@@ -1,0 +1,86 @@
+<%- include('../includes/head.ejs') %>
+</head>
+<body class="ms-body ms-aside-left-open ms-primary-theme ms-has-quickbar">
+  <%- include('../includes/preloader.ejs') %> <%-
+  include('../includes/navigation.ejs') %>
+
+  <main class="body-content">
+
+     <% if (errorMessage) { %>
+    <div class="user-message user-message--error"><%= errorMessage %></div>
+    <% } %>
+    <div
+      class="ms-content-wrapper"
+      action="/admin/<% if (editing) { %>edit-profile<% } else { %>add-profile<% } %>"
+      method="POST"
+      enctype="multipart/form-data"
+    >
+      <div class="ms-content-wrapper">
+        <div class="row">
+    
+         
+           <div class="col-md-12">
+            <div class="ms-panel">
+              <div class="ms-panel-header">
+                <h6><%= lingua.order_id_page_header %></h6>
+              </div>
+              
+            </div>
+          </div>
+    
+    
+    <div class=" col-md-6">
+      <div><%= order.orderdetails[1].quantity %></div>
+            <div class="ms-panel ms-panel-fh">
+              <div class="ms-panel-body">
+                <h4 class="section-title bold"><%= lingua.order_id_page_subheader %></h4>
+                <table class="table ms-profile-information">
+                  
+                  <tbody>
+                   
+                    <tr>
+                      <th scope="row">Price</th>
+                      <td>$<%= order.orderdetails[0].product %></td>
+                    </tr>
+                    <tr>
+                      <th scope="row">Product Category</th>
+                      <td>Veg</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">Availiblity</th>
+                   <td><span class="badge badge-pill badge-primary">In stock</span></td>
+                    </tr>
+                    <tr>
+                      <th scope="row">Delivery Charges</th>
+                      <td>Free</td>
+                    </tr>
+    
+                    <tr>
+                      <th scope="row">SKU Identification</th>
+                      <td>23445</td>
+                    </tr>
+                  
+                  </tbody>
+                  
+                </table>
+                <div class="new">
+                  <button type="button" class="btn btn-primary">Edit</button>
+                  <button type="button" class="btn btn-secondary">Delete</button>
+                </div>
+    
+              </div>
+            </div>
+          </div>
+    
+    
+    
+    
+    
+        </div>
+      </div>
+        </div>
+      </div>
+    </div>
+  </main>
+<%- include('../includes/end.ejs') %>
+</body>

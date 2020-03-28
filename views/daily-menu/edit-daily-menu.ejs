@@ -1,0 +1,219 @@
+<%- include('../includes/head.ejs') %>
+
+</head>
+<body class="ms-body ms-aside-left-open ms-primary-theme ms-has-quickbar">
+  <%- include('../includes/preloader.ejs') %> <%-
+  include('../includes/navigation.ejs') %> <%-
+  include('../includes/sidebar-right.ejs') %>
+
+  <main class="body-content">
+    <%- include('../includes/navigation-bar.ejs') %> <% if (errorMessage) { %>
+    <div class="user-message user-message--error"><%= errorMessage %></div>
+    <% } %>
+    <div
+      class="ms-content-wrapper"
+      action="/admin/<% if (editing) { %>edit-daily-menu<% } else { %>add-daily-menu<% } %>"
+      method="POST"
+      enctype="multipart/form-data"
+    >
+      <div class="row">
+        <div class="col-xl-6 col-md-12">
+          <div class="ms-panel ms-panel-fh">
+            <div class="ms-panel-header">
+              <h6>Add Product Form</h6>
+            </div>
+            <div class="ms-panel-body">
+                <div class="form-row">
+                  <form
+                    class="product-form"
+                    action="/admin/<% if (editing) { %>edit-daily-menu<% } else { %>add-daily-menu<% } %>"
+                    method="POST"
+                    enctype="multipart/form-data"
+                  >
+
+                  <div class="input-group date" data-provide="datepicker">
+                    <input type="text" class="form-control">
+                    <div class="input-group-addon">
+                        <span class="glyphicon glyphicon-th"></span>
+                    </div>
+                </div>
+                  <script>
+                    $('.datepicker').datepicker({
+                     format: 'mm/dd/yyyy',
+                   startDate: '-3d'
+});
+                  </script>
+                  
+               
+             
+
+                  <div class="input-group mb-3 x">
+                    <select class="custom-select" id="roCategory" name="roCategory">
+                     
+                      <% if (editing && product.category.ro=='meniulZilei')  { %> 
+                        <option selected value="Meniul Zilei">Meniul Zilei</option> 
+        
+                        <% } else{ %>
+                        <option value="Meniul Zilei">Meniul Zilei</option>
+                      <% } %>
+                    </select>
+                    <div class="input-group-append">
+                      <label class="input-group-text" for="huCategory">CATEGORY RO</label>
+                    </div>
+                  </div>
+
+                  <div class="input-group mb-3 x">
+                    <select class="custom-select" id="huCategory" name="huCategory">
+                    
+                      <% if (editing && product.category.hu=='Napi Menü')  { %> 
+                        <option selected value="Napi Menü">Napi Menü</option> 
+        
+                        <% } else{ %>
+                        <option value="Napi Menü">Napi Menü</option>
+                      <% } %>
+
+                    </select>
+                    <div class="input-group-append">
+                      <label class="input-group-text" for="inputGroupSelect02">CATEGORY HU</label>
+                    </div>
+                  </div>
+
+                  <div class="input-group mb-3 x">
+                    <select class="custom-select" id="enCategory" name="enCategory">
+          
+                      <% if (editing && product.category.en=='Daily Menu')  { %> 
+                        <option selected value="Daily Menu">Daily Menu</option> 
+        
+                        <% } else{ %>
+                        <option value="Daily Menu">Daily Menu</option>
+                      <% } %>        
+                    </select>
+                    <div class="input-group-append">
+                      <label class="input-group-text" for="inputGroupSelect02">CATEGORY EN</label>
+                    </div>
+                  </div>
+
+                  <div class="col-md-6 mb-3">
+                    <label for="price"><%= lingua.create_product_price %></label>
+                    <div class="input-group">
+                      <input
+                        class="form-control <%= validationErrors.find(e => e.param === 'price') ? 'invalid' : '' %>"
+                        type="number"
+                        name="price"
+                        id="price"
+                        step="0.01"
+                        value="<% if (editing || hasError) { %><%= product.price %><% } %>"
+                      />
+                      <div class="invalid-feedback">
+                        Price 
+                      </div>
+                    </div>
+                  </div>
+
+               
+
+                 
+                  <div class="col-md-12 mb-3">
+                    <label for="roDescription"><%= lingua.create_product_description1 %></label>
+                    <div class="input-group">
+                      <textarea
+                        class="form-control <%= validationErrors.find(e => e.param === 'roDescription') ? 'invalid' : '' %>"
+                        name="roDescription"
+                        id="roDescription"
+                        rows="5"
+                      >
+ <% if (editing || hasError) { %><%= product.description.ro %><% } %></textarea
+                      >
+                      <div class="invalid-feedback">
+                        Please provide a message.
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-md-12 mb-3">
+                    <label for="huDescription"><%= lingua.create_product_description2 %></label>
+                    <div class="input-group">
+                      <textarea
+                        class="form-control <%= validationErrors.find(e => e.param === 'huDescription') ? 'invalid' : '' %>"
+                        name="huDescription"
+                        id="huDescription"
+                        rows="5"
+                      >
+ <% if (editing || hasError) { %><%= product.description.hu %><% } %></textarea
+                      >
+                      <div class="invalid-feedback">
+                        Please provide a message.
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-md-12 mb-3">
+                    <label for="enDescription"><%= lingua.create_product_description3 %></label>
+                    <div class="input-group">
+                      <textarea
+                        class="form-control <%= validationErrors.find(e => e.param === 'enDescription') ? 'invalid' : '' %>"
+                        name="enDescription"
+                        id="enDescription"
+                        rows="5"
+                      >
+ <% if (editing || hasError) { %><%= product.description.en %><% } %></textarea
+                      >
+                      <div class="invalid-feedback">
+                        Please provide a message.
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-12 mb-3">
+                    <label for="validationCustom12"><%= lingua.create_product_image %></label>
+                    <div class="custom-file">
+                      <input type="file" name="image" id="image" />
+                    </div>
+                  </div>
+                </div>
+            
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-6 col-md-12">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="ms-panel">
+                <div class="ms-panel-header">
+                  <h6>Product</h6>
+                </div>
+                <div class="ms-panel-body">
+                
+                    <div class="carousel-inner">
+                      <div class="carousel-item active">
+                        <% if (editing) { %><img src="/<%= product.imageUrl %>" alt="<%= product.price %>"><% }  %>
+                      </div>
+                     
+                      </div>
+                     
+                    
+                    </div>
+                  
+                </div>
+                  <% if (editing) { %>
+                  <input
+                    type="hidden"
+                    value="<%= product._id %>"
+                    name="productId"
+                  />
+                  <% } %>
+
+                  <button class="btn" type="submit">
+                    <% if (editing) { %>Update Product<% } else { %>Add
+                    Product<% } %>
+                  </button>
+                </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+ <%- include('../includes/end.ejs') %>
+</body>

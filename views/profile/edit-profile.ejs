@@ -1,0 +1,263 @@
+<%- include('../includes/head.ejs') %>
+</head>
+<body class="ms-body ms-aside-left-open ms-primary-theme ms-has-quickbar">
+  <%- include('../includes/preloader.ejs') %> <%-
+  include('../includes/navigation.ejs') %> 
+
+  <main class="body-content">
+
+
+     <% if (errorMessage) { %>
+    <div class="user-message user-message--error"><%= errorMessage %></div>
+    <% } %>
+    <div >
+    <div class="ms-content-wrapper editprofiledown">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="ms-panel">
+            <div class="ms-panel-header">
+              <h6>Basic Form Elements</h6>
+            </div>
+            <div class="ms-panel-body">
+              <form 
+              class="ms-content-wrapper"
+              action="/admin/<% if (editing) { %>edit-profile<% } else { %>add-profile<% } %>"
+              method="POST"
+              enctype="multipart/form-data"
+              >
+                <div class="form-group">
+                  <label for="email">Email address</label>
+                  <input
+                        class="form-control <%= validationErrors.find(e => e.param === 'email') ? 'invalid' : '' %>"
+                        type="text"
+                        name="email"
+                        id="email"
+                        value="<% if (editing || hasError) { %><%= admin.email %><% } %>"
+                      />
+                </div>
+                <div class="form-group">
+                  <label for="fullName">Full Name</label>
+                  <input
+                  class="form-control <%= validationErrors.find(e => e.param === 'fullName') ? 'invalid' : '' %>"
+                  type="text"
+                  name="fullName"
+                  id="fullName"
+                  value="<% if (editing || hasError) { %><%= admin.fullName %><% } %>"
+                />
+                </div>
+                <div class="form-group">
+                  <label for="phoneNuber">Tel Numb.</label>
+                  <input
+                  class="form-control <%= validationErrors.find(e => e.param === 'phoneNuber') ? 'invalid' : '' %>"
+                  type="text"
+                  name="phoneNuber"
+                  id="phoneNuber"
+                  value="<% if (editing || hasError) { %><%= admin.phoneNuber %><% } %>"
+                />
+                </div>
+                <div class="form-group">
+                  <label for="open">Open</label>
+                  <input
+                  class="form-control <%= validationErrors.find(e => e.param === 'open') ? 'invalid' : '' %>"
+                  type="text"
+                  name="open"
+                  id="open"
+                  value="<% if (editing || hasError) { %><%= admin.open %><% } %>"
+                />
+                </div>
+                <div class="form-group">
+                  <label for="close">Clsoed</label>
+                  <input
+                  class="form-control <%= validationErrors.find(e => e.param === 'close') ? 'invalid' : '' %>"
+                  type="text"
+                  name="close"
+                  id="close"
+                  value="<% if (editing || hasError) { %><%= admin.close %><% } %>"
+                />
+                </div>
+                <div class="form-group">
+                  <label for="date">Csatlakozas</label>
+                  <input
+                  class="form-control"
+                  type="text"
+                  name="phoneNuber"
+                  id="phoneNuber"
+                  disabled
+                  value="<%= admin.date %>"
+                />
+                </div>
+            </div>
+          </div>
+        </div>
+
+
+
+        <div class="col-md-6">
+          <div class="ms-panel">
+            <div class="ms-panel-header">
+              <h6>Basic Form Elements</h6>
+            </div>
+            <div class="ms-panel-body">
+              
+                <div class="form-group">
+                  <label for="roAdress">RO ADRESS</label>
+                  <input
+                  class="form-control <%= validationErrors.find(e => e.param === 'roAdress') ? 'invalid' : '' %>"
+                  type="text"
+                  name="roAdress"
+                  id="roAdress"
+                  value="<% if (editing || hasError) { %><%= admin.adress.ro %><% } %>"
+                />
+                </div>
+                <div class="form-group">
+                  <label for="huAdress">HU ADRESS</label>
+                  <input
+                        class="form-control <%= validationErrors.find(e => e.param === 'huAdress') ? 'invalid' : '' %>"
+                        type="text"
+                        name="huAdress"
+                        id="huAdress"
+                        value="<% if (editing || hasError) { %><%= admin.adress.hu %><% } %>"
+                      />
+                </div>
+
+                <div class="form-group">
+                  <label for="enAdress">EN ADRESS</label>
+                  <input
+                        class="form-control <%= validationErrors.find(e => e.param === 'enAdress') ? 'invalid' : '' %>"
+                        type="text"
+                        name="enAdress"
+                        id="enAdress"
+                        value="<% if (editing || hasError) { %><%= admin.adress.en %><% } %>"
+                      />
+                </div>
+                <div class="form-group">
+                  <label for="roLocation">Location RO</label>
+                  <select class="form-control" id="roLocation" name="roLocation">
+                    <option>Location RO</option>
+                    <% if (editing && admin.location.ro=='Odorheiu Secuiesc')  { %> 
+                      <option selected value="Odorheiu Secuiesc">Odorheiu Secuiesc</option> 
+                      <% } else{ %>
+                      <option value="Odorheiu Secuiesc">Odorheiu Secuiesc</option>
+                    <% } %>
+                    <% if (editing && admin.location.ro=='Târgu Mureș')  { %> 
+                      <option selected value="Târgu Mureș">Târgu Mureș</option> 
+                      <% } else{ %>
+                      <option value="Târgu Mureș">Târgu Mureș</option>
+                    <% } %>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="huLocation">Location HU</label>
+                  <select class="form-control" id="huLocation" name="huLocation">
+                    <option>Location HU</option>
+                    <% if (editing && admin.location.hu=='Székelyudvarhely')  { %> 
+                      <option selected value="Székelyudvarhely">Székelyudvarhely</option> 
+                      <% } else{ %>
+                      <option value="Székelyudvarhely">Székelyudvarhely</option>
+                    <% } %>
+                    <% if (editing && admin.location.hu=='Marosvásárhely')  { %> 
+                      <option selected value="Marosvásárhely">Marosvásárhely</option> 
+      
+                      <% } else{ %>
+                      <option value="Marosvásárhely">Marosvásárhely</option>
+                    <% } %>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="enLocation">Location EN</label>
+                  <select class="form-control" id="enLocation" name="enLocation">
+                    <option>Location EN</option>
+                    <% if (editing && admin.location.en=='SzékelyudvarhelyUS')  { %> 
+                      <option selected value="SzékelyudvarhelyUS">SzékelyudvarhelyUS</option>      
+                      <% } else{ %>
+                      <option value="SzékelyudvarhelyUS">SzékelyudvarhelyUS</option>
+                    <% } %>
+                    <% if (editing && admin.location.en=='MarosvásárhelyUS')  { %> 
+                      <option selected value="MarosvásárhelyUS">MarosvásárhelyUS</option>    
+                      <% } else{ %>
+                      <option value="MarosvásárhelyUS">MarosvásárhelyUS</option>
+                    <% } %>
+                  </select>
+                </div>
+               
+            
+            </div>
+          </div>
+        </div>
+
+
+
+        <div class="col-md-6">
+          <div class="ms-panel">
+            <div class="ms-panel-header">
+              <h6>Basic Form Elements</h6>
+            </div>
+            <div class="ms-panel-body">
+             
+                <div class="form-group">
+                  <label for="roShortCompanyDesc">roShortCompanyDesce</label>
+                  <input
+                        class="form-control <%= validationErrors.find(e => e.param === 'roShortCompanyDesc') ? 'invalid' : '' %>"
+                        type="text"
+                        name="roShortCompanyDesc"
+                        id="roShortCompanyDesc"
+                        value="<% if (editing || hasError) { %><%= admin.shortCompanyDesc.ro %><% } %>"
+                      />
+                </div>
+                <div class="form-group">
+                  <label for="huShortCompanyDesc">huShortCompanyDesce</label>
+                  <input
+                        class="form-control <%= validationErrors.find(e => e.param === 'huShortCompanyDesc') ? 'invalid' : '' %>"
+                        type="text"
+                        name="huShortCompanyDesc"
+                        id="huShortCompanyDesc"
+                        value="<% if (editing || hasError) { %><%= admin.shortCompanyDesc.hu %><% } %>"
+                      />
+                </div>
+                <div class="form-group">
+                  <label for="enShortCompanyDesc">enShortCompanyDesce</label>
+                  <input
+                  class="form-control <%= validationErrors.find(e => e.param === 'enShortCompanyDesc') ? 'invalid' : '' %>"
+                  type="text"
+                  name="enShortCompanyDesc"
+                  id="enShortCompanyDesc"
+                  value="<% if (editing || hasError) { %><%= admin.shortCompanyDesc.en %><% } %>"
+                />
+                </div>
+               
+            </div>
+          </div>
+        </div>
+
+     
+        <div class="col-xl-6 col-md-12">
+          <div class="row">
+            <div class="col-md-12">
+           
+                  <% if (editing) { %>
+                  <input
+                    type="hidden"
+                    value="<%= admin._id %>"
+                    name="adminId"
+                  />
+                  <% } %>
+
+                  <button class="btn btn-success" type="submit">
+                    <% if (editing) { %><%= lingua.update_profile %><% } else { %>Add
+                    Product<% } %>
+                  </button>
+               
+                </div>
+              </div>
+         
+         </div>
+   
+  </form>
+
+
+      </div>
+      </div>
+    </div>
+  </main>
+<%- include('../includes/end.ejs') %>
+</body>

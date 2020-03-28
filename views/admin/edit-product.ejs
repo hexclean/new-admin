@@ -1,0 +1,308 @@
+<%- include('../includes/head.ejs') %>
+</head>
+<body class="ms-body ms-aside-left-open ms-primary-theme ms-has-quickbar">
+  <%- include('../includes/preloader.ejs') %> <%-
+  include('../includes/navigation.ejs') %> <%-
+  include('../includes/sidebar-right.ejs') %>
+
+  <main class="body-content">
+     <% if (errorMessage) { %>
+    <div class="user-message user-message--error"><%= errorMessage %></div>
+    <% } %>
+    <div
+      class="ms-content-wrapper"
+      action="/admin/<% if (editing) { %>edit-product<% } else { %>add-product<% } %>"
+      method="POST"
+      enctype="multipart/form-data"
+    >
+      <div class="row">
+        <div class="col-xl-6 col-md-12">
+          <div class="ms-panel ms-panel-fh">
+            <div class="ms-panel-header">
+              <h6>Add Product Form</h6>
+            </div>
+            <div class="ms-panel-body">
+                <div class="form-row">
+                  <form
+                    class="product-form"
+                    action="/admin/<% if (editing) { %>edit-product<% } else { %>add-product<% } %>"
+                    method="POST"
+                    enctype="multipart/form-data"
+                  >
+                  <div class="col-md-12 mb-3">
+                    <label for="roTitle"><%= lingua.create_product_name1 %></label>
+                    <div class="input-group">
+                      <input
+                        class="form-control <%= validationErrors.find(e => e.param === 'roTitle') ? 'invalid' : '' %>"
+                        type="text"
+                        name="roTitle"
+                        id="roTitle"
+                        value="<% if (editing || hasError) { %><%= product.title.ro %><% } %>"
+                      />
+                    </div>
+                  </div>
+
+                  <div class="col-md-12 mb-3">
+                    <label for="huTitle"><%= lingua.create_product_name2 %></label>
+                    <div class="input-group">
+                      <input
+                        class="form-control <%= validationErrors.find(e => e.param === 'huTitle') ? 'invalid' : '' %>"
+                        type="text"
+                        name="huTitle"
+                        id="huTitle"
+                        value="<% if (editing || hasError) { %><%= product.title.hu %><% } %>"
+                      />
+                    </div>
+                  </div>
+
+                  <div class="col-md-12 mb-3">
+                    <label for="enTitle"><%= lingua.create_product_name3 %></label>
+                    <div class="input-group">
+                      <input
+                        class="form-control <%= validationErrors.find(e => e.param === 'enTitle') ? 'invalid' : '' %>"
+                        type="text"
+                        name="enTitle"
+                        id="enTitle"
+                        value="<% if (editing || hasError) { %><%= product.title.en %><% } %>"
+                      />
+                    </div>
+                  </div>
+
+                  <div class="input-group mb-3 x">
+                    <select class="custom-select" id="roCategory" name="roCategory">
+                      <option>CATEGORY..RO</option>
+                      <% if (editing && product.category.ro=='meniulZilei')  { %> 
+                        <option selected value="meniulZilei">Meniul Zilei</option> 
+        
+                        <% } else{ %>
+                        <option value="meniulZilei">Meniul Zilei</option>
+                      <% } %>
+
+                      <% if (editing && product.category.ro=='pizza')  { %> 
+                        <option selected value="pizza">Pizza</option> 
+        
+                        <% } else{ %>
+                        <option value="pizza">Pizza</option>
+                      <% } %>
+
+                      <% if (editing && product.category.ro=='dessert')  { %> 
+                        <option selected value="dessert">Dessert</option> 
+        
+                        <% } else{ %>
+                        <option value="dessert">Dessert</option>
+                      <% } %>
+
+                      <% if (editing && product.category.ro=='egyeb')  { %> 
+                        <option selected value="egyeb">Egyeb</option> 
+        
+                        <% } else{ %>
+                        <option value="egyeb">Egyeb</option>
+                      <% } %>
+                     
+                
+                    </select>
+                    <div class="input-group-append">
+                      <label class="input-group-text" for="huCategory">CATEGORY</label>
+                    </div>
+                  </div>
+
+                  <div class="input-group mb-3 x">
+                    <select class="custom-select" id="huCategory" name="huCategory">
+                      <option>CATEGORY..HU</option>
+                      <% if (editing && product.category.hu=='ponty')  { %> 
+                        <option selected value="ponty">Ponty</option> 
+        
+                        <% } else{ %>
+                        <option value="ponty">Ponty</option>
+                      <% } %>
+
+                      <% if (editing && product.category.hu=='amur')  { %> 
+                        <option selected value="amur">Amur</option> 
+        
+                        <% } else{ %>
+                        <option value="amur">Amur</option>
+                      <% } %>
+
+                      <% if (editing && product.category.hu=='kotesek')  { %> 
+                        <option selected value="kotesek">Kotesek</option> 
+        
+                        <% } else{ %>
+                        <option value="kotesek">Kotesek</option>
+                      <% } %>
+
+                      <% if (editing && product.category.hu=='egyeb')  { %> 
+                        <option selected value="egyeb">Egyeb</option> 
+        
+                        <% } else{ %>
+                        <option value="egyeb">Egyeb</option>
+                      <% } %>
+                     
+                
+                    </select>
+                    <div class="input-group-append">
+                      <label class="input-group-text" for="inputGroupSelect02">CATEGORY</label>
+                    </div>
+                  </div>
+
+                  <div class="input-group mb-3 x">
+                    <select class="custom-select" id="enCategory" name="enCategory">
+                      <option>CATEGORY..EN</option>
+                      <% if (editing && product.category.en=='ponty')  { %> 
+                        <option selected value="ponty">Ponty</option> 
+        
+                        <% } else{ %>
+                        <option value="ponty">Ponty</option>
+                      <% } %>
+
+                      <% if (editing && product.category.en=='amur')  { %> 
+                        <option selected value="amur">Amur</option> 
+        
+                        <% } else{ %>
+                        <option value="amur">Amur</option>
+                      <% } %>
+
+                      <% if (editing && product.category.en=='kotesek')  { %> 
+                        <option selected value="kotesek">Kotesek</option> 
+        
+                        <% } else{ %>
+                        <option value="kotesek">Kotesek</option>
+                      <% } %>
+
+                      <% if (editing && product.category.en=='egyeb')  { %> 
+                        <option selected value="egyeb">Egyeb</option> 
+        
+                        <% } else{ %>
+                        <option value="egyeb">Egyeb</option>
+                      <% } %>
+                     
+                
+                    </select>
+                    <div class="input-group-append">
+                      <label class="input-group-text" for="inputGroupSelect02">CATEGORY</label>
+                    </div>
+                  </div>
+
+                  <div class="col-md-6 mb-3">
+                    <label for="price"><%= lingua.create_product_price %></label>
+                    <div class="input-group">
+                      <input
+                        class="form-control <%= validationErrors.find(e => e.param === 'price') ? 'invalid' : '' %>"
+                        type="number"
+                        name="price"
+                        id="price"
+                        step="0.01"
+                        value="<% if (editing || hasError) { %><%= product.price %><% } %>"
+                      />
+                      <div class="invalid-feedback">
+                        Price 
+                      </div>
+                    </div>
+                  </div>
+
+               
+
+                 
+                  <div class="col-md-12 mb-3">
+                    <label for="roDescription"><%= lingua.create_product_description1 %></label>
+                    <div class="input-group">
+                      <textarea
+                        class="form-control <%= validationErrors.find(e => e.param === 'roDescription') ? 'invalid' : '' %>"
+                        name="roDescription"
+                        id="roDescription"
+                        rows="5"
+                      >
+ <% if (editing || hasError) { %><%= product.description.ro %><% } %></textarea
+                      >
+                      <div class="invalid-feedback">
+                        Please provide a message.
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-md-12 mb-3">
+                    <label for="huDescription"><%= lingua.create_product_description2 %></label>
+                    <div class="input-group">
+                      <textarea
+                        class="form-control <%= validationErrors.find(e => e.param === 'huDescription') ? 'invalid' : '' %>"
+                        name="huDescription"
+                        id="huDescription"
+                        rows="5"
+                      >
+ <% if (editing || hasError) { %><%= product.description.hu %><% } %></textarea
+                      >
+                      <div class="invalid-feedback">
+                        Please provide a message.
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-md-12 mb-3">
+                    <label for="enDescription"><%= lingua.create_product_description3 %></label>
+                    <div class="input-group">
+                      <textarea
+                        class="form-control <%= validationErrors.find(e => e.param === 'enDescription') ? 'invalid' : '' %>"
+                        name="enDescription"
+                        id="enDescription"
+                        rows="5"
+                      >
+ <% if (editing || hasError) { %><%= product.description.en %><% } %></textarea
+                      >
+                      <div class="invalid-feedback">
+                        Please provide a message.
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-12 mb-3">
+                    <label for="validationCustom12"><%= lingua.create_product_image %></label>
+                    <div class="custom-file">
+                      <input type="file" name="image" id="image" />
+                    </div>
+                  </div>
+                </div>
+            
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-6 col-md-12">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="ms-panel">
+                <div class="ms-panel-header">
+                  <h6>Product</h6>
+                </div>
+                <div class="ms-panel-body">
+                
+                    <div class="carousel-inner">
+                      <div class="carousel-item active">
+                        <% if (editing) { %><img src="/<%= product.imageUrl %>" alt="<%= product.price %>"><% }  %>
+                      </div>
+                     
+                      </div>
+                     
+                    
+                    </div>
+                  
+                </div>
+                  <% if (editing) { %>
+                  <input
+                    type="hidden"
+                    value="<%= product._id %>"
+                    name="productId"
+                  />
+                  <% } %>
+
+                  <button class="btn" type="submit">
+                    <% if (editing) { %>Update Product<% } else { %>Add
+                    Product<% } %>
+                  </button>
+                </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+ <%- include('../includes/end.ejs') %>
+</body>

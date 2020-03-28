@@ -1,0 +1,136 @@
+<%- include('../includes/head.ejs') %>
+<script type="text/javascript">
+ 
+      function toggle_visibility(id) {
+         var e = document.getElementById(id);
+         if(e.style.display == 'block')
+            e.style.display = 'none';
+         else
+            e.style.display = 'block';
+      }
+
+</script>
+<style type="text/css">
+  #popupBoxOnePosition {
+    top: 0;
+    left: 0;
+    position: fixed;
+    width: 100%;
+    height: 120%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: none;
+  }
+
+  .popupBoxWrapper {
+    width: 550px;
+    margin: 50px auto;
+    text-align: left;
+  }
+  .popupBoxContent {
+    background-color: #fff;
+    padding: 15px;
+  }
+</style>
+</head>
+<body class="ms-body ms-aside-left-open ms-primary-theme ms-has-quickbar">
+  <%- include('../includes/preloader.ejs') %> <%-
+  include('../includes/navigation.ejs') %> <%-
+  include('../includes/sidebar-right.ejs') %>
+
+  <main class="body-content">   
+    <div class="ms-content-wrapper">
+        <div class="row">
+          <div class="col-md-12">
+            <nav aria-label="breadcrumb" class="new">
+              <ol class="breadcrumb pl-0">
+                <li class="breadcrumb-item"><a href="#"><i class="material-icons">home</i> Home</a></li>
+                
+              </ol>
+            </nav>
+            
+            <div class="col-12">
+                <div class="ms-panel">
+                  <div class="ms-panel-header">
+                    <h6> Order List</h6>
+                  </div>
+                  <div class="ms-panel-body">
+    
+                    <div class="table-responsive">
+                      <table class="table table-hover thead-primary">
+                        <thead>
+                          <tr>
+                            <th scope="col"><%= lingua.order_page_list_order_name %></th>
+                            <th scope="col"><%= lingua.order_page_list_order_adress %></th>
+                            <th scope="col"><%= lingua.order_page_list_order_product %></th>
+                                <th scope="col"><%= lingua.order_page_list_order_pay %></th>
+                                <th scope="col"><%= lingua.order_page_list_order_status %></th>
+                                <th scope="col"><%= lingua.order_page_list_order_total_price %></th>
+                                <th scope="col"><%= lingua.order_page_list_order_total_action %></th>
+                          </tr>
+                        </thead>
+                        <% if (ords.length > 0) { %>
+                        <tbody>
+                            <% for (let orders of ords) { %>
+                          <tr>
+                            <td> df %></td>
+                            <td> Jhon Leo</td>
+                              <td><%= orders.totalPrice %></td>
+                              <td><%= orders.totalPrice %></td>
+                              <td><span class="">Pending</span></td>
+                                <td>$10</td>
+                                <td><a href="/admin/edit-order/<%= orders._id %>?edit=true" class="btn grid-btn mt-0 btn-sm btn-secondary" ><%= lingua.product_action_edit %></a>
+                                </td>
+                                <td>
+                                  <div id="popupBoxOnePosition">
+                                    <div class="popupBoxWrapper">
+                                      <div class="popupBoxContent">
+                                        <h3>Popup Box 1</h3>
+                                        <p>You are currently viewing popup box 1.</p>
+                                        <form action="/admin/delete-order" method="POST">
+                                          <input type="hidden" value="<%= orders._id %>" name="orderId">
+                                          <button class="btn grid-btn mt-0 btn-sm btn-primary" type="submit"><%= lingua.product_action_delete %></button>
+                                       </form>
+                                        <p>Click <a href="javascript:void(0)" onclick="toggle_visibility('popupBoxOnePosition');">here</a> to close popup box one.</p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </td> 
+                          </tr>    
+                          <% } %>
+                        </tbody>
+                         <% } else { %>
+                        <h1>No Products Found!</h1>
+                        <% } %>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>        
+        </div>
+        <div id="popupBoxOnePosition">
+          <div class="popupBoxWrapper">
+            <div class="popupBoxContent">
+              <h3>Popup Box 1</h3>
+              <p>You are currently viewing popup box 1.</p>
+              <p>Click <a href="javascript:void(0)" onclick="toggle_visibility('popupBoxOnePosition');">here</a> to close popup box one.</p>
+            </div>
+          </div>
+        </div>
+    
+      
+    
+        <div >
+    
+          <p>Click <a href="javascript:void(0)" onclick="toggle_visibility('popupBoxOnePosition');">here</a> to see popup box one.</p>
+          
+    
+        </div>
+	
+
+  </main>
+ 
+<%- include('../includes/end.ejs')
+  %>
+</body>

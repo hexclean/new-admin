@@ -1,0 +1,106 @@
+<%- include('../includes/head.ejs') %>
+</head>
+<body class="ms-body ms-aside-left-open ms-primary-theme ms-has-quickbar">
+  <%- include('../includes/preloader.ejs') %> <%-
+  include('../includes/navigation.ejs') %> <%-
+  include('../includes/sidebar-right.ejs') %>
+ 
+  <main class="body-content">  
+    <div class="ms-content-wrapper">
+      <div class="ms-profile-overview">
+        <div class="ms-profile-cover">
+          <img class="ms-profile-img" src="" alt="people">
+          <div class="ms-profile-user-info">
+            <h3 class="ms-profile-username text-white"><%= admin.fullName %></h3>           
+          </div>        
+        </div>
+        <ul class="ms-profile-navigation nav nav-tabs tabs-bordered" role="tablist">
+          <li role="presentation"><a href="#tab1" aria-controls="tab1" class="active show" role="tab" data-toggle="tab"> Overview </a></li>
+          <li role="presentation"><a href="/admin/edit-profile/<%= admin._id %>?edit=true"> <%= lingua.product_action_edit %> </a></li>
+          <li role="presentation"><a href="#tab3" aria-controls="tab3" role="tab" data-toggle="tab"> Portfolio </a></li>
+        </ul>
+        <div class="tab-content">
+          <div class="tab-pane" id="tab1">
+          </div>
+          <div class="tab-pane" id="tab2">
+          </div>
+          <div class="tab-pane" id="tab3">
+          </div>
+        </div>
+      </div>
+      <div class="container">
+        <div class="row">
+          <div class="col-sm">
+           <a href="?language=hu">
+            <img src="/images/hu.png" width="100" height="100">
+            </a>       
+          </div>
+          <div class="col-sm">
+           <a href="?language=ro">
+            <img src="/images/ro.png" width="100" height="100">
+            </a>      
+          </div>
+          <div class="col-sm">
+           <a href="?language=en">
+            <img src="/images/en.png" width="100" height="100">
+            </a>   
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xl-7 col-md-12">
+          <div class="ms-panel ms-panel-fh">
+            <div class="ms-panel-body">
+              <h2 class="section-title">About Me</h2>
+              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean non elit nisl. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.
+                Aenean luctus, justo id pellentesque imperdiet, augue metus ornare quam, in pulvinar massa erat nec dui. Nam at facilisis nulla.
+              </p>
+              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean non elit nisl. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.
+                Aenean luctus, justo id pellentesque imperdiet, augue metus ornare quam, in pulvinar massa erat nec dui. Nam at facilisis nulla.
+              </p>
+              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean non elit nisl. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.
+                Aenean luctus, justo id pellentesque imperdiet, augue metus ornare quam, in pulvinar massa erat nec dui. Nam at facilisis nulla.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-5 col-md-12">
+          <div class="ms-panel ms-panel-fh">
+            <div class="ms-panel-body">
+              <table class="table ms-profile-information">
+                <tbody>
+                  <tr>
+                    <th scope="row"><%= lingua.dashboard_profile_full_name %></th>
+                    <td><%= admin.fullName %></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">E-mail</th>
+                    <td><%= admin.email %></td>
+                  </tr>
+                  <tr>
+                    <th scope="row"><%= lingua.dashboard_profile_phone_num %></th>
+                    <td><%= admin.phoneNuber %></td>
+                  </tr>
+                  <tr>
+                    <th scope="row"><%= lingua.dashboard_profile_open %></th>
+                    <td><%= admin.open %></td>
+                  </tr>
+                  <tr>
+                    <th scope="row"><%= lingua.dashboard_profile_close %></th>
+                    <td><%= admin.close %></td>
+                  </tr>
+                  <tr>
+                    <th scope="row"><%= lingua.dashboard_profile_connect %></th>
+                    <td><%= admin.date %></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+<%- include('../includes/end.ejs')
+  %>
+</body>
