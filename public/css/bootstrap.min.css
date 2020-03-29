@@ -1729,6 +1729,27 @@ pre code {
     transition: none;
   }
 }
+
+.input-group input.invalid,
+.input-group textarea.invalid
+{
+  border-color: red !important;
+}
+
+.input-group-append option.invalid{
+  border-color: red !important;
+}
+
+.input-group-append select.invalid{
+  border-color: red !important;
+}
+
+.custom-select option.invalid{
+  border-color: red !important;
+}
+.custom-select select.invalid{
+  border-color: red !important;
+}
 .form-control::-ms-expand {
   background-color: transparent;
   border: 0;

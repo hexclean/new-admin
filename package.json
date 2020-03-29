@@ -1,7 +1,7 @@
 {
   "name": "foodapp",
   "version": "1.0.0",
-  "description": "",
+  "description": "Install: 1) npm init 2) npm install --save express express-validator bcrypt config jsonwebtoken mongoose request bcrypt bcryptjs connect-mongodb-session express-session connect-mongodb-session ejs passport passport-google-oauth20 cookie-session 3) npm install --save -D nodemon concurrently",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -52,5 +52,13 @@
   "devDependencies": {
     "concurrently": "^5.1.0",
     "nodemon": "^2.0.2"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hexclean/foodnet.git"
+  },
+  "bugs": {
+    "url": "https://github.com/hexclean/foodnet/issues"
+  },
+  "homepage": "https://github.com/hexclean/foodnet#readme"
 }

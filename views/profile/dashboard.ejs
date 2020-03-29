@@ -9,7 +9,8 @@
     <div class="ms-content-wrapper">
       <div class="ms-profile-overview">
         <div class="ms-profile-cover">
-          <img class="ms-profile-img" src="" alt="people">
+   <img class="ms-profile-img" src="/<%= admin.imageUrl %>" alt="<%= admin.fullName %>">
+          
           <div class="ms-profile-user-info">
             <h3 class="ms-profile-username text-white"><%= admin.fullName %></h3>           
           </div>        
@@ -17,7 +18,7 @@
         <ul class="ms-profile-navigation nav nav-tabs tabs-bordered" role="tablist">
           <li role="presentation"><a href="#tab1" aria-controls="tab1" class="active show" role="tab" data-toggle="tab"> Overview </a></li>
           <li role="presentation"><a href="/admin/edit-profile/<%= admin._id %>?edit=true"> <%= lingua.product_action_edit %> </a></li>
-          <li role="presentation"><a href="#tab3" aria-controls="tab3" role="tab" data-toggle="tab"> Portfolio </a></li>
+          <li role="presentation"><a href="/admin/edit-photo/<%= admin._id %>?edit=true"> <%= lingua.admin_photo %> </a></li>
         </ul>
         <div class="tab-content">
           <div class="tab-pane" id="tab1">

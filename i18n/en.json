@@ -34,5 +34,6 @@
   "dashboard_profile_open": "Open",
   "dashboard_profile_close": "Closed",
   "dashboard_profile_connect": "Registartion",
-  "update_profile": "Update Profile"
+  "update_profile": "Update Profile",
+  "admin_photo": "Profile Picture"
 }

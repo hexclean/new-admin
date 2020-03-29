@@ -38,11 +38,10 @@ exports.postAddDailyMenu = async (req, res, next) => {
       hasError: true,
       product: [
         {
-          description: {
-            en: enDescription,
-            hu: huDescription,
-            ro: roDescription
-          },
+          enDescription: enDescription,
+          huDescription: huDescription,
+          roDescription: roDescription,
+          
           category: { en: enCategory, hu: huCategory, ro: roCategory }
         }
       ],
@@ -60,11 +59,9 @@ exports.postAddDailyMenu = async (req, res, next) => {
       editing: false,
       hasError: true,
       product: {
-        description: {
-          en: enDescription,
-          hu: huDescription,
-          ro: roDescription
-        },
+        enDescription: enDescription,
+          huDescription: huDescription,
+          roDescription: roDescription,
         category: { en: enCategory, hu: huCategory, ro: roCategory }
       },
       errorMessage: errors.array()[0].msg,

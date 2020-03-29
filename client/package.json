@@ -9,6 +9,7 @@
     "axios": "^0.19.2",
     "cypress": "^4.0.2",
     "moment": "^2.24.0",
+    "nodemon": "^2.0.2",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "react-facebook-login": "^4.1.1",

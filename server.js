@@ -1,6 +1,6 @@
 const express = require("express"),
   lingua = require("lingua");
-const errorController = require("./admin/controllers/error");
+// const errorController = require("./admin/controllers/error");
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
 const MongoDBStore = require("connect-mongodb-session")(session);
@@ -9,8 +9,9 @@ const mongoose = require("mongoose");
 const flash = require("connect-flash");
 const multer = require("multer");
 const path = require("path");
+const errorController = require('./admin/controllers/error');
 const MONGODB_URI =
-  "mongodb+srv://foodapp:foodapp@foodapp-sxheo.mongodb.net/test?retryWrites=true&w=majority";
+  "mongodb://foodnet:foodnet@foodnet-shard-00-00-jff9b.mongodb.net:27017,foodnet-shard-00-01-jff9b.mongodb.net:27017,foodnet-shard-00-02-jff9b.mongodb.net:27017/test?ssl=true&replicaSet=foodnet-shard-0&authSource=admin&retryWrites=true&w=majority";
 
 mongoose.Promise = global.Promise;
 const app = express();

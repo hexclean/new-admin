@@ -1,4 +1,7 @@
 <%- include('../includes/head.ejs') %>
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 <script type="text/javascript">
  
       function toggle_visibility(id) {
@@ -81,19 +84,14 @@
                                 <td><a href="/admin/edit-order/<%= orders._id %>?edit=true" class="btn grid-btn mt-0 btn-sm btn-secondary" ><%= lingua.product_action_edit %></a>
                                 </td>
                                 <td>
-                                  <div id="popupBoxOnePosition">
-                                    <div class="popupBoxWrapper">
-                                      <div class="popupBoxContent">
-                                        <h3>Popup Box 1</h3>
-                                        <p>You are currently viewing popup box 1.</p>
+                                 
                                         <form action="/admin/delete-order" method="POST">
                                           <input type="hidden" value="<%= orders._id %>" name="orderId">
                                           <button class="btn grid-btn mt-0 btn-sm btn-primary" type="submit"><%= lingua.product_action_delete %></button>
                                        </form>
-                                        <p>Click <a href="javascript:void(0)" onclick="toggle_visibility('popupBoxOnePosition');">here</a> to close popup box one.</p>
-                                      </div>
-                                    </div>
-                                  </div>
+                                     
+
+
                                 </td> 
                           </tr>    
                           <% } %>
@@ -109,25 +107,33 @@
             </div>
           </div>        
         </div>
-        <div id="popupBoxOnePosition">
-          <div class="popupBoxWrapper">
-            <div class="popupBoxContent">
-              <h3>Popup Box 1</h3>
-              <p>You are currently viewing popup box 1.</p>
-              <p>Click <a href="javascript:void(0)" onclick="toggle_visibility('popupBoxOnePosition');">here</a> to close popup box one.</p>
-            </div>
-          </div>
-        </div>
+        
     
-      
-    
-        <div >
-    
-          <p>Click <a href="javascript:void(0)" onclick="toggle_visibility('popupBoxOnePosition');">here</a> to see popup box one.</p>
-          
-    
-        </div>
-	
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+  Launch demo modal
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
 
   </main>
  

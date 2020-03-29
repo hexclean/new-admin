@@ -2,7 +2,6 @@ const fileHelper = require("../../util/file");
 const { validationResult } = require("express-validator/check");
 const Product = require("../../models/Product");
 
-const x = 33;
 
 exports.getAddProduct = (req, res, next) => {
   res.render("admin/edit-product", {
@@ -37,18 +36,22 @@ exports.postAddProduct = async (req, res, next) => {
       path: "/admin/add-product",
       editing: false,
       hasError: true,
-      product: [
+      product: 
         {
-          title: { en: enTitle, hu: huTitle, ro: roTitle },
-
-          description: {
-            en: enDescription,
-            hu: huDescription,
-            ro: roDescription
-          },
-          category: { en: enCategory, hu: huCategory, ro: roCategory }
+          // title: enTitle, hu: huTitle, ro: roTitle },
+          title: huTitle,
+          title: enTitle,
+          title: roTitle,
+          description: enDescription,
+          description: huDescription,
+          description: roDescription,
+           
+          price: price,
+          category:  enCategory,
+          category:  huCategory,
+          category:  roCategory,
         }
-      ],
+      ,
       errorMessage: "Attached file is not an image.",
       validationErrors: []
     });
@@ -63,14 +66,17 @@ exports.postAddProduct = async (req, res, next) => {
       editing: false,
       hasError: true,
       product: {
-        title: { en: enTitle, hu: huTitle, ro: roTitle },
-
-        description: {
-          en: enDescription,
-          hu: huDescription,
-          ro: roDescription
-        },
-        category: { en: enCategory, hu: huCategory, ro: roCategory }
+        huTitle: huTitle,
+        price: price,
+        title: roTitle,
+        description: enDescription,
+        description: huDescription,
+        description: roDescription,
+           
+          
+          category:  enCategory,
+          category:  huCategory,
+          category:  roCategory,
       },
       errorMessage: errors.array()[0].msg,
       validationErrors: errors.array()

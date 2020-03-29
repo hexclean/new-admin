@@ -1,0 +1,55 @@
+<%- include('../includes/head.ejs') %>
+</head>
+<body class="ms-body ms-aside-left-open ms-primary-theme ms-has-quickbar">
+  <%- include('../includes/preloader.ejs') %> <%-
+  include('../includes/navigation.ejs') %> <%-
+  include('../includes/sidebar-right.ejs') %>
+
+  <main class="body-content">
+     <% if (errorMessage) { %>
+    <div class="user-message user-message--error"><%= errorMessage %></div>
+    <% } %>
+    <form
+      class="ms-content-wrapper"
+      action="/admin/<% if (editing) { %>edit-photo<% } else { %>add-photo<% } %>"
+      method="POST"
+      enctype="multipart/form-data">
+
+    
+
+                  <div class="col-md-12 mb-3">
+                    <label for="validationCustom12"><%= lingua.create_product_image %></label>
+                    <div class="custom-file">
+                      <input type="file" name="image" id="image" />
+                    </div>
+                  </div>
+
+        <div class="col-xl-6 col-md-12">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="ms-panel">
+              
+                  
+         
+                <% if (editing) { %>
+                  <input
+                    type="hidden"
+                    value="<%= admin._id %>"
+                    name="adminId"/>
+                  <% } %>
+
+                  <button class="btn" type="submit">
+                    <% if (editing) { %>Update Product<% } else { %>Add
+                    Product<% } %>
+                  </button>
+              
+                </div>
+              </div>
+            </div>
+          </div>
+
+    
+  </form>
+  </main>
+ <%- include('../includes/end.ejs') %>
+</body>

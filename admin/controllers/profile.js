@@ -132,9 +132,6 @@ exports.postEditProfile = (req, res, next) => {
   }
   Admin.findById(adminId)
     .then(admin => {
-      // if (admin.adminId.toString() !== req.admin._id.toString()) {
-      //   return res.redirect("/");
-      // }
       admin.email = updatedEmail;
       admin.open = updatedOpened;
       admin.close = updatedClosed;
@@ -155,10 +152,6 @@ exports.postEditProfile = (req, res, next) => {
         ro: updatedRoLocation,
         hu: updatedHuLocation
       };
-      // if (image) {
-      //   fileHelper.deleteFile(admin.imageUrl);
-      //   admin.imageUrl = image.path;
-      // }
       return admin.save().then(result => {
         console.log("UPDATED PRODUCT!");
         res.redirect("/admin/dashboard");
@@ -185,6 +178,141 @@ exports.getDashboard = (req, res, next) => {
         editing: editMode,
         path: "/admin/edit-admin",
         admin: admin
+      });
+    })
+    .catch(err => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
+};
+
+exports.getDashboard2 = (req, res, next) => {
+  const adminId = req.admin._id;
+  Admin.findById(adminId)
+    .then(admin => {
+      if (!admin) {
+        return res.redirect("/admin/products");
+      }
+      res.render("profile/edit-photo", {
+        pageTitle: "Edit admin",
+        editing: false,
+        hasError: false,
+        errorMessage: null,
+        validationErrors: [],
+        path: "/admin/edit-admin",
+        admin: admin
+      });
+    })
+    .catch(err => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
+};
+exports.postAddPhoto = async (req, res, next) => {
+ 
+  const image = req.file;
+  if (!image) {
+    return res.status(422).render("profile/edit-photo", {
+      pageTitle: "Add Product",
+      path: "/admin/add-product",
+      editing: false,
+      hasError: true,
+      errorMessage: "Attached file is not an image.",
+      validationErrors: []
+    });
+  }
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    console.log(errors.array());
+    return res.status(422).render("profile/edit-photo", {
+      pageTitle: "Add Product",
+      path: "/admin/add-product",
+      editing: false,
+      hasError: true,
+      errorMessage: errors.array()[0].msg,
+      validationErrors: errors.array()
+    });
+  }
+
+  const imageUrl = image.path;
+
+  await Admin.update({
+  imageUrl: imageUrl
+    
+  })
+    .then(result => {
+      console.log("Created Product");
+      res.redirect("/admin/dashboard");
+    })
+    .catch(err => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
+};
+
+exports.getEditPhoto = (req, res, next) => {
+  const editMode = req.query.edit;
+  if (!editMode) {
+    return res.redirect("/");
+  }
+  const adminId = req.params.adminId;
+  Admin.findById(adminId)
+    .then(admin => {
+      if (!admin) {
+        return res.redirect("/");
+      }
+      res.render("profile/edit-photo", {
+        pageTitle: "Edit admin",
+        path: "/admin/edit-admin",
+        editing: editMode,
+        admin: admin,
+        hasError: false,
+        errorMessage: null,
+        validationErrors: []
+      });
+    })
+    .catch(err => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
+};
+
+exports.postEditPhoto = (req, res, next) => {
+  const adminId = req.body.adminId;
+  const image = req.file;
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(422).render("admin/edit-photo", {
+      pageTitle: "Edit Product",
+      path: "/admin/edit-product",
+      editing: true,
+      hasError: true,
+      admin: 
+        {
+          
+          _id: adminId
+        }
+      ,
+      errorMessage: errors.array()[0].msg,
+      validationErrors: errors.array()
+    });
+  }
+
+  Admin.findById(adminId)
+    .then(admin => {
+      if (image) {
+        fileHelper.deleteFile(admin.imageUrl);
+        admin.imageUrl = image.path;
+      }
+      return admin.save().then(result => {
+        console.log("UPDATED PRODUCT!");
+        res.redirect("/admin/dashboard");
       });
     })
     .catch(err => {

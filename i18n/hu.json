@@ -34,5 +34,6 @@
   "dashboard_profile_open": "Nyitás",
   "dashboard_profile_close": "Zárás",
   "dashboard_profile_connect": "Registrált",
-  "update_profile": "Profil frissítés"
+  "update_profile": "Profil frissítés",
+  "admin_photo": "Profil kép"
 }

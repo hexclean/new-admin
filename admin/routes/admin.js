@@ -53,6 +53,14 @@ router.post("/delete-product", isAuth, adminController.postDeleteProduct);
 router.post("/edit-profile", isAuth, adminProfileController.postEditProfile);
 router.get("/edit-profile/:adminId", adminProfileController.getEditProfile);
 router.get("/dashboard", isAuth, adminProfileController.getDashboard);
+//
+router.get("/add-photo", isAuth, adminProfileController.getDashboard2);
+// /admin/add-product
+router.post(
+  "/add-photo",isAuth,adminProfileController.postAddPhoto
+);
+router.get("/edit-photo/:adminId", isAuth, adminProfileController.getEditPhoto);
+router.post("/edit-photo", isAuth, adminProfileController.postEditPhoto);
 
 //ORDERS
 router.get("/orders", isAuth, adminOrderController.getOrders);
