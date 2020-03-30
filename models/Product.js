@@ -57,6 +57,9 @@ const productSchema = mongoose.Schema({
   price: {
     type: Number
   },
+  active: {
+  type: Number
+  },
   adminId: {
     type: Schema.Types.ObjectId,
     ref: "admin"

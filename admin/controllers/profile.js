@@ -35,48 +35,6 @@ exports.getEditProfile = (req, res, next) => {
 exports.postEditProfile = (req, res, next) => {
   const adminId = req.body.adminId;
   const updatedEmail = req.body.email;
-  // const updatedCategory = req.body.category;
-  // const updatedPrice = req.body.price;
-  // const image = req.file;
-  // const updatedDesc = req.body.description;
-
-  const errors = validationResult(req);
-
-  if (!errors.isEmpty()) {
-    return res.status(422).render("admin/edit-profile", {
-      pageTitle: "Edit Product",
-      path: "/admin/edit-product",
-      editing: true,
-      hasError: true,
-      admin: {
-        email: updatedEmail,
-
-        _id: adminId
-      },
-      errorMessage: errors.array()[0].msg,
-      validationErrors: errors.array()
-    });
-  }
-
-  Admin.findById(adminId)
-    .then(admin => {
-      admin.email = updatedEmail;
-
-      return admin.save().then(result => {
-        console.log("UPDATED PRODUCT!");
-        res.redirect("/admin/products");
-      });
-    })
-    .catch(err => {
-      const error = new Error(err);
-      error.httpStatusCode = 500;
-      return next(error);
-    });
-};
-
-exports.postEditProfile = (req, res, next) => {
-  const adminId = req.body.adminId;
-  const updatedEmail = req.body.email;
   const updatedphoneNuber = req.body.phoneNuber;
   const updatedfullName = req.body.fullName;
   const updatedOpened = req.body.open;
@@ -210,49 +168,9 @@ exports.getDashboard2 = (req, res, next) => {
       return next(error);
     });
 };
-exports.postAddPhoto = async (req, res, next) => {
- 
-  const image = req.file;
-  if (!image) {
-    return res.status(422).render("profile/edit-photo", {
-      pageTitle: "Add Product",
-      path: "/admin/add-product",
-      editing: false,
-      hasError: true,
-      errorMessage: "Attached file is not an image.",
-      validationErrors: []
-    });
-  }
-  const errors = validationResult(req);
 
-  if (!errors.isEmpty()) {
-    console.log(errors.array());
-    return res.status(422).render("profile/edit-photo", {
-      pageTitle: "Add Product",
-      path: "/admin/add-product",
-      editing: false,
-      hasError: true,
-      errorMessage: errors.array()[0].msg,
-      validationErrors: errors.array()
-    });
-  }
 
-  const imageUrl = image.path;
 
-  await Admin.update({
-  imageUrl: imageUrl
-    
-  })
-    .then(result => {
-      console.log("Created Product");
-      res.redirect("/admin/dashboard");
-    })
-    .catch(err => {
-      const error = new Error(err);
-      error.httpStatusCode = 500;
-      return next(error);
-    });
-};
 
 exports.getEditPhoto = (req, res, next) => {
   const editMode = req.query.edit;
@@ -284,18 +202,19 @@ exports.getEditPhoto = (req, res, next) => {
 
 exports.postEditPhoto = (req, res, next) => {
   const adminId = req.body.adminId;
+ 
   const image = req.file;
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
-    return res.status(422).render("admin/edit-photo", {
+    return res.status(422).render("admin/edit-product", {
       pageTitle: "Edit Product",
       path: "/admin/edit-product",
       editing: true,
       hasError: true,
       admin: 
         {
-          
+         
           _id: adminId
         }
       ,
@@ -305,14 +224,15 @@ exports.postEditPhoto = (req, res, next) => {
   }
 
   Admin.findById(adminId)
-    .then(admin => {
+    .then(product => {
+    
       if (image) {
-        fileHelper.deleteFile(admin.imageUrl);
-        admin.imageUrl = image.path;
+        
+        product.imageUrl = image.path;
       }
-      return admin.save().then(result => {
+      return product.save().then(result => {
         console.log("UPDATED PRODUCT!");
-        res.redirect("/admin/dashboard");
+        res.redirect("/admin/products");
       });
     })
     .catch(err => {

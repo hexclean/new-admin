@@ -8,6 +8,8 @@ const adminCouponController = require("../controllers/coupon");
 const isAuth = require("../../middleware/is-auth");
 const router = express.Router();
 
+
+
 // /admin/add-product
 router.get("/add-product", isAuth, adminController.getAddProduct);
 
@@ -56,9 +58,7 @@ router.get("/dashboard", isAuth, adminProfileController.getDashboard);
 //
 router.get("/add-photo", isAuth, adminProfileController.getDashboard2);
 // /admin/add-product
-router.post(
-  "/add-photo",isAuth,adminProfileController.postAddPhoto
-);
+
 router.get("/edit-photo/:adminId", isAuth, adminProfileController.getEditPhoto);
 router.post("/edit-photo", isAuth, adminProfileController.postEditPhoto);
 

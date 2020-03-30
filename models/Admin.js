@@ -9,7 +9,6 @@ const AdminSchema = new mongoose.Schema({
   },
   password: {
     type: String,
-    
   },
 
   date: {

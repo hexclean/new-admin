@@ -11,19 +11,3 @@ Version:
 
 1.4: (1.0 + 0.1) + order list_order detail_list send_order
 sdas
-
-{
-	"restaurant_id": "5e7ba17b19aad5712e457142",
-	"products": [{
-		"quantity": 10,
-		"product": "5e7d038050ed5925428ac77a",
-		"price": 12
-		
-	
-	},
-	{
-		"quantity": 30,
-		"product": "5e7d03b750ed5925428ac77b",
-		"price": 33
-	}]
-}

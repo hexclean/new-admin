@@ -52,6 +52,7 @@ app.set("views", "views");
 const adminRoutes = require("./admin/routes/admin");
 const indexRoutes = require("./admin/routes/index");
 const authRoutes = require("./admin/routes/auth");
+
 const superRoutes = require("./admin/routes/superadmin");
 // const isAuthRoutes = require("./admin/routes/isAuth");
 app.use(express.static(path.join(__dirname, "public")));

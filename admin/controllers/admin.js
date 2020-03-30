@@ -98,7 +98,8 @@ exports.postAddProduct = async (req, res, next) => {
     price: price,
     adminId: req.admin,
     extraPrice: price * 1.1,
-    dailyMenu: "no"
+    dailyMenu: "no",
+    active: 1
   })
     .then(result => {
       console.log("Created Product");
@@ -224,7 +225,7 @@ exports.postEditProduct = (req, res, next) => {
 };
 
 exports.getProducts = (req, res, next) => {
-  Product.find({ adminId: req.admin._id, dailyMenu: { $ne: "yes" } })
+  Product.find({ adminId: req.admin._id, dailyMenu: { $ne: "yes" }, active: 1 })
     .then(products => {
       var currentLanguage = req.cookies.language;
       res.render("admin/products", {
@@ -248,12 +249,11 @@ exports.postDeleteProduct = (req, res, next) => {
       if (!product) {
         return next(new Error("Product not found."));
       }
-      fileHelper.deleteFile(product.imageUrl);
-      return Product.deleteOne({ _id: prodId, adminId: req.admin._id });
+      product.active = 0;
+      return product.save().then(result => {
+        res.redirect("/admin/products");
     })
-    .then(() => {
-      console.log("DESTROYED PRODUCT");
-      res.redirect("/admin/products");
+    
     })
     .catch(err => {
       const error = new Error(err);
@@ -261,3 +261,5 @@ exports.postDeleteProduct = (req, res, next) => {
       return next(error);
     });
 };
+
+

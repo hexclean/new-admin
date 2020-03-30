@@ -3,10 +3,10 @@ const router = express.Router();
 const auth = require("../../middleware/auth");
 const { check, validationResult } = require("express-validator");
 
-const Product = require("../../models/Product");
 const Order = require("../../models/Orders");
-const User = require("../../models/User");
+
 const OrderItem = require("../../models/OrderItem");
+
 // @route    POST api/orders
 // @desc     Create an order
 // @access   Private
@@ -42,7 +42,6 @@ router.post("/", auth, async (req, res) => {
       item.save();
     });
   });
-
   try {
     res.json(order);
   } catch (err) {
