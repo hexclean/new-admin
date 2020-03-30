@@ -38,7 +38,6 @@ exports.postAddProduct = async (req, res, next) => {
       hasError: true,
       product: 
         {
-          // title: enTitle, hu: huTitle, ro: roTitle },
           title: huTitle,
           title: enTitle,
           title: roTitle,
@@ -160,28 +159,28 @@ exports.postEditProduct = (req, res, next) => {
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
+    console.log(errors.array());
     return res.status(422).render("admin/edit-product", {
       pageTitle: "Edit Product",
       path: "/admin/edit-product",
       editing: true,
       hasError: true,
-      product: [
+      product: 
         {
-          title: { en: updatedEnTitle, hu: updatedHuTitle, ro: updatedRoTitle },
+          title:  updatedEnTitle,
+          title: updatedHuTitle, 
+          title: updatedRoTitle,
           price: updatedPrice,
-          description: {
-            en: updatedEnDesc,
-            hu: updatedHuDesc,
-            ro: updatedRoDesc
-          },
-          category: {
-            en: updatedEnCategory,
-            hu: updatedHuCategory,
-            ro: updatedRoCategory
-          },
+          description: updatedEnDesc,
+          description: updatedHuDesc,
+          description: updatedRoDesc,
+          category:  updatedEnCategory,
+          category: updatedHuCategory,
+          category: updatedRoCategory,
+         
           _id: prodId
-        }
-      ],
+        },
+      
       errorMessage: errors.array()[0].msg,
       validationErrors: errors.array()
     });

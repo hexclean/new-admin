@@ -30,10 +30,24 @@
                     enctype="multipart/form-data"
                   >
 
-                  <aside class="widget">
-                    <p>Date: <input type="text" id="datepick" name="datepick"></p>
+                
 
-             </aside>
+             <div class="col-md-6 mb-3">
+              <label for="datepick"><%= lingua.create_product_price %></label>
+              <div class="input-group">
+                <input
+                  class="form-control <%= validationErrors.find(e => e.param === 'dailyMenuTime') ? 'invalid' : '' %>"
+                  type="text"
+                  name="datepick"
+                  id="datepick"
+                  step="0.01"
+                  value="<% if (editing || hasError) { %><%= product.dailyMenuTime %><% } %>"
+                />
+                <div class="invalid-feedback">
+                  Time 
+                </div>
+              </div>
+            </div>
                 
 
                   <div class="input-group mb-3 x">

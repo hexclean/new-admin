@@ -42,14 +42,39 @@ router.post(
       .trim(),
     body("enDescription")
       .isLength({ min: 5, max: 400 })
-      .trim()
+      .trim(),
+      
   ],
 
   isAuth,
   adminController.postAddProduct
 );
 router.get("/edit-product/:productId", isAuth, adminController.getEditProduct);
-router.post("/edit-product", isAuth, adminController.postEditProduct);
+router.post("/edit-product",[
+  body("roTitle")
+    .isString()
+    .isLength({ min: 3 })
+    .trim(),
+  body("huTitle")
+    .isString()
+    .isLength({ min: 3 })
+    .trim(),
+  body("enTitle")
+    .isString()
+    .isLength({ min: 3 })
+    .trim(),
+  body("price").isFloat(),
+  body("roDescription")
+    .isLength({ min: 5, max: 400 })
+    .trim(),
+  body("huDescription")
+    .isLength({ min: 5, max: 400 })
+    .trim(),
+  body("enDescription")
+    .isLength({ min: 5, max: 400 })
+    .trim(),
+    
+], isAuth, adminController.postEditProduct);
 router.post("/delete-product", isAuth, adminController.postDeleteProduct);
 
 router.post("/edit-profile", isAuth, adminProfileController.postEditProfile);

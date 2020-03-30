@@ -212,7 +212,7 @@
                         class="form-control <%= validationErrors.find(e => e.param === 'huDescription') ? 'invalid' : '' %>"
                         name="huDescription"
                         id="huDescription"
-                        rows="5">m<% if (editing || hasError) { %><%= product.description.hu %><% } %></textarea>
+                        rows="5"><% if (editing || hasError) { %><%= product.description.hu %><% } %></textarea>
                       <div class="invalid-feedback">
                         Please provide a message.
                       </div>

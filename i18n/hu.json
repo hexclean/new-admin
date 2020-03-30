@@ -35,5 +35,6 @@
   "dashboard_profile_close": "Zárás",
   "dashboard_profile_connect": "Registrált",
   "update_profile": "Profil frissítés",
-  "admin_photo": "Profil kép"
+  "admin_photo": "Profil kép",
+  "upload_product_image": "Kép feltöltése kötelező!"
 }

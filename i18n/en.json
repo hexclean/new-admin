@@ -35,5 +35,6 @@
   "dashboard_profile_close": "Closed",
   "dashboard_profile_connect": "Registartion",
   "update_profile": "Update Profile",
-  "admin_photo": "Profile Picture"
+  "admin_photo": "Profile Picture",
+  "upload_product_image": "Attached file is not an image!"
 }

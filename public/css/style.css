@@ -7725,3 +7725,16 @@ body:not(.ms-settings-open) .ms-settings-toggle:hover {
     left: 75%;
   }
 }
+
+.user-message--error {
+  padding: 20px;
+  background-color: #f44336;
+  color: white;
+  margin-bottom: 25px;
+  margin-top: 25px;
+}
+
+.input-group input.invalid,
+.input-group textarea.invalid {
+  border-color: red;
+}
