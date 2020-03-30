@@ -1,5 +1,8 @@
 <%- include('../includes/head.ejs') %>
+<link rel="stylesheet" type="text/css" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/smoothness/jquery-ui.css" media="all">
 
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
 </head>
 <body class="ms-body ms-aside-left-open ms-primary-theme ms-has-quickbar">
   <%- include('../includes/navigation.ejs') %>
@@ -29,9 +32,13 @@
                     enctype="multipart/form-data"
                   >
 
+                  <input id="dateTimePicker"></input>  
+                  <script type="text/javascript">
+                      $(document).ready(function() {
+                          $('#dateTimePicker').datetimepicker();
+                      });
+                  </script> 
                 
-                  <aside class="widget">
-                    <p>Date: <input type="text" id="datepick"></p>
 
                   <div class="input-group mb-3 x">
                     <select class="custom-select" id="roCategory" name="roCategory">

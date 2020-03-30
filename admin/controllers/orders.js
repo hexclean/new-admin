@@ -128,28 +128,20 @@ exports.postEditOrder = (req, res, next) => {
     });
 };
 
+
 exports.postDeleteOrder = (req, res, next) => {
   const ordId = req.body.orderId;
   Orders.findById(ordId)
-    .then(orders => {
-      if (!orders) {
-        return next(new Error("order not found."));
+    .then(admin => {
+      if (!admin) {
+        return next(new Error("Product not found."));
       }
+      
       return Orders.deleteOne({ _id: ordId, admin: req.admin._id });
     })
-    .then(orders => {
-      res.redirect("order/orders", {
-        ords: orders,
-        currentLanguage: currentLanguage,
-        pageTitle: "Admin Products",
-        path: "/admin/products"
-      });
-      return transporter.sendMail({
-        to: "dsfdsf",
-        from: "foodnet.ro",
-        subject: "ok",
-        html: "<h1>ok</h1>"
-      });
+    .then(() => {
+      console.log("DESTROYED PRODUCT");
+      res.redirect("/admin/products");
     })
     .catch(err => {
       const error = new Error(err);
