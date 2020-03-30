@@ -1,9 +1,7 @@
 <%- include('../includes/head.ejs') %>
 </head>
 <body class="ms-body ms-aside-left-open ms-primary-theme ms-has-quickbar">
-  <%- include('../includes/preloader.ejs') %> <%-
-  include('../includes/navigation.ejs') %> <%-
-  include('../includes/sidebar-right.ejs') %>
+<%- include('../includes/navigation.ejs') %> 
 
   <main class="body-content">
      <% if (errorMessage) { %>
@@ -14,9 +12,28 @@
       action="/admin/<% if (editing) { %>edit-photo<% } else { %>add-photo<% } %>"
       method="POST"
       enctype="multipart/form-data">
-
-    
-
+      <div class="ms-profile-overview">
+        <div class="ms-profile-cover">
+   <img class="ms-profile-img" src="/<%= admin.imageUrl %>" alt="<%= admin.fullName %>">
+          
+          <div class="ms-profile-user-info">
+            <h3 class="ms-profile-username text-white"><%= admin.fullName %></h3>           
+          </div>        
+        </div>
+        <ul class="ms-profile-navigation nav nav-tabs tabs-bordered" role="tablist">
+          <li role="presentation"><a href="/admin/dashboard" aria-controls="tab1"> Overview </a></li>
+          <li role="presentation"><a href="/admin/edit-profile/<%= admin._id %>?edit=true"> <%= lingua.product_action_edit %> </a></li>
+          <li role="presentation"><a href="/admin/edit-photo/<%= admin._id %>?edit=true"> <%= lingua.admin_photo %> </a></li>
+        </ul>
+        <div class="tab-content">
+          <div class="tab-pane" id="tab1">
+          </div>
+          <div class="tab-pane" id="tab2">
+          </div>
+          <div class="tab-pane" id="tab3">
+          </div>
+        </div>
+      </div>
                   <div class="col-md-12 mb-3">
                     <label for="validationCustom12"><%= lingua.create_product_image %></label>
                     <div class="custom-file">
@@ -28,7 +45,32 @@
           <div class="row">
             <div class="col-md-12">
               <div class="ms-panel">
-              
+                <div class="col-xl-6 col-md-12">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="ms-panel">
+                        <div class="ms-panel-header">
+                          <h6>Product</h6>
+                        </div>
+                        <div class="ms-panel-body">
+                        
+                            <div class="carousel-inner">
+                              <div class="carousel-item active">
+                                <% if (editing) { %><img src="/<%= admin.imageUrl %>" alt="<%= admin.price %>"><% }  %>
+                              </div>
+                             
+                              </div>
+                             
+                            
+                            </div>
+                          
+                 
+                 
+                      
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                   
          
                 <% if (editing) { %>

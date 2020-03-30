@@ -75,13 +75,13 @@
                         </thead>
                     
                         <tbody>
-                            <% for (let partners of ptr) { %>
+                            <% for (let partner of ptr) { %>
                           <tr>
-                            <td><%= partners.fullName %></td>
-                            <td><%= partners.location.hu %></td>
-                            <td><%= partners.phoneNuber %></td>
-                            <td><%= partners.email %></td>
-                            <td> <a href="#" class="btn btn-success btn-icon-split">
+                            <td><%= partner.fullName %></td>
+                            <td><%= partner.location.hu %></td>
+                            <td><%= partner.phoneNuber %></td>
+                            <td><%= partner.email %></td>
+                            <td> <a href="/super-admin/edit-parner/<%= partner._id %>?edit=true" class="btn btn-success btn-icon-split">
                                
                                 <span class="text">Megtekintés</span>
                               </a></td>

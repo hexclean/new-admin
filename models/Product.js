@@ -66,6 +66,9 @@ const productSchema = mongoose.Schema({
   },
   dailyMenu: {
     type: String
+  },
+  dailyMenuTime:{
+    type: Date
   }
 });
 

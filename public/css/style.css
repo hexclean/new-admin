@@ -553,27 +553,10 @@ ul {
   font-size: 12px;
 }
 
-/* Typography */
-@font-face {
-  font-family: "Roboto";
-  src: url("../fonts/Roboto-Regular.ttf");
-  font-weight: 400;
-  font-style: normal;
-}
 
-@font-face {
-  font-family: "Roboto";
-  src: url("../fonts/Roboto-Medium.ttf");
-  font-weight: 500;
-  font-style: normal;
-}
 
-@font-face {
-  font-family: "Roboto";
-  src: url("../fonts/Roboto-Bold.ttf");
-  font-weight: 700;
-  font-style: normal;
-}
+
+
 
 body {
   font-family: "Roboto", sans-serif;
@@ -776,9 +759,7 @@ pre {
 .ms-content-wrapper {
   padding: 0px;
 }
-.editprofiledown {
-  padding-top: 72px;
-}
+
 .has-chevron {
   position: relative;
 }

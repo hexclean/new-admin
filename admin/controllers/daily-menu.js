@@ -1,11 +1,12 @@
 const fileHelper = require("../../util/file");
 const nexmo = require("nexmo");
 const { validationResult } = require("express-validator/check");
+// const datepicker = require('js-datepicker')
+// const picker = datepicker(selector, options)
 
 const Product = require("../../models/Product");
 
-const Admin = require("../../models/Admin");
-const Orders = require("../../models/Orders");
+
 
 exports.getAddDailyMenu = (req, res, next) => {
   res.render("daily-menu/edit-daily-menu", {
@@ -21,6 +22,7 @@ exports.getAddDailyMenu = (req, res, next) => {
 exports.postAddDailyMenu = async (req, res, next) => {
   const price = req.body.price;
   //
+  const date = req.body.datepicker
   const roDescription = req.body.roDescription;
   const huDescription = req.body.huDescription;
   const enDescription = req.body.enDescription;
@@ -70,7 +72,7 @@ exports.postAddDailyMenu = async (req, res, next) => {
   }
 
   const imageUrl = image.path;
-
+console.log("date", date)
   await Product.create({
     title: { en: "Daily Menu", hu: "Napi Menü", ro: "Meniul Zilei" },
 
@@ -84,7 +86,8 @@ exports.postAddDailyMenu = async (req, res, next) => {
     dailyMenu: "yes",
     price: price,
     adminId: req.admin,
-    extraPrice: price * 1.1
+    extraPrice: price * 1.1,
+    dailyMenuTime:date
   })
     .then(result => {
       console.log("Created Product");

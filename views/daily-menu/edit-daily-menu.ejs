@@ -1,10 +1,16 @@
 <%- include('../includes/head.ejs') %>
-
+<meta charset="utf-8">
+<link rel="stylesheet" type="text/css" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/smoothness/jquery-ui.css" media="all">
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
+<script>
+$(function() {
+    $('#datepick').datepicker();
+});
+</script>
 </head>
 <body class="ms-body ms-aside-left-open ms-primary-theme ms-has-quickbar">
-  <%- include('../includes/preloader.ejs') %> <%-
-  include('../includes/navigation.ejs') %> <%-
-  include('../includes/sidebar-right.ejs') %>
+  <%- include('../includes/navigation.ejs') %>
 
   <main class="body-content">
     <%- include('../includes/navigation-bar.ejs') %> <% if (errorMessage) { %>
@@ -31,21 +37,9 @@
                     enctype="multipart/form-data"
                   >
 
-                  <div class="input-group date" data-provide="datepicker">
-                    <input type="text" class="form-control">
-                    <div class="input-group-addon">
-                        <span class="glyphicon glyphicon-th"></span>
-                    </div>
-                </div>
-                  <script>
-                    $('.datepicker').datepicker({
-                     format: 'mm/dd/yyyy',
-                   startDate: '-3d'
-});
-                  </script>
-                  
-               
-             
+                
+                  <aside class="widget">
+                    <p>Date: <input type="text" id="datepick"></p>
 
                   <div class="input-group mb-3 x">
                     <select class="custom-select" id="roCategory" name="roCategory">
