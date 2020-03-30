@@ -22,6 +22,8 @@ exports.getAddDailyMenu = (req, res, next) => {
 exports.postAddDailyMenu = async (req, res, next) => {
   const price = req.body.price;
   //
+  const datepick = req.body.datepick;
+  //
   const date = req.body.datepicker
   const roDescription = req.body.roDescription;
   const huDescription = req.body.huDescription;
@@ -38,15 +40,16 @@ exports.postAddDailyMenu = async (req, res, next) => {
       path: "/daily-menu/add-daily-menu",
       editing: false,
       hasError: true,
-      product: [
+      product: 
         {
           enDescription: enDescription,
           huDescription: huDescription,
           roDescription: roDescription,
           
           category: { en: enCategory, hu: huCategory, ro: roCategory }
-        }
-      ],
+        },
+        dailyMenuTime: datepick
+      ,
       errorMessage: "Attached file is not an image.",
       validationErrors: []
     });
@@ -64,6 +67,7 @@ exports.postAddDailyMenu = async (req, res, next) => {
         enDescription: enDescription,
           huDescription: huDescription,
           roDescription: roDescription,
+          dailyMenuTime: datepick,
         category: { en: enCategory, hu: huCategory, ro: roCategory }
       },
       errorMessage: errors.array()[0].msg,
@@ -72,7 +76,7 @@ exports.postAddDailyMenu = async (req, res, next) => {
   }
 
   const imageUrl = image.path;
-console.log("date", date)
+console.log("date", datepick)
   await Product.create({
     title: { en: "Daily Menu", hu: "Napi Menü", ro: "Meniul Zilei" },
 
@@ -87,7 +91,7 @@ console.log("date", date)
     price: price,
     adminId: req.admin,
     extraPrice: price * 1.1,
-    dailyMenuTime:date
+    dailyMenuTime: datepick
   })
     .then(result => {
       console.log("Created Product");

@@ -140,8 +140,7 @@ exports.postDeleteOrder = (req, res, next) => {
       return Orders.deleteOne({ _id: ordId, admin: req.admin._id });
     })
     .then(() => {
-      console.log("DESTROYED PRODUCT");
-      res.redirect("/admin/products");
+      res.redirect("/admin/orders");
     })
     .catch(err => {
       const error = new Error(err);
