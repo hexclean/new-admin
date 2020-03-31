@@ -1,19 +1,4 @@
-const fileHelper = require("../../util/file");
-const nexmo = require("nexmo");
-const { validationResult } = require("express-validator/check");
-const nodemailer = require("nodemailer");
-const sendgridTransport = require("nodemailer-sendgrid-transport");
-const OrdersItem = require("../../models/OrderItem");
 const Orders = require("../../models/Orders");
-
-const transporter = nodemailer.createTransport(
-  sendgridTransport({
-    auth: {
-      // api_user: "d",
-      api_key: "d"
-    }
-  })
-);
 
 exports.getOrders = (req, res, next) => {
   Orders.aggregate([

@@ -59,6 +59,10 @@ router.get("/edit-product/:productId", isAuth, adminController.getEditProduct);
 
 router.get("/search", isAuth, adminController.getSearchProduct);
 
+router.get("/search-user", isAuth, adminUsersController.getSearchUsers);
+
+router.get("/autocomplete/", isAuth, adminUsersController.getUsersSearchedInput);
+
 router.post("/edit-product",[
   body("roTitle")
     .isString()

@@ -4,7 +4,8 @@ const Schema = mongoose.Schema;
 const UserSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true
+    required: true,
+    text: true
   },
   email: {
     type: String,
@@ -29,6 +30,9 @@ const UserSchema = new mongoose.Schema({
   adminId: {
     type: Schema.Types.ObjectId,
     ref: "admin"
+  },
+  phoneNumber:{
+    type: String
   }
 });
 

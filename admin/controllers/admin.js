@@ -27,12 +27,6 @@ exports.getSearchProduct = (req, res, next) => {
     });
 };
 
-// app.post("/search", function(req, res) {
-//   db.collection('textstore').find({
-//     "$text": {
-//       "$search": req.body.query
-//     }
-//   }
 
 exports.getAddProduct = (req, res, next) => {
   res.render("admin/edit-product", {
