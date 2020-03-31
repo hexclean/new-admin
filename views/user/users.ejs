@@ -35,9 +35,9 @@
                             <% for (let orders of ords) { %>
                           <tr>
                             <td> df %></td>
-                            <td> <%= orders.userInfo[0].name %></td>
-                              <td><%= orders.userInfo[0].totalOrder %></td>
-                              <td><%= orders.userInfo[0].totalOrder/orders.userInfo[0].dbOrder %></td>
+                            <td> <%= orders.name %></td>
+                              <td><%= orders.email %></td>
+                              <td><%= orders.email %></td>
                               <td><span class="">Pending</span></td>
                                 <td>$10</td>
                                 <td><a href="/admin/edit-order/<%= orders._id %>?edit=true" class="btn grid-btn mt-0 btn-sm btn-secondary" ><%= lingua.product_action_edit %></a>

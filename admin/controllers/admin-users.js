@@ -1,19 +1,9 @@
 const nodemailer = require("nodemailer");
-const sendgridTransport = require("nodemailer-sendgrid-transport");
-const Orders = require("../../models/Orders");
+const Users = require("../../models/User");
 
 
 exports.getOrders = (req, res, next) => {
-  Orders.aggregate([
-    {
-      $lookup: {
-        from: "users",
-        localField: "user",
-        foreignField: "_id",
-        as: "userInfo"
-      }
-    }
-  ])
+  Users.find({ adminId: req.admin._id})
     .then(orders => {
       var currentLanguage = req.cookies.language;
       console.log(orders);

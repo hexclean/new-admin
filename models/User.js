@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 
 const UserSchema = new mongoose.Schema({
   name: {
@@ -24,6 +25,10 @@ const UserSchema = new mongoose.Schema({
   },
   dbOrder:{
     type: Number
+  },
+  adminId: {
+    type: Schema.Types.ObjectId,
+    ref: "admin"
   }
 });
 

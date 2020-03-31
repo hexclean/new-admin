@@ -42,6 +42,7 @@ router.post("/", auth, async (req, res) => {
       });
       User.findById({_id: req.user.id})
       .then(user => {
+        user.adminId = restaurant_id;
        user.dbOrder += 1;
         user.totalOrder += totalPrice;
         return user.save()
