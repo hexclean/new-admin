@@ -2,22 +2,15 @@ const fileHelper = require("../../util/file");
 const { validationResult } = require("express-validator/check");
 const Product = require("../../models/Product");
 
-// // Search for gigs
-// exports.getSearchProduct = (req, res, next) => {
-//   let  term  = req.body.term;
-
-//   // Make lowercase
-//   // term = term.toLowerCase();
-// console.log("req.query",req.query)
-//   Product.find()
-//     .then(products => res.render('admin/products',   prods: products,{ products }))
-//     .catch(err => console.log(err));
-// };
-
 exports.getSearchProduct = (req, res, next) => {
   let { term } = req.query;
-  console.log("req.query",req.query)
-  Product.find({ adminId: req.admin._id, dailyMenu: { $ne: "yes" }, active: 1 , $text: { $search:  '%' + term + '%' } })
+  console.log("req.query", req.query);
+  Product.find({
+    adminId: req.admin._id,
+    dailyMenu: { $ne: "yes" },
+    active: 1,
+    $text: { $search: "%" + term + "%" }
+  })
     .then(products => {
       var currentLanguage = req.cookies.language;
       res.render("admin/products", {
@@ -34,8 +27,7 @@ exports.getSearchProduct = (req, res, next) => {
     });
 };
 
-
-// app.post("/search", function(req, res) {  
+// app.post("/search", function(req, res) {
 //   db.collection('textstore').find({
 //     "$text": {
 //       "$search": req.body.query
@@ -75,21 +67,19 @@ exports.postAddProduct = async (req, res, next) => {
       path: "/admin/add-product",
       editing: false,
       hasError: true,
-      product: 
-        {
-          title: huTitle,
-          title: enTitle,
-          title: roTitle,
-          description: enDescription,
-          description: huDescription,
-          description: roDescription,
-           
-          price: price,
-          category:  enCategory,
-          category:  huCategory,
-          category:  roCategory,
-        }
-      ,
+      product: {
+        title: huTitle,
+        title: enTitle,
+        title: roTitle,
+        description: enDescription,
+        description: huDescription,
+        description: roDescription,
+
+        price: price,
+        category: enCategory,
+        category: huCategory,
+        category: roCategory
+      },
       errorMessage: "Attached file is not an image.",
       validationErrors: []
     });
@@ -110,11 +100,10 @@ exports.postAddProduct = async (req, res, next) => {
         description: enDescription,
         description: huDescription,
         description: roDescription,
-           
-          
-          category:  enCategory,
-          category:  huCategory,
-          category:  roCategory,
+
+        category: enCategory,
+        category: huCategory,
+        category: roCategory
       },
       errorMessage: errors.array()[0].msg,
       validationErrors: errors.array()
@@ -204,22 +193,21 @@ exports.postEditProduct = (req, res, next) => {
       path: "/admin/edit-product",
       editing: true,
       hasError: true,
-      product: 
-        {
-          title:  updatedEnTitle,
-          title: updatedHuTitle, 
-          roTitle: updatedRoTitle,
-          price: updatedPrice,
-          description: updatedEnDesc,
-          description: updatedHuDesc,
-          description: updatedRoDesc,
-          category:  updatedEnCategory,
-          category: updatedHuCategory,
-          category: updatedRoCategory,
-         
-          _id: prodId
-        },
-      
+      product: {
+        title: updatedEnTitle,
+        title: updatedHuTitle,
+        roTitle: updatedRoTitle,
+        price: updatedPrice,
+        description: updatedEnDesc,
+        description: updatedHuDesc,
+        description: updatedRoDesc,
+        category: updatedEnCategory,
+        category: updatedHuCategory,
+        category: updatedRoCategory,
+
+        _id: prodId
+      },
+
       errorMessage: errors.array()[0].msg,
       validationErrors: errors.array()
     });
@@ -290,8 +278,7 @@ exports.postDeleteProduct = (req, res, next) => {
       product.active = 0;
       return product.save().then(result => {
         res.redirect("/admin/products");
-    })
-    
+      });
     })
     .catch(err => {
       const error = new Error(err);
@@ -300,4 +287,21 @@ exports.postDeleteProduct = (req, res, next) => {
     });
 };
 
-
+exports.postDeleteDailyMenu = (req, res, next) => {
+  const prodId = req.body.productId;
+  Product.findById(prodId)
+    .then(product => {
+      if (!product) {
+        return next(new Error("Product not found."));
+      }
+      product.active = 0;
+      return product.save().then(result => {
+        res.redirect("/admin/daily-menus");
+      });
+    })
+    .catch(err => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
+};

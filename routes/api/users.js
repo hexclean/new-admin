@@ -42,7 +42,8 @@ router.post(
       user = new User({
         name,
         email,
-
+        dbOrder: 0,
+        totalOrder: 0,
         password
       });
 

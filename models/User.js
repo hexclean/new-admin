@@ -18,6 +18,12 @@ const UserSchema = new mongoose.Schema({
   date: {
     type: Date,
     default: Date.now
+  },
+  totalOrder:{
+    type: Number
+  },
+  dbOrder:{
+    type: Number
   }
 });
 

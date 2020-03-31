@@ -91,7 +91,8 @@ console.log("date", datepick)
     price: price,
     adminId: req.admin,
     extraPrice: price * 1.1,
-    dailyMenuTime: datepick
+    dailyMenuTime: datepick,
+    active: 1
   })
     .then(result => {
       console.log("Created Product");
@@ -195,7 +196,7 @@ exports.postEditDailyMenu = (req, res, next) => {
 };
 
 exports.getDailyMenu = (req, res, next) => {
-  Product.find({ adminId: req.admin._id, dailyMenu: { $ne: "no" } })
+  Product.find({ adminId: req.admin._id, dailyMenu: { $ne: "no" }, active: 1})
     .then(products => {
       var currentLanguage = req.cookies.language;
       res.render("daily-menu/daily-menus-list", {

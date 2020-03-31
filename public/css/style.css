@@ -703,6 +703,13 @@ pre {
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   margin-top: 8px;
 }
+.ms-panel-header-updated{
+  padding: 0.9rem !important;
+  position: relative;
+ 
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  margin-top: 8px;
+}
 .ms-panel-header.header-mini {
   border-bottom: 0;
   padding-bottom: 0;

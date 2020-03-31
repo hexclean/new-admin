@@ -13,12 +13,31 @@
         <div class="row">
           <div class="col-md-12">
            
-            <h1>Find A Product</h1>
-            <form action="/admin/search" class="search-form">
-              <i class="fas fa-search"></i>
-              <input type="search" name="term" placeholder="Javascript, PHP, Rails, etc...">
-              <input type="submit" value="Search">
-            </form>
+           
+            <div class="ms-panel">
+              <div class="ms-panel-header ms-panel-header-updated">
+                <h6>Default Validation</h6>
+              </div>
+              <form action="/admin/search" class="search-form">
+              <div class="ms-panel-body">
+                  
+                  <div class="form-row">
+                    <div class="col-md-6 upd mb-3 ">
+                      <label for="validationCustom03">City</label>
+                      <div class="input-group">
+                        <input type="search" class="form-control" placeholder="Name" name="term">
+                       
+                      </div>
+                    </div>
+                 
+                   
+                  </div>
+                
+                 
+                  <button class="btn btn-primary" type="submit">Submit form</button>
+                </form>
+              </div>
+            </div>
 
            
             <% if (prods.length > 0) { %>
@@ -36,7 +55,7 @@
                           <h6 class="mb-0"><%= product.title[`${currentLanguage}`] %></h6>
                           <h6 class="ms-text-primary mb-0"><%= product.price %> lej</h6>
                         </div>   
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, dolor sit amet, consectetur adipiscing</p>
+                        <p><%= product.description[`${currentLanguage}`] %></p>
                         <div class="new mb-0">
                           <form action="/admin/delete-product" method="POST">
                             <input type="hidden" value="<%= product._id %>" name="productId">

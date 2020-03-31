@@ -6805,6 +6805,9 @@ button.bg-dark:hover {
 .my-3 {
   margin-bottom: 1rem !important;
 }
+.upd{
+  margin-bottom: -1rem !important;
+}
 .ml-3,
 .mx-3 {
   margin-left: 1rem !important;

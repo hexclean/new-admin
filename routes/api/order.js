@@ -4,7 +4,7 @@ const auth = require("../../middleware/auth");
 const { check, validationResult } = require("express-validator");
 
 const Order = require("../../models/Orders");
-
+const User = require("../../models/User")
 const OrderItem = require("../../models/OrderItem");
 
 // @route    POST api/orders
@@ -21,7 +21,8 @@ router.post("/", auth, async (req, res) => {
   products.map(product => {
     totalPrice += parseFloat(product.price) * parseInt(product.quantity);
   });
-
+  
+  
   const order = new Order({
     totalPrice: totalPrice,
     user: req.user.id,
@@ -39,9 +40,18 @@ router.post("/", auth, async (req, res) => {
         orderId: savedOrderId,
         user: req.user.id
       });
+      User.findById({_id: req.user.id})
+      .then(user => {
+       user.dbOrder += 1;
+        user.totalOrder += totalPrice;
+        return user.save()
+      })
       item.save();
     });
   });
+
+
+ 
   try {
     res.json(order);
   } catch (err) {
