@@ -5,6 +5,7 @@ const adminDailyMenuController = require("../controllers/daily-menu");
 const adminProfileController = require("../controllers/profile");
 const adminOrderController = require("../controllers/orders");
 const adminCouponController = require("../controllers/coupon");
+const adminCostsController = require("../controllers/cost");
 
 const adminUsersController = require("../controllers/admin-users");
 
@@ -12,9 +13,9 @@ const isAuth = require("../../middleware/is-auth");
 const router = express.Router();
 
 
+//
 router.get("/users", isAuth, adminUsersController.getOrders);
 router.get("/edit-order/:orderId", isAuth, adminUsersController.getEditOrder);
-
 
 // /admin/add-product
 router.get("/add-product", isAuth, adminController.getAddProduct);
@@ -27,29 +28,13 @@ router.post(
   "/add-product",
 
   [
-    body("roTitle")
-      .isString()
-      .isLength({ min: 3 })
-      .trim(),
-    body("huTitle")
-      .isString()
-      .isLength({ min: 3 })
-      .trim(),
-    body("enTitle")
-      .isString()
-      .isLength({ min: 3 })
-      .trim(),
+    body("roTitle").isString().isLength({ min: 3 }).trim(),
+    body("huTitle").isString().isLength({ min: 3 }).trim(),
+    body("enTitle").isString().isLength({ min: 3 }).trim(),
     body("price").isFloat(),
-    body("roDescription")
-      .isLength({ min: 5, max: 400 })
-      .trim(),
-    body("huDescription")
-      .isLength({ min: 5, max: 400 })
-      .trim(),
-    body("enDescription")
-      .isLength({ min: 5, max: 400 })
-      .trim(),
-      
+    body("roDescription").isLength({ min: 5, max: 400 }).trim(),
+    body("huDescription").isLength({ min: 5, max: 400 }).trim(),
+    body("enDescription").isLength({ min: 5, max: 400 }).trim()
   ],
 
   isAuth,
@@ -61,33 +46,26 @@ router.get("/search", isAuth, adminController.getSearchProduct);
 
 router.get("/search-user", isAuth, adminUsersController.getSearchUsers);
 
-router.get("/autocomplete/", isAuth, adminUsersController.getUsersSearchedInput);
+router.get(
+  "/autocomplete/",
+  isAuth,
+  adminUsersController.getUsersSearchedInput
+);
 
-router.post("/edit-product",[
-  body("roTitle")
-    .isString()
-    .isLength({ min: 3 })
-    .trim(),
-  body("huTitle")
-    .isString()
-    .isLength({ min: 3 })
-    .trim(),
-  body("enTitle")
-    .isString()
-    .isLength({ min: 3 })
-    .trim(),
-  body("price").isFloat(),
-  body("roDescription")
-    .isLength({ min: 5, max: 400 })
-    .trim(),
-  body("huDescription")
-    .isLength({ min: 5, max: 400 })
-    .trim(),
-  body("enDescription")
-    .isLength({ min: 5, max: 400 })
-    .trim(),
-    
-], isAuth, adminController.postEditProduct);
+router.post(
+  "/edit-product",
+  [
+    body("roTitle").isString().isLength({ min: 3 }).trim(),
+    body("huTitle").isString().isLength({ min: 3 }).trim(),
+    body("enTitle").isString().isLength({ min: 3 }).trim(),
+    body("price").isFloat(),
+    body("roDescription").isLength({ min: 5, max: 400 }).trim(),
+    body("huDescription").isLength({ min: 5, max: 400 }).trim(),
+    body("enDescription").isLength({ min: 5, max: 400 }).trim()
+  ],
+  isAuth,
+  adminController.postEditProduct
+);
 router.post("/delete-product", isAuth, adminController.postDeleteProduct);
 
 router.post("/edit-profile", isAuth, adminProfileController.postEditProfile);
@@ -136,4 +114,10 @@ router.post("/add-coupon", isAuth, adminCouponController.postAddCoupon);
 //   adminCouponController.getEditProduct
 // );
 // router.post("/edit-discount", isAuth, adminCouponController.postEditProduct);
+
+
+router.get("/costs", isAuth, adminCostsController.getCoupons);
+router.get("/add-cost", isAuth, adminCostsController.getAddCost);
+router.post("/add-cost", isAuth, adminCostsController.postAddCost);
+
 module.exports = router;

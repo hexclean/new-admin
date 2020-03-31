@@ -114,6 +114,78 @@
                     </div>
                   </div>
 
+                  <div class="input-group mb-3 x">
+                    <select class="custom-select" id="rodailyVegan" name="rodailyVegan">
+                      <option>Vegan..ro</option>
+                      <% if (editing && product.dailyVegan.ro=='Nu')  { %> 
+                        <option selected value="Nu">Nu</option> 
+        
+                        <% } else{ %>
+                        <option value="Nu">Nu</option>
+                      <% } %>
+
+                      <% if (editing && product.dailyVegan.ro=='Da')  { %> 
+                        <option selected value="Da">Da</option> 
+        
+                        <% } else{ %>
+                        <option value="Da">Da</option>
+                      <% } %>
+                
+                    </select>
+                    <div class="input-group-append">
+                      <label class="input-group-text" for="inputGroupSelect02">rodailyVegan</label>
+                    </div>
+                  </div>
+
+
+                  <div class="input-group mb-3 x">
+                    <select class="custom-select" id="hudailyVegan" name="hudailyVegan">
+                      <option>Vegan..HU</option>
+                      <% if (editing && product.dailyVegan.hu=='Nem')  { %> 
+                        <option selected value="Nem">Nem</option> 
+        
+                        <% } else{ %>
+                        <option value="Nem">Nem</option>
+                      <% } %>
+
+                      <% if (editing && product.dailyVegan.hu=='Igen')  { %> 
+                        <option selected value="Igen">Igen</option> 
+        
+                        <% } else{ %>
+                        <option value="Igen">Igen</option>
+                      <% } %>
+                
+                    </select>
+                    <div class="input-group-append">
+                      <label class="input-group-text" for="inputGroupSelect02">hudailyVegan</label>
+                    </div>
+                  </div>
+
+                 
+
+                  <div class="input-group mb-3 x">
+                    <select class="custom-select" id="endailyVegan" name="endailyVegan">
+                      <option>Vegan..en</option>
+                      <% if (editing && product.dailyVegan.en=='No')  { %> 
+                        <option selected value="No">No</option> 
+        
+                        <% } else{ %>
+                        <option value="No">No</option>
+                      <% } %>
+
+                      <% if (editing && product.dailyVegan.en=='Yes')  { %> 
+                        <option selected value="Yes">Yes</option> 
+        
+                        <% } else{ %>
+                        <option value="Yes">Yes</option>
+                      <% } %>
+                
+                    </select>
+                    <div class="input-group-append">
+                      <label class="input-group-text" for="inputGroupSelect02">endailyVegan</label>
+                    </div>
+                  </div>
+
                
 
                  
@@ -178,6 +250,10 @@
             </div>
           </div>
         </div>
+
+
+     
+
         <div class="col-xl-6 col-md-12">
           <div class="row">
             <div class="col-md-12">

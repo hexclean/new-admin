@@ -50,7 +50,6 @@ const productSchema = mongoose.Schema({
       required: true
     }
   },
-
   imageUrl: {
     type: String
   },
@@ -61,7 +60,7 @@ const productSchema = mongoose.Schema({
     type: Number
   },
   active: {
-  type: Number
+    type: Number
   },
   adminId: {
     type: Schema.Types.ObjectId,
@@ -70,8 +69,22 @@ const productSchema = mongoose.Schema({
   dailyMenu: {
     type: String
   },
-  dailyMenuTime:{
+  dailyMenuTime: {
     type: Date
+  },
+  dailyVegan: {
+    ro: {
+      type: String,
+      enum: ["Da", "Nu"]
+    },
+    hu: {
+      type: String,
+      enum: ["Igen", "Nem"]
+    },
+    en: {
+      type: String,
+      enum: ["Yes", "No"]
+    }
   }
 });
 

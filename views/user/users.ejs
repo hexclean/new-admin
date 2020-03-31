@@ -59,7 +59,7 @@
                               <td><%= user.email %></td>
                               <td><%= user.totalOrder %></td>
                              
-                                <td><%= user.totalOrder %>/<%= user.dbOrder %> %></td>
+                                <td><%= user.totalOrder / user.dbOrder %> %></td>
                                 <td><%= user.phoneNumber %></td>
                                 
                           </tr>    
@@ -97,7 +97,7 @@
           minLenght: 1,
           select: function(event,ui){
             if(ui.item){
-              $("#searchName").text(ui.item.label)
+              $("#searchName").val(ui.item.label)
             }
           }
         })

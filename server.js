@@ -20,6 +20,14 @@ const store = new MongoDBStore({
   collection: "sessions"
 });
 app.use(cookieParser());
+app.use((error, req, res, next) => {
+  res.status(500).render('500', {
+    pageTitle: 'Error!',
+    path: '/500',
+    isAuthenticated: req.session.isLoggedIn
+  });
+});
+
 
 // Init Middleware
 app.use(express.json({ extended: false }));
@@ -52,7 +60,6 @@ const adminRoutes = require("./admin/routes/admin");
 const indexRoutes = require("./admin/routes/index");
 const authRoutes = require("./admin/routes/auth");
 const superRoutes = require("./admin/routes/superadmin");
-// const isAuthRoutes = require("./admin/routes/isAuth");
 app.use(express.static(path.join(__dirname, "public")));
 app.use("/images", express.static(path.join(__dirname, "images")));
 app.use(
@@ -73,7 +80,7 @@ app.use(
     store: store
   })
 );
-// app.get("/500", errorController.get500);
+app.get("/500", errorController.get500);
 
 // app.use(errorController.get404);
 
@@ -113,12 +120,12 @@ app.use("/api/order", require("./routes/api/order"));
 app.use("/api/products", require("./routes/api/products"));
 app.use("/api/restaurants", require("./routes/api/restaurants"));
 app.use(bodyParser.urlencoded({ extended: false }));
-// app.use(isAuthRoutes);
 app.use("/admin", adminRoutes);
 app.use("/super-admin", superRoutes);
 app.use(indexRoutes);
 //fsdfsd
 app.use(authRoutes);
+
 
 const PORT = process.env.PORT || 5000;
 

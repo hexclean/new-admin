@@ -33,6 +33,10 @@ exports.postAddDailyMenu = async (req, res, next) => {
   const huCategory = req.body.huCategory;
   const enCategory = req.body.enCategory;
   //
+  const rodailyVegan = req.body.rodailyVegan;
+  const hudailyVegan = req.body.hudailyVegan;
+  const endailyVegan = req.body.endailyVegan;
+  //
   const image = req.file;
   if (!image) {
     return res.status(422).render("daily-menu/edit-daily-menu", {
@@ -46,7 +50,8 @@ exports.postAddDailyMenu = async (req, res, next) => {
           huDescription: huDescription,
           roDescription: roDescription,
           
-          category: { en: enCategory, hu: huCategory, ro: roCategory }
+          category: { en: enCategory, hu: huCategory, ro: roCategory },
+          dailyVegan: { en: endailyVegan, hu: hudailyVegan, ro: rodailyVegan }
         },
         dailyMenuTime: datepick
       ,
@@ -68,7 +73,8 @@ exports.postAddDailyMenu = async (req, res, next) => {
           huDescription: huDescription,
           roDescription: roDescription,
           dailyMenuTime: datepick,
-        category: { en: enCategory, hu: huCategory, ro: roCategory }
+        category: { en: enCategory, hu: huCategory, ro: roCategory },
+        dailyVegan: { en: endailyVegan, hu: hudailyVegan, ro: rodailyVegan }
       },
       errorMessage: errors.array()[0].msg,
       validationErrors: errors.array()
@@ -86,6 +92,7 @@ console.log("date", datepick)
       ro: roDescription
     },
     category: { en: enCategory, hu: huCategory, ro: roCategory },
+    dailyVegan: { en: endailyVegan, hu: hudailyVegan, ro: rodailyVegan },
     imageUrl: imageUrl,
     dailyMenu: "yes",
     price: price,

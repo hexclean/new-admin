@@ -82,7 +82,7 @@ exports.getEditOrder = (req, res, next) => {
 
 exports.getUsersSearchedInput = (req, res, next) => {
   var regex = new RegExp(req.query["term"], "i");
-  var userFilter = Users.find({ name: regex }, { name: 1 });
+  var userFilter = Users.find({adminId: req.admin._id},{ name: regex });
   userFilter.exec(function (err, data) {
     var result = [];
     if (!err) {
@@ -101,25 +101,25 @@ exports.getUsersSearchedInput = (req, res, next) => {
   });
 };
 
-exports.getSearchUsers= (req, res, next) => {
-    let { term } = req.query;
-    console.log("req.query", req.query);
-    Users.find({
-      adminId: req.admin._id,
-      $text: { $search: "%" + term + "%" }
-    })
-      .then(users => {
-        var currentLanguage = req.cookies.language;
-        res.render("user/users", {
-          usr: users,
-          currentLanguage: currentLanguage,
-          pageTitle: "Admin Products",
-          path: "/admin/products"
-        });
-      })
-      .catch(err => {
-        const error = new Error(err);
-        error.httpStatusCode = 500;
-        return next(error);
+exports.getSearchUsers = (req, res, next) => {
+  let { term } = req.query;
+  console.log("req.query", req.query);
+  Users.find({
+    adminId: req.admin._id,
+    $text: { $search: "%" + term + "%" }
+  })
+    .then(users => {
+      var currentLanguage = req.cookies.language;
+      res.render("user/users", {
+        usr: users,
+        currentLanguage: currentLanguage,
+        pageTitle: "Admin Products",
+        path: "/admin/products"
       });
-  };
+    })
+    .catch(err => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
+};

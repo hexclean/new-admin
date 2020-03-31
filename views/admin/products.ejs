@@ -1,80 +1,64 @@
 <%- include('../includes/head.ejs') %>
-<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-
 </head>
 <body class="ms-body ms-aside-left-open ms-primary-theme ms-has-quickbar">
-<%- include('../includes/navigation.ejs') %>
-
-  <main class="body-content">   
-    <%- include('../includes/navigation-bar.ejs') %>
-    <div class="ms-content-wrapper">
-        <div class="row">
-          <div class="col-md-12">
-           
-           
-            <div class="ms-panel">
-              <div class="ms-panel-header ms-panel-header-updated">
-                <h6>Default Validation</h6>
-              </div>
-              <form action="/admin/search" class="search-form">
-              <div class="ms-panel-body">
-                  
-                  <div class="form-row">
-                    <div class="col-md-6 upd mb-3 ">
-                      <label for="validationCustom03">City</label>
-                      <div class="input-group">
-                        <input type="search" class="form-control" placeholder="Name" name="term">
-                       
-                      </div>
-                    </div>
-                 
-                   
+   <%- include('../includes/navigation.ejs') %>
+   <main class="body-content">
+      <%- include('../includes/navigation-bar.ejs') %>
+      <div class="ms-content-wrapper">
+         <div class="row">
+            <div class="col-md-12">
+               <div class="ms-panel">
+                  <div class="ms-panel-header ms-panel-header-updated">
+                     <h6>Default Validation</h6>
                   </div>
-                
-                 
-                  <button class="btn btn-primary" type="submit">Submit form</button>
-                </form>
-              </div>
-            </div>
-
-           
-            <% if (prods.length > 0) { %>
-              <div class="row">
-                <% for (let product of prods) { %>
-                  <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">        
-                    <div class="ms-card">
-                      <div class="ms-card-img">
-                        <%= lingua.language %>
-                        <img src="/<%= product.imageUrl %>" alt="<%= product.title.ro %>">
-                      </div>
-                     
-                      <div class="ms-card-body">
-                        <div class="new">
-                          <h6 class="mb-0"><%= product.title[`${currentLanguage}`] %></h6>
-                          <h6 class="ms-text-primary mb-0"><%= product.price %> lej</h6>
-                        </div>   
-                        <p><%= product.description[`${currentLanguage}`] %></p>
-                        <div class="new mb-0">
-                          <form action="/admin/delete-product" method="POST">
-                            <input type="hidden" value="<%= product._id %>" name="productId">
-                            <button class="btn grid-btn mt-0 btn-sm btn-primary" type="submit"><%= lingua.product_action_delete %></button>
-                         </form>
-                          <a href="/admin/edit-product/<%= product._id %>?edit=true"class="btn grid-btn mt-0 btn-sm btn-secondary" ><%= lingua.product_action_edit %></a>
+                  <form action="/admin/search" class="search-form">
+                     <div class="ms-panel-body">
+                        <div class="form-row">
+                           <div class="col-md-6 upd mb-3 ">
+                              <label for="validationCustom03">City</label>
+                              <div class="input-group">
+                                 <input type="search" class="form-control" placeholder="Name" name="term">
+                              </div>
+                           </div>
                         </div>
-                      </div>
-                    </div>
+                        <button class="btn btn-primary" type="submit">Submit form</button>
+                  </form>
+                  </div>
+               </div>
+               <% if (prods.length > 0) { %>
+               <div class="row">
+                  <% for (let product of prods) { %>
+                  <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
+                     <div class="ms-card">
+                        <div class="ms-card-img">
+                           <%= lingua.language %>
+                           <img src="/<%= product.imageUrl %>" alt="<%= product.title.ro %>">
+                        </div>
+                        <div class="ms-card-body">
+                           <div class="new">
+                              <h6 class="mb-0"><%= product.title[`${currentLanguage}`] %></h6>
+                              <h6 class="ms-text-primary mb-0"><%= product.price %> lej</h6>
+                           </div>
+                           <p><%= product.description[`${currentLanguage}`] %></p>
+                           <div class="new mb-0">
+                              <form action="/admin/delete-product" method="POST">
+                                 <input type="hidden" value="<%= product._id %>" name="productId">
+                                 <button class="btn grid-btn mt-0 btn-sm btn-primary" type="submit"><%= lingua.product_action_delete %></button>
+                              </form>
+                              <a href="/admin/edit-product/<%= product._id %>?edit=true"class="btn grid-btn mt-0 btn-sm btn-secondary" ><%= lingua.product_action_edit %></a>
+                           </div>
+                        </div>
+                     </div>
                   </div>
                   <% } %>
-                </div>    
+               </div>
             </div>
-          </div>
-          <% } else { %>
-            <h1>No Products Found!</h1>
-            <% } %>
-        </div>
-  </main>
-<%- include('../includes/end.ejs')
-  %>
+         </div>
+         <% } else { %>
+         <h1>No Products Found!</h1>
+         <% } %>
+      </div>
+   </main>
+   <%- include('../includes/end.ejs')
+      %>
 </body>
