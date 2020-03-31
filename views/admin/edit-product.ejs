@@ -54,27 +54,55 @@
                            </div>
                         </div>
                         <div class="input-group mb-3 x">
-                           <select class="custom-select <%= validationErrors.find(e => e.param === 'roCategory') ? 'invalid' : '' %>" id="roCategory" name="roCategory">
-                              <option class="<%= validationErrors.find(e => e.param === 'roCategory') ? 'invalid' : '' %>" selected value="meniulZilei">CATEGORY..RO</option>
-                              <% if (editing && product.category.ro=='meniulZilei')  { %> 
-                              <option>Meniul Zilei</option>
+                           <select class="custom-select" id="roCategory" name="roCategory">
+                              <option>CATEGORY..RO</option>
+                              <% if (editing && product.category.ro=='Crispy Box')  { %> 
+                              <option  value="crispy-box">Crispy Box</option>
                               <% } else{ %>
-                              <option value="meniulZilei">Meniul Zilei</option>
+                              <option value="crispy-box">Crispy Box</option>
                               <% } %>
-                              <% if (editing && product.category.ro=='pizza')  { %> 
+                              <% if (editing && product.category.ro=='Pizza')  { %> 
                               <option selected value="pizza">Pizza</option>
                               <% } else{ %>
                               <option value="pizza">Pizza</option>
                               <% } %>
-                              <% if (editing && product.category.ro=='dessert')  { %> 
-                              <option selected value="dessert">Dessert</option>
+                              <% if (editing && product.category.ro=='Pui')  { %> 
+                              <option selected value="pui">Pui</option>
                               <% } else{ %>
-                              <option value="dessert">Dessert</option>
+                              <option value="pui">Pui</option>
                               <% } %>
-                              <% if (editing && product.category.ro=='egyeb')  { %> 
-                              <option selected value="egyeb">Egyeb</option>
+                              <% if (editing && product.category.ro=='Porc')  { %> 
+                              <option selected value="pork">Porc</option>
                               <% } else{ %>
-                              <option value="egyeb">Egyeb</option>
+                              <option value="pork">Porc</option>
+                              <% } %>
+                           </select>
+                           <div class="input-group-append">
+                              <label class="input-group-text" for="roCategory">CATEGORY</label>
+                           </div>
+                        </div>
+                        <div class="input-group mb-3 x">
+                           <select class="custom-select" id="huCategory" name="huCategory">
+                              <option>CATEGORY..RO</option>
+                              <% if (editing && product.category.ro=='Crispy Box')  { %> 
+                              <option  value="crispy-box">Crispy Box</option>
+                              <% } else{ %>
+                              <option value="crispy-box">Crispy Box</option>
+                              <% } %>
+                              <% if (editing && product.category.ro=='Pizza')  { %> 
+                              <option selected value="pizza">Pizza</option>
+                              <% } else{ %>
+                              <option value="pizza">Pizza</option>
+                              <% } %>
+                              <% if (editing && product.category.ro=='Csirke')  { %> 
+                              <option selected value="pui">Csirke</option>
+                              <% } else{ %>
+                              <option value="pui">Csirke</option>
+                              <% } %>
+                              <% if (editing && product.category.ro=='Sertés')  { %> 
+                              <option selected value="pork">Sertés</option>
+                              <% } else{ %>
+                              <option value="pork">Sertés</option>
                               <% } %>
                            </select>
                            <div class="input-group-append">
@@ -82,61 +110,34 @@
                            </div>
                         </div>
                         <div class="input-group mb-3 x">
-                           <select class="custom-select" id="huCategory" name="huCategory">
-                              <option>CATEGORY..HU</option>
-                              <% if (editing && product.category.hu=='ponty')  { %> 
-                              <option selected value="ponty">Ponty</option>
-                              <% } else{ %>
-                              <option value="ponty">Ponty</option>
-                              <% } %>
-                              <% if (editing && product.category.hu=='amur')  { %> 
-                              <option selected value="amur">Amur</option>
-                              <% } else{ %>
-                              <option value="amur">Amur</option>
-                              <% } %>
-                              <% if (editing && product.category.hu=='kotesek')  { %> 
-                              <option selected value="kotesek">Kotesek</option>
-                              <% } else{ %>
-                              <option value="kotesek">Kotesek</option>
-                              <% } %>
-                              <% if (editing && product.category.hu=='egyeb')  { %> 
-                              <option selected value="egyeb">Egyeb</option>
-                              <% } else{ %>
-                              <option value="egyeb">Egyeb</option>
-                              <% } %>
-                           </select>
-                           <div class="input-group-append">
-                              <label class="input-group-text" for="inputGroupSelect02">CATEGORY</label>
-                           </div>
-                        </div>
-                        <div class="input-group mb-3 x">
                            <select class="custom-select" id="enCategory" name="enCategory">
-                              <option>CATEGORY..EN</option>
-                              <% if (editing && product.category.en=='ponty')  { %> 
-                              <option selected value="ponty">Ponty</option>
+                              <option>CATEGORY..RO</option>
+                              <% if (editing && product.category.ro=='Crispy Box')  { %> 
+                              <option  value="crispy-box">Crispy Box</option>
                               <% } else{ %>
-                              <option value="ponty">Ponty</option>
+                              <option value="crispy-box">Crispy Box</option>
                               <% } %>
-                              <% if (editing && product.category.en=='amur')  { %> 
-                              <option selected value="amur">Amur</option>
+                              <% if (editing && product.category.ro=='Pizza')  { %> 
+                              <option selected value="pizza">Pizza</option>
                               <% } else{ %>
-                              <option value="amur">Amur</option>
+                              <option value="pizza">Pizza</option>
                               <% } %>
-                              <% if (editing && product.category.en=='kotesek')  { %> 
-                              <option selected value="kotesek">Kotesek</option>
+                              <% if (editing && product.category.ro=='Chicken')  { %> 
+                              <option selected value="pui">Chicken</option>
                               <% } else{ %>
-                              <option value="kotesek">Kotesek</option>
+                              <option value="pui">Chicken</option>
                               <% } %>
-                              <% if (editing && product.category.en=='egyeb')  { %> 
-                              <option selected value="egyeb">Egyeb</option>
+                              <% if (editing && product.category.ro=='Pig')  { %> 
+                              <option selected value="pork">Pig</option>
                               <% } else{ %>
-                              <option value="egyeb">Egyeb</option>
+                              <option value="pork">Pig</option>
                               <% } %>
                            </select>
                            <div class="input-group-append">
-                              <label class="input-group-text" for="inputGroupSelect02">CATEGORY</label>
+                              <label class="input-group-text" for="enCategory">CATEGORY</label>
                            </div>
                         </div>
+                       
                         <div class="col-md-6 mb-3">
                            <label for="price"><%= lingua.create_product_price %></label>
                            <div class="input-group">
@@ -230,6 +231,35 @@
          </div>
          </div>
       </form>
+      <script>
+        
+     $( document ).ready(function() {
+
+            $('#enCategory').on('change', function() {
+         
+         $("#huCategory").val(this.value).trigger('change');
+         $("#roCategory").val(this.value).trigger('change');
+      });
+         $('#roCategory').on('change', function() {
+         
+           
+            $("#huCategory").val(this.value).trigger('change');
+            $("#enCategory").val(this.value).trigger('change');
+            
+         });
+
+         $('#huCategory').on('change', function() {
+         
+           
+            $("#roCategory").val(this.value).trigger('change');
+            $("#enCategory").val(this.value).trigger('change');
+            
+      });
+      
+     
+         });
+        
+      </script>
    </main>
    <%- include('../includes/end.ejs') %>
 </body>

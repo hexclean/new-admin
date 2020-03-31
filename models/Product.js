@@ -36,17 +36,17 @@ const productSchema = mongoose.Schema({
   category: {
     ro: {
       type: String,
-      enum: ["meniulZilei", "pizza", "soup", "Meniul Zilei"],
+      enum: ["Crispy Box", "Pizza", "Pui", "Porc"],
       required: true
     },
     hu: {
       type: String,
-      enum: ["Daily Menu", "amur", "kotesek", "Napi Menü", "ponty"],
+      enum: ["Crispy Box", "Pizza", "Csirke", "Sertés"],
       required: true
     },
     en: {
       type: String,
-      enum: ["ponty", "amur", "kotesek", "Daily Menu"],
+      enum: ["Crispy Box", "Pizza", "Chicken", "Pig"],
       required: true
     }
   },
