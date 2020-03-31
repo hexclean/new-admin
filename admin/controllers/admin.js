@@ -2,6 +2,45 @@ const fileHelper = require("../../util/file");
 const { validationResult } = require("express-validator/check");
 const Product = require("../../models/Product");
 
+// // Search for gigs
+// exports.getSearchProduct = (req, res, next) => {
+//   let  term  = req.body.term;
+
+//   // Make lowercase
+//   // term = term.toLowerCase();
+// console.log("req.query",req.query)
+//   Product.find()
+//     .then(products => res.render('admin/products',   prods: products,{ products }))
+//     .catch(err => console.log(err));
+// };
+
+exports.getSearchProduct = (req, res, next) => {
+  let { term } = req.query;
+  console.log("req.query",req.query)
+  Product.find({ adminId: req.admin._id, dailyMenu: { $ne: "yes" }, active: 1 , $text: { $search:  '%' + term + '%' } })
+    .then(products => {
+      var currentLanguage = req.cookies.language;
+      res.render("admin/products", {
+        prods: products,
+        currentLanguage: currentLanguage,
+        pageTitle: "Admin Products",
+        path: "/admin/products"
+      });
+    })
+    .catch(err => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
+};
+
+
+// app.post("/search", function(req, res) {  
+//   db.collection('textstore').find({
+//     "$text": {
+//       "$search": req.body.query
+//     }
+//   }
 
 exports.getAddProduct = (req, res, next) => {
   res.render("admin/edit-product", {
@@ -169,7 +208,7 @@ exports.postEditProduct = (req, res, next) => {
         {
           title:  updatedEnTitle,
           title: updatedHuTitle, 
-          title: updatedRoTitle,
+          roTitle: updatedRoTitle,
           price: updatedPrice,
           description: updatedEnDesc,
           description: updatedHuDesc,

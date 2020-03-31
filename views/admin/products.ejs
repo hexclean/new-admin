@@ -13,6 +13,13 @@
         <div class="row">
           <div class="col-md-12">
            
+            <h1>Find A Product</h1>
+            <form action="/admin/search" class="search-form">
+              <i class="fas fa-search"></i>
+              <input type="search" name="term" placeholder="Javascript, PHP, Rails, etc...">
+              <input type="submit" value="Search">
+            </form>
+
            
             <% if (prods.length > 0) { %>
               <div class="row">

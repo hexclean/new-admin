@@ -50,6 +50,9 @@ router.post(
   adminController.postAddProduct
 );
 router.get("/edit-product/:productId", isAuth, adminController.getEditProduct);
+
+router.get("/search", isAuth, adminController.getSearchProduct);
+
 router.post("/edit-product",[
   body("roTitle")
     .isString()
