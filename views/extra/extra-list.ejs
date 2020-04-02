@@ -1,0 +1,76 @@
+<%- include('../includes/head.ejs') %>
+</head>
+<body class="ms-body ms-aside-left-open ms-primary-theme ms-has-quickbar">
+<%- include('../includes/navigation.ejs') %>
+
+  <main class="body-content">
+    <%- include('../includes/navigation-bar.ejs') %>   
+    <div class="ms-content-wrapper">
+        <div class="row">
+          <div class="col-md-12">
+            
+            
+            <div class="col-12">
+                <div class="ms-panel">
+                  <div class="ms-panel-header">
+                    <h6> Order List</h6>
+                  </div>
+                  <div class="ms-panel-body">
+    
+                    <div class="table-responsive">
+                      <table class="table table-hover thead-primary">
+                        <thead>
+                          <tr>
+                            <th scope="col"><%= lingua.order_page_list_order_name %></th>
+                            <th scope="col"><%= lingua.order_page_list_order_adress %></th>
+                            <th scope="col"><%= lingua.order_page_list_order_product %></th>
+                                <th scope="col"><%= lingua.order_page_list_order_pay %></th>
+                                <th scope="col"><%= lingua.order_page_list_order_status %></th>
+                                <th scope="col"><%= lingua.order_page_list_order_total_price %></th>
+                                <th scope="col"><%= lingua.order_page_list_order_total_action %></th>
+                          </tr>
+                        </thead>
+                        <% if (ords.length > 0) { %>
+                        <tbody>
+                            <% for (let orders of ords) { %>
+                          <tr>
+                            <td> df %></td>
+                            <td> Jhon Leo</td>
+                              <td><%= orders.totalPrice %></td>
+                              <td><%= orders.totalPrice %></td>
+                              <td><span class="">Pending</span></td>
+                                <td>$10</td>
+                                <td><a href="/admin/edit-order/<%= orders._id %>?edit=true" class="btn grid-btn mt-0 btn-sm btn-secondary" ><%= lingua.product_action_edit %></a>
+                                </td>
+                                <td>
+                                 
+                                        <form action="/admin/delete-order" method="POST">
+                                          <input type="hidden" value="<%= orders._id %>" name="orderId">
+                                          <button class="btn grid-btn mt-0 btn-sm btn-primary" type="submit"><%= lingua.product_action_delete %></button>
+                                       </form>
+                                     
+
+
+                                </td> 
+                          </tr>    
+                          <% } %>
+                        </tbody>
+                         <% } else { %>
+                        <h1>No Products Found!</h1>
+                        <% } %>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>        
+        </div>
+        
+    
+
+  </main>
+ 
+<%- include('../includes/end.ejs')
+  %>
+</body>

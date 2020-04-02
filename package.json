@@ -15,6 +15,7 @@
   "dependencies": {
     "bcrypt": "^3.0.8",
     "bcryptjs": "^2.4.3",
+    "bootstrap": "^4.4.1",
     "config": "^3.2.5",
     "connect-flash": "^0.1.1",
     "connect-mongodb-session": "^2.3.1",
@@ -43,7 +44,9 @@
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
     "path": "^0.12.7",
+    "react-bootstrap": "^1.0.0",
     "react-router-dom": "^5.1.2",
+    "reactn": "^2.2.6",
     "redux-devtools-extension": "^2.13.8",
     "request": "^2.88.2",
     "sequelize": "^5.21.5",

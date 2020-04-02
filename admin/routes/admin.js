@@ -6,15 +6,15 @@ const adminProfileController = require("../controllers/profile");
 const adminOrderController = require("../controllers/orders");
 const adminCouponController = require("../controllers/coupon");
 const adminCostsController = require("../controllers/cost");
-
+const adminExtraController = require("../controllers/extra");
 const adminUsersController = require("../controllers/admin-users");
 
 const isAuth = require("../../middleware/is-auth");
 const router = express.Router();
 
-
 //
 router.get("/users", isAuth, adminUsersController.getOrders);
+router.get("/extras", isAuth, adminExtraController.getOrders);
 router.get("/edit-order/:orderId", isAuth, adminUsersController.getEditOrder);
 
 // /admin/add-product
@@ -114,7 +114,6 @@ router.post("/add-coupon", isAuth, adminCouponController.postAddCoupon);
 //   adminCouponController.getEditProduct
 // );
 // router.post("/edit-discount", isAuth, adminCouponController.postEditProduct);
-
 
 router.get("/costs", isAuth, adminCostsController.getCoupons);
 router.get("/add-cost", isAuth, adminCostsController.getAddCost);

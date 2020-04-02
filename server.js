@@ -21,13 +21,12 @@ const store = new MongoDBStore({
 });
 app.use(cookieParser());
 app.use((error, req, res, next) => {
-  res.status(500).render('500', {
-    pageTitle: 'Error!',
-    path: '/500',
+  res.status(500).render("500", {
+    pageTitle: "Error!",
+    path: "/500",
     isAuthenticated: req.session.isLoggedIn
   });
 });
-
 
 // Init Middleware
 app.use(express.json({ extended: false }));
@@ -125,7 +124,6 @@ app.use("/super-admin", superRoutes);
 app.use(indexRoutes);
 //fsdfsd
 app.use(authRoutes);
-
 
 const PORT = process.env.PORT || 5000;
 

@@ -57,24 +57,24 @@
                            <select class="custom-select" id="roCategory" name="roCategory">
                               <option>CATEGORY..RO</option>
                               <% if (editing && product.category.ro=='Crispy Box')  { %> 
-                              <option  value="crispy-box">Crispy Box</option>
+                              <option  value="CrispyBox">Crispy Box</option>
                               <% } else{ %>
-                              <option value="crispy-box">Crispy Box</option>
+                              <option  value="CrispyBox">Crispy Box</option>
                               <% } %>
                               <% if (editing && product.category.ro=='Pizza')  { %> 
-                              <option selected value="pizza">Pizza</option>
+                              <option  selected value="Pizza">Pizza</option>
                               <% } else{ %>
-                              <option value="pizza">Pizza</option>
+                              <option  value="Pizza">Pizza</option>
                               <% } %>
                               <% if (editing && product.category.ro=='Pui')  { %> 
-                              <option selected value="pui">Pui</option>
+                              <option  selected value="Pui">Pui</option>
                               <% } else{ %>
-                              <option value="pui">Pui</option>
+                              <option  value="Pui">Pui</option>
                               <% } %>
                               <% if (editing && product.category.ro=='Porc')  { %> 
-                              <option selected value="pork">Porc</option>
+                              <option  selected value="Porc">Porc</option>
                               <% } else{ %>
-                              <option value="pork">Porc</option>
+                              <option  value="Porc">Porc</option>
                               <% } %>
                            </select>
                            <div class="input-group-append">
@@ -83,26 +83,26 @@
                         </div>
                         <div class="input-group mb-3 x">
                            <select class="custom-select" id="huCategory" name="huCategory">
-                              <option>CATEGORY..RO</option>
-                              <% if (editing && product.category.ro=='Crispy Box')  { %> 
-                              <option  value="crispy-box">Crispy Box</option>
+                              <option>CATEGORY..HU</option>
+                              <% if (editing && product.category.hu=='Crispy Box')  { %> 
+                              <option   value="Crispy Box">Crispy Box</option>
                               <% } else{ %>
-                              <option value="crispy-box">Crispy Box</option>
+                              <option  value="Crispy Box">Crispy Box</option>
                               <% } %>
-                              <% if (editing && product.category.ro=='Pizza')  { %> 
-                              <option selected value="pizza">Pizza</option>
+                              <% if (editing && product.category.hu=='Pizza')  { %> 
+                              <option  selected value="Pizza">Pizza</option>
                               <% } else{ %>
-                              <option value="pizza">Pizza</option>
+                              <option  value="Pizza">Pizza</option>
                               <% } %>
-                              <% if (editing && product.category.ro=='Csirke')  { %> 
-                              <option selected value="pui">Csirke</option>
+                              <% if (editing && product.category.hu=='Csirke')  { %> 
+                              <option  selected value="Csirke">Csirke</option>
                               <% } else{ %>
-                              <option value="pui">Csirke</option>
+                              <option   value="Csirke">Csirke</option>
                               <% } %>
-                              <% if (editing && product.category.ro=='Sertés')  { %> 
-                              <option selected value="pork">Sertés</option>
+                              <% if (editing && product.category.hu=='Sertés')  { %> 
+                              <option  selected value="Sertés">Sertés</option>
                               <% } else{ %>
-                              <option value="pork">Sertés</option>
+                              <option  value="Sertés">Sertés</option>
                               <% } %>
                            </select>
                            <div class="input-group-append">
@@ -111,26 +111,26 @@
                         </div>
                         <div class="input-group mb-3 x">
                            <select class="custom-select" id="enCategory" name="enCategory">
-                              <option>CATEGORY..RO</option>
-                              <% if (editing && product.category.ro=='Crispy Box')  { %> 
-                              <option  value="crispy-box">Crispy Box</option>
+                              <option>CATEGORY..EN</option>
+                              <% if (editing && product.category.en=='Crispy Box')  { %> 
+                              <option   value="Crispy Box">Crispy Box</option>
                               <% } else{ %>
-                              <option value="crispy-box">Crispy Box</option>
+                              <option  value="Crispy Box">Crispy Box</option>
                               <% } %>
-                              <% if (editing && product.category.ro=='Pizza')  { %> 
-                              <option selected value="pizza">Pizza</option>
+                              <% if (editing && product.category.en=='Pizza')  { %> 
+                              <option  selected value="Pizza">Pizza</option>
                               <% } else{ %>
-                              <option value="pizza">Pizza</option>
+                              <option  value="Pizza">Pizza</option>
                               <% } %>
-                              <% if (editing && product.category.ro=='Chicken')  { %> 
-                              <option selected value="pui">Chicken</option>
+                              <% if (editing && product.category.en=='Chicken')  { %> 
+                              <option  selected value="Chicken">Chicken</option>
                               <% } else{ %>
-                              <option value="pui">Chicken</option>
+                              <option  value="Chicken">Chicken</option>
                               <% } %>
-                              <% if (editing && product.category.ro=='Pig')  { %> 
-                              <option selected value="pork">Pig</option>
+                              <% if (editing && product.category.en=='Pig')  { %> 
+                              <option   selected value="Pig">Pig</option>
                               <% } else{ %>
-                              <option value="pork">Pig</option>
+                              <option  value="Pig">Pig</option>
                               <% } %>
                            </select>
                            <div class="input-group-append">
@@ -231,35 +231,12 @@
          </div>
          </div>
       </form>
-      <script>
-        
-     $( document ).ready(function() {
-
-            $('#enCategory').on('change', function() {
-         
-         $("#huCategory").val(this.value).trigger('change');
-         $("#roCategory").val(this.value).trigger('change');
-      });
-         $('#roCategory').on('change', function() {
-         
-           
-            $("#huCategory").val(this.value).trigger('change');
-            $("#enCategory").val(this.value).trigger('change');
-            
-         });
-
-         $('#huCategory').on('change', function() {
-         
-           
-            $("#roCategory").val(this.value).trigger('change');
-            $("#enCategory").val(this.value).trigger('change');
-            
-      });
-      
      
-         });
-        
-      </script>
+
+
+
+
+  
    </main>
    <%- include('../includes/end.ejs') %>
 </body>
