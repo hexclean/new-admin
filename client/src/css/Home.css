@@ -2,8 +2,35 @@
   color: #fd8f00;
 }
 
+.burger-size {
+  width: 310px;
+  height: auto;
+}
+
+.partners {
+  color: white;
+}
+
+.orange-bck {
+  background-color: #fd8f00;
+}
+
+.partners-ph {
+  background-color: white;
+  max-width: 200px;
+  max-height: 200px;
+  border-radius: 15px;
+}
+.partners-info {
+  background-color: red;
+  border-radius: 15px;
+  max-width: 200px;
+  max-height: 200px;
+}
+
 .header-text {
   padding-left: 101px;
+  margin-top: 50px;
 }
 
 .btn-warning {
@@ -37,15 +64,16 @@
 .animation1 {
   z-index: 1;
   position: relative;
-  margin-left: 85px;
+  margin-left: 96px;
 }
 .animation2 {
-  margin-top: -75px;
+  margin-top: -73px;
+  margin-left: 88px;
   z-index: 0;
   position: relative;
 }
 .animation3 {
-  margin-left: -35px;
+  margin-left: 91px;
   z-index: 1;
   margin-top: -5px;
   position: relative;
