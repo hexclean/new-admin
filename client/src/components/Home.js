@@ -71,18 +71,35 @@ export const Home = () => (
           </div>
         </div>
         <div className="row">
-          <div className="col-6 d-flex justify-content-center partners-ph">
-            <img src="/images/animation3.png" alt="navtiagtion3" />
+          <div className="col-lg-4 offset-lg-2 offset-sm-0 bg thumbnail">
+            <div className="row">
+              <div className="col-6 partners-ph">
+                <img
+                  className="img-fluid pt-img"
+                  src="/images/animation3.png"
+                  alt="navtiagtion3"
+                />
+              </div>
+              <div className="col-6 partners-info">
+                <p className="text-center">PARTNEREINK</p>
+                <p className="text-center">PARTNEREINK</p>
+              </div>
+            </div>
           </div>
-          <div className="col-6  d-flex justify-content-center partners-info">
-            <p className="text-center">PARTNEREINK</p>
-          </div>
-
-          <div className="col-6 col-sm-4 d-flex justify-content-center">
-            .col-6 .col-sm-4
-          </div>
-          <div className="col-6 col-sm-4 d-flex justify-content-center">
-            .col-6 .col-sm-4
+          <div className="col-lg-4  thumbnail bg">
+            <div className="row">
+              <div className="col-6 d-flex justify-content-center partners-ph">
+                <img
+                  className="img-fluid pt-img"
+                  src="/images/animation3.png"
+                  alt="navtiagtion3"
+                />
+              </div>
+              <div className="col-6 partners-info">
+                <p className="text-center">PARTNEREINK</p>
+                <p className="text-center">PARTNEREINK</p>
+              </div>
+            </div>
           </div>
         </div>
 

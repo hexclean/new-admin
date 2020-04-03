@@ -2,9 +2,13 @@
   color: #fd8f00;
 }
 
-.burger-size {
+/* .burger-size {
   width: 310px;
   height: auto;
+} */
+
+.pt-img {
+  min-height: 115px;
 }
 
 .partners {
@@ -15,14 +19,22 @@
   background-color: #fd8f00;
 }
 
+.bg {
+  background-color: red;
+  border-radius: 15px;
+}
+
 .partners-ph {
   background-color: white;
   max-width: 200px;
   max-height: 200px;
   border-radius: 15px;
 }
+
 .partners-info {
   background-color: red;
+  /* border-top-right-radius: 15px;
+  border-top-left-radius: 15px; */
   border-radius: 15px;
   max-width: 200px;
   max-height: 200px;
@@ -84,3 +96,38 @@
   z-index: 0;
   position: relative;
 }
+@media (max-width: 1397px), (min-width: 1393px) {
+  .fix-wave {
+    margin-top: -1px;
+  }
+}
+
+@media (max-width: 1115px), (min-width: 992px) {
+  .fix-wave {
+    margin-top: -11px;
+  }
+}
+/* 
+@media screen and (max-width: 1132px) {
+  .fix-wave {
+    margin-top: -6px;
+  }
+}
+
+@media screen and (max-width: 1053px) {
+  .fix-wave {
+    margin-top: -7px;
+  }
+}
+
+@media screen and (max-width: 1037px) {
+  .fix-wave {
+    margin-top: -7px;
+  }
+}
+
+@media screen and (max-width: 1036px) {
+  .fix-wave {
+    margin-top: -7px;
+  }
+} */
