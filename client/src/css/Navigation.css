@@ -1,0 +1,36 @@
+.mainnv {
+  background-color: rgba(0, 0, 0, 0.7) !important;
+}
+.mainnv .nav-link {
+  color: #fff !important;
+  text-transform: uppercase;
+}
+.mainnv .text-yellow {
+  color: #f99b39 !important;
+}
+.align-right {
+  justify-content: flex-end;
+}
+.mainnv ul {
+  align-items: center;
+}
+.fonts-1 {
+  font-family: "Bebas Neue", cursive;
+  font-size: 24px !important;
+}
+@media only screen and (max-width: 991px) {
+  .mainnv a {
+    display: block !important;
+    margin: auto !important;
+  }
+  .mainnv img {
+    display: block;
+    margin: auto;
+    max-width: 100%;
+  }
+  .mainnv ul {
+    align-items: center;
+    margin: auto;
+    padding: 0px;
+  }
+}

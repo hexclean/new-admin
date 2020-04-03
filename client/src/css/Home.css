@@ -1,48 +1,164 @@
 .header-title {
   color: #fd8f00;
+  font-family: "Montserrat", sans-serif;
 }
 
-/* .burger-size {
-  width: 310px;
+.orange-bc {
+  background-color: #fd8f00;
+}
+
+.text-white {
+  color: white;
+  font-family: "Montserrat", sans-serif;
+}
+
+.text-bcg-balck {
+  color: #1c1c1c;
+  font-family: "Bebas Neue", cursive;
+  font-size: 24px;
+}
+
+.app-div {
+  margin-top: -100px;
+}
+
+.store-section-text {
+  padding-top: 41px;
+}
+
+.store {
+  padding-top: 35px;
+}
+
+.header-subtitle {
+  color: white;
+  font-family: "Bebas Neue", cursive;
+  font-size: 24px;
+}
+.footer-top {
+  margin-top: -87px;
+  z-index: 99999;
+  position: relative;
+}
+.header-button {
+  margin-top: 30px;
+  text-transform: uppercase;
+}
+
+.burger-header {
+  display: block;
+  width: 90%;
   height: auto;
-} */
+}
+
+.section-two-partners {
+  margin-top: -21px;
+}
+
+.partners-block {
+  margin-top: -50px;
+}
+
+.partners-image-info-box {
+  background-color: white;
+  width: 180px;
+  height: 180px;
+  border-radius: 15px;
+}
+
+.partners-detail-info-box {
+  background-color: #f0c685;
+  border-radius: 15px;
+  max-width: 280px;
+  max-height: 280px;
+}
+
+.bg {
+  background-color: #f0c685;
+  border-radius: 15px;
+}
+.space-between-restaurants {
+  margin-top: 13px;
+}
+
+.space-between-restaurants-hor {
+  margin-left: 10px;
+}
+
+.partners-text-sec-two {
+  color: white;
+  font-family: "Bebas Neue", cursive;
+  font-size: 70px;
+}
+
+.partners-text-sec-p {
+  color: white;
+  font-family: "Bebas Neue", cursive;
+  font-size: 55px;
+}
+
+.what-is-section {
+  margin-top: -89px;
+}
+
+.test111 {
+  z-index: 99999;
+  position: relative;
+}
+
+.test2 {
+  z-index: 0;
+  position: relative;
+}
+
+.what-is-section-title {
+  margin-top: 40px;
+}
+
+.what-is-title {
+  color: #fd8f00;
+  font-family: "Bebas Neue", cursive;
+  font-size: 70px;
+}
+/* sdfdfsdfdsfsd */
+
+.wt-is {
+  background-color: #1c1c1c;
+}
 
 .pt-img {
   min-height: 115px;
 }
 
-.partners {
+.short-desc-wht {
   color: white;
+  font-family: "Bebas Neue", cursive;
+  font-size: 24px;
 }
 
+.new-img {
+  margin-top: -34px;
+  height: auto;
+  width: 440px;
+}
+
+.what-is {
+  color: #fd8f00;
+}
+.test2 {
+  z-index: 0;
+  position: relative;
+}
+.test {
+  z-index: 1;
+  position: relative;
+}
 .orange-bck {
   background-color: #fd8f00;
 }
 
-.bg {
-  background-color: red;
-  border-radius: 15px;
-}
-
-.partners-ph {
-  background-color: white;
-  max-width: 200px;
-  max-height: 200px;
-  border-radius: 15px;
-}
-
-.partners-info {
-  background-color: red;
-  /* border-top-right-radius: 15px;
-  border-top-left-radius: 15px; */
-  border-radius: 15px;
-  max-width: 200px;
-  max-height: 200px;
-}
-
 .header-text {
-  padding-left: 101px;
-  margin-top: 50px;
+  padding-left: 36px;
 }
 
 .btn-warning {
@@ -54,9 +170,6 @@
 
 .btn:focus {
   outline: 0 !important;
-}
-.header-p {
-  color: white;
 }
 
 #home-section .home-inner {
@@ -91,8 +204,9 @@
   position: relative;
 }
 .animation4 {
-  margin-left: 70px;
-  margin-top: -76px;
+  margin-left: 101px;
+  margin-top: -37px;
+
   z-index: 0;
   position: relative;
 }
@@ -131,3 +245,38 @@
     margin-top: -7px;
   }
 } */
+
+.mainnv {
+  background-color: rgba(0, 0, 0, 0.7) !important;
+}
+.mainnv .nav-link {
+  font-size: 14px;
+  font-weight: 500;
+  color: #fff !important;
+  text-transform: uppercase;
+}
+.mainnv .text-yellow {
+  color: #f99b39 !important;
+}
+.align-right {
+  justify-content: flex-end;
+}
+.mainnv ul {
+  align-items: center;
+}
+@media only screen and (max-width: 991px) {
+  .mainnv a {
+    display: block !important;
+    margin: auto !important;
+  }
+  .mainnv img {
+    display: block;
+    margin: auto;
+    max-width: 100%;
+  }
+  .mainnv ul {
+    align-items: center;
+    margin: auto;
+    padding: 0px;
+  }
+}
