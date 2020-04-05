@@ -14,7 +14,11 @@ const router = express.Router();
 
 //
 router.get("/users", isAuth, adminUsersController.getOrders);
-router.get("/extras", isAuth, adminExtraController.getOrders);
+router.get("/extras", isAuth, adminController.getExtras);
+router.post("/add-extra", isAuth, adminExtraController.postAddExtra);
+router.get("/add-extra", isAuth, adminExtraController.getAddExtra);
+router.get("/edit-extra/:extraId", isAuth, adminExtraController.getEditExtra);
+///
 router.get("/edit-order/:orderId", isAuth, adminUsersController.getEditOrder);
 
 // /admin/add-product
@@ -34,7 +38,7 @@ router.post(
     body("price").isFloat(),
     body("roDescription").isLength({ min: 5, max: 400 }).trim(),
     body("huDescription").isLength({ min: 5, max: 400 }).trim(),
-    body("enDescription").isLength({ min: 5, max: 400 }).trim()
+    body("enDescription").isLength({ min: 5, max: 400 }).trim(),
   ],
 
   isAuth,
@@ -61,7 +65,7 @@ router.post(
     body("price").isFloat(),
     body("roDescription").isLength({ min: 5, max: 400 }).trim(),
     body("huDescription").isLength({ min: 5, max: 400 }).trim(),
-    body("enDescription").isLength({ min: 5, max: 400 }).trim()
+    body("enDescription").isLength({ min: 5, max: 400 }).trim(),
   ],
   isAuth,
   adminController.postEditProduct

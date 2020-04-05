@@ -1,6 +1,7 @@
 const fileHelper = require("../../util/file");
 const { validationResult } = require("express-validator/check");
 const Product = require("../../models/Product");
+const ExtraAdd = require("../../models/ExtraAdd");
 
 exports.getSearchProduct = (req, res, next) => {
   let { term } = req.query;
@@ -9,24 +10,23 @@ exports.getSearchProduct = (req, res, next) => {
     adminId: req.admin._id,
     dailyMenu: { $ne: "yes" },
     active: 1,
-    $text: { $search: "%" + term + "%" }
+    $text: { $search: "%" + term + "%" },
   })
-    .then(products => {
+    .then((products) => {
       var currentLanguage = req.cookies.language;
       res.render("admin/products", {
         prods: products,
         currentLanguage: currentLanguage,
         pageTitle: "Admin Products",
-        path: "/admin/products"
+        path: "/admin/products",
       });
     })
-    .catch(err => {
+    .catch((err) => {
       const error = new Error(err);
       error.httpStatusCode = 500;
       return next(error);
     });
 };
-
 
 exports.getAddProduct = (req, res, next) => {
   res.render("admin/edit-product", {
@@ -35,7 +35,7 @@ exports.getAddProduct = (req, res, next) => {
     editing: false,
     hasError: false,
     errorMessage: null,
-    validationErrors: []
+    validationErrors: [],
   });
 };
 
@@ -72,10 +72,10 @@ exports.postAddProduct = async (req, res, next) => {
         price: price,
         category: enCategory,
         category: huCategory,
-        category: roCategory
+        category: roCategory,
       },
       errorMessage: "Attached file is not an image.",
-      validationErrors: []
+      validationErrors: [],
     });
   }
   const errors = validationResult(req);
@@ -97,10 +97,10 @@ exports.postAddProduct = async (req, res, next) => {
 
         category: enCategory,
         category: huCategory,
-        category: roCategory
+        category: roCategory,
       },
       errorMessage: errors.array()[0].msg,
-      validationErrors: errors.array()
+      validationErrors: errors.array(),
     });
   }
 
@@ -112,7 +112,7 @@ exports.postAddProduct = async (req, res, next) => {
     description: {
       en: enDescription,
       hu: huDescription,
-      ro: roDescription
+      ro: roDescription,
     },
     category: { en: enCategory, hu: huCategory, ro: roCategory },
     imageUrl: imageUrl,
@@ -120,45 +120,62 @@ exports.postAddProduct = async (req, res, next) => {
     adminId: req.admin,
     extraPrice: price * 1.1,
     dailyMenu: "no",
-    active: 1
+    active: 1,
   })
-    .then(result => {
+    .then((result) => {
       console.log("Created Product");
       res.redirect("/admin/products");
     })
-    .catch(err => {
+    .catch((err) => {
       const error = new Error(err);
       error.httpStatusCode = 500;
       return next(error);
     });
 };
 
-exports.getEditProduct = (req, res, next) => {
+exports.getExtras = (req, res, next) => {
+  ExtraAdd.find({ adminId: req.admin._id })
+
+    .then((orders) => {
+      var currentLanguage = req.cookies.language;
+      console.log(orders);
+      res.render("extra/extra-list", {
+        ords: orders,
+        currentLanguage: currentLanguage,
+        pageTitle: "Admin Products",
+        path: "/admin/products",
+      });
+    })
+    .catch((err) => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
+};
+
+exports.getEditProduct = async (req, res, next) => {
   const editMode = req.query.edit;
   if (!editMode) {
     return res.redirect("/");
   }
   const prodId = req.params.productId;
-  Product.findById(prodId)
-    .then(product => {
-      if (!product) {
-        return res.redirect("/");
-      }
-      res.render("admin/edit-product", {
-        pageTitle: "Edit Product",
-        path: "/admin/edit-product",
-        editing: editMode,
-        product: product,
-        hasError: false,
-        errorMessage: null,
-        validationErrors: []
-      });
-    })
-    .catch(err => {
-      const error = new Error(err);
-      error.httpStatusCode = 500;
-      return next(error);
-    });
+  const product = await Product.findById(prodId);
+  const extras = await ExtraAdd.find({ adminId: req.admin._id });
+
+  if (!product) {
+    return res.redirect("/");
+  }
+
+  res.render("admin/edit-product", {
+    pageTitle: "Edit Product",
+    path: "/admin/edit-product",
+    editing: editMode,
+    product: product,
+    hasError: false,
+    errorMessage: null,
+    validationErrors: [],
+    ords: extras,
+  });
 };
 
 exports.postEditProduct = (req, res, next) => {
@@ -199,45 +216,45 @@ exports.postEditProduct = (req, res, next) => {
         category: updatedHuCategory,
         category: updatedRoCategory,
 
-        _id: prodId
+        _id: prodId,
       },
 
       errorMessage: errors.array()[0].msg,
-      validationErrors: errors.array()
+      validationErrors: errors.array(),
     });
   }
 
   Product.findById(prodId)
-    .then(product => {
+    .then((product) => {
       if (product.adminId.toString() !== req.admin._id.toString()) {
         return res.redirect("/");
       }
       product.title = {
         en: updatedEnTitle,
         hu: updatedHuTitle,
-        ro: updatedRoTitle
+        ro: updatedRoTitle,
       };
       product.price = updatedPrice;
       product.category = {
         en: updatedEnCategory,
         hu: updatedHuCategory,
-        ro: updatedRoCategory
+        ro: updatedRoCategory,
       };
       product.description = {
         en: updatedEnDesc,
         hu: updatedHuDesc,
-        ro: updatedRoDesc
+        ro: updatedRoDesc,
       };
       if (image) {
         fileHelper.deleteFile(product.imageUrl);
         product.imageUrl = image.path;
       }
-      return product.save().then(result => {
+      return product.save().then((result) => {
         console.log("UPDATED PRODUCT!");
         res.redirect("/admin/products");
       });
     })
-    .catch(err => {
+    .catch((err) => {
       const error = new Error(err);
       error.httpStatusCode = 500;
       return next(error);
@@ -246,16 +263,16 @@ exports.postEditProduct = (req, res, next) => {
 
 exports.getProducts = (req, res, next) => {
   Product.find({ adminId: req.admin._id, dailyMenu: { $ne: "yes" }, active: 1 })
-    .then(products => {
+    .then((products) => {
       var currentLanguage = req.cookies.language;
       res.render("admin/products", {
         prods: products,
         currentLanguage: currentLanguage,
         pageTitle: "Admin Products",
-        path: "/admin/products"
+        path: "/admin/products",
       });
     })
-    .catch(err => {
+    .catch((err) => {
       const error = new Error(err);
       error.httpStatusCode = 500;
       return next(error);
@@ -265,16 +282,16 @@ exports.getProducts = (req, res, next) => {
 exports.postDeleteProduct = (req, res, next) => {
   const prodId = req.body.productId;
   Product.findById(prodId)
-    .then(product => {
+    .then((product) => {
       if (!product) {
         return next(new Error("Product not found."));
       }
       product.active = 0;
-      return product.save().then(result => {
+      return product.save().then((result) => {
         res.redirect("/admin/products");
       });
     })
-    .catch(err => {
+    .catch((err) => {
       const error = new Error(err);
       error.httpStatusCode = 500;
       return next(error);
@@ -284,16 +301,16 @@ exports.postDeleteProduct = (req, res, next) => {
 exports.postDeleteDailyMenu = (req, res, next) => {
   const prodId = req.body.productId;
   Product.findById(prodId)
-    .then(product => {
+    .then((product) => {
       if (!product) {
         return next(new Error("Product not found."));
       }
       product.active = 0;
-      return product.save().then(result => {
+      return product.save().then((result) => {
         res.redirect("/admin/daily-menus");
       });
     })
-    .catch(err => {
+    .catch((err) => {
       const error = new Error(err);
       error.httpStatusCode = 500;
       return next(error);

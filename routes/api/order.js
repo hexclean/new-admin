@@ -4,7 +4,7 @@ const auth = require("../../middleware/auth");
 const { check, validationResult } = require("express-validator");
 
 const Order = require("../../models/Orders");
-const User = require("../../models/User")
+const User = require("../../models/User");
 const OrderItem = require("../../models/OrderItem");
 
 // @route    POST api/orders
@@ -18,41 +18,37 @@ router.post("/", auth, async (req, res) => {
 
   const { restaurant_id, products } = req.body;
   var totalPrice = 0;
-  products.map(product => {
+  products.map((product) => {
     totalPrice += parseFloat(product.price) * parseInt(product.quantity);
   });
-  
-  
+
   const order = new Order({
     totalPrice: totalPrice,
     user: req.user.id,
     admin: restaurant_id,
-    status: "Rendelve"
+    status: "Rendelve",
   });
 
   order.save((err, savedOrder) => {
     const { _id: savedOrderId } = savedOrder;
-    products.map(product => {
+    products.map((product) => {
       const item = new OrderItem({
         quantity: product.quantity,
         product: product.product,
         price: product.price,
         orderId: savedOrderId,
-        user: req.user.id
+        user: req.user.id,
       });
-      User.findById({_id: req.user.id})
-      .then(user => {
+      User.findById({ _id: req.user.id }).then((user) => {
         user.adminId = restaurant_id;
-       user.dbOrder += 1;
+        user.dbOrder += 1;
         user.totalOrder += totalPrice;
-        return user.save()
-      })
+        return user.save();
+      });
       item.save();
     });
   });
 
-
- 
   try {
     res.json(order);
   } catch (err) {

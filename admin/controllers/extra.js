@@ -1,126 +1,86 @@
 const ExtraAdd = require("../../models/ExtraAdd");
+const { validationResult } = require("express-validator/check");
 
-exports.getOrders = (req, res, next) => {
-  ExtraAdd.find({ admin: req.admin._id })
+exports.postAddExtra = async (req, res, next) => {
+  const roTitle = req.body.roTitle;
+  const huTitle = req.body.huTitle;
+  const enTitle = req.body.enTitle;
+  //
+  const price = req.body.price;
 
-    .then(orders => {
-      var currentLanguage = req.cookies.language;
-      console.log(orders);
-      res.render("extra/extra-list", {
-        ords: orders,
-        currentLanguage: currentLanguage,
-        pageTitle: "Admin Products",
-        path: "/admin/products"
-      });
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    console.log(errors.array());
+    return res.status(422).render("admin/edit-extra", {
+      pageTitle: "Add Product",
+      path: "/admin/add-product",
+      editing: false,
+      hasError: true,
+      product: {
+        huTitle: huTitle,
+        price: price,
+        title: roTitle,
+        title: enTitle,
+      },
+      errorMessage: errors.array()[0].msg,
+      validationErrors: errors.array(),
+    });
+  }
+  console.log("adminUd", req.admin);
+  await ExtraAdd.create({
+    title: { en: enTitle, hu: huTitle, ro: roTitle },
+
+    price: price,
+    adminId: req.admin,
+    status: 1,
+  })
+    .then((result) => {
+      console.log("Created Product");
+      res.redirect("/admin/extras");
     })
-    .catch(err => {
+    .catch((err) => {
       const error = new Error(err);
       error.httpStatusCode = 500;
       return next(error);
     });
 };
 
-exports.getEditOrder = (req, res, next) => {
+exports.getEditExtra = (req, res, next) => {
   const editMode = req.query.edit;
   if (!editMode) {
     return res.redirect("/");
   }
-  const ordId = req.params.orderId;
-  Orders.aggregate([
-    {
-      $lookup: {
-        from: "users",
-        localField: "user",
-        foreignField: "_id",
-        as: "userinfo"
-      }
-    },
-    {
-      $lookup: {
-        from: "orderitems",
-        localField: "_id",
-        foreignField: "orderId",
-        as: "orderdetails"
-      }
-    },
-    {
-      $lookup: {
-        from: "products",
-        localField: "adminId",
-        foreignField: "_id",
-        as: "dasd"
-      }
-    }
-  ])
-    .then(order => {
-      let ordItem;
-      for (let ord of order) {
-        if (ord._id == ordId) {
-          ordItem = ord;
-        }
-      }
-      console.log(ordItem);
-      if (!order) {
+  const extId = req.params.productId;
+  ExtraAdd.findById(extId)
+    .then((product) => {
+      if (!product) {
         return res.redirect("/");
       }
-      res.render("order/edit-order", {
-        pageTitle: "Edit order",
-        path: "/admin/edit-order",
+      res.render("extra/edit-extra", {
+        pageTitle: "Edit Product",
+        path: "/admin/edit-product",
         editing: editMode,
-        order: ordItem,
+        product: product,
         hasError: false,
         errorMessage: null,
-        validationErrors: []
+        validationErrors: [],
       });
     })
-    .catch(err => {
+    .catch((err) => {
       const error = new Error(err);
       error.httpStatusCode = 500;
       return next(error);
     });
 };
 
-exports.postEditOrder = (req, res, next) => {
-  const ordId = req.body.orderId;
-  // Title
-
-  const updatedSms = req.body.telNumb;
-
-  Orders.findById(ordId)
-    .then(order => {
-      if (order.adminId.toString() !== req.admin._id.toString()) {
-        return res.redirect("/");
-      }
-      order.telNumb = updatedSms;
-
-      return order.save().then(result => {
-        console.log("UPDATED PRODUCT!");
-        res.redirect("/admin/products");
-      });
-    })
-    .catch(err => {
-      const error = new Error(err);
-      error.httpStatusCode = 500;
-      return next(error);
-    });
-};
-
-exports.postDeleteOrder = (req, res, next) => {
-  const ordId = req.body.orderId;
-  Orders.findById(ordId)
-    .then(admin => {
-      if (!admin) {
-        return next(new Error("Product not found."));
-      }
-
-      return Orders.deleteOne({ _id: ordId, admin: req.admin._id });
-    })
-    .then(() => {
-      res.redirect("/admin/orders");
-    })
-    .catch(err => {
-      const error = new Error(err);
-      error.httpStatusCode = 500;
-      return next(error);
-    });
+exports.getAddExtra = (req, res, next) => {
+  res.render("extra/edit-extra", {
+    pageTitle: "Add Product",
+    path: "/admin/add-product",
+    editing: false,
+    hasError: false,
+    errorMessage: null,
+    validationErrors: [],
+  });
 };

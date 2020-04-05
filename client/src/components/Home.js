@@ -48,8 +48,22 @@ export const Home = () => (
           </div>
         </div>
       </div>
-
-      <img src={waveOrangeTop} />
+      <svg
+        id="Layer_1"
+        data-name="Layer 1"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 1920 142.75"
+      >
+        <defs>
+          <style>.cls-1</style>
+        </defs>
+        <title>svg wave</title>
+        <path
+          class="cls-1"
+          d="M0,137.06S348.25,28.6,901.44,82.78,1920,22.81,1920,22.81V165.56H0Z"
+          transform="translate(0 -22.81)"
+        />
+      </svg>
     </header>
     <section id="explore-head-section">
       <div className="container-fluid section-two-partners orange-bck test111 ">
@@ -129,7 +143,7 @@ export const Home = () => (
           </div>
           <div className="col-lg-12">
             <div className="row">
-              <div class="col d-flex justify-content-center">
+              <div class="col d-flex next-rest-icon justify-content-center">
                 <img
                   className=""
                   src="/images/nextrest.png"
@@ -140,7 +154,6 @@ export const Home = () => (
           </div>
         </div>
       </div>
-      <img src={waveOrangeBottom} />
     </section>
     {/* Sporolj meg */}
     <section id="explore-head-section1 test2">
@@ -232,36 +245,75 @@ export const Home = () => (
       <div className="container-fluid wt-is">
         <div className="row">
           <div className="col text-center py-5">
-            <h1 className="display-4 what-is-section-title text-uppercase what-is-title ">
+            <h1 className="display-4 footer-title ">
               íratkozz fel hírlevelünkre és <br />
               értesülj elsőként legújabb partrenreinkről!
             </h1>
           </div>
         </div>
-        <div className="row">
-          <div className="col-lg-6 partners  offset-lg-1 d-flex justify-content-center">
-            <img
-              className="new-img"
-              src="/images/home-pizza10.png"
-              alt="navtiagtion3"
-            />
-          </div>
-          <div className="col-lg-4">
-            <div className="row">
-              <div className="col-6 partners">
-                <p className="align-self-start short-desc-wht">
-                  Lorem ipsum dolor sit ametpsum dolor sit ametpsum dolor sit
-                  ametpsum dolor sit amet
-                </p>
-                <button type="button" className="btn btn-warning">
-                  Warning
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
+    <svg
+      id="Layer_1"
+      data-name="Layer 1"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 1920 142.75"
+    >
+      <defs>
+        <style></style>
+      </defs>
+      <title>svg wave</title>
+      <path
+        class="cls-1"
+        d="M0,137.06S348.25,28.6,901.44,82.78,1920,22.81,1920,22.81V165.56H0Z"
+        transform="translate(0 -22.81)"
+      />
+    </svg>
+    <svg
+      id="Layer_1"
+      data-name="Layer 1"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 1920 142.75"
+    >
+      <defs>
+        <style></style>
+      </defs>
+      <title>svg wave</title>
+      <path
+        class="cls-1"
+        d="M0,137.06S348.25,28.6,901.44,82.78,1920,22.81,1920,22.81V165.56H0Z"
+        transform="translate(0 -22.81)"
+      />
+    </svg>
+    <svg
+      id="Layer_1"
+      data-name="Layer 1"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 1920 142.75"
+    >
+      <defs>
+        <style></style>
+      </defs>
+      <title>svg wave</title>
+      <path
+        class="cls-1"
+        d="M0,137.06S348.25,28.6,901.44,82.78,1920,22.81,1920,22.81V165.56H0Z"
+        transform="translate(0 -22.81)"
+      />
+    </svg>
+    <svg
+      id="Layer_1"
+      data-name="Layer 1"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 1920 142.75"
+    >
+      <defs></defs>
+      <title>svg wave2</title>
+      <path
+        class="cls-1"
+        d="M1920,28.5S1571.75,137,1018.56,82.78,0,142.75,0,142.75V0H1920Z"
+      />
+    </svg>
   </div>
 );
 

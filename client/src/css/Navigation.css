@@ -2,6 +2,8 @@
   background-color: rgba(0, 0, 0, 0.7) !important;
 }
 .mainnv .nav-link {
+  font-size: 14px;
+  font-weight: 500;
   color: #fff !important;
   text-transform: uppercase;
 }
@@ -13,10 +15,6 @@
 }
 .mainnv ul {
   align-items: center;
-}
-.fonts-1 {
-  font-family: "Bebas Neue", cursive;
-  font-size: 24px !important;
 }
 @media only screen and (max-width: 991px) {
   .mainnv a {
@@ -31,6 +29,14 @@
   .mainnv ul {
     align-items: center;
     margin: auto;
-    padding: 0px;
+    padding: 0;
+  }
+  .mx-auto {
+    text-align: center;
+  }
+}
+@media only screen and (min-width: 992px) {
+  .mx-auto a {
+    display: inline-block !important;
   }
 }

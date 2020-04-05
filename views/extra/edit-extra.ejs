@@ -1,0 +1,114 @@
+fwefw
+<%- include('../includes/head.ejs') %>
+</head>
+<body class="ms-body ms-aside-left-open ms-primary-theme ms-has-quickbar">
+   <%- include('../includes/navigation.ejs') %>
+   <main class="body-content">
+      <%- include('../includes/navigation-bar.ejs') %>
+      <% if (errorMessage) { %>
+      <div class="user-message user-message--error"><%= errorMessage %></div>
+      <% } %>
+      <form
+         class="ms-content-wrapper"
+         action="/admin/<% if (editing) { %>edit-extra<% } else { %>add-extra<% } %>"
+         method="POST"
+         enctype="multipart/form-data">
+         <div class="row">
+            <div class="col-xl-6 col-md-12">
+               <div class="ms-panel ms-panel-fh">
+                  <div class="ms-panel-header">
+                     <h6>Add Product Form</h6>
+                  </div>
+                  <div class="ms-panel-body">
+                     <div class="form-row">
+                        <div class="col-md-12 mb-3">
+                           <label for="roTitle"><%= lingua.create_product_name1 %></label>
+                           <div class="input-group">
+                              <input
+                                 class="form-control <%= validationErrors.find(e => e.param === 'roTitle') ? 'invalid' : '' %>"
+                                 type="text"
+                                 name="roTitle"
+                                 id="roTitle"
+                                 value="<% if (editing || hasError) { %><%= product.title.ro %><% } %>">
+                           </div>
+                        </div>
+                        <div class="col-md-12 mb-3">
+                           <label for="huTitle"><%= lingua.create_product_name2 %></label>
+                           <div class="input-group">
+                              <input
+                                 class="form-control <%= validationErrors.find(e => e.param === 'huTitle') ? 'invalid' : '' %>"
+                                 type="text"
+                                 name="huTitle"
+                                 id="huTitle"
+                                 value="<% if (editing || hasError) { %><%= product.title.hu %><% } %>">
+                           </div>
+                        </div>
+                        <div class="col-md-12 mb-3">
+                           <label for="enTitle"><%= lingua.create_product_name3 %></label>
+                           <div class="input-group">
+                              <input
+                                 class="form-control <%= validationErrors.find(e => e.param === 'enTitle') ? 'invalid' : '' %>"
+                                 type="text"
+                                 name="enTitle"
+                                 id="enTitle"
+                                 value="<% if (editing || hasError) { %><%= product.title.en %><% } %>">
+                           </div>
+                        </div>
+                        
+                      
+                       
+                        <div class="col-md-6 mb-3">
+                           <label for="price"><%= lingua.create_product_price %></label>
+                           <div class="input-group">
+                              <input
+                                 class="form-control <%= validationErrors.find(e => e.param === 'price') ? 'invalid' : '' %>"
+                                 type="number"
+                                 name="price"
+                                 id="price"
+                                 step="0.01"
+                                 value="<% if (editing || hasError) { %><%= product.price %><% } %>">
+                           </div>
+                        </div>
+                      
+                       
+                     
+                       
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div class="col-xl-6 col-md-12">
+               <div class="row">
+                  <div class="col-md-12">
+                     <div class="ms-panel">
+                        <div class="ms-panel-header">
+                           <h6>Product</h6>
+                        </div>
+                      
+                        <% if (editing) { %>
+                        <input
+                           type="hidden"
+                           value="<%= product._id %>"
+                           name="extId"
+                           />
+                        <% } %>
+                        <button class="btn" type="submit">
+                        <% if (editing) { %>Update Product<% } else { %>Add
+                        Product<% } %>
+                        </button>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+         </div>
+      </form>
+     
+
+
+
+
+  
+   </main>
+   <%- include('../includes/end.ejs') %>
+</body>

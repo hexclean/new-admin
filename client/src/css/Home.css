@@ -21,9 +21,12 @@
 .app-div {
   margin-top: -100px;
 }
-
+.next-rest-icon {
+  margin-top: -50px;
+}
 .store-section-text {
   padding-top: 41px;
+  font-size: 56px;
 }
 
 .store {
@@ -88,13 +91,13 @@
 .partners-text-sec-two {
   color: white;
   font-family: "Bebas Neue", cursive;
-  font-size: 70px;
+  font-size: 56px;
 }
 
 .partners-text-sec-p {
   color: white;
   font-family: "Bebas Neue", cursive;
-  font-size: 55px;
+  font-size: 39px;
 }
 
 .what-is-section {
@@ -115,10 +118,17 @@
   margin-top: 40px;
 }
 
+.footer-title {
+  color: white;
+  font-family: "Montserrat", sans-serif;
+  text-transform: uppercase;
+  font-size: 30px;
+}
+
 .what-is-title {
   color: #fd8f00;
   font-family: "Bebas Neue", cursive;
-  font-size: 70px;
+  font-size: 56px;
 }
 /* sdfdfsdfdsfsd */
 
@@ -210,73 +220,33 @@
   z-index: 0;
   position: relative;
 }
-@media (max-width: 1397px), (min-width: 1393px) {
-  .fix-wave {
-    margin-top: -1px;
+
+@media (max-width: 1220px), (min-width: 992px) {
+  .space-between-restaurants-hor {
+    margin-left: 0px;
   }
 }
 
-@media (max-width: 1115px), (min-width: 992px) {
-  .fix-wave {
-    margin-top: -11px;
-  }
-}
-/* 
-@media screen and (max-width: 1132px) {
-  .fix-wave {
-    margin-top: -6px;
+@media (max-width: 1220px), (min-width: 992px) {
+  .bg {
+    margin-bottom: 11px;
   }
 }
 
-@media screen and (max-width: 1053px) {
-  .fix-wave {
-    margin-top: -7px;
+@media (max-width: 1220px), (min-width: 992px) {
+  .partners-image-info-box {
+    height: 210px;
   }
 }
 
-@media screen and (max-width: 1037px) {
-  .fix-wave {
-    margin-top: -7px;
+@media (max-width: 991px), (min-width: 92px) {
+  .app-div {
+    margin-top: -74px;
   }
 }
 
-@media screen and (max-width: 1036px) {
-  .fix-wave {
-    margin-top: -7px;
-  }
-} */
-
-.mainnv {
-  background-color: rgba(0, 0, 0, 0.7) !important;
-}
-.mainnv .nav-link {
-  font-size: 14px;
-  font-weight: 500;
-  color: #fff !important;
-  text-transform: uppercase;
-}
-.mainnv .text-yellow {
-  color: #f99b39 !important;
-}
-.align-right {
-  justify-content: flex-end;
-}
-.mainnv ul {
-  align-items: center;
-}
-@media only screen and (max-width: 991px) {
-  .mainnv a {
-    display: block !important;
-    margin: auto !important;
-  }
-  .mainnv img {
-    display: block;
-    margin: auto;
-    max-width: 100%;
-  }
-  .mainnv ul {
-    align-items: center;
-    margin: auto;
-    padding: 0px;
+@media (max-width: 991px), (min-width: 92px) {
+  .orange-bc {
+    margin-top: -2px;
   }
 }

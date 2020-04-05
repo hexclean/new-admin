@@ -6,29 +6,29 @@ const extraAddSchema = mongoose.Schema({
     ro: {
       type: String,
       required: true,
-      text: true
+      text: true,
     },
     hu: {
       type: String,
       required: true,
-      text: true
+      text: true,
     },
     en: {
       type: String,
       required: true,
-      text: true
-    }
+      text: true,
+    },
   },
   price: {
-    type: Number
+    type: Number,
   },
   status: {
-    type: Number
+    type: Number,
   },
-  extraItemId: {
+  adminId: {
     type: Schema.Types.ObjectId,
-    ref: "admin"
-  }
+    ref: "admin",
+  },
 });
 
 module.exports = ExtraAdd = mongoose.model("extraadd", extraAddSchema);
