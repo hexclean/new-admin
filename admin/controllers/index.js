@@ -4,8 +4,8 @@ const Admin = require("../../models/Admin");
 
 exports.indexController = (req, res, next) => {
   const adminId = req.admin._id;
-  Admin.findById(adminId)
-    .then(admin => {
+  Admin.findByPk(adminId)
+    .then((admin) => {
       if (!admin) {
         return res.redirect("/admin/products");
       }
@@ -13,10 +13,10 @@ exports.indexController = (req, res, next) => {
         pageTitle: "Edit admin",
 
         path: "/admin/edit-admin",
-        admin: admin
+        admin: admin,
       });
     })
-    .catch(err => {
+    .catch((err) => {
       const error = new Error(err);
       error.httpStatusCode = 500;
       return next(error);

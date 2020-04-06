@@ -15,9 +15,9 @@ exports.getLogin = (req, res, next) => {
     errorMessage: message,
     oldInput: {
       email: "",
-      password: ""
+      password: "",
     },
-    validationErrors: []
+    validationErrors: [],
   });
 };
 
@@ -25,37 +25,37 @@ exports.getSignup = (req, res, next) => {
   res.render("auth/signup", {
     path: "/signup",
     pageTitle: "Signup",
-    isAuthenticated: false
+    isAuthenticated: false,
   });
 };
 
 exports.postLogin = (req, res, next) => {
   const email = req.body.email;
   const password = req.body.password;
-  Admin.findOne({ email: email })
-    .then(admin => {
+  Admin.findOne({ where: { email: email } })
+    .then((admin) => {
       if (!admin) {
         return res.redirect("/login");
       }
       bcrypt
         .compare(password, admin.password)
-        .then(doMatch => {
+        .then((doMatch) => {
           if (doMatch) {
             req.session.isLoggedIn = true;
             req.session.admin = admin;
-            return req.session.save(err => {
+            return req.session.save((err) => {
               console.log(err);
               res.redirect("/");
             });
           }
           res.redirect("/login");
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
           res.redirect("/login");
         });
     })
-    .catch(err => console.log(err));
+    .catch((err) => console.log(err));
 };
 
 exports.postSignup = (req, res, next) => {
@@ -70,24 +70,23 @@ exports.postSignup = (req, res, next) => {
       oldInput: {
         email: email,
         password: password,
-        confirmPassword: req.body.confirmPassword
+        confirmPassword: req.body.confirmPassword,
       },
-      validationErrors: errors.array()
+      validationErrors: errors.array(),
     });
   }
   bcrypt
     .hash(password, 12)
-    .then(hashedPassword => {
-      const admin = new Admin({
+    .then((hashedPassword) => {
+      Admin.create({
         email: email,
-        password: hashedPassword
+        password: hashedPassword,
       });
-      return admin.save();
     })
-    .then(result => {
+    .then((result) => {
       res.redirect("/login");
     })
-    .catch(err => {
+    .catch((err) => {
       const error = new Error(err);
       error.httpStatusCode = 500;
       return next(error);
@@ -95,7 +94,7 @@ exports.postSignup = (req, res, next) => {
 };
 
 exports.postLogout = (req, res, next) => {
-  req.session.destroy(err => {
+  req.session.destroy((err) => {
     console.log(err);
     res.redirect("/");
   });

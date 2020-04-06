@@ -1,7 +1,7 @@
 const Sequelize = require("sequelize");
 
-const sequelize = new Sequelize("food-app", "root", "MyFoodApp", {
+const sequelize = new Sequelize("foodnet", "root", "y7b5uwFOODNET", {
   dialect: "mysql",
-  host: "localhost"
+  host: "localhost",
 });
 module.exports = sequelize;

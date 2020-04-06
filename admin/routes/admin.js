@@ -13,42 +13,31 @@ const isAuth = require("../../middleware/is-auth");
 const router = express.Router();
 
 //
-router.get("/users", isAuth, adminUsersController.getOrders);
-router.get("/extras", isAuth, adminController.getExtras);
-router.post("/add-extra", isAuth, adminExtraController.postAddExtra);
-router.get("/add-extra", isAuth, adminExtraController.getAddExtra);
-router.get("/edit-extra/:extraId", isAuth, adminExtraController.getEditExtra);
+router.get("/users", adminUsersController.getOrders);
+router.get("/extras", adminController.getExtras);
+router.post("/add-extra", adminExtraController.postAddExtra);
+router.get("/add-extra", adminExtraController.getAddExtra);
+router.get("/edit-extra/:extraId", adminExtraController.getEditExtra);
 ///
-router.get("/edit-order/:orderId", isAuth, adminUsersController.getEditOrder);
+router.get("/edit-order/:orderId", adminUsersController.getEditOrder);
 
 // /admin/add-product
-router.get("/add-product", isAuth, adminController.getAddProduct);
+router.get("/add-product", adminController.getAddProduct);
 
 // /admin/products
-router.get("/products", isAuth, adminController.getProducts);
+router.get("/products", adminController.getProducts);
 
 // /admin/add-product
 router.post(
   "/add-product",
 
-  [
-    body("roTitle").isString().isLength({ min: 3 }).trim(),
-    body("huTitle").isString().isLength({ min: 3 }).trim(),
-    body("enTitle").isString().isLength({ min: 3 }).trim(),
-    body("price").isFloat(),
-    body("roDescription").isLength({ min: 5, max: 400 }).trim(),
-    body("huDescription").isLength({ min: 5, max: 400 }).trim(),
-    body("enDescription").isLength({ min: 5, max: 400 }).trim(),
-  ],
-
-  isAuth,
   adminController.postAddProduct
 );
-router.get("/edit-product/:productId", isAuth, adminController.getEditProduct);
+router.get("/edit-product/:productId", adminController.getEditProduct);
 
-router.get("/search", isAuth, adminController.getSearchProduct);
+router.get("/search", adminController.getSearchProduct);
 
-router.get("/search-user", isAuth, adminUsersController.getSearchUsers);
+router.get("/search-user", adminUsersController.getSearchUsers);
 
 router.get(
   "/autocomplete/",
@@ -70,33 +59,33 @@ router.post(
   isAuth,
   adminController.postEditProduct
 );
-router.post("/delete-product", isAuth, adminController.postDeleteProduct);
+router.post("/delete-product", adminController.postDeleteProduct);
 
-router.post("/edit-profile", isAuth, adminProfileController.postEditProfile);
+router.post("/edit-profile", adminProfileController.postEditProfile);
 router.get("/edit-profile/:adminId", adminProfileController.getEditProfile);
-router.get("/dashboard", isAuth, adminProfileController.getDashboard);
+router.get("/dashboard", adminProfileController.getDashboard);
 //
-router.get("/add-photo", isAuth, adminProfileController.getDashboard2);
+router.get("/add-photo", adminProfileController.getDashboard2);
 // /admin/add-product
 
-router.get("/edit-photo/:adminId", isAuth, adminProfileController.getEditPhoto);
-router.post("/edit-photo", isAuth, adminProfileController.postEditPhoto);
+router.get("/edit-photo/:adminId", adminProfileController.getEditPhoto);
+router.post("/edit-photo", adminProfileController.postEditPhoto);
 
 //ORDERS
-router.get("/orders", isAuth, adminOrderController.getOrders);
-router.get("/edit-order/:orderId", isAuth, adminOrderController.getEditOrder);
-router.post("/edit-order", isAuth, adminOrderController.postEditOrder);
-router.post("/delete-order", isAuth, adminOrderController.postDeleteOrder);
+router.get("/orders", adminOrderController.getOrders);
+router.get("/edit-order/:orderId", adminOrderController.getEditOrder);
+router.post("/edit-order", adminOrderController.postEditOrder);
+router.post("/delete-order", adminOrderController.postDeleteOrder);
 // DAILY MENU
-router.get("/daily-menus", isAuth, adminDailyMenuController.getDailyMenu);
+router.get("/daily-menus", adminDailyMenuController.getDailyMenu);
 router.post(
   "/edit-daily-menu",
   isAuth,
   adminDailyMenuController.postEditDailyMenu
 );
-router.post("/delete-daily-menu", isAuth, adminController.postDeleteDailyMenu);
+router.post("/delete-daily-menu", adminController.postDeleteDailyMenu);
 
-router.get("/add-daily-menu", isAuth, adminDailyMenuController.getAddDailyMenu);
+router.get("/add-daily-menu", adminDailyMenuController.getAddDailyMenu);
 router.post(
   "/add-daily-menu",
   isAuth,
@@ -109,18 +98,18 @@ router.get(
 );
 
 // DISCOUNT
-router.get("/discounts", isAuth, adminCouponController.getCoupons);
-router.get("/add-coupon", isAuth, adminCouponController.getAddCoupon);
-router.post("/add-coupon", isAuth, adminCouponController.postAddCoupon);
+router.get("/discounts", adminCouponController.getCoupons);
+router.get("/add-coupon", adminCouponController.getAddCoupon);
+router.post("/add-coupon", adminCouponController.postAddCoupon);
 // router.get(
 //   "/edit-discount/:discountId",
 //   isAuth,
 //   adminCouponController.getEditProduct
 // );
-// router.post("/edit-discount", isAuth, adminCouponController.postEditProduct);
+// router.post("/edit-discount", adminCouponController.postEditProduct);
 
-router.get("/costs", isAuth, adminCostsController.getCoupons);
-router.get("/add-cost", isAuth, adminCostsController.getAddCost);
-router.post("/add-cost", isAuth, adminCostsController.postAddCost);
+router.get("/costs", adminCostsController.getCoupons);
+router.get("/add-cost", adminCostsController.getAddCost);
+router.post("/add-cost", adminCostsController.postAddCost);
 
 module.exports = router;

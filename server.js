@@ -3,32 +3,61 @@ const express = require("express"),
 const errorController = require("./admin/controllers/error");
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
-const MongoDBStore = require("connect-mongodb-session")(session);
 const bodyParser = require("body-parser");
-const mongoose = require("mongoose");
 const flash = require("connect-flash");
 const multer = require("multer");
 const path = require("path");
-const MONGODB_URI =
-  "mongodb://foodnet:foodnet@foodnet-shard-00-00-jff9b.mongodb.net:27017,foodnet-shard-00-01-jff9b.mongodb.net:27017,foodnet-shard-00-02-jff9b.mongodb.net:27017/test?ssl=true&replicaSet=foodnet-shard-0&authSource=admin&retryWrites=true&w=majority";
 
-mongoose.Promise = global.Promise;
+var SequelizeStore = require("connect-session-sequelize")(session.Store);
+var Sequelize = require("sequelize");
+
+const sequelize = require("./util/database");
+const Product = require("./models/Product");
+const Admin = require("./models/Admin");
 const app = express();
-mongoose.connect(MONGODB_URI);
-const store = new MongoDBStore({
-  uri: MONGODB_URI,
-  collection: "sessions"
+const db = new Sequelize("foodnet", "root", "y7b5uwFOODNET", {
+  host: "localhost",
+  dialect: "mysql",
 });
+const sessionStore = new SequelizeStore({
+  db: db,
+  checkExpirationInterval: 15 * 60 * 1000,
+  expiration: 7 * 24 * 60 * 60 * 1000,
+});
+
+app.use(
+  session({
+    secret: "my secret",
+    resave: false,
+    saveUninitialized: false,
+    store: sessionStore,
+  })
+);
+
 app.use(cookieParser());
-app.use((error, req, res, next) => {
-  res.status(500).render("500", {
-    pageTitle: "Error!",
-    path: "/500",
-    isAuthenticated: req.session.isLoggedIn
-  });
-});
+// app.use((error, req, res, next) => {
+//   res.status(500).render("500", {
+//     pageTitle: "Error!",
+//     path: "/500",
+//     isAuthenticated: req.session.isLoggedIn,
+//   });
+// });
 
 // Init Middleware
+
+app.use((req, res, next) => {
+  if (!req.session.admin) {
+    return next();
+  }
+  Admin.findByPk(req.session.admin.id)
+    .then((admin) => {
+      req.admin = admin;
+      next();
+    })
+    .catch((err) => console.log(err));
+});
+sessionStore.sync();
+
 app.use(express.json({ extended: false }));
 
 const fileStorage = multer.diskStorage({
@@ -37,7 +66,7 @@ const fileStorage = multer.diskStorage({
   },
   filename: (req, file, cb) => {
     cb(null, new Date().toISOString() + "-" + file.originalname);
-  }
+  },
 });
 
 const fileFilter = (req, file, cb) => {
@@ -66,45 +95,18 @@ app.use(
     defaultLocale: "en",
     path: __dirname + "/i18n",
     cookieOptions: {
-      expires: new Date(Date.now() + 24 * 60 * 60 * 1000)
-    }
+      expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
+    },
   })
 );
 app.use(express.json({ extended: false }));
-app.use(
-  session({
-    secret: "my secret",
-    resave: false,
-    saveUninitialized: false,
-    store: store
-  })
-);
+
 app.get("/500", errorController.get500);
 
 // app.use(errorController.get404);
 
 app.use(flash());
-app.use((req, res, next) => {
-  if (!req.session.admin) {
-    return next();
-  }
-  Admin.findById(req.session.admin._id)
-    .then(admin => {
-      if (!admin) {
-        return next();
-      }
-      req.admin = admin;
-      next();
-    })
-    .catch(err => {
-      throw new Error(err);
-    });
-});
 
-app.use((req, res, next) => {
-  res.locals.isAuthenticated = req.session.isLoggedIn;
-  next();
-});
 app.use(
   multer({ storage: fileStorage, fileFilter: fileFilter }).single("image")
 );
@@ -127,4 +129,15 @@ app.use(authRoutes);
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
+Product.belongsTo(Admin, { constrains: true, onDelete: "CASCADE" });
+Admin.hasMany(Product);
+
+sequelize
+  // .sync({ force: true })
+  .sync()
+  .then((user) => {
+    app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
+  })
+  .catch((err) => {
+    console.log(err);
+  });
