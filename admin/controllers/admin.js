@@ -215,7 +215,6 @@ exports.postEditProduct = (req, res, next) => {
         category: updatedEnCategory,
         category: updatedHuCategory,
         category: updatedRoCategory,
-
         _id: prodId,
       },
 

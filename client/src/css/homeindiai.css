@@ -1,0 +1,541 @@
+body {
+  font-family: "bebas_neueregular";
+  margin: 0px;
+  padding: 0px;
+  color: #333333;
+  font-size: 16px;
+  line-height: 25px;
+  overflow-x: hidden;
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: "montserratextrabold";
+  src: url("../font/montserrat-extrabold.woff2") format("woff2"),
+    url("../font/montserrat-extrabold.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "bebas_neuebold";
+  src: url("../font/bebasneue_bold.woff2") format("woff2"),
+    url("../font/bebasneue_bold.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "bebas_neueregular";
+  src: url("../font/bebasneue_regular.woff2") format("woff2"),
+    url("../font/bebasneue_regular.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "montserratsemibold";
+  src: url("../font/montserrat-semibold.woff2") format("woff2"),
+    url("../font/montserrat-semibold.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+.newletter input[type="text"]::-webkit-input-placeholder {
+  /* Edge */
+  color: #666666;
+}
+
+.newletter input[type="text"]:-ms-input-placeholder {
+  /* Internet Explorer */
+  color: #666666;
+}
+
+.newletter input[type="text"]::placeholder {
+  color: #666666;
+}
+
+.mont-semibld {
+  font-family: "montserratsemibold";
+}
+
+.babas-regular {
+  font-family: "bebas_neueregular";
+}
+
+.btn-yellow {
+  background: #fe8f01;
+  color: #1c1c1c;
+  font-size: 18px;
+  display: inline-block;
+  padding: 5px 12px;
+  border-radius: 9px;
+}
+.btn-yellow:hover,
+.btn-yellow:focus {
+  color: #1c1c1c;
+  text-decoration: none;
+  outline: none !important;
+}
+.text-yellow {
+  color: #fe8f01;
+}
+.text-white {
+  color: #ffffff;
+}
+p {
+  font-size: 35px;
+  color: #fff;
+  line-height: 46px;
+  font-family: "bebas_neueregular";
+}
+
+.clear {
+  clear: both;
+}
+.black-bg {
+  background: #1c1c1c url("../images/wave-bl.svg") no-repeat center bottom fixed;
+}
+h2 {
+  font-size: 30px;
+  font-family: "montserratextrabold";
+  letter-spacing: 3px;
+}
+.bg-svg {
+}
+
+.black-bg img {
+  max-width: 100%;
+  height: auto;
+}
+.black-yellow {
+  background: #fe8f01;
+}
+
+.margrht20 {
+  margin-right: 10px;
+}
+
+.mainnv .navbar {
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
+.mainnv {
+  position: absolute;
+  top: 15px;
+  left: 0px;
+  z-index: 9;
+  width: 100%;
+}
+.mainnv .nav-link {
+  font-size: 14px;
+  font-weight: 500;
+  color: #fff !important;
+  text-transform: uppercase;
+  font-family: "bebas_neuebold";
+}
+.mainnv .text-yellow {
+  color: #f99b39 !important;
+}
+.align-right {
+  justify-content: flex-end;
+}
+.mainnv ul {
+  align-items: center;
+}
+@media only screen and (max-width: 991px) {
+  .mainnv a {
+    display: block !important;
+    margin: auto !important;
+  }
+  .mainnv img {
+    display: block;
+    margin: auto;
+    max-width: 100%;
+  }
+  .mainnv ul {
+    align-items: center;
+    margin: auto;
+    padding: 0px;
+  }
+  .mx-auto {
+    text-align: center;
+  }
+}
+
+@media only screen and (min-width: 992px) {
+  .mx-auto a {
+    display: inline-block !important;
+  }
+}
+
+.footer-social {
+  margin: 0px;
+  padding: 0px;
+  color: #fff;
+  list-style-type: none;
+}
+.footer-social li {
+  margin-bottom: 10px;
+}
+.footer-social li a {
+  color: #fff;
+  font-family: "montserratsemibold";
+}
+.footer-social li i {
+  background: #fff;
+  width: 25px;
+  height: 25px;
+  line-height: 25px;
+  display: inline-block;
+  text-align: center;
+  margin-right: 5px;
+  border-radius: 50%;
+  color: #1c1c1c;
+}
+/* css for banner-section Starts */
+
+.banner-section p {
+  font-family: "bebas_neuebold";
+  font-size: 30px;
+  color: #fff;
+  line-height: 37px;
+  letter-spacing: 2px;
+  margin-bottom: 40px;
+}
+
+.banner-section {
+  position: relative;
+  padding: 200px 0px 0px;
+}
+.banner-section h2 {
+  font-size: 36px;
+}
+
+/* css for banner-section Ends */
+
+/* css for happymen Starts */
+.happymen-right img {
+  max-width: 100%;
+}
+.happy-men {
+  position: relative;
+  overflow: hidden;
+}
+.happymen-right {
+  position: absolute;
+  bottom: -28px;
+}
+.happy-men h3 {
+  color: #1a1a1a !important;
+  font-family: "bebas_neueregular";
+  margin: 0px;
+  padding: 0px 0px 40px;
+}
+
+/* css for happymen Ends */
+
+h2 {
+  margin-bottom: 30px;
+  text-transform: uppercase;
+}
+.paddtpbtm-100 {
+  padding: 100px 0px;
+}
+img {
+  max-width: 100%;
+}
+.margbtm-15 {
+  margin-bottom: 15px;
+}
+/* css for partner-ink Starts */
+
+.partner-inkbx {
+  background: #febc66;
+  border-radius: 21px;
+}
+.partner-inkbxlft {
+  float: left;
+  width: 50%;
+  height: 176px;
+}
+.partner-inkbxrht {
+  float: left;
+  width: 50%;
+  padding: 15px;
+  height: 176px;
+}
+.expand-link {
+  margin-top: 50px;
+  display: inline-block;
+}
+.expand-link img {
+  display: block;
+  margin: auto;
+  margin-top: 5px;
+}
+.partner-inkbxlft img {
+  width: 100%;
+  height: 100%;
+}
+.partner-inkbxrht h3 {
+  text-align: center;
+  color: #000000;
+  font-size: 21px;
+  font-family: "bebas_neuebold";
+  letter-spacing: 1px;
+}
+.icon-list {
+  margin: 0px;
+  padding: 0px;
+  list-style-type: none;
+}
+.icon-list li img {
+  margin-right: 5px;
+}
+
+.icon-list li {
+  font-family: "bebas_neueregular";
+}
+/* css for partner-ink Ends */
+
+/* css for footer Starts */
+
+.normal-list {
+  list-style-type: none;
+  margin: 0px;
+  padding: 0px;
+}
+.normal-list a {
+  color: #fff;
+  font-family: "montserratsemibold";
+}
+.footer-bottom {
+  padding-top: 55px;
+}
+.newletter input[type="text"] {
+  text-align: left;
+  padding: 12px 20px;
+  margin: 9px 0;
+  box-sizing: border-box;
+  border-radius: 10px;
+  outline: none;
+  width: 40%;
+  height: 20%;
+  border: 2px solid #fe8f01;
+}
+.newletter input[type="text"]:hover {
+  border: 1px solid #000;
+  transition: 6s;
+}
+::placeholder {
+  color: #000;
+  opacity: 1;
+  font-weight: 400;
+  font-size: 20px;
+  text-align: center;
+}
+.newletter button {
+  height: 50px;
+  padding: 0;
+  margin: 0;
+  margin-left: 5px;
+  border: 2px solid #fe8f01;
+}
+
+.newletter .btn-yellow {
+  padding: 5px 12px;
+}
+
+.newletter .btn {
+  border-radius: 30px;
+  width: 14%;
+  margin-left: 5px;
+  font-size: 20px;
+}
+
+@media (max-width: 992px) {
+  .newletter .btn {
+    width: 20%;
+  }
+  .newletter input[type="text"] {
+    width: 50%;
+  }
+}
+@media (max-width: 768px) {
+  .newletter .btn {
+    width: 40%;
+  }
+  .newletter input[type="text"] {
+    width: 90%;
+  }
+}
+@media (max-width: 440px) {
+  .newletter .btn {
+    width: 50%;
+    font-size: 18px;
+  }
+  .newletter input[type="text"] {
+    width: 100%;
+  }
+}
+footer {
+  padding: 0px 0px 15px;
+}
+.newletter {
+  margin-bottom: 80px;
+}
+.footer-body h2 {
+  padding-bottom: 60px;
+  margin: 0px;
+}
+.footer-bottom p {
+  font-size: 20px;
+}
+
+/* css for footer Ends */
+
+/* ================= Responsive ====================== */
+
+@media only screen and (min-width: 992px) and (max-width: 1024px) {
+}
+
+@media only screen and (min-width: 767px) and (max-width: 991px) {
+  .partner-inkbxlft,
+  .partner-inkbxrht .happymen-right {
+    bottom: 100px;
+  }
+}
+
+@media only screen and (min-width: 480px) and (max-width: 768px) {
+  .happy-men svg,
+  .banner-section svg {
+    top: 0px !important;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .navbar-collapse {
+    background: #fe8f01 !important;
+  }
+  .partner-inkbxrht h3 {
+    font-size: 18px;
+  }
+  .navbar-collapse .text-yellow {
+    color: #fff;
+  }
+
+  .happymen-left.paddtpbtm-100 {
+    padding: 48px 0px;
+  }
+  p {
+    font-size: 24px;
+    line-height: 36px;
+  }
+  .happymen-left img {
+    max-width: 36%;
+  }
+  p br {
+    display: none;
+  }
+  h2 {
+    font-size: 25px;
+  }
+  footer {
+    text-align: center;
+  }
+  .partner-inkbx {
+    margin-bottom: 15px;
+  }
+  svg {
+    position: relative;
+    top: -2px;
+  }
+  .happymen-right {
+    position: static;
+  }
+  .expand-link {
+    margin-top: 25px;
+    display: inline-block;
+  }
+  .happy-men svg,
+  .banner-section svg {
+    top: 0px;
+  }
+  .navbar-light .navbar-toggler {
+    background: #fff;
+  }
+  .banner-section {
+    position: relative;
+    padding: 100px 0px 0px;
+  }
+  .banner-section .btn-yellow {
+    margin-bottom: 30px;
+  }
+  .banner-section img {
+    margin: auto;
+    display: block;
+  }
+  .banner-section svg {
+    top: 0px;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+}
+
+@media only screen and (max-width: 479px) {
+  .partner-inkbxrht h3 {
+    font-size: 18px;
+  }
+  .happymen-left.paddtpbtm-100 {
+    padding: 48px 0px;
+  }
+  p {
+    font-size: 24px;
+    line-height: 36px;
+  }
+  .happymen-left img {
+    max-width: 36%;
+  }
+  p br {
+    display: none;
+  }
+  h2 {
+    font-size: 25px;
+  }
+  footer {
+    text-align: center;
+  }
+  .partner-inkbx {
+    margin-bottom: 15px;
+  }
+  svg {
+    position: relative;
+    top: -2px;
+  }
+  .happymen-right {
+    position: static;
+  }
+  .expand-link {
+    margin-top: 25px;
+    display: inline-block;
+  }
+  .happy-men svg,
+  .banner-section svg {
+    top: 0px;
+  }
+  .navbar-light .navbar-toggler {
+    background: #fff;
+  }
+  .banner-section {
+    position: relative;
+    padding: 100px 0px 0px;
+  }
+  .banner-section .btn-yellow {
+    margin-bottom: 30px;
+  }
+  .happy-men svg {
+    top: 0px;
+  }
+}
