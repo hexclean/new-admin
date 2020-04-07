@@ -13,6 +13,8 @@ var Sequelize = require("sequelize");
 
 const sequelize = require("./util/database");
 const Product = require("./models/Product");
+const ProductTranslation = require("./models/ProductTranslation");
+const Language = require("./models/Language");
 const Admin = require("./models/Admin");
 const app = express();
 const db = new Sequelize("foodnet", "root", "y7b5uwFOODNET", {
@@ -131,11 +133,13 @@ const PORT = process.env.PORT || 5000;
 
 Product.belongsTo(Admin, { constrains: true, onDelete: "CASCADE" });
 Admin.hasMany(Product);
+Language.hasOne(ProductTranslation);
+Product.hasOne(ProductTranslation);
 
 sequelize
   // .sync({ force: true })
   .sync()
-  .then((user) => {
+  .then((result) => {
     app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
   })
   .catch((err) => {

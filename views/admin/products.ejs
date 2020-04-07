@@ -32,14 +32,14 @@
                      <div class="ms-card">
                         <div class="ms-card-img">
                            <%= lingua.language %>
-                           <img src="/<%= product.imageUrl %>" alt="<%= product.title.ro %>">
+                           <img src="/<%= product.imageUrl %>" alt="<%= product.title %>">
                         </div>
                         <div class="ms-card-body">
                            <div class="new">
-                              <h6 class="mb-0"><%= product.title[`${currentLanguage}`] %></h6>
+                              <h6 class="mb-0"></h6>
                               <h6 class="ms-text-primary mb-0"><%= product.price %> lej</h6>
                            </div>
-                           <p><%= product.description[`${currentLanguage}`] %></p>
+                           <p><%= product.id %></p>
                            <div class="new mb-0">
                               <form action="/admin/delete-product" method="POST">
                                  <input type="hidden" value="<%= product._id %>" name="productId">

@@ -1,8 +1,7 @@
 const fileHelper = require("../../util/file");
 const { validationResult } = require("express-validator/check");
 const Product = require("../../models/Product");
-const ExtraAdd = require("../../models/ExtraAdd");
-
+const ProductTranslation = require("../../models/ProductTranslation");
 exports.getSearchProduct = (req, res, next) => {
   let { term } = req.query;
   console.log("req.query", req.query);
@@ -40,104 +39,108 @@ exports.getAddProduct = (req, res, next) => {
 };
 
 exports.postAddProduct = async (req, res, next) => {
-  const title = req.body.title;
-  const imageUrl = req.body.imageUrl;
+  const roTitle = req.body.roTitle;
+  const huTitle = req.body.huTitle;
+  const enTitle = req.body.enTitle;
+  //
   const price = req.body.price;
-  const description = req.body.description;
-  // const roTitle = req.body.roTitle;
-  // const huTitle = req.body.huTitle;
-  // const enTitle = req.body.enTitle;
-  // //
-  // const price = req.body.price;
-  // //
-  // const roDescription = req.body.roDescription;
-  // const huDescription = req.body.huDescription;
-  // const enDescription = req.body.enDescription;
-  // //
-  // const roCategory = req.body.roCategory;
-  // const huCategory = req.body.huCategory;
-  // const enCategory = req.body.enCategory;
-  // //
-  // const image = req.file;
-  // if (!image) {
-  //   return res.status(422).render("admin/edit-product", {
-  //     pageTitle: "Add Product",
-  //     path: "/admin/add-product",
-  //     editing: false,
-  //     hasError: true,
-  //     product: {
-  //       title: huTitle,
-  //       title: enTitle,
-  //       title: roTitle,
-  //       description: enDescription,
-  //       description: huDescription,
-  //       description: roDescription,
+  //
+  const roDescription = req.body.roDescription;
+  const huDescription = req.body.huDescription;
+  const enDescription = req.body.enDescription;
+  //
 
-  //       price: price,
-  //       category: enCategory,
-  //       category: huCategory,
-  //       category: roCategory,
-  //     },
-  //     errorMessage: "Attached file is not an image.",
-  //     validationErrors: [],
-  //   });
-  // }
-  // const errors = validationResult(req);
+  const roCategory = req.body.roCategory;
+  const huCategory = req.body.huCategory;
+  const enCategory = req.body.enCategory;
+  //
+  const image = req.file;
+  if (!image) {
+    return res.status(422).render("admin/edit-product", {
+      pageTitle: "Add Product",
+      path: "/admin/add-product",
+      editing: false,
+      hasError: true,
+      product: {
+        title: huTitle,
+        title: enTitle,
+        title: roTitle,
+        description: enDescription,
+        description: huDescription,
+        description: roDescription,
 
-  // if (!errors.isEmpty()) {
-  //   console.log(errors.array());
-  //   return res.status(422).render("admin/edit-product", {
-  //     pageTitle: "Add Product",
-  //     path: "/admin/add-product",
-  //     editing: false,
-  //     hasError: true,
-  //     product: {
-  //       huTitle: huTitle,
-  //       price: price,
-  //       title: roTitle,
-  //       description: enDescription,
-  //       description: huDescription,
-  //       description: roDescription,
+        price: price,
+        category: enCategory,
+        category: huCategory,
+        category: roCategory,
+      },
+      errorMessage: "Attached file is not an image.",
+      validationErrors: [],
+    });
+  }
+  const errors = validationResult(req);
 
-  //       category: enCategory,
-  //       category: huCategory,
-  //       category: roCategory,
-  //     },
-  //     errorMessage: errors.array()[0].msg,
-  //     validationErrors: errors.array(),
-  //   });
-  // }
+  if (!errors.isEmpty()) {
+    console.log(errors.array());
+    return res.status(422).render("admin/edit-product", {
+      pageTitle: "Add Product",
+      path: "/admin/add-product",
+      editing: false,
+      hasError: true,
+      product: {
+        huTitle: huTitle,
+        price: price,
+        title: roTitle,
+        description: enDescription,
+        description: huDescription,
+        description: roDescription,
 
-  // const imageUrl = image.path;
+        category: enCategory,
+        category: huCategory,
+        category: roCategory,
+      },
+      errorMessage: errors.array()[0].msg,
+      validationErrors: errors.array(),
+    });
+  }
 
-  req.admin
-    .createProduct({
-      title: title,
-      price: price,
-      imageUrl: imageUrl,
-      description: description,
-      adminId: req.admin.id,
-    })
+  const imageUrl = image.path;
 
-    // await Product.create({
-    //   title: { en: enTitle, hu: huTitle, ro: roTitle },
+  const product = await req.admin.createProduct({
+    imageUrl: imageUrl,
+    price: price,
+  });
 
-    //   description: {
-    //     en: enDescription,
-    //     hu: huDescription,
-    //     ro: roDescription,
-    //   },
-    //   category: { en: enCategory, hu: huCategory, ro: roCategory },
-    //   imageUrl: imageUrl,
-    //   price: price,
-    //   adminId: req.admin,
-    //   extraPrice: price * 1.1,
-    //   dailyMenu: "no",
-    //   active: 1,
-    // })
+  async function productTransaltion() {
+    await ProductTranslation.create({
+      title: roTitle,
+      languageId: 1,
+      description: roDescription,
+      productId: product.id,
+      category: roCategory,
+    });
+    await ProductTranslation.create({
+      title: huTitle,
+      languageId: 2,
+      description: huDescription,
+      productId: product.id,
+      category: huCategory,
+    });
+
+    await ProductTranslation.create({
+      title: enTitle,
+      languageId: 3,
+      description: enDescription,
+      productId: product.id,
+      category: enCategory,
+    });
+  }
+
+  productTransaltion()
     .then((result) => {
-      console.log("Created Product");
-      res.redirect("/admin/products");
+      console.log(product.id);
+
+      res.redirect("/admin/add-product");
     })
     .catch((err) => {
       const error = new Error(err);
@@ -145,7 +148,6 @@ exports.postAddProduct = async (req, res, next) => {
       return next(error);
     });
 };
-
 exports.getExtras = (req, res, next) => {
   ExtraAdd.find({ adminId: req.admin._id })
 
