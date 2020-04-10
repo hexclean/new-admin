@@ -2,6 +2,7 @@ const fileHelper = require("../../util/file");
 const { validationResult } = require("express-validator/check");
 const Product = require("../../models/Product");
 const ProductTranslation = require("../../models/ProductTranslation");
+
 exports.getSearchProduct = (req, res, next) => {
   let { term } = req.query;
   console.log("req.query", req.query);

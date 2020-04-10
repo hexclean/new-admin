@@ -5,7 +5,7 @@ const ProductTranslation = sequelize.define("productTranslation", {
   id: {
     type: Sequelize.INTEGER,
     autoIncrement: true,
-
+    allowNull: false,
     primaryKey: true,
   },
   title: {

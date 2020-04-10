@@ -14,6 +14,10 @@ var Sequelize = require("sequelize");
 const sequelize = require("./util/database");
 const Product = require("./models/Product");
 const ProductTranslation = require("./models/ProductTranslation");
+const VariantTranslation = require("./models/VariantTranslation");
+const Variant = require("./models/Variant");
+const Extra = require("./models/Extra");
+const ExtraTranslation = require("./models/ExtraTranslation");
 const Language = require("./models/Language");
 const Admin = require("./models/Admin");
 const app = express();
@@ -89,7 +93,7 @@ app.set("views", "views");
 const adminRoutes = require("./admin/routes/admin");
 const indexRoutes = require("./admin/routes/index");
 const authRoutes = require("./admin/routes/auth");
-const superRoutes = require("./admin/routes/superadmin");
+// const superRoutes = require("./admin/routes/superadmin");
 app.use(express.static(path.join(__dirname, "public")));
 app.use("/images", express.static(path.join(__dirname, "images")));
 app.use(
@@ -114,27 +118,45 @@ app.use(
 );
 // Define Routes
 // app.use("/users", require("./routes/users"));
-app.use("/api/auth", require("./routes/api/auth"));
-app.use("/api/deliveryadress", require("./routes/api/delivery-adress"));
+// app.use("/api/auth", require("./routes/api/auth"));
+// app.use("/api/deliveryadress", require("./routes/api/delivery-adress"));
+// // app.use("/api/products", require("./routes/api/products"));
+// app.use("/api/users", require("./routes/api/users"));
+// app.use("/api/profile", require("./routes/api/profile"));
+// app.use("/api/order", require("./routes/api/order"));
 // app.use("/api/products", require("./routes/api/products"));
-app.use("/api/users", require("./routes/api/users"));
-app.use("/api/profile", require("./routes/api/profile"));
-app.use("/api/order", require("./routes/api/order"));
-app.use("/api/products", require("./routes/api/products"));
-app.use("/api/restaurants", require("./routes/api/restaurants"));
+// app.use("/api/restaurants", require("./routes/api/restaurants"));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use("/admin", adminRoutes);
-app.use("/super-admin", superRoutes);
+// app.use("/super-admin", superRoutes);
 app.use(indexRoutes);
-//fsdfsd
 app.use(authRoutes);
 
-const PORT = process.env.PORT || 5000;
-
+// Admin -> Products, Variant, Extra
 Product.belongsTo(Admin, { constrains: true, onDelete: "CASCADE" });
 Admin.hasMany(Product);
+
+Variant.belongsTo(Admin, { constrains: true, onDelete: "CASCADE" });
+Admin.hasMany(Variant);
+
+Extra.belongsTo(Admin, { constrains: true, onDelete: "CASCADE" });
+Admin.hasMany(Extra);
+
+// Language -> ProductTranslation, VariantTranslation, ExtraTranslation
 Language.hasOne(ProductTranslation);
+Language.hasOne(VariantTranslation);
+Language.hasOne(ExtraTranslation);
+
+// Product -> Translation
 Product.hasOne(ProductTranslation);
+Variant.hasOne(VariantTranslation);
+Extra.hasOne(ExtraTranslation);
+
+// Product -> Variant
+Product.hasMany(Variant);
+Product.hasMany(Extra);
+// Config PORT
+const PORT = process.env.PORT || 5000;
 
 sequelize
   // .sync({ force: true })
