@@ -9,7 +9,7 @@
       <% } %>
       <form
          class="ms-content-wrapper"
-         action="/admin/<% if (editing) { %>edit-extra<% } else { %>add-extra<% } %>"
+         action="/admin/<% if (editing) { %>edit-main-variant<% } else { %>add-main-variant<% } %>"
          method="POST"
          enctype="multipart/form-data">
          <div class="row">
@@ -28,7 +28,7 @@
                                  type="text"
                                  name="roName"
                                  id="roName"
-                                 value="<% if (editing || hasError) { %><%= extra.amount %><% } %>">
+                                 value="<% if (editing || hasError) { %><%= product.name.ro %><% } %>">
                            </div>
                         </div>
                         <div class="col-md-12 mb-3">
@@ -39,7 +39,7 @@
                                  type="text"
                                  name="huName"
                                  id="huName"
-                                 value="<% if (editing || hasError) { %><%= extra.amount %><% } %>">
+                                 value="<% if (editing || hasError) { %><%= product.name.hu %><% } %>">
                            </div>
                         </div>
                         <div class="col-md-12 mb-3">
@@ -50,21 +50,24 @@
                                  type="text"
                                  name="enName"
                                  id="enName"
-                                 value="<% if (editing || hasError) { %><%= extra.amount %><% } %>">
+                                 value="<% if (editing || hasError) { %><%= product.name.en %><% } %>">
                            </div>
                         </div>
                         <div class="col-md-6 mb-3">
-                           <label for="amount"><%= lingua.create_product_price %></label>
+                           <label for="price"><%= lingua.create_product_price %></label>
                            <div class="input-group">
                               <input
-                                 class="form-control <%= validationErrors.find(e => e.param === 'amount') ? 'invalid' : '' %>"
+                                 class="form-control <%= validationErrors.find(e => e.param === 'price') ? 'invalid' : '' %>"
                                  type="number"
-                                 name="amount"
-                                 id="amount"
+                                 name="price"
+                                 id="price"
                                  step="0.01"
-                                 value="<% if (editing || hasError) { %><%= extra.amount %><% } %>">
+                                 value="<% if (editing || hasError) { %><%= product.price %><% } %>">
                            </div>
                         </div>
+                       
+                      
+                       
                      </div>
                   </div>
                </div>
@@ -79,8 +82,8 @@
                         <% if (editing) { %>
                         <input
                            type="hidden"
-                           value="<%= extra.id %>"
-                           name="extraId"
+                           value="<%= variant.id %>"
+                           name="variantId"
                            />
                         <% } %>
                         <button class="btn" type="submit">

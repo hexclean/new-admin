@@ -1,6 +1,7 @@
 const { body } = require("express-validator/check");
 const express = require("express");
 const adminController = require("../controllers/admin");
+const extraController = require("../controllers/extra");
 // const adminDailyMenuController = require("../controllers/daily-menu");
 // const adminProfileController = require("../controllers/profile");
 // const adminOrderController = require("../controllers/orders");
@@ -21,6 +22,20 @@ const router = express.Router();
 ///
 // router.get("/edit-order/:orderId", adminUsersController.getEditOrder);
 
+router.get("/add-extra", isAuth, extraController.getAddExtra);
+router.get("/extras", isAuth, extraController.getExtras);
+router.get("/edit-extra/:extraId", isAuth, extraController.getEditExtra);
+// router.post(
+//   "/edit-extra",
+//   isAuth,
+
+//   extraController.postEditExtra
+// );
+router.post(
+  "/add-extra",
+
+  extraController.postAddExtra
+);
 // /admin/add-product
 router.get("/add-product", isAuth, adminController.getAddProduct);
 

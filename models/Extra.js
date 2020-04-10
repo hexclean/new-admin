@@ -8,7 +8,7 @@ const Extra = sequelize.define("extra", {
     allowNull: false,
     primaryKey: true,
   },
-  price: {
+  amount: {
     type: Sequelize.DOUBLE,
     allowNull: false,
   },
