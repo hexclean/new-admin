@@ -35,12 +35,23 @@ router.get(
   isAuth,
   variantsController.getEditVariant
 );
+router.post(
+  "/edit-variant",
+  isAuth,
+
+  variantsController.postEditVariant
+);
 ///
 router.get("/add-category", isAuth, variantsController.getAddProductCategory);
 router.post(
   "/add-category",
 
   variantsController.postAddProductCategory
+);
+router.get(
+  "/edit-variant/:variantId",
+  isAuth,
+  variantsController.getEditVariant
 );
 ///
 router.get("/add-extra", isAuth, extraController.getAddExtra);

@@ -21,7 +21,7 @@ const ExtraTranslation = require("./models/ExtraTranslation");
 const ExtraCategory = require("./models/ExtraCategory");
 const ProductCategory = require("./models/ProductCategory");
 const ProductCategoryTranslation = require("./models/ProductCategoryTranslation");
-
+const ProductVariantsExtras = require("./models/ProductVariantsExtras");
 const Language = require("./models/Language");
 const Admin = require("./models/Admin");
 const app = express();
@@ -163,6 +163,10 @@ ProductCategory.hasMany(ProductCategoryTranslation);
 // Product -> Variant
 
 Extra.hasOne(ExtraCategory);
+
+ProductVariant.hasMany(ProductVariantsExtras);
+Extra.hasMany(ProductVariantsExtras);
+
 // Config PORT
 const PORT = process.env.PORT || 5000;
 
