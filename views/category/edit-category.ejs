@@ -9,7 +9,7 @@
       <% } %>
       <form
          class="ms-content-wrapper"
-         action="/admin/<% if (editing) { %>edit-variant<% } else { %>add-variant<% } %>"
+         action="/admin/<% if (editing) { %>edit-category<% } else { %>add-category<% } %>"
          method="POST"
          enctype="multipart/form-data">
          <div class="row">
@@ -28,7 +28,7 @@
                                  type="text"
                                  name="roName"
                                  id="roName"
-                                 value="<% if (editing || hasError) { %><%= variant.price %><% } %>">
+                                 value="<% if (editing || hasError) { %><%= category.roName %><% } %>">
                            </div>
                         </div>
                         <div class="col-md-12 mb-3">
@@ -39,7 +39,7 @@
                                  type="text"
                                  name="huName"
                                  id="huName"
-                                 value="<% if (editing || hasError) { %><%= variant.price %><% } %>">
+                                 value="<% if (editing || hasError) { %><%= category.huName %><% } %>">
                            </div>
                         </div>
                         <div class="col-md-12 mb-3">
@@ -50,22 +50,10 @@
                                  type="text"
                                  name="enName"
                                  id="enName"
-                                 value="<% if (editing || hasError) { %><%= variant.price %><% } %>">
+                                 value="<% if (editing || hasError) { %><%= category.enName %><% } %>">
                            </div>
                         </div>
-                        <div class="col-md-6 mb-3">
-                           <label for="price"><%= lingua.create_product_price %></label>
-                           <div class="input-group">
-                              <input
-                                 class="form-control <%= validationErrors.find(e => e.param === 'price') ? 'invalid' : '' %>"
-                                 type="number"
-                                 name="price"
-                                 id="price"
-                                 step="0.01"
-                                 value="<% if (editing || hasError) { %><%= variant.price %><% } %>">
-                           </div>
-                        </div>
-                       
+                        
                       
                        
                      </div>
@@ -82,8 +70,8 @@
                         <% if (editing) { %>
                         <input
                            type="hidden"
-                           value="<%= variant.id %>"
-                           name="variantId"
+                           value="<%= category.id %>"
+                           name="categoryId"
                            />
                         <% } %>
                         <button class="btn" type="submit">

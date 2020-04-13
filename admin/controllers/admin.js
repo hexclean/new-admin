@@ -176,7 +176,6 @@ exports.getEditProduct = async (req, res, next) => {
   }
   const prodId = req.params.productId;
   const product = await req.user.getProducts({ where: { id: prodId } });
-  const extras = await ExtraAdd.find({ adminId: req.admin._id });
 
   if (!product) {
     return res.redirect("/");

@@ -159,7 +159,7 @@ Language.hasOne(ProductCategoryTranslation);
 Product.hasOne(ProductTranslation);
 ProductVariant.hasOne(ProductVariantTranslation);
 Extra.hasOne(ExtraTranslation);
-
+ProductCategory.hasMany(ProductCategoryTranslation);
 // Product -> Variant
 
 Extra.hasOne(ExtraCategory);
