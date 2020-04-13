@@ -276,13 +276,14 @@ exports.postEditProduct = (req, res, next) => {
     });
 };
 
-exports.getProducts = (req, res, next) => {
-  //{ adminId: req.admin._id, dailyMenu: { $ne: "yes" }, active: 1 }
-  Product.findAll()
+exports.getProducts = async (req, res, next) => {
+  const test = await Product.findAll();
+  await Product.findAll()
     .then((products) => {
       var currentLanguage = req.cookies.language;
       res.render("admin/products", {
         prods: products,
+        ts: test,
         currentLanguage: currentLanguage,
         pageTitle: "Admin Products",
         path: "/admin/products",

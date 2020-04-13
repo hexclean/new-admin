@@ -57,6 +57,24 @@
          <% } else { %>
          <h1>No Products Found!</h1>
          <% } %>
+
+<select id="select">
+   <option value="default">
+      default
+   </option>
+   
+</select>
+         <script>
+            var select = document.getElementById("select"),
+            arr = ['ok',"oks"];
+            for (var i=0; i<arr.length; i++){
+               var option = document.createElement("option"),
+               txt = document.createTextNode(arr[i]);
+               option.appendChild(txt);
+               option.setAttribute("value", arr[i]);
+               select.insertBefore(option, select.lastChild)
+            }
+         </script>
       </div>
    </main>
    <%- include('../includes/end.ejs')

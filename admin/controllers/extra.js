@@ -76,29 +76,47 @@ exports.postAddExtra = async (req, res, next) => {
     });
 };
 
-exports.getEditExtra = async (req, res, next) => {
-  const editMode = req.query.edit;
-  if (!editMode) {
-    return res.redirect("/");
-  }
-
-  const extra = await Extra.findAll({ adminId: req.admin.id });
-
-  if (!extra) {
-    return res.redirect("/");
-  }
-
-  res.render("extra/edit-extra", {
-    pageTitle: "Edit extra",
-    path: "/admin/edit-extra",
-    editing: editMode,
-    extra: extra,
-    hasError: false,
-    errorMessage: null,
-    validationErrors: [],
-    extra: extra,
-  });
+exports.getExtras = (req, res, next) => {
+  Extra.findAll()
+    .then((extra) => {
+      var currentLanguage = req.cookies.language;
+      res.render("extra/extras", {
+        ext: extra,
+        currentLanguage: currentLanguage,
+        pageTitle: "Admin Products",
+        path: "/admin/products",
+      });
+    })
+    .catch((err) => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
 };
+
+// exports.getEditExtra = async (req, res, next) => {
+//   const editMode = req.query.edit;
+//   if (!editMode) {
+//     return res.redirect("/");
+//   }
+
+//   const extra = await Extra.findAll({ adminId: req.admin.id });
+
+//   if (!extra) {
+//     return res.redirect("/");
+//   }
+
+//   res.render("extra/edit-extra", {
+//     pageTitle: "Edit extra",
+//     path: "/admin/edit-extra",
+//     editing: editMode,
+//     extra: extra,
+//     hasError: false,
+//     errorMessage: null,
+//     validationErrors: [],
+//     extra: extra,
+//   });
+// };
 
 exports.getEditExtra = (req, res, next) => {
   const editMode = req.query.edit;
@@ -125,20 +143,33 @@ exports.getEditExtra = (req, res, next) => {
     .catch((err) => console.log(err));
 };
 
-exports.getExtras = (req, res, next) => {
-  Extra.findAll()
+exports.postEditExtra = (req, res, next) => {
+  const extId = req.body.extraId;
+  // const updatedTitle = req.body.title;
+  // const updatedPrice = req.body.price;
+  // const updatedImageUrl = req.body.imageUrl;
+  const updatedAmount = req.body.amount;
+  Extra.findByPk(extId)
     .then((extra) => {
-      var currentLanguage = req.cookies.language;
-      res.render("extra/extras", {
-        ext: extra,
-        currentLanguage: currentLanguage,
+      extra.amount = updatedAmount;
+      return extra.save();
+    })
+    .then((result) => {
+      console.log("UPDATED PRODUCT!");
+      res.redirect("/admin/products");
+    })
+    .catch((err) => console.log(err));
+};
+
+exports.getProducts = (req, res, next) => {
+  req.user
+    .getProducts()
+    .then((products) => {
+      res.render("admin/products", {
+        prods: products,
         pageTitle: "Admin Products",
         path: "/admin/products",
       });
     })
-    .catch((err) => {
-      const error = new Error(err);
-      error.httpStatusCode = 500;
-      return next(error);
-    });
+    .catch((err) => console.log(err));
 };

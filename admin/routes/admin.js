@@ -2,7 +2,7 @@ const { body } = require("express-validator/check");
 const express = require("express");
 const adminController = require("../controllers/admin");
 const extraController = require("../controllers/extra");
-// const adminDailyMenuController = require("../controllers/daily-menu");
+const variantsController = require("../controllers/variants");
 // const adminProfileController = require("../controllers/profile");
 // const adminOrderController = require("../controllers/orders");
 // const adminCouponController = require("../controllers/coupon");
@@ -22,15 +22,23 @@ const router = express.Router();
 ///
 // router.get("/edit-order/:orderId", adminUsersController.getEditOrder);
 
+router.get("/variants-index", isAuth, variantsController.getIndex);
+router.get("/add-variant", isAuth, variantsController.getAddVariant);
+router.post(
+  "/add-variant",
+
+  variantsController.postAddVariant
+);
+///
 router.get("/add-extra", isAuth, extraController.getAddExtra);
 router.get("/extras", isAuth, extraController.getExtras);
 router.get("/edit-extra/:extraId", isAuth, extraController.getEditExtra);
-// router.post(
-//   "/edit-extra",
-//   isAuth,
+router.post(
+  "/edit-extra",
+  isAuth,
 
-//   extraController.postEditExtra
-// );
+  extraController.postEditExtra
+);
 router.post(
   "/add-extra",
 

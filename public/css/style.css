@@ -553,11 +553,6 @@ ul {
   font-size: 12px;
 }
 
-
-
-
-
-
 body {
   font-family: "Roboto", sans-serif;
   font-size: 14px;
@@ -703,10 +698,10 @@ pre {
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   margin-top: 8px;
 }
-.ms-panel-header-updated{
+.ms-panel-header-updated {
   padding: 0.9rem !important;
   position: relative;
- 
+
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   margin-top: 8px;
 }
@@ -7744,4 +7739,14 @@ body:not(.ms-settings-open) .ms-settings-toggle:hover {
 .input-group input.invalid,
 .input-group textarea.invalid {
   border-color: red;
+}
+
+.no-img-var {
+  position: relative;
+  height: 56px;
+  background-color: #fff;
+  margin-bottom: 30px;
+  -webkit-box-shadow: 0 1px 6px 1px rgba(69, 65, 78, 0.1);
+  -moz-box-shadow: 0 1px 6px 1px rgba(69, 65, 78, 0.1);
+  box-shadow: 0 1px 6px 1px rgba(69, 65, 78, 0.1);
 }

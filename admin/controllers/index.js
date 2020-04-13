@@ -1,7 +1,7 @@
 const Admin = require("../../models/Admin");
 
 exports.indexController = (req, res, next) => {
-  const adminId = req.admin._id;
+  const adminId = req.admin.id;
   Admin.findByPk(adminId)
     .then((admin) => {
       if (!admin) {

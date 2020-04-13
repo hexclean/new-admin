@@ -14,10 +14,14 @@ var Sequelize = require("sequelize");
 const sequelize = require("./util/database");
 const Product = require("./models/Product");
 const ProductTranslation = require("./models/ProductTranslation");
-const VariantTranslation = require("./models/VariantTranslation");
-const Variant = require("./models/Variant");
+const ProductVariantTranslation = require("./models/ProductVariantTranslation");
+const ProductVariant = require("./models/ProductVariant");
 const Extra = require("./models/Extra");
 const ExtraTranslation = require("./models/ExtraTranslation");
+const ExtraCategory = require("./models/ExtraCategory");
+const ProductCategory = require("./models/ProductCategory");
+const ProductCategoryTranslation = require("./models/ProductCategoryTranslation");
+
 const Language = require("./models/Language");
 const Admin = require("./models/Admin");
 const app = express();
@@ -134,27 +138,31 @@ app.use(authRoutes);
 
 // Admin -> Products, Variant, Extra
 Product.belongsTo(Admin, { constrains: true, onDelete: "CASCADE" });
+// Extra.belongsTo(ExtraTranslation, { constrains: true, onDelete: "CASCADE" });
 Admin.hasMany(Product);
 
-Variant.belongsTo(Admin, { constrains: true, onDelete: "CASCADE" });
-Admin.hasMany(Variant);
+ProductVariant.belongsTo(Admin, { constrains: true, onDelete: "CASCADE" });
+Admin.hasMany(ProductVariant);
 
 Extra.belongsTo(Admin, { constrains: true, onDelete: "CASCADE" });
 Admin.hasMany(Extra);
 
+ProductCategory.belongsTo(Admin, { constrains: true, onDelete: "CASCADE" });
+Admin.hasMany(ProductCategory);
+
 // Language -> ProductTranslation, VariantTranslation, ExtraTranslation
 Language.hasOne(ProductTranslation);
-Language.hasOne(VariantTranslation);
+Language.hasOne(ProductVariantTranslation);
 Language.hasOne(ExtraTranslation);
-
+Language.hasOne(ProductCategoryTranslation);
 // Product -> Translation
 Product.hasOne(ProductTranslation);
-Variant.hasOne(VariantTranslation);
+ProductVariant.hasOne(ProductVariantTranslation);
 Extra.hasOne(ExtraTranslation);
 
 // Product -> Variant
-Product.hasMany(Variant);
-Product.hasMany(Extra);
+
+Extra.hasOne(ExtraCategory);
 // Config PORT
 const PORT = process.env.PORT || 5000;
 
