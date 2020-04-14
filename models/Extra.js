@@ -8,10 +8,6 @@ const Extra = sequelize.define("extra", {
     allowNull: false,
     primaryKey: true,
   },
-  amount: {
-    type: Sequelize.DOUBLE,
-    allowNull: false,
-  },
 });
 
 module.exports = Extra;

@@ -9,7 +9,27 @@ const ProductVariantsExtras = sequelize.define("productVariantsExtras", {
     primaryKey: true,
   },
   price: {
-    type: Sequelize.DOUBLE,
+    type: Sequelize.STRING,
+    allowNull: false,
+  },
+  discountedPrice: {
+    type: Sequelize.STRING,
+    allowNull: false,
+  },
+  quantityMin: {
+    type: Sequelize.STRING,
+    allowNull: false,
+  },
+  quantityMax: {
+    type: Sequelize.STRING,
+    allowNull: false,
+  },
+  mandatory: {
+    type: Sequelize.STRING,
+    allowNull: false,
+  },
+  active: {
+    type: Sequelize.INTEGER,
     allowNull: false,
   },
 });

@@ -67,7 +67,7 @@ exports.postAddExtra = async (req, res, next) => {
     .then((result) => {
       console.log(extra.id);
 
-      res.redirect("/admin/add-product");
+      res.redirect("/admin/add-extra");
     })
     .catch((err) => {
       const error = new Error(err);

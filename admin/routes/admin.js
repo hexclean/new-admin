@@ -35,6 +35,7 @@ router.get(
   isAuth,
   variantsController.getEditVariant
 );
+
 router.post(
   "/edit-variant",
   isAuth,
