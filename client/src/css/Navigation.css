@@ -1,11 +1,21 @@
+.mainnv .navbar {
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
 .mainnv {
-  background-color: rgba(0, 0, 0, 0.7) !important;
+  position: absolute;
+  top: 15px;
+  left: 0px;
+  z-index: 9;
+  width: 100%;
 }
 .mainnv .nav-link {
   font-size: 14px;
   font-weight: 500;
   color: #fff !important;
   text-transform: uppercase;
+  font-family: "bebas_neuebold";
 }
 .mainnv .text-yellow {
   color: #f99b39 !important;
@@ -15,6 +25,13 @@
 }
 .mainnv ul {
   align-items: center;
+}
+
+.navbar-nav .nav-link {
+  margin-right: 20px;
+}
+.navbar-nav .nav-link:last-child {
+  margin-right: 0px;
 }
 @media only screen and (max-width: 991px) {
   .mainnv a {
@@ -29,14 +46,33 @@
   .mainnv ul {
     align-items: center;
     margin: auto;
-    padding: 0;
+    padding: 0px;
   }
   .mx-auto {
     text-align: center;
   }
 }
-@media only screen and (min-width: 992px) {
-  .mx-auto a {
-    display: inline-block !important;
+
+@media (max-width: 991px) and (min-width: 1px) {
+  .navbar-light .navbar-toggler {
+    background: #fff;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .navbar-collapse {
+    background: #fe8f01 !important;
+  }
+  .partner-inkbxrht h3 {
+    font-size: 18px;
+  }
+  .navbar-collapse .text-yellow {
+    color: #fff;
+  }
+}
+
+@media only screen and (max-width: 479px) {
+  .navbar-light .navbar-toggler {
+    background: #fff;
   }
 }

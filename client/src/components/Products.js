@@ -18,54 +18,54 @@
     <link type="text/css" rel="stylesheet" href="css/product.css" />
   </head>
   <body>
-    <div class="mainnv">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-12">
-            <nav class="navbar navbar-expand-lg navbar-light">
+    <div className="mainnv">
+      <div className="container">
+        <div className="row">
+          <div className="col-md-12">
+            <nav className="navbar navbar-expand-lg navbar-light">
               <button
-                class="navbar-toggler"
+                className="navbar-toggler"
                 type="button"
                 data-toggle="collapse"
                 data-target="#collapsibleNavbar"
               >
-                <span class="navbar-toggler-icon"></span>
+                <span className="navbar-toggler-icon"></span>
               </button>
 
-              <div class="collapse navbar-collapse" id="collapsibleNavbar">
-                <ul class="navbar-nav mr-auto mt-2 mt-lg-0 col-md-5 col-lg-5">
-                  <li class="nav-item active">
-                    <a class="nav-link" href="#"
-                      >Restaurants <span class="sr-only">(current)</span></a
+              <div className="collapse navbar-collapse" id="collapsibleNavbar">
+                <ul className="navbar-nav mr-auto mt-2 mt-lg-0 col-md-5 col-lg-5">
+                  <li className="nav-item active">
+                    <a className="nav-link" href="#"
+                      >Restaurants <span className="sr-only">(current)</span></a
                     >
                   </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="#">Subscription</a>
+                  <li className="nav-item">
+                    <a className="nav-link" href="#">Subscription</a>
                   </li>
-                  <li class="nav-item">
-                    <a class="nav-link disabled text-yellow" href="#"
+                  <li className="nav-item">
+                    <a className="nav-link disabled text-yellow" href="#"
                       >Download App</a
                     >
                   </li>
                 </ul>
 
-                <div class="mx-auto col-md-4 col-lg-5">
-                  <a href="#" class="navbar-brand"
+                <div className="mx-auto col-md-4 col-lg-5">
+                  <a href="#" className="navbar-brand"
                     ><img src="images/logo.png"
                   /></a>
-                  <a class="nav-link text-yellow" href="#">Be my partner</a>
+                  <a className="nav-link text-yellow" href="#">Be my partner</a>
                 </div>
 
                 <ul
-                  class="navbar-nav ml-auto col-md-3 mt-2 mt-lg-0 align-right col-lg-2"
+                  className="navbar-nav ml-auto col-md-3 mt-2 mt-lg-0 align-right col-lg-2"
                 >
-                  <li class="nav-item">
-                    <a class="nav-link" href="#"
+                  <li className="nav-item">
+                    <a className="nav-link" href="#"
                       ><img src="images/profile.png"
                     /></a>
                   </li>
-                  <li class="nav-item">
-                    <a class="nav-link disabled" href="#"
+                  <li className="nav-item">
+                    <a className="nav-link disabled" href="#"
                       ><img src="images/cart.png"
                     /></a>
                   </li>
@@ -77,21 +77,21 @@
       </div>
     </div>
 
-    <div class="banner-section">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-3">
-            <div class="white-radiusbox">
+    <div className="banner-section">
+      <div className="container">
+        <div className="row">
+          <div className="col-md-3">
+            <div className="white-radiusbox">
               <img src="images/rexo.png" />
             </div>
           </div>
-          <div class="col-md-9">
-            <h2 class="text-yellow">CE DELICII DELIVERY</h2>
+          <div className="col-md-9">
+            <h2 className="text-yellow">CE DELICII DELIVERY</h2>
             <p>
               Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
               amet,consectetuer Lorem ipsum dolor. consectetuer adipiscing elit.
             </p>
-            <ul class="info-list">
+            <ul className="info-list">
               <li><img src="images/icon-1.png" />12:00 - 22:00</li>
               <li><img src="images/icon-2.png" />10-15 min</li>
               <li><img src="images/icon-3.png" />25 RON+</li>
@@ -99,7 +99,7 @@
           </div>
         </div>
       </div>
-      <div class="margtp50">
+      <div className="margtp50">
         <svg
           id="Layer_1"
           data-name="Layer 1"
@@ -115,7 +115,7 @@
           </defs>
           <title>svg wave</title>
           <path
-            class="cls-1"
+            className="cls-1"
             d="M0,137.06S348.25,28.6,901.44,82.78,1920,22.81,1920,22.81V165.56H0Z"
             transform="translate(0 -22.81)"
           />
@@ -123,26 +123,26 @@
       </div>
     </div>
     <!-- product-section Starts -->
-    <div class="product-section partner-ink black-yellow">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-10 mx-auto">
-            <div class="search-box">
-              <div class="main">
-                <div class="row">
-                  <div class="col-md-6">
-                    <h2 class="text-white">KÍnálatunk</h2>
+    <div className="product-section partner-ink black-yellow">
+      <div className="container">
+        <div className="row">
+          <div className="col-md-10 mx-auto">
+            <div className="search-box">
+              <div className="main">
+                <div className="row">
+                  <div className="col-md-6">
+                    <h2 className="text-white">KÍnálatunk</h2>
                   </div>
-                  <div class="col-md-6">
-                    <div class="input-group">
-                      <div class="input-group-append">
-                        <button class="btn btn-secondary" type="button">
+                  <div className="col-md-6">
+                    <div className="input-group">
+                      <div className="input-group-append">
+                        <button className="btn btn-secondary" type="button">
                           <img src="images/search-icon.png" />
                         </button>
                       </div>
                       <input
                         type="text"
-                        class="form-control"
+                        className="form-control"
                         placeholder="KERESÉS..."
                       />
                     </div>
@@ -154,15 +154,15 @@
           </div>
         </div>
 
-        <div class="tab-main margin">
-          <div class="row">
-            <div class="col-1">
-              <div class="yellow-graybx">
+        <div className="tab-main margin">
+          <div className="row">
+            <div className="col-1">
+              <div className="yellow-graybx">
                 <a href="#"><img src="images/nextrest.png" /></a>
               </div>
             </div>
-            <div class="col-10">
-              <div class="yellow-graybx tabbx">
+            <div className="col-10">
+              <div className="yellow-graybx tabbx">
                 <a href="#"><img src="images/kaja1.png" /></a>
                 <a href="#"><img src="images/kaja2.png" /></a>
 
@@ -174,8 +174,8 @@
                 <a href="#"><img src="images/kaja7.png" /></a>
               </div>
             </div>
-            <div class="col-1">
-              <div class="yellow-graybx">
+            <div className="col-1">
+              <div className="yellow-graybx">
                 <a href="#"><img src="images/allergen.png" /></a>
               </div>
             </div>
@@ -183,22 +183,22 @@
           </div>
         </div>
 
-        <div class="row">
-          <div class="col-sm-12 col-md-12">
-            <div class="row">
-              <div class="col-md-6 padding-right">
-                <div class="partner-inkbxtp margbtm-15">
-                  <div class="partner-inkbx">
-                    <div class="partner-inkbxlft">
+        <div className="row">
+          <div className="col-sm-12 col-md-12">
+            <div className="row">
+              <div className="col-md-6 padding-right">
+                <div className="partner-inkbxtp margbtm-15">
+                  <div className="partner-inkbx">
+                    <div className="partner-inkbxlft">
                       <img src="images/pr2.png" />
                     </div>
-                    <div class="partner-inkbxrht">
+                    <div className="partner-inkbxrht">
                       <h3>SÜLT POLIPKAROK</h3>
                       <p>
                         Lorem ipsum dolor sit amet, conse-ctetuer adipiscing. SI
                         ipsum dolor sit amet Lorem DOlor Si marto.
                       </p>
-                      <ul class="size-list">
+                      <ul className="size-list">
                         <li><a href="#">SMALL</a></li>
                         <li><a href="#">MEDIUM</a></li>
                         <li><a href="#">LARGE</a></li>
@@ -208,34 +208,34 @@
                           /></a>
                         </li>
                         <li>
-                          <a href="#" class="small-cart"
+                          <a href="#" className="small-cart"
                             ><img src="images/cart-small.png" />KOSÁRBA RAKOM</a
                           >
                         </li>
                       </ul>
                     </div>
-                    <div class="clear"></div>
+                    <div className="clear"></div>
                   </div>
-                  <div class="text-center">
-                    <a href="#" class="extra-btn">
+                  <div className="text-center">
+                    <a href="#" className="extra-btn">
                       EXTRÁK <img src="images/drop-arrow.png"
                     /></a>
                   </div>
                 </div>
               </div>
-              <div class="col-md-6 padding-right">
-                <div class="partner-inkbxtp margbtm-15">
-                  <div class="partner-inkbx">
-                    <div class="partner-inkbxlft">
+              <div className="col-md-6 padding-right">
+                <div className="partner-inkbxtp margbtm-15">
+                  <div className="partner-inkbx">
+                    <div className="partner-inkbxlft">
                       <img src="images/pr4.png" />
                     </div>
-                    <div class="partner-inkbxrht">
+                    <div className="partner-inkbxrht">
                       <h3>PARADICSOMSZENDVICS</h3>
                       <p>
                         Lorem ipsum dolor sit amet, conse-ctetuer adipiscing. SI
                         ipsum dolor sit amet Lorem DOlor Si marto.
                       </p>
-                      <ul class="size-list">
+                      <ul className="size-list">
                         <li><a href="#">SMALL</a></li>
                         <li><a href="#">MEDIUM</a></li>
                         <li><a href="#">LARGE</a></li>
@@ -251,29 +251,29 @@
                         </li>
                       </ul>
                     </div>
-                    <div class="clear"></div>
+                    <div className="clear"></div>
                   </div>
-                  <div class="text-center">
-                    <a href="#" class="extra-btn">
+                  <div className="text-center">
+                    <a href="#" className="extra-btn">
                       EXTRÁK <img src="images/drop-arrow.png"
                     /></a>
                   </div>
                 </div>
               </div>
 
-              <div class="col-md-6 padding-right">
-                <div class="partner-inkbxtp margbtm-15">
-                  <div class="partner-inkbx">
-                    <div class="partner-inkbxlft">
+              <div className="col-md-6 padding-right">
+                <div className="partner-inkbxtp margbtm-15">
+                  <div className="partner-inkbx">
+                    <div className="partner-inkbxlft">
                       <img src="images/pr3.png" />
                     </div>
-                    <div class="partner-inkbxrht">
+                    <div className="partner-inkbxrht">
                       <h3>SÜLT POLIPKAROK</h3>
                       <p>
                         Lorem ipsum dolor sit amet, conse-ctetuer adipiscing. SI
                         ipsum dolor sit amet Lorem DOlor Si marto.
                       </p>
-                      <ul class="size-list">
+                      <ul className="size-list">
                         <li><a href="#">SMALL</a></li>
                         <li><a href="#">MEDIUM</a></li>
                         <li><a href="#">LARGE</a></li>
@@ -289,37 +289,37 @@
                         </li>
                       </ul>
                     </div>
-                    <div class="clear"></div>
+                    <div className="clear"></div>
                   </div>
-                  <div class="text-center">
-                    <ul class="bottom-list tt">
+                  <div className="text-center">
+                    <ul className="bottom-list tt">
                       <li>
-                        <div class="box-c">
-                          <img src="images/ico.png" class="img-fluid" />
+                        <div className="box-c">
+                          <img src="images/ico.png" className="img-fluid" />
                           <p>LOREM IPSUM <span>+ 12 LEJ</span></p>
                         </div>
-                        <div class="box-c">
-                          <img src="images/ico.png" class="img-fluid" />
+                        <div className="box-c">
+                          <img src="images/ico.png" className="img-fluid" />
                           <p>LOREM IPSUM <span>+ 12 LEJ</span></p>
                         </div>
                       </li>
                       <li>
-                        <div class="box-c">
-                          <img src="images/ico.png" class="img-fluid" />
+                        <div className="box-c">
+                          <img src="images/ico.png" className="img-fluid" />
                           <p>LOREM IPSUM <span>+ 12 LEJ</span></p>
                         </div>
-                        <div class="box-c">
-                          <img src="images/ico.png" class="img-fluid" />
+                        <div className="box-c">
+                          <img src="images/ico.png" className="img-fluid" />
                           <p>LOREM IPSUM <span>+ 12 LEJ</span></p>
                         </div>
                       </li>
                       <li>
-                        <div class="box-c">
-                          <img src="images/ico.png" class="img-fluid" />
+                        <div className="box-c">
+                          <img src="images/ico.png" className="img-fluid" />
                           <p>LOREM IPSUM <span>+ 12 LEJ</span></p>
                         </div>
-                        <div class="box-c">
-                          <img src="images/ico.png" class="img-fluid" />
+                        <div className="box-c">
+                          <img src="images/ico.png" className="img-fluid" />
                           <p>LOREM IPSUM <span>+ 12 LEJ</span></p>
                         </div>
                       </li>
@@ -327,19 +327,19 @@
                   </div>
                 </div>
               </div>
-              <div class="col-md-6 padding-right">
-                <div class="partner-inkbxtp margbtm-15">
-                  <div class="partner-inkbx">
-                    <div class="partner-inkbxlft">
+              <div className="col-md-6 padding-right">
+                <div className="partner-inkbxtp margbtm-15">
+                  <div className="partner-inkbx">
+                    <div className="partner-inkbxlft">
                       <img src="images/pr6.png" />
                     </div>
-                    <div class="partner-inkbxrht">
+                    <div className="partner-inkbxrht">
                       <h3>PARADICSOMSZENDVICS</h3>
                       <p>
                         Lorem ipsum dolor sit amet, conse-ctetuer adipiscing. SI
                         ipsum dolor sit amet Lorem DOlor Si marto.
                       </p>
-                      <ul class="size-list">
+                      <ul className="size-list">
                         <li><a href="#">SMALL</a></li>
                         <li><a href="#">MEDIUM</a></li>
                         <li><a href="#">LARGE</a></li>
@@ -355,28 +355,28 @@
                         </li>
                       </ul>
                     </div>
-                    <div class="clear"></div>
+                    <div className="clear"></div>
                   </div>
-                  <div class="text-center">
-                    <a href="#" class="extra-btn">
+                  <div className="text-center">
+                    <a href="#" className="extra-btn">
                       EXTRÁK <img src="images/drop-arrow.png"
                     /></a>
                   </div>
                 </div>
               </div>
-              <div class="col-md-6 padding-right">
-                <div class="partner-inkbxtp margbtm-15">
-                  <div class="partner-inkbx">
-                    <div class="partner-inkbxlft">
+              <div className="col-md-6 padding-right">
+                <div className="partner-inkbxtp margbtm-15">
+                  <div className="partner-inkbx">
+                    <div className="partner-inkbxlft">
                       <img src="images/cover.png" />
                     </div>
-                    <div class="partner-inkbxrht">
+                    <div className="partner-inkbxrht">
                       <h3>SÜLT POLIPKAROK</h3>
                       <p>
                         Lorem ipsum dolor sit amet, conse-ctetuer adipiscing. SI
                         ipsum dolor sit amet Lorem DOlor Si marto.
                       </p>
-                      <ul class="size-list">
+                      <ul className="size-list">
                         <li><a href="#">SMALL</a></li>
                         <li><a href="#">MEDIUM</a></li>
                         <li><a href="#">LARGE</a></li>
@@ -392,28 +392,28 @@
                         </li>
                       </ul>
                     </div>
-                    <div class="clear"></div>
+                    <div className="clear"></div>
                   </div>
-                  <div class="text-center">
-                    <a href="#" class="extra-btn">
+                  <div className="text-center">
+                    <a href="#" className="extra-btn">
                       EXTRÁK <img src="images/drop-arrow.png"
                     /></a>
                   </div>
                 </div>
               </div>
-              <div class="col-md-6 padding-right">
-                <div class="partner-inkbxtp margbtm-15">
-                  <div class="partner-inkbx">
-                    <div class="partner-inkbxlft">
+              <div className="col-md-6 padding-right">
+                <div className="partner-inkbxtp margbtm-15">
+                  <div className="partner-inkbx">
+                    <div className="partner-inkbxlft">
                       <img src="images/pr2.png" />
                     </div>
-                    <div class="partner-inkbxrht">
+                    <div className="partner-inkbxrht">
                       <h3>PARADICSOMSZENDVICS</h3>
                       <p>
                         Lorem ipsum dolor sit amet, conse-ctetuer adipiscing. SI
                         ipsum dolor sit amet Lorem DOlor Si marto.
                       </p>
-                      <ul class="size-list">
+                      <ul className="size-list">
                         <li><a href="#">SMALL</a></li>
                         <li><a href="#">MEDIUM</a></li>
                         <li><a href="#">LARGE</a></li>
@@ -429,28 +429,28 @@
                         </li>
                       </ul>
                     </div>
-                    <div class="clear"></div>
+                    <div className="clear"></div>
                   </div>
-                  <div class="text-center">
-                    <a href="#" class="extra-btn">
+                  <div className="text-center">
+                    <a href="#" className="extra-btn">
                       EXTRÁK <img src="images/drop-arrow.png"
                     /></a>
                   </div>
                 </div>
               </div>
-              <div class="col-md-6 padding-right">
-                <div class="partner-inkbxtp margbtm-15">
-                  <div class="partner-inkbx">
-                    <div class="partner-inkbxlft">
+              <div className="col-md-6 padding-right">
+                <div className="partner-inkbxtp margbtm-15">
+                  <div className="partner-inkbx">
+                    <div className="partner-inkbxlft">
                       <img src="images/cover.png" />
                     </div>
-                    <div class="partner-inkbxrht">
+                    <div className="partner-inkbxrht">
                       <h3>SÜLT POLIPKAROK</h3>
                       <p>
                         Lorem ipsum dolor sit amet, conse-ctetuer adipiscing. SI
                         ipsum dolor sit amet Lorem DOlor Si marto.
                       </p>
-                      <ul class="size-list">
+                      <ul className="size-list">
                         <li><a href="#">SMALL</a></li>
                         <li><a href="#">MEDIUM</a></li>
                         <li><a href="#">LARGE</a></li>
@@ -466,37 +466,37 @@
                         </li>
                       </ul>
                     </div>
-                    <div class="clear"></div>
+                    <div className="clear"></div>
                   </div>
-                  <div class="text-center">
-                    <ul class="bottom-list tt">
+                  <div className="text-center">
+                    <ul className="bottom-list tt">
                       <li>
-                        <div class="box-c">
-                          <img src="images/ico.png" class="img-fluid" />
+                        <div className="box-c">
+                          <img src="images/ico.png" className="img-fluid" />
                           <p>LOREM IPSUM <span>+ 12 LEJ</span></p>
                         </div>
-                        <div class="box-c">
-                          <img src="images/ico.png" class="img-fluid" />
+                        <div className="box-c">
+                          <img src="images/ico.png" className="img-fluid" />
                           <p>LOREM IPSUM <span>+ 12 LEJ</span></p>
                         </div>
                       </li>
                       <li>
-                        <div class="box-c">
-                          <img src="images/ico.png" class="img-fluid" />
+                        <div className="box-c">
+                          <img src="images/ico.png" className="img-fluid" />
                           <p>LOREM IPSUM <span>+ 12 LEJ</span></p>
                         </div>
-                        <div class="box-c">
-                          <img src="images/ico.png" class="img-fluid" />
+                        <div className="box-c">
+                          <img src="images/ico.png" className="img-fluid" />
                           <p>LOREM IPSUM <span>+ 12 LEJ</span></p>
                         </div>
                       </li>
                       <li>
-                        <div class="box-c">
-                          <img src="images/ico.png" class="img-fluid" />
+                        <div className="box-c">
+                          <img src="images/ico.png" className="img-fluid" />
                           <p>LOREM IPSUM <span>+ 12 LEJ</span></p>
                         </div>
-                        <div class="box-c">
-                          <img src="images/ico.png" class="img-fluid" />
+                        <div className="box-c">
+                          <img src="images/ico.png" className="img-fluid" />
                           <p>LOREM IPSUM <span>+ 12 LEJ</span></p>
                         </div>
                       </li>
@@ -504,19 +504,19 @@
                   </div>
                 </div>
               </div>
-              <div class="col-md-6 padding-right">
-                <div class="partner-inkbxtp margbtm-15">
-                  <div class="partner-inkbx">
-                    <div class="partner-inkbxlft">
+              <div className="col-md-6 padding-right">
+                <div className="partner-inkbxtp margbtm-15">
+                  <div className="partner-inkbx">
+                    <div className="partner-inkbxlft">
                       <img src="images/pr9.png" />
                     </div>
-                    <div class="partner-inkbxrht">
+                    <div className="partner-inkbxrht">
                       <h3>PARADICSOMSZENDVICS</h3>
                       <p>
                         Lorem ipsum dolor sit amet, conse-ctetuer adipiscing. SI
                         ipsum dolor sit amet Lorem DOlor Si marto.
                       </p>
-                      <ul class="size-list">
+                      <ul className="size-list">
                         <li><a href="#">SMALL</a></li>
                         <li><a href="#">MEDIUM</a></li>
                         <li><a href="#">LARGE</a></li>
@@ -526,16 +526,16 @@
                           /></a>
                         </li>
                         <li>
-                          <a href="#" class="small-cart"
+                          <a href="#" className="small-cart"
                             ><img src="images/cart-small.png" />KOSÁRBA RAKOM</a
                           >
                         </li>
                       </ul>
                     </div>
-                    <div class="clear"></div>
+                    <div className="clear"></div>
                   </div>
-                  <div class="text-center">
-                    <a href="#" class="extra-btn">
+                  <div className="text-center">
+                    <a href="#" className="extra-btn">
                       EXTRÁK <img src="images/drop-arrow.png"
                     /></a>
                   </div>
@@ -545,9 +545,9 @@
           </div>
         </div>
 
-        <div class="row">
-          <div class="col-md-12 text-center">
-            <a href="#" class="text-white expand-link"
+        <div className="row">
+          <div className="col-md-12 text-center">
+            <a href="#" className="text-white expand-link"
               >TOVÁBBI ÉTTERMEK<img src="images/drop-arrow.png" />
             </a>
           </div>
@@ -557,7 +557,7 @@
 
     <!-- product-section Ends -->
 
-    <div class="piza-section">
+    <div className="piza-section">
       <div>
         <svg
           id="Layer_1"
@@ -574,29 +574,29 @@
           </defs>
           <title>svg wave2</title>
           <path
-            class="cls-1"
+            className="cls-1"
             d="M1920,28.5S1571.75,137,1018.56,82.78,0,142.75,0,142.75V0H1920Z"
           />
         </svg>
       </div>
-      <div class="container">
-        <div class="row">
-          <div class="col-md-9 mx-auto">
-            <div class="piza-bg">
-              <div class="row">
-                <div class="col-md-12">
-                  <div class="col-md-12 text-center">
-                    <h2 class="text-white babas-regular">
+      <div className="container">
+        <div className="row">
+          <div className="col-md-9 mx-auto">
+            <div className="piza-bg">
+              <div className="row">
+                <div className="col-md-12">
+                  <div className="col-md-12 text-center">
+                    <h2 className="text-white babas-regular">
                       SPÓROLJ MEG HAVI 10%-ot!
                     </h2>
                   </div>
                 </div>
               </div>
-              <div class="row">
-                <div class="col-md-6">
+              <div className="row">
+                <div className="col-md-6">
                   <img src="images/home-pizza10.png" />
                 </div>
-                <div class="col-md-6">
+                <div className="col-md-6">
                   <p>
                     Lorem ipsum dolor sit amet, consectetuer adipiscing elit sed
                     diam MOLENO MANO ET.
@@ -605,7 +605,7 @@
                     ipsum dolor sit amet,consectetuer adipiscing elit,sed diam
                     MOLENO MANO ET.
                   </p>
-                  <a href="#" class="btn-yellow">PRÓBÁLD KI!</a>
+                  <a href="#" className="btn-yellow">PRÓBÁLD KI!</a>
                 </div>
               </div>
             </div>
@@ -614,39 +614,39 @@
       </div>
     </div>
 
-    <footer class="black-bg">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-6">
-            <div class="footer-body">
-              <h2 class="text-yellow">KÖVESS MINKET:</h2>
+    <footer className="black-bg">
+      <div className="container">
+        <div className="row">
+          <div className="col-md-6">
+            <div className="footer-body">
+              <h2 className="text-yellow">KÖVESS MINKET:</h2>
 
-              <ul class="footer-social">
+              <ul className="footer-social">
                 <li>
                   <a href="#"
-                    ><i class="fa fa-facebook" aria-hidden="true"></i>
+                    ><i className="fa fa-facebook" aria-hidden="true"></i>
                     /foodnetofﬁcial</a
                   >
                 </li>
                 <li>
                   <a href="#"
-                    ><i class="fa fa-instagram" aria-hidden="true"></i
+                    ><i className="fa fa-instagram" aria-hidden="true"></i
                     >@foodnetofﬁcial</a
                   >
                 </li>
                 <li>
                   <a href="#"
-                    ><i class="fa fa-youtube-play" aria-hidden="true"></i
+                    ><i className="fa fa-youtube-play" aria-hidden="true"></i
                     >/foodnetofﬁcial
                   </a>
                 </li>
               </ul>
             </div>
           </div>
-          <div class="col-md-6">
-            <div class="footer-body">
-              <h2 class="text-yellow">EGYÉB OLDALAK:</h2>
-              <ul class="normal-list">
+          <div className="col-md-6">
+            <div className="footer-body">
+              <h2 className="text-yellow">EGYÉB OLDALAK:</h2>
+              <ul className="normal-list">
                 <li><a href="#">Termeni și Condiții</a></li>
                 <li><a href="#">Politica de conﬁdențialitate</a></li>
                 <li><a href="#">Returnare produse</a></li>
@@ -656,9 +656,9 @@
             </div>
           </div>
         </div>
-        <div class="row">
-          <div class="col-md-12">
-            <div class="footer-bottom text-center">
+        <div className="row">
+          <div className="col-md-12">
+            <div className="footer-bottom text-center">
               <p>©2020-2021 foodnet.ro - Minden jog fenntartva.</p>
             </div>
           </div>
