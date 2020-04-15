@@ -1,6 +1,7 @@
 const fileHelper = require("../../util/file");
 const { validationResult } = require("express-validator/check");
 const VariantTranslation = require("../../models/ProductVariantTranslation");
+const productVariant = require("../../models/ProductVariant");
 const ProductCategoryTranslation = require("../../models/ProductCategoryTranslation");
 const ProductVariantsExtras = require("../../models/ProductVariantsExtras");
 
@@ -36,6 +37,7 @@ exports.postAddVariant = async (req, res, next) => {
   const roName = req.body.roName;
   const huName = req.body.huName;
   const enName = req.body.enName;
+  const sku = req.body.sku;
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
@@ -49,6 +51,7 @@ exports.postAddVariant = async (req, res, next) => {
         roName: roName,
         huName: huName,
         enName: enName,
+        sku: sku,
       },
       errorMessage: errors.array()[0].msg,
       validationErrors: errors.array(),
@@ -62,16 +65,19 @@ exports.postAddVariant = async (req, res, next) => {
       name: roName,
       languageId: 1,
       productVariantId: variant.id,
+      sku: sku,
     });
     await VariantTranslation.create({
       name: huName,
       languageId: 2,
+      sku: sku,
       productVariantId: variant.id,
     });
 
     await VariantTranslation.create({
       name: enName,
       languageId: 3,
+      sku: sku,
       productVariantId: variant.id,
     });
   }
@@ -94,6 +100,7 @@ exports.postAddVariant = async (req, res, next) => {
 exports.postEditVariant = async (req, res, next) => {
   const vrId = req.body.variantId;
   const extId = req.body.extraId;
+  const updatedSku = req.body.sku;
   const updatedRoName = req.body.roName;
   const updatedHuName = req.body.huName;
   const updatedEnName = req.body.enName;
@@ -105,21 +112,23 @@ exports.postEditVariant = async (req, res, next) => {
 
   const ext = await req.admin.getExtras();
 
-  async function productVariantTransaltion() {
+  async function updateProductVariant() {
     await VariantTranslation.update(
-      { name: updatedRoName },
+      { name: updatedRoName, sku: updatedSku },
+
       { where: { productVariantId: vrId, languageId: 1 } }
     );
     await VariantTranslation.update(
-      { name: updatedHuName },
+      { name: updatedHuName, sku: updatedSku },
+
       { where: { productVariantId: vrId, languageId: 2 } }
     );
     await VariantTranslation.update(
-      { name: updatedEnName },
+      { name: updatedEnName, sku: updatedSku },
+
       { where: { productVariantId: vrId, languageId: 3 } }
     );
-  }
-  async function productExtraCreate() {
+
     await ProductVariantsExtras.create({
       price: updatedExtraPrice,
       discountedPrice: updatedExtraDiscountedPrice,
@@ -131,16 +140,15 @@ exports.postEditVariant = async (req, res, next) => {
     });
   }
 
-  productVariantTransaltion();
-  productExtraCreate();
-  console.log("extIdextIdextIdextId", extId);
-  try {
-    const x = 0;
-  } catch (err) {
-    const e = new Error(err);
-    e.httpStatusCode = 500;
-    return next(e);
-  }
+  updateProductVariant()
+    .then((result) => {
+      res.redirect("/");
+    })
+    .catch((err) => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
 };
 
 exports.getEditVariant = async (req, res, next) => {
@@ -152,7 +160,6 @@ exports.getEditVariant = async (req, res, next) => {
   const variant = await VariantTranslation.findAll({
     where: { productVariantId: vrId },
   });
-  console.log(variant[0].name);
 
   if (!variant) {
     return res.redirect("/");
@@ -163,6 +170,7 @@ exports.getEditVariant = async (req, res, next) => {
     path: "/admin/edit-product",
     editing: editMode,
     variant: variant,
+
     ext: ext,
     variantId: vrId,
     hasError: false,
@@ -171,7 +179,6 @@ exports.getEditVariant = async (req, res, next) => {
   });
 };
 
-//////
 exports.getAddProductCategory = (req, res, next) => {
   res.render("category/edit-category", {
     pageTitle: "Add Product",

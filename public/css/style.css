@@ -516,17 +516,17 @@ Version: 1.0.0
 .bg-dropbox {
   background-color: #3d9ae8;
 }
-.btn-extras-save{
+.btn-extras-save {
   border-radius: 3% !important;
 }
 .bg-dribble {
   background-color: #ea4c89;
 }
 
-.extra-name{
+.extra-name {
   margin-top: -15px;
 }
-.extra-margin-top{
+.extra-margin-top {
   margin-top: 20px;
 }
 .text-red {
@@ -724,7 +724,7 @@ pre {
 }
 .ms-panel-header h6 {
   margin-bottom: 0;
-  text-transform: uppercase;
+  /* text-transform: uppercase; */
   font-weight: 700;
 }
 .ms-panel-header .btn {
@@ -1842,7 +1842,7 @@ a.ms-confirm-trigger:hover {
   margin-bottom: 0;
 }
 .ms-infographics-widget .ms-card-body h6 {
-  text-transform: uppercase;
+  /* text-transform: uppercase; */
 }
 .ms-card-change,
 .ms-card-change i {

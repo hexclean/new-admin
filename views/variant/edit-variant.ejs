@@ -22,6 +22,17 @@
                   <div class="ms-panel-body">
                      <div class="form-row">
                         <div class="col-md-12 mb-3">
+                           <label for="sku">Sku</label>
+                           <div class="input-group">
+                              <input
+                                 class="form-control <%= validationErrors.find(e => e.param === 'sku') ? 'invalid' : '' %>"
+                                 type="text"
+                                 name="sku"
+                                 id="sku"
+                                 value="<% if (editing || hasError) { %><%= variant[0].sku %><% } %>">
+                           </div>
+                        </div>
+                        <div class="col-md-12 mb-3">
                            <label for="roName"><%= lingua.create_product_name1 %></label>
                            <div class="input-group">
                               <input
@@ -54,131 +65,134 @@
                                  value="<% if (editing || hasError) { %><%= variant[2].name %><% } %>">
                            </div>
                         </div>
-                     </div>
-                  </div>
-               </div>
-            </div>
-            <div class="col-xl-6 col-md-12">
-               <div class="row">
-                  <div class="col-md-12">
-                     <div class="ms-panel">
-                        <div class="ms-panel-header">
-                           <h6>Product</h6>
-                        </div>
                         <% if (editing) { %>
-                        <input
-                           type="hidden"
-                           value="<%= variantId %>"
-                           name="variantId"
-                           />
-                        <% } %>
-                        <button type="button" class="btn btn-pill btn-success has-icon btn-extras-save"><i class="flaticon-tick-inside-circle"></i> 
-
-                        <% if (editing) { %>Update Product<% } else { %>Add
-                        Product<% } %>
-                        </button>
+                           <input
+                              type="hidden"
+                              value="<%= variantId %>"
+                              name="variantId"
+                              />
+                           <% } %>
+                           <button class="btn btn-success has-icon" type="submit">
+                           <% if (editing) { %>Update Product<% } else { %>Add
+                           Product<% } %>
+                           </button>
                      </div>
                   </div>
                </div>
             </div>
          </div>
-         <% if (editing) { %>
-         <% if (ext.length > 0) { %>
-         <div class="ms-content-wrapper">
-            <div class="row">
-               <div class="col-md-12">
-                  <div class="row">
-                     <% for (let extra of ext) { %>
-                     <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
-                        <div class="ms-card">
-                           <div class="d-flex justify-content-center extra-margin-top">
-                              <label class="ms-switch">
-                              <input type="checkbox" > <span class="ms-switch-slider ms-switch-success round"></span>
-                              </label> 
-                           </div>
-                           <div class="ms-card-body">
-                              <div class="new  d-flex justify-content-center extra-name">
-                                 <h6 class="mb-0"><b>Veggies</b> </h6>
-                              </div>
-                              <div class="col-md-12 mb-3">
-                                 <label for="price">Price</label>
-                                 <div class="input-group">
-                                    <input
-                                       class="form-control <%= validationErrors.find(e => e.param === 'price') ? 'invalid' : '' %>"
-                                       type="text"
-                                       name="price"
-                                       id="price"
-                                       value="<% if (editing || hasError) { %><%= extra.price %><% } %>"
-                                       />
+        
+           
+               
+                    
+                  
+           
+        
+               </div>
+               </div>
+                  <div class="ms-panel ms-btn-display">
+                     <div class="ms-panel-header">
+                     <h6>A <%= variant[0].sku %> hozzárendelhető extrái:</h6>
+                     </div>
+                     
+                  </div>
+                  <% if (editing) { %>
+                  <% if (ext.length > 0) { %>
+                  <div class="ms-content-wrapper">
+                     <div class="row">
+                        <div class="col-md-12">
+                           <div class="row">
+                              <% for (let extra of ext) { %>
+                              <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
+                                 <div class="ms-card">
+                                    <div class="d-flex justify-content-center extra-margin-top">
+                                       <label class="ms-switch">
+                                       <input type="checkbox" > <span class="ms-switch-slider ms-switch-success round"></span>
+                                       </label> 
+                                    </div>
+                                    <div class="ms-card-body">
+                                       <div class="new  d-flex justify-content-center extra-name">
+                                          <h6 class="mb-0"><b>Veggies</b> </h6>
+                                       </div>
+                                       <div class="col-md-12 mb-3">
+                                          <label for="price">Price</label>
+                                          <div class="input-group">
+                                             <input
+                                                class="form-control <%= validationErrors.find(e => e.param === 'price') ? 'invalid' : '' %>"
+                                                type="text"
+                                                name="price"
+                                                id="price"
+                                                value="<% if (editing || hasError) { %><%= extra.price %><% } %>"
+                                                />
+                                          </div>
+                                       </div>
+                                       <div class="col-md-12 mb-3">
+                                          <label for="discountedPrice"
+                                             >Discounted Price</label
+                                             >
+                                          <div class="input-group">
+                                             <input
+                                                class="form-control <%= validationErrors.find(e => e.param === 'discountedPrice') ? 'invalid' : '' %>"
+                                                type="text"
+                                                name="discountedPrice"
+                                                id="discountedPrice"
+                                                value="<% if (editing || hasError) { %><%= extra.discountedPrice %><% } %>"
+                                                />
+                                          </div>
+                                       </div>
+                                       <div class="col-md-12 mb-3">
+                                          <label for="quantityMin"
+                                             >Quantity Minimum</label
+                                             >
+                                          <div class="input-group">
+                                             <input
+                                                class="form-control <%= validationErrors.find(e => e.param === 'quantityMin') ? 'invalid' : '' %>"
+                                                type="text"
+                                                name="quantityMin"
+                                                id="quantityMin"
+                                                value="<% if (editing || hasError) { %><%= extra.quantityMin %><% } %>"
+                                                />
+                                          </div>
+                                       </div>
+                                       <div class="col-md-12 mb-3">
+                                          <label for="quantityMax"
+                                             >Quantity Maximum</label
+                                             >
+                                          <div class="input-group">
+                                             <input
+                                                class="form-control <%= validationErrors.find(e => e.param === 'quantityMax') ? 'invalid' : '' %>"
+                                                type="text"
+                                                name="quantityMax"
+                                                id="quantityMax"
+                                                value="<% if (editing || hasError) { %><%= extra.quantityMax %><% } %>"
+                                                />
+                                          </div>
+                                       </div>
+                                       <div class="col-md-12 mb-3">
+                                          <label for="mandatory"
+                                             >Mandatory</label
+                                             >
+                                          <div class="input-group">
+                                             <input
+                                                class="form-control <%= validationErrors.find(e => e.param === 'mandatory') ? 'invalid' : '' %>"
+                                                type="text"
+                                                name="mandatory"
+                                                id="mandatory"
+                                                value="<% if (editing || hasError) { %><%= extra.mandatory %><% } %>"
+                                                />
+                                          </div>
+                                       </div>
+                                    </div>
                                  </div>
                               </div>
-                              <div class="col-md-12 mb-3">
-                                 <label for="discountedPrice"
-                                    >Discounted Price</label
-                                    >
-                                 <div class="input-group">
-                                    <input
-                                       class="form-control <%= validationErrors.find(e => e.param === 'discountedPrice') ? 'invalid' : '' %>"
-                                       type="text"
-                                       name="discountedPrice"
-                                       id="discountedPrice"
-                                       value="<% if (editing || hasError) { %><%= extra.discountedPrice %><% } %>"
-                                       />
-                                 </div>
-                              </div>
-                              <div class="col-md-12 mb-3">
-                                 <label for="quantityMin"
-                                    >Quantity Minimum</label
-                                    >
-                                 <div class="input-group">
-                                    <input
-                                       class="form-control <%= validationErrors.find(e => e.param === 'quantityMin') ? 'invalid' : '' %>"
-                                       type="text"
-                                       name="quantityMin"
-                                       id="quantityMin"
-                                       value="<% if (editing || hasError) { %><%= extra.quantityMin %><% } %>"
-                                       />
-                                 </div>
-                              </div>
-                              <div class="col-md-12 mb-3">
-                                 <label for="quantityMax"
-                                    >Quantity Maximum</label
-                                    >
-                                 <div class="input-group">
-                                    <input
-                                       class="form-control <%= validationErrors.find(e => e.param === 'quantityMax') ? 'invalid' : '' %>"
-                                       type="text"
-                                       name="quantityMax"
-                                       id="quantityMax"
-                                       value="<% if (editing || hasError) { %><%= extra.quantityMax %><% } %>"
-                                       />
-                                 </div>
-                              </div>
-                              <div class="col-md-12 mb-3">
-                                 <label for="mandatory"
-                                    >Mandatory</label
-                                    >
-                                 <div class="input-group">
-                                    <input
-                                       class="form-control <%= validationErrors.find(e => e.param === 'mandatory') ? 'invalid' : '' %>"
-                                       type="text"
-                                       name="mandatory"
-                                       id="mandatory"
-                                       value="<% if (editing || hasError) { %><%= extra.mandatory %><% } %>"
-                                       />
-                                 </div>
-                              </div>
+                              <% } %>
                            </div>
                         </div>
                      </div>
-                     <% } %>
                   </div>
-               </div>
-            </div>
-         </div>
-         <% } else { %>
-         <% } %>
-         <% } %>
+                  <% } else { %>
+                  <% } %>
+                  <% } %>
       </form>
    </main>
    <%- include('../includes/end.ejs') %>
