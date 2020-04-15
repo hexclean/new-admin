@@ -1848,6 +1848,9 @@ a.ms-confirm-trigger:hover {
 .ms-card-change i {
   font-size: 1.5rem;
 }
+.btn-left {
+  margin-left: 73%;
+}
 .ms-infographics-widget .ms-card-body + i {
   position: absolute;
   top: 1rem;

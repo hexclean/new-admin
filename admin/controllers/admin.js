@@ -28,11 +28,13 @@ exports.getSearchProduct = (req, res, next) => {
     });
 };
 
-exports.getAddProduct = (req, res, next) => {
+exports.getAddProduct = async (req, res, next) => {
+  const ext = await req.admin.getProductVariants();
   res.render("admin/edit-product", {
     pageTitle: "Add Product",
     path: "/admin/add-product",
     editing: false,
+    ext: ext,
     hasError: false,
     errorMessage: null,
     validationErrors: [],
@@ -111,7 +113,7 @@ exports.postAddProduct = async (req, res, next) => {
     imageUrl: imageUrl,
     price: price,
   });
-
+  const ext = await req.admin.getProductVariants();
   async function productTransaltion() {
     await ProductTranslation.create({
       title: roTitle,
@@ -139,9 +141,10 @@ exports.postAddProduct = async (req, res, next) => {
 
   productTransaltion()
     .then((result) => {
-      console.log(product.id);
-
-      res.redirect("/admin/add-product");
+      res.redirect("/admin/add-product"),
+        {
+          ext: ext,
+        };
     })
     .catch((err) => {
       const error = new Error(err);
