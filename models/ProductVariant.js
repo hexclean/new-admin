@@ -8,6 +8,12 @@ const ProductVariant = sequelize.define("productVariant", {
     allowNull: false,
     primaryKey: true,
   },
+  // code: {
+  //   type: Sequelize.INTEGER,
+  //   autoIncrement: true,
+  //   allowNull: false,
+  //   primaryKey: true,
+  // },
 });
 
 module.exports = ProductVariant;

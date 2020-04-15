@@ -516,10 +516,19 @@ Version: 1.0.0
 .bg-dropbox {
   background-color: #3d9ae8;
 }
+.btn-extras-save{
+  border-radius: 3% !important;
+}
 .bg-dribble {
   background-color: #ea4c89;
 }
 
+.extra-name{
+  margin-top: -15px;
+}
+.extra-margin-top{
+  margin-top: 20px;
+}
 .text-red {
   color: #ff0018;
 }
