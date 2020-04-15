@@ -28,7 +28,7 @@
                                  type="text"
                                  name="roTitle"
                                  id="roTitle"
-                                 value="<% if (editing || hasError) { %><%= product.title.ro %><% } %>">
+                                 value="<% if (editing || hasError) { %><%= product.id %><% } %>">
                            </div>
                         </div>
                         <div class="col-md-12 mb-3">
@@ -39,7 +39,7 @@
                                  type="text"
                                  name="huTitle"
                                  id="huTitle"
-                                 value="<% if (editing || hasError) { %><%= product.title.hu %><% } %>">
+                                 value="<% if (editing || hasError) { %><%= product.id %><% } %>">
                            </div>
                         </div>
                         <div class="col-md-12 mb-3">
@@ -50,7 +50,7 @@
                                  type="text"
                                  name="enTitle"
                                  id="enTitle"
-                                 value="<% if (editing || hasError) { %><%= product.title.en %><% } %>">
+                                 value="<% if (editing || hasError) { %><%= product.id %><% } %>">
                            </div>
                         </div>
                         <div class="input-group mb-3 x">
@@ -145,7 +145,7 @@
                                  class="form-control <%= validationErrors.find(e => e.param === 'roDescription') ? 'invalid' : '' %>"
                                  name="roDescription"
                                  id="roDescription"
-                                 rows="5"> <% if (editing || hasError) { %><%= product.description.ro %><% } %></textarea>
+                                 rows="5"> <% if (editing || hasError) { %><%= product.id %><% } %></textarea>
                               <div class="invalid-feedback">
                                  Please provide a message.
                               </div>
@@ -158,7 +158,7 @@
                                  class="form-control <%= validationErrors.find(e => e.param === 'huDescription') ? 'invalid' : '' %>"
                                  name="huDescription"
                                  id="huDescription"
-                                 rows="5"><% if (editing || hasError) { %><%= product.description.hu %><% } %></textarea>
+                                 rows="5"><% if (editing || hasError) { %><%= product.id %><% } %></textarea>
                               <div class="invalid-feedback">
                                  Please provide a message.
                               </div>
@@ -171,7 +171,7 @@
                                  class="form-control <%= validationErrors.find(e => e.param === 'enDescription') ? 'invalid' : '' %>"
                                  name="enDescription"
                                  id="enDescription"
-                                 rows="5"> <% if (editing || hasError) { %><%= product.description.en %><% } %></textarea>
+                                 rows="5"> <% if (editing || hasError) { %><%= product.id %><% } %></textarea>
                               <div class="invalid-feedback">
                                  Please provide a message.
                               </div>

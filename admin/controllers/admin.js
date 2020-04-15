@@ -174,23 +174,26 @@ exports.getEditProduct = async (req, res, next) => {
   if (!editMode) {
     return res.redirect("/");
   }
-  const prodId = req.params.productId;
-  const product = await req.user.getProducts({ where: { id: prodId } });
+  const prodId = await req.params.productId;
+  req.admin
+    .getProducts({ where: { id: prodId } })
 
-  if (!product) {
-    return res.redirect("/");
-  }
-
-  res.render("admin/edit-product", {
-    pageTitle: "Edit Product",
-    path: "/admin/edit-product",
-    editing: editMode,
-    prods: product,
-    hasError: false,
-    errorMessage: null,
-    validationErrors: [],
-    ords: extras,
-  });
+    .then((products) => {
+      const product = products[0];
+      if (!product) {
+        return res.redirect("/");
+      }
+      res.render("admin/edit-product", {
+        pageTitle: "Edit Product",
+        path: "/admin/edit-product",
+        editing: editMode,
+        product: product,
+        hasError: false,
+        errorMessage: null,
+        validationErrors: [],
+      });
+    })
+    .catch((err) => console.log(err));
 };
 
 exports.postEditProduct = (req, res, next) => {
@@ -276,14 +279,11 @@ exports.postEditProduct = (req, res, next) => {
 };
 
 exports.getProducts = async (req, res, next) => {
-  const test = await Product.findAll();
-  await Product.findAll()
+  await req.admin
+    .getProducts()
     .then((products) => {
-      var currentLanguage = req.cookies.language;
       res.render("admin/products", {
         prods: products,
-        ts: test,
-        currentLanguage: currentLanguage,
         pageTitle: "Admin Products",
         path: "/admin/products",
       });

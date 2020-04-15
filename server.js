@@ -22,6 +22,7 @@ const ExtraCategory = require("./models/ExtraCategory");
 const ProductCategory = require("./models/ProductCategory");
 const ProductCategoryTranslation = require("./models/ProductCategoryTranslation");
 const ProductVariantsExtras = require("./models/ProductVariantsExtras");
+const ProductExtras = require("./models/productExtra");
 const Language = require("./models/Language");
 const Admin = require("./models/Admin");
 const app = express();
@@ -83,7 +84,8 @@ const fileFilter = (req, file, cb) => {
   if (
     file.mimetype === "image/png" ||
     file.mimetype === "image/jpg" ||
-    file.mimetype === "image/jpeg"
+    file.mimetype === "image/jpeg" ||
+    file.mimetype === "image/ods"
   ) {
     cb(null, true);
   } else {
@@ -157,6 +159,8 @@ Language.hasOne(ExtraTranslation);
 Language.hasOne(ProductCategoryTranslation);
 // Product -> Translation
 Product.hasOne(ProductTranslation);
+Product.hasMany(ProductExtras);
+Extra.hasMany(ProductExtras);
 ProductVariant.hasOne(ProductVariantTranslation);
 Extra.hasOne(ExtraTranslation);
 ProductCategory.hasMany(ProductCategoryTranslation);

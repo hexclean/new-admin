@@ -46,7 +46,6 @@ exports.postAddExtra = async (req, res, next) => {
     await ExtraTranslation.create({
       name: roName,
       languageId: 1,
-
       extraId: extra.id,
     });
     await ExtraTranslation.create({

@@ -127,6 +127,7 @@ exports.postEditVariant = async (req, res, next) => {
       quantityMax: updatedExtraQuantityMax,
       mandatory: updatedExtraMandatory,
       productVariantId: vrId,
+      active: 1,
     });
   }
 

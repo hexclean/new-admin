@@ -11,31 +11,31 @@ body {
 
 @font-face {
   font-family: "montserratextrabold";
-  src: url("../font/montserrat-extrabold.woff2") format("woff2"),
-    url("../font/montserrat-extrabold.woff") format("woff");
+  src: url("/font/montserrat-extrabold.woff2") format("woff2"),
+    url("/font/montserrat-extrabold.woff") format("woff");
   font-weight: normal;
   font-style: normal;
 }
 @font-face {
   font-family: "bebas_neuebold";
-  src: url("../font/bebasneue_bold.woff2") format("woff2"),
-    url("../font/bebasneue_bold.woff") format("woff");
+  src: url("/font/bebasneue_bold.woff2") format("woff2"),
+    url("/font/bebasneue_bold.woff") format("woff");
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
   font-family: "bebas_neueregular";
-  src: url("../font/bebasneue_regular.woff2") format("woff2"),
-    url("../font/bebasneue_regular.woff") format("woff");
+  src: url("/font/bebasneue_regular.woff2") format("woff2"),
+    url("/font/bebasneue_regular.woff") format("woff");
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
   font-family: "montserratsemibold";
-  src: url("../font/montserrat-semibold.woff2") format("woff2"),
-    url("../font/montserrat-semibold.woff") format("woff");
+  src: url("/font/montserrat-semibold.woff2") format("woff2"),
+    url("/font/montserrat-semibold.woff") format("woff");
   font-weight: normal;
   font-style: normal;
 }
@@ -249,7 +249,7 @@ p {
   clear: both;
 }
 .black-bg {
-  background: #1c1c1c url("../images/wave-bl.svg") no-repeat center bottom fixed;
+  background: #1c1c1c url("/images/wave-bl.svg") no-repeat center bottom fixed;
 }
 h2 {
   font-size: 30px;
@@ -359,7 +359,7 @@ h2 {
 .piza-section {
   position: relative;
   padding: 0px 0px 30px;
-  background: url("../images/home-first.jpg") no-repeat left center;
+  background: url("/images/home-first.jpg") no-repeat left center;
   background-size: cover;
 }
 .banner-section p {
@@ -374,14 +374,14 @@ h2 {
 .banner-section {
   position: relative;
   padding: 200px 0px 0px;
-  background: url("../images/bg2.jpg") no-repeat left center fixed;
+  background: url("/images/bg2.jpg") no-repeat left center fixed;
   background-size: cover;
 }
 
 .piza-bg {
   position: relative;
   padding: 70px 30px 70px;
-  background: url(../images/home-pizzabg.png) no-repeat center center;
+  background: url(/images/home-pizzabg.png) no-repeat center center;
   background-size: contain;
 }
 .search-box .input-group {

@@ -9,7 +9,6 @@ import wave4 from "../wave4.svg";
 import Navigation from "./Navigation";
 export const Home = () => (
   <div>
-    <Navigation />
     <div className="banner-section">
       <div className="container">
         <div className="row">
@@ -27,7 +26,7 @@ export const Home = () => (
             </a>
           </div>
           <div className="col-md-5">
-            <img src="images/burger.png" />
+            <img src="images/burger.png" alt="" />
           </div>
         </div>
       </div>
@@ -49,21 +48,21 @@ export const Home = () => (
               <div className="col-md-6 padding-right">
                 <div className="partner-inkbx margbtm-15">
                   <div className="partner-inkbxlft">
-                    <img src="images/rexo.png" />
+                    <img src="images/rexo.png" alt="" />
                   </div>
                   <div className="partner-inkbxrht">
                     <h3>NATURE AND ORGANIC RESTAURANT</h3>
                     <ul className="icon-list">
                       <li>
-                        <img src="images/info-info-icon-1.png" />
+                        <img src="images/info-info-icon-1.png" alt="" />
                         09:00 - 23:00
                       </li>
                       <li>
-                        <img src="images/info-icon-2.png" />
+                        <img src="images/info-icon-2.png" alt="" />
                         15-25 min
                       </li>
                       <li>
-                        <img src="images/info-icon-3.png" />
+                        <img src="images/info-icon-3.png" alt="" />
                         50 RON+
                       </li>
                     </ul>
@@ -74,7 +73,7 @@ export const Home = () => (
               <div className="col-md-6">
                 <div className="partner-inkbx margbtm-15">
                   <div className="partner-inkbxlft">
-                    <img src="images/Asset-1.png" />
+                    <img src="images/Asset-1.png" alt="" />
                   </div>
                   <div className="partner-inkbxrht">
                     <h3>
@@ -83,15 +82,15 @@ export const Home = () => (
                     </h3>
                     <ul className="icon-list">
                       <li>
-                        <img src="images/info-icon-1.png" />
+                        <img src="images/info-icon-1.png" alt="" />
                         12:00 - 22:00
                       </li>
                       <li>
-                        <img src="images/info-icon-2.png" />
+                        <img src="images/info-icon-2.png" alt="" />
                         10-15 min
                       </li>
                       <li>
-                        <img src="images/info-icon-3.png" />
+                        <img src="images/info-icon-3.png" alt="" />
                         25 RON+
                       </li>
                     </ul>
@@ -102,7 +101,7 @@ export const Home = () => (
               <div className="col-md-6 padding-right">
                 <div className="partner-inkbx">
                   <div className="partner-inkbxlft">
-                    <img src="images/rexo.png" />
+                    <img src="images/rexo.png" alt="" />
                   </div>
                   <div className="partner-inkbxrht">
                     <h3>
@@ -112,15 +111,15 @@ export const Home = () => (
                     </h3>
                     <ul className="icon-list">
                       <li>
-                        <img src="images/info-icon-1.png" />
+                        <img src="images/info-icon-1.png" alt="" />
                         09:00 - 23:00
                       </li>
                       <li>
-                        <img src="images/info-icon-2.png" />
+                        <img src="images/info-icon-2.png" alt="" />
                         15-25 min
                       </li>
                       <li>
-                        <img src="images/info-icon-3.png" />
+                        <img src="images/info-icon-3.png" alt="" />
                         50 RON+
                       </li>
                     </ul>
@@ -131,7 +130,7 @@ export const Home = () => (
               <div className="col-md-6">
                 <div className="partner-inkbx">
                   <div className="partner-inkbxlft">
-                    <img src="images/Asset-1.png" />
+                    <img src="images/Asset-1.png" alt="" />
                   </div>
                   <div className="partner-inkbxrht">
                     <h3>
@@ -140,15 +139,15 @@ export const Home = () => (
                     </h3>
                     <ul className="icon-list">
                       <li>
-                        <img src="images/info-icon-1.png" />
+                        <img src="images/info-icon-1.png" alt="" />
                         12:00 - 22:00
                       </li>
                       <li>
-                        <img src="images/info-icon-2.png" />
+                        <img src="images/info-icon-2.png" alt="" />
                         10-15 min
                       </li>
                       <li>
-                        <img src="images/info-icon-3.png" />
+                        <img src="images/info-icon-3.png" alt="" />
                         25 RON+
                       </li>
                     </ul>
@@ -164,7 +163,7 @@ export const Home = () => (
           <div className="col-md-12 text-center">
             <a href="#" className="text-white expand-link">
               TOVÁBBI ÉTTERMEK
-              <img src="images/drop-arrow.png" />
+              <img src="images/drop-arrow.png" alt="" />
             </a>
           </div>
         </div>
@@ -185,7 +184,7 @@ export const Home = () => (
         </div>
         <div className="row">
           <div className="col-md-6">
-            <img src="images/home-pizza10.png" />
+            <img src="images/home-pizza10.png" alt="" />
           </div>
           <div className="col-md-6">
             <p>
@@ -222,16 +221,16 @@ export const Home = () => (
                   KÉSZÜLÉKEKRE IS!{" "}
                 </h3>
                 <a href="#" className="margrht20">
-                  <img src="images/appstore.png" />
+                  <img src="images/appstore.png" alt="" />
                 </a>
                 <a href="#" className="">
-                  <img src="images/googleplay.png" />
+                  <img src="images/googleplay.png" alt="" />
                 </a>
               </div>
             </div>
             <div className="col-md-6">
               <div className="happymen-right">
-                <img src="images/happymen.png" />
+                <img src="images/happymen.png" alt="" />
               </div>
             </div>
           </div>

@@ -3,6 +3,7 @@ const express = require("express");
 const adminController = require("../controllers/admin");
 const extraController = require("../controllers/extra");
 const variantsController = require("../controllers/variants");
+const migrationController = require("../controllers/migration");
 // const adminProfileController = require("../controllers/profile");
 // const adminOrderController = require("../controllers/orders");
 // const adminCouponController = require("../controllers/coupon");
@@ -12,6 +13,15 @@ const variantsController = require("../controllers/variants");
 
 const isAuth = require("../../middleware/is-auth");
 const router = express.Router();
+///
+
+router.get("/step-one", isAuth, migrationController.getIndex);
+router.get("/import-extras", isAuth, migrationController.getAddExtra);
+router.post(
+  "/import-extras",
+
+  migrationController.postAddExtra
+);
 
 //
 // router.get("/users", adminUsersController.getOrders);
