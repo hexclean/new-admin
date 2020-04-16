@@ -140,6 +140,7 @@ app.use(authRoutes);
 
 // Admin -> Products, Variant, Extra
 Product.belongsTo(Admin, { constrains: true, onDelete: "CASCADE" });
+
 // Extra.belongsTo(ExtraTranslation, { constrains: true, onDelete: "CASCADE" });
 Admin.hasMany(Product);
 
@@ -153,20 +154,20 @@ ProductCategory.belongsTo(Admin, { constrains: true, onDelete: "CASCADE" });
 Admin.hasMany(ProductCategory);
 
 // Language -> ProductTranslation, VariantTranslation, ExtraTranslation
-Language.hasOne(ProductTranslation);
-Language.hasOne(ProductVariantTranslation);
-Language.hasOne(ExtraTranslation);
-Language.hasOne(ProductCategoryTranslation);
+Language.hasMany(ProductTranslation);
+Language.hasMany(ProductVariantTranslation);
+Language.hasMany(ExtraTranslation);
+Language.hasMany(ProductCategoryTranslation);
 // Product -> Translation
-Product.hasOne(ProductTranslation);
+Product.hasMany(ProductTranslation);
 Product.hasMany(ProductExtras);
 Extra.hasMany(ProductExtras);
-ProductVariant.hasOne(ProductVariantTranslation);
-Extra.hasOne(ExtraTranslation);
+ProductVariant.hasMany(ProductVariantTranslation);
+Extra.hasMany(ExtraTranslation);
 ProductCategory.hasMany(ProductCategoryTranslation);
 // Product -> Variant
 
-Extra.hasOne(ExtraCategory);
+Extra.hasMany(ExtraCategory);
 
 ProductVariant.hasMany(ProductVariantsExtras);
 Extra.hasMany(ProductVariantsExtras);

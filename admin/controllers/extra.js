@@ -66,7 +66,7 @@ exports.postAddExtra = async (req, res, next) => {
     .then((result) => {
       console.log(extra.id);
 
-      res.redirect("/admin/add-extra");
+      res.redirect("/admin/vr-index");
     })
     .catch((err) => {
       const error = new Error(err);

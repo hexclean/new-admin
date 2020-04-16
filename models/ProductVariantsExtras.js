@@ -29,7 +29,7 @@ const ProductVariantsExtras = sequelize.define("productVariantsExtras", {
     allowNull: false,
   },
   active: {
-    type: Sequelize.INTEGER,
+    type: Sequelize.STRING,
     allowNull: false,
   },
 });

@@ -32,7 +32,7 @@ const router = express.Router();
 ///
 // router.get("/edit-order/:orderId", adminUsersController.getEditOrder);
 
-router.get("/variants-index", isAuth, variantsController.getIndex);
+router.get("/vr-index", isAuth, variantsController.getIndex);
 router.get("/add-variant", isAuth, variantsController.getAddVariant);
 router.post(
   "/add-variant",

@@ -6,10 +6,13 @@ const ProductCategoryTranslation = require("../../models/ProductCategoryTranslat
 const ProductVariantsExtras = require("../../models/ProductVariantsExtras");
 
 exports.getIndex = async (req, res, next) => {
+  const vr = await req.admin.getProductVariants();
+
   res
     .render("variant/index", {
       pageTitle: "Admin Products",
       path: "/admin/products",
+      vr: vr,
     })
 
     .catch((err) => {
@@ -96,12 +99,12 @@ exports.postAddVariant = async (req, res, next) => {
 exports.postEditVariant = async (req, res, next) => {
   const vrId = req.body.variantId;
   const extId = req.body.extraId;
+  const status = req.body.status;
   const updatedSku = req.body.sku;
   const updatedRoName = req.body.roName;
   const updatedHuName = req.body.huName;
   const updatedEnName = req.body.enName;
-
-  ////itt is nezni req.body.price[i]
+  //
   const updatedExtraPrice = req.body.price;
   const updatedExtraDiscountedPrice = req.body.discountedPrice;
   const updatedExtraQuantityMin = req.body.quantityMin;
@@ -126,20 +129,53 @@ exports.postEditVariant = async (req, res, next) => {
       { where: { productVariantId: vrId, languageId: 3 } }
     );
     console.log(req.body);
-    // for
-    if (typeof req.body["status"] == "undefined") {
-      return;
+
+    if (Array.isArray(extId)) {
+      for (let i = 0; extId.length - 1; i++) {
+        if (status[i] == "on") {
+          // await ProductVariantsExtras.findByPk(extId).then(extras =>{
+          //   price: updatedExtraPrice[i],
+          //   discountedPrice: updatedExtraDiscountedPrice[i],
+          //   quantityMin: updatedExtraQuantityMin[i],
+          //   quantityMax: updatedExtraQuantityMax[i],
+          //   mandatory: updatedExtraMandatory[i],
+          //   productVariantId: vrId,
+          //   extraId: extId[i],
+          //   active: status[i],
+          // });
+          ProductVariantsExtras.findByPk(extId)
+            .then((extras) => {
+              extras.price = updatedExtraPrice[i];
+              extras.discountedPrice = updatedExtraDiscountedPrice[i];
+              extras.quantityMin = updatedExtraQuantityMin[i];
+              extras.quantityMax = updatedExtraQuantityMax[i];
+              extras.mandatory = updatedExtraMandatory[i];
+              extras.productVariantId = vrId;
+              extras.extraId = extId[i];
+              extras.active = status[i];
+              return extras.save();
+            })
+            .then((result) => {
+              console.log("UPDATED PRODUCT!");
+              res.redirect("/admin/products");
+            })
+            .catch((err) => console.log(err));
+        }
+      }
     } else {
-      await ProductVariantsExtras.create({
-        price: updatedExtraPrice,
-        discountedPrice: updatedExtraDiscountedPrice,
-        quantityMin: updatedExtraQuantityMin,
-        quantityMax: updatedExtraQuantityMax,
-        mandatory: updatedExtraMandatory,
-        productVariantId: vrId,
-        extraId: extId,
-        active: typeof req.body["status"] !== "undefined" ? 1 : 0,
-      });
+      if (typeof status == "undefined") {
+        console.log("nemememememememememememmmememe");
+      }
+      await ProductVariantsExtras.create(
+        { price: updatedExtraPrice },
+        { discountedPrice: updatedExtraDiscountedPrice },
+        { quantityMin: updatedExtraQuantityMin },
+        { quantityMax: updatedExtraQuantityMax },
+        { mandatory: updatedExtraMandatory },
+        { productVariantId: vrId },
+        { extraId: extId },
+        { active: typeof req.body["status"] !== "undefined" ? 1 : 0 }
+      );
     }
   }
 

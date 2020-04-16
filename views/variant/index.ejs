@@ -11,9 +11,9 @@
       <div class="ms-profile-overview no-img-var">
        
         <ul class="ms-profile-navigation nav nav-tabs tabs-bordered" role="tablist">
-          <li role="presentation"><a href="#tab1" aria-controls="tab1" class="active show" role="tab" data-toggle="tab"> Index </a></li>
-          <li role="presentation"><a href="#"> Category </a></li>
-          <li role="presentation"><a href="@"> Extras </a></li>
+          <li role="presentation"><a href="#" aria-controls="tab1" class="active show" role="tab" data-toggle="tab"> Index </a></li>
+          <li role="presentation"><a href="/admin/add-variant"> Variant </a></li>
+          <li role="presentation"><a href="/admin/add-extra"> Extra </a></li>
         </ul>
         <div class="tab-content">
           <div class="tab-pane" id="tab1">
@@ -24,7 +24,121 @@
           </div>
         </div>
       </div>
-     
+    </div>
+    <div class="ms-content-wrapper">
+      <div class="row">
+
+        <div class="col-md-12">
+          
+
+
+          <div class="col-md-12">
+            <div class="ms-panel ms-panel-fh">
+              <div class="ms-panel-header">
+                <h6>Favourite Orders</h6>
+              </div>
+              <div class="ms-panel-body order-circle">
+
+                <div class="row">
+                  <div class="col-xl-3 col-lg-3 col-md-6">
+                      <h6 class="text-center">Pizza</h6>
+                    <div class="progress-rounded progress-round-tiny">
+
+                      <div class="progress-value">12%</div>
+                      <svg>
+                        <circle class="progress-cicle bg-success" cx="65" cy="65" r="57" stroke-width="4" fill="none" aria-valuenow="12" aria-orientation="vertical" aria-valuemin="0" aria-valuemax="100" role="slider">
+                        </circle>
+                      </svg>
+                    </div>
+                  </div>
+                  <div class="col-xl-3 col-lg-3 col-md-6">
+                        <h6 class="text-center">Mexican Noodels</h6>
+                    <div class="progress-rounded progress-round-tiny">
+                      <div class="progress-value">38.8%</div>
+                      <svg>
+                        <circle class="progress-cicle bg-primary" cx="65" cy="65" r="57" stroke-width="4" fill="none" aria-valuenow="38.8" aria-orientation="vertical" aria-valuemin="0" aria-valuemax="100" role="slider">
+                        </circle>
+                      </svg>
+                    </div>
+                  </div>
+                  <div class="col-xl-3 col-lg-3 col-md-6">
+                      <h6 class="text-center">Spicy Salad</h6>
+                    <div class="progress-rounded progress-round-tiny">
+                      <div class="progress-value">78.8%</div>
+                      <svg>
+                        <circle class="progress-cicle bg-secondary" cx="65" cy="65" r="57" stroke-width="4" fill="none" aria-valuenow="78.8" aria-orientation="vertical" aria-valuemin="0" aria-valuemax="100" role="slider">
+                        </circle>
+                      </svg>
+                    </div>
+                  </div>
+                  <div class="col-xl-3 col-lg-3 col-md-6">
+                      <h6 class="text-center">French Fries</h6>
+                    <div class="progress-rounded progress-round-tiny">
+                      <div class="progress-value">100%</div>
+                      <svg>
+                        <circle class="progress-cicle bg-dark" cx="65" cy="65" r="57" stroke-width="4" fill="none" aria-valuenow="100" aria-orientation="vertical" aria-valuemin="0" aria-valuemax="100" role="slider">
+                        </circle>
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-12">
+            <div class="ms-panel">
+              <div class="ms-panel-header">
+                <h6> Order List</h6>
+              </div>
+              <div class="ms-panel-body">
+
+                <div class="table-responsive">
+                  <table class="table table-hover thead-primary">
+                    <thead>
+                      <tr>
+                        <th scope="col">Order ID</th>
+                        <th scope="col">Order Name</th>
+                        <th scope="col">Customer Name</th>
+                        <th scope="col">Location</th>
+                          <th scope="col">Order Status</th>
+                            <th scope="col">Delivered Time</th>
+                            <th scope="col">Price</th>
+                      </tr>
+                    </thead>
+                    <% if (vr.length > 0) { %>
+                     
+                         <% for (let variant of vr) { %>
+                          <tbody>
+                            <tr>
+                              <th scope="row"><%= variant.id %></th>
+                              <td>French Fries</td>
+                              <td> Jhon Leo</td>
+                                <td> New Town</td>
+                              <td><span class="badge badge-primary">Pending</span></td>
+                                <td>10:05</td>
+                                  <td>$10</td>
+                            </tr>
+                      
+                         
+            
+      
+                          </tbody>
+                         <% } %>
+                   
+                <% } else { %>
+                <h1>No Products Found!</h1>
+                <% } %>
+                    
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+
+      </div>
     </div>
   </main>
 <%- include('../includes/end.ejs')
