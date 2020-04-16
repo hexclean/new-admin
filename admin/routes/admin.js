@@ -36,6 +36,13 @@ router.get("/vr-index", isAuth, variantsController.getIndex);
 router.get("/add-variant", isAuth, variantsController.getAddVariant);
 router.post(
   "/add-variant",
+  // [
+  //   body("sku").isString().isLength({ min: 3 }).trim(),
+  //   body("roName").isString().isLength({ min: 3 }).trim(),
+  //   body("huName").isString().isLength({ min: 3 }).trim(),
+  //   body("enName").isString().isLength({ min: 3 }).trim(),
+  // ],
+  isAuth,
 
   variantsController.postAddVariant
 );

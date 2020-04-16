@@ -1,7 +1,5 @@
-const fileHelper = require("../../util/file");
 const { validationResult } = require("express-validator/check");
-const VariantTranslation = require("../../models/ProductVariantTranslation");
-const productVariant = require("../../models/ProductVariant");
+const ProductVariantTranslation = require("../../models/ProductVariantTranslation");
 const ProductCategoryTranslation = require("../../models/ProductCategoryTranslation");
 const ProductVariantsExtras = require("../../models/ProductVariantsExtras");
 
@@ -23,7 +21,7 @@ exports.getIndex = async (req, res, next) => {
 };
 
 exports.getAddVariant = async (req, res, next) => {
-  const ext = 0;
+  const ext = await req.admin.getExtras();
   res.render("variant/edit-variant", {
     pageTitle: "Add Product",
     path: "/admin/add-product",
@@ -37,15 +35,24 @@ exports.getAddVariant = async (req, res, next) => {
 };
 
 exports.postAddVariant = async (req, res, next) => {
+  const extId = req.body.extraId;
   const roName = req.body.roName;
   const huName = req.body.huName;
   const enName = req.body.enName;
   const sku = req.body.sku;
+  //
+  const vrId = req.body.variantId;
+  const updatedExtraPrice = req.body.price;
+  const updatedExtraDiscountedPrice = req.body.discountedPrice;
+  const updatedExtraQuantityMin = req.body.quantityMin;
+  const updatedExtraQuantityMax = req.body.quantityMax;
+  const updatedExtraMandatory = req.body.mandatory;
+  const status = req.body.status;
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
     console.log(errors.array());
-    return res.status(422).render("admin/edit-product", {
+    return res.status(422).render("variant/edit-variant", {
       pageTitle: "Add Product",
       path: "/admin/add-product",
       editing: false,
@@ -62,32 +69,61 @@ exports.postAddVariant = async (req, res, next) => {
   }
 
   const variant = await req.admin.createProductVariant();
+  const ext = await req.admin.getExtras();
 
   async function productVariantTransaltion() {
-    await VariantTranslation.create({
+    await ProductVariantTranslation.create({
       name: roName,
       languageId: 1,
       productVariantId: variant.id,
       sku: sku,
     });
-    await VariantTranslation.create({
+    await ProductVariantTranslation.create({
       name: huName,
       languageId: 2,
       sku: sku,
       productVariantId: variant.id,
     });
 
-    await VariantTranslation.create({
+    await ProductVariantTranslation.create({
       name: enName,
       languageId: 3,
       sku: sku,
       productVariantId: variant.id,
     });
   }
-
-  productVariantTransaltion()
+  async function addExtraToVariant() {
+    if (Array.isArray(ext)) {
+      for (let i = 0; ext.length - 1; i++) {
+        if (status[i] == "on") {
+          console.log("1");
+          await ProductVariantsExtras.create({
+            price: updatedExtraPrice[i],
+            discountedPrice: updatedExtraDiscountedPrice[i],
+            quantityMin: updatedExtraQuantityMin[i],
+            quantityMax: updatedExtraQuantityMax[i],
+            mandatory: updatedExtraMandatory[i],
+            productVariantId: variant.id,
+            extraId: extId[i],
+            active: typeof status[i] == "on" ? 0 : 1,
+          });
+        } else {
+          if (status[i] == "undefined") {
+            console.log("9");
+            next();
+          }
+        }
+      }
+    }
+  }
+  productVariantTransaltion();
+  addExtraToVariant()
     .then((result) => {
-      res.redirect("/admin/edit-variant/" + variant.id + "/?edit=true");
+      console.log("asd222");
+      res.redirect("/admin/edit-variant/" + variant.id + "/?edit=true"),
+        {
+          ext: ext,
+        };
     })
     .catch((err) => {
       const error = new Error(err);
@@ -104,82 +140,46 @@ exports.postEditVariant = async (req, res, next) => {
   const updatedRoName = req.body.roName;
   const updatedHuName = req.body.huName;
   const updatedEnName = req.body.enName;
-  //
-  const updatedExtraPrice = req.body.price;
-  const updatedExtraDiscountedPrice = req.body.discountedPrice;
-  const updatedExtraQuantityMin = req.body.quantityMin;
-  const updatedExtraQuantityMax = req.body.quantityMax;
-  const updatedExtraMandatory = req.body.mandatory;
-  const ext = await req.admin.getExtras();
+
+  // ////itt is nezni req.body.price[i]
+  // const updatedExtraPrice = req.body.price;
+  // const updatedExtraDiscountedPrice = req.body.discountedPrice;
+  // const updatedExtraQuantityMin = req.body.quantityMin;
+  // const updatedExtraQuantityMax = req.body.quantityMax;
+  // const updatedExtraMandatory = req.body.mandatory;
+  // const ext = await req.admin.getExtras();
 
   async function updateProductVariant() {
-    await VariantTranslation.update(
+    await ProductVariantTranslation.update(
       { name: updatedRoName, sku: updatedSku },
 
       { where: { productVariantId: vrId, languageId: 1 } }
     );
-    await VariantTranslation.update(
+    await ProductVariantTranslation.update(
       { name: updatedHuName, sku: updatedSku },
 
       { where: { productVariantId: vrId, languageId: 2 } }
     );
-    await VariantTranslation.update(
+    await ProductVariantTranslation.update(
       { name: updatedEnName, sku: updatedSku },
 
       { where: { productVariantId: vrId, languageId: 3 } }
     );
-    console.log(req.body);
-
-    if (Array.isArray(extId)) {
-      for (let i = 0; extId.length - 1; i++) {
-        if (status[i] == "on") {
-          // await ProductVariantsExtras.findByPk(extId).then(extras =>{
-          //   price: updatedExtraPrice[i],
-          //   discountedPrice: updatedExtraDiscountedPrice[i],
-          //   quantityMin: updatedExtraQuantityMin[i],
-          //   quantityMax: updatedExtraQuantityMax[i],
-          //   mandatory: updatedExtraMandatory[i],
-          //   productVariantId: vrId,
-          //   extraId: extId[i],
-          //   active: status[i],
-          // });
-          ProductVariantsExtras.findByPk(extId)
-            .then((extras) => {
-              extras.price = updatedExtraPrice[i];
-              extras.discountedPrice = updatedExtraDiscountedPrice[i];
-              extras.quantityMin = updatedExtraQuantityMin[i];
-              extras.quantityMax = updatedExtraQuantityMax[i];
-              extras.mandatory = updatedExtraMandatory[i];
-              extras.productVariantId = vrId;
-              extras.extraId = extId[i];
-              extras.active = status[i];
-              return extras.save();
-            })
-            .then((result) => {
-              console.log("UPDATED PRODUCT!");
-              res.redirect("/admin/products");
-            })
-            .catch((err) => console.log(err));
-        }
-      }
-    } else {
-      if (typeof status == "undefined") {
-        console.log("nemememememememememememmmememe");
-      }
-      await ProductVariantsExtras.create(
-        { price: updatedExtraPrice },
-        { discountedPrice: updatedExtraDiscountedPrice },
-        { quantityMin: updatedExtraQuantityMin },
-        { quantityMax: updatedExtraQuantityMax },
-        { mandatory: updatedExtraMandatory },
-        { productVariantId: vrId },
-        { extraId: extId },
-        { active: typeof req.body["status"] !== "undefined" ? 1 : 0 }
-      );
-    }
+  }
+  async function add() {
+    let a = 2;
+    let b = 10;
+    const x = a + b;
+    console.log(
+      "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+      x
+    );
   }
 
-  updateProductVariant()
+  console.log("1");
+
+  updateProductVariant();
+  add()
     .then((result) => {
       res.redirect("/");
     })
@@ -197,7 +197,7 @@ exports.getEditVariant = async (req, res, next) => {
   }
   const vrId = req.params.variantId;
   const extraId = req.params.extraId;
-  const variant = await VariantTranslation.findAll({
+  const variant = await ProductVariantTranslation.findAll({
     where: { productVariantId: vrId },
   });
 
