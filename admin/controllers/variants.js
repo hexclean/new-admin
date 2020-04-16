@@ -100,12 +100,13 @@ exports.postEditVariant = async (req, res, next) => {
   const updatedRoName = req.body.roName;
   const updatedHuName = req.body.huName;
   const updatedEnName = req.body.enName;
+
+  ////itt is nezni req.body.price[i]
   const updatedExtraPrice = req.body.price;
   const updatedExtraDiscountedPrice = req.body.discountedPrice;
   const updatedExtraQuantityMin = req.body.quantityMin;
   const updatedExtraQuantityMax = req.body.quantityMax;
   const updatedExtraMandatory = req.body.mandatory;
-
   const ext = await req.admin.getExtras();
 
   async function updateProductVariant() {
@@ -125,16 +126,21 @@ exports.postEditVariant = async (req, res, next) => {
       { where: { productVariantId: vrId, languageId: 3 } }
     );
     console.log(req.body);
-    await ProductVariantsExtras.create({
-      price: updatedExtraPrice,
-      discountedPrice: updatedExtraDiscountedPrice,
-      quantityMin: updatedExtraQuantityMin,
-      quantityMax: updatedExtraQuantityMax,
-      mandatory: updatedExtraMandatory,
-      productVariantId: vrId,
-      // extraId: extId,
-      active: typeof req.body["status"] !== "undefined" ? 1 : 0,
-    });
+    // for
+    if (typeof req.body["status"] == "undefined") {
+      return;
+    } else {
+      await ProductVariantsExtras.create({
+        price: updatedExtraPrice,
+        discountedPrice: updatedExtraDiscountedPrice,
+        quantityMin: updatedExtraQuantityMin,
+        quantityMax: updatedExtraQuantityMax,
+        mandatory: updatedExtraMandatory,
+        productVariantId: vrId,
+        extraId: extId,
+        active: typeof req.body["status"] !== "undefined" ? 1 : 0,
+      });
+    }
   }
 
   updateProductVariant()

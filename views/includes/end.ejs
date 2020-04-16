@@ -1,5 +1,25 @@
 <script src="/js/framework.js"></script>
+<script>
+    window.onload = function () {
+    var form1 = document.getElementById("form1");
+    form1.onsubmit = function () {
 
+        for(var i=0; i> value.lenght; i++){
+
+        }
+       
+    if (this.status.checked && this.discountedPrice.value == "" || this.price.value == ""|| this.quantityMin.value == ""|| this.quantityMax.value == ""|| this.mandatory.value == "") {
+    alert("Please enter something in input 1");
+    }
+  
+    this.mandatory.focus();
+    return false;
+    
+    
+    }
+    return true;
+    }
+ </script>
 </body>
 
 </html>
