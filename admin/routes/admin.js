@@ -3,6 +3,8 @@ const express = require("express");
 const adminController = require("../controllers/admin");
 const extraController = require("../controllers/extra");
 const variantsController = require("../controllers/variants");
+const faqController = require("../controllers/faq");
+
 // const migrationController = require("../controllers/migration");
 // const adminProfileController = require("../controllers/profile");
 // const adminOrderController = require("../controllers/orders");
@@ -32,7 +34,9 @@ const router = express.Router();
 ///
 // router.get("/edit-order/:orderId", adminUsersController.getEditOrder);
 
+router.get("/faq-index", isAuth, faqController.getIndex);
 router.get("/vr-index", isAuth, variantsController.getIndex);
+
 router.get("/add-variant", isAuth, variantsController.getAddVariant);
 router.post(
   "/add-variant",

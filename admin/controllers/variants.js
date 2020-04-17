@@ -2,17 +2,34 @@ const { validationResult } = require("express-validator/check");
 const ProductVariantTranslation = require("../../models/ProductVariantTranslation");
 const ProductCategoryTranslation = require("../../models/ProductCategoryTranslation");
 const ProductVariantsExtras = require("../../models/ProductVariantsExtras");
+const ProductVariants = require("../../models/ProductVariant");
+const ITEMS_PER_PAGE = 2;
 
 exports.getIndex = async (req, res, next) => {
-  const vr = await req.admin.getProductVariants();
+  const page = +req.query.page || 1;
+  let totalItems;
 
-  res
-    .render("variant/index", {
-      pageTitle: "Admin Products",
-      path: "/admin/products",
-      vr: vr,
+  await ProductVariants.findAll()
+    .then((numVariants) => {
+      totalItems = numVariants;
+      return ProductVariants.findAll({
+        offset: (page - 1) * ITEMS_PER_PAGE,
+        limit: ITEMS_PER_PAGE,
+      });
     })
-
+    .then((vr) => {
+      res.render("variant/index", {
+        pageTitle: "Admin Products",
+        path: "/admin/products",
+        vr: vr,
+        currentPage: page,
+        hasNextPage: ITEMS_PER_PAGE * page < totalItems,
+        hasPreviousPage: page > 1,
+        nextPage: page + 1,
+        previousPage: page - 1,
+        lastPage: Math.ceil(totalItems / ITEMS_PER_PAGE),
+      });
+    })
     .catch((err) => {
       const error = new Error(err);
       error.httpStatusCode = 500;
