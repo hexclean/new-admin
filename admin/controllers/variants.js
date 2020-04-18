@@ -3,32 +3,43 @@ const ProductVariantTranslation = require("../../models/ProductVariantTranslatio
 const ProductCategoryTranslation = require("../../models/ProductCategoryTranslation");
 const ProductVariantsExtras = require("../../models/ProductVariantsExtras");
 const ProductVariants = require("../../models/ProductVariant");
-const ITEMS_PER_PAGE = 2;
+const ITEMS_PER_PAGE = 15;
 
 exports.getIndex = async (req, res, next) => {
   const page = +req.query.page || 1;
   let totalItems;
+  await req.admin
+    .getProductVariants()
 
-  await ProductVariants.findAll()
     .then((numVariants) => {
       totalItems = numVariants;
-      return ProductVariants.findAll({
+      return req.admin.getProductVariants({
         offset: (page - 1) * ITEMS_PER_PAGE,
         limit: ITEMS_PER_PAGE,
       });
     })
     .then((vr) => {
+      console.log("totalItems.length", totalItems.length);
+      console.log("ITEMS_PER_PAGE", ITEMS_PER_PAGE);
+      console.log(
+        "totalItems / ITEMS_PER_PAGE:::",
+        Math.ceil(totalItems.length / ITEMS_PER_PAGE)
+      );
       res.render("variant/index", {
         pageTitle: "Admin Products",
         path: "/admin/products",
-        vr: vr,
         currentPage: page,
-        hasNextPage: ITEMS_PER_PAGE * page < totalItems,
+        hasNextPage: ITEMS_PER_PAGE * page < totalItems.length,
         hasPreviousPage: page > 1,
         nextPage: page + 1,
         previousPage: page - 1,
-        lastPage: Math.ceil(totalItems / ITEMS_PER_PAGE),
+        lastPage: Math.ceil(totalItems.length / ITEMS_PER_PAGE),
+        vr: vr,
       });
+      console.log(
+        "lastPage.length",
+        Math.ceil(totalItems.length / ITEMS_PER_PAGE)
+      );
     })
     .catch((err) => {
       const error = new Error(err);
