@@ -219,54 +219,7 @@
          </div>
          </div>
 
-          <div class="ms-panel ms-btn-display">
-            <div class="ms-panel-header">
-            <h6>A hozzárendelhető extrái:</h6>
-            </div>
-            
-         </div>
-            <% if (ext.length > 0) { %>
-            <div class="ms-content-wrapper">
-               <div class="row">
-                  <div class="col-md-12">
-                     <div class="row">
-                        <% for (let extra of ext) { %>
-                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
-                           <div class="ms-card">
-                              <div class="d-flex justify-content-center extra-margin-top">
-                                 <label class="ms-switch">
-                                 <input type="checkbox" > <span class="ms-switch-slider ms-switch-success round"></span>
-                                 </label> 
-                              </div>
-                              <div class="ms-card-body">
-                                 <div class="new  d-flex justify-content-center extra-name">
-                                    <h6 class="mb-0"><b>Veggies</b> </h6>
-                                 </div>
-                                 <div class="col-md-12 mb-3">
-                                    <label for="price">Price</label>
-                                    <div class="input-group">
-                                       <input
-                                          class="form-control <%= validationErrors.find(e => e.param === 'price') ? 'invalid' : '' %>"
-                                          type="text"
-                                          name="price"
-                                          id="price"
-                                          value="<% if (editing || hasError) { %><%= extra.price %><% } %>"
-                                          />
-                                    </div>
-                                 </div>
-                            
-                          
-                              </div>
-                           </div>
-                        </div>
-                        <% } %>
-                     </div>
-                  </div>
-               </div>
-            </div>
-            <% } else { %>
-            <% } %>
-          
+        
       </form>
    
   

@@ -1,8 +1,8 @@
-(function($) {
+(function ($) {
   "use strict";
 
   /*========= Costic Framework ===========*/
-  var CosticFramework = (function() {
+  var CosticFramework = (function () {
     /* Initialize all required functions */
     function init() {
       setActiveMenuItem();
@@ -15,34 +15,24 @@
         .split("/")
         .slice(-1)[0]
         .replace(/^\/|\/$/g, "");
-      $(".ms-main-aside .menu-item a", $("#ms-side-nav")).each(function() {
+      $(".ms-main-aside .menu-item a", $("#ms-side-nav")).each(function () {
         var $this = $(this);
         if (current === "" || current === "index.html") {
           //for root url
           if ($this.attr("href").indexOf("index.html") !== -1) {
             $(this).addClass("active");
-            $(this)
-              .parents(".collapse")
-              .prev()
-              .addClass("active");
+            $(this).parents(".collapse").prev().addClass("active");
             if ($(this).parents(".collapse").length) {
-              $(this)
-                .closest(".collapse")
-                .addClass("show");
+              $(this).closest(".collapse").addClass("show");
             }
           }
         } else {
           //for other url
           if ($this.attr("href").indexOf(current) !== -1) {
             $(this).addClass("active");
-            $(this)
-              .parents(".collapse")
-              .prev()
-              .addClass("active");
+            $(this).parents(".collapse").prev().addClass("active");
             if ($(this).parents(".collapse").length) {
-              $(this)
-                .closest(".collapse")
-                .addClass("show");
+              $(this).closest(".collapse").addClass("show");
             }
           }
         }
@@ -51,7 +41,7 @@
 
     /*  Custom Toggle Actions */
     function customToggleActions() {
-      $(".ms-toggler").bind("click", function() {
+      $(".ms-toggler").bind("click", function () {
         var target = $(this).data("target");
         var toggleType = $(this).data("toggle");
 
@@ -82,7 +72,7 @@
     }
 
     return {
-      init: init
+      init: init,
     };
   })();
 

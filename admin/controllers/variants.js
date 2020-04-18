@@ -105,12 +105,14 @@ exports.postAddVariant = async (req, res, next) => {
       languageId: 1,
       productVariantId: variant.id,
       sku: sku,
+      adminId: 1,
     });
     await ProductVariantTranslation.create({
       name: huName,
       languageId: 2,
       sku: sku,
       productVariantId: variant.id,
+      adminId: 1,
     });
 
     await ProductVariantTranslation.create({
@@ -118,34 +120,34 @@ exports.postAddVariant = async (req, res, next) => {
       languageId: 3,
       sku: sku,
       productVariantId: variant.id,
+      adminId: 1,
     });
   }
-  async function addExtraToVariant() {
-    if (Array.isArray(ext)) {
-      for (let i = 0; ext.length - 1; i++) {
-        if (status[i] == "on") {
-          console.log("1");
-          await ProductVariantsExtras.create({
-            price: updatedExtraPrice[i],
-            discountedPrice: updatedExtraDiscountedPrice[i],
-            quantityMin: updatedExtraQuantityMin[i],
-            quantityMax: updatedExtraQuantityMax[i],
-            mandatory: updatedExtraMandatory[i],
-            productVariantId: variant.id,
-            extraId: extId[i],
-            active: typeof status[i] == "on" ? 0 : 1,
-          });
-        } else {
-          if (status[i] == "undefined") {
-            console.log("9");
-            next();
-          }
-        }
-      }
+  // console.log(req.body);
+  const process = Array.isArray(req.body.extraId);
+
+  // async function addExtraToVariant() {
+  if (Array.isArray(ext)) {
+    // console.log(updatedExtraPrice[0]);
+    console.log("status", status);
+    for (let i = 0; i <= ext.length - 1; i++) {
+      // console.log(ext.length);
+      // console.log(updatedExtraPrice[i]);
+      // await ProductVariantsExtras.create({
+      //   price: updatedExtraPrice[i] || 0,
+      //   discountedPrice: updatedExtraDiscountedPrice[i] || 0,
+      //   quantityMin: updatedExtraQuantityMin[i] || 0,
+      //   quantityMax: updatedExtraQuantityMax[i] || 0,
+      //   mandatory: updatedExtraMandatory[i] || 0,
+      //   productVariantId: variant.id,
+      //   extraId: extId[i],
+      //   active: typeof status !== "undefined" && status[i] == "on" ? 1 : 0,
+      // });
     }
+
+    // }
   }
-  productVariantTransaltion();
-  addExtraToVariant()
+  productVariantTransaltion()
     .then((result) => {
       console.log("asd222");
       res.redirect("/admin/edit-variant/" + variant.id + "/?edit=true"),
@@ -194,22 +196,10 @@ exports.postEditVariant = async (req, res, next) => {
       { where: { productVariantId: vrId, languageId: 3 } }
     );
   }
-  async function add() {
-    let a = 2;
-    let b = 10;
-    const x = a + b;
-    console.log(
-      "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-      x
-    );
-  }
 
-  console.log("1");
-
-  updateProductVariant();
-  add()
+  updateProductVariant()
     .then((result) => {
-      res.redirect("/");
+      res.redirect("/"), {};
     })
     .catch((err) => {
       const error = new Error(err);

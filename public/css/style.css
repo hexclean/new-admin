@@ -472,6 +472,10 @@ Version: 1.0.0
   background-color: #12b252;
   background-image: linear-gradient(to right, #12b252, #31e97a);
 }
+
+.imp-delete-colour {
+  background-color: #ff0018 !important;
+}
 .bg-gradient-warning {
   background-color: #fea837;
   background-image: linear-gradient(to right, #fea837, #fed257);

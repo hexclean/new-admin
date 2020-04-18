@@ -147,6 +147,12 @@ Admin.hasMany(Product);
 ProductVariant.belongsTo(Admin, { constrains: true, onDelete: "CASCADE" });
 Admin.hasMany(ProductVariant);
 
+ProductVariantTranslation.belongsTo(Admin, {
+  constrains: true,
+  onDelete: "CASCADE",
+});
+Admin.hasMany(ProductVariantTranslation);
+
 Extra.belongsTo(Admin, { constrains: true, onDelete: "CASCADE" });
 Admin.hasMany(Extra);
 
