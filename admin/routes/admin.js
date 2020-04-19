@@ -63,6 +63,7 @@ router.post(
 
   variantsController.postEditVariant
 );
+router.post("/delete-variant", variantsController.postDeleteVariant);
 ///
 router.get("/add-category", isAuth, variantsController.getAddProductCategory);
 router.post(
@@ -76,6 +77,7 @@ router.get(
   variantsController.getEditVariant
 );
 ///
+router.get("/ok", isAuth, adminController.getOk);
 router.get("/add-extra", isAuth, extraController.getAddExtra);
 router.get("/extras", isAuth, extraController.getExtras);
 router.get("/edit-extra/:extraId", isAuth, extraController.getEditExtra);

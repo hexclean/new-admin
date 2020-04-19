@@ -19,12 +19,6 @@ exports.getIndex = async (req, res, next) => {
       });
     })
     .then((vr) => {
-      console.log("totalItems.length", totalItems.length);
-      console.log("ITEMS_PER_PAGE", ITEMS_PER_PAGE);
-      console.log(
-        "totalItems / ITEMS_PER_PAGE:::",
-        Math.ceil(totalItems.length / ITEMS_PER_PAGE)
-      );
       res.render("variant/index", {
         pageTitle: "Admin Products",
         path: "/admin/products",
@@ -36,10 +30,6 @@ exports.getIndex = async (req, res, next) => {
         lastPage: Math.ceil(totalItems.length / ITEMS_PER_PAGE),
         vr: vr,
       });
-      console.log(
-        "lastPage.length",
-        Math.ceil(totalItems.length / ITEMS_PER_PAGE)
-      );
     })
     .catch((err) => {
       const error = new Error(err);
@@ -301,4 +291,17 @@ exports.postAddProductCategory = async (req, res, next) => {
       error.httpStatusCode = 500;
       return next(error);
     });
+};
+
+exports.postDeleteVariant = (req, res, next) => {
+  const prodId = req.body.variantId;
+  ProductVariants.findByPk(prodId)
+    .then((product) => {
+      return product.destroy();
+    })
+    .then((result) => {
+      console.log("DESTROYED PRODUCT");
+      res.redirect("/admin/vr-index");
+    })
+    .catch((err) => console.log(err));
 };

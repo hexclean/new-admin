@@ -138,8 +138,24 @@ app.use("/admin", adminRoutes);
 app.use(indexRoutes);
 app.use(authRoutes);
 
-// Admin -> Products, Variant, Extra
+// Product-> ProductTranslation -> Language
+ProductTranslation.belongsTo(Product, {
+  as: "TheTranslation",
+  foreignKey: "productId",
+});
+Product.hasMany(ProductTranslation, { foreignKey: "productId" });
+
+ProductTranslation.belongsTo(Language, {
+  as: "TheLanguage",
+  foreignKey: "languageId",
+});
+Language.hasMany(ProductTranslation, { foreignKey: "languageId" });
+//
 Product.belongsTo(Admin, { constrains: true, onDelete: "CASCADE" });
+// ProductTranslation.belongsTo(Product, {
+//   targetKey: "id",
+//   foreignKey: "productId",
+// });
 
 // Extra.belongsTo(ExtraTranslation, { constrains: true, onDelete: "CASCADE" });
 Admin.hasMany(Product);
@@ -160,12 +176,11 @@ ProductCategory.belongsTo(Admin, { constrains: true, onDelete: "CASCADE" });
 Admin.hasMany(ProductCategory);
 
 // Language -> ProductTranslation, VariantTranslation, ExtraTranslation
-Language.hasMany(ProductTranslation);
+
 Language.hasMany(ProductVariantTranslation);
 Language.hasMany(ExtraTranslation);
 Language.hasMany(ProductCategoryTranslation);
-// Product -> Translation
-Product.hasMany(ProductTranslation);
+
 Product.hasMany(ProductExtras);
 Extra.hasMany(ProductExtras);
 ProductVariant.hasMany(ProductVariantTranslation);

@@ -1,6 +1,7 @@
 const fileHelper = require("../../util/file");
 const { validationResult } = require("express-validator/check");
 const Product = require("../../models/Product");
+const Language = require("../../models/Language");
 const ProductTranslation = require("../../models/ProductTranslation");
 
 exports.getSearchProduct = (req, res, next) => {
@@ -283,10 +284,26 @@ exports.postEditProduct = (req, res, next) => {
 
 exports.getProducts = async (req, res, next) => {
   await req.admin
-    .getProducts()
+    .getProducts({
+      include: [
+        {
+          model: ProductTranslation,
+        },
+      ],
+    })
     .then((products) => {
+      var currentLanguage = req.cookies.language;
+      if (currentLanguage == "ro") {
+        currentLanguage = 0;
+      } else if (currentLanguage == "hu") {
+        currentLanguage = 1;
+      } else {
+        currentLanguage = 2;
+      }
+
       res.render("admin/products", {
         prods: products,
+        currentLanguage: currentLanguage,
         pageTitle: "Admin Products",
         path: "/admin/products",
       });
@@ -329,6 +346,40 @@ exports.postDeleteDailyMenu = (req, res, next) => {
         res.redirect("/admin/daily-menus");
       });
     })
+    .catch((err) => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
+};
+
+exports.getOk = async (req, res, next) => {
+  await req.admin
+    .getProducts({
+      include: [
+        {
+          model: ProductTranslation,
+        },
+      ],
+    })
+    .then((products) => {
+      var currentLanguage = req.cookies.language;
+      if (currentLanguage == "ro") {
+        currentLanguage = 0;
+      } else if (currentLanguage == "hu") {
+        currentLanguage = 1;
+      } else {
+        currentLanguage = 2;
+      }
+
+      res.render("admin/ok", {
+        prods: products,
+        currentLanguage: currentLanguage,
+        pageTitle: "Admin Products",
+        path: "/admin/products",
+      });
+    })
+
     .catch((err) => {
       const error = new Error(err);
       error.httpStatusCode = 500;
