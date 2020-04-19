@@ -57,12 +57,12 @@ router.get(
   variantsController.getEditVariant
 );
 
-router.post(
-  "/edit-variant",
-  isAuth,
+// router.post(
+//   "/edit-variant",
+//   isAuth,
 
-  variantsController.postEditVariant
-);
+//   variantsController.postEditVariant
+// );
 router.post("/delete-variant", variantsController.postDeleteVariant);
 ///
 router.get("/add-category", isAuth, variantsController.getAddProductCategory);

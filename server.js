@@ -150,6 +150,22 @@ ProductTranslation.belongsTo(Language, {
   foreignKey: "languageId",
 });
 Language.hasMany(ProductTranslation, { foreignKey: "languageId" });
+
+// ProductVariant-> ProductVariantTranslation -> Language
+ProductVariantTranslation.belongsTo(ProductVariant, {
+  as: "TheTranslation",
+  foreignKey: "productVariantId",
+});
+ProductVariant.hasMany(ProductVariantTranslation, {
+  foreignKey: "productVariantId",
+});
+
+ProductVariantTranslation.belongsTo(Language, {
+  as: "TheLanguage",
+  foreignKey: "languageId",
+});
+Language.hasMany(ProductVariantTranslation, { foreignKey: "languageId" });
+
 //
 Product.belongsTo(Admin, { constrains: true, onDelete: "CASCADE" });
 // ProductTranslation.belongsTo(Product, {

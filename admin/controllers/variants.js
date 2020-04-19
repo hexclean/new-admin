@@ -54,6 +54,7 @@ exports.getAddVariant = async (req, res, next) => {
 
 exports.postAddVariant = async (req, res, next) => {
   const extId = req.body.extraId;
+  const extraChId = req.body.extraChId;
   const roName = req.body.roName;
   const huName = req.body.huName;
   const enName = req.body.enName;
@@ -120,19 +121,19 @@ exports.postAddVariant = async (req, res, next) => {
   if (Array.isArray(ext)) {
     // console.log(updatedExtraPrice[0]);
     console.log("status", status);
-    for (let i = 0; i <= ext.length - 1; i++) {
-      // console.log(ext.length);
-      // console.log(updatedExtraPrice[i]);
-      // await ProductVariantsExtras.create({
-      //   price: updatedExtraPrice[i] || 0,
-      //   discountedPrice: updatedExtraDiscountedPrice[i] || 0,
-      //   quantityMin: updatedExtraQuantityMin[i] || 0,
-      //   quantityMax: updatedExtraQuantityMax[i] || 0,
-      //   mandatory: updatedExtraMandatory[i] || 0,
-      //   productVariantId: variant.id,
-      //   extraId: extId[i],
-      //   active: typeof status !== "undefined" && status[i] == "on" ? 1 : 0,
-      // });
+    for (let i = 0; i <= extraChId.length - 1; i++) {
+      console.log(ext.length);
+      console.log(updatedExtraPrice[i]);
+      await ProductVariantsExtras.create({
+        price: updatedExtraPrice[i] || 0,
+        discountedPrice: updatedExtraDiscountedPrice[i] || 0,
+        quantityMin: updatedExtraQuantityMin[i] || 0,
+        quantityMax: updatedExtraQuantityMax[i] || 0,
+        mandatory: updatedExtraMandatory[i] || 0,
+        productVariantId: variant.id,
+        extraId: extId[i],
+        active: typeof status !== "undefined" && status[i] == "on" ? 1 : 0,
+      });
     }
 
     // }
@@ -140,7 +141,7 @@ exports.postAddVariant = async (req, res, next) => {
   productVariantTransaltion()
     .then((result) => {
       console.log("asd222");
-      res.redirect("/admin/edit-variant/" + variant.id + "/?edit=true"),
+      res.redirect("/admin/vr-index"),
         {
           ext: ext,
         };
@@ -205,27 +206,35 @@ exports.getEditVariant = async (req, res, next) => {
   }
   const vrId = req.params.variantId;
   const extraId = req.params.extraId;
-  const variant = await ProductVariantTranslation.findAll({
-    where: { productVariantId: vrId },
-  });
-
-  if (!variant) {
-    return res.redirect("/");
-  }
-  console.log(req.params.extraId);
   const ext = await req.admin.getExtras();
-  res.render("variant/edit-variant", {
-    pageTitle: "Edit Product",
-    path: "/admin/edit-product",
-    editing: editMode,
-    variant: variant,
-    extraId: extraId,
-    ext: ext,
-    variantId: vrId,
-    hasError: false,
-    errorMessage: null,
-    validationErrors: [],
-  });
+  await ProductVariantTranslation.findAll({
+    include: [
+      {
+        model: ProductVariants,
+        as: "TheTranslation",
+      },
+    ],
+  })
+    .then((variant) => {
+      if (!variant) {
+        return res.redirect("/");
+      }
+      // console.log(variant);
+      console.log(variant);
+      res.render("variant/edit-variant", {
+        pageTitle: "Edit Product",
+        path: "/admin/edit-product",
+        editing: editMode,
+        variant: variant,
+        extraId: extraId,
+        ext: ext,
+        variantId: vrId,
+        hasError: false,
+        errorMessage: null,
+        validationErrors: [],
+      });
+    })
+    .catch((err) => console.log(err));
 };
 
 exports.getAddProductCategory = (req, res, next) => {

@@ -435,6 +435,9 @@ Version: 1.0.0
   background-color: #ffffff;
   color: #ff0018;
 }
+.buttons-text-variants {
+  padding-left: 27px !important;
+}
 .bg-secondary {
   background-color: #000000;
 }

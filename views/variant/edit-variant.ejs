@@ -62,7 +62,7 @@
                                  type="text"
                                  name="enName"
                                  id="enName"
-                                 value="<% if (editing || hasError) { %><%= variant[2].name %><% } %>">
+                                 value="<% if (editing || hasError) { %><%= variant[2].id %><% } %>">
                            </div>
                         </div>
                         <% if (editing) { %>
@@ -108,7 +108,7 @@
                         <div class="ms-card">
                            <div class="d-flex justify-content-center extra-margin-top">
                               <label class="ms-switch">
-                              <input id="status" type="checkbox" name="status[]" value="0" > <span class="ms-switch-slider ms-switch-success round"></span>
+                              <input id="status" type="checkbox" name="extraChId" value="<%= extra.id %>" > <span class="ms-switch-slider ms-switch-success round"></span>
                               </label> 
                            </div>
                            <div class="ms-card-body">

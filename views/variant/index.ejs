@@ -85,13 +85,13 @@
                            <table class="table table-hover thead-primary">
                               <thead>
                                  <tr>
-                                    <th scope="col">Order ID</th>
-                                    <th scope="col">Order Name</th>
-                                    <th scope="col">Customer Name</th>
-                                    <th scope="col">Location</th>
-                                    <th scope="col">Order Status</th>
-                                    <th scope="col">Delivered Time</th>
-                                    <th scope="col">Price</th>
+                                    <th scope="col">ID</th>
+                                    <th scope="col">SKU</th>
+                                   
+                                    <th scope="col">EXTRA</th>
+                                    <th scope="col">STATUS</th>
+                                    <th scope="col" class="buttons-text-variants">DELETE</th>
+                                    <th scope="col" >EDIT</th>
                                  </tr>
                               </thead>
                               <% if (vr.length > 0) { %>
@@ -100,7 +100,7 @@
                                  <tr>
                                     <th scope="row"><%= variant.id %></th>
                                     <td>French Fries</td>
-                                    <td> Jhon Leo</td>
+                                  
                                     <td> New Town</td>
                                     
                                     <td><span class="badge badge-primary">Pending</span></td>
