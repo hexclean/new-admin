@@ -173,20 +173,33 @@ exports.getExtras = (req, res, next) => {
     });
 };
 
-exports.getEditProduct = async (req, res, next) => {
+exports.getEditProduct = (req, res, next) => {
   const editMode = req.query.edit;
   if (!editMode) {
     return res.redirect("/");
   }
-  const prodId = await req.params.productId;
+  const prodId = req.params.productId;
+  // console.log(product[0]);
+
   req.admin
-    .getProducts({ where: { id: prodId } })
+    .getProducts({
+      where: { adminId: req.admin.id },
+      include: [
+        {
+          model: ProductTranslation,
+          // as: "TheTranslation",
+          // where: { id: prodId },
+        },
+      ],
+    })
 
     .then((products) => {
       const product = products[0];
+      console.log(product.productTranslations[0]);
       if (!product) {
         return res.redirect("/");
       }
+      console.log(product[0]);
       res.render("admin/edit-product", {
         pageTitle: "Edit Product",
         path: "/admin/edit-product",
@@ -282,8 +295,8 @@ exports.postEditProduct = (req, res, next) => {
     });
 };
 
-exports.getProducts = async (req, res, next) => {
-  await req.admin
+exports.getProducts = (req, res, next) => {
+  req.admin
     .getProducts({
       include: [
         {
@@ -292,6 +305,7 @@ exports.getProducts = async (req, res, next) => {
       ],
     })
     .then((products) => {
+      console.log(products[0]);
       var currentLanguage = req.cookies.language;
       if (currentLanguage == "ro") {
         currentLanguage = 0;

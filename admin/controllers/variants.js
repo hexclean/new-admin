@@ -66,8 +66,10 @@ exports.postAddVariant = async (req, res, next) => {
   const updatedExtraQuantityMin = req.body.quantityMin;
   const updatedExtraQuantityMax = req.body.quantityMax;
   const updatedExtraMandatory = req.body.mandatory;
-  const status = req.body.status;
+  // const status = req.body.status;
+  var filteredStatus = req.body.status.filter(Boolean);
   const errors = validationResult(req);
+  console.log(filteredStatus);
 
   if (!errors.isEmpty()) {
     console.log(errors.array());
@@ -119,7 +121,6 @@ exports.postAddVariant = async (req, res, next) => {
   // async function addExtraToVariant() {
   if (Array.isArray(ext)) {
     // console.log(updatedExtraPrice[0]);
-    console.log("status", status);
     for (let i = 0; i <= ext.length - 1; i++) {
       console.log(ext.length);
       console.log(updatedExtraPrice[i]);
@@ -131,7 +132,7 @@ exports.postAddVariant = async (req, res, next) => {
         mandatory: updatedExtraMandatory[i] || 0,
         productVariantId: variant.id,
         extraId: extId[i],
-        active: typeof status !== "undefined" && status[i] == "on" ? 1 : 0,
+        active: filteredStatus[i] == "on" ? 1 : 0,
       });
     }
     console.log(req.body.ext);

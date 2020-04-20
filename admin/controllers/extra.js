@@ -18,7 +18,7 @@ exports.postAddExtra = async (req, res, next) => {
   const roName = req.body.roName;
   const huName = req.body.huName;
   const enName = req.body.enName;
-  const amount = req.body.amount;
+
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
@@ -38,9 +38,7 @@ exports.postAddExtra = async (req, res, next) => {
     });
   }
 
-  const extra = await req.admin.createExtra({
-    amount: amount,
-  });
+  const extra = await req.admin.createExtra();
 
   async function extraTransaltion() {
     await ExtraTranslation.create({
