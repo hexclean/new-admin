@@ -29,13 +29,12 @@ exports.getSearchProduct = (req, res, next) => {
     });
 };
 
-exports.getAddProduct = async (req, res, next) => {
-  const ext = await req.admin.getProductVariants();
+exports.getAddProduct = (req, res, next) => {
   res.render("admin/edit-product", {
     pageTitle: "Add Product",
     path: "/admin/add-product",
     editing: false,
-    ext: ext,
+
     hasError: false,
     errorMessage: null,
     validationErrors: [],
@@ -114,7 +113,6 @@ exports.postAddProduct = async (req, res, next) => {
     imageUrl: imageUrl,
     price: price,
   });
-  const ext = await req.admin.getProductVariants();
   async function productTransaltion() {
     await ProductTranslation.create({
       title: roTitle,
@@ -142,29 +140,7 @@ exports.postAddProduct = async (req, res, next) => {
 
   productTransaltion()
     .then((result) => {
-      res.redirect("/admin/add-product"),
-        {
-          ext: ext,
-        };
-    })
-    .catch((err) => {
-      const error = new Error(err);
-      error.httpStatusCode = 500;
-      return next(error);
-    });
-};
-exports.getExtras = (req, res, next) => {
-  ExtraAdd.find({ adminId: req.admin._id })
-
-    .then((orders) => {
-      var currentLanguage = req.cookies.language;
-      console.log(orders);
-      res.render("extra/extra-list", {
-        ords: orders,
-        currentLanguage: currentLanguage,
-        pageTitle: "Admin Products",
-        path: "/admin/products",
-      });
+      res.redirect("/admin/add-product");
     })
     .catch((err) => {
       const error = new Error(err);
