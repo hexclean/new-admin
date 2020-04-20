@@ -115,13 +115,12 @@ exports.postAddVariant = async (req, res, next) => {
     });
   }
   // console.log(req.body);
-  const process = Array.isArray(req.body.extraId);
 
   // async function addExtraToVariant() {
   if (Array.isArray(ext)) {
     // console.log(updatedExtraPrice[0]);
     console.log("status", status);
-    for (let i = 0; i <= extraChId.length - 1; i++) {
+    for (let i = 0; i <= ext.length - 1; i++) {
       console.log(ext.length);
       console.log(updatedExtraPrice[i]);
       await ProductVariantsExtras.create({
@@ -135,6 +134,7 @@ exports.postAddVariant = async (req, res, next) => {
         active: typeof status !== "undefined" && status[i] == "on" ? 1 : 0,
       });
     }
+    console.log(req.body.ext);
 
     // }
   }
@@ -219,7 +219,7 @@ exports.getEditVariant = async (req, res, next) => {
       if (!variant) {
         return res.redirect("/");
       }
-      // console.log(variant);
+      console.log(variant);
       console.log(variant);
       res.render("variant/edit-variant", {
         pageTitle: "Edit Product",
