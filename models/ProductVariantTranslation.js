@@ -13,10 +13,6 @@ const ProductVariantTranslation = sequelize.define(
     name: {
       type: Sequelize.STRING,
     },
-    sku: {
-      type: Sequelize.STRING,
-      allowNull: false,
-    },
   }
 );
 

@@ -54,7 +54,7 @@
                                  type="text"
                                  name="roName"
                                  id="roName"
-                                 value="<% if (editing || hasError) { %><%= variant.name %><% } %>">
+                                 value="<% if (editing || hasError) { %><%= variant.productVariantTranslations[0].name %><% } %>">
                            </div>
                         </div>
                         <div class="col-md-12 mb-3">
@@ -65,7 +65,7 @@
                                  type="text"
                                  name="huName"
                                  id="huName"
-                                 value="<% if (editing || hasError) { %><%= variant[2].name %><% } %>">
+                                 value="<% if (editing || hasError) { %><%= variant.productVariantTranslations[1].name %><% } %>">
                            </div>
                         </div>
                         <div class="col-md-12 mb-3">
@@ -76,7 +76,7 @@
                                  type="text"
                                  name="enName"
                                  id="enName"
-                                 value="<% if (editing || hasError) { %><%= variant.name %><% } %>">
+                                 value="<% if (editing || hasError) { %><%= variant.productVariantTranslations[2].name %><% } %>">
                            </div>
                         </div>
                         <% if (editing) { %>

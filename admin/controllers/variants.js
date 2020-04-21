@@ -19,6 +19,7 @@ exports.getIndex = async (req, res, next) => {
       });
     })
     .then((vr) => {
+      console.log(vr);
       res.render("variant/index", {
         pageTitle: "Admin Products",
         path: "/admin/products",
@@ -66,7 +67,6 @@ exports.postAddVariant = async (req, res, next) => {
   const updatedExtraQuantityMin = req.body.quantityMin;
   const updatedExtraQuantityMax = req.body.quantityMax;
   const updatedExtraMandatory = req.body.mandatory;
-  // const status = req.body.status;
   var filteredStatus = req.body.status.filter(Boolean);
   const errors = validationResult(req);
   console.log(filteredStatus);
@@ -89,7 +89,9 @@ exports.postAddVariant = async (req, res, next) => {
     });
   }
 
-  const variant = await req.admin.createProductVariant();
+  const variant = await req.admin.createProductVariant({
+    sku: sku,
+  });
   const ext = await req.admin.getExtras();
 
   async function productVariantTransaltion() {
@@ -97,13 +99,13 @@ exports.postAddVariant = async (req, res, next) => {
       name: roName,
       languageId: 1,
       productVariantId: variant.id,
-      sku: sku,
+
       adminId: 1,
     });
     await ProductVariantTranslation.create({
       name: huName,
       languageId: 2,
-      sku: sku,
+
       productVariantId: variant.id,
       adminId: 1,
     });
@@ -111,7 +113,7 @@ exports.postAddVariant = async (req, res, next) => {
     await ProductVariantTranslation.create({
       name: enName,
       languageId: 3,
-      sku: sku,
+
       productVariantId: variant.id,
       adminId: 1,
     });
@@ -208,19 +210,19 @@ exports.getEditVariant = async (req, res, next) => {
   const vrId = req.params.variantId;
   const extraId = req.params.extraId;
   const ext = await req.admin.getExtras();
-  await ProductVariantTranslation.findAll({
-    include: [
-      {
-        model: ProductVariants,
-        as: "TheTranslation",
-      },
-    ],
-  })
-    .then((variant) => {
+  await req.admin
+    .getProductVariants({
+      include: [
+        {
+          model: ProductVariantTranslation,
+        },
+      ],
+    })
+    .then((variants) => {
+      const variant = variants[0];
       if (!variant) {
         return res.redirect("/");
       }
-      console.log(variant);
       console.log(variant);
       res.render("variant/edit-variant", {
         pageTitle: "Edit Product",
