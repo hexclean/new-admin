@@ -4,37 +4,11 @@ const Product = require("../../models/Product");
 const Language = require("../../models/Language");
 const ProductTranslation = require("../../models/ProductTranslation");
 
-exports.getSearchProduct = (req, res, next) => {
-  let { term } = req.query;
-  console.log("req.query", req.query);
-  Product.find({
-    adminId: req.admin._id,
-    dailyMenu: { $ne: "yes" },
-    active: 1,
-    $text: { $search: "%" + term + "%" },
-  })
-    .then((products) => {
-      var currentLanguage = req.cookies.language;
-      res.render("admin/products", {
-        prods: products,
-        currentLanguage: currentLanguage,
-        pageTitle: "Admin Products",
-        path: "/admin/products",
-      });
-    })
-    .catch((err) => {
-      const error = new Error(err);
-      error.httpStatusCode = 500;
-      return next(error);
-    });
-};
-
 exports.getAddProduct = (req, res, next) => {
   res.render("admin/edit-product", {
     pageTitle: "Add Product",
     path: "/admin/add-product",
     editing: false,
-
     hasError: false,
     errorMessage: null,
     validationErrors: [],
@@ -155,11 +129,10 @@ exports.getEditProduct = (req, res, next) => {
     return res.redirect("/");
   }
   const prodId = req.params.productId;
-  // console.log(product[0]);
 
   req.admin
     .getProducts({
-      where: { adminId: req.admin.id },
+      where: { id: prodId },
       include: [
         {
           model: ProductTranslation,
@@ -270,7 +243,6 @@ exports.postEditProduct = (req, res, next) => {
       return next(error);
     });
 };
-
 exports.getProducts = (req, res, next) => {
   req.admin
     .getProducts({
@@ -280,8 +252,9 @@ exports.getProducts = (req, res, next) => {
         },
       ],
     })
-    .then((products) => {
-      console.log(products[0]);
+    .then((product) => {
+      console.log(product[0]);
+      // console.log(products[2].title);
       var currentLanguage = req.cookies.language;
       if (currentLanguage == "ro") {
         currentLanguage = 0;
@@ -292,7 +265,8 @@ exports.getProducts = (req, res, next) => {
       }
 
       res.render("admin/products", {
-        prods: products,
+        prods: product,
+
         currentLanguage: currentLanguage,
         pageTitle: "Admin Products",
         path: "/admin/products",
@@ -336,40 +310,6 @@ exports.postDeleteDailyMenu = (req, res, next) => {
         res.redirect("/admin/daily-menus");
       });
     })
-    .catch((err) => {
-      const error = new Error(err);
-      error.httpStatusCode = 500;
-      return next(error);
-    });
-};
-
-exports.getOk = async (req, res, next) => {
-  await req.admin
-    .getProducts({
-      include: [
-        {
-          model: ProductTranslation,
-        },
-      ],
-    })
-    .then((products) => {
-      var currentLanguage = req.cookies.language;
-      if (currentLanguage == "ro") {
-        currentLanguage = 0;
-      } else if (currentLanguage == "hu") {
-        currentLanguage = 1;
-      } else {
-        currentLanguage = 2;
-      }
-
-      res.render("admin/ok", {
-        prods: products,
-        currentLanguage: currentLanguage,
-        pageTitle: "Admin Products",
-        path: "/admin/products",
-      });
-    })
-
     .catch((err) => {
       const error = new Error(err);
       error.httpStatusCode = 500;

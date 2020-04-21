@@ -5,28 +5,24 @@
    <main class="body-content">
       <%- include('../includes/navigation-bar.ejs') %>
       <div class="ms-content-wrapper">
-         <div class="ms-profile-overview no-img-var">
-            <ul class="ms-profile-navigation nav nav-tabs tabs-bordered" role="tablist">
-               <li role="presentation"><a href="#" aria-controls="tab1" class="active show" role="tab" data-toggle="tab"> Index </a></li>
-               <li role="presentation"><a href="/admin/add-product"> Add Product </a></li>
-               <li role="presentation"><a href="/admin/add-extra"> Extra </a></li>
-            </ul>
-            <div class="tab-content">
-               <div class="tab-pane" id="tab1">
-               </div>
-               <div class="tab-pane" id="tab2">
-               </div>
-               <div class="tab-pane" id="tab3">
-               </div>
-            </div>
-         </div>
-      </div>
-      <div class="ms-content-wrapper">
          <div class="row">
             <div class="col-md-12">
                <div class="ms-panel">
-                 
-              
+                  <div class="ms-panel-header ms-panel-header-updated">
+                     <h6>Default Validation</h6>
+                  </div>
+                  <form action="/admin/search" class="search-form">
+                     <div class="ms-panel-body">
+                        <div class="form-row">
+                           <div class="col-md-6 upd mb-3 ">
+                              <label for="validationCustom03">City</label>
+                              <div class="input-group">
+                                 <input type="search" class="form-control" placeholder="Name" name="term">
+                              </div>
+                           </div>
+                        </div>
+                        <button class="btn btn-primary" type="submit">Submit form</button>
+                  </form>
                   </div>
                </div>
                <% if (prods.length > 0) { %>
@@ -43,7 +39,7 @@
                               <h6 class="mb-0"></h6>
                               <h6 class="ms-text-primary mb-0"><%= product.price %> lej</h6>
                            </div>
-                           <p> <%= product.productTranslations[`${currentLanguage}`].title%>"</p>
+                           <p>fd</p>
                            <div class="new mb-0">
                               <form action="/admin/delete-product" method="POST">
                                  <input type="hidden" value="<%= product.id %>" name="productId">
@@ -61,7 +57,6 @@
          <% } else { %>
          <h1>No Products Found!</h1>
          <% } %>
-
 <select id="select">
    <option value="default">
       default
