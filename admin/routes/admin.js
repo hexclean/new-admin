@@ -104,6 +104,7 @@ router.post(
   adminController.postAddProduct
 );
 router.get("/edit-product/:productId", isAuth, adminController.getEditProduct);
+router.post("/edit-product", isAuth, adminController.postEditProduct);
 
 // router.get("/search", adminController.getSearchProduct);
 
@@ -115,21 +116,7 @@ router.get("/edit-product/:productId", isAuth, adminController.getEditProduct);
 //   adminUsersController.getUsersSearchedInput
 // );
 
-router.post(
-  "/edit-product",
-  isAuth,
-  [
-    body("roTitle").isString().isLength({ min: 3 }).trim(),
-    body("huTitle").isString().isLength({ min: 3 }).trim(),
-    body("enTitle").isString().isLength({ min: 3 }).trim(),
-    body("price").isFloat(),
-    body("roDescription").isLength({ min: 5, max: 400 }).trim(),
-    body("huDescription").isLength({ min: 5, max: 400 }).trim(),
-    body("enDescription").isLength({ min: 5, max: 400 }).trim(),
-  ],
-  isAuth,
-  adminController.postEditProduct
-);
+router.post(isAuth, adminController.postEditProduct);
 router.post("/delete-product", isAuth, adminController.postDeleteProduct);
 
 // router.post("/edit-profile", adminProfileController.postEditProfile);

@@ -1,4 +1,34 @@
 <%- include('../includes/head.ejs') %>
+<script>
+   function validateForm() {
+   var roTitle = document.forms["myForm"]["roTitle"].value;
+   var enTitle = document.forms["myForm"]["enTitle"].value;
+   var huTitle = document.forms["myForm"]["huTitle"].value;
+   var price = document.forms["myForm"]["price"].value;
+   var enDescription = document.forms["myForm"]["enDescription"].value;
+   var huDescription = document.forms["myForm"]["huDescription"].value;
+   var roDescription = document.forms["myForm"]["roDescription"].value;
+   
+   if (roTitle == "" ||huTitle == "" ||roTitle == "" || enTitle == ""||price == "" ||enDescription == "" || huDescription == "" || roDescription == "" ) {
+     alert("Name must be filled out");
+     return false;
+   }
+   } 
+</script>
+<script>
+   $(document).ready(function() {
+      $('.status-checkbox').click(function(){
+         var variantId = $(this).attr('data-variantId');
+         if($(this).is(':checked')) {
+            $('.status-'+variantId).val('on');
+            
+         } else {
+            $('.status-'+variantId).val('off');
+            
+         }
+      });
+   });
+</script>
 </head>
 <body class="ms-body ms-aside-left-open ms-primary-theme ms-has-quickbar">
    <%- include('../includes/navigation.ejs') %>
@@ -7,7 +37,8 @@
       <% if (errorMessage) { %>
       <div class="user-message user-message--error"><%= errorMessage %></div>
       <% } %>
-      <form
+      <form onsubmit="return validateForm()"
+         name="myForm"
          class="ms-content-wrapper"
          action="/admin/<% if (editing) { %>edit-product<% } else { %>add-product<% } %>"
          method="POST"
@@ -71,7 +102,6 @@
                               <% } else{ %>
                               <option  value="chicken">chicken</option>
                               <% } %>
-                             
                            </select>
                            <div class="input-group-append">
                               <label class="input-group-text" for="roCategory">CATEGORY</label>
@@ -95,7 +125,6 @@
                               <% } else{ %>
                               <option   value="chicken">chicken</option>
                               <% } %>
-                              
                            </select>
                            <div class="input-group-append">
                               <label class="input-group-text" for="huCategory">CATEGORY</label>
@@ -119,13 +148,11 @@
                               <% } else{ %>
                               <option  value="chicken">chicken</option>
                               <% } %>
-                             
                            </select>
                            <div class="input-group-append">
                               <label class="input-group-text" for="enCategory">CATEGORY</label>
                            </div>
                         </div>
-                       
                         <div class="col-md-6 mb-3">
                            <label for="price"><%= lingua.create_product_price %></label>
                            <div class="input-group">
@@ -180,7 +207,7 @@
                         <div class="col-md-12 mb-3">
                            <label for="validationCustom12"><%= lingua.create_product_image %></label>
                            <div class="custom-file">
-                              <input type="file" name="image" id="image" />
+                              <input  accept="image/png, image/jpeg,image/jpeg" type="file" name="image" id="image" />
                            </div>
                         </div>
                      </div>
@@ -214,16 +241,72 @@
                         </button>
                      </div>
                   </div>
+                  <div class="col-xl-6 col-md-12">
+                     <div class="row">
+                        <div class="col-md-12">
+                           <div class="ms-panel">
+                              <div class="ms-panel-header">
+                                 <h6>Allergens</h6>
+                              </div>
+                              <div class="ms-panel-body">
+                                 <label class="ms-switch" >                 
+                                 <input class="status-checkbox" type="checkbox" name="status" id="status" > <span class="ms-switch-slider ms-switch-success round"></span>
+                                 </label> 
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
                </div>
             </div>
          </div>
          </div>
-
-          
-           
+         <% if (vari.length > 0) { %>
+         <div class="ms-content-wrapper">
+            <div class="row">
+               <div class="col-md-12">
+                  <div class="row">
+                     <% for (let variant of vari) { %>
+                     <input
+                        type="hidden"
+                        value="<%= variant.id %>"
+                        name="variantId"
+                        />          
+                     <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
+                        <div class="ms-card">
+                           <div class="d-flex justify-content-center extra-margin-top">
+                              <label class="ms-switch" >                 
+                              <input type="hidden" value="off" class="status-<%= variant.id %>" name="status[<%= variant.id %>]" >          
+                              <input  data-variantId="<%= variant.id %>"  class="status-checkbox" type="checkbox"  > <span class="ms-switch-slider ms-switch-success round"></span>
+                              </label> 
+                           </div>
+                           <div class="ms-card-body">
+                              <div class="new  d-flex justify-content-center extra-name">
+                                 <h6 class="mb-0"><b><%= variant.id %></b> </h6>
+                              </div>
+                              <div class="col-md-12 mb-3">
+                                 <label for="price">Price</label>
+                                 <div class="input-group">
+                                    <input
+                                       class="form-control <%= validationErrors.find(e => e.param === 'price') ? 'invalid' : '' %>"
+                                       type="text"
+                                       name="price"
+                                       id="price"
+                                       value="<% if (editing || hasError) { %><%= variant.price %><% } %>"
+                                       />
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     <% } %>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <% } else { %>
+         <% } %>
       </form>
-   
-  
    </main>
    <%- include('../includes/end.ejs') %>
 </body>

@@ -1,7 +1,7 @@
 const Sequelize = require("sequelize");
 const sequelize = require("../util/database");
 
-const Product = sequelize.define("product", {
+const ProductVariantToProduct = sequelize.define("productVariantToProduct", {
   id: {
     type: Sequelize.INTEGER,
     autoIncrement: true,
@@ -9,16 +9,14 @@ const Product = sequelize.define("product", {
     primaryKey: true,
   },
   price: {
-    type: Sequelize.DOUBLE,
-    allowNull: false,
-  },
-  imageUrl: {
     type: Sequelize.STRING,
     allowNull: false,
   },
-  allergen: {
-    type: Sequelize.INTEGER,
+
+  active: {
+    type: Sequelize.STRING,
+    allowNull: false,
   },
 });
 
-module.exports = Product;
+module.exports = ProductVariantToProduct;

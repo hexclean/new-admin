@@ -18,6 +18,9 @@ const ProductTranslation = sequelize.define("productTranslation", {
   category: {
     type: Sequelize.ENUM("dailyMenu", "pizza", "chicken"),
   },
+  allergen: {
+    type: Sequelize.INTEGER,
+  },
 });
 
 module.exports = ProductTranslation;

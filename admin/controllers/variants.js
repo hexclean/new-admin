@@ -3,6 +3,7 @@ const ProductVariantTranslation = require("../../models/ProductVariantTranslatio
 const ProductCategoryTranslation = require("../../models/ProductCategoryTranslation");
 const ProductVariantsExtras = require("../../models/ProductVariantsExtras");
 const ProductVariants = require("../../models/ProductVariant");
+const productExtraTranslation = require("../../models/ExtraTranslation");
 const ITEMS_PER_PAGE = 15;
 
 exports.getIndex = async (req, res, next) => {
@@ -55,7 +56,6 @@ exports.getAddVariant = async (req, res, next) => {
 
 exports.postAddVariant = async (req, res, next) => {
   const extId = req.body.extraId;
-  const extraChId = req.body.extraChId;
   const roName = req.body.roName;
   const huName = req.body.huName;
   const enName = req.body.enName;
@@ -89,7 +89,7 @@ exports.postAddVariant = async (req, res, next) => {
     });
   }
 
-  const variant = await req.admin.createProductVariant({
+  const variantt = await req.admin.createProductVariant({
     sku: sku,
   });
   const ext = await req.admin.getExtras();
@@ -98,7 +98,7 @@ exports.postAddVariant = async (req, res, next) => {
     await ProductVariantTranslation.create({
       name: roName,
       languageId: 1,
-      productVariantId: variant.id,
+      productVariantId: variantt.id,
 
       adminId: 1,
     });
@@ -106,7 +106,7 @@ exports.postAddVariant = async (req, res, next) => {
       name: huName,
       languageId: 2,
 
-      productVariantId: variant.id,
+      productVariantId: variantt.id,
       adminId: 1,
     });
 
@@ -114,15 +114,12 @@ exports.postAddVariant = async (req, res, next) => {
       name: enName,
       languageId: 3,
 
-      productVariantId: variant.id,
+      productVariantId: variantt.id,
       adminId: 1,
     });
   }
-  // console.log(req.body);
 
-  // async function addExtraToVariant() {
   if (Array.isArray(ext)) {
-    // console.log(updatedExtraPrice[0]);
     for (let i = 0; i <= ext.length - 1; i++) {
       console.log(ext.length);
       console.log(updatedExtraPrice[i]);
@@ -132,14 +129,12 @@ exports.postAddVariant = async (req, res, next) => {
         quantityMin: updatedExtraQuantityMin[i] || 0,
         quantityMax: updatedExtraQuantityMax[i] || 0,
         mandatory: updatedExtraMandatory[i] || 0,
-        productVariantId: variant.id,
+        productVariantId: variantt.id,
         extraId: extId[i],
         active: filteredStatus[i] == "on" ? 1 : 0,
       });
     }
     console.log(req.body.ext);
-
-    // }
   }
   productVariantTransaltion()
     .then((result) => {
@@ -209,7 +204,19 @@ exports.getEditVariant = async (req, res, next) => {
   }
   const vrId = req.params.variantId;
   const extraId = req.params.extraId;
-  const ext = await req.admin.getExtras();
+  const extra = await req.admin
+    .getExtras({
+      include: [
+        {
+          model: productExtraTranslation,
+        },
+      ],
+    })
+    .then((extra) => {
+      console.log("extra.extraTranslations[0]", extra);
+    })
+    .catch((err) => console.log(err));
+
   await req.admin
     .getProductVariants({
       include: [
@@ -223,14 +230,14 @@ exports.getEditVariant = async (req, res, next) => {
       if (!variant) {
         return res.redirect("/");
       }
-      console.log(variant);
+      // console.log(variant);
       res.render("variant/edit-variant", {
         pageTitle: "Edit Product",
         path: "/admin/edit-product",
         editing: editMode,
         variant: variant,
         extraId: extraId,
-        ext: ext,
+        ext: extra,
         variantId: vrId,
         hasError: false,
         errorMessage: null,

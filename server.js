@@ -7,7 +7,7 @@ const bodyParser = require("body-parser");
 const flash = require("connect-flash");
 const multer = require("multer");
 const path = require("path");
-
+var expressValidator = require("express-validator");
 var SequelizeStore = require("connect-session-sequelize")(session.Store);
 var Sequelize = require("sequelize");
 
@@ -22,6 +22,7 @@ const ExtraCategory = require("./models/ExtraCategory");
 const ProductCategory = require("./models/ProductCategory");
 const ProductCategoryTranslation = require("./models/ProductCategoryTranslation");
 const ProductVariantsExtras = require("./models/ProductVariantsExtras");
+const ProductVariantToProduct = require("./models/ProductVariantToProduct");
 const ProductExtras = require("./models/productExtra");
 const Language = require("./models/Language");
 const Admin = require("./models/Admin");
@@ -84,8 +85,7 @@ const fileFilter = (req, file, cb) => {
   if (
     file.mimetype === "image/png" ||
     file.mimetype === "image/jpg" ||
-    file.mimetype === "image/jpeg" ||
-    file.mimetype === "image/ods"
+    file.mimetype === "image/jpeg"
   ) {
     cb(null, true);
   } else {
@@ -133,6 +133,7 @@ app.use(
 // app.use("/api/products", require("./routes/api/products"));
 // app.use("/api/restaurants", require("./routes/api/restaurants"));
 app.use(bodyParser.urlencoded({ extended: false }));
+// app.use(expressValidator());
 app.use("/admin", adminRoutes);
 // app.use("/super-admin", superRoutes);
 app.use(indexRoutes);
@@ -167,13 +168,16 @@ ProductVariantTranslation.belongsTo(Language, {
 Language.hasMany(ProductVariantTranslation, { foreignKey: "languageId" });
 
 //
-Product.belongsTo(Admin, { constrains: true, onDelete: "CASCADE" });
-// ProductTranslation.belongsTo(Product, {
-//   targetKey: "id",
-//   foreignKey: "productId",
-// });
+// Product-> ProductTranslation -> Languagef
+ProductVariant.belongsTo(Product, {
+  as: "VariantToProduct",
+  foreignKey: "productId",
+});
+Product.hasMany(ProductVariant, { foreignKey: "productId" });
 
-// Extra.belongsTo(ExtraTranslation, { constrains: true, onDelete: "CASCADE" });
+//
+Product.belongsTo(Admin, { constrains: true, onDelete: "CASCADE" });
+
 Admin.hasMany(Product);
 
 ProductVariant.belongsTo(Admin, { constrains: true, onDelete: "CASCADE" });
@@ -208,6 +212,9 @@ Extra.hasMany(ExtraCategory);
 
 ProductVariant.hasMany(ProductVariantsExtras);
 Extra.hasMany(ProductVariantsExtras);
+
+//
+// Product.hasMany(ProductVariantToProduct);
 
 // Config PORT
 const PORT = process.env.PORT || 5000;

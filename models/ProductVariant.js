@@ -10,8 +10,10 @@ const ProductVariant = sequelize.define("productVariant", {
   },
   sku: {
     type: Sequelize.STRING,
-
     allowNull: false,
+  },
+  price: {
+    type: Sequelize.INTEGER,
   },
 });
 

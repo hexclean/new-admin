@@ -1,14 +1,19 @@
 const fileHelper = require("../../util/file");
 const { validationResult } = require("express-validator/check");
+// const { check, validationResult } = require("express-validator");
+
 const Product = require("../../models/Product");
-const Language = require("../../models/Language");
+const ProductVariant = require("../../models/ProductVariant");
 const ProductTranslation = require("../../models/ProductTranslation");
 
-exports.getAddProduct = (req, res, next) => {
+exports.getAddProduct = async (req, res, next) => {
+  const vari = await ProductVariant.findAll();
+
   res.render("admin/edit-product", {
     pageTitle: "Add Product",
     path: "/admin/add-product",
     editing: false,
+    vari: vari,
     hasError: false,
     errorMessage: null,
     validationErrors: [],
@@ -26,67 +31,20 @@ exports.postAddProduct = async (req, res, next) => {
   const huDescription = req.body.huDescription;
   const enDescription = req.body.enDescription;
   //
+  const status = req.body.status;
+  const image = req.file;
+  const imageUrl = image.path;
 
   const roCategory = req.body.roCategory;
   const huCategory = req.body.huCategory;
   const enCategory = req.body.enCategory;
   //
-  const image = req.file;
-  if (!image) {
-    return res.status(422).render("admin/edit-product", {
-      pageTitle: "Add Product",
-      path: "/admin/add-product",
-      editing: false,
-      hasError: true,
-      product: {
-        title: huTitle,
-        title: enTitle,
-        title: roTitle,
-        description: enDescription,
-        description: huDescription,
-        description: roDescription,
-
-        price: price,
-        category: enCategory,
-        category: huCategory,
-        category: roCategory,
-      },
-      errorMessage: "Attached file is not an image.",
-      validationErrors: [],
-    });
-  }
-  const errors = validationResult(req);
-
-  if (!errors.isEmpty()) {
-    console.log(errors.array());
-    return res.status(422).render("admin/edit-product", {
-      pageTitle: "Add Product",
-      path: "/admin/add-product",
-      editing: false,
-      hasError: true,
-      product: {
-        huTitle: huTitle,
-        price: price,
-        title: roTitle,
-        description: enDescription,
-        description: huDescription,
-        description: roDescription,
-
-        category: enCategory,
-        category: huCategory,
-        category: roCategory,
-      },
-      errorMessage: errors.array()[0].msg,
-      validationErrors: errors.array(),
-    });
-  }
-
-  const imageUrl = image.path;
-
   const product = await req.admin.createProduct({
     imageUrl: imageUrl,
     price: price,
+    allergen: typeof status !== "undefined" ? 1 : 0,
   });
+
   async function productTransaltion() {
     await ProductTranslation.create({
       title: roTitle,
@@ -94,6 +52,7 @@ exports.postAddProduct = async (req, res, next) => {
       description: roDescription,
       productId: product.id,
       category: roCategory,
+      allergen: typeof status !== "undefined" ? 1 : 0,
     });
     await ProductTranslation.create({
       title: huTitle,
@@ -101,6 +60,7 @@ exports.postAddProduct = async (req, res, next) => {
       description: huDescription,
       productId: product.id,
       category: huCategory,
+      allergen: typeof status !== "undefined" ? 1 : 0,
     });
 
     await ProductTranslation.create({
@@ -109,12 +69,31 @@ exports.postAddProduct = async (req, res, next) => {
       description: enDescription,
       productId: product.id,
       category: enCategory,
+      allergen: typeof status !== "undefined" ? 1 : 0,
     });
+  }
+  const vari = await ProductVariant.findAll();
+
+  if (Array.isArray(vari)) {
+    for (let i = 0; i <= vari.length - 1; i++) {
+      console.log(vari.length);
+      await ProductVariantsExtras.create({
+        price: updatedExtraPrice[i] || 0,
+
+        productVariantId: variantt.id,
+        extraId: extId[i],
+        active: filteredStatus[i] == "on" ? 1 : 0,
+      });
+    }
+    console.log(req.body.ext);
   }
 
   productTransaltion()
     .then((result) => {
-      res.redirect("/admin/add-product");
+      res.redirect("/admin/products"),
+        {
+          vari: vari,
+        };
     })
     .catch((err) => {
       const error = new Error(err);
@@ -177,41 +156,42 @@ exports.postEditProduct = (req, res, next) => {
   const updatedHuDesc = req.body.huDescription;
   const updatedEnDesc = req.body.enDescription;
   //
+  const status = req.body.status;
   const updatedPrice = req.body.price;
   const image = req.file;
   const errors = validationResult(req);
 
-  if (!errors.isEmpty()) {
-    console.log(errors.array());
-    return res.status(422).render("admin/edit-product", {
-      pageTitle: "Edit Product",
-      path: "/admin/edit-product",
-      editing: true,
-      hasError: true,
-      product: {
-        title: updatedEnTitle,
-        title: updatedHuTitle,
-        roTitle: updatedRoTitle,
-        price: updatedPrice,
-        description: updatedEnDesc,
-        description: updatedHuDesc,
-        description: updatedRoDesc,
-        category: updatedEnCategory,
-        category: updatedHuCategory,
-        category: updatedRoCategory,
-        _id: prodId,
-      },
+  // if (!errors.isEmpty()) {
+  //   console.log(errors.array());
+  //   return res.status(422).render("admin/edit-product", {
+  //     pageTitle: "Edit Product",
+  //     path: "/admin/edit-product",
+  //     editing: true,
+  //     hasError: true,
+  //     product: {
+  //       title: updatedEnTitle,
+  //       title: updatedHuTitle,
+  //       roTitle: updatedRoTitle,
+  //       price: updatedPrice,
+  //       description: updatedEnDesc,
+  //       description: updatedHuDesc,
+  //       description: updatedRoDesc,
+  //       category: updatedEnCategory,
+  //       category: updatedHuCategory,
+  //       category: updatedRoCategory,
+  //       _id: prodId,
+  //     },
 
-      errorMessage: errors.array()[0].msg,
-      validationErrors: errors.array(),
-    });
-  }
+  //     errorMessage: errors.array()[0].msg,
+  //     validationErrors: errors.array(),
+  //   });
+  // }
 
-  Product.findById(prodId)
+  Product.findByPk(prodId)
     .then((product) => {
-      if (product.adminId.toString() !== req.admin._id.toString()) {
-        return res.redirect("/");
-      }
+      // if (product.adminId.toString() !== req.admin._id.toString()) {
+      //   return res.redirect("/");
+      // }
       product.title = {
         en: updatedEnTitle,
         hu: updatedHuTitle,
@@ -227,6 +207,11 @@ exports.postEditProduct = (req, res, next) => {
         en: updatedEnDesc,
         hu: updatedHuDesc,
         ro: updatedRoDesc,
+      };
+      product.allergen = {
+        en: typeof status !== "undefined" ? 1 : 0,
+        ro: typeof status !== "undefined" ? 1 : 0,
+        hu: typeof status !== "undefined" ? 1 : 0,
       };
       if (image) {
         fileHelper.deleteFile(product.imageUrl);
