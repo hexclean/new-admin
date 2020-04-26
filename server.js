@@ -169,11 +169,17 @@ Language.hasMany(ProductVariantTranslation, { foreignKey: "languageId" });
 
 //
 // Product-> ProductTranslation -> Languagef
-ProductVariant.belongsTo(Product, {
+ProductVariantToProduct.belongsTo(Product, {
   as: "VariantToProduct",
   foreignKey: "productId",
 });
-Product.hasMany(ProductVariant, { foreignKey: "productId" });
+Product.hasMany(ProductVariantToProduct, { foreignKey: "productId" });
+
+ProductVariantToProduct.belongsTo(ProductVariant, {
+  as: "variant",
+  foreignKey: "variantId",
+});
+Product.hasMany(ProductVariantToProduct, { foreignKey: "variantId" });
 
 //
 Product.belongsTo(Admin, { constrains: true, onDelete: "CASCADE" });
@@ -216,6 +222,19 @@ Extra.hasMany(ProductVariantsExtras);
 //
 // Product.hasMany(ProductVariantToProduct);
 
+ExtraTranslation.belongsTo(Extra, {
+  as: "extraTranslation",
+  foreignKey: "extraId",
+});
+Extra.hasMany(ExtraTranslation, { foreignKey: "extraId" });
+
+ExtraTranslation.belongsTo(Language, {
+  as: "extraLanguage",
+  foreignKey: "languageId",
+});
+Language.hasMany(ExtraTranslation, { foreignKey: "languageId" });
+
+///
 // Config PORT
 const PORT = process.env.PORT || 5000;
 

@@ -1,4 +1,5 @@
 <%- include('../includes/head.ejs') %>
+
 <script>
    $(document).ready(function() {
       $('.status-checkbox').click(function(){
@@ -13,6 +14,7 @@
       });
    });
 </script>
+
 </head>
 <body class="ms-body ms-aside-left-open ms-primary-theme ms-has-quickbar">
    <%- include('../includes/navigation.ejs') %>
@@ -21,12 +23,26 @@
       <% if (errorMessage) { %>
       <div class="user-message user-message--error"><%= errorMessage %></div>
       <% } %>
-      <form
-         class="ms-content-wrapper"
+      <form onsubmit="return validateForm()"
+         class="ms-content-wrapper" name="myForm"
          action="/admin/<% if (editing) { %>edit-variant<% } else { %>add-variant<% } %>"
          method="POST"
          enctype="multipart/form-data"
          id="form1">
+         <script>
+            function validateForm() {
+            var sku = document.forms["myForm"]["sku"].value;
+            var enTitle = document.forms["myForm"]["roName"].value;
+            var huTitle = document.forms["myForm"]["huName"].value;
+            var enTitle = document.forms["myForm"]["huName"].value;
+           
+            
+            if (roTitle == "" ||huTitle == "" || enTitle == ""|| sku == ""  ) {
+              alert("Name must be filled out");
+              return false;
+            }
+            } 
+         </script>
          <div class="row">
             <div class="col-xl-6 col-md-12">
                <div class="ms-panel ms-panel-fh">
@@ -121,7 +137,7 @@
                            <div class="d-flex justify-content-center extra-margin-top">
                               <label class="ms-switch" >                 
                                  <input type="hidden" value="off" class="status-<%= extra.id %>" name="status[<%= extra.id %>]" >          
-                                 <input  data-extraId="<%= extra.id %>"  class="status-checkbox" type="checkbox"  > <span class="ms-switch-slider ms-switch-success round"></span>
+                                 <input checked='unchecked'  data-extraId="<%= extra.id %>"  class="status-checkbox" type="checkbox"  > <span class="ms-switch-slider ms-switch-success round"></span>
                               </label> 
                            </div>
                            <div class="ms-card-body">

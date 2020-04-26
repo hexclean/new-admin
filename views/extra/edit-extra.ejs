@@ -1,4 +1,18 @@
 <%- include('../includes/head.ejs') %>
+
+<script>
+   function validateForm() {
+   var enTitle = document.forms["myForm"]["roName"].value;
+   var huTitle = document.forms["myForm"]["huName"].value;
+   var enTitle = document.forms["myForm"]["huName"].value;
+  
+   
+   if (roTitle == "" ||huTitle == "" || enTitle == ""|| sku == ""  ) {
+     alert("Name must be filled out");
+     return false;
+   }
+   } 
+</script>
 </head>
 <body class="ms-body ms-aside-left-open ms-primary-theme ms-has-quickbar">
    <%- include('../includes/navigation.ejs') %>
@@ -7,8 +21,9 @@
       <% if (errorMessage) { %>
       <div class="user-message user-message--error"><%= errorMessage %></div>
       <% } %>
-      <form
-         class="ms-content-wrapper"
+      <form 
+      name="myForm"
+         class="ms-content-wrapper" 
          action="/admin/<% if (editing) { %>edit-extra<% } else { %>add-extra<% } %>"
          method="POST"
          enctype="multipart/form-data">
@@ -20,6 +35,7 @@
                   </div>
                   <div class="ms-panel-body">
                      <div class="form-row">
+                     
                         <div class="col-md-12 mb-3">
                            <label for="roName"><%= lingua.create_product_name1 %></label>
                            <div class="input-group">
@@ -28,7 +44,7 @@
                                  type="text"
                                  name="roName"
                                  id="roName"
-                                 value="<% if (editing || hasError) { %><%= extra[0].name %><% } %>">
+                                 value="<% if (editing || hasError) { %><%= extra[0].extraTranslations[0].name %><% } %>">
                            </div>
                         </div>
                         <div class="col-md-12 mb-3">
@@ -39,7 +55,7 @@
                                  type="text"
                                  name="huName"
                                  id="huName"
-                                 value="<% if (editing || hasError) { %><%= extra[1].name %><% } %>">
+                                 value="<% if (editing || hasError) { %><%= extra[0].extraTranslations[1].name %><% } %>">
                            </div>
                         </div>
                         <div class="col-md-12 mb-3">
@@ -50,7 +66,7 @@
                                  type="text"
                                  name="enName"
                                  id="enName"
-                                 value="<% if (editing || hasError) { %><%= extra[2].name %><% } %>">
+                                 value="<% if (editing || hasError) { %><%= extra[0].extraTranslations[2].name %><% } %>">
                            </div>
                         </div>
                       
@@ -65,17 +81,16 @@
                         <div class="ms-panel-header">
                            <h6>Product</h6>
                         </div>
+                        
                         <% if (editing) { %>
-                        <input
-                           type="hidden"
-                           value="<%= extra.id %>"
-                           name="extraId"
-                           />
-                        <% } %>
-                        <button class="btn" type="submit">
-                        <% if (editing) { %>Update Product<% } else { %>Add
-                        Product<% } %>
-                        </button>
+                           <input type="hidden" value="<%= extra.id %>" name="extraId">
+
+                           <%for (let i = 0; i < extTranslations.length; i++){%>
+                              <input type="hidden" value="<%= extTranslations[i].id %>" name="extTranId">
+                          <%}%>
+                       <% } %>
+           
+                       <button class="btn" type="submit"><% if (editing) { %>Update Product<% } else { %>Add Product<% } %></button>
                      </div>
                   </div>
                </div>

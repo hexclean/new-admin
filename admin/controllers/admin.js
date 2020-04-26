@@ -4,6 +4,7 @@ const { validationResult } = require("express-validator/check");
 
 const Product = require("../../models/Product");
 const ProductVariant = require("../../models/ProductVariant");
+const ProductVariantToProduct = require("../../models/ProductVariantToProduct");
 const ProductTranslation = require("../../models/ProductTranslation");
 
 exports.getAddProduct = async (req, res, next) => {
@@ -77,10 +78,10 @@ exports.postAddProduct = async (req, res, next) => {
   if (Array.isArray(vari)) {
     for (let i = 0; i <= vari.length - 1; i++) {
       console.log(vari.length);
-      await ProductVariantsExtras.create({
-        price: updatedExtraPrice[i] || 0,
+      await ProductVariantToProduct.create({
+        price: price[i] || 0,
 
-        productVariantId: variantt.id,
+        productVariantId: product.id,
         extraId: extId[i],
         active: filteredStatus[i] == "on" ? 1 : 0,
       });

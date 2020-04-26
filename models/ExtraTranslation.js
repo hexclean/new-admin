@@ -11,6 +11,9 @@ const ExtraTranslation = sequelize.define("extraTranslation", {
   name: {
     type: Sequelize.STRING,
   },
+  adminId: {
+    type: Sequelize.INTEGER,
+  },
 });
 
 module.exports = ExtraTranslation;

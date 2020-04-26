@@ -27,7 +27,7 @@ const router = express.Router();
 
 //
 // router.get("/users", adminUsersController.getOrders);
-// router.get("/extras", adminController.getExtras);
+// router.get("/extras", extraController.getExtras);
 // router.post("/add-extra", adminExtraController.postAddExtra);
 // router.get("/add-extra", adminExtraController.getAddExtra);
 // router.get("/edit-extra/:extraId", adminExtraController.getEditExtra);
@@ -88,7 +88,12 @@ router.post(
 );
 router.post(
   "/add-extra",
-
+  [
+    body("roName").isString().isLength({ min: 3 }).trim(),
+    body("huName").isString().isLength({ min: 3 }).trim(),
+    body("enName").isString().isLength({ min: 3 }).trim(),
+  ],
+  isAuth,
   extraController.postAddExtra
 );
 // /admin/add-product
