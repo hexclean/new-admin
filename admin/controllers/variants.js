@@ -104,7 +104,7 @@ exports.postAddVariant = async (req, res, next) => {
     });
   }
 
-  const variantt = await req.admin.createProductVariant({
+  const variant = await req.admin.createProductVariant({
     sku: sku,
   });
   const ext = await req.admin.getExtras();
@@ -113,7 +113,7 @@ exports.postAddVariant = async (req, res, next) => {
     await ProductVariantTranslation.create({
       name: roName,
       languageId: 1,
-      productVariantId: variantt.id,
+      productVariantId: variant.id,
 
       adminId: 1,
     });
@@ -121,7 +121,7 @@ exports.postAddVariant = async (req, res, next) => {
       name: huName,
       languageId: 2,
 
-      productVariantId: variantt.id,
+      productVariantId: variant.id,
       adminId: 1,
     });
 
@@ -129,7 +129,7 @@ exports.postAddVariant = async (req, res, next) => {
       name: enName,
       languageId: 3,
 
-      productVariantId: variantt.id,
+      productVariantId: variant.id,
       adminId: 1,
     });
   }
@@ -144,7 +144,7 @@ exports.postAddVariant = async (req, res, next) => {
         quantityMin: updatedExtraQuantityMin[i] || 0,
         quantityMax: updatedExtraQuantityMax[i] || 0,
         mandatory: updatedExtraMandatory[i] || 0,
-        productVariantId: variantt.id,
+        productVariantId: variant.id,
         extraId: extId[i],
         active: filteredStatus[i] == "on" ? 1 : 0,
       });
