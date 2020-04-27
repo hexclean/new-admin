@@ -19,7 +19,9 @@ exports.postAddCategory = async (req, res, next) => {
   const huName = req.body.huName;
   const enName = req.body.enName;
 
-  const category = await req.admin.createCategory();
+  const category = await VariantCategory.create({
+    adminId: req.admin.id,
+  });
 
   async function extraTransaltion() {
     await VariantCategoryTranslation.create({
@@ -46,8 +48,6 @@ exports.postAddCategory = async (req, res, next) => {
 
   extraTransaltion()
     .then((result) => {
-      console.log(extra.id);
-
       res.redirect("/admin/vr-index");
     })
     .catch((err) => {
