@@ -1,0 +1,35 @@
+<div class="row">
+  <% for (let i = 0; i < variant[0].productVariantsExtras.length; i++) { %> <%
+  if (variant[0].productVariantsExtras[i].active ==1) { %>
+  <label class="ms-switch">
+    <input
+      type="hidden"
+      value="off"
+      class="status-<%= extra.id %>"
+      name="status[<%= extra.id %>]"
+    />
+    <input
+      checked
+      data-extraId="<%= extra.id %>"
+      class="status-checkbox"
+      type="checkbox"
+    />
+    <span class="ms-switch-slider ms-switch-success round"></span>
+  </label>
+  <% } else { %>
+  <label class="ms-switch">
+    <input
+      type="hidden"
+      value="off"
+      class="status-<%= extra.id %>"
+      name="status[<%= extra.id %>]"
+    />
+    <input
+      data-extraId="<%= extra.id %>"
+      class="status-checkbox"
+      type="checkbox"
+    />
+    <span class="ms-switch-slider ms-switch-success round"></span>
+  </label>
+  <% } %> <% } %>
+</div>
