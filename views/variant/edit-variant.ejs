@@ -43,7 +43,7 @@
                                  type="text"
                                  name="sku"
                                  id="sku"
-                                 value="<% if (editing || hasError) { %><%= variant.sku %><% } %>">
+                                 value="<% if (editing || hasError) { %><%= variant[0].productVariantTranslations[0].sku %><% } %>">
                            </div>
                         </div>
                         <div class="col-md-12 mb-3">
@@ -54,7 +54,7 @@
                                  type="text"
                                  name="roName"
                                  id="roName"
-                                 value="<% if (editing || hasError) { %><%= variant.name %><% } %>">
+                                 value="<% if (editing || hasError) { %><%= variant[0].productVariantTranslations[0].name %><% } %>">
                            </div>
                         </div>
                         <div class="col-md-12 mb-3">
@@ -65,7 +65,7 @@
                                  type="text"
                                  name="huName"
                                  id="huName"
-                                 value="<% if (editing || hasError) { %><%= variant[2].name %><% } %>">
+                                 value="<% if (editing || hasError) { %><%= variant[0].productVariantTranslations[1].name %><% } %>">
                            </div>
                         </div>
                         <div class="col-md-12 mb-3">
@@ -76,16 +76,15 @@
                                  type="text"
                                  name="enName"
                                  id="enName"
-                                 value="<% if (editing || hasError) { %><%= variant.name %><% } %>">
+                                 value="<% if (editing || hasError) { %><%= variant[0].productVariantTranslations[2].name %><% } %>">
                            </div>
                         </div>
                         <% if (editing) { %>
-                        <input
-                           type="hidden"
-                           value="<%= variantId %>"
-                           name="variantId"
-                           />
-                        <% } %>
+                           <input type="hidden" value="<%= variant.id %>" name="variantId">
+                           <%for (let i = 0; i < extTranslations.length; i++){%>
+                           <input type="hidden" value="<%= extTranslations[i].id %>" name="extTranId">
+                           <%}%>
+                           <% } %>
                         <button class="btn btn-success has-icon" id="votebutton" type="submit">
                         <% if (editing) { %>Update Product<% } else { %>Add
                         Product<% } %>

@@ -87,7 +87,6 @@
                                  <tr>
                                     <th scope="col">ID</th>
                                     <th scope="col">SKU</th>
-                                   
                                     <th scope="col">EXTRA</th>
                                     <th scope="col">STATUS</th>
                                     <th scope="col" class="buttons-text-variants">DELETE</th>
@@ -100,12 +99,9 @@
                                  <tr>
                                     <th scope="row"><%= variant.id %></th>
                                     <td><%= variant.sku %></td>
-                                  
                                     <td> New Town</td>
-                                    
                                     <td><span class="badge badge-primary">Pending</span></td>
                                     <td>
-                                     
                                        <div class="col-md-3 col-sm-6 ">
                                           <input type="hidden" value="<%= variant.id %>" name="variantId">
                                           <button  class="btn grid-btn mt-0 btn-sm btn-secondary imp-delete-colour "  data-toggle="modal" data-target="#modal-2"> DELETE </button>
@@ -126,8 +122,6 @@
                                                       <button type="submit" class="btn btn-primary shadow-none">Delete</button>
                                                    </form>
                                                    <button type="button" class="btn btn-light" data-dismiss="modal">Cancel</button>
-                                                   
-                                              
                                                 </div>
                                              </div>
                                           </div>
@@ -159,7 +153,6 @@
                                  <tr>
                                     <th scope="col">ID</th>
                                     <th scope="col">SKU</th>
-                                   
                                     <th scope="col">EXTRA</th>
                                     <th scope="col">STATUS</th>
                                     <th scope="col" class="buttons-text-variants">DELETE</th>
@@ -172,14 +165,12 @@
                                  <tr>
                                     <th scope="row"><%= variant.id %></th>
                                     <td><%= variant.sku %></td>
-                                  
                                     <td> New Town</td>
-                                    
                                     <td><span class="badge badge-primary">Pending</span></td>
                                     <td>
-                                     
                                        <div class="col-md-3 col-sm-6 ">
                                           <input type="hidden" value="<%= variant.id %>" name="variantId">
+                                          
                                           <button  class="btn grid-btn mt-0 btn-sm btn-secondary imp-delete-colour "  data-toggle="modal" data-target="#modal-2"> DELETE </button>
                                        </div>
                                        <div class="modal fade" id="modal-2" tabindex="-1" role="dialog" aria-labelledby="modal-2">
@@ -198,8 +189,6 @@
                                                       <button type="submit" class="btn btn-primary shadow-none">Delete</button>
                                                    </form>
                                                    <button type="button" class="btn btn-light" data-dismiss="modal">Cancel</button>
-                                                   
-                                              
                                                 </div>
                                              </div>
                                           </div>
@@ -223,6 +212,5 @@
          </div>
       </div>
    </main>
-   <%- include('../includes/end.ejs')
-      %>
+   <%- include('../includes/end.ejs') %>
 </body>

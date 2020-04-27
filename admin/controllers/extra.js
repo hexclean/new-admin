@@ -141,12 +141,10 @@ exports.getEditExtra = (req, res, next) => {
 };
 
 exports.postEditExtra = async (req, res, next) => {
-  const extId = req.params.extraId;
   const updatedRoName = req.body.roName;
   const updatedHuName = req.body.huName;
   const updatedEnName = req.body.enName;
   const extTranId = req.body.extTranId;
-  const errors = validationResult(req);
 
   Extra.findAll({
     include: [
