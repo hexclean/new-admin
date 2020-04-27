@@ -28,11 +28,7 @@
                   
                   <script>
                       $(document).ready(function() {
-                         
-                      var activeCheckbox ="<%= isActive[i].extraId %>"     
-                        // alert("s");
-                        console.log('.status-checkbox-'+activeCheckbox);
-                        console.log('.status-'+activeCheckbox);
+                      var activeCheckbox ="<%= isActive[i].extraId %>";
                       $('.status-checkbox-'+activeCheckbox).prop('checked', true);
                       $('.status-'+activeCheckbox).val('on');
                       });
