@@ -1,32 +1,47 @@
 <%- include('../includes/head.ejs') %>
-
 <script>
    $(document).ready(function() {
       $('.status-checkbox').click(function(){
          var extraId = $(this).attr('data-extraId');
          if($(this).is(':checked')) {
             $('.status-'+extraId).val('on');
-            
          } else {
             $('.status-'+extraId).val('off');
-            
          }
       });
    });
 </script>
-
 </head>
 <body class="ms-body ms-aside-left-open ms-primary-theme ms-has-quickbar">
    <%- include('../includes/navigation.ejs') %>
    <main class="body-content">
       <%- include('../includes/navigation-bar.ejs') %>
-      
       <form
          class="ms-content-wrapper" name="myForm"
          action="/admin/<% if (editing) { %>edit-variant<% } else { %>add-variant<% } %>"
          method="POST"
          enctype="multipart/form-data"
          id="form1">
+         <% if (editing) { %>
+            <% for (let i = 0; i < isActive.length; i++) { %>
+               <% if (isActive[i].active ==1) { %>
+                  
+                  <script>
+                      $(document).ready(function() {
+                         
+                      var activeCheckbox ="<%= isActive[i].extraId %>"     
+                        // alert("s");
+                        console.log('.status-checkbox-'+activeCheckbox);
+                        console.log('.status-'+activeCheckbox);
+                      $('.status-checkbox-'+activeCheckbox).prop('checked', true);
+                      $('.status-'+activeCheckbox).val('on');
+                      });
+                  </script>
+                     
+                  <% } 
+               %>
+            <% } %>
+            <% } %>
          <div class="row">
             <div class="col-xl-6 col-md-12">
                <div class="ms-panel ms-panel-fh">
@@ -96,14 +111,11 @@
          </div>
          </div>
          </div>
-      
          <div class="ms-panel ms-btn-display">
             <div class="ms-panel-header">
                <h6>A  hozzárendelhető extrái:</h6>
             </div>
          </div>
-         
-        
          <% if (ext.length > 0) { %>
          <div class="ms-content-wrapper">
             <div class="row">
@@ -118,28 +130,13 @@
                      <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
                         <div class="ms-card">
                            <div class="d-flex justify-content-center extra-margin-top">
-
-                             
-                                 <div class="row">
-                                    <% for (let i = 0; i < variant[0].productVariantsExtras.length; i++) { %>
-                                       <% if (variant[0].productVariantsExtras[i].active ==1) { %>
-                                          <script>
-                                              
-                                              $('.status-checkbox').prop('checked', true);
-                                          </script>
-
-                                          <% } else { %>
-                                            
-                                             <% } %>
-                                    <% } %>
+                                 <div class="row"> 
+                                   
                                     <label class="ms-switch" >                 
                                        <input type="hidden" value="off" class="status-<%= extra.id %>" name="status[<%= extra.id %>]" >          
-                                       <input    data-extraId="<%= extra.id %>"  class="status-checkbox" type="checkbox"  > <span class="ms-switch-slider ms-switch-success round"></span>
+                                       <input    data-extraId="<%= extra.id %>"  class="status-checkbox status-checkbox-<%= extra.id %>" type="checkbox"  > <span class="ms-switch-slider ms-switch-success round"></span>
                                     </label> 
                                  </div>
-                             
-                           
-                            
                            </div>
                            <div class="ms-card-body">
                               <div class="new  d-flex justify-content-center extra-name">
@@ -222,9 +219,7 @@
             </div>
          </div>
          <% } else { %>
-        
          <% } %>
-  
       </form>
    </main>
    <%- include('../includes/end.ejs') %>

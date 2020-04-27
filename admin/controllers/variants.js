@@ -232,12 +232,17 @@ exports.getEditVariant = async (req, res, next) => {
     ],
   })
     .then((variant) => {
-      for (let i = 0; i < variant[0].productVariantsExtras.length; i++) {
-        console.log(
-          "variant[0].productVariantsExtras",
-          variant[0].productVariantsExtras[i].active
-        );
-      }
+      // for (let i = 0; i < variant[0].productVariantsExtras.length; i++) {
+      //   console.log(
+      //     "variant[0].productVariantsExtras",
+      //     variant[0].productVariantsExtras[i].active
+      //   );
+      // }
+      console.log("extra", ext);
+      console.log(
+        "variant[0].productVariantsExtras",
+        variant[0].productVariantsExtras
+      );
       // console.log(variant[0].productVariantsExtras.active);
       // const extra = extras[0];
       // if (extra[0].adminId !== req.admin.id) {
