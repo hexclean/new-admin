@@ -16,33 +16,17 @@
 </script>
 
 </head>
-<body oncontextmenu="return false;"> 
+<body class="ms-body ms-aside-left-open ms-primary-theme ms-has-quickbar">
    <%- include('../includes/navigation.ejs') %>
    <main class="body-content">
       <%- include('../includes/navigation-bar.ejs') %>
-      <% if (errorMessage) { %>
-      <div class="user-message user-message--error"><%= errorMessage %></div>
-      <% } %>
-      <form onsubmit="return validateForm()"
+      
+      <form
          class="ms-content-wrapper" name="myForm"
          action="/admin/<% if (editing) { %>edit-variant<% } else { %>add-variant<% } %>"
          method="POST"
          enctype="multipart/form-data"
          id="form1">
-         <script>
-            function validateForm() {
-            var sku = document.forms["myForm"]["sku"].value;
-            var enTitle = document.forms["myForm"]["roName"].value;
-            var huTitle = document.forms["myForm"]["huName"].value;
-            var enTitle = document.forms["myForm"]["huName"].value;
-           
-            
-            if (roTitle == "" ||huTitle == "" || enTitle == ""|| sku == ""  ) {
-              alert("Name must be filled out");
-              return false;
-            }
-            } 
-         </script>
          <div class="row">
             <div class="col-xl-6 col-md-12">
                <div class="ms-panel ms-panel-fh">
@@ -223,28 +207,8 @@
          <% } else { %>
         
          <% } %>
-      
-<script>
-   document.onkeydown = function(e) {
-  if(event.keyCode == 123) {
-     return false;
-  }
-  if(e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) {
-     return false;
-  }
-  if(e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) {
-     return false;
-  }
-  if(e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) {
-     return false;
-  }
-  if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) {
-     return false;
-  }
-}
-</script>
+  
       </form>
-   </body>
    </main>
    <%- include('../includes/end.ejs') %>
 </body>

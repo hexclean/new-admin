@@ -36,5 +36,8 @@
   "dashboard_profile_connect": "Registartion",
   "update_profile": "Update Profile",
   "admin_photo": "Profile Picture",
-  "upload_product_image": "Attached file is not an image!"
+  "upload_product_image": "Attached file is not an image!",
+  "extra_ro_name_required": "Extra romanian name is required",
+  "extra_hu_name_required": "Extra hungarian name us required",
+  "extra_en_name_required": "Extra english en name is req"
 }

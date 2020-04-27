@@ -148,22 +148,6 @@ exports.postEditExtra = async (req, res, next) => {
   const extTranId = req.body.extTranId;
   const errors = validationResult(req);
 
-  if (!errors.isEmpty()) {
-    console.log(errors.array());
-    return res.status(422).render("admin/edit-product", {
-      pageTitle: "Add Product",
-      path: "/admin/add-product",
-      editing: false,
-      hasError: true,
-      product: {
-        roName: extra[0].extraTranslations[2].roName,
-        huName: extra[0].extraTranslations[2].huName,
-        enName: extra[0].extraTranslations[2].enName,
-      },
-      errorMessage: errors.array()[0].msg,
-      validationErrors: errors.array(),
-    });
-  }
   Extra.findAll({
     include: [
       {
@@ -172,26 +156,11 @@ exports.postEditExtra = async (req, res, next) => {
     ],
   })
     .then((extra) => {
-      console.log(extra);
-      if (extra.adminId != req.admin.id) {
-        return res.redirect("/");
-      }
-      if (!errors.isEmpty()) {
-        console.log(errors.array());
-        return res.status(422).render("admin/edit-product", {
-          pageTitle: "Add Product",
-          path: "/admin/add-product",
-          editing: false,
-          hasError: true,
-          product: {
-            title: title,
-            price: price,
-            description: description,
-          },
-          errorMessage: errors.array()[0].msg,
-          validationErrors: errors.array(),
-        });
-      }
+      // console.log(extra);
+      // if (extra.adminId != req.admin.id) {
+      //   return res.redirect("/");
+      // }
+
       async function msg() {
         await ExtraTranslation.update(
           { name: updatedRoName },

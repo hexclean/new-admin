@@ -37,6 +37,8 @@
   "dashboard_profile_connect": "tudomtudomtudom",
   "update_profile": "tudomtudomtudom",
   "admin_photo": "Profil photo",
-  "upload_product_image": "sdfsdfsdfsdfsfsdfsdfsfdfsfdsfsdf!"
-  
+  "upload_product_image": "sdfsdfsdfsdfsfsdfsdfsfdfsfdsfsdf!",
+  "extra_ro_name_required": "Numele extra roman este required",
+  "extra_hu_name_required": "Numele extra hun name este req",
+  "extra_en_name_required": "Numele extra en name este req"
 }

@@ -36,5 +36,8 @@
   "dashboard_profile_connect": "Registrált",
   "update_profile": "Profil frissítés",
   "admin_photo": "Profil kép",
-  "upload_product_image": "Kép feltöltése kötelező!"
+  "upload_product_image": "Kép feltöltése kötelező!",
+  "extra_ro_name_required": "Román nevet kötlező megadni",
+  "extra_hu_name_required": "Magyar nevet kötlező megadni",
+  "extra_en_name_required": "angol nevet kötlező megadni"
 }

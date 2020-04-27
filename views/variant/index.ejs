@@ -166,8 +166,8 @@
                                     <th scope="col" >EDIT</th>
                                  </tr>
                               </thead>
-                              <% if (vr.length > 0) { %>
-                              <% for (let variant of vr) { %>
+                              <% if (extras.length > 0) { %>
+                              <% for (let variant of extras) { %>
                               <tbody>
                                  <tr>
                                     <th scope="row"><%= variant.id %></th>
@@ -205,7 +205,7 @@
                                           </div>
                                        </div>
                                     </td>
-                                    <td>                              <a href="/admin/edit-variant/<%= variant.id %>?edit=true"class="btn grid-btn mt-0 btn-sm btn-secondary" ><%= lingua.product_action_edit %></a>
+                                    <td>                              <a href="/admin/edit-extra/<%= variant.id %>?edit=true"class="btn grid-btn mt-0 btn-sm btn-secondary" ><%= lingua.product_action_edit %></a>
                                     </td>
                                  </tr>
                               </tbody>

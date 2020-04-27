@@ -4,11 +4,28 @@ const ProductCategoryTranslation = require("../../models/ProductCategoryTranslat
 const ProductVariantsExtras = require("../../models/ProductVariantsExtras");
 const ProductVariants = require("../../models/ProductVariant");
 const productExtraTranslation = require("../../models/ExtraTranslation");
+const ProductExtra = require("../../models/Extra");
 const ITEMS_PER_PAGE = 15;
 
 exports.getIndex = async (req, res, next) => {
   const page = +req.query.page || 1;
   let totalItems;
+
+  const extras = await ProductExtra.findAll({
+    where: {
+      adminId: req.admin.id,
+    },
+  }).then((numExtras) => {
+    totalItems = numExtras;
+    return ProductExtra.findAll({
+      where: {
+        adminId: req.admin.id,
+      },
+      offset: (page - 1) * ITEMS_PER_PAGE,
+      limit: ITEMS_PER_PAGE,
+    });
+  });
+
   await req.admin
     .getProductVariants()
 
@@ -20,7 +37,6 @@ exports.getIndex = async (req, res, next) => {
       });
     })
     .then((vr) => {
-      console.log(vr);
       res.render("variant/index", {
         pageTitle: "Admin Products",
         path: "/admin/products",
@@ -31,6 +47,7 @@ exports.getIndex = async (req, res, next) => {
         previousPage: page - 1,
         lastPage: Math.ceil(totalItems.length / ITEMS_PER_PAGE),
         vr: vr,
+        extras: extras,
       });
     })
     .catch((err) => {
