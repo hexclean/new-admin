@@ -7,7 +7,6 @@ const bodyParser = require("body-parser");
 const flash = require("connect-flash");
 const multer = require("multer");
 const path = require("path");
-var expressValidator = require("express-validator");
 var SequelizeStore = require("connect-session-sequelize")(session.Store);
 var Sequelize = require("sequelize");
 
@@ -18,7 +17,7 @@ const ProductVariantTranslation = require("./models/ProductVariantTranslation");
 const ProductVariant = require("./models/ProductVariant");
 const Extra = require("./models/Extra");
 const ExtraTranslation = require("./models/ExtraTranslation");
-const ExtraCategory = require("./models/ExtraCategory");
+// const ExtraCategory = require("./models/ExtraCategory");
 const ProductCategory = require("./models/ProductCategory");
 const ProductCategoryTranslation = require("./models/ProductCategoryTranslation");
 const ProductVariantsExtras = require("./models/ProductVariantsExtras");
@@ -26,6 +25,10 @@ const ProductVariantToProduct = require("./models/ProductVariantToProduct");
 const ProductExtras = require("./models/productExtra");
 const Language = require("./models/Language");
 const Admin = require("./models/Admin");
+//
+const VariantCategory = require("./models/VariantCategory");
+const VariantCategoryTranslation = require("./models/VariantCategoryTranslation");
+
 const app = express();
 const db = new Sequelize("foodnet", "root", "y7b5uwFOODNET", {
   host: "localhost",
@@ -168,6 +171,23 @@ ProductVariantTranslation.belongsTo(Language, {
 Language.hasMany(ProductVariantTranslation, { foreignKey: "languageId" });
 
 //
+
+VariantCategoryTranslation.belongsTo(VariantCategory, {
+  as: "variantCat",
+  foreignKey: "variantCategoryId",
+});
+VariantCategory.hasMany(VariantCategoryTranslation, {
+  foreignKey: "variantCategoryId",
+});
+
+VariantCategoryTranslation.belongsTo(Language, {
+  as: "variantCategoryTrans",
+  foreignKey: "languageId",
+});
+Language.hasMany(VariantCategoryTranslation, { foreignKey: "languageId" });
+
+///
+
 // Product-> ProductTranslation -> Languagef
 ProductVariantToProduct.belongsTo(Product, {
   as: "VariantToProduct",
@@ -214,7 +234,7 @@ Extra.hasMany(ExtraTranslation);
 ProductCategory.hasMany(ProductCategoryTranslation);
 // Product -> Variant
 
-Extra.hasMany(ExtraCategory);
+// Extra.hasMany(ExtraCategory);
 
 ProductVariant.hasMany(ProductVariantsExtras);
 Extra.hasMany(ProductVariantsExtras);

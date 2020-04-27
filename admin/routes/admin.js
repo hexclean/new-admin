@@ -4,6 +4,7 @@ const adminController = require("../controllers/admin");
 const extraController = require("../controllers/extra");
 const variantsController = require("../controllers/variants");
 const faqController = require("../controllers/faq");
+const categoryController = require("../controllers/category");
 
 // const migrationController = require("../controllers/migration");
 // const adminProfileController = require("../controllers/profile");
@@ -76,6 +77,10 @@ router.get(
   isAuth,
   variantsController.getEditVariant
 );
+//
+router.get("/add-category", isAuth, categoryController.getAddCategory);
+router.post("/add-category", isAuth, categoryController.postAddCategory);
+
 ///
 router.get("/add-extra", isAuth, extraController.getAddExtra);
 router.get("/extras", isAuth, extraController.getExtras);
@@ -86,16 +91,7 @@ router.post(
 
   extraController.postEditExtra
 );
-router.post(
-  "/add-extra",
-  [
-    body("roName").isString().isLength({ min: 3 }).trim(),
-    body("huName").isString().isLength({ min: 3 }).trim(),
-    body("enName").isString().isLength({ min: 3 }).trim(),
-  ],
-  isAuth,
-  extraController.postAddExtra
-);
+router.post("/add-extra", isAuth, extraController.postAddExtra);
 // /admin/add-product
 router.get("/add-product", isAuth, adminController.getAddProduct);
 

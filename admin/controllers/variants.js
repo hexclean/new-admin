@@ -2,7 +2,7 @@ const { validationResult } = require("express-validator/check");
 const ProductVariantTranslation = require("../../models/ProductVariantTranslation");
 const ProductVariantsExtras = require("../../models/ProductVariantsExtras");
 const ProductVariants = require("../../models/ProductVariant");
-const productExtraTranslation = require("../../models/ExtraTranslation");
+const ProductVariantExtras = require("../../models/ProductVariantsExtras");
 const ProductExtra = require("../../models/Extra");
 const ITEMS_PER_PAGE = 15;
 
@@ -227,9 +227,22 @@ exports.getEditVariant = async (req, res, next) => {
       {
         model: ProductVariantTranslation,
       },
+      { model: ProductVariantExtras },
     ],
   })
     .then((variant) => {
+      for (let i = 0; i < variant[0].productVariantsExtras.length; i++) {
+        // console.log(
+        //   "extra[0].extraTranslations[i].id",
+        //   variant[0].productVariantsExtras[i].active
+        // );
+        if (variant[0].productVariantsExtras[i].active !== 1) {
+          console.log("1", variant[0].productVariantsExtras[i].active);
+        } else {
+          console.log("nem");
+        }
+      }
+      // console.log(variant[0].productVariantsExtras.active);
       // const extra = extras[0];
       // if (extra[0].adminId !== req.admin.id) {
       //   return res.redirect("/");
@@ -249,7 +262,9 @@ exports.getEditVariant = async (req, res, next) => {
         errorMessage: null,
         validationErrors: [],
         extTranslations: variant[0].productVariantTranslations,
+        activeCheck: variant[0].productVariantsExtras,
       });
+      // console.log(activeCheck);
     })
     .catch((err) => {
       const error = new Error(err);
