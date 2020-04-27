@@ -1,17 +1,86 @@
 <%- include('../includes/head.ejs') %>
-
 <script>
-   function validateForm() {
-   var enTitle = document.forms["myForm"]["roName"].value;
-   var huTitle = document.forms["myForm"]["huName"].value;
-   var enTitle = document.forms["myForm"]["huName"].value;
+
+$(function () {
+  $("#roName_error_message").hide();
+  $("#huName_error_message").hide();
+  $("#enName_password_error_message").hide();
+
+  var error_roName = false;
+  var error_huName = false;
+  var error_enName = false;
+  var error_sku = false;
+
+  $("#roName").focusout(function () {
+    check_roName();
+  });
+
+  $("#huName").focusout(function(){
+     check_huName();
+  })
+
+  $("#enName").focusout(function(){
+     check_enName();
+  })
   
-   
-   if (roTitle == "" ||huTitle == "" || enTitle == ""|| sku == ""  ) {
-     alert("Name must be filled out");
-     return false;
-   }
-   } 
+  function check_roName() {
+    var roName_length = $("#roName").val().length;
+
+    if (roName_length < 2 || roName_length > 15) {
+      $("#roName_error_message").html("Should be between 2-20 characters");
+      $("#roName_error_message").show();
+      error_roName = true;
+    } else {
+      $("#roName_error_message").hide();
+    }
+  }
+
+  function check_huName() {
+    var huName_length = $("#huName").val().length;
+
+    if (huName_length < 2 || huName_length > 15) {
+      $("#huName_error_message").html("Should be between 2-20 characters");
+      $("#huName_error_message").show();
+      error_huName = true;
+    } else {
+      $("#huName_error_message").hide();
+    }
+  }
+
+  function check_enName() {
+    var enName_length = $("#enName").val().length;
+
+    if (enName_length < 2 || enName_length > 15) {
+      $("#enName_error_message").html("Should be between 2-20 characters");
+      $("#enName_error_message").show();
+      error_enName = true;
+    } else {
+      $("#enName_error_message").hide();
+    }
+  }
+ 
+  $("#registration_form").submit(function () {
+    error_roName = false;
+    error_huName = false;
+    error_enName = false;
+
+    check_roName();
+    check_huName();
+    check_enName();
+
+    if (
+      error_roName == false &&
+      error_huName == false &&
+      error_enName == false 
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  });
+});
+
+
 </script>
 </head>
 <body class="ms-body ms-aside-left-open ms-primary-theme ms-has-quickbar">
@@ -22,7 +91,7 @@
       <div class="user-message user-message--error"><%= errorMessage %></div>
       <% } %>
       <form 
-      name="myForm"
+         id="registration_form"
          class="ms-content-wrapper" 
          action="/admin/<% if (editing) { %>edit-extra<% } else { %>add-extra<% } %>"
          method="POST"
@@ -35,7 +104,6 @@
                   </div>
                   <div class="ms-panel-body">
                      <div class="form-row">
-                     
                         <div class="col-md-12 mb-3">
                            <label for="roName"><%= lingua.create_product_name1 %></label>
                            <div class="input-group">
@@ -46,6 +114,7 @@
                                  id="roName"
                                  value="<% if (editing || hasError) { %><%= extra[0].extraTranslations[0].name %><% } %>">
                            </div>
+                           <span class="error_form" id="roName_error_message"></span>
                         </div>
                         <div class="col-md-12 mb-3">
                            <label for="huName"><%= lingua.create_product_name2 %></label>
@@ -57,6 +126,7 @@
                                  id="huName"
                                  value="<% if (editing || hasError) { %><%= extra[0].extraTranslations[1].name %><% } %>">
                            </div>
+                           <span class="error_form" id="huName_error_message"></span>
                         </div>
                         <div class="col-md-12 mb-3">
                            <label for="enName"><%= lingua.create_product_name3 %></label>
@@ -68,8 +138,8 @@
                                  id="enName"
                                  value="<% if (editing || hasError) { %><%= extra[0].extraTranslations[2].name %><% } %>">
                            </div>
+                           <span class="error_form" id="enName_error_message"></span>
                         </div>
-                      
                      </div>
                   </div>
                </div>
@@ -81,16 +151,13 @@
                         <div class="ms-panel-header">
                            <h6>Product</h6>
                         </div>
-                        
                         <% if (editing) { %>
-                           <input type="hidden" value="<%= extra.id %>" name="extraId">
-
-                           <%for (let i = 0; i < extTranslations.length; i++){%>
-                              <input type="hidden" value="<%= extTranslations[i].id %>" name="extTranId">
-                          <%}%>
-                       <% } %>
-           
-                       <button class="btn" type="submit"><% if (editing) { %>Update Product<% } else { %>Add Product<% } %></button>
+                        <input type="hidden" value="<%= extra.id %>" name="extraId">
+                        <%for (let i = 0; i < extTranslations.length; i++){%>
+                        <input type="hidden" value="<%= extTranslations[i].id %>" name="extTranId">
+                        <%}%>
+                        <% } %>
+                        <button type="submit" class="btn" ><% if (editing) { %>Update Product<% } else { %>Add Product<% } %></button>
                      </div>
                   </div>
                </div>
@@ -98,8 +165,6 @@
          </div>
          </div>
       </form>
-   
-  
    </main>
    <%- include('../includes/end.ejs') %>
 </body>

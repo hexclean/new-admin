@@ -16,7 +16,7 @@
 </script>
 
 </head>
-<body class="ms-body ms-aside-left-open ms-primary-theme ms-has-quickbar">
+<body oncontextmenu="return false;"> 
    <%- include('../includes/navigation.ejs') %>
    <main class="body-content">
       <%- include('../includes/navigation-bar.ejs') %>
@@ -137,7 +137,7 @@
                            <div class="d-flex justify-content-center extra-margin-top">
                               <label class="ms-switch" >                 
                                  <input type="hidden" value="off" class="status-<%= extra.id %>" name="status[<%= extra.id %>]" >          
-                                 <input checked='unchecked'  data-extraId="<%= extra.id %>"  class="status-checkbox" type="checkbox"  > <span class="ms-switch-slider ms-switch-success round"></span>
+                                 <input   data-extraId="<%= extra.id %>"  class="status-checkbox" type="checkbox"  > <span class="ms-switch-slider ms-switch-success round"></span>
                               </label> 
                            </div>
                            <div class="ms-card-body">
@@ -223,8 +223,28 @@
          <% } else { %>
         
          <% } %>
-        
+      
+<script>
+   document.onkeydown = function(e) {
+  if(event.keyCode == 123) {
+     return false;
+  }
+  if(e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) {
+     return false;
+  }
+  if(e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) {
+     return false;
+  }
+  if(e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) {
+     return false;
+  }
+  if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) {
+     return false;
+  }
+}
+</script>
       </form>
+   </body>
    </main>
    <%- include('../includes/end.ejs') %>
 </body>

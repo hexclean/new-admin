@@ -112,19 +112,16 @@ exports.getEditExtra = (req, res, next) => {
     ],
   })
     .then((extra) => {
-      for (let i = 0; i < extra[0].extraTranslations.length; i++) {
-        console.log(
-          "extra[0].extraTranslations[i].id",
-          extra[0].extraTranslations[i].id
-        );
-      }
-
-      // console.log(extra[0].extraTranslations);
-      // console.log(extra[0].extraTranslations);
-      if (extra[0].adminId != req.admin.id) {
+      // const extra = extras[0];
+      console.log(extra);
+      // if (extra[0].adminId !== req.admin.id) {
+      //   return res.redirect("/");
+      // }
+      // console.log(extra.adminId);
+      console.log("req.admin", extra[0].adminId);
+      if (extra[0].adminId !== req.admin.id) {
         return res.redirect("/");
       }
-      // console.log("extraTranslation[0]:", extra[0].extraTranslations[0].id);
       res.render("extra/edit-extra", {
         pageTitle: "Edit Product",
         path: "/admin/edit-product",
@@ -149,10 +146,25 @@ exports.postEditExtra = async (req, res, next) => {
   const updatedHuName = req.body.huName;
   const updatedEnName = req.body.enName;
   const extTranId = req.body.extTranId;
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    console.log(errors.array());
+    return res.status(422).render("admin/edit-product", {
+      pageTitle: "Add Product",
+      path: "/admin/add-product",
+      editing: false,
+      hasError: true,
+      product: {
+        roName: extra[0].extraTranslations[2].roName,
+        huName: extra[0].extraTranslations[2].huName,
+        enName: extra[0].extraTranslations[2].enName,
+      },
+      errorMessage: errors.array()[0].msg,
+      validationErrors: errors.array(),
+    });
+  }
   Extra.findAll({
-    // where: {
-    //   id: extId,
-    // },
     include: [
       {
         model: ExtraTranslation,
@@ -160,11 +172,26 @@ exports.postEditExtra = async (req, res, next) => {
     ],
   })
     .then((extra) => {
-      // console.log(extra.extraTranslations);
-      // console.log("req.admin.id:", req.admin.id);
-      // if (extra.adminId != req.admin.id) {
-      //   return res.redirect("/");
-      // }
+      console.log(extra);
+      if (extra.adminId != req.admin.id) {
+        return res.redirect("/");
+      }
+      if (!errors.isEmpty()) {
+        console.log(errors.array());
+        return res.status(422).render("admin/edit-product", {
+          pageTitle: "Add Product",
+          path: "/admin/add-product",
+          editing: false,
+          hasError: true,
+          product: {
+            title: title,
+            price: price,
+            description: description,
+          },
+          errorMessage: errors.array()[0].msg,
+          validationErrors: errors.array(),
+        });
+      }
       async function msg() {
         await ExtraTranslation.update(
           { name: updatedRoName },
@@ -180,28 +207,10 @@ exports.postEditExtra = async (req, res, next) => {
           { name: updatedEnName },
           { where: { id: extTranId[2], languageId: 3 } }
         );
-        console.log("Message:");
       }
       msg();
-      console.log("extTranId[0]", extTranId[0]);
-      console.log("extTranId[1]", extTranId[1]);
-      console.log("extTranId[2]", extTranId[2]);
-      console.log("RO", updatedRoName);
-      console.log("HU", updatedHuName);
-      console.log("EN", updatedEnName);
 
-      // let ids = [1, 2, 3];
-      // console.log("extra/Translation[0]:", extra[0].extraTranslations[0].id);
-      // extra[0].extraTranslations.id;
-      // ExtraTranslation.update({ name: updatedRoName }, { where: { id: ids } });
-      // console.log("extraTranslation[0]:", extra[0].extraTranslations);
-      // extra.name[0] = updatedRoName;
-      // extra.name[1] = updatedHuName;
-      // extra.name[2] = updatedEnName;
-      // return extra.save().then((result) => {
-      //   console.log("UPDATED PRODUCT!");
       res.redirect("/admin/vr-index");
-      // });
     })
     .catch((err) => {
       const error = new Error(err);
@@ -221,50 +230,4 @@ exports.getProducts = (req, res, next) => {
       });
     })
     .catch((err) => console.log(err));
-};
-
-const getProductsByUserFilter = async (userFilters) => {
-  const { filters, categoryId, perPage, offset, orderBy } = userFilters;
-
-  let sql =
-    `SELECT * FROM foodnet.extras as ex
-    JOIN foodnet.extraTranslations as ext
-   ON ex.id = ext.extraId
-     join foodnet.languages as lan
-   ON ext.languageId = lan.id
-    where ex.adminId =` +
-    req.admin.id +
-    `1 AND ext.extraId =` +
-    extId +
-    `;`;
-
-  const products = await Product.findAll({
-    where: {
-      id: productIds,
-      enabled: ENABLED,
-    },
-    attributes: ["image", "id", "name", "seoName", "categoryId"],
-    include: [
-      {
-        attributes: ["seoUrl"],
-        model: Category,
-        as: "category",
-      },
-      {
-        attributes: ["rating"],
-        model: ProductRating,
-      },
-      {
-        model: ProductType,
-        attributes: ["id", "name", "price", "discount"],
-        include: [
-          {
-            attributes: ["image"],
-            model: ProductImage,
-          },
-        ],
-      },
-    ],
-  });
-  return { products: products, totalCount: totalCount.length };
 };

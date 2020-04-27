@@ -7769,3 +7769,9 @@ body:not(.ms-settings-open) .ms-settings-toggle:hover {
   -moz-box-shadow: 0 1px 6px 1px rgba(69, 65, 78, 0.1);
   box-shadow: 0 1px 6px 1px rgba(69, 65, 78, 0.1);
 }
+
+.error_form {
+	font-size: 15px;
+	font-family: Arial;
+	color: #FF0052;
+}
