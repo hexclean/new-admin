@@ -67,11 +67,11 @@ router.post(
 router.post("/delete-variant", variantsController.postDeleteVariant);
 ///
 
-router.get(
-  "/edit-variant/:variantId",
-  isAuth,
-  variantsController.getEditVariant
-);
+// router.get(
+//   "/edit-variant/:variantId",
+//   isAuth,
+//   variantsController.getEditVariant
+// );
 //
 router.get("/add-category", isAuth, categoryController.getAddCategory);
 router.post("/add-category", isAuth, categoryController.postAddCategory);

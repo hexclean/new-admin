@@ -1,7 +1,7 @@
 <%- include('../includes/head.ejs') %>
 <script>
    $(document).ready(function() {
-      $('.status-checkbox').click(function(){
+      $('.status-checkbox').click(function() {
          var extraId = $(this).attr('data-extraId');
          if($(this).is(':checked')) {
             $('.status-'+extraId).val('on');
@@ -11,6 +11,63 @@
       });
    });
 </script>
+
+<!-- 
+<script>
+   $(document).ready(function() {
+
+
+     
+      $('.status-checkbox').click(function(){
+         $("#roName_error_message").hide();
+         var error_roName = false;
+
+         $("#roName").focusout(function () {
+            check_roName();
+         });
+
+
+
+         function check_roName() {
+         var roName_length = $("#roName").val().length;
+         var extraId = $(this).attr('data-extraId');
+
+         if ($(this).is(':checked') || roName_length <2) {
+
+            $('.status-' + extraId).val('on');
+            $("#roName_error_message").html(`<%= lingua.extra_ro_name_required %>`);
+            $("#roName_error_message").show();
+            error_roName = true;
+            
+         } else {
+            $('.status-'+extraId).val('off');
+            $("#roName_error_message").hide();
+         }
+
+        }
+
+
+        $("#form1").submit(function () {
+            error_roName = false;
+            
+
+            check_roName();
+           
+
+            if (
+               error_roName == false
+              
+            ) {
+               return true;
+            } else {
+               return false;
+            }
+          });
+       
+      });
+   });
+</script> -->
+
 </head>
 <body class="ms-body ms-aside-left-open ms-primary-theme ms-has-quickbar">
    <%- include('../includes/navigation.ejs') %>
@@ -90,6 +147,7 @@
                                  value="<% if (editing || hasError) { %><%= variant[0].productVariantTranslations[2].name %><% } %>">
                            </div>
                         </div>
+                        
                         <% if (editing) { %>
                            <input type="hidden" value="<%= variant.id %>" name="variantId">
                            <%for (let i = 0; i < extTranslations.length; i++){%>
@@ -149,6 +207,8 @@
                                        value="<% if (editing || hasError) { %><%= extra.price %><% } %>"
                                        />
                                  </div>
+                                 <span class="error_form" id="roName_error_message"></span>
+
                               </div>
                               <div class="col-md-12 mb-3">
                                  <label for="discountedPrice"

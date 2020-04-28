@@ -113,12 +113,12 @@ exports.getEditExtra = (req, res, next) => {
   })
     .then((extra) => {
       // const extra = extras[0];
-      console.log(extra);
-      // if (extra[0].adminId !== req.admin.id) {
-      //   return res.redirect("/");
-      // }
+      console.log("extra.adminId", extra[0].adminId);
+      if (extra[0].adminId !== req.admin.id) {
+        return res.redirect("/");
+      }
       // console.log(extra.adminId);
-      console.log("req.admin", extra[0].adminId);
+      // console.log("req.admin", extra[0].adminId);
       if (extra[0].adminId !== req.admin.id) {
         return res.redirect("/");
       }

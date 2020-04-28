@@ -83,26 +83,6 @@ exports.postAddVariant = async (req, res, next) => {
   const updatedExtraQuantityMax = req.body.quantityMax;
   const updatedExtraMandatory = req.body.mandatory;
   var filteredStatus = req.body.status.filter(Boolean);
-  const errors = validationResult(req);
-  console.log(filteredStatus);
-
-  if (!errors.isEmpty()) {
-    console.log(errors.array());
-    return res.status(422).render("variant/edit-variant", {
-      pageTitle: "Add Product",
-      path: "/admin/add-product",
-      editing: false,
-      hasError: true,
-      variant: {
-        roName: roName,
-        huName: huName,
-        enName: enName,
-        sku: sku,
-      },
-      errorMessage: errors.array()[0].msg,
-      validationErrors: errors.array(),
-    });
-  }
 
   const variant = await req.admin.createProductVariant({
     sku: sku,
@@ -115,14 +95,14 @@ exports.postAddVariant = async (req, res, next) => {
       languageId: 1,
       productVariantId: variant.id,
 
-      adminId: 1,
+      adminId: req.admin.id,
     });
     await ProductVariantTranslation.create({
       name: huName,
       languageId: 2,
 
       productVariantId: variant.id,
-      adminId: 1,
+      adminId: req.admin.id,
     });
 
     await ProductVariantTranslation.create({
@@ -130,14 +110,13 @@ exports.postAddVariant = async (req, res, next) => {
       languageId: 3,
 
       productVariantId: variant.id,
-      adminId: 1,
+      adminId: req.admin.id,
     });
   }
 
   if (Array.isArray(ext)) {
     for (let i = 0; i <= ext.length - 1; i++) {
-      console.log(ext.length);
-      console.log(updatedExtraPrice[i]);
+      console.log("updatedExtraPrice[i]", updatedExtraPrice[i]);
       await ProductVariantsExtras.create({
         price: updatedExtraPrice[i] || 0,
         discountedPrice: updatedExtraDiscountedPrice[i] || 0,
@@ -149,7 +128,6 @@ exports.postAddVariant = async (req, res, next) => {
         active: filteredStatus[i] == "on" ? 1 : 0,
       });
     }
-    console.log(req.body.ext);
   }
   productVariantTransaltion()
     .then((result) => {
@@ -167,11 +145,21 @@ exports.postAddVariant = async (req, res, next) => {
 };
 
 exports.postEditVariant = async (req, res, next) => {
+  const extId = req.body.extraId;
+  const sku = req.body.sku;
+  const varId = req.body.variantId;
+  const updatedExtraPrice = req.body.price;
+  const updatedExtraDiscountedPrice = req.body.discountedPrice;
+  const updatedExtraQuantityMin = req.body.quantityMin;
+  const updatedExtraQuantityMax = req.body.quantityMax;
+  const updatedExtraMandatory = req.body.mandatory;
+  var filteredStatus = req.body.status.filter(Boolean);
   const updatedRoName = req.body.roName;
   const updatedHuName = req.body.huName;
   const updatedEnName = req.body.enName;
   const extTranId = req.body.extTranId;
-
+  const ext = await req.admin.getExtras();
+  console.log("const varId = req.params.variantId;", varId);
   ProductVariants.findAll({
     include: [
       {
@@ -180,11 +168,6 @@ exports.postEditVariant = async (req, res, next) => {
     ],
   })
     .then((variant) => {
-      // console.log(extra);
-      // if (extra.adminId != req.admin.id) {
-      //   return res.redirect("/");
-      // }
-
       async function msg() {
         await ProductVariantTranslation.update(
           { name: updatedRoName },
@@ -200,7 +183,25 @@ exports.postEditVariant = async (req, res, next) => {
           { name: updatedEnName },
           { where: { id: extTranId[2], languageId: 3 } }
         );
+
+        console.log("varIdvarIdvarIdvarIdvarIdvarIdvarIdvarId::", varId[0]);
+
+        if (Array.isArray(ext)) {
+          for (let i = 0; i <= ext.length - 1; i++) {
+            await ProductVariantsExtras.update(
+              { price: updatedExtraPrice[i] || 0 },
+              { discountedPrice: updatedExtraDiscountedPrice[i] || 0 },
+              { quantityMin: updatedExtraQuantityMin[i] || 0 },
+              { quantityMax: updatedExtraQuantityMax[i] || 0 },
+              { mandatory: updatedExtraMandatory[i] || 0 },
+              { productVariantId: variant.id },
+              { extraId: extId[i] },
+              { active: filteredStatus[i] == "on" ? 1 : 0 }
+            );
+          }
+        }
       }
+
       msg();
 
       res.redirect("/admin/vr-index");
@@ -219,7 +220,7 @@ exports.getEditVariant = async (req, res, next) => {
   }
   const varId = req.params.variantId;
   const ext = await req.admin.getExtras();
-
+  // console.log("varId", varId);
   ProductVariants.findAll({
     where: {
       id: varId,
@@ -232,7 +233,7 @@ exports.getEditVariant = async (req, res, next) => {
     ],
   })
     .then((variant) => {
-      console.log(variant[0].productVariantTranslations[0].sku);
+      console.log("varId", varId);
       res.render("variant/edit-variant", {
         pageTitle: "Edit Product",
         path: "/admin/edit-product",
