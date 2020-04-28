@@ -4,6 +4,7 @@ const ProductVariantsExtras = require("../../models/ProductVariantsExtras");
 const ProductVariants = require("../../models/ProductVariant");
 const ProductVariantExtras = require("../../models/ProductVariantsExtras");
 const ProductExtra = require("../../models/Extra");
+const Category = require("../../models/VariantCategory");
 const ITEMS_PER_PAGE = 15;
 
 exports.getIndex = async (req, res, next) => {
@@ -58,14 +59,16 @@ exports.getIndex = async (req, res, next) => {
 
 exports.getAddVariant = async (req, res, next) => {
   const ext = await req.admin.getExtras();
+  const cat = await Category.findAll();
+  console.log(cat);
   res.render("variant/edit-variant", {
     pageTitle: "Add Product",
     path: "/admin/add-product",
     editing: false,
     hasError: false,
     ext: ext,
+    cat: cat,
     errorMessage: null,
-
     validationErrors: [],
   });
 };

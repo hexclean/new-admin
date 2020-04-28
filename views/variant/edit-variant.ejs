@@ -12,7 +12,7 @@
    });
 </script>
 
-<!-- 
+
 <script>
    $(document).ready(function() {
 
@@ -29,21 +29,24 @@
 
 
          function check_roName() {
-         var roName_length = $("#roName").val().length;
+         var roName_length = $("#price").val().length;
          var extraId = $(this).attr('data-extraId');
+         $(".doboz").each(function(){
+            var extraId = $(this).data('extra');
+            console.log('EXTRA'+ extraId);
+            var price_len = $('.price_'+extraId).val().length;
+            console.log('len'+ price_len);
 
-         if ($(this).is(':checked') || roName_length <2) {
+            if ($(this).find('input:checkbox').is(':checked') && price_len < 2) {
+               $(this).find(".extra_error_message").show();
+               $(this).find(".extra_error_message").html(`<%= lingua.extra_ro_name_required %>`);
+               error_roName = true;
+            }else{
+               $(this).find(".extra_error_message").hide();
 
-            $('.status-' + extraId).val('on');
-            $("#roName_error_message").html(`<%= lingua.extra_ro_name_required %>`);
-            $("#roName_error_message").show();
-            error_roName = true;
-            
-         } else {
-            $('.status-'+extraId).val('off');
-            $("#roName_error_message").hide();
-         }
+            }
 
+         })
         }
 
 
@@ -66,7 +69,7 @@
        
       });
    });
-</script> -->
+</script>
 
 </head>
 <body class="ms-body ms-aside-left-open ms-primary-theme ms-has-quickbar">
@@ -95,6 +98,7 @@
                %>
             <% } %>
             <% } %>
+            
          <div class="row">
             <div class="col-xl-6 col-md-12">
                <div class="ms-panel ms-panel-fh">
@@ -114,6 +118,22 @@
                                  value="<% if (editing || hasError) { %><%= variant[0].productVariantTranslations[0].sku %><% } %>">
                            </div>
                         </div>
+                        <div class="col-md-6 mb-3">
+                           <label for="validationCustom22">Select Catagory</label>
+                           <div class="input-group">
+                             <select class="form-control" id="validationCustom22" required>
+                               <option value="">Catagory 1</option>
+                               <option value="">Catagory 2</option>
+                               <option value="">Catagory 3</option>
+                               <option value="">Catagory 4</option>
+       
+                             </select>
+                             <div class="invalid-feedback">
+                               Please select a Catagory.
+                             </div>
+                           </div>
+                         </div>
+                      
                         <div class="col-md-12 mb-3">
                            <label for="roName"><%= lingua.create_product_name1 %></label>
                            <div class="input-group">
@@ -162,6 +182,7 @@
                   </div>
                </div>
             </div>
+            
          </div>
          </div>
          </div>
@@ -181,7 +202,7 @@
                         value="<%= extra.id %>"
                         name="extraId"
                         />          
-                     <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
+                     <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 doboz" data-extra="<%= extra.id %>">
                         <div class="ms-card">
                            <div class="d-flex justify-content-center extra-margin-top">
                                  <div class="row"> 
@@ -200,14 +221,14 @@
                                  <label for="price">Price</label>
                                  <div class="input-group">
                                     <input
-                                       class="form-control <%= validationErrors.find(e => e.param === 'price') ? 'invalid' : '' %>"
+                                       class="price_<%= extra.id %> form-control <%= validationErrors.find(e => e.param === 'price') ? 'invalid' : '' %>"
                                        type="text"
                                        name="price"
                                        id="price"
                                        value="<% if (editing || hasError) { %><%= extra.price %><% } %>"
                                        />
                                  </div>
-                                 <span class="error_form" id="roName_error_message"></span>
+                                 <span class="extra_error_message error_form" id="roName_error_message"></span>
 
                               </div>
                               <div class="col-md-12 mb-3">
