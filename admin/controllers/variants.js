@@ -81,10 +81,8 @@ exports.postAddVariant = async (req, res, next) => {
   const sku = req.body.sku;
   //
   const updatedExtraPrice = req.body.price;
-  const updatedExtraDiscountedPrice = req.body.discountedPrice;
   const updatedExtraQuantityMin = req.body.quantityMin;
   const updatedExtraQuantityMax = req.body.quantityMax;
-  const updatedExtraMandatory = req.body.mandatory;
   var filteredStatus = req.body.status.filter(Boolean);
 
   const variant = await req.admin.createProductVariant({
@@ -122,10 +120,9 @@ exports.postAddVariant = async (req, res, next) => {
       console.log("updatedExtraPrice[i]", updatedExtraPrice[i]);
       await ProductVariantsExtras.create({
         price: updatedExtraPrice[i] || 0,
-        discountedPrice: updatedExtraDiscountedPrice[i] || 0,
+        discountedPrice: updatedExtraPrice[i] * 0.1 || 0,
         quantityMin: updatedExtraQuantityMin[i] || 0,
         quantityMax: updatedExtraQuantityMax[i] || 0,
-        mandatory: updatedExtraMandatory[i] || 0,
         productVariantId: variant.id,
         extraId: extId[i],
         active: filteredStatus[i] == "on" ? 1 : 0,

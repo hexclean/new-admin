@@ -24,10 +24,6 @@ const ProductVariantsExtras = sequelize.define("productVariantsExtras", {
     type: Sequelize.STRING,
     allowNull: false,
   },
-  mandatory: {
-    type: Sequelize.STRING,
-    allowNull: false,
-  },
   active: {
     type: Sequelize.STRING,
     allowNull: false,
