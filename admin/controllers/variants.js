@@ -117,10 +117,9 @@ exports.postAddVariant = async (req, res, next) => {
 
   if (Array.isArray(ext)) {
     for (let i = 0; i <= ext.length - 1; i++) {
-      console.log("updatedExtraPrice[i]", updatedExtraPrice[i]);
       await ProductVariantsExtras.create({
         price: updatedExtraPrice[i] || 0,
-        discountedPrice: updatedExtraPrice[i] * 0.1 || 0,
+        discountedPrice: updatedExtraPrice[i] || 0,
         quantityMin: updatedExtraQuantityMin[i] || 0,
         quantityMax: updatedExtraQuantityMax[i] || 0,
         productVariantId: variant.id,
@@ -131,7 +130,8 @@ exports.postAddVariant = async (req, res, next) => {
   }
   productVariantTransaltion()
     .then((result) => {
-      console.log("asd222");
+      console.log("updatedExtraPrice", updatedExtraPrice);
+
       res.redirect("/admin/vr-index"),
         {
           ext: ext,
