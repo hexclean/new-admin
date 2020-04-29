@@ -1,7 +1,6 @@
 const fileHelper = require("../../util/file");
 const { validationResult } = require("express-validator/check");
 const VariantCategory = require("../../models/VariantCategory");
-const VariantCategoryTranslation = require("../../models/VariantCategoryTranslation");
 
 exports.getAddCategory = (req, res, next) => {
   res.render("category/edit-category", {

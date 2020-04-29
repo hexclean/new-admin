@@ -28,7 +28,6 @@ exports.getIndex = async (req, res, next) => {
 
   await req.admin
     .getProductVariants()
-
     .then((numVariants) => {
       totalItems = numVariants;
       return req.admin.getProductVariants({
@@ -60,7 +59,6 @@ exports.getIndex = async (req, res, next) => {
 exports.getAddVariant = async (req, res, next) => {
   const ext = await req.admin.getExtras();
   const cat = await Category.findAll();
-  console.log(cat);
   res.render("variant/edit-variant", {
     pageTitle: "Add Product",
     path: "/admin/add-product",
@@ -184,21 +182,46 @@ exports.postEditVariant = async (req, res, next) => {
           { where: { id: extTranId[2], languageId: 3 } }
         );
 
-        console.log("varIdvarIdvarIdvarIdvarIdvarIdvarIdvarId::", varId[0]);
-
-        if (Array.isArray(ext)) {
-          for (let i = 0; i <= ext.length - 1; i++) {
+        // if (Array.isArray(ext)) {
+        for (let i = 0; i <= ext.length - 1; i++) {
+          try {
             await ProductVariantsExtras.update(
               { price: updatedExtraPrice[i] || 0 },
-              { discountedPrice: updatedExtraDiscountedPrice[i] || 0 },
-              { quantityMin: updatedExtraQuantityMin[i] || 0 },
-              { quantityMax: updatedExtraQuantityMax[i] || 0 },
-              { mandatory: updatedExtraMandatory[i] || 0 },
-              { productVariantId: variant.id },
-              { extraId: extId[i] },
-              { active: filteredStatus[i] == "on" ? 1 : 0 }
+              { where: { id: ext[i].id } }
             );
+            console.log("extraId: extId[i],", extId[i]);
+            console.log("variantId", varId);
+          } catch (err) {
+            console.log(err);
           }
+          // await ProductVariantsExtras({ where: { id: ext[i].id } }).on(
+          //   "success",
+          //   function (project) {
+          //     // Check if record exists in db
+          //     if (project) {
+          //       project
+          //         .update({
+          //           price: updatedExtraPrice[i] || 0,
+          //         })
+          //         .then(function () {
+          //           console.log(
+          //             "dsadasdasdcccccdsadasdasdcccccdsadasdasdccccc"
+          //           );
+          //         });
+          //     }
+          //   }
+          // );
+          // await ProductVariantsExtras.update(
+          //   { price: updatedExtraPrice[i] || 0 },
+          //   { discountedPrice: updatedExtraDiscountedPrice[i] || 0 },
+          //   { quantityMin: updatedExtraQuantityMin[i] || 0 },
+          //   { quantityMax: updatedExtraQuantityMax[i] || 0 },
+          //   { mandatory: updatedExtraMandatory[i] || 0 },
+          //   { productVariantId: variant.id },
+          //   { extraId: extId[i] },
+          //   { active: filteredStatus[i] == "on" ? 1 : 0 }
+          // );
+          // }
         }
       }
 

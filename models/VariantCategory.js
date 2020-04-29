@@ -8,6 +8,12 @@ const VariantCategory = sequelize.define("variantCategory", {
     allowNull: false,
     primaryKey: true,
   },
+  name: {
+    type: Sequelize.STRING,
+  },
+  adminId: {
+    type: Sequelize.INTEGER,
+  },
 });
 
 module.exports = VariantCategory;
