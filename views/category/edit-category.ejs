@@ -113,6 +113,18 @@ $(document).ready(function () {
                   <div class="ms-panel-body">
                      <div class="form-row">
                         <div class="col-md-12 mb-3">
+                           <label for="sku">sku</label>
+                           <div class="input-group">
+                              <input
+                                 class="form-control"
+                                 type="text"
+                                 name="sku"
+                                 id="sku"
+                                 value="<% if (editing || hasError) { %><%= extra[0].extraTranslations[1].name %><% } %>">
+                           </div>
+                           <span class="error_form" id="huName_error_message"></span>
+                        </div>
+                        <div class="col-md-12 mb-3">
                            <label for="roName"><%= lingua.create_product_name1 %></label>
                            <div class="input-group">
                               <input

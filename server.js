@@ -9,6 +9,8 @@ const multer = require("multer");
 const path = require("path");
 var SequelizeStore = require("connect-session-sequelize")(session.Store);
 var Sequelize = require("sequelize");
+const ProductCategory = require("./models/ProductCategory");
+const ProductCategoryTranslation = require("./models/ProductCategoryTranslation");
 
 const sequelize = require("./util/database");
 const Product = require("./models/Product");
@@ -24,7 +26,6 @@ const ProductExtras = require("./models/productExtra");
 const Language = require("./models/Language");
 const Admin = require("./models/Admin");
 //
-const VariantCategory = require("./models/VariantCategory");
 
 const app = express();
 const db = new Sequelize("foodnet", "root", "y7b5uwFOODNET", {
@@ -142,6 +143,7 @@ app.get("/500", errorController.get500);
 // Tables Config //
 
 // Product-> ProductTranslation -> Language
+Product.belongsTo(Admin, { constrains: true, onDelete: "CASCADE" });
 
 ProductTranslation.belongsTo(Product, {
   as: "TheTranslation",
@@ -154,13 +156,29 @@ ProductTranslation.belongsTo(Language, {
   foreignKey: "languageId",
 });
 
+///
+
+ProductCategoryTranslation.belongsTo(ProductCategory, {
+  as: "productCategoryTranslation",
+  foreignKey: "productCategoryId",
+});
+ProductCategory.hasMany(ProductCategoryTranslation, {
+  foreignKey: "productCategoryId",
+});
+
+ProductCategoryTranslation.belongsTo(Language, {
+  as: "productVariantTranslationLg",
+  foreignKey: "languageId",
+});
+Language.hasMany(ProductCategoryTranslation, { foreignKey: "languageId" });
+
+///
+
 // ProductVariantTranslation-> Admin
 ProductVariantTranslation.belongsTo(Admin, {
   constrains: true,
   onDelete: "CASCADE",
 });
-Product.belongsTo(Admin, { constrains: true, onDelete: "CASCADE" });
-
 Admin.hasMany(ProductVariantTranslation);
 
 Language.hasMany(ProductTranslation, { foreignKey: "languageId" });
@@ -182,12 +200,12 @@ Language.hasMany(ProductVariantTranslation, { foreignKey: "languageId" });
 
 //
 
-ProductVariant.belongsTo(VariantCategory, {
+ProductVariant.belongsTo(ProductCategory, {
   as: "variantCat",
   foreignKey: "variantCategoryId",
 });
 
-VariantCategory.hasMany(ProductVariant, {
+ProductCategory.hasOne(ProductVariant, {
   foreignKey: "variantCategoryId",
 });
 

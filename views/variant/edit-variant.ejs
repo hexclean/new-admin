@@ -59,6 +59,10 @@
 });
 </script>
 
+<script type="text/javascript">
+   $
+
+</script>
 
 <script>
    $(function () {
@@ -209,20 +213,17 @@
                            <span class="error_form" id="sku_error_message"></span>
                         </div>
                         <div class="col-md-6 mb-3">
-                           <label for="validationCustom22">Select Catagory</label>
-                           <div class="input-group">
-                             <select class="form-control" id="validationCustom22" required>
-                               <option value="">Catagory 1</option>
-                               <option value="">Catagory 2</option>
-                               <option value="">Catagory 3</option>
-                               <option value="">Catagory 4</option>
-       
-                             </select>
-                             <div class="invalid-feedback">
-                               Please select a Catagory.
-                             </div>
-                           </div>
+                           <select name="hour">
+                              <option value="">--Please choose an option--</option>
+                              <% for(let i = 0; i < cat.length; i++) { %>       
+                                <option value='<%= cat[i].id %>'><%= cat[i].sku %></option>
+                              <% } %>
+                            </select>
                          </div>
+
+                         
+
+                   
 
                         
                       
@@ -264,7 +265,7 @@
                         </div>
                         
                         <% if (editing) { %>
-                           <input type="hidden" value="<%= variant.id %>" name="variantId">
+                           <input type="hidden" value="10" name="variantId">
                            <%for (let i = 0; i < extTranslations.length; i++){%>
                            <input type="hidden" value="<%= extTranslations[i].id %>" name="extTranId">
                            <%}%>
@@ -286,6 +287,7 @@
                <h6>A  hozzárendelhető extrái:</h6>
             </div>
          </div>
+         <input type="text" name="search" id="search_text" class="form-control"/>
          <% if (ext.length > 0) { %>
          <div class="ms-content-wrapper">
             <div class="row">

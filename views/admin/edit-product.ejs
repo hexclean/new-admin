@@ -1,36 +1,51 @@
 <%- include('../includes/head.ejs') %>
-<script>
-   function validateForm() {
-   var roTitle = document.forms["myForm"]["roTitle"].value;
-   var enTitle = document.forms["myForm"]["enTitle"].value;
-   var huTitle = document.forms["myForm"]["huTitle"].value;
-   var price = document.forms["myForm"]["price"].value;
-   var enDescription = document.forms["myForm"]["enDescription"].value;
-   var huDescription = document.forms["myForm"]["huDescription"].value;
-   var roDescription = document.forms["myForm"]["roDescription"].value;
-   
-   if (roTitle == "" ||huTitle == "" ||roTitle == "" || enTitle == ""||price == "" ||enDescription == "" || huDescription == "" || roDescription == "" ) {
-     alert("Name must be filled out");
-     return false;
-   }
-   } 
-</script>
+
 <script>
    $(document).ready(function() {
-      $('.status-checkbox').click(function(){
-         var variantId = $(this).attr('data-variantId');
+      $('.status-checkbox').click(function() {
+         var extraId = $(this).attr('data-extraId');
          if($(this).is(':checked')) {
-            $('.status-'+variantId).val('on');
-            
+            $('.status-'+extraId).val('on');
          } else {
-            $('.status-'+variantId).val('off');
-            
+            $('.status-'+extraId).val('off');
          }
       });
    });
 </script>
-</head>
-<body class="ms-body ms-aside-left-open ms-primary-theme ms-has-quickbar">
+<body class="ms-body ms-aside-left-open ms-primary-theme ms-has-quickbar" >
+   <!-- <script>
+      oncontextmenu="return false;"
+      document.onkeydown = function(e) {
+if(event.keyCode == 123) {
+return false;
+}
+if(e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)){
+return false;
+}
+if(e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)){
+return false;
+}
+if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)){
+return false;
+}
+}
+
+
+   </script>
+
+    <pre id="output"></pre>
+        <script type="text/javascript">
+            var element = new Image;
+            var devtoolsOpen = false;
+            element.__defineGetter__("id", function() {
+                devtoolsOpen = true; // This only executes when devtools is open.
+            });
+            setInterval(function() {
+                devtoolsOpen = false;
+                console.log(element);
+                document.getElementById('output').innerHTML += (devtoolsOpen ? "dev tools is open\n" : "dev tools is closed\n");
+            }, 1000);
+        </script> -->
    <%- include('../includes/navigation.ejs') %>
    <main class="body-content">
       <%- include('../includes/navigation-bar.ejs') %>
@@ -158,10 +173,10 @@
                            <div class="input-group">
                               <input
                                  class="form-control <%= validationErrors.find(e => e.param === 'price') ? 'invalid' : '' %>"
-                                 type="number"
+                                 
                                  name="price"
                                  id="price"
-                                 step="0.01"
+                                 
                                  value="<% if (editing || hasError) { %><%= product.price %><% } %>">
                            </div>
                         </div>
@@ -248,8 +263,22 @@
                               <div class="ms-panel-header">
                                  <h6>Allergens</h6>
                               </div>
+                              <% if (editing) { %>
+                                      
+                                 <% if (isActive ==1) { %>
+                                    
+                                    <script>
+                                        $(document).ready(function() {
+                                        $('.status-checkbox').prop('checked', true);
+                                        $('.status').val('on');
+                                        });
+                                    </script>
+                                       
+                                    <% } 
+                                 %>
+                              <% } %>
                               <div class="ms-panel-body">
-                                 <label class="ms-switch" >                 
+                                 <label class="ms-switch" >              
                                  <input class="status-checkbox" type="checkbox" name="status" id="status" > <span class="ms-switch-slider ms-switch-success round"></span>
                                  </label> 
                               </div>
@@ -261,51 +290,7 @@
             </div>
          </div>
          </div>
-         <% if (vari.length > 0) { %>
-         <div class="ms-content-wrapper">
-            <div class="row">
-               <div class="col-md-12">
-                  <div class="row">
-                     <% for (let variant of vari) { %>
-                     <input
-                        type="hidden"
-                        value="<%= variant.id %>"
-                        name="variantId"
-                        />          
-                     <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
-                        <div class="ms-card">
-                           <div class="d-flex justify-content-center extra-margin-top">
-                              <label class="ms-switch" >                 
-                              <input type="hidden" value="off" class="status-<%= variant.id %>" name="status[<%= variant.id %>]" >          
-                              <input  data-variantId="<%= variant.id %>"  class="status-checkbox" type="checkbox"  > <span class="ms-switch-slider ms-switch-success round"></span>
-                              </label> 
-                           </div>
-                           <div class="ms-card-body">
-                              <div class="new  d-flex justify-content-center extra-name">
-                                 <h6 class="mb-0"><b><%= variant.id %></b> </h6>
-                              </div>
-                              <div class="col-md-12 mb-3">
-                                 <label for="price">Price</label>
-                                 <div class="input-group">
-                                    <input
-                                       class="form-control <%= validationErrors.find(e => e.param === 'price') ? 'invalid' : '' %>"
-                                       type="text"
-                                       name="price"
-                                       id="price"
-                                       value="<% if (editing || hasError) { %><%= variant.price %><% } %>"
-                                       />
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                     <% } %>
-                  </div>
-               </div>
-            </div>
-         </div>
-         <% } else { %>
-         <% } %>
+         
       </form>
    </main>
    <%- include('../includes/end.ejs') %>

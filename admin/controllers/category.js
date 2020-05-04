@@ -1,6 +1,5 @@
-const fileHelper = require("../../util/file");
-const { validationResult } = require("express-validator/check");
-const VariantCategory = require("../../models/VariantCategory");
+const Category = require("../../models/ProductCategory");
+const CategoryTranslation = require("../../models/ProductCategoryTranslation");
 
 exports.getAddCategory = (req, res, next) => {
   res.render("category/edit-category", {
@@ -17,30 +16,32 @@ exports.postAddCategory = async (req, res, next) => {
   const roName = req.body.roName;
   const huName = req.body.huName;
   const enName = req.body.enName;
+  const sku = req.body.sku;
 
-  const category = await VariantCategory.create({
+  const category = await Category.create({
     adminId: req.admin.id,
+    sku: sku,
   });
 
   async function extraTransaltion() {
-    await VariantCategoryTranslation.create({
+    await CategoryTranslation.create({
       name: roName,
       languageId: 1,
-      variantCategoryId: category.id,
+      productCategoryId: category.id,
       adminId: req.admin.id,
     });
-    await VariantCategoryTranslation.create({
+    await CategoryTranslation.create({
       name: huName,
       languageId: 2,
       adminId: req.admin.id,
 
-      variantCategoryId: category.id,
+      productCategoryId: category.id,
     });
 
-    await VariantCategoryTranslation.create({
+    await CategoryTranslation.create({
       name: enName,
       languageId: 3,
-      variantCategoryId: category.id,
+      productCategoryId: category.id,
       adminId: req.admin.id,
     });
   }

@@ -75,19 +75,19 @@ exports.postAddProduct = async (req, res, next) => {
   }
   const vari = await ProductVariant.findAll();
 
-  if (Array.isArray(vari)) {
-    for (let i = 0; i <= vari.length - 1; i++) {
-      console.log(vari.length);
-      await ProductVariantToProduct.create({
-        price: price[i] || 0,
+  // if (Array.isArray(vari)) {
+  //   for (let i = 0; i <= vari.length - 1; i++) {
+  //     console.log(vari.length);
+  //     await ProductVariantToProduct.create({
+  //       price: price[i] || 0,
 
-        productVariantId: product.id,
-        extraId: extId[i],
-        active: filteredStatus[i] == "on" ? 1 : 0,
-      });
-    }
-    console.log(req.body.ext);
-  }
+  //       productVariantId: product.id,
+  //       extraId: extId[i],
+  //       active: filteredStatus[i] == "on" ? 1 : 0,
+  //     });
+  //   }
+  //   console.log(req.body.ext);
+  // }
 
   productTransaltion()
     .then((result) => {
@@ -124,11 +124,10 @@ exports.getEditProduct = (req, res, next) => {
 
     .then((products) => {
       const product = products[0];
-      console.log(product.productTranslations[0]);
       if (!product) {
         return res.redirect("/");
       }
-      console.log(product[0]);
+      console.log("product.allergen", product.allergen);
       res.render("admin/edit-product", {
         pageTitle: "Edit Product",
         path: "/admin/edit-product",
@@ -137,6 +136,8 @@ exports.getEditProduct = (req, res, next) => {
         hasError: false,
         errorMessage: null,
         validationErrors: [],
+
+        isActive: product.allergen,
       });
     })
     .catch((err) => console.log(err));
