@@ -143,16 +143,17 @@ exports.getEditProduct = (req, res, next) => {
     .catch((err) => console.log(err));
 };
 
-exports.postEditProduct = (req, res, next) => {
+exports.postEditProduct = async (req, res, next) => {
   const prodId = req.body.productId;
   // Title
   const updatedRoTitle = req.body.roTitle;
   const updatedHuTitle = req.body.huTitle;
   const updatedEnTitle = req.body.enTitle;
+
   // Category
-  const updatedRoCategory = req.body.roCategory;
-  const updatedHuCategory = req.body.huCategory;
-  const updatedEnCategory = req.body.enCategory;
+  // const updatedRoCategory = req.body.roCategory;
+  // const updatedHuCategory = req.body.huCategory;
+  // const updatedEnCategory = req.body.enCategory;
   // Description
   const updatedRoDesc = req.body.roDescription;
   const updatedHuDesc = req.body.huDescription;
@@ -163,72 +164,44 @@ exports.postEditProduct = (req, res, next) => {
   const image = req.file;
   const errors = validationResult(req);
 
-  // if (!errors.isEmpty()) {
-  //   console.log(errors.array());
-  //   return res.status(422).render("admin/edit-product", {
-  //     pageTitle: "Edit Product",
-  //     path: "/admin/edit-product",
-  //     editing: true,
-  //     hasError: true,
-  //     product: {
-  //       title: updatedEnTitle,
-  //       title: updatedHuTitle,
-  //       roTitle: updatedRoTitle,
-  //       price: updatedPrice,
-  //       description: updatedEnDesc,
-  //       description: updatedHuDesc,
-  //       description: updatedRoDesc,
-  //       category: updatedEnCategory,
-  //       category: updatedHuCategory,
-  //       category: updatedRoCategory,
-  //       _id: prodId,
-  //     },
+  await Product.findByPk(prodId).then((product) => {
+    if (product.adminId.toString() !== req.admin.id.toString()) {
+      return res.redirect("/");
+    }
+    product.price = updatedPrice;
+    if (image) {
+      fileHelper.deleteFile(product.imageUrl);
+      product.imageUrl = image.path;
+    }
+    return product.save().then((result) => {
+      console.log("UPDATED PRODUCT!");
+      // res.redirect("/admin/products");
+    });
+  });
+  async function msg() {
+    try {
+      await ProductTranslation.update(
+        { title: updatedRoTitle },
+        { where: { productId: prodId, languageId: 1 } }
+      );
 
-  //     errorMessage: errors.array()[0].msg,
-  //     validationErrors: errors.array(),
-  //   });
-  // }
+      await ProductTranslation.update(
+        { title: updatedHuTitle },
+        { where: { productId: prodId, languageId: 2 } }
+      );
 
-  Product.findByPk(prodId)
-    .then((product) => {
-      // if (product.adminId.toString() !== req.admin._id.toString()) {
-      //   return res.redirect("/");
-      // }
-      product.title = {
-        en: updatedEnTitle,
-        hu: updatedHuTitle,
-        ro: updatedRoTitle,
-      };
-      product.price = updatedPrice;
-      product.category = {
-        en: updatedEnCategory,
-        hu: updatedHuCategory,
-        ro: updatedRoCategory,
-      };
-      product.description = {
-        en: updatedEnDesc,
-        hu: updatedHuDesc,
-        ro: updatedRoDesc,
-      };
-      product.allergen = {
-        en: typeof status !== "undefined" ? 1 : 0,
-        ro: typeof status !== "undefined" ? 1 : 0,
-        hu: typeof status !== "undefined" ? 1 : 0,
-      };
-      if (image) {
-        fileHelper.deleteFile(product.imageUrl);
-        product.imageUrl = image.path;
-      }
-      return product.save().then((result) => {
-        console.log("UPDATED PRODUCT!");
-        res.redirect("/admin/products");
-      });
-    })
-    .catch((err) => {
+      await ProductTranslation.update(
+        { title: updatedEnTitle },
+        { where: { productId: prodId, languageId: 3 } }
+      );
+    } catch (err) {
       const error = new Error(err);
       error.httpStatusCode = 500;
       return next(error);
-    });
+    }
+  }
+  msg();
+  res.redirect("/");
 };
 exports.getProducts = (req, res, next) => {
   req.admin
