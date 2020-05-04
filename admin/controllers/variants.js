@@ -205,94 +205,33 @@ exports.postEditVariant = async (req, res, next) => {
         if (Array.isArray(ext)) {
           const Op = Sequelize.Op;
           for (let i = 0; i <= ext.length - 1; i++) {
-            if (filteredStatus[i] == "on") {
-              let extrasIds = [extId[i]];
-              let variantId = [varId];
-              console.log("extrasIds", extrasIds);
-              await ProductVariantsExtras.update(
-                { price: 44 },
-                {
-                  where: {
-                    extraId: {
-                      [Op.in]: extrasIds,
-                    },
-                    productVariantId: {
-                      [Op.in]: variantId,
-                    },
+            let extrasIds = [extId[i]];
+            let variantId = [varId];
+            await ProductVariantsExtras.update(
+              {
+                price: updatedExtraPrice[i] || 0,
+                quantityMin: updatedExtraQuantityMin[i] || 0,
+                quantityMax: updatedExtraQuantityMax[i] || 0,
+                discountedPrice: updatedExtraPrice[i] * 0.8 || 0,
+                active: filteredStatus[i] == "on" ? 1 : 0,
+              },
+              {
+                where: {
+                  extraId: {
+                    [Op.in]: extrasIds,
                   },
-                }
-              );
-              console.log("VARIANT_ID", varId);
-            } else {
-              next;
-            }
-
-            // price: updatedExtraPrice[i] || 0,
-            // discountedPrice: updatedExtraPrice[i] || 0,
-            // quantityMin: updatedExtraQuantityMin[i] || 0,
-            // quantityMax: updatedExtraQuantityMax[i] || 0,
-            // productVariantId: variant.id,
-            // extraId: extId[i],
-            // active: filteredStatus[i] == "on" ? 1 : 0,
-            // );
-            // console.log("PRICE", updatedExtraPrice[i]);
-            // console.log("EXTRAID", extId[i]);
-            // console.log("EXTRASIDS", extrasIds);
+                  productVariantId: {
+                    [Op.in]: variantId,
+                  },
+                },
+              }
+            );
+            console.log("ACTIVE", filteredStatus[i]);
+            console.log("VARIANT_ID", varId);
+            console.log("UPDATED_EXTRA_PRICE[I]", updatedExtraPrice[i]);
           }
-          // console.log("PRICE", updatedExtraPrice[i]);
         }
       }
-      // if (Array.isArray(ext)) {
-      // for (let i = 0; i <= ext.length - 1; i++) {
-      //   let extrasIds = [1, 2];
-      //   const Op = Sequelize.Op;
-      //   try {
-      //     await ProductVariantsExtras.update(
-      //       { price: updatedExtraPrice[i] || 0 },
-      //       {
-      //         where: {
-      //           extraId: {
-      //             [Op.in]: extrasIds,
-      //           },
-      //         },
-      //       }
-      //     );
-      //     console.log("extraId: extId[i],", extId[i]);
-      //     console.log("PRICE extId[i],", updatedExtraPrice[i]);
-      //     console.log("variantId", varId);
-      //   } catch (err) {
-      //     console.log(err);
-      //   }
-      // await ProductVariantsExtras({ where: { id: ext[i].id } }).on(
-      //   "success",
-      //   function (project) {
-      //     // Check if record exists in db
-      //     if (project) {
-      //       project
-      //         .update({
-      //           price: updatedExtraPrice[i] || 0,
-      //         })
-      //         .then(function () {
-      //           console.log(
-      //             "dsadasdasdcccccdsadasdasdcccccdsadasdasdccccc"
-      //           );
-      //         });
-      //     }
-      //   }
-      // );
-      // await ProductVariantsExtras.update(
-      //   { price: updatedExtraPrice[i] || 0 },
-      //   { discountedPrice: updatedExtraDiscountedPrice[i] || 0 },
-      //   { quantityMin: updatedExtraQuantityMin[i] || 0 },
-      //   { quantityMax: updatedExtraQuantityMax[i] || 0 },
-      //   { mandatory: updatedExtraMandatory[i] || 0 },
-      //   { productVariantId: variant.id },
-      //   { extraId: extId[i] },
-      //   { active: filteredStatus[i] == "on" ? 1 : 0 }
-      // );
-      // }
-      //   }
-      // }
 
       msg();
 
