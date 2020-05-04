@@ -162,13 +162,11 @@ exports.postAddVariant = async (req, res, next) => {
 
 exports.postEditVariant = async (req, res, next) => {
   const extId = req.body.extraId;
-  const sku = req.body.sku;
+  const updatedSku = req.body.sku;
   const varId = req.body.variantId;
   const updatedExtraPrice = req.body.price;
-  const updatedExtraDiscountedPrice = req.body.discountedPrice;
   const updatedExtraQuantityMin = req.body.quantityMin;
   const updatedExtraQuantityMax = req.body.quantityMax;
-  const updatedExtraMandatory = req.body.mandatory;
   var filteredStatus = req.body.status.filter(Boolean);
   const updatedRoName = req.body.roName;
   const updatedHuName = req.body.huName;
@@ -187,6 +185,11 @@ exports.postEditVariant = async (req, res, next) => {
   })
     .then((variant) => {
       async function msg() {
+        await ProductVariants.findByPk(varId).then((variant) => {
+          variant.sku = updatedSku;
+          return variant.save();
+        });
+
         await ProductVariantTranslation.update(
           { name: updatedRoName },
           { where: { id: extTranId[0], languageId: 1 } }
@@ -226,15 +229,10 @@ exports.postEditVariant = async (req, res, next) => {
                 },
               }
             );
-            console.log("ACTIVE", filteredStatus[i]);
-            console.log("VARIANT_ID", varId);
-            console.log("UPDATED_EXTRA_PRICE[I]", updatedExtraPrice[i]);
           }
         }
       }
-
       msg();
-
       res.redirect("/admin/vr-index");
     })
     .catch((err) => {
@@ -262,6 +260,7 @@ exports.getEditVariant = async (req, res, next) => {
   ProductVariants.findAll({
     where: {
       id: varId,
+      adminId: req.admin.id,
     },
     include: [
       {
@@ -271,7 +270,6 @@ exports.getEditVariant = async (req, res, next) => {
     ],
   })
     .then((variant) => {
-      // console.log("vadsadasdasdasdasdasdasdasdasdasdasrId", varId);
       res.render("variant/edit-variant", {
         pageTitle: "Edit Product",
         path: "/admin/edit-product",
@@ -283,10 +281,10 @@ exports.getEditVariant = async (req, res, next) => {
         cat: cat,
         errorMessage: null,
         validationErrors: [],
-
         extTranslations: variant[0].productVariantTranslations,
         isActive: variant[0].productVariantsExtras,
       });
+      console.log(variant[0].sku);
     })
     .catch((err) => {
       const error = new Error(err);
