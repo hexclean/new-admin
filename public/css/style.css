@@ -438,6 +438,11 @@ Version: 1.0.0
 .buttons-text-variants {
   padding-left: 27px !important;
 }
+
+.alergen-border {
+  border-style: solid;
+  border-color: red;
+}
 .bg-secondary {
   background-color: #000000;
 }
@@ -7771,7 +7776,7 @@ body:not(.ms-settings-open) .ms-settings-toggle:hover {
 }
 
 .error_form {
-	font-size: 15px;
-	font-family: Arial;
-	color: #FF0052;
+  font-size: 15px;
+  font-family: Arial;
+  color: #ff0052;
 }

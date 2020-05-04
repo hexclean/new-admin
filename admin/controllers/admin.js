@@ -4,11 +4,15 @@ const { validationResult } = require("express-validator/check");
 
 const Product = require("../../models/Product");
 const ProductVariant = require("../../models/ProductVariant");
-const ProductVariantToProduct = require("../../models/ProductVariantToProduct");
+const ProductVariants = require("../../models/ProductVariant");
 const ProductTranslation = require("../../models/ProductTranslation");
 
 exports.getAddProduct = async (req, res, next) => {
-  const vari = await ProductVariant.findAll();
+  const vari = await ProductVariant.findAll({
+    where: {
+      adminId: req.admin.id,
+    },
+  });
 
   res.render("admin/edit-product", {
     pageTitle: "Add Product",
@@ -40,6 +44,12 @@ exports.postAddProduct = async (req, res, next) => {
   const huCategory = req.body.huCategory;
   const enCategory = req.body.enCategory;
   //
+  const vari = await ProductVariant.findAll({
+    where: {
+      adminId: req.admin.id,
+    },
+  });
+
   const product = await req.admin.createProduct({
     imageUrl: imageUrl,
     price: price,
@@ -73,7 +83,6 @@ exports.postAddProduct = async (req, res, next) => {
       allergen: typeof status !== "undefined" ? 1 : 0,
     });
   }
-  const vari = await ProductVariant.findAll();
 
   // if (Array.isArray(vari)) {
   //   for (let i = 0; i <= vari.length - 1; i++) {
@@ -127,7 +136,6 @@ exports.getEditProduct = (req, res, next) => {
       if (!product) {
         return res.redirect("/");
       }
-      console.log("product.allergen", product.allergen);
       res.render("admin/edit-product", {
         pageTitle: "Edit Product",
         path: "/admin/edit-product",
@@ -145,15 +153,12 @@ exports.getEditProduct = (req, res, next) => {
 
 exports.postEditProduct = async (req, res, next) => {
   const prodId = req.body.productId;
+
   // Title
   const updatedRoTitle = req.body.roTitle;
   const updatedHuTitle = req.body.huTitle;
   const updatedEnTitle = req.body.enTitle;
 
-  // Category
-  // const updatedRoCategory = req.body.roCategory;
-  // const updatedHuCategory = req.body.huCategory;
-  // const updatedEnCategory = req.body.enCategory;
   // Description
   const updatedRoDesc = req.body.roDescription;
   const updatedHuDesc = req.body.huDescription;
@@ -162,7 +167,6 @@ exports.postEditProduct = async (req, res, next) => {
   const status = req.body.status;
   const updatedPrice = req.body.price;
   const image = req.file;
-  const errors = validationResult(req);
 
   await Product.findByPk(prodId).then((product) => {
     if (product.adminId.toString() !== req.admin.id.toString()) {
@@ -172,26 +176,36 @@ exports.postEditProduct = async (req, res, next) => {
     if (image) {
       fileHelper.deleteFile(product.imageUrl);
       product.imageUrl = image.path;
+      product.allergen = status !== "undefined" ? 1 : 0;
     }
-    return product.save().then((result) => {
-      console.log("UPDATED PRODUCT!");
-      // res.redirect("/admin/products");
-    });
+    return product.save();
   });
   async function msg() {
     try {
       await ProductTranslation.update(
-        { title: updatedRoTitle },
+        {
+          title: updatedRoTitle,
+          description: updatedRoDesc,
+          status: status == "on" ? 1 : 0,
+        },
         { where: { productId: prodId, languageId: 1 } }
       );
 
       await ProductTranslation.update(
-        { title: updatedHuTitle },
+        {
+          title: updatedHuTitle,
+          description: updatedHuDesc,
+          status: status == "on" ? 1 : 0,
+        },
         { where: { productId: prodId, languageId: 2 } }
       );
 
       await ProductTranslation.update(
-        { title: updatedEnTitle },
+        {
+          title: updatedEnTitle,
+          description: updatedEnDesc,
+          status: status == "on" ? 1 : 0,
+        },
         { where: { productId: prodId, languageId: 3 } }
       );
     } catch (err) {
@@ -201,7 +215,8 @@ exports.postEditProduct = async (req, res, next) => {
     }
   }
   msg();
-  res.redirect("/");
+  console.log("status", status);
+  res.redirect("/admin/products");
 };
 exports.getProducts = (req, res, next) => {
   req.admin
@@ -213,7 +228,6 @@ exports.getProducts = (req, res, next) => {
       ],
     })
     .then((product) => {
-      console.log(product[0]);
       // console.log(products[2].title);
       var currentLanguage = req.cookies.language;
       if (currentLanguage == "ro") {

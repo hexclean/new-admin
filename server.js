@@ -244,7 +244,11 @@ Extra.hasMany(ProductExtras);
 ProductVariant.hasMany(ProductVariantTranslation);
 Extra.hasMany(ExtraTranslation);
 // Product -> Variant
-
+Product.belongsTo(ProductVariant, {
+  as: "productVariantJoin",
+  foreignKey: "languageId",
+});
+ProductVariant.hasMany(Product, { foreignKey: "productVariantId" });
 // Extra.hasMany(ExtraCategory);
 
 ProductVariant.hasMany(ProductVariantsExtras);

@@ -256,11 +256,13 @@ return false;
                         </button>
                      </div>
                   </div>
+
+                  
                   <div class="col-xl-6 col-md-12">
                      <div class="row">
                         <div class="col-md-12">
                            <div class="ms-panel">
-                              <div class="ms-panel-header">
+                              <div class="ms-panel-header alergen-border">
                                  <h6>Allergens</h6>
                               </div>
                               <% if (editing) { %>
@@ -277,7 +279,7 @@ return false;
                                     <% } 
                                  %>
                               <% } %>
-                              <div class="ms-panel-body">
+                              <div class="ms-panel-body alergen-border">
                                  <label class="ms-switch" >              
                                  <input class="status-checkbox" type="checkbox" name="status" id="status" > <span class="ms-switch-slider ms-switch-success round"></span>
                                  </label> 
@@ -290,8 +292,83 @@ return false;
             </div>
          </div>
          </div>
-         
+         <% if (vari.length > 0) { %>
+            <div class="ms-content-wrapper">
+               <div class="row">
+                  <div class="col-md-12">
+                     <div class="row">
+                        <% for (let variant of vari) { %>
+                        <input
+                           type="hidden"
+                           value="<%= variant.id %>"
+                           name="variantId"
+                           />          
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
+                           <div class="ms-card">
+                              <div class="d-flex justify-content-center extra-margin-top">
+                                 <label class="ms-switch" >                 
+                                 <input type="hidden" value="off" class="status-<%= variant.id %>" name="status[<%= variant.id %>]" >          
+                                 <input  data-variantId="<%= variant.id %>"  class="status-checkbox" type="checkbox"  > <span class="ms-switch-slider ms-switch-success round"></span>
+                                 </label> 
+                              </div>
+                              <div class="ms-card-body">
+                                 <div class="new  d-flex justify-content-center extra-name">
+                                    <h6 class="mb-0"><b><%= variant.id %></b> </h6>
+                                 </div>
+                                 <div class="col-md-12 mb-3">
+                                    <label for="price">Price</label>
+                                    <div class="input-group">
+                                       <input
+                                          class="form-control <%= validationErrors.find(e => e.param === 'price') ? 'invalid' : '' %>"
+                                          type="text"
+                                          name="price"
+                                          id="price"
+                                          value="<% if (editing || hasError) { %><%= variant.price %><% } %>"
+                                          />
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                        <% } %>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <% } else { %>
+            <% } %>
       </form>
+      
+<select name="select1" id="select1">
+  <option value="1">Fruit</option>
+  <option value="2">Animal</option>
+  <option value="3">Bird</option>
+  <option value="4">Car</option>
+</select>
+
+
+<select name="select2" id="select2">
+  <option value="1">Banana</option>
+  <option value="1">Apple</option>
+  <option value="1">Orange</option>
+  <option value="2">Wolf</option>
+  <option value="2">Fox</option>
+  <option value="2">Bear</option>
+  <option value="3">Eagle</option>
+  <option value="3">Hawk</option>
+  <option value="4">BWM<option>
+</select>
+<script>
+   $("#select1").change(function() {
+  if ($(this).data('options') === undefined) {
+    /*Taking an array of all options-2 and kind of embedding it on the select1*/
+    $(this).data('options', $('#select2 option').clone());
+  }
+  var id = $(this).val();
+  var options = $(this).data('options').filter('[value=' + id + ']');
+  $('#select2').html(options);
+});
+</script>
    </main>
    <%- include('../includes/end.ejs') %>
 </body>

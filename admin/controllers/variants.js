@@ -6,6 +6,8 @@ const ProductVariantExtras = require("../../models/ProductVariantsExtras");
 const ProductExtra = require("../../models/Extra");
 const Category = require("../../models/ProductCategory");
 const CategoryTranslation = require("../../models/ProductCategoryTranslation");
+var Sequelize = require("sequelize");
+
 const ITEMS_PER_PAGE = 15;
 
 exports.getIndex = async (req, res, next) => {
@@ -66,10 +68,6 @@ exports.getAddVariant = async (req, res, next) => {
       },
     ],
   });
-  console.log(cat);
-  for (let i = 0; i < cat.length; i++) {
-    console.log("extra[0].extraTranslations[i].id", cat[i].sku);
-  }
   res.render("variant/edit-variant", {
     pageTitle: "Add Product",
     path: "/admin/add-product",
@@ -101,7 +99,6 @@ exports.postAddVariant = async (req, res, next) => {
       },
     ],
   });
-  console.log("hour", hour);
   const variant = await req.admin.createProductVariant({
     sku: sku,
     variantCategoryId: hour,
@@ -177,6 +174,8 @@ exports.postEditVariant = async (req, res, next) => {
   const updatedHuName = req.body.huName;
   const updatedEnName = req.body.enName;
   const extTranId = req.body.extTranId;
+  var filteredStatus = req.body.status.filter(Boolean);
+
   const ext = await req.admin.getExtras();
   console.log("const varId = req.params.variantId;", varId);
   ProductVariants.findAll({
@@ -203,49 +202,97 @@ exports.postEditVariant = async (req, res, next) => {
           { where: { id: extTranId[2], languageId: 3 } }
         );
 
-        // if (Array.isArray(ext)) {
-        for (let i = 0; i <= ext.length - 1; i++) {
-          // let extrasIds =
-          try {
-            await ProductVariantsExtras.update(
-              { price: updatedExtraPrice[i] || 0 },
-              { where: 10 }
-            );
-            console.log("extraId: extId[i],", extId[i]);
-            console.log("variantId", varId);
-          } catch (err) {
-            console.log(err);
+        if (Array.isArray(ext)) {
+          const Op = Sequelize.Op;
+          for (let i = 0; i <= ext.length - 1; i++) {
+            if (filteredStatus[i] == "on") {
+              let extrasIds = [extId[i]];
+              let variantId = [varId];
+              console.log("extrasIds", extrasIds);
+              await ProductVariantsExtras.update(
+                { price: 44 },
+                {
+                  where: {
+                    extraId: {
+                      [Op.in]: extrasIds,
+                    },
+                    productVariantId: {
+                      [Op.in]: variantId,
+                    },
+                  },
+                }
+              );
+              console.log("VARIANT_ID", varId);
+            } else {
+              next;
+            }
+
+            // price: updatedExtraPrice[i] || 0,
+            // discountedPrice: updatedExtraPrice[i] || 0,
+            // quantityMin: updatedExtraQuantityMin[i] || 0,
+            // quantityMax: updatedExtraQuantityMax[i] || 0,
+            // productVariantId: variant.id,
+            // extraId: extId[i],
+            // active: filteredStatus[i] == "on" ? 1 : 0,
+            // );
+            // console.log("PRICE", updatedExtraPrice[i]);
+            // console.log("EXTRAID", extId[i]);
+            // console.log("EXTRASIDS", extrasIds);
           }
-          // await ProductVariantsExtras({ where: { id: ext[i].id } }).on(
-          //   "success",
-          //   function (project) {
-          //     // Check if record exists in db
-          //     if (project) {
-          //       project
-          //         .update({
-          //           price: updatedExtraPrice[i] || 0,
-          //         })
-          //         .then(function () {
-          //           console.log(
-          //             "dsadasdasdcccccdsadasdasdcccccdsadasdasdccccc"
-          //           );
-          //         });
-          //     }
-          //   }
-          // );
-          // await ProductVariantsExtras.update(
-          //   { price: updatedExtraPrice[i] || 0 },
-          //   { discountedPrice: updatedExtraDiscountedPrice[i] || 0 },
-          //   { quantityMin: updatedExtraQuantityMin[i] || 0 },
-          //   { quantityMax: updatedExtraQuantityMax[i] || 0 },
-          //   { mandatory: updatedExtraMandatory[i] || 0 },
-          //   { productVariantId: variant.id },
-          //   { extraId: extId[i] },
-          //   { active: filteredStatus[i] == "on" ? 1 : 0 }
-          // );
-          // }
+          // console.log("PRICE", updatedExtraPrice[i]);
         }
       }
+      // if (Array.isArray(ext)) {
+      // for (let i = 0; i <= ext.length - 1; i++) {
+      //   let extrasIds = [1, 2];
+      //   const Op = Sequelize.Op;
+      //   try {
+      //     await ProductVariantsExtras.update(
+      //       { price: updatedExtraPrice[i] || 0 },
+      //       {
+      //         where: {
+      //           extraId: {
+      //             [Op.in]: extrasIds,
+      //           },
+      //         },
+      //       }
+      //     );
+      //     console.log("extraId: extId[i],", extId[i]);
+      //     console.log("PRICE extId[i],", updatedExtraPrice[i]);
+      //     console.log("variantId", varId);
+      //   } catch (err) {
+      //     console.log(err);
+      //   }
+      // await ProductVariantsExtras({ where: { id: ext[i].id } }).on(
+      //   "success",
+      //   function (project) {
+      //     // Check if record exists in db
+      //     if (project) {
+      //       project
+      //         .update({
+      //           price: updatedExtraPrice[i] || 0,
+      //         })
+      //         .then(function () {
+      //           console.log(
+      //             "dsadasdasdcccccdsadasdasdcccccdsadasdasdccccc"
+      //           );
+      //         });
+      //     }
+      //   }
+      // );
+      // await ProductVariantsExtras.update(
+      //   { price: updatedExtraPrice[i] || 0 },
+      //   { discountedPrice: updatedExtraDiscountedPrice[i] || 0 },
+      //   { quantityMin: updatedExtraQuantityMin[i] || 0 },
+      //   { quantityMax: updatedExtraQuantityMax[i] || 0 },
+      //   { mandatory: updatedExtraMandatory[i] || 0 },
+      //   { productVariantId: variant.id },
+      //   { extraId: extId[i] },
+      //   { active: filteredStatus[i] == "on" ? 1 : 0 }
+      // );
+      // }
+      //   }
+      // }
 
       msg();
 
@@ -272,7 +319,7 @@ exports.getEditVariant = async (req, res, next) => {
       },
     ],
   });
-  // console.log("varId", varId);
+  console.log("VARIANT_ID_BY_PARAMS", varId);
   ProductVariants.findAll({
     where: {
       id: varId,
@@ -291,6 +338,7 @@ exports.getEditVariant = async (req, res, next) => {
         path: "/admin/edit-product",
         editing: editMode,
         variant: variant,
+        variantIdByParams: varId,
         hasError: false,
         ext: ext,
         cat: cat,
@@ -318,6 +366,7 @@ exports.getAddProductCategory = (req, res, next) => {
     validationErrors: [],
   });
 };
+
 exports.postAddProductCategory = async (req, res, next) => {
   const roName = req.body.roName;
   const huName = req.body.huName;

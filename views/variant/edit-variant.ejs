@@ -221,12 +221,6 @@
                             </select>
                          </div>
 
-                         
-
-                   
-
-                        
-                      
                         <div class="col-md-12 mb-3">
                            <label for="roName"><%= lingua.create_product_name1 %></label>
                            <div class="input-group">
@@ -265,7 +259,7 @@
                         </div>
                         
                         <% if (editing) { %>
-                           <input type="hidden" value="10" name="variantId">
+                           <input type="hidden" value="<%= variantIdByParams %>" name="variantId">
                            <%for (let i = 0; i < extTranslations.length; i++){%>
                            <input type="hidden" value="<%= extTranslations[i].id %>" name="extTranId">
                            <%}%>
@@ -287,7 +281,6 @@
                <h6>A  hozzárendelhető extrái:</h6>
             </div>
          </div>
-         <input type="text" name="search" id="search_text" class="form-control"/>
          <% if (ext.length > 0) { %>
          <div class="ms-content-wrapper">
             <div class="row">
