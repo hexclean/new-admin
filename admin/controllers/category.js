@@ -79,13 +79,14 @@ exports.getEditCategory = (req, res, next) => {
       if (category[0].adminId !== req.admin.id) {
         return res.redirect("/");
       }
-      console.log(category);
+      // console.log("catId", catId);
 
       res.render("category/edit-category", {
         pageTitle: "Edit Product",
         path: "/admin/edit-product",
         editing: editMode,
         cat: category,
+        catId: catId,
         hasError: false,
         errorMessage: null,
         validationErrors: [],
@@ -103,8 +104,13 @@ exports.postEditCategory = async (req, res, next) => {
   const updatedRoName = req.body.roName;
   const updatedHuName = req.body.huName;
   const updatedEnName = req.body.enName;
+  const updatedSku = req.body.sku;
+  const catId = req.body.categoryId;
+
   const catTranId = req.body.catTranId;
-  console.log(catTranId);
+  console.log("catTranId", catTranId);
+  console.log("catId", catId);
+
   Category.findAll({
     where: { adminId: req.admin.id },
     include: [
@@ -115,6 +121,7 @@ exports.postEditCategory = async (req, res, next) => {
   })
     .then((category) => {
       async function msg() {
+        await Category.update({ sku: updatedSku }, { where: { id: catId } });
         await CategoryTranslation.update(
           { name: updatedRoName },
           { where: { id: catTranId[0], languageId: 1 } }

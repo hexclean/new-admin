@@ -291,10 +291,7 @@ exports.getEditVariant = async (req, res, next) => {
       },
     ],
   });
-  for (let i = 0; i < productVarToExt.length; i++) {
-    console.log("extra[0].extraTranslations[i].id", productVarToExt);
-  }
-  // console.log("productVarToExt[0].extraId", productVarToExt);
+
   ProductVariants.findAll({
     where: {
       id: varId,
