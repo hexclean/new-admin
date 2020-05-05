@@ -39,18 +39,7 @@ router.get("/faq-index", isAuth, faqController.getIndex);
 router.get("/vr-index", isAuth, variantsController.getIndex);
 
 router.get("/add-variant", isAuth, variantsController.getAddVariant);
-router.post(
-  "/add-variant",
-  // [
-  //   body("sku").isString().isLength({ min: 3 }).trim(),
-  //   body("roName").isString().isLength({ min: 3 }).trim(),
-  //   body("huName").isString().isLength({ min: 3 }).trim(),
-  //   body("enName").isString().isLength({ min: 3 }).trim(),
-  // ],
-  isAuth,
-
-  variantsController.postAddVariant
-);
+router.post("/add-variant", isAuth, variantsController.postAddVariant);
 
 router.get(
   "/edit-variant/:variantId",
@@ -67,14 +56,19 @@ router.post(
 router.post("/delete-variant", variantsController.postDeleteVariant);
 ///
 
-// router.get(
-//   "/edit-variant/:variantId",
-//   isAuth,
-//   variantsController.getEditVariant
-// );
-//
 router.get("/add-category", isAuth, categoryController.getAddCategory);
 router.post("/add-category", isAuth, categoryController.postAddCategory);
+router.get(
+  "/edit-category/:categoryId",
+  isAuth,
+  categoryController.getEditCategory
+);
+router.post(
+  "/edit-category",
+  isAuth,
+
+  categoryController.postEditCategory
+);
 
 ///
 router.get("/add-extra", isAuth, extraController.getAddExtra);

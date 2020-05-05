@@ -120,7 +120,7 @@ $(document).ready(function () {
                                  type="text"
                                  name="sku"
                                  id="sku"
-                                 value="<% if (editing || hasError) { %><%= extra[0].extraTranslations[1].name %><% } %>">
+                                 value="<% if (editing || hasError) { %><%= cat[0].productCategoryTranslations[1].name %><% } %>">
                            </div>
                            <span class="error_form" id="huName_error_message"></span>
                         </div>
@@ -132,7 +132,7 @@ $(document).ready(function () {
                                  type="text"
                                  name="roName"
                                  id="roName"
-                                 value="<% if (editing || hasError) { %><%= extra[0].extraTranslations[0].name %><% } %>">
+                                 value="<% if (editing || hasError) { %><%= cat[0].productCategoryTranslations[0].name %><% } %>">
                            </div>
                            <span class="error_form" id="roName_error_message"></span>
                         </div>
@@ -144,7 +144,7 @@ $(document).ready(function () {
                                  type="text"
                                  name="huName"
                                  id="huName"
-                                 value="<% if (editing || hasError) { %><%= extra[0].extraTranslations[1].name %><% } %>">
+                                 value="<% if (editing || hasError) { %><%= cat[0].productCategoryTranslations[1].name %><% } %>">
                            </div>
                            <span class="error_form" id="huName_error_message"></span>
                         </div>
@@ -156,7 +156,7 @@ $(document).ready(function () {
                                  type="text"
                                  name="enName"
                                  id="enName"
-                                 value="<% if (editing || hasError) { %><%= extra[0].extraTranslations[2].name %><% } %>">
+                                 value="<% if (editing || hasError) { %><%= cat[0].productCategoryTranslations[2].name %><% } %>">
                            </div>
                            <span class="error_form" id="enName_error_message"></span>
                         </div>
@@ -172,9 +172,9 @@ $(document).ready(function () {
                            <h6>Product</h6>
                         </div>
                         <% if (editing) { %>
-                        <input type="hidden" value="<%= extra.id %>" name="categoryId">
+                        <input type="hidden" value="<%= cat.id %>" name="categoryId">
                         <%for (let i = 0; i < extTranslations.length; i++){%>
-                        <input type="hidden" value="<%= extTranslations[i].id %>" name="categoryId">
+                        <input type="hidden" value="<%= extTranslations[i].id %>" name="catTranId">
                         <%}%>
                         <% } %>
                         <button type="submit" id="extra-btn" class="btn btn-success has-icon" ><% if (editing) { %>Update Product<% } else { %>Add Product<% } %></button>

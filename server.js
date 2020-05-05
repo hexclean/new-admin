@@ -22,7 +22,6 @@ const ExtraTranslation = require("./models/ExtraTranslation");
 
 const ProductVariantsExtras = require("./models/ProductVariantsExtras");
 const ProductVariantToProduct = require("./models/ProductVariantToProduct");
-const ProductExtras = require("./models/productExtra");
 const Language = require("./models/Language");
 const Admin = require("./models/Admin");
 //
@@ -239,8 +238,6 @@ Admin.hasMany(Extra);
 Language.hasMany(ProductVariantTranslation);
 Language.hasMany(ExtraTranslation);
 
-Product.hasMany(ProductExtras);
-Extra.hasMany(ProductExtras);
 ProductVariant.hasMany(ProductVariantTranslation);
 Extra.hasMany(ExtraTranslation);
 // Product -> Variant

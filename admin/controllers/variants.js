@@ -8,12 +8,36 @@ const Category = require("../../models/ProductCategory");
 const CategoryTranslation = require("../../models/ProductCategoryTranslation");
 var Sequelize = require("sequelize");
 
-const ITEMS_PER_PAGE = 15;
+const ITEMS_PER_PAGE = 12;
 
 exports.getIndex = async (req, res, next) => {
   const page = +req.query.page || 1;
   let totalItems;
 
+  const category = await Category.findAll({
+    where: {
+      adminId: req.admin.id,
+    },
+    include: [
+      {
+        model: CategoryTranslation,
+      },
+    ],
+  }).then((numExtras) => {
+    totalItems = numExtras;
+    return Category.findAll({
+      where: {
+        adminId: req.admin.id,
+      },
+      include: [
+        {
+          model: CategoryTranslation,
+        },
+      ],
+      offset: (page - 1) * ITEMS_PER_PAGE,
+      limit: ITEMS_PER_PAGE,
+    });
+  });
   const extras = await ProductExtra.findAll({
     where: {
       adminId: req.admin.id,
@@ -28,7 +52,7 @@ exports.getIndex = async (req, res, next) => {
       limit: ITEMS_PER_PAGE,
     });
   });
-
+  console.log(category[0].id);
   await req.admin
     .getProductVariants()
     .then((numVariants) => {
@@ -49,6 +73,7 @@ exports.getIndex = async (req, res, next) => {
         previousPage: page - 1,
         lastPage: Math.ceil(totalItems.length / ITEMS_PER_PAGE),
         vr: vr,
+        cat: category,
         extras: extras,
       });
     })
@@ -299,72 +324,6 @@ exports.getEditVariant = async (req, res, next) => {
         isActive: variant[0].productVariantsExtras,
       });
       console.log(variant[0].sku);
-    })
-    .catch((err) => {
-      const error = new Error(err);
-      error.httpStatusCode = 500;
-      return next(error);
-    });
-};
-
-exports.getAddProductCategory = (req, res, next) => {
-  res.render("category/edit-category", {
-    pageTitle: "Add Product",
-    path: "/admin/add-product",
-    editing: false,
-    hasError: false,
-    errorMessage: null,
-    validationErrors: [],
-  });
-};
-
-exports.postAddProductCategory = async (req, res, next) => {
-  const roName = req.body.roName;
-  const huName = req.body.huName;
-  const enName = req.body.enName;
-  const errors = validationResult(req);
-
-  if (!errors.isEmpty()) {
-    console.log(errors.array());
-    return res.status(422).render("category/edit-category", {
-      pageTitle: "Add Product",
-      path: "/admin/add-product",
-      editing: false,
-      hasError: true,
-      category: {
-        roName: roName,
-        huName: huName,
-        enName: enName,
-      },
-      errorMessage: errors.array()[0].msg,
-      validationErrors: errors.array(),
-    });
-  }
-
-  const category = await req.admin.createProductCategory();
-
-  async function productCategoryTransaltion() {
-    await ProductCategoryTranslation.create({
-      name: roName,
-      languageId: 1,
-      productCategoryId: category.id,
-    });
-    await ProductCategoryTranslation.create({
-      name: huName,
-      languageId: 2,
-      productCategoryId: category.id,
-    });
-
-    await ProductCategoryTranslation.create({
-      name: enName,
-      languageId: 3,
-      productCategoryId: category.id,
-    });
-  }
-
-  productCategoryTransaltion()
-    .then((result) => {
-      res.redirect("/admin/g/");
     })
     .catch((err) => {
       const error = new Error(err);

@@ -112,13 +112,11 @@ exports.getEditExtra = (req, res, next) => {
     ],
   })
     .then((extra) => {
-      // const extra = extras[0];
       console.log("extra.adminId", extra[0].adminId);
       if (extra[0].adminId !== req.admin.id) {
         return res.redirect("/");
       }
-      // console.log(extra.adminId);
-      // console.log("req.admin", extra[0].adminId);
+
       if (extra[0].adminId !== req.admin.id) {
         return res.redirect("/");
       }
@@ -184,17 +182,4 @@ exports.postEditExtra = async (req, res, next) => {
       error.httpStatusCode = 500;
       return next(error);
     });
-};
-
-exports.getProducts = (req, res, next) => {
-  req.user
-    .getProducts()
-    .then((products) => {
-      res.render("admin/products", {
-        prods: products,
-        pageTitle: "Admin Products",
-        path: "/admin/products",
-      });
-    })
-    .catch((err) => console.log(err));
 };
