@@ -198,11 +198,11 @@
                            <label for="sku">Sku</label>
                            <div class="input-group">
                               <input
-                                 class="form-control <%= validationErrors.find(e => e.param === 'sku') ? 'invalid' : '' %>"
+                                 class="form-control"
                                  type="text"
                                  name="sku"
                                  id="sku"
-                                 value="<% if (editing || hasError) { %><%= variant[0].sku %><% } %>">
+                                 value="<% if (editing) { %><%= variant[0].sku %><% } %>">
                            </div>
                            <span class="error_form" id="sku_error_message"></span>
                         </div>
@@ -219,11 +219,11 @@
                            <label for="roName"><%= lingua.create_product_name1 %></label>
                            <div class="input-group">
                               <input
-                                 class="form-control <%= validationErrors.find(e => e.param === 'roName') ? 'invalid' : '' %>"
+                                 class="form-control"
                                  type="text"
                                  name="roName"
                                  id="roName"
-                                 value="<% if (editing || hasError) { %><%= variant[0].productVariantTranslations[0].name %><% } %>">
+                                 value="<% if (editing) { %><%= variant[0].productVariantTranslations[0].name %><% } %>">
                            </div>
                            <span class="error_form" id="roName_error_message"></span>
                         </div>
@@ -231,11 +231,11 @@
                            <label for="huName"><%= lingua.create_product_name2 %></label>
                            <div class="input-group">
                               <input
-                                 class="form-control <%= validationErrors.find(e => e.param === 'huName') ? 'invalid' : '' %>"
+                                 class="form-control"
                                  type="text"
                                  name="huName"
                                  id="huName"
-                                 value="<% if (editing || hasError) { %><%= variant[0].productVariantTranslations[1].name %><% } %>">
+                                 value="<% if (editing) { %><%= variant[0].productVariantTranslations[1].name %><% } %>">
                            </div>
                            <span class="error_form" id="huName_error_message"></span>
                         </div>
@@ -243,11 +243,11 @@
                            <label for="enName"><%= lingua.create_product_name3 %></label>
                            <div class="input-group">
                               <input
-                                 class="form-control <%= validationErrors.find(e => e.param === 'enName') ? 'invalid' : '' %>"
+                                 class="form-control"
                                  type="text"
                                  name="enName"
                                  id="enName"
-                                 value="<% if (editing || hasError) { %><%= variant[0].productVariantTranslations[2].name %><% } %>">
+                                 value="<% if (editing) { %><%= variant[0].productVariantTranslations[2].name %><% } %>">
                            </div>
                            <span class="error_form" id="enName_error_message"></span>
                         </div>
@@ -325,7 +325,7 @@
                                           type="text"
                                           name="discountedPrice"
                                           id="discountedPrice"
-                                          value="<% if (editing || hasError) { %><%= varToExt[i].discountedPrice %><% } %>"
+                                          value="<% if (editing) { %><%= varToExt[i].discountedPrice %><% } %>"
                                           />
                                     </div>
                                  </div>
@@ -416,11 +416,11 @@
                                              >
                                           <div class="input-group">
                                              <input disabled
-                                                class="form-control <%= validationErrors.find(e => e.param === 'discountedPrice') ? 'invalid' : '' %>"
+                                                class="form-control"
                                                 type="text"
                                                 name="discountedPrice"
                                                 id="discountedPrice"
-                                                value="<% if (editing || hasError) { %><%= extra.discountedPrice %><% } %>"
+                                                value="<% if (editing) { %><%= extra.discountedPrice %><% } %>"
                                                 />
                                           </div>
                                        </div>

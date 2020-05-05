@@ -176,43 +176,33 @@ exports.postEditProduct = async (req, res, next) => {
     if (image) {
       fileHelper.deleteFile(product.imageUrl);
       product.imageUrl = image.path;
-      product.allergen = status !== "undefined" ? 1 : 0;
     }
     return product.save();
   });
   async function msg() {
-    try {
-      await ProductTranslation.update(
-        {
-          title: updatedRoTitle,
-          description: updatedRoDesc,
-          status: status == "on" ? 1 : 0,
-        },
-        { where: { productId: prodId, languageId: 1 } }
-      );
+    await ProductTranslation.update(
+      {
+        title: updatedRoTitle,
+        description: updatedRoDesc,
+      },
+      { where: { productId: prodId, languageId: 1 } }
+    );
 
-      await ProductTranslation.update(
-        {
-          title: updatedHuTitle,
-          description: updatedHuDesc,
-          status: status == "on" ? 1 : 0,
-        },
-        { where: { productId: prodId, languageId: 2 } }
-      );
+    await ProductTranslation.update(
+      {
+        title: updatedHuTitle,
+        description: updatedHuDesc,
+      },
+      { where: { productId: prodId, languageId: 2 } }
+    );
 
-      await ProductTranslation.update(
-        {
-          title: updatedEnTitle,
-          description: updatedEnDesc,
-          status: status == "on" ? 1 : 0,
-        },
-        { where: { productId: prodId, languageId: 3 } }
-      );
-    } catch (err) {
-      const error = new Error(err);
-      error.httpStatusCode = 500;
-      return next(error);
-    }
+    await ProductTranslation.update(
+      {
+        title: updatedEnTitle,
+        description: updatedEnDesc,
+      },
+      { where: { productId: prodId, languageId: 3 } }
+    );
   }
   msg();
   console.log("status", status);
