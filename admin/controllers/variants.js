@@ -173,9 +173,8 @@ exports.postEditVariant = async (req, res, next) => {
   const updatedEnName = req.body.enName;
   const extTranId = req.body.extTranId;
   var filteredStatus = req.body.status.filter(Boolean);
-
+  console.log("extId", extId);
   const ext = await req.admin.getExtras();
-  console.log("const varId = req.params.variantId;", varId);
   ProductVariants.findAll({
     include: [
       {
@@ -229,6 +228,8 @@ exports.postEditVariant = async (req, res, next) => {
                 },
               }
             );
+            console.log("extrasIds", extrasIds);
+            console.log("variantId", variantId);
           }
         }
       }
@@ -248,6 +249,15 @@ exports.getEditVariant = async (req, res, next) => {
     return res.redirect("/");
   }
   const varId = req.params.variantId;
+  let variantId = [varId];
+  const Op = Sequelize.Op;
+  const productVarToExt = await ProductVariantsExtras.findAll({
+    where: {
+      productVariantId: {
+        [Op.in]: variantId,
+      },
+    },
+  });
   const ext = await req.admin.getExtras();
   const cat = await Category.findAll({
     include: [
@@ -256,7 +266,10 @@ exports.getEditVariant = async (req, res, next) => {
       },
     ],
   });
-  console.log("VARIANT_ID_BY_PARAMS", varId);
+  for (let i = 0; i < productVarToExt.length; i++) {
+    console.log("extra[0].extraTranslations[i].id", productVarToExt);
+  }
+  // console.log("productVarToExt[0].extraId", productVarToExt);
   ProductVariants.findAll({
     where: {
       id: varId,
@@ -278,6 +291,7 @@ exports.getEditVariant = async (req, res, next) => {
         variantIdByParams: varId,
         hasError: false,
         ext: ext,
+        varToExt: productVarToExt,
         cat: cat,
         errorMessage: null,
         validationErrors: [],
