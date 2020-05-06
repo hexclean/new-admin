@@ -1,14 +1,11 @@
 const fileHelper = require("../../util/file");
-const { validationResult } = require("express-validator/check");
-// const { check, validationResult } = require("express-validator");
-
 const Product = require("../../models/Product");
 const ProductVariant = require("../../models/ProductVariant");
-const ProductVariants = require("../../models/ProductVariant");
 const ProductTranslation = require("../../models/ProductTranslation");
+const ProductFinal = require("../../models/ProductFinal");
 
 exports.getAddProduct = async (req, res, next) => {
-  const vari = await ProductVariant.findAll({
+  const ext = await ProductVariant.findAll({
     where: {
       adminId: req.admin.id,
     },
@@ -18,7 +15,7 @@ exports.getAddProduct = async (req, res, next) => {
     pageTitle: "Add Product",
     path: "/admin/add-product",
     editing: false,
-    vari: vari,
+    ext: ext,
     hasError: false,
     errorMessage: null,
     validationErrors: [],
@@ -30,13 +27,13 @@ exports.postAddProduct = async (req, res, next) => {
   const huTitle = req.body.huTitle;
   const enTitle = req.body.enTitle;
   //
-  const price = req.body.price;
+  const price = req.body.priceProduct;
   //
   const roDescription = req.body.roDescription;
   const huDescription = req.body.huDescription;
   const enDescription = req.body.enDescription;
   //
-  const status = req.body.status;
+  const status = req.body.statusAllergen;
   const image = req.file;
   const imageUrl = image.path;
 
@@ -44,7 +41,13 @@ exports.postAddProduct = async (req, res, next) => {
   const huCategory = req.body.huCategory;
   const enCategory = req.body.enCategory;
   //
-  const vari = await ProductVariant.findAll({
+  // Add Variant elements
+  const updatedExtraPrice = req.body.price;
+  const extId = req.body.extraId;
+  console.log("extraId", extId);
+  var filteredStatus = req.body.status.filter(Boolean);
+
+  const ext = await ProductVariant.findAll({
     where: {
       adminId: req.admin.id,
     },
@@ -83,26 +86,27 @@ exports.postAddProduct = async (req, res, next) => {
       allergen: typeof status !== "undefined" ? 1 : 0,
     });
   }
+  console.log("11111product.id", product.id);
 
-  // if (Array.isArray(vari)) {
-  //   for (let i = 0; i <= vari.length - 1; i++) {
-  //     console.log(vari.length);
-  //     await ProductVariantToProduct.create({
-  //       price: price[i] || 0,
+  if (Array.isArray(ext)) {
+    for (let i = 0; i <= ext.length - 1; i++) {
+      await ProductFinal.create({
+        price: updatedExtraPrice[i] || 0,
+        productId: product.id,
+        variantId: extId[i],
 
-  //       productVariantId: product.id,
-  //       extraId: extId[i],
-  //       active: filteredStatus[i] == "on" ? 1 : 0,
-  //     });
-  //   }
-  //   console.log(req.body.ext);
-  // }
+        active: filteredStatus[i] == "on" ? 1 : 0,
+      });
+      console.log("22222extId[i]", extId);
+      console.log("22222product.id", product.id);
+    }
+  }
 
   productTransaltion()
     .then((result) => {
       res.redirect("/admin/products"),
         {
-          vari: vari,
+          ext: ext,
         };
     })
     .catch((err) => {
@@ -112,13 +116,14 @@ exports.postAddProduct = async (req, res, next) => {
     });
 };
 
-exports.getEditProduct = (req, res, next) => {
+exports.getEditProduct = async (req, res, next) => {
   const editMode = req.query.edit;
   if (!editMode) {
     return res.redirect("/");
   }
   const prodId = req.params.productId;
-
+  const x = await ProductFinal.findAll();
+  console.log(x);
   req.admin
     .getProducts({
       where: { id: prodId },

@@ -5,6 +5,7 @@ const extraController = require("../controllers/extra");
 const variantsController = require("../controllers/variants");
 const faqController = require("../controllers/faq");
 const categoryController = require("../controllers/category");
+const adminProfileController = require("../controllers/profile");
 
 // const migrationController = require("../controllers/migration");
 // const adminProfileController = require("../controllers/profile");
@@ -37,7 +38,7 @@ const router = express.Router();
 
 router.get("/faq-index", isAuth, faqController.getIndex);
 router.get("/vr-index", isAuth, variantsController.getIndex);
-router.get("/search-extr-by-keyword", variantsController.searchExtraByKeyword);
+// router.get("/search-extr-by-keyword", variantsController.searchExtraByKeyword);
 router.get("/add-variant", isAuth, variantsController.getAddVariant);
 router.post("/add-variant", isAuth, variantsController.postAddVariant);
 
@@ -159,5 +160,7 @@ router.post("/delete-daily-menu", isAuth, adminController.postDeleteDailyMenu);
 // router.get("/costs", adminCostsController.getCoupons);
 // router.get("/add-cost", adminCostsController.getAddCost);
 // router.post("/add-cost", adminCostsController.postAddCost);
-
+router.post("/edit-profile", isAuth, adminProfileController.postEditProfile);
+router.get("/edit-profile/:adminId", adminProfileController.getEditProfile);
+router.get("/dashboard", isAuth, adminProfileController.getDashboard);
 module.exports = router;

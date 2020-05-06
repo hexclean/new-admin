@@ -91,7 +91,7 @@ exports.getIndex = async (req, res, next) => {
       limit: ITEMS_PER_PAGE,
     });
   });
-  console.log(category[0].id);
+  // console.log(category[0].id);
   await req.admin
     .getProductVariants()
     .then((numVariants) => {

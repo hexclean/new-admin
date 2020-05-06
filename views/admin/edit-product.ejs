@@ -99,85 +99,17 @@ return false;
                                  value="<% if (editing || hasError) { %><%= product.productTranslations[2].title %><% } %>">
                            </div>
                         </div>
-                        <div class="input-group mb-3 x">
-                           <select class="custom-select" id="roCategory" name="roCategory">
-                              <option>CATEGORY..RO</option>
-                              <% if (editing && product.category=='dailyMenu')  { %> 
-                              <option  value="dailyMenu">dailyMenu</option>
-                              <% } else{ %>
-                              <option  value="dailyMenu">dailyMenu</option>
-                              <% } %>
-                              <% if (editing && product.category=='pizza')  { %> 
-                              <option  selected value="pizza">pizza</option>
-                              <% } else{ %>
-                              <option  value="pizza">pizza</option>
-                              <% } %>
-                              <% if (editing && product.category=='chicken')  { %> 
-                              <option  selected value="chicken">chicken</option>
-                              <% } else{ %>
-                              <option  value="chicken">chicken</option>
-                              <% } %>
-                           </select>
-                           <div class="input-group-append">
-                              <label class="input-group-text" for="roCategory">CATEGORY</label>
-                           </div>
-                        </div>
-                        <div class="input-group mb-3 x">
-                           <select class="custom-select" id="huCategory" name="huCategory">
-                              <option>CATEGORY..HU</option>
-                              <% if (editing && product.category=='dailyMenu')  { %> 
-                              <option   value="dailyMenu">dailyMenu</option>
-                              <% } else{ %>
-                              <option  value="dailyMenu">dailyMenu</option>
-                              <% } %>
-                              <% if (editing && product.category=='pizza')  { %> 
-                              <option  selected value="pizza">pizza</option>
-                              <% } else{ %>
-                              <option  value="pizza">pizza</option>
-                              <% } %>
-                              <% if (editing && product.category=='chicken')  { %> 
-                              <option  selected value="chicken">chicken</option>
-                              <% } else{ %>
-                              <option   value="chicken">chicken</option>
-                              <% } %>
-                           </select>
-                           <div class="input-group-append">
-                              <label class="input-group-text" for="huCategory">CATEGORY</label>
-                           </div>
-                        </div>
-                        <div class="input-group mb-3 x">
-                           <select class="custom-select" id="enCategory" name="enCategory">
-                              <option>CATEGORY..EN</option>
-                              <% if (editing && product.category=='dailyMenu')  { %> 
-                              <option   value="dailyMenu">dailyMenu</option>
-                              <% } else{ %>
-                              <option  value="dailyMenu">dailyMenu</option>
-                              <% } %>
-                              <% if (editing && product.category=='pizza')  { %> 
-                              <option  selected value="pizza">pizza</option>
-                              <% } else{ %>
-                              <option  value="pizza">pizza</option>
-                              <% } %>
-                              <% if (editing && product.category=='chicken')  { %> 
-                              <option  selected value="chicken">chicken</option>
-                              <% } else{ %>
-                              <option  value="chicken">chicken</option>
-                              <% } %>
-                           </select>
-                           <div class="input-group-append">
-                              <label class="input-group-text" for="enCategory">CATEGORY</label>
-                           </div>
-                        </div>
+                      
                         <div class="col-md-6 mb-3">
-                           <label for="price"><%= lingua.create_product_price %></label>
+                           <label for="priceProduct"><%= lingua.create_product_price %></label>
                            <div class="input-group">
                               <input
-                                 class="form-control <%= validationErrors.find(e => e.param === 'price') ? 'invalid' : '' %>"
+                                 class="form-control"
                                  
-                                 name="price"
-                                 id="price"
+                                 name="priceProduct"
+                                 id="priceProduct"
                                  
-                                 value="<% if (editing || hasError) { %><%= product.price %><% } %>">
+                                 value="<% if (editing) { %><%= product.price %><% } %>">
                            </div>
                         </div>
                         <div class="col-md-12 mb-3">
@@ -271,8 +203,8 @@ return false;
                                     
                                     <script>
                                         $(document).ready(function() {
-                                        $('.status-checkbox').prop('checked', true);
-                                        $('.status').val('on');
+                                        $('.status-checkbox-allergen').prop('checked', true);
+                                        $('.statusAllergen').val('on');
                                         });
                                     </script>
                                        
@@ -281,7 +213,7 @@ return false;
                               <% } %>
                               <div class="ms-panel-body alergen-border">
                                  <label class="ms-switch" >              
-                                 <input class="status-checkbox" type="checkbox" name="status" id="status" > <span class="ms-switch-slider ms-switch-success round"></span>
+                                 <input class="status-checkbox-allergen" type="checkbox" name="statusAllergen" id="statusAllergen" > <span class="ms-switch-slider ms-switch-success round"></span>
                                  </label> 
                               </div>
                            </div>
@@ -298,8 +230,171 @@ return false;
 
 
 
-
-
+       <% if (editing) { %>  <% if (ext.length > 0) { %>
+         <div class="ms-content-wrapper">
+            <div class="row">
+               <div class="col-md-12">
+                  <div class="row">
+                     <% for (let i = 0; i < varToExt.length; i++) { %>
+                        <input
+                        type="hidden"
+                        value="<%= varToExt[i].extraId %>"
+                        name="extraId"
+                        />          
+                     <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 extra_box" data-extra="<%= varToExt[i].extraId %>">
+                        <div class="ms-card">
+                           <div class="d-flex justify-content-center extra-margin-top">
+                                 <div class="row"> 
+                                   
+                                    <label class="ms-switch" >                 
+                                       <input type="hidden" value="off" class="status-<%= varToExt[i].extraId %>" name="status[<%= varToExt[i].extraId %>]" >          
+                                       <input    data-extraId="<%= varToExt[i].extraId %>"  class="status-checkbox status-checkbox-<%= varToExt[i].extraId %>" type="checkbox">
+                                       <span class="ms-switch-slider ms-switch-success round"></span>
+                                    </label> 
+                                 </div>
+                           </div>
+                           <div class="ms-card-body">
+                              <div class="new d-flex justify-content-center extra-name">
+                                 <h6 class="mb-0"><b><%= varToExt[i].extraId %></b> </h6>
+                              </div>
+                              <div class="col-md-12 mb-3">
+                                 <label for="price">Price</label>
+                                 <div class="input-group">
+                                    <input
+                                       class="price_<%= varToExt[i].id %>"
+                                       type="text"
+                                       name="price"
+                                       id="price"
+                                       value="<% if (editing) { %><%= varToExt[i].price %><% } %>"
+                                       />
+                                 </div>
+                                 <span class="extra_error_message error_form" id="price_error_message"></span>
+                              </div>
+                              <div class="col-md-12 mb-3">
+                                 <label for="discountedPrice"
+                                    >Discounted Price</label
+                                    >
+                                 <div class="input-group">
+                                    <input disabled
+                                       class="form-control"
+                                       type="text"
+                                       name="discountedPrice"
+                                       id="discountedPrice"
+                                       value="<% if (editing) { %><%= varToExt[i].discountedPrice %><% } %>"
+                                       />
+                                 </div>
+                              </div>
+                              <div class="col-md-12 mb-3">
+                                 <label for="quantityMin"
+                                    >Quantity Minimum</label
+                                    >
+                                 <div class="input-group">
+                                    <input
+                                       class="qtMin_<%= varToExt[i].id %>"
+                                       type="text"
+                                       name="quantityMin"
+                                       id="quantityMin"
+                                       value="<% if (editing) { %><%= varToExt[i].quantityMin %><% } %>"
+                                       />
+                                 </div>
+                                 <span class="extra_error_message error_form" id="qtMin_error_message"></span>
+                              </div>
+                              <div class="col-md-12 mb-3">
+                                 <label for="quantityMax"
+                                    >Quantity Maximum</label
+                                    >
+                                 <div class="input-group">
+                                    <input
+                                       class="qtMax_<%= varToExt[i].id %>"
+                                       type="text"
+                                       name="quantityMax"
+                                       id="quantityMax"
+                                       value="<% if (editing) { %><%= varToExt[i].quantityMax %><% } %>"
+                                       />
+                                 </div>
+                                 <span class="extra_error_message error_form" id="qtMax_error_message"></span>
+                              </div>
+                          
+                           </div>
+                        </div>
+                     </div>
+                     <% } %>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <% } else { %>
+         <% } %><% } else { %>
+            
+            <% if (ext.length > 0) { %>
+               <div class="ms-content-wrapper">
+                  <div class="row">
+                     <div class="col-md-12">
+                        <div class="row">
+                           <% for (let extra of ext) { %>
+                              <input
+                              type="hidden"
+                              value="<%= extra.id %>"
+                              name="extraId"
+                              />          
+                           <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 extra_box" data-extra="<%= extra.id %>">
+                              <div class="ms-card">
+                                 <div class="d-flex justify-content-center extra-margin-top">
+                                       <div class="row"> 
+                                         
+                                          <label class="ms-switch" >                 
+                                             <input type="hidden" value="off" class="status-<%= extra.id %>" name="status[<%= extra.id %>]" >          
+                                             <input    data-extraId="<%= extra.id %>"  class="status-checkbox status-checkbox-<%= extra.id %>" type="checkbox"  > <span class="ms-switch-slider ms-switch-success round"></span>
+                                          </label> 
+                                       </div>
+                                 </div>
+                                 <div class="ms-card-body">
+                                    <div class="new d-flex justify-content-center extra-name">
+                                       <h6 class="mb-0"><b>dsasd</b> </h6>
+                                    </div>
+                                    <div class="col-md-12 mb-3">
+                                       <label for="price">Price</label>
+                                       <div class="input-group">
+                                          <input
+                                             class="price_<%= extra.id %>"
+                                             type="text"
+                                             name="price"
+                                             id="price"
+                                             value="<% if (editing) { %><%= extra.price %><% } %>"
+                                             />
+                                       </div>
+                                       <span class="extra_error_message error_form" id="price_error_message"></span>
+                                    </div>
+                                    <div class="col-md-12 mb-3">
+                                       <label for="discountedPrice"
+                                          >Discounted Price</label
+                                          >
+                                       <div class="input-group">
+                                          <input disabled
+                                             class="form-control"
+                                             type="text"
+                                             name="discountedPrice"
+                                             id="discountedPrice"
+                                             value="<% if (editing) { %><%= extra.discountedPrice %><% } %>"
+                                             />
+                                       </div>
+                                    </div>
+                                 
+                                    
+                                
+                                 </div>
+                              </div>
+                           </div>
+                           <% } %>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               <% } else { %>
+               <% } %>
+            
+            
+            <% } %>
 
 
 

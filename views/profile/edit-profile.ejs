@@ -21,8 +21,8 @@
         </div>
         <ul class="ms-profile-navigation nav nav-tabs tabs-bordered" role="tablist">
           <li role="presentation"><a href="/admin/dashboard" aria-controls="tab1"> Overview </a></li>
-          <li role="presentation"><a class="active show" href="/admin/edit-profile/<%= admin._id %>?edit=true"> <%= lingua.product_action_edit %> </a></li>
-          <li role="presentation"><a href="/admin/edit-photo/<%= admin._id %>?edit=true"> <%= lingua.admin_photo %> </a></li>
+          <li role="presentation"><a class="active show" href="/admin/edit-profile/<%= admin.id %>?edit=true"> <%= lingua.product_action_edit %> </a></li>
+          <li role="presentation"><a href="/admin/edit-photo/<%= admin.id %>?edit=true"> <%= lingua.admin_photo %> </a></li>
         </ul>
         <div class="tab-content">
           <div class="tab-pane" id="tab1">
@@ -127,7 +127,7 @@
                   type="text"
                   name="roAdress"
                   id="roAdress"
-                  value="<% if (editing || hasError) { %><%= admin.adress.ro %><% } %>"
+                  value="<% if (editing || hasError) { %><%= admin.name %><% } %>"
                 />
                 </div>
                 <div class="form-group">
@@ -137,7 +137,7 @@
                         type="text"
                         name="huAdress"
                         id="huAdress"
-                        value="<% if (editing || hasError) { %><%= admin.adress.hu %><% } %>"
+                        value="<% if (editing || hasError) { %><%= admin.name %><% } %>"
                       />
                 </div>
 
@@ -148,59 +148,12 @@
                         type="text"
                         name="enAdress"
                         id="enAdress"
-                        value="<% if (editing || hasError) { %><%= admin.adress.en %><% } %>"
+                        value="<% if (editing || hasError) { %><%= admin.name %><% } %>"
                       />
                 </div>
-                <div class="form-group">
-                  <label for="roLocation">Location RO</label>
-                  <select class="form-control" id="roLocation" name="roLocation">
-                    <option>Location RO</option>
-                    <% if (editing && admin.location.ro=='Odorheiu Secuiesc')  { %> 
-                      <option selected value="Odorheiu Secuiesc">Odorheiu Secuiesc</option> 
-                      <% } else{ %>
-                      <option value="Odorheiu Secuiesc">Odorheiu Secuiesc</option>
-                    <% } %>
-                    <% if (editing && admin.location.ro=='Târgu Mureș')  { %> 
-                      <option selected value="Târgu Mureș">Târgu Mureș</option> 
-                      <% } else{ %>
-                      <option value="Târgu Mureș">Târgu Mureș</option>
-                    <% } %>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label for="huLocation">Location HU</label>
-                  <select class="form-control" id="huLocation" name="huLocation">
-                    <option>Location HU</option>
-                    <% if (editing && admin.location.hu=='Székelyudvarhely')  { %> 
-                      <option selected value="Székelyudvarhely">Székelyudvarhely</option> 
-                      <% } else{ %>
-                      <option value="Székelyudvarhely">Székelyudvarhely</option>
-                    <% } %>
-                    <% if (editing && admin.location.hu=='Marosvásárhely')  { %> 
-                      <option selected value="Marosvásárhely">Marosvásárhely</option> 
-      
-                      <% } else{ %>
-                      <option value="Marosvásárhely">Marosvásárhely</option>
-                    <% } %>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label for="enLocation">Location EN</label>
-                  <select class="form-control" id="enLocation" name="enLocation">
-                    <option>Location EN</option>
-                    <% if (editing && admin.location.en=='SzékelyudvarhelyUS')  { %> 
-                      <option selected value="SzékelyudvarhelyUS">SzékelyudvarhelyUS</option>      
-                      <% } else{ %>
-                      <option value="SzékelyudvarhelyUS">SzékelyudvarhelyUS</option>
-                    <% } %>
-                    <% if (editing && admin.location.en=='MarosvásárhelyUS')  { %> 
-                      <option selected value="MarosvásárhelyUS">MarosvásárhelyUS</option>    
-                      <% } else{ %>
-                      <option value="MarosvásárhelyUS">MarosvásárhelyUS</option>
-                    <% } %>
-                  </select>
-                </div>
+                
                
+              
             
             </div>
           </div>
@@ -222,7 +175,7 @@
                         type="text"
                         name="roShortCompanyDesc"
                         id="roShortCompanyDesc"
-                        value="<% if (editing || hasError) { %><%= admin.shortCompanyDesc.ro %><% } %>"
+                        value="<% if (editing || hasError) { %><%= admin.name %><% } %>"
                       />
                 </div>
                 <div class="form-group">
@@ -232,7 +185,7 @@
                         type="text"
                         name="huShortCompanyDesc"
                         id="huShortCompanyDesc"
-                        value="<% if (editing || hasError) { %><%= admin.shortCompanyDesc.hu %><% } %>"
+                        value="<% if (editing || hasError) { %><%= admin.id %><% } %>"
                       />
                 </div>
                 <div class="form-group">
@@ -242,7 +195,7 @@
                   type="text"
                   name="enShortCompanyDesc"
                   id="enShortCompanyDesc"
-                  value="<% if (editing || hasError) { %><%= admin.shortCompanyDesc.en %><% } %>"
+                  value="<% if (editing || hasError) { %><%= admin.id %><% } %>"
                 />
                 </div>
                
@@ -258,7 +211,7 @@
                   <% if (editing) { %>
                   <input
                     type="hidden"
-                    value="<%= admin._id %>"
+                    value="<%= admin.id %>"
                     name="adminId"
                   />
                   <% } %>

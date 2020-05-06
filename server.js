@@ -19,6 +19,7 @@ const ProductVariantTranslation = require("./models/ProductVariantTranslation");
 const ProductVariant = require("./models/ProductVariant");
 const Extra = require("./models/Extra");
 const ExtraTranslation = require("./models/ExtraTranslation");
+const ProductFinal = require("./models/ProductFinal");
 
 const ProductVariantsExtras = require("./models/ProductVariantsExtras");
 const ProductVariantToProduct = require("./models/ProductVariantToProduct");
@@ -140,6 +141,17 @@ app.use(authRoutes);
 app.get("/500", errorController.get500);
 
 // Tables Config //
+ProductFinal.belongsTo(Product, {
+  as: "theProductId",
+  foreignKey: "productId",
+});
+Product.hasMany(ProductFinal, { foreignKey: "productId" });
+
+ProductFinal.belongsTo(ProductVariant, {
+  as: "theVariantd",
+  foreignKey: "variantId",
+});
+ProductVariant.hasMany(ProductFinal, { foreignKey: "variantId" });
 
 // Product-> ProductTranslation -> Language
 Product.belongsTo(Admin, { constrains: true, onDelete: "CASCADE" });
