@@ -507,7 +507,21 @@
                  <input id="tags">
                </div>
                 
-                
+               SELECT * FROM foodnet.products as prod
+               JOIN foodnet.productFinals as fin
+               ON prod.id = fin.productId
+               JOIN foodnet.productVariants as pv
+               ON pv.id = fin.variantId
+               JOIN foodnet.productVariantTranslations as pvr
+               ON pv.id = pvr.productVariantId
+               JOIN foodnet.productVariantsExtras as pve
+               ON pve.productVariantId = pv.id
+               JOIN foodnet.extras as ex
+               ON ex.id = pve.extraId
+               JOIN extraTranslations as extrans
+               on extrans.extraId = ex.id
+               WHERE fin.active = 1;
+               
                
       </form>
    </main>

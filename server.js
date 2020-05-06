@@ -222,19 +222,6 @@ ProductCategory.hasOne(ProductVariant, {
 
 ///
 
-// Product-> ProductTranslation -> Languagef
-ProductVariantToProduct.belongsTo(Product, {
-  as: "VariantToProduct",
-  foreignKey: "productId",
-});
-Product.hasMany(ProductVariantToProduct, { foreignKey: "productId" });
-
-ProductVariantToProduct.belongsTo(ProductVariant, {
-  as: "variant",
-  foreignKey: "variantId",
-});
-Product.hasMany(ProductVariantToProduct, { foreignKey: "variantId" });
-
 //
 
 Admin.hasMany(Product);
@@ -253,11 +240,6 @@ Language.hasMany(ExtraTranslation);
 ProductVariant.hasMany(ProductVariantTranslation);
 Extra.hasMany(ExtraTranslation);
 // Product -> Variant
-Product.belongsTo(ProductVariant, {
-  as: "productVariantJoin",
-  foreignKey: "languageId",
-});
-ProductVariant.hasMany(Product, { foreignKey: "productVariantId" });
 // Extra.hasMany(ExtraCategory);
 
 ProductVariant.hasMany(ProductVariantsExtras);
@@ -280,13 +262,13 @@ Language.hasMany(ExtraTranslation, { foreignKey: "languageId" });
 
 ///
 
-// app.use((error, req, res, next) => {
-//   res.status(500).render("500", {
-//     pageTitle: "Error!",
-//     path: "/500",
-//     isAuthenticated: req.session.isLoggedIn,
-//   });
-// });
+app.use((error, req, res, next) => {
+  res.status(500).render("500", {
+    pageTitle: "Error!",
+    path: "/500",
+    isAuthenticated: req.session.isLoggedIn,
+  });
+});
 // Config PORT
 const PORT = process.env.PORT || 5000;
 
