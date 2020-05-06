@@ -37,7 +37,7 @@ const router = express.Router();
 
 router.get("/faq-index", isAuth, faqController.getIndex);
 router.get("/vr-index", isAuth, variantsController.getIndex);
-
+router.get("/search-extr-by-keyword", variantsController.searchExtraByKeyword);
 router.get("/add-variant", isAuth, variantsController.getAddVariant);
 router.post("/add-variant", isAuth, variantsController.postAddVariant);
 

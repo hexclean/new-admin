@@ -395,7 +395,7 @@
                                     </div>
                                     <div class="ms-card-body">
                                        <div class="new d-flex justify-content-center extra-name">
-                                          <h6 class="mb-0"><b><%= extra.id %></b> </h6>
+                                          <h6 class="mb-0"><b>dsasd</b> </h6>
                                        </div>
                                        <div class="col-md-12 mb-3">
                                           <label for="price">Price</label>
@@ -468,7 +468,47 @@
                
                
                <% } %>
-       
+               
+                 <script>
+                 $( function() {
+                   var availableTags = [
+                     "ActionScript",
+                     "AppleScript",
+                     "Asp",
+                     "BASIC",
+                     "C",
+                     "C++",
+                     "Clojure",
+                     "COBOL",
+                     "ColdFusion",
+                     "Erlang",
+                     "Fortran",
+                     "Groovy",
+                     "Haskell",
+                     "Java",
+                     "JavaScript",
+                     "Lisp",
+                     "Perl",
+                     "PHP",
+                     "Python",
+                     "Ruby",
+                     "Scala",
+                     "Scheme"
+                   ];
+                   $( "#tags" ).autocomplete({
+                     source: availableTags
+                   });
+                 } );
+                 </script>
+               
+                
+               <div class="ui-widget">
+                 <label for="tags">Tags: </label>
+                 <input id="tags">
+               </div>
+                
+                
+               
       </form>
    </main>
    <%- include('../includes/end.ejs') %>

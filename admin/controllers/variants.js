@@ -1,4 +1,3 @@
-const { validationResult } = require("express-validator/check");
 const ProductVariantTranslation = require("../../models/ProductVariantTranslation");
 const ProductVariantsExtras = require("../../models/ProductVariantsExtras");
 const ProductVariants = require("../../models/ProductVariant");
@@ -6,10 +5,50 @@ const ProductVariantExtras = require("../../models/ProductVariantsExtras");
 const ProductExtra = require("../../models/Extra");
 const Category = require("../../models/ProductCategory");
 const CategoryTranslation = require("../../models/ProductCategoryTranslation");
+const Extras = require("../../models/Extra");
+const ExtraTranslations = require("../../models/ExtraTranslation");
+
 var Sequelize = require("sequelize");
 
-const ITEMS_PER_PAGE = 12;
+const ITEMS_PER_PAGE = 14;
 
+exports.searchExtraByKeyword = async (req, res, next) => {
+  res.render("search/index", {
+    pageTitle: "Admin Products",
+    path: "/admin/products",
+  });
+  const Op = Sequelize.Op;
+  const lang = req.query.language;
+  const keyword = req.query.keyword;
+  if (lang == "hu") {
+    const lang2 = 1;
+    await Extras.findAll({
+      where: {
+        adminId: req.admin.id,
+      },
+      raw: true,
+      // nest: true,
+
+      include: {
+        model: ExtraTranslations,
+        where: {
+          name: { [Op.like]: "%" + keyword + "%" },
+          languageId: lang2,
+        },
+        raw: true,
+      },
+    })
+      .then((searchedExtra) => {
+        console.log(searchedExtra);
+      })
+
+      .catch((err) => {
+        const error = new Error(err);
+        error.httpStatusCode = 500;
+        return next(error);
+      });
+  }
+};
 exports.getIndex = async (req, res, next) => {
   const page = +req.query.page || 1;
   let totalItems;
