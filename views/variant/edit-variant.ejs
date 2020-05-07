@@ -15,44 +15,75 @@
 <script>
    $(document).ready(function () {
   $(".status-checkbox").click(function () {
-    $("#price_error_message").hide();
-    $("#qtMin_error_message").hide();
-    $("#qtMax_error_message").hide();
+   var extraId = $(this).data("extraid");
+    $("#price_error_message_"+extraId).hide();
+    $("#qtMin_error_message_"+extraId).hide();
+    $("#qtMax_error_message_"+extraId).hide();
     var error_price = false;
     var error_qtMin = false;
     var error_qtMax = false;
-    function check_variantInputs() {
+    
+  
+  });
+  function check_variantInputs() {
       var extraId = $(this).attr("data-extraId");
       $(".extra_box").each(function () {
         var extraId = $(this).data("extra");
         var price_len = $(".price_" + extraId).val().length;
         var qtMin_len = $(".qtMin_" + extraId).val().length;
         var qtMax_len = $(".qtMax_" + extraId).val().length;
-        if ($(this).find("input:checkbox").is(":checked") && price_len < 1 && qtMin_len < 1 && qtMax_len < 1) {
-          $(this).find(".extra_error_message").show();
-          $(this)
-            .find(".extra_error_message")
-            .html("Mezo kitoltese kotelezo");
-          error_price = true;
-          error_qtMin = true;
-          error_qtMax = true;
+        if ($(this).find("input:checkbox").is(":checked") && (price_len < 1 || qtMin_len < 1 || qtMax_len < 1)) {
+           if (price_len < 1) {
+            $("#price_error_message_"+extraId).show().html("Mezo kitoltese kotelezo");
+              error_price = true;
+           } else {
+            $("#price_error_message_"+extraId).hide().html("");
+           }
+
+           if (qtMin_len < 1) {
+            $("#qtMin_error_message_"+extraId).show().html("Mezo kitoltese kotelezo");
+            error_qtMin = true;
+           }else {
+            $("#qtMin_error_message_"+extraId).hide().html("");
+           }
+
+           if (qtMax_len < 1) {
+            $("#qtMax_error_message_"+extraId).show();
+            $("#qtMax_error_message_"+extraId).html("Mezo kitoltese kotelezo");
+            error_qtMax = true;
+           }else {
+            $("#qtMax_error_message_"+extraId).hide().html("");
+           }
+
+          
+          
         } else {
           $(this).find(".extra_error_message").hide();
         }
       });
     }
-    $("#variant-form").submit(function () {
+  $(".extra_price_input").focusout(function() {
+      var len = $(this).val().length; 
+      var extraId = $(this).closest(".extra_box").data('extra');
+      if (len < 1) {
+         $("#price_error_message_"+extraId).show().html("Mezo kitoltese kotelezo");
+      } else {
+         $("#price_error_message_"+extraId).hide().html("");
+      }
+   
+  });
+  $("#variant-form").submit(function () {
       error_price = false;
       error_qtMin = false;
       error_qtMax = false;
       check_variantInputs();
+      console.log(error_price, error_qtMin, error_qtMax);
       if (error_price == false && error_qtMin == false && error_qtMax == false) {
         return true;
       } else {
         return false;
       }
     });
-  });
 });
 </script>
 
@@ -340,7 +371,7 @@
                                           value="<% if (editing) { %><%= varToExt[i].price %><% } %>"
                                           />
                                     </div>
-                                    <span class="extra_error_message error_form" id="price_error_message"></span>
+                                    <span class="extra_error_message error_form" id="price_error_message_<%= varToExt[i].extraId %>"></span>
                                  </div>
                                  <div class="col-md-12 mb-3">
                                     <label for="discountedPrice"
@@ -369,7 +400,7 @@
                                           value="<% if (editing) { %><%= varToExt[i].quantityMin %><% } %>"
                                           />
                                     </div>
-                                    <span class="extra_error_message error_form" id="qtMin_error_message"></span>
+                                    <span class="extra_error_message error_form" id="qtMin_error_message_<%= varToExt[i].extraId %>"></span>
                                  </div>
                                  <div class="col-md-12 mb-3">
                                     <label for="quantityMax"
@@ -384,7 +415,7 @@
                                           value="<% if (editing) { %><%= varToExt[i].quantityMax %><% } %>"
                                           />
                                     </div>
-                                    <span class="extra_error_message error_form" id="qtMax_error_message"></span>
+                                    <span class="extra_error_message error_form" id="qtMax_error_message_<%= varToExt[i].extraId %>"></span>
                                  </div>
                              
                               </div>
@@ -428,14 +459,14 @@
                                           <label for="price">Price</label>
                                           <div class="input-group">
                                              <input
-                                                class="price_<%= extra.id %>"
+                                                class="price_<%= extra.id %> extra_price_input"
                                                 type="text"
                                                 name="price"
                                                 id="price"
                                                 value="<% if (editing) { %><%= extra.price %><% } %>"
                                                 />
                                           </div>
-                                          <span class="extra_error_message error_form" id="price_error_message"></span>
+                                          <span class="extra_error_message error_form" id="price_error_message_<%= extra.id %>"></span>
                                        </div>
                                        <div class="col-md-12 mb-3">
                                           <label for="discountedPrice"
@@ -464,7 +495,7 @@
                                                 value="<% if (editing) { %><%= extra.quantityMin %><% } %>"
                                                 />
                                           </div>
-                                          <span class="extra_error_message error_form" id="qtMin_error_message"></span>
+                                          <span class="extra_error_message error_form" id="qtMin_error_message_<%= extra.id %>"></span>
                                        </div>
                                        <div class="col-md-12 mb-3">
                                           <label for="quantityMax"
@@ -479,7 +510,7 @@
                                                 value="<% if (editing) { %><%= extra.quantityMax %><% } %>"
                                                 />
                                           </div>
-                                          <span class="extra_error_message error_form" id="qtMax_error_message"></span>
+                                          <span class="extra_error_message error_form" id="qtMax_error_message_<%= extra.id %>"></span>
                                        </div>
                                    
                                     </div>
