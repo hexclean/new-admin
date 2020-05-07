@@ -1,22 +1,23 @@
-const fileHelper = require("../../util/file");
-const nexmo = require("nexmo");
 const { validationResult } = require("express-validator/check");
 const Admin = require("../../models/Admin");
-const Product = require("../../models/Product");
+const AdminInfo = require("../../models/AdminInfo");
 
 exports.getEditProfile = (req, res, next) => {
+  const adminId = req.admin.id;
   const editMode = req.query.edit;
   if (!editMode) {
     return res.redirect("/");
   }
-  const adminId = req.admin.id;
+
   Admin.findByPk(adminId)
     .then((admin) => {
-      if (!admin) {
+      if (admin.id != req.admin.id) {
         return res.redirect("/admin/products");
       }
-      console.log("adminId", adminId);
-      console.log("req.admin.id", req.admin.id);
+      for (let i = 0; i <= admin.length; i++) {
+        console.log(admin[i].id);
+      }
+      console.log(admin);
       res.render("profile/edit-profile", {
         pageTitle: "Edit Product",
         path: "/admin/edit-product",
@@ -34,137 +35,130 @@ exports.getEditProfile = (req, res, next) => {
     });
 };
 
-exports.postEditProfile = (req, res, next) => {
+// exports.postEditProfile = async (req, res, next) => {
+//   const adminId = req.body.adminId;
+//   const fullName = req.body.fullName;
+//   const phoneNumber = req.body.phoneNumber;
+//   const open = req.body.open;
+//   const close = req.body.close;
+//   const roAdress = req.body.roAdress;
+//   const huAdress = req.body.huAdress;
+//   const enAdress = req.body.enAdress;
+//   const roShortCompanyDesc = req.body.roShortCompanyDesc;
+//   const huShortCompanyDesc = req.body.huShortCompanyDesc;
+//   const enShortCompanyDesc = req.body.enShortCompanyDesc;
+//   console.log(open);
+//   console.log(adminId);
+//   async function msg() {
+//     var values = { title: "some title", content: "P" };
+//     var condition = { where: { id: 2 } };
+//     options = { multi: true };
+
+//     AdminInfo.update(values, condition, options).then(function (upresult) {});
+
+//     await Admin.findByPk(adminId).then((admin) => {
+//       admin.phoneNumber = phoneNumber;
+//       admin.open = open;
+//       admin.close = close;
+//       admin.fullName = fullName;
+//       return admin.save();
+//     });
+//     await AdminInfo.update({
+//       where: {
+//         adminId: req.admin.id,
+//         languageId: 1,
+//       },
+//     }).then((admin) => {
+//       admin.adress = roAdress;
+//       admin.companyDescription = roShortCompanyDesc;
+//       admin.fullName = fullName;
+//       return admin.save();
+//     });
+//     //   { adress: roAdress },
+//     //   { companyDescription: roShortCompanyDesc },
+//     //   { where: { adminId: adminId, languageId: 1 } }
+//     // );
+//     // await AdminInfo.update(
+//     //   { adress: huAdress },
+//     //   { companyDescription: huShortCompanyDesc },
+//     //   { where: { adminId: adminId, languageId: 2 } }
+//     // );
+//     // await AdminInfo.update(
+//     //   { adress: enAdress },
+//     //   { companyDescription: enShortCompanyDesc },
+//     //   { where: { adminId: adminId, languageId: 3 } }
+//     // );
+//   }
+//   msg();
+//   res.redirect("/admin/dashboard");
+//   // .catch((err) => {
+//   //   const error = new Error(err);
+//   //   error.httpStatusCode = 500;
+//   //   return next(error);
+//   // });
+// };
+
+exports.postEditProfile = async (req, res, next) => {
   const adminId = req.body.adminId;
-  const updatedEmail = req.body.email;
-  // const updatedCategory = req.body.category;
-  // const updatedPrice = req.body.price;
-  // const image = req.file;
-  // const updatedDesc = req.body.description;
+  const fullName = req.body.fullName;
+  const phoneNumber = req.body.phoneNumber;
+  const open = req.body.open;
+  const close = req.body.close;
+  const roAdress = req.body.roAdress;
+  const huAdress = req.body.huAdress;
+  const enAdress = req.body.enAdress;
+  const roShortCompanyDesc = req.body.roShortCompanyDesc;
+  const huShortCompanyDesc = req.body.huShortCompanyDesc;
+  const enShortCompanyDesc = req.body.enShortCompanyDesc;
 
-  const errors = validationResult(req);
-
-  if (!errors.isEmpty()) {
-    return res.status(422).render("admin/edit-profile", {
-      pageTitle: "Edit Product",
-      path: "/admin/edit-product",
-      editing: true,
-      hasError: true,
-      admin: {
-        email: updatedEmail,
-
-        id: adminId,
+  Admin.findAll({
+    include: [
+      {
+        model: AdminInfo,
+        // where: { s: 2 },
       },
-      errorMessage: errors.array()[0].msg,
-      validationErrors: errors.array(),
-    });
-  }
-
-  Admin.findByPk(adminId)
-    .then((admin) => {
-      admin.email = updatedEmail;
-
-      return admin.save().then((result) => {
-        console.log("UPDATED PRODUCT!");
-        res.redirect("/admin/products");
-      });
-    })
-    .catch((err) => {
-      const error = new Error(err);
-      error.httpStatusCode = 500;
-      return next(error);
-    });
-};
-
-exports.postEditProfile = (req, res, next) => {
-  const adminId = req.body.adminId;
-  const updatedEmail = req.body.email;
-  const updatedphoneNuber = req.body.phoneNuber;
-  const updatedfullName = req.body.fullName;
-  const updatedOpened = req.body.open;
-  const updatedClosed = req.body.close;
-  // Short Description
-  const updatedRoShortCompanyDesc = req.body.roShortCompanyDesc;
-  const updatedhuShortCompanyDesc = req.body.huShortCompanyDesc;
-  const updatedEnShortCompanyDesc = req.body.enShortCompanyDesc;
-  // Adress
-  const updatedRoAdress = req.body.roAdress;
-  const updatedHuAdress = req.body.huAdress;
-  const updatedEnAdress = req.body.enAdress;
-  // Location
-  const updatedRoLocation = req.body.roLocation;
-  const updatedHuLocation = req.body.huLocation;
-  const updatedEnLocation = req.body.enLocation;
-
-  // const image = req.file;
-  const errors = validationResult(req);
-
-  if (!errors.isEmpty()) {
-    return res.status(422).render("profile/edit-profile", {
-      pageTitle: "Edit Product",
-      path: "/admin/edit-product",
-      editing: true,
-      hasError: true,
-      admin: {
-        open: updatedOpened,
-        close: updatedClosed,
-        email: updatedEmail,
-        phoneNuber: updatedphoneNuber,
-        fullName: updatedfullName,
-        adress: {
-          en: updatedEnAdress,
-          ro: updatedRoAdress,
-          hu: updatedHuAdress,
-        },
-        shortCompanyDesc: {
-          en: updatedEnShortCompanyDesc,
-          ro: updatedRoShortCompanyDesc,
-          hu: updatedhuShortCompanyDesc,
-        },
-        location: {
-          en: updatedEnLocation,
-          ro: updatedRoLocation,
-          hu: updatedHuLocation,
-        },
-        id: adminId,
-      },
-      errorMessage: errors.array()[0].msg,
-      validationErrors: errors.array(),
-    });
-  }
-  Admin.findByPk(adminId)
-    .then((admin) => {
-      // if (admin.adminId.toString() !== req.admin._id.toString()) {
+    ],
+  })
+    .then((extra) => {
+      // console.log(extra);
+      // if (extra.adminId != req.admin.id) {
       //   return res.redirect("/");
       // }
-      admin.email = updatedEmail;
-      admin.open = updatedOpened;
-      admin.close = updatedClosed;
-      admin.fullName = updatedfullName;
-      admin.phoneNuber = updatedphoneNuber;
-      admin.adress = {
-        en: updatedEnAdress,
-        hu: updatedHuAdress,
-        ro: updatedRoAdress,
-      };
-      admin.shortCompanyDesc = {
-        en: updatedEnShortCompanyDesc,
-        ro: updatedRoShortCompanyDesc,
-        hu: updatedhuShortCompanyDesc,
-      };
-      admin.location = {
-        en: updatedEnLocation,
-        ro: updatedRoLocation,
-        hu: updatedHuLocation,
-      };
-      // if (image) {
-      //   fileHelper.deleteFile(admin.imageUrl);
-      //   admin.imageUrl = image.path;
-      // }
-      return admin.save().then((result) => {
-        console.log("UPDATED PRODUCT!");
-        res.redirect("/admin/dashboard");
-      });
+
+      async function msg() {
+        await Admin.update(
+          {
+            phoneNumber: phoneNumber,
+            open: open,
+            close: close,
+            fullName: fullName,
+          },
+          { where: { id: req.admin.id } }
+        );
+
+        await AdminInfo.update(
+          { shortCompanyDesc: roShortCompanyDesc, adress: roAdress },
+          { where: { adminId: req.admin.id, languageId: 1 } }
+        );
+
+        await AdminInfo.update(
+          { shortCompanyDesc: huShortCompanyDesc, adress: huAdress },
+          { where: { adminId: req.admin.id, languageId: 2 } }
+        );
+
+        await AdminInfo.update(
+          { shortCompanyDesc: enShortCompanyDesc, adress: enAdress },
+          { where: { adminId: req.admin.id, languageId: 3 } }
+        );
+
+        // await ExtraTranslation.update(
+        //   { name: updatedEnName },
+        //   { where: { id: extTranId[2], languageId: 3 } }
+        // );
+      }
+      msg();
+
+      res.redirect("/admin/vr-index");
     })
     .catch((err) => {
       const error = new Error(err);

@@ -49,62 +49,76 @@
                 <div class="form-group">
                   <label for="email">Email address</label>
                   <input
-                        class="form-control <%= validationErrors.find(e => e.param === 'email') ? 'invalid' : '' %>"
+                        class="form-control"
                         type="text"
                         name="email"
+                        disabled
                         id="email"
-                        value="<% if (editing || hasError) { %><%= admin.email %><% } %>"
+                        value="<% if (editing) { %><%= admin.email %><% } %>"
                       />
                 </div>
                 <div class="form-group">
                   <label for="fullName">Full Name</label>
                   <input
-                  class="form-control <%= validationErrors.find(e => e.param === 'fullName') ? 'invalid' : '' %>"
+                  class="form-control"
                   type="text"
                   name="fullName"
                   id="fullName"
-                  value="<% if (editing || hasError) { %><%= admin.fullName %><% } %>"
+                  value="<% if (editing) { %><%= admin.fullName %><% } %>"
                 />
                 </div>
                 <div class="form-group">
-                  <label for="phoneNuber">Tel Numb.</label>
+                  <label for="phoneNumber">Tel Numb.</label>
                   <input
-                  class="form-control <%= validationErrors.find(e => e.param === 'phoneNuber') ? 'invalid' : '' %>"
+                  class="form-control"
                   type="text"
-                  name="phoneNuber"
-                  id="phoneNuber"
-                  value="<% if (editing || hasError) { %><%= admin.phoneNuber %><% } %>"
+                  name="phoneNumber"
+                  id="phoneNumber"
+                  value="<% if (editing) { %><%= admin.phoneNumber %><% } %>"
                 />
                 </div>
                 <div class="form-group">
                   <label for="open">Open</label>
                   <input
-                  class="form-control <%= validationErrors.find(e => e.param === 'open') ? 'invalid' : '' %>"
+                  class="form-control"
                   type="text"
                   name="open"
                   id="open"
-                  value="<% if (editing || hasError) { %><%= admin.open %><% } %>"
+                  value="<% if (editing) { %><%= admin.open %><% } %>"
                 />
                 </div>
                 <div class="form-group">
                   <label for="close">Clsoed</label>
                   <input
-                  class="form-control <%= validationErrors.find(e => e.param === 'close') ? 'invalid' : '' %>"
+                  class="form-control%"
                   type="text"
                   name="close"
                   id="close"
-                  value="<% if (editing || hasError) { %><%= admin.close %><% } %>"
+                  value="<% if (editing) { %><%= admin.close %><% } %>"
                 />
                 </div>
+
+                <div class="form-group">
+                  <label for="commission">commission</label>
+                  <input
+                  class="form-control"
+                  type="text"
+                  name="commission"
+                  id="commission"
+                  disabled
+                  value="<%= admin.commission %>"
+                />
+                </div>
+
                 <div class="form-group">
                   <label for="date">Csatlakozas</label>
                   <input
                   class="form-control"
                   type="text"
-                  name="phoneNuber"
-                  id="phoneNuber"
+                  name="date"
+                  id="date"
                   disabled
-                  value="<%= admin.date %>"
+                  value="<%= admin.createdAt %>"
                 />
                 </div>
             </div>
@@ -123,32 +137,32 @@
                 <div class="form-group">
                   <label for="roAdress">RO ADRESS</label>
                   <input
-                  class="form-control <%= validationErrors.find(e => e.param === 'roAdress') ? 'invalid' : '' %>"
+                  class="form-control"
                   type="text"
                   name="roAdress"
                   id="roAdress"
-                  value="<% if (editing || hasError) { %><%= admin.name %><% } %>"
+                  value="<% if (editing ) { %><%= admin.name %><% } %>"
                 />
                 </div>
                 <div class="form-group">
                   <label for="huAdress">HU ADRESS</label>
                   <input
-                        class="form-control <%= validationErrors.find(e => e.param === 'huAdress') ? 'invalid' : '' %>"
+                        class="form-control"
                         type="text"
                         name="huAdress"
                         id="huAdress"
-                        value="<% if (editing || hasError) { %><%= admin.name %><% } %>"
+                        value="<% if (editing) { %><%= admin.name %><% } %>"
                       />
                 </div>
 
                 <div class="form-group">
                   <label for="enAdress">EN ADRESS</label>
                   <input
-                        class="form-control <%= validationErrors.find(e => e.param === 'enAdress') ? 'invalid' : '' %>"
+                        class="form-control"
                         type="text"
                         name="enAdress"
                         id="enAdress"
-                        value="<% if (editing || hasError) { %><%= admin.name %><% } %>"
+                        value="<% if (editing) { %><%= admin.name %><% } %>"
                       />
                 </div>
                 
@@ -171,31 +185,31 @@
                 <div class="form-group">
                   <label for="roShortCompanyDesc">roShortCompanyDesce</label>
                   <input
-                        class="form-control <%= validationErrors.find(e => e.param === 'roShortCompanyDesc') ? 'invalid' : '' %>"
+                        class="form-control"
                         type="text"
                         name="roShortCompanyDesc"
                         id="roShortCompanyDesc"
-                        value="<% if (editing || hasError) { %><%= admin.name %><% } %>"
+                        value="<% if (editing) { %><%= admin.name %><% } %>"
                       />
                 </div>
                 <div class="form-group">
                   <label for="huShortCompanyDesc">huShortCompanyDesce</label>
                   <input
-                        class="form-control <%= validationErrors.find(e => e.param === 'huShortCompanyDesc') ? 'invalid' : '' %>"
+                        class="form-control"
                         type="text"
                         name="huShortCompanyDesc"
                         id="huShortCompanyDesc"
-                        value="<% if (editing || hasError) { %><%= admin.id %><% } %>"
+                        value="<% if (editing) { %><%= admin.id %><% } %>"
                       />
                 </div>
                 <div class="form-group">
                   <label for="enShortCompanyDesc">enShortCompanyDesce</label>
                   <input
-                  class="form-control <%= validationErrors.find(e => e.param === 'enShortCompanyDesc') ? 'invalid' : '' %>"
+                  class="form-control"
                   type="text"
                   name="enShortCompanyDesc"
                   id="enShortCompanyDesc"
-                  value="<% if (editing || hasError) { %><%= admin.id %><% } %>"
+                  value="<% if (editing) { %><%= admin.id %><% } %>"
                 />
                 </div>
                

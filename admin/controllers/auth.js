@@ -1,5 +1,7 @@
 const bcrypt = require("bcryptjs");
 const Admin = require("../../models/Admin");
+const AdminInfo = require("../../models/AdminInfo");
+
 const { validationResult } = require("express-validator/check");
 
 exports.getLogin = (req, res, next) => {
@@ -58,7 +60,7 @@ exports.postLogin = (req, res, next) => {
     .catch((err) => console.log(err));
 };
 
-exports.postSignup = (req, res, next) => {
+exports.postSignup = async (req, res, next) => {
   const email = req.body.email;
   const password = req.body.password;
   const errors = validationResult(req);
@@ -78,10 +80,33 @@ exports.postSignup = (req, res, next) => {
   bcrypt
     .hash(password, 12)
     .then((hashedPassword) => {
-      Admin.create({
-        email: email,
-        password: hashedPassword,
-      });
+      async function createAdmin() {
+        const admin = await Admin.create({
+          email: email,
+          password: hashedPassword,
+        });
+        await AdminInfo.create({
+          adminId: admin.id,
+          adress: "",
+          languageId: 1,
+          shortCompanyDesc: "",
+        });
+
+        await AdminInfo.create({
+          adminId: admin.id,
+          adress: "",
+          languageId: 2,
+          shortCompanyDesc: "",
+        });
+
+        await AdminInfo.create({
+          adminId: admin.id,
+          adress: "",
+          languageId: 3,
+          shortCompanyDesc: "",
+        });
+      }
+      createAdmin();
     })
     .then((result) => {
       res.redirect("/login");

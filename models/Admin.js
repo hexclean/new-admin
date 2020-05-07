@@ -16,6 +16,7 @@ const Admin = sequelize.define("admin", {
   open: Sequelize.STRING,
   close: Sequelize.STRING,
   password: Sequelize.STRING,
+  fullName: Sequelize.STRING,
 });
 
 module.exports = Admin;

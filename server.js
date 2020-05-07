@@ -147,7 +147,7 @@ AdminInfo.belongsTo(Admin, {
   as: "theAdminInfo",
   foreignKey: "adminId",
 });
-Admin.hasOne(AdminInfo, { foreignKey: "adminId" });
+Admin.hasMany(AdminInfo, { foreignKey: "adminId" });
 AdminInfo.belongsTo(Language, {
   as: "adminInfoTrans",
   foreignKey: "languageId",
