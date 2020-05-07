@@ -196,20 +196,9 @@ exports.postEditProduct = async (req, res, next) => {
   const updatedExtraPrice = req.body.price;
 
   const status = req.body.status;
-  const updatedPrice = req.body.price;
+  const updatedPrice = req.body.priceProduct;
   const image = req.file;
 
-  // await Product.findByPk(prodId).then((product) => {
-  //   if (product.adminId.toString() !== req.admin.id.toString()) {
-  //     return res.redirect("/");
-  //   }
-  //   product.price = updatedPrice;
-  //   if (image) {
-  //     fileHelper.deleteFile(product.imageUrl);
-  //     product.imageUrl = image.path;
-  //   }
-  //   return product.save();
-  // });
   let ext = await ProductVariant.findAll();
   Product.findAll({
     include: [
@@ -220,6 +209,17 @@ exports.postEditProduct = async (req, res, next) => {
   })
     .then((result) => {
       async function msg() {
+        await Product.findByPk(prodId).then((product) => {
+          if (product.adminId.toString() !== req.admin.id.toString()) {
+            return res.redirect("/");
+          }
+          product.price = updatedPrice;
+          if (image) {
+            fileHelper.deleteFile(product.imageUrl);
+            product.imageUrl = image.path;
+          }
+          return product.save();
+        });
         await ProductTranslation.update(
           {
             title: updatedRoTitle,
@@ -269,14 +269,13 @@ exports.postEditProduct = async (req, res, next) => {
         }
       }
       msg();
+      res.redirect("/admin/products");
     })
     .catch((err) => {
       const error = new Error(err);
       error.httpStatusCode = 500;
       return next(error);
     });
-
-  res.redirect("/admin/products");
 };
 exports.getProducts = (req, res, next) => {
   req.admin
