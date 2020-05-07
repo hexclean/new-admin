@@ -72,6 +72,26 @@
       }
    
   });
+  $(".extra_qtMin_input").focusout(function() {
+      var len = $(this).val().length; 
+      var extraId = $(this).closest(".extra_box").data('extra');
+      if (len < 1) {
+         $("#qtMin_error_message_"+extraId).show().html("Mezo kitoltese kotelezo");
+      } else {
+         $("#qtMin_error_message_"+extraId).hide().html("");
+      }
+   
+  });
+  $(".extra_qtMax_input").focusout(function() {
+      var len = $(this).val().length; 
+      var extraId = $(this).closest(".extra_box").data('extra');
+      if (len < 1) {
+         $("#qtMax_error_message_"+extraId).show().html("Mezo kitoltese kotelezo");
+      } else {
+         $("#qtMax_error_message_"+extraId).hide().html("");
+      }
+   
+  });
   $("#variant-form").submit(function () {
       error_price = false;
       error_qtMin = false;
@@ -447,7 +467,7 @@
                                             
                                              <label class="ms-switch" >                 
                                                 <input type="hidden" value="off" class="status-<%= extra.id %>" name="status[<%= extra.id %>]" >          
-                                                <input    data-extraId="<%= extra.id %>"  class="status-checkbox status-checkbox-<%= extra.id %>" type="checkbox"  > <span class="ms-switch-slider ms-switch-success round"></span>
+                                                <input    data-extraId="<%= extra.id %>"  class="status-checkbox status-checkbox-<%= extra.id %>" type="checkbox"> <span class="ms-switch-slider ms-switch-success round"></span>
                                              </label> 
                                           </div>
                                     </div>
@@ -488,7 +508,7 @@
                                              >
                                           <div class="input-group">
                                              <input
-                                                class="qtMin_<%= extra.id %>"
+                                                class="qtMin_<%= extra.id %> extra_qtMin_input"
                                                 type="text"
                                                 name="quantityMin"
                                                 id="quantityMin"
@@ -503,7 +523,7 @@
                                              >
                                           <div class="input-group">
                                              <input
-                                                class="qtMax_<%= extra.id %>"
+                                                class="qtMax_<%= extra.id %> extra_qtMax_input"
                                                 type="text"
                                                 name="quantityMax"
                                                 id="quantityMax"
