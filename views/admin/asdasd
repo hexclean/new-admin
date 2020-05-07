@@ -1,0 +1,29 @@
+<div class="col-md-12 mb-3">
+  <label for="roDescription"><%= lingua.create_product_description2 %></label>
+  <div class="input-group">
+    <textarea
+      class="form-control"
+      name="roDescription"
+      id="roDescription"
+      rows="5"
+    >
+<% if (editing) { %><%= product[0].productTranslations[0].description %><% } %></textarea
+    >
+  </div>
+  <span class="error_form" id="roDescription_error_message"></span>
+</div>
+
+<div class="col-md-12 mb-3">
+  <label for="roDescription"><%= lingua.create_product_description1 %></label>
+  <div class="input-group">
+    <textarea
+      class="form-control"
+      name="roDescription"
+      id="roDescription"
+      rows="5"
+    >
+ <% if (editing) { %><%= product[0].productTranslations[0].description %><% } %></textarea
+    >
+  </div>
+  <span class="error_form" id="roDescription_error_message"></span>
+</div>

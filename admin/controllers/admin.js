@@ -126,14 +126,13 @@ exports.getEditProduct = async (req, res, next) => {
   const prodId = req.params.productId;
   let productId = [prodId];
   const Op = Sequelize.Op;
-  const productFinal = await ProductFinal.findAll({
+  let productFinal = await ProductFinal.findAll({
     where: {
       productId: {
         [Op.in]: productId,
       },
     },
   });
-  console.log(productFinal[0].acti);
   Product.findAll({
     where: {
       id: prodId,

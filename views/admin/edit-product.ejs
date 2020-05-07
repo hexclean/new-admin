@@ -13,38 +13,107 @@
 </script>
 
 <script>
+   $(document).ready(function () {
+  $(".status-checkbox").click(function () {
+   var extraId = $(this).data("extraid");
+    $("#price_error_message_"+extraId).hide();
+   
+    var error_price = false;
+   
+  
+  });
+  function check_variantInputs() {
+      var extraId = $(this).attr("data-extraId");
+      $(".extra_box").each(function () {
+        var extraId = $(this).data("extra");
+        var price_len = $(".price_" + extraId).val().length;
+     
+        if ($(this).find("input:checkbox").is(":checked") && (price_len < 1)) {
+           if (price_len < 1) {
+            $("#price_error_message_"+extraId).show().html("Mezo kitoltese kotelezo");
+              error_price = true;
+           } else {
+            $("#price_error_message_"+extraId).hide().html("");
+           }
+          
+        } else {
+          $(this).find(".extra_error_message").hide();
+        }
+      });
+    }
+  $(".extra_price_input").focusout(function() {
+      var len = $(this).val().length; 
+      var extraId = $(this).closest(".extra_box").data('extra');
+      if (len < 1) {
+         $("#price_error_message_"+extraId).show().html("Mezo kitoltese kotelezo");
+      } else {
+         $("#price_error_message_"+extraId).hide().html("");
+      }
+   
+  });
+
+  $("#product-form").submit(function () {
+      error_price = false;
+     
+      check_variantInputs();
+      if (error_price == false) {
+        return true;
+      } else {
+        return false;
+      }
+    });
+});
+</script>
+
+<script>
    $(function () {
      $("#roName_error_message").hide();
      $("#huName_error_message").hide();
      $("#enName_error_message").hide();
-     $("#sku_error_message").hide();
+     $("#priceProduct_error_message").hide();
+     $("#roDescription_error_message").hide();
+     $("#huDescription_error_message").hide();
+     $("#enDescription_error_message").hide();
    
      var error_roName = false;
      var error_huName = false;
      var error_enName = false;
-     var error_sku = false;
+     var error_priceProduct = false;
+     var error_roDescription = false;
+     var error_huDescription = false;
+     var error_enDescription = false;
+    
    
-     $("#roName").focusout(function () {
+     $("#roTitle").focusout(function () {
        check_roName();
      });
    
-     $("#huName").focusout(function(){
+     $("#huTitle").focusout(function(){
         check_huName();
      })
    
-     $("#enName").focusout(function(){
+     $("#enTitle").focusout(function(){
         check_enName();
      })
-   
-     $("#sku").focusout(function(){
-        check_sku();
+     $("#priceProduct").focusout(function(){
+        check_priceProduct();
      })
+     $("#roDescription").focusout(function () {
+       check_roDescription();
+     });
+
+     $("#huDescription").focusout(function () {
+       check_huDescription();
+     });
+     $("#enDescription").focusout(function () {
+       check_enDescription();
+     });
      
      function check_roName() {
-       var roName_length = $("#roName").val().length;
+       var roName_length = $("#roTitle").val().length;
    
        if (roName_length < 2 || roName_length > 15) {
-         $("#roName_error_message").html("roname");
+         $("#roName_error_message").html("ro");
          $("#roName_error_message").show();
          error_roName = true;
        } else {
@@ -53,10 +122,10 @@
      }
    
      function check_huName() {
-       var huName_length = $("#huName").val().length;
+       var huName_length = $("#huTitle").val().length;
    
        if (huName_length < 2 || huName_length > 15) {
-         $("#huName_error_message").html("huname");
+         $("#huName_error_message").html("hu");
          $("#huName_error_message").show();
          error_huName = true;
        } else {
@@ -65,45 +134,88 @@
      }
    
      function check_enName() {
-       var enName_length = $("#enName").val().length;
+       var enName_length = $("#enTitle").val().length;
    
        if (enName_length < 2 || enName_length > 15) {
-         $("#enName_error_message").html("enname");
+         $("#enName_error_message").html("en");
          $("#enName_error_message").show();
          error_enName = true;
        } else {
          $("#enName_error_message").hide();
        }
      }
+     function check_priceProduct() {
+       var price_length = $("#priceProduct").val().length;
    
-     function check_sku() {
-       var sku_length = $("#sku").val().length;
-   
-       if (sku_length < 2 || sku_length > 15) {
-         $("#sku_error_message").html("sku");
-         $("#sku_error_message").show();
-         error_sku = true;
+       if (price_length < 1) {
+         $("#priceProduct_error_message").html("price");
+         $("#priceProduct_error_message").show();
+         error_priceProduct = true;
        } else {
-         $("#sku_error_message").hide();
+         $("#priceProduct_error_message").hide();
+       }
+     }
+     function check_roDescription() {
+       var roDescription_length = $("#roDescription");
+   
+       if (roDescription_length.val() === "") {
+         $("#roDescription_error_message").html("roDescription_error_message");
+         $("#roDescription_error_message").show();
+         error_roDescription = true;
+       } else {
+         $("#roDescription_error_message").hide();
+       }
+     }
+
+     function check_huDescription() {
+       var huDescription_length = $("#huDescription");
+   
+       if (huDescription_length.val() === "") {
+         $("#huDescription_error_message").html("huDescription_error_message");
+         $("#huDescription_error_message").show();
+         error_huDescription = true;
+       } else {
+         $("#huDescription_error_message").hide();
+       }
+     }
+
+     function check_enDescription() {
+       var huDescription_length = $("#enDescription");
+   
+       if (huDescription_length.val() === "") {
+         $("#enDescription_error_message").html("enDescription");
+         $("#enDescription_error_message").show();
+         error_huDescription = true;
+       } else {
+         $("#enDescription_error_message").hide();
        }
      }
     
-     $("#registration_form").submit(function () {
+     $("#product-form").submit(function () {
        error_roName = false;
        error_huName = false;
        error_enName = false;
-       error_sku = false;
+       error_priceProduct = false;
+       error_roDescription = false;
+       error_huDescription = false;
+       error_enDescription = false;
    
        check_roName();
        check_huName();
        check_enName();
-       check_sku();
-   
+       check_priceProduct();
+       check_roDescription();
+       check_huDescription();
+       check_enDescription();
+
        if (
          error_roName == false &&
          error_huName == false &&
          error_enName == false &&
-         error_sku == false
+         error_priceProduct == false &&
+         error_roDescription == false &&
+         error_huDescription == false &&
+         error_enDescription == false
        ) {
          return true;
        } else {
@@ -112,58 +224,21 @@
      });
    });
    </script>
-   <style>
-      .intro {
-         border-color: red;
-      }
-   </style>
 <body class="ms-body ms-aside-left-open ms-primary-theme ms-has-quickbar" >
-   <!-- <script>
-      oncontextmenu="return false;"
-      document.onkeydown = function(e) {
-if(event.keyCode == 123) {
-return false;
-}
-if(e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)){
-return false;
-}
-if(e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)){
-return false;
-}
-if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)){
-return false;
-}
-}
 
-
-   </script>
-
-    <pre id="output"></pre>
-        <script type="text/javascript">
-            var element = new Image;
-            var devtoolsOpen = false;
-            element.__defineGetter__("id", function() {
-                devtoolsOpen = true; // This only executes when devtools is open.
-            });
-            setInterval(function() {
-                devtoolsOpen = false;
-                console.log(element);
-                document.getElementById('output').innerHTML += (devtoolsOpen ? "dev tools is open\n" : "dev tools is closed\n");
-            }, 1000);
-        </script> -->
    <%- include('../includes/navigation.ejs') %>
    <main class="body-content">
       <%- include('../includes/navigation-bar.ejs') %>
       <% if (errorMessage) { %>
       <div class="user-message user-message--error"><%= errorMessage %></div>
       <% } %>
-      <form onsubmit="return validateForm()"
+      <form
          name="myForm"
          class="ms-content-wrapper"
          action="/admin/<% if (editing) { %>edit-product<% } else { %>add-product<% } %>"
          method="POST"
          enctype="multipart/form-data"
-         id="variant-form">
+         id="product-form">
 
          <% if (editing) { %>
             <% for (let i = 0; i < isActiveVariant.length; i++) { %>
@@ -180,6 +255,22 @@ return false;
                   <% } 
                %>
             <% } %>
+            <% } %>
+
+
+            <% if (editing) { %>
+                                      
+               <% if (isActive ==1) { %>
+                  
+                  <script>
+                      $(document).ready(function() {
+                      $('.status-checkbox-allergen').prop('checked', true);
+                      $('.statusAllergen').val('on');
+                      });
+                  </script>
+                     
+                  <% } 
+               %>
             <% } %>
             
          <div class="row">
@@ -200,6 +291,7 @@ return false;
                                  id="roTitle"
                                  value="<% if (editing) { %><%= product[0].productTranslations[0].title %><% } %>">
                            </div>
+                           <span class="error_form" id="roName_error_message"></span>
                         </div>
                         <div class="col-md-12 mb-3">
                            <label for="huTitle"><%= lingua.create_product_name2 %></label>
@@ -211,6 +303,7 @@ return false;
                                  id="huTitle"
                                  value="<% if (editing) { %><%= product[0].productTranslations[1].title %><% } %>">
                            </div>
+                           <span class="error_form" id="huName_error_message"></span>
                         </div>
                         <div class="col-md-12 mb-3">
                            <label for="enTitle"><%= lingua.create_product_name3 %></label>
@@ -222,6 +315,7 @@ return false;
                                  id="enTitle"
                                  value="<% if (editing) { %><%= product[0].productTranslations[2].title %><% } %>">
                            </div>
+                           <span class="error_form" id="enName_error_message"></span>
                         </div>
                       
                         <div class="col-md-6 mb-3">
@@ -229,26 +323,28 @@ return false;
                            <div class="input-group">
                               <input
                                  class="form-control"
-                                 
                                  name="priceProduct"
-                                 id="priceProduct"
-                                 
+                                 id="priceProduct" 
                                  value="<% if (editing) { %><%= product[0].price %><% } %>">
                            </div>
+                           <span class="error_form" id="priceProduct_error_message"></span>
                         </div>
+
+                        
                         <div class="col-md-12 mb-3">
-                           <label for="roDescription"><%= lingua.create_product_description1 %></label>
+                           <label for="roDescription"><%= lingua.create_product_description2 %></label>
                            <div class="input-group">
                               <textarea
                                  class="form-control"
                                  name="roDescription"
                                  id="roDescription"
-                                 rows="5"> <% if (editing) { %><%= product[0].productTranslations[0].description %><% } %></textarea>
-                              <div class="invalid-feedback">
-                                 Please provide a message.
-                              </div>
+                                 rows="5"><% if (editing) { %><%= product[0].productTranslations[0].description %><% } %></textarea>
                            </div>
+                           
+                           <span class="error_form" id="roDescription_error_message"></span>
                         </div>
+                       
+
                         <div class="col-md-12 mb-3">
                            <label for="huDescription"><%= lingua.create_product_description2 %></label>
                            <div class="input-group">
@@ -257,24 +353,23 @@ return false;
                                  name="huDescription"
                                  id="huDescription"
                                  rows="5"><% if (editing) { %><%= product[0].productTranslations[1].description %><% } %></textarea>
-                              <div class="invalid-feedback">
-                                 Please provide a message.
-                              </div>
                            </div>
+                           <span class="error_form" id="huDescription_error_message"></span>
                         </div>
+
                         <div class="col-md-12 mb-3">
-                           <label for="enDescription"><%= lingua.create_product_description3 %></label>
+                           <label for="enDescription"><%= lingua.create_product_description2 %></label>
                            <div class="input-group">
                               <textarea
                                  class="form-control"
                                  name="enDescription"
                                  id="enDescription"
-                                 rows="5"> <% if (editing) { %><%= product[0].productTranslations[2].description %><% } %></textarea>
-                              <div class="invalid-feedback">
-                                 Please provide a message.
-                              </div>
+                                 rows="5"><% if (editing) { %><%= product[0].productTranslations[2].description %><% } %></textarea>
+                              
                            </div>
+                           <span class="error_form" id="enDescription_error_message"></span>
                         </div>
+
                         <div class="col-md-12 mb-3">
                            <label for="validationCustom12"><%= lingua.create_product_image %></label>
                            <div class="custom-file">
@@ -321,20 +416,7 @@ return false;
                               <div class="ms-panel-header alergen-border">
                                  <h6>Allergens</h6>
                               </div>
-                              <% if (editing) { %>
-                                      
-                                 <% if (isActive ==1) { %>
-                                    
-                                    <script>
-                                        $(document).ready(function() {
-                                        $('.status-checkbox-allergen').prop('checked', true);
-                                        $('.statusAllergen').val('on');
-                                        });
-                                    </script>
-                                       
-                                    <% } 
-                                 %>
-                              <% } %>
+                              
                               <div class="ms-panel-body alergen-border">
                                  <label class="ms-switch" >              
                                  <input class="status-checkbox-allergen" type="checkbox" name="statusAllergen" id="statusAllergen" > <span class="ms-switch-slider ms-switch-success round"></span>
@@ -348,12 +430,6 @@ return false;
             </div>
          </div>
          </div>
-       ///////////
-
-
-
-
-
 
        <div class="ms-panel ms-btn-display">
          <div class="ms-panel-header">
@@ -495,11 +571,7 @@ return false;
             
             
             <% } %>
-            
-             
 
-    
-         ///////
       </form>
    </main>
    <%- include('../includes/end.ejs') %>
