@@ -625,7 +625,7 @@ a {
   -webkit-transition: 0.3s;
   transition: 0.3s;
   color: #ff0018;
-  font-size: 14px;
+  font-size: 16px !important;
 }
 a:hover,
 a:active,
@@ -7767,7 +7767,7 @@ body:not(.ms-settings-open) .ms-settings-toggle:hover {
 
 .no-img-var {
   position: relative;
-  height: 56px;
+  height: 58px !important;
   background-color: #fff;
   margin-bottom: 30px;
   -webkit-box-shadow: 0 1px 6px 1px rgba(69, 65, 78, 0.1);

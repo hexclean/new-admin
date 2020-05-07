@@ -262,13 +262,13 @@ Language.hasMany(ExtraTranslation, { foreignKey: "languageId" });
 
 ///
 
-app.use((error, req, res, next) => {
-  res.status(500).render("500", {
-    pageTitle: "Error!",
-    path: "/500",
-    isAuthenticated: req.session.isLoggedIn,
-  });
-});
+// app.use((error, req, res, next) => {
+//   res.status(500).render("500", {
+//     pageTitle: "Error!",
+//     path: "/500",
+//     isAuthenticated: req.session.isLoggedIn,
+//   });
+// });
 // Config PORT
 const PORT = process.env.PORT || 5000;
 

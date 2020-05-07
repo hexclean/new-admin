@@ -3,7 +3,8 @@
 $(function () {
   $("#roName_error_message").hide();
   $("#huName_error_message").hide();
-  $("#enName_password_error_message").hide();
+  $("#enName_error_message").hide();
+  $("#sku_error_message").hide();
 
   var error_roName = false;
   var error_huName = false;
@@ -21,12 +22,16 @@ $(function () {
   $("#enName").focusout(function(){
      check_enName();
   })
+
+  $("#sku").focusout(function(){
+     check_sku();
+  })
   
   function check_roName() {
     var roName_length = $("#roName").val().length;
 
     if (roName_length < 2 || roName_length > 15) {
-      $("#roName_error_message").html(`<%= lingua.extra_ro_name_required %>`);
+      $("#roName_error_message").html("roname");
       $("#roName_error_message").show();
       error_roName = true;
     } else {
@@ -38,7 +43,7 @@ $(function () {
     var huName_length = $("#huName").val().length;
 
     if (huName_length < 2 || huName_length > 15) {
-      $("#huName_error_message").html(`<%= lingua.extra_hu_name_required %>`);
+      $("#huName_error_message").html("huname");
       $("#huName_error_message").show();
       error_huName = true;
     } else {
@@ -50,11 +55,23 @@ $(function () {
     var enName_length = $("#enName").val().length;
 
     if (enName_length < 2 || enName_length > 15) {
-      $("#enName_error_message").html(`<%= lingua.extra_en_name_required %>`);
+      $("#enName_error_message").html("enname");
       $("#enName_error_message").show();
       error_enName = true;
     } else {
       $("#enName_error_message").hide();
+    }
+  }
+
+  function check_sku() {
+    var sku_length = $("#sku").val().length;
+
+    if (sku_length < 2 || sku_length > 15) {
+      $("#sku_error_message").html("sku");
+      $("#sku_error_message").show();
+      error_sku = true;
+    } else {
+      $("#sku_error_message").hide();
     }
   }
  
@@ -62,15 +79,18 @@ $(function () {
     error_roName = false;
     error_huName = false;
     error_enName = false;
+    error_sku = false;
 
     check_roName();
     check_huName();
     check_enName();
+    check_sku();
 
     if (
       error_roName == false &&
       error_huName == false &&
-      error_enName == false 
+      error_enName == false &&
+      error_sku == false
     ) {
       return true;
     } else {
@@ -122,7 +142,7 @@ $(document).ready(function () {
                                  id="sku"
                                  value="<% if (editing) { %><%= cat[0].sku %><% } %>">
                            </div>
-                           <span class="error_form" id="huName_error_message"></span>
+                           <span class="error_form" id="sku_error_message"></span>
                         </div>
                         <div class="col-md-12 mb-3">
                            <label for="roName"><%= lingua.create_product_name1 %></label>

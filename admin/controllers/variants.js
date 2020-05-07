@@ -150,7 +150,7 @@ exports.postAddVariant = async (req, res, next) => {
   const huName = req.body.huName;
   const enName = req.body.enName;
   const sku = req.body.sku;
-  const hour = req.body.hour;
+  const category = req.body.category;
   //
   const updatedExtraPrice = req.body.price;
   const updatedExtraQuantityMin = req.body.quantityMin;
@@ -165,7 +165,7 @@ exports.postAddVariant = async (req, res, next) => {
   });
   const variant = await req.admin.createProductVariant({
     sku: sku,
-    variantCategoryId: hour,
+    variantCategoryId: category,
   });
   const ext = await req.admin.getExtras();
 

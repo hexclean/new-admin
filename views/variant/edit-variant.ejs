@@ -66,11 +66,15 @@
      $("#huName_error_message").hide();
      $("#enName_error_message").hide();
      $("#sku_error_message").hide();
+     $("#category_error_message").hide();
    
      var error_roName = false;
      var error_huName = false;
      var error_enName = false;
      var error_sku = false;
+     var error_sku = false;
+     var error_category = false;
+
    
      $("#roName").focusout(function () {
        check_roName();
@@ -86,6 +90,9 @@
      $("#sku").focusout(function(){
         check_sku();
      })
+     $("#category").focusout(function () {
+       check_category();
+     });
      
      function check_roName() {
        var roName_length = $("#roName").val().length;
@@ -133,23 +140,37 @@
          $("#sku_error_message").hide();
        }
      }
+     function check_category() {
+       var category_length = $("#category");
+   
+       if (category_length.val() === "") {
+         $("#category_error_message").html("kategoria");
+         $("#category_error_message").show();
+         error_category = true;
+       } else {
+         $("#category_error_message").hide();
+       }
+     }
     
      $("#variant-form").submit(function () {
        error_roName = false;
        error_huName = false;
        error_enName = false;
        error_sku = false;
+       error_category = false;
    
        check_roName();
        check_huName();
        check_enName();
        check_sku();
-   
+       check_category();
+
        if (
          error_roName == false &&
          error_huName == false &&
          error_enName == false &&
-         error_sku == false
+         error_sku == false &&
+         error_category == false
        ) {
          return true;
        } else {
@@ -206,13 +227,19 @@
                            </div>
                            <span class="error_form" id="sku_error_message"></span>
                         </div>
-                        <div class="col-md-6 mb-3">
-                           <select name="hour">
-                              <option value="">--Please choose an option--</option>
+                      
+                         <div class="col-md-6 mb-3">
+                           <label for="validationCustom22">Select Catagory</label>
+                           <div class="input-group">
+                             <select class="form-control" for="category" id="category" name="category">
+                              <option value="">Categoryyyyy</option>
                               <% for(let i = 0; i < cat.length; i++) { %>       
-                                <option value='<%= cat[i].id %>'><%= cat[i].sku %></option>
+                                <option id="category" name="category" value='<%= cat[i].id %>'><%= cat[i].sku %></option>
                               <% } %>
-                            </select>
+                             </select>
+                            
+                           </div>
+                           <span class="error_form" id="category_error_message"></span>
                          </div>
 
                         <div class="col-md-12 mb-3">
