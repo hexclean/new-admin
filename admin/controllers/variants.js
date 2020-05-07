@@ -320,7 +320,6 @@ exports.getEditVariant = async (req, res, next) => {
       },
     },
   });
-  console.log(productVarToExt);
   const ext = await req.admin.getExtras();
   const cat = await Category.findAll({
     include: [
@@ -358,7 +357,6 @@ exports.getEditVariant = async (req, res, next) => {
         extTranslations: variant[0].productVariantTranslations,
         isActive: variant[0].productVariantsExtras,
       });
-      console.log(variant[0].sku);
     })
     .catch((err) => {
       const error = new Error(err);

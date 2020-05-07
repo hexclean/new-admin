@@ -124,8 +124,6 @@ exports.getEditProduct = async (req, res, next) => {
     return res.redirect("/");
   }
   const prodId = req.params.productId;
-  const variantId = req.body.variantId;
-  let vrID = [variantId];
   let productId = [prodId];
   const Op = Sequelize.Op;
   const productFinal = await ProductFinal.findAll({
@@ -135,13 +133,7 @@ exports.getEditProduct = async (req, res, next) => {
       },
     },
   });
-  console.log(productFinal);
-  for (let i = 0; i < productFinal.length; i++) {
-    // console.log(productFinal[i].productId);
-  }
-  console.log("productId");
-  // const productFinal = await ProductVariants.findAll();
-  // console.log(variantId);
+  console.log(productFinal[0].acti);
   Product.findAll({
     where: {
       id: prodId,
@@ -170,6 +162,7 @@ exports.getEditProduct = async (req, res, next) => {
 
         extTranslations: product[0].productTranslations,
         isActive: product[0].allergen,
+        isActiveVariant: productFinal,
       });
     })
     .catch((err) => {
