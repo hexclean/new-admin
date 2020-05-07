@@ -4,6 +4,8 @@ const ProductVariant = require("../../models/ProductVariant");
 const ProductTranslation = require("../../models/ProductTranslation");
 const ProductFinal = require("../../models/ProductFinal");
 
+var Sequelize = require("sequelize");
+
 exports.getAddProduct = async (req, res, next) => {
   const ext = await ProductVariant.findAll({
     where: {
@@ -122,44 +124,66 @@ exports.getEditProduct = async (req, res, next) => {
     return res.redirect("/");
   }
   const prodId = req.params.productId;
-  const x = await ProductFinal.findAll();
-  console.log(x);
-  req.admin
-    .getProducts({
-      where: { id: prodId },
-      include: [
-        {
-          model: ProductTranslation,
-          // as: "TheTranslation",
-          // where: { id: prodId },
-        },
-      ],
-    })
-
-    .then((products) => {
-      const product = products[0];
-      if (!product) {
-        return res.redirect("/");
-      }
+  const variantId = req.body.variantId;
+  let vrID = [variantId];
+  let productId = [prodId];
+  const Op = Sequelize.Op;
+  const productFinal = await ProductFinal.findAll({
+    where: {
+      productId: {
+        [Op.in]: productId,
+      },
+    },
+  });
+  console.log(productFinal);
+  for (let i = 0; i < productFinal.length; i++) {
+    // console.log(productFinal[i].productId);
+  }
+  console.log("productId");
+  // const productFinal = await ProductVariants.findAll();
+  // console.log(variantId);
+  Product.findAll({
+    where: {
+      id: prodId,
+      adminId: req.admin.id,
+    },
+    include: [
+      {
+        model: ProductTranslation,
+      },
+      { model: ProductFinal },
+    ],
+  })
+    .then((product) => {
       res.render("admin/edit-product", {
         pageTitle: "Edit Product",
         path: "/admin/edit-product",
         editing: editMode,
         product: product,
+        variantIdByParams: prodId,
         hasError: false,
+        productIds: prodId,
+        ext: productFinal,
+        productVariant: productFinal,
         errorMessage: null,
         validationErrors: [],
 
-        isActive: product.allergen,
+        extTranslations: product[0].productTranslations,
+        isActive: product[0].allergen,
       });
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
 };
-
 exports.postEditProduct = async (req, res, next) => {
   const prodId = req.body.productId;
-
+  const varId = req.body.variantId;
+  var filteredStatus = req.body.status.filter(Boolean);
   // Title
+  console.log(prodId);
   const updatedRoTitle = req.body.roTitle;
   const updatedHuTitle = req.body.huTitle;
   const updatedEnTitle = req.body.enTitle;
@@ -169,48 +193,89 @@ exports.postEditProduct = async (req, res, next) => {
   const updatedHuDesc = req.body.huDescription;
   const updatedEnDesc = req.body.enDescription;
   //
+  const updatedExtraPrice = req.body.price;
+
   const status = req.body.status;
   const updatedPrice = req.body.price;
   const image = req.file;
 
-  await Product.findByPk(prodId).then((product) => {
-    if (product.adminId.toString() !== req.admin.id.toString()) {
-      return res.redirect("/");
-    }
-    product.price = updatedPrice;
-    if (image) {
-      fileHelper.deleteFile(product.imageUrl);
-      product.imageUrl = image.path;
-    }
-    return product.save();
-  });
-  async function msg() {
-    await ProductTranslation.update(
+  // await Product.findByPk(prodId).then((product) => {
+  //   if (product.adminId.toString() !== req.admin.id.toString()) {
+  //     return res.redirect("/");
+  //   }
+  //   product.price = updatedPrice;
+  //   if (image) {
+  //     fileHelper.deleteFile(product.imageUrl);
+  //     product.imageUrl = image.path;
+  //   }
+  //   return product.save();
+  // });
+  let ext = await ProductVariant.findAll();
+  Product.findAll({
+    include: [
       {
-        title: updatedRoTitle,
-        description: updatedRoDesc,
+        model: ProductTranslation,
       },
-      { where: { productId: prodId, languageId: 1 } }
-    );
+    ],
+  })
+    .then((result) => {
+      async function msg() {
+        await ProductTranslation.update(
+          {
+            title: updatedRoTitle,
+            description: updatedRoDesc,
+          },
+          { where: { productId: prodId, languageId: 1 } }
+        );
 
-    await ProductTranslation.update(
-      {
-        title: updatedHuTitle,
-        description: updatedHuDesc,
-      },
-      { where: { productId: prodId, languageId: 2 } }
-    );
+        await ProductTranslation.update(
+          {
+            title: updatedHuTitle,
+            description: updatedHuDesc,
+          },
+          { where: { productId: prodId, languageId: 2 } }
+        );
 
-    await ProductTranslation.update(
-      {
-        title: updatedEnTitle,
-        description: updatedEnDesc,
-      },
-      { where: { productId: prodId, languageId: 3 } }
-    );
-  }
-  msg();
-  console.log("status", status);
+        await ProductTranslation.update(
+          {
+            title: updatedEnTitle,
+            description: updatedEnDesc,
+          },
+          { where: { productId: prodId, languageId: 3 } }
+        );
+        if (Array.isArray(ext)) {
+          const Op = Sequelize.Op;
+          for (let i = 0; i <= ext.length - 1; i++) {
+            let variIds = [varId[i]];
+            let prodIds = [prodId];
+            await ProductFinal.update(
+              {
+                price: updatedExtraPrice[i] || 0,
+                discountedPrice: updatedExtraPrice[i] * 0.8 || 0,
+                active: filteredStatus[i] == "on" ? 1 : 0,
+              },
+              {
+                where: {
+                  variantId: {
+                    [Op.in]: variIds,
+                  },
+                  productId: {
+                    [Op.in]: prodIds,
+                  },
+                },
+              }
+            );
+          }
+        }
+      }
+      msg();
+    })
+    .catch((err) => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
+
   res.redirect("/admin/products");
 };
 exports.getProducts = (req, res, next) => {

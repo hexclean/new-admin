@@ -236,7 +236,7 @@ exports.postEditVariant = async (req, res, next) => {
   const updatedHuName = req.body.huName;
   const updatedEnName = req.body.enName;
   const extTranId = req.body.extTranId;
-  var filteredStatus = req.body.status.filter(Boolean);
+  // var filteredStatus = req.body.status.filter(Boolean);
   console.log("extId", extId);
   const ext = await req.admin.getExtras();
   ProductVariants.findAll({
@@ -292,8 +292,6 @@ exports.postEditVariant = async (req, res, next) => {
                 },
               }
             );
-            console.log("extrasIds", extrasIds);
-            console.log("variantId", variantId);
           }
         }
       }
@@ -322,6 +320,7 @@ exports.getEditVariant = async (req, res, next) => {
       },
     },
   });
+  console.log(productVarToExt);
   const ext = await req.admin.getExtras();
   const cat = await Category.findAll({
     include: [

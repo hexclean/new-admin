@@ -39,14 +39,12 @@
            } else {
             $("#price_error_message_"+extraId).hide().html("");
            }
-
            if (qtMin_len < 1) {
             $("#qtMin_error_message_"+extraId).show().html("Mezo kitoltese kotelezo");
             error_qtMin = true;
            }else {
             $("#qtMin_error_message_"+extraId).hide().html("");
            }
-
            if (qtMax_len < 1) {
             $("#qtMax_error_message_"+extraId).show();
             $("#qtMax_error_message_"+extraId).html("Mezo kitoltese kotelezo");
@@ -54,7 +52,6 @@
            }else {
             $("#qtMax_error_message_"+extraId).hide().html("");
            }
-
           
           
         } else {
@@ -125,7 +122,6 @@
      var error_sku = false;
      var error_sku = false;
      var error_category = false;
-
    
      $("#roName").focusout(function () {
        check_roName();
@@ -215,7 +211,6 @@
        check_enName();
        check_sku();
        check_category();
-
        if (
          error_roName == false &&
          error_huName == false &&
@@ -278,8 +273,21 @@
                            </div>
                            <span class="error_form" id="sku_error_message"></span>
                         </div>
-                      
-                         <div class="col-md-6 mb-3">
+
+                        <% if (editing) { %><div class="col-md-6 mb-3">
+                           <label for="validationCustom22">Select Catagory</label>
+                           <div class="input-group">
+                             <select class="form-control" for="category" id="category" name="category">
+                              <option value="">jkkkjj</option>
+                              <% for(let i = 0; i < cat.length; i++) { %>       
+                                <option id="category" name="category" value='<%= cat[i].id %>'><%= cat[i].sku %></option>
+                              <% } %>
+                             </select>
+                            
+                           </div>
+                           <span class="error_form" id="category_error_message"></span>
+                         </div>
+                         <% } else { %><div class="col-md-6 mb-3">
                            <label for="validationCustom22">Select Catagory</label>
                            <div class="input-group">
                              <select class="form-control" for="category" id="category" name="category">
@@ -291,7 +299,11 @@
                             
                            </div>
                            <span class="error_form" id="category_error_message"></span>
-                         </div>
+                         </div><% } %>
+                      
+                         
+
+                      
 
                         <div class="col-md-12 mb-3">
                            <label for="roName"><%= lingua.create_product_name1 %></label>
@@ -384,7 +396,7 @@
                                     <label for="price">Price</label>
                                     <div class="input-group">
                                        <input
-                                          class="price_<%= varToExt[i].id %>"
+                                          class="price_<%= varToExt[i].id %> extra_price_input"
                                           type="text"
                                           name="price"
                                           id="price"
@@ -413,7 +425,7 @@
                                        >
                                     <div class="input-group">
                                        <input
-                                          class="qtMin_<%= varToExt[i].id %>"
+                                          class="qtMin_<%= varToExt[i].id %> extra_qtMin_input"
                                           type="text"
                                           name="quantityMin"
                                           id="quantityMin"
@@ -428,7 +440,7 @@
                                        >
                                     <div class="input-group">
                                        <input
-                                          class="qtMax_<%= varToExt[i].id %>"
+                                          class="qtMax_<%= varToExt[i].id %> extra_qtMax_input"
                                           type="text"
                                           name="quantityMax"
                                           id="quantityMax"
@@ -547,60 +559,9 @@
                
                <% } %>
                
-                 <script>
-                 $( function() {
-                   var availableTags = [
-                     "ActionScript",
-                     "AppleScript",
-                     "Asp",
-                     "BASIC",
-                     "C",
-                     "C++",
-                     "Clojure",
-                     "COBOL",
-                     "ColdFusion",
-                     "Erlang",
-                     "Fortran",
-                     "Groovy",
-                     "Haskell",
-                     "Java",
-                     "JavaScript",
-                     "Lisp",
-                     "Perl",
-                     "PHP",
-                     "Python",
-                     "Ruby",
-                     "Scala",
-                     "Scheme"
-                   ];
-                   $( "#tags" ).autocomplete({
-                     source: availableTags
-                   });
-                 } );
-                 </script>
-               
                 
-               <div class="ui-widget">
-                 <label for="tags">Tags: </label>
-                 <input id="tags">
-               </div>
                 
-               SELECT * FROM foodnet.products as prod
-               JOIN foodnet.productFinals as fin
-               ON prod.id = fin.productId
-               JOIN foodnet.productVariants as pv
-               ON pv.id = fin.variantId
-               JOIN foodnet.productVariantTranslations as pvr
-               ON pv.id = pvr.productVariantId
-               JOIN foodnet.productVariantsExtras as pve
-               ON pve.productVariantId = pv.id
-               JOIN foodnet.extras as ex
-               ON ex.id = pve.extraId
-               JOIN extraTranslations as extrans
-               on extrans.extraId = ex.id
-               WHERE fin.active = 1;
-               
-               
+              
       </form>
    </main>
    <%- include('../includes/end.ejs') %>

@@ -175,33 +175,33 @@ return false;
                            <label for="roTitle"><%= lingua.create_product_name1 %></label>
                            <div class="input-group">
                               <input
-                                 class="form-control <%= validationErrors.find(e => e.param === 'roTitle') ? 'invalid' : '' %>"
+                                 class="form-control"
                                  type="text"
                                  name="roTitle"
                                  id="roTitle"
-                                 value="<% if (editing || hasError) { %><%= product.productTranslations[0].title %><% } %>">
+                                 value="<% if (editing) { %><%= product[0].productTranslations[0].title %><% } %>">
                            </div>
                         </div>
                         <div class="col-md-12 mb-3">
                            <label for="huTitle"><%= lingua.create_product_name2 %></label>
                            <div class="input-group">
                               <input
-                                 class="form-control <%= validationErrors.find(e => e.param === 'huTitle') ? 'invalid' : '' %>"
+                                 class="form-control"
                                  type="text"
                                  name="huTitle"
                                  id="huTitle"
-                                 value="<% if (editing || hasError) { %><%= product.productTranslations[1].title %><% } %>">
+                                 value="<% if (editing) { %><%= product[0].productTranslations[1].title %><% } %>">
                            </div>
                         </div>
                         <div class="col-md-12 mb-3">
                            <label for="enTitle"><%= lingua.create_product_name3 %></label>
                            <div class="input-group">
                               <input
-                                 class="form-control <%= validationErrors.find(e => e.param === 'enTitle') ? 'invalid' : '' %>"
+                                 class="form-control"
                                  type="text"
                                  name="enTitle"
                                  id="enTitle"
-                                 value="<% if (editing || hasError) { %><%= product.productTranslations[2].title %><% } %>">
+                                 value="<% if (editing) { %><%= product[0].productTranslations[2].title %><% } %>">
                            </div>
                         </div>
                       
@@ -214,17 +214,17 @@ return false;
                                  name="priceProduct"
                                  id="priceProduct"
                                  
-                                 value="<% if (editing) { %><%= product.price %><% } %>">
+                                 value="<% if (editing) { %><%= product[0].price %><% } %>">
                            </div>
                         </div>
                         <div class="col-md-12 mb-3">
                            <label for="roDescription"><%= lingua.create_product_description1 %></label>
                            <div class="input-group">
                               <textarea
-                                 class="form-control <%= validationErrors.find(e => e.param === 'roDescription') ? 'invalid' : '' %>"
+                                 class="form-control"
                                  name="roDescription"
                                  id="roDescription"
-                                 rows="5"> <% if (editing || hasError) { %><%= product.productTranslations[0].description %><% } %></textarea>
+                                 rows="5"> <% if (editing) { %><%= product[0].productTranslations[0].description %><% } %></textarea>
                               <div class="invalid-feedback">
                                  Please provide a message.
                               </div>
@@ -234,10 +234,10 @@ return false;
                            <label for="huDescription"><%= lingua.create_product_description2 %></label>
                            <div class="input-group">
                               <textarea
-                                 class="form-control <%= validationErrors.find(e => e.param === 'huDescription') ? 'invalid' : '' %>"
+                                 class="form-control"
                                  name="huDescription"
                                  id="huDescription"
-                                 rows="5"><% if (editing || hasError) { %><%= product.productTranslations[1].description %><% } %></textarea>
+                                 rows="5"><% if (editing) { %><%= product[0].productTranslations[1].description %><% } %></textarea>
                               <div class="invalid-feedback">
                                  Please provide a message.
                               </div>
@@ -247,10 +247,10 @@ return false;
                            <label for="enDescription"><%= lingua.create_product_description3 %></label>
                            <div class="input-group">
                               <textarea
-                                 class="form-control <%= validationErrors.find(e => e.param === 'enDescription') ? 'invalid' : '' %>"
+                                 class="form-control"
                                  name="enDescription"
                                  id="enDescription"
-                                 rows="5"> <% if (editing || hasError) { %><%= product.productTranslations[2].description %><% } %></textarea>
+                                 rows="5"> <% if (editing) { %><%= product[0].productTranslations[2].description %><% } %></textarea>
                               <div class="invalid-feedback">
                                  Please provide a message.
                               </div>
@@ -276,14 +276,14 @@ return false;
                         <div class="ms-panel-body">
                            <div class="carousel-inner">
                               <div class="carousel-item active">
-                                 <% if (editing) { %><img src="/<%= product.imageUrl %>" alt="<%= product.price %>"><% }  %>
+                                 <% if (editing) { %><img src="/<%= product[0].imageUrl %>" alt="<%= product[0].price %>"><% }  %>
                               </div>
                            </div>
                         </div>
                         <% if (editing) { %>
                         <input
                            type="hidden"
-                           value="<%= product.id %>"
+                           value="<%= productIds %>"
                            name="productId"
                            />
                         <% } %>
@@ -335,45 +335,51 @@ return false;
 
 
 
-       <% if (editing) { %>  <% if (ext.length > 0) { %>
+
+       <div class="ms-panel ms-btn-display">
+         <div class="ms-panel-header">
+            <h6>A  hozzárendelhető extrái:</h6>
+         </div>
+      </div>
+      <% if (editing) { %>  <% if (productVariant.length > 0) { %>
          <div class="ms-content-wrapper">
             <div class="row">
                <div class="col-md-12">
                   <div class="row">
-                     <% for (let i = 0; i < varToExt.length; i++) { %>
+                     <%  for (let i = 0; i < productVariant.length; i++) { %>
                         <input
                         type="hidden"
-                        value="<%= varToExt[i].extraId %>"
-                        name="extraId"
+                        value="<%= productVariant[i].variantId %>"
+                        name="variantId"
                         />          
-                     <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 extra_box" data-extra="<%= varToExt[i].extraId %>">
+                     <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 extra_box" data-extra="<%= productVariant[i].variantId %>">
                         <div class="ms-card">
                            <div class="d-flex justify-content-center extra-margin-top">
                                  <div class="row"> 
                                    
                                     <label class="ms-switch" >                 
-                                       <input type="hidden" value="off" class="status-<%= varToExt[i].extraId %>" name="status[<%= varToExt[i].extraId %>]" >          
-                                       <input    data-extraId="<%= varToExt[i].extraId %>"  class="status-checkbox status-checkbox-<%= varToExt[i].extraId %>" type="checkbox">
+                                       <input type="hidden" value="off" class="status-<%= productVariant[i].variantId %>" name="status[<%= productVariant[i].variantId %>]" >          
+                                       <input    data-extraId="<%= productVariant[i].variantId %>"  class="status-checkbox status-checkbox-<%= productVariant[i].variantId %>" type="checkbox">
                                        <span class="ms-switch-slider ms-switch-success round"></span>
                                     </label> 
                                  </div>
                            </div>
                            <div class="ms-card-body">
                               <div class="new d-flex justify-content-center extra-name">
-                                 <h6 class="mb-0"><b><%= varToExt[i].extraId %></b> </h6>
+                                 <h6 class="mb-0"><b><%= productVariant[i].variantId %></b> </h6>
                               </div>
                               <div class="col-md-12 mb-3">
-                                 <label for="price">Price</label>
+                                 <label for="price"><%= productVariant[i].variantId %></label>
                                  <div class="input-group">
                                     <input
-                                       class="price_<%= varToExt[i].id %>"
+                                       class="price_<%= productVariant[i].id %> extra_price_input"
                                        type="text"
                                        name="price"
                                        id="price"
-                                       value="<% if (editing) { %><%= varToExt[i].price %><% } %>"
+                                       value="<% if (editing) { %><%= productVariant[i].price %><% } %>"
                                        />
                                  </div>
-                                 <span class="extra_error_message error_form" id="price_error_message"></span>
+                                 <span class="extra_error_message error_form" id="price_error_message_<%= productVariant[i].extraId %>"></span>
                               </div>
                               <div class="col-md-12 mb-3">
                                  <label for="discountedPrice"
@@ -385,41 +391,12 @@ return false;
                                        type="text"
                                        name="discountedPrice"
                                        id="discountedPrice"
-                                       value="<% if (editing) { %><%= varToExt[i].discountedPrice %><% } %>"
+                                       value="<% if (editing) { %><%= productVariant[i].discountedPrice %><% } %>"
                                        />
                                  </div>
                               </div>
-                              <div class="col-md-12 mb-3">
-                                 <label for="quantityMin"
-                                    >Quantity Minimum</label
-                                    >
-                                 <div class="input-group">
-                                    <input
-                                       class="qtMin_<%= varToExt[i].id %>"
-                                       type="text"
-                                       name="quantityMin"
-                                       id="quantityMin"
-                                       value="<% if (editing) { %><%= varToExt[i].quantityMin %><% } %>"
-                                       />
-                                 </div>
-                                 <span class="extra_error_message error_form" id="qtMin_error_message"></span>
-                              </div>
-                              <div class="col-md-12 mb-3">
-                                 <label for="quantityMax"
-                                    >Quantity Maximum</label
-                                    >
-                                 <div class="input-group">
-                                    <input
-                                       class="qtMax_<%= varToExt[i].id %>"
-                                       type="text"
-                                       name="quantityMax"
-                                       id="quantityMax"
-                                       value="<% if (editing) { %><%= varToExt[i].quantityMax %><% } %>"
-                                       />
-                                 </div>
-                                 <span class="extra_error_message error_form" id="qtMax_error_message"></span>
-                              </div>
-                          
+                             
+                             
                            </div>
                         </div>
                      </div>
@@ -449,7 +426,7 @@ return false;
                                          
                                           <label class="ms-switch" >                 
                                              <input type="hidden" value="off" class="status-<%= extra.id %>" name="status[<%= extra.id %>]" >          
-                                             <input    data-extraId="<%= extra.id %>"  class="status-checkbox status-checkbox-<%= extra.id %>" type="checkbox"  > <span class="ms-switch-slider ms-switch-success round"></span>
+                                             <input    data-extraId="<%= extra.id %>"  class="status-checkbox status-checkbox-<%= extra.id %>" type="checkbox"> <span class="ms-switch-slider ms-switch-success round"></span>
                                           </label> 
                                        </div>
                                  </div>
@@ -461,14 +438,14 @@ return false;
                                        <label for="price">Price</label>
                                        <div class="input-group">
                                           <input
-                                             class="price_<%= extra.id %>"
+                                             class="price_<%= extra.id %> extra_price_input"
                                              type="text"
                                              name="price"
                                              id="price"
                                              value="<% if (editing) { %><%= extra.price %><% } %>"
                                              />
                                        </div>
-                                       <span class="extra_error_message error_form" id="price_error_message"></span>
+                                       <span class="extra_error_message error_form" id="price_error_message_<%= extra.id %>"></span>
                                     </div>
                                     <div class="col-md-12 mb-3">
                                        <label for="discountedPrice"
@@ -484,9 +461,8 @@ return false;
                                              />
                                        </div>
                                     </div>
-                                 
+                                   
                                     
-                                
                                  </div>
                               </div>
                            </div>
@@ -500,42 +476,12 @@ return false;
             
             
             <% } %>
+            
+             
 
-
-
+    
          ///////
       </form>
-      
-<select name="select1" id="select1">
-  <option value="1">Fruit</option>
-  <option value="2">Animal</option>
-  <option value="3">Bird</option>
-  <option value="4">Car</option>
-</select>
-
-
-<select name="select2" id="select2">
-  <option value="1">Banana</option>
-  <option value="1">Apple</option>
-  <option value="1">Orange</option>
-  <option value="2">Wolf</option>
-  <option value="2">Fox</option>
-  <option value="2">Bear</option>
-  <option value="3">Eagle</option>
-  <option value="3">Hawk</option>
-  <option value="4">BWM<option>
-</select>
-<script>
-   $("#select1").change(function() {
-  if ($(this).data('options') === undefined) {
-    /*Taking an array of all options-2 and kind of embedding it on the select1*/
-    $(this).data('options', $('#select2 option').clone());
-  }
-  var id = $(this).val();
-  var options = $(this).data('options').filter('[value=' + id + ']');
-  $('#select2').html(options);
-});
-</script>
    </main>
    <%- include('../includes/end.ejs') %>
 </body>
