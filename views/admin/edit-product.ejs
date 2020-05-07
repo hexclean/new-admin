@@ -74,6 +74,7 @@
      $("#roDescription_error_message").hide();
      $("#huDescription_error_message").hide();
      $("#enDescription_error_message").hide();
+     $("#file_error_message").hide();
    
      var error_roName = false;
      var error_huName = false;
@@ -82,6 +83,7 @@
      var error_roDescription = false;
      var error_huDescription = false;
      var error_enDescription = false;
+     var error_file = false;
     
    
      $("#roTitle").focusout(function () {
@@ -107,6 +109,10 @@
      });
      $("#enDescription").focusout(function () {
        check_enDescription();
+     });
+     
+     $("#image").focusout(function () {
+       check_file();
      });
      
      function check_roName() {
@@ -190,6 +196,17 @@
          $("#enDescription_error_message").hide();
        }
      }
+
+     function check_file() {
+
+
+      var vidFileLength = $("#videoUploadFile")[0].files.length;
+if(vidFileLength === 0){
+    alert("No file selected.");
+}
+   
+       
+     }
     
      $("#product-form").submit(function () {
        error_roName = false;
@@ -199,6 +216,7 @@
        error_roDescription = false;
        error_huDescription = false;
        error_enDescription = false;
+       error_file = false;
    
        check_roName();
        check_huName();
@@ -207,6 +225,7 @@
        check_roDescription();
        check_huDescription();
        check_enDescription();
+       check_file();
 
        if (
          error_roName == false &&
@@ -215,7 +234,8 @@
          error_priceProduct == false &&
          error_roDescription == false &&
          error_huDescription == false &&
-         error_enDescription == false
+         error_enDescription == false &&
+         error_file == false
        ) {
          return true;
        } else {
@@ -372,9 +392,10 @@
 
                         <div class="col-md-12 mb-3">
                            <label for="validationCustom12"><%= lingua.create_product_image %></label>
-                           <div class="custom-file">
-                              <input  accept="image/png, image/jpeg,image/jpeg" type="file" name="image" id="image" />
+                           <div class="custom-file" id="image">
+                              <input  accept="image/png, image/jpeg,image/jpeg" type="file" name="image" id="videoUploadFile" />
                            </div>
+                           <span class="error_form" id="file_error_message"></span>
                         </div>
                      </div>
                   </div>
