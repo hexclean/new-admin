@@ -10,16 +10,16 @@ const AdminInfo = sequelize.define("adminInfo", {
   },
   companyDescription: {
     type: Sequelize.STRING,
-    allowNull: false,
   },
   adminId: {
     type: Sequelize.INTEGER,
-    allowNull: false,
   },
   adress: {
     type: Sequelize.STRING,
-    allowNull: false,
   },
+  shortCompanyDesc: Sequelize.STRING,
+  location: Sequelize.STRING,
+  fullName: Sequelize.STRING,
 });
 
 module.exports = AdminInfo;

@@ -22,9 +22,10 @@ const ExtraTranslation = require("./models/ExtraTranslation");
 const ProductFinal = require("./models/ProductFinal");
 
 const ProductVariantsExtras = require("./models/ProductVariantsExtras");
-const ProductVariantToProduct = require("./models/ProductVariantToProduct");
 const Language = require("./models/Language");
 const Admin = require("./models/Admin");
+const AdminInfo = require("./models/AdminInfo");
+
 //
 
 const app = express();
@@ -139,6 +140,19 @@ app.use("/admin", adminRoutes);
 app.use(indexRoutes);
 app.use(authRoutes);
 app.get("/500", errorController.get500);
+
+////
+
+AdminInfo.belongsTo(Admin, {
+  as: "theAdminInfo",
+  foreignKey: "adminId",
+});
+Admin.hasOne(AdminInfo, { foreignKey: "adminId" });
+AdminInfo.belongsTo(Language, {
+  as: "adminInfoTrans",
+  foreignKey: "languageId",
+});
+Language.hasMany(AdminInfo, { foreignKey: "languageId" });
 
 // Tables Config //
 ProductFinal.belongsTo(Product, {
