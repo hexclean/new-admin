@@ -3,7 +3,7 @@ const Product = require("../../models/Product");
 const ProductVariant = require("../../models/ProductVariant");
 const ProductTranslation = require("../../models/ProductTranslation");
 const ProductFinal = require("../../models/ProductFinal");
-
+const Admin = require("../../models/Admin");
 var Sequelize = require("sequelize");
 
 exports.getAddProduct = async (req, res, next) => {
@@ -29,7 +29,7 @@ exports.postAddProduct = async (req, res, next) => {
   const huTitle = req.body.huTitle;
   const enTitle = req.body.enTitle;
   //
-  const price = req.body.priceProduct;
+  const price = req.body.price;
   //
   const roDescription = req.body.roDescription;
   const huDescription = req.body.huDescription;
@@ -44,10 +44,10 @@ exports.postAddProduct = async (req, res, next) => {
   const enCategory = req.body.enCategory;
   //
   // Add Variant elements
-  const updatedExtraPrice = req.body.price;
   const extId = req.body.extraId;
-  console.log("extraId", extId);
   var filteredStatus = req.body.status.filter(Boolean);
+  const commission = await Admin.findByPk(req.admin.id);
+  let commissionCode = commission.commissionCode;
 
   const ext = await ProductVariant.findAll({
     where: {
@@ -57,7 +57,6 @@ exports.postAddProduct = async (req, res, next) => {
 
   const product = await req.admin.createProduct({
     imageUrl: imageUrl,
-    price: price,
     allergen: typeof status !== "undefined" ? 1 : 0,
   });
 
@@ -88,19 +87,16 @@ exports.postAddProduct = async (req, res, next) => {
       allergen: typeof status !== "undefined" ? 1 : 0,
     });
   }
-  console.log("11111product.id", product.id);
 
   if (Array.isArray(ext)) {
     for (let i = 0; i <= ext.length - 1; i++) {
       await ProductFinal.create({
-        price: updatedExtraPrice[i] || 0,
+        price: price[i] * commissionCode || 0,
         productId: product.id,
         variantId: extId[i],
 
         active: filteredStatus[i] == "on" ? 1 : 0,
       });
-      console.log("22222extId[i]", extId);
-      console.log("22222product.id", product.id);
     }
   }
 

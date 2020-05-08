@@ -70,7 +70,7 @@
      $("#roName_error_message").hide();
      $("#huName_error_message").hide();
      $("#enName_error_message").hide();
-     $("#priceProduct_error_message").hide();
+   
      $("#roDescription_error_message").hide();
      $("#huDescription_error_message").hide();
      $("#enDescription_error_message").hide();
@@ -79,7 +79,7 @@
      var error_roName = false;
      var error_huName = false;
      var error_enName = false;
-     var error_priceProduct = false;
+  
      var error_roDescription = false;
      var error_huDescription = false;
      var error_enDescription = false;
@@ -97,9 +97,7 @@
      $("#enTitle").focusout(function(){
         check_enName();
      })
-     $("#priceProduct").focusout(function(){
-        check_priceProduct();
-     })
+  
      $("#roDescription").focusout(function () {
        check_roDescription();
      });
@@ -150,17 +148,7 @@
          $("#enName_error_message").hide();
        }
      }
-     function check_priceProduct() {
-       var price_length = $("#priceProduct").val().length;
    
-       if (price_length < 1) {
-         $("#priceProduct_error_message").html("price");
-         $("#priceProduct_error_message").show();
-         error_priceProduct = true;
-       } else {
-         $("#priceProduct_error_message").hide();
-       }
-     }
      function check_roDescription() {
        var roDescription_length = $("#roDescription");
    
@@ -212,7 +200,7 @@ if(vidFileLength === 0){
        error_roName = false;
        error_huName = false;
        error_enName = false;
-       error_priceProduct = false;
+      
        error_roDescription = false;
        error_huDescription = false;
        error_enDescription = false;
@@ -221,7 +209,7 @@ if(vidFileLength === 0){
        check_roName();
        check_huName();
        check_enName();
-       check_priceProduct();
+      
        check_roDescription();
        check_huDescription();
        check_enDescription();
@@ -231,7 +219,7 @@ if(vidFileLength === 0){
          error_roName == false &&
          error_huName == false &&
          error_enName == false &&
-         error_priceProduct == false &&
+       
          error_roDescription == false &&
          error_huDescription == false &&
          error_enDescription == false &&
@@ -338,17 +326,7 @@ if(vidFileLength === 0){
                            <span class="error_form" id="enName_error_message"></span>
                         </div>
                       
-                        <div class="col-md-6 mb-3">
-                           <label for="priceProduct"><%= lingua.create_product_price %></label>
-                           <div class="input-group">
-                              <input
-                                 class="form-control"
-                                 name="priceProduct"
-                                 id="priceProduct" 
-                                 value="<% if (editing) { %><%= product[0].price %><% } %>">
-                           </div>
-                           <span class="error_form" id="priceProduct_error_message"></span>
-                        </div>
+                      
 
                         
                         <div class="col-md-12 mb-3">
