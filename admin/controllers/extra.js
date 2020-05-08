@@ -68,6 +68,7 @@ exports.postAddExtra = async (req, res, next) => {
           active: 0,
           productVariantId: variantId[i].id,
           extraId: extra.id,
+          adminId: req.admin.id,
         }
         // {
         //   where: {

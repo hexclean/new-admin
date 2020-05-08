@@ -8,7 +8,7 @@
          <div class="ms-profile-overview no-img-var">
             <ul class="ms-profile-navigation nav nav-tabs tabs-bordered" role="tablist">
                <li role="presentation"><a href="#" aria-controls="tab1" class="active show" role="tab" data-toggle="tab"> Index </a></li>
-               <li role="presentation"><a href="/admin/add-variant">Add Variant </a></li>
+               <li role="presentation"><a class="my-link" href="/admin/add-variant">Add Variant </a></li>
                <li role="presentation"><a href="/admin/add-extra"> Add Extra </a></li>
                <li role="presentation"><a href="/admin/add-category"> Add category </a></li>
             </ul>
@@ -22,6 +22,17 @@
             </div>
          </div>
       </div>
+    
+       
+            <% if ( checkExtraLength.length === 0) { %>
+               <script>
+                  $('.my-link').click(function () {return false;});
+               </script>
+               dadsda
+               
+              
+         <% } %>
+       
       <div class="ms-content-wrapper">
          <div class="row">
             <div class="col-md-12">

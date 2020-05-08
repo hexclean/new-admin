@@ -53,6 +53,10 @@ exports.getIndex = async (req, res, next) => {
   const page = +req.query.page || 1;
   let totalItems;
 
+  const checkExtraLength = await Extras.findAll({
+    where: { adminId: req.admin.id },
+  });
+
   const category = await Category.findAll({
     where: {
       adminId: req.admin.id,
@@ -106,6 +110,7 @@ exports.getIndex = async (req, res, next) => {
         pageTitle: "Admin Products",
         path: "/admin/products",
         currentPage: page,
+        checkExtraLength: checkExtraLength,
         hasNextPage: ITEMS_PER_PAGE * page < totalItems.length,
         hasPreviousPage: page > 1,
         nextPage: page + 1,

@@ -143,6 +143,13 @@ app.get("/500", errorController.get500);
 
 ////
 
+ProductVariantsExtras.belongsTo(Admin, {
+  as: "theAdminInfo",
+  foreignKey: "adminId",
+});
+
+Admin.hasMany(ProductVariantsExtras, { foreignKey: "adminId" });
+
 AdminInfo.belongsTo(Admin, {
   as: "theAdminInfo",
   foreignKey: "adminId",
