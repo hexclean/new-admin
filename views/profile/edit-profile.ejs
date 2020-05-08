@@ -54,7 +54,7 @@
                         name="email"
                         disabled
                         id="email"
-                        value="<% if (editing) { %><%= admin.email %><% } %>"
+                        value="<% if (editing) { %><%= admin[0].email %><% } %>"
                       />
                 </div>
                 <div class="form-group">
@@ -64,7 +64,7 @@
                   type="text"
                   name="fullName"
                   id="fullName"
-                  value="<% if (editing) { %><%= admin.fullName %><% } %>"
+                  value="<% if (editing) { %><%= admin[0].fullName %><% } %>"
                 />
                 </div>
                 <div class="form-group">
@@ -74,7 +74,7 @@
                   type="text"
                   name="phoneNumber"
                   id="phoneNumber"
-                  value="<% if (editing) { %><%= admin.phoneNumber %><% } %>"
+                  value="<% if (editing) { %><%= admin[0].phoneNumber %><% } %>"
                 />
                 </div>
                 <div class="form-group">
@@ -84,17 +84,17 @@
                   type="text"
                   name="open"
                   id="open"
-                  value="<% if (editing) { %><%= admin.open %><% } %>"
+                  value="<% if (editing) { %><%= admin[0].open %><% } %>"
                 />
                 </div>
                 <div class="form-group">
                   <label for="close">Clsoed</label>
                   <input
-                  class="form-control%"
+                  class="form-control"
                   type="text"
                   name="close"
                   id="close"
-                  value="<% if (editing) { %><%= admin.close %><% } %>"
+                  value="<% if (editing) { %><%= admin[0].close %><% } %>"
                 />
                 </div>
 
@@ -106,7 +106,7 @@
                   name="commission"
                   id="commission"
                   disabled
-                  value="<%= admin.commission %>"
+                  value="<%= admin[0].commission %>"
                 />
                 </div>
 
@@ -118,7 +118,7 @@
                   name="date"
                   id="date"
                   disabled
-                  value="<%= admin.createdAt %>"
+                  value="<%= admin[0].createdAt %>"
                 />
                 </div>
             </div>
@@ -141,7 +141,7 @@
                   type="text"
                   name="roAdress"
                   id="roAdress"
-                  value="<% if (editing ) { %><%= admin.name %><% } %>"
+                  value="<% if (editing ) { %><%= admin[0].adminInfos[0].adress %><% } %>"
                 />
                 </div>
                 <div class="form-group">
@@ -151,7 +151,7 @@
                         type="text"
                         name="huAdress"
                         id="huAdress"
-                        value="<% if (editing) { %><%= admin.name %><% } %>"
+                        value="<% if (editing) { %><%= admin[0].adminInfos[1].adress %><% } %>"
                       />
                 </div>
 
@@ -162,7 +162,7 @@
                         type="text"
                         name="enAdress"
                         id="enAdress"
-                        value="<% if (editing) { %><%= admin.name %><% } %>"
+                        value="<% if (editing) { %><%= admin[0].adminInfos[2].adress %><% } %>"
                       />
                 </div>
                 
@@ -170,7 +170,21 @@
               
             
             </div>
+            
           </div>
+          <% if (editing) { %>
+            <input
+              type="hidden"
+              value="<%= admin.id %>"
+              name="adminId"
+            />
+            <% } %>
+  
+            <button class="btn btn-success" type="submit">
+              <% if (editing) { %><%= lingua.update_profile %><% } else { %>Add
+              Product<% } %>
+            </button>
+         
         </div>
 
 
@@ -189,7 +203,7 @@
                         type="text"
                         name="roShortCompanyDesc"
                         id="roShortCompanyDesc"
-                        value="<% if (editing) { %><%= admin.name %><% } %>"
+                        value="<% if (editing) { %><%= admin[0].adminInfos[0].shortCompanyDesc %><% } %>"
                       />
                 </div>
                 <div class="form-group">
@@ -199,7 +213,7 @@
                         type="text"
                         name="huShortCompanyDesc"
                         id="huShortCompanyDesc"
-                        value="<% if (editing) { %><%= admin.id %><% } %>"
+                        value="<% if (editing) { %><%= admin[0].adminInfos[1].shortCompanyDesc %><% } %>"
                       />
                 </div>
                 <div class="form-group">
@@ -209,43 +223,27 @@
                   type="text"
                   name="enShortCompanyDesc"
                   id="enShortCompanyDesc"
-                  value="<% if (editing) { %><%= admin.id %><% } %>"
+                  value="<% if (editing) { %><%= admin[0].adminInfos[2].shortCompanyDesc %><% } %>"
                 />
                 </div>
                
             </div>
           </div>
-        </div>
-
-     
-        <div class="col-xl-6 col-md-12">
-          <div class="row">
-            <div class="col-md-12">
-           
-                  <% if (editing) { %>
-                  <input
-                    type="hidden"
-                    value="<%= admin.id %>"
-                    name="adminId"
-                  />
-                  <% } %>
-
-                  <button class="btn btn-success" type="submit">
-                    <% if (editing) { %><%= lingua.update_profile %><% } else { %>Add
-                    Product<% } %>
-                  </button>
-               
-                </div>
-              </div>
          
-         </div>
-   
-  </form>
+           
+          
+          
+        </div>
+       
+       
+
 
 
       </div>
       </div>
     </div>
+           
+  </form>
   </main>
 <%- include('../includes/end.ejs') %>
 </body>
