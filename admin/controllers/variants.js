@@ -57,6 +57,10 @@ exports.getIndex = async (req, res, next) => {
     where: { adminId: req.admin.id },
   });
 
+  const checkCategoryLength = await Category.findAll({
+    where: { adminId: req.admin.id },
+  });
+
   const category = await Category.findAll({
     where: {
       adminId: req.admin.id,
@@ -111,6 +115,7 @@ exports.getIndex = async (req, res, next) => {
         path: "/admin/products",
         currentPage: page,
         checkExtraLength: checkExtraLength,
+        checkCategoryLength: checkCategoryLength,
         hasNextPage: ITEMS_PER_PAGE * page < totalItems.length,
         hasPreviousPage: page > 1,
         nextPage: page + 1,
@@ -134,17 +139,27 @@ exports.getAddVariant = async (req, res, next) => {
     where: { adminId: req.admin.id },
   });
 
+  const checkCategoryLength = await Category.findAll({
+    where: { adminId: req.admin.id },
+  });
+
   if (checkExtraLength.length === 0) {
     return res.redirect("/admin/vr-index");
   }
+
+  if (checkCategoryLength.length === 0) {
+    return res.redirect("/admin/vr-index");
+  }
+
   const cat = await Category.findAll({
+    where: { adminId: req.admin.id },
     include: [
       {
         model: CategoryTranslation,
       },
     ],
   });
-  console.log(cat);
+  console.log(req.admin.id);
   res.render("variant/edit-variant", {
     pageTitle: "Add Product",
     path: "/admin/add-product",
@@ -175,6 +190,7 @@ exports.postAddVariant = async (req, res, next) => {
   const ext = await req.admin.getExtras();
 
   const cat = await Category.findAll({
+    where: { adminId: req.admin.id },
     include: [
       {
         model: CategoryTranslation,
