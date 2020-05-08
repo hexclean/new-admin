@@ -330,27 +330,30 @@
                            </div>
                            <span class="error_form" id="category_error_message"></span>
                          </div>
-                         
-                         
-                         
-                         
-                         
-                         
-                         
-                         
-                         
-                         
-                         
-                         
-                         
-                         
-                         
-                         
-                         
-                         
                          <% } %>
                       
-                         
+                         <script>
+                           $(function() { //run on document.ready
+                           $("#categoryRo").change(function() { //this occurs when select 1 changes
+                              $("#categoryHu").val($(this).val());
+                              $("#categoryEn").val($(this).val());
+                           });
+                           });
+            
+                           $(function() { //run on document.ready
+                           $("#categoryHu").change(function() { //this occurs when select 1 changes
+                              $("#categoryRo").val($(this).val());
+                              $("#categoryEn").val($(this).val());
+                           });
+                           });
+            
+                           $(function() { //run on document.ready
+                           $("#categoryEn").change(function() { //this occurs when select 1 changes
+                              $("#categoryRo").val($(this).val());
+                              $("#categoryHu").val($(this).val());
+                           });
+                           });
+                        </script>
 
                       
 
