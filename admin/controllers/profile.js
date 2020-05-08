@@ -1,14 +1,17 @@
-const { validationResult } = require("express-validator/check");
+const fileHelper = require("../../util/file");
 const Admin = require("../../models/Admin");
 const AdminInfo = require("../../models/AdminInfo");
 
-exports.getEditProfile = (req, res, next) => {
+exports.getEditProfile = async (req, res, next) => {
+  adminId = req.admin.id;
+  adminIdParams = req.params.adminId;
+  console.log("adminId", adminId);
   const editMode = req.query.edit;
   if (!editMode) {
     return res.redirect("/");
   }
 
-  Admin.findAll({
+  await Admin.findAll({
     include: [
       {
         model: AdminInfo,
@@ -17,13 +20,10 @@ exports.getEditProfile = (req, res, next) => {
     ],
   })
     .then((admin) => {
-      // if (admin.id != req.admin.id) {
-      //   return res.redirect("/admin/products");
-      // }
-      for (let i = 0; i <= admin.length; i++) {
-        // console.log(admin[i].adminInfos[0].adress);
+      if (adminIdParams != adminId) {
+        return res.redirect("/");
       }
-      // console.log(admin);
+
       res.render("profile/edit-profile", {
         pageTitle: "Edit Product",
         path: "/admin/edit-product",
