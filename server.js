@@ -205,6 +205,19 @@ ProductCategoryTranslation.belongsTo(Language, {
 Language.hasMany(ProductCategoryTranslation, { foreignKey: "languageId" });
 
 ///
+ProductVariantTranslation.belongsTo(ProductCategory, {
+  as: "productVrCategoryTranslation",
+  foreignKey: "categoryId",
+});
+ProductCategory.hasMany(ProductVariantTranslation, {
+  foreignKey: "categoryId",
+});
+
+ProductVariantTranslation.belongsTo(Language, {
+  as: "productCVariantTranslationLg",
+  foreignKey: "languageId",
+});
+Language.hasMany(ProductVariantTranslation, { foreignKey: "languageId" });
 
 // ProductVariantTranslation-> Admin
 ProductVariantTranslation.belongsTo(Admin, {
@@ -231,15 +244,6 @@ ProductVariantTranslation.belongsTo(Language, {
 Language.hasMany(ProductVariantTranslation, { foreignKey: "languageId" });
 
 //
-
-ProductVariant.belongsTo(ProductCategory, {
-  as: "variantCat",
-  foreignKey: "variantCategoryId",
-});
-
-ProductCategory.hasOne(ProductVariant, {
-  foreignKey: "variantCategoryId",
-});
 
 ///
 

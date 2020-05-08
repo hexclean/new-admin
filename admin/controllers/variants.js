@@ -130,6 +130,13 @@ exports.getIndex = async (req, res, next) => {
 
 exports.getAddVariant = async (req, res, next) => {
   const ext = await req.admin.getExtras();
+  const checkExtraLength = await Extras.findAll({
+    where: { adminId: req.admin.id },
+  });
+
+  if (checkExtraLength.length === 0) {
+    return res.redirect("/admin/vr-index");
+  }
   const cat = await Category.findAll({
     include: [
       {
@@ -137,6 +144,7 @@ exports.getAddVariant = async (req, res, next) => {
       },
     ],
   });
+  console.log(cat);
   res.render("variant/edit-variant", {
     pageTitle: "Add Product",
     path: "/admin/add-product",
@@ -155,12 +163,17 @@ exports.postAddVariant = async (req, res, next) => {
   const huName = req.body.huName;
   const enName = req.body.enName;
   const sku = req.body.sku;
-  const category = req.body.category;
+  const categoryRo = req.body.categoryRo;
+  const categoryHu = req.body.categoryHu;
+  const categoryEn = req.body.categoryEn;
+
   //
   const updatedExtraPrice = req.body.price;
   const updatedExtraQuantityMin = req.body.quantityMin;
   const updatedExtraQuantityMax = req.body.quantityMax;
   var filteredStatus = req.body.status.filter(Boolean);
+  const ext = await req.admin.getExtras();
+
   const cat = await Category.findAll({
     include: [
       {
@@ -168,24 +181,23 @@ exports.postAddVariant = async (req, res, next) => {
       },
     ],
   });
+
   const variant = await req.admin.createProductVariant({
     sku: sku,
-    variantCategoryId: category,
   });
-  const ext = await req.admin.getExtras();
 
   async function productVariantTransaltion() {
     await ProductVariantTranslation.create({
       name: roName,
       languageId: 1,
       productVariantId: variant.id,
-
+      categoryId: categoryRo,
       adminId: req.admin.id,
     });
     await ProductVariantTranslation.create({
       name: huName,
       languageId: 2,
-
+      categoryId: categoryHu,
       productVariantId: variant.id,
       adminId: req.admin.id,
     });
@@ -193,7 +205,7 @@ exports.postAddVariant = async (req, res, next) => {
     await ProductVariantTranslation.create({
       name: enName,
       languageId: 3,
-
+      categoryId: categoryEn,
       productVariantId: variant.id,
       adminId: req.admin.id,
     });
@@ -209,6 +221,7 @@ exports.postAddVariant = async (req, res, next) => {
         productVariantId: variant.id,
         extraId: extId[i],
         active: filteredStatus[i] == "on" ? 1 : 0,
+        adminId: req.admin.id,
       });
     }
   }

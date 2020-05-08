@@ -8,10 +8,6 @@ const Product = sequelize.define("product", {
     allowNull: false,
     primaryKey: true,
   },
-  price: {
-    type: Sequelize.INTEGER,
-    allowNull: false,
-  },
   imageUrl: {
     type: Sequelize.STRING,
     allowNull: false,

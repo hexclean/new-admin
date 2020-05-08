@@ -8,7 +8,7 @@
          <div class="ms-profile-overview no-img-var">
             <ul class="ms-profile-navigation nav nav-tabs tabs-bordered" role="tablist">
                <li role="presentation"><a href="#" aria-controls="tab1" class="active show" role="tab" data-toggle="tab"> Index </a></li>
-               <li role="presentation"><a href="/admin/add-product">Add Product </a></li>
+               <li role="presentation"><a class="add-product" href="/admin/add-product">Add Product </a></li>
               
             </ul>
             <div class="tab-content">
@@ -21,6 +21,14 @@
             </div>
          </div>
       </div>
+      <% if ( checkVariantLength.length === 0) { %>
+         <script>
+            $('.add-product').click(function () {return false;});
+         </script>
+    <div class="alert alert-danger" role="alert">
+      <i class="flaticon-alert-1"></i> <strong>Oh snap!</strong> eloszor varians kell legyen addig nem lehet termeket feltolteni
+    </div>
+   <% } %>
       <div class="ms-content-wrapper">
          <div class="row">
             <div class="col-md-12">

@@ -5,6 +5,7 @@ const ProductTranslation = require("../../models/ProductTranslation");
 const ProductFinal = require("../../models/ProductFinal");
 const Admin = require("../../models/Admin");
 var Sequelize = require("sequelize");
+const ProductVariants = require("../../models/ProductVariant");
 
 exports.getAddProduct = async (req, res, next) => {
   const ext = await ProductVariant.findAll({
@@ -13,11 +14,20 @@ exports.getAddProduct = async (req, res, next) => {
     },
   });
 
+  const checkVariantLength = await ProductVariants.findAll({
+    where: { adminId: req.admin.id },
+  });
+
+  if (checkVariantLength.length === 0) {
+    return res.redirect("/admin/products");
+  }
+
   res.render("admin/edit-product", {
     pageTitle: "Add Product",
     path: "/admin/add-product",
     editing: false,
     ext: ext,
+    checkVariantLength: checkVariantLength,
     hasError: false,
     errorMessage: null,
     validationErrors: [],
@@ -265,7 +275,10 @@ exports.postEditProduct = async (req, res, next) => {
       return next(error);
     });
 };
-exports.getProducts = (req, res, next) => {
+exports.getProducts = async (req, res, next) => {
+  const checkVariantLength = await ProductVariants.findAll({
+    where: { adminId: req.admin.id },
+  });
   req.admin
     .getProducts({
       include: [
@@ -287,7 +300,7 @@ exports.getProducts = (req, res, next) => {
 
       res.render("admin/products", {
         prods: product,
-
+        checkVariantLength: checkVariantLength,
         currentLanguage: currentLanguage,
         pageTitle: "Admin Products",
         path: "/admin/products",
