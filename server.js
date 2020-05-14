@@ -25,6 +25,12 @@ const ProductVariantsExtras = require("./models/ProductVariantsExtras");
 const Language = require("./models/Language");
 const Admin = require("./models/Admin");
 const AdminInfo = require("./models/AdminInfo");
+// Daily Menu
+const DailyMenu = require("./models/DailyMenu");
+const DailyMenuTranslation = require("./models/DailyMenuTranslation");
+const DailyMenuFinal = require("./models/DailyMenuFinal");
+const Allergen = require("./models/Allergen");
+const AllergenTranslation = require("./models/AllergenTranslation");
 
 //
 
@@ -285,7 +291,41 @@ ExtraTranslation.belongsTo(Language, {
 });
 Language.hasMany(ExtraTranslation, { foreignKey: "languageId" });
 
-///
+// Daily Menu
+DailyMenu.belongsTo(Admin, { constrains: true, onDelete: "CASCADE" });
+
+DailyMenuTranslation.belongsTo(DailyMenu, {
+  as: "dailyMenuTrans",
+  foreignKey: "dailyMenuId",
+});
+DailyMenu.hasMany(DailyMenuTranslation, { foreignKey: "dailyMenuId" });
+
+DailyMenuTranslation.belongsTo(Language, {
+  as: "dailyMenuLang",
+  foreignKey: "languageId",
+});
+
+DailyMenuFinal.belongsTo(DailyMenu, {
+  as: "theDailyId",
+  foreignKey: "dailyMenuId",
+});
+DailyMenu.hasMany(DailyMenuFinal, { foreignKey: "dailyMenuId" });
+
+Allergen.belongsTo(Admin, { constrains: true, onDelete: "CASCADE" });
+
+AllergenTranslation.belongsTo(Allergen, {
+  as: "dailyAllTrans",
+  foreignKey: "allergenId",
+});
+Allergen.hasMany(AllergenTranslation, {
+  foreignKey: "allergenId",
+});
+
+DailyMenuFinal.belongsTo(Allergen, {
+  as: "theAllergenId",
+  foreignKey: "allergenId",
+});
+Allergen.hasMany(DailyMenuFinal, { foreignKey: "allergenId" });
 
 // app.use((error, req, res, next) => {
 //   res.status(500).render("500", {

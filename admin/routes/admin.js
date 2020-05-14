@@ -6,7 +6,7 @@ const variantsController = require("../controllers/variants");
 const faqController = require("../controllers/faq");
 const categoryController = require("../controllers/category");
 const adminProfileController = require("../controllers/profile");
-
+const dailyMenuController = require("../controllers/daily-menu");
 // const migrationController = require("../controllers/migration");
 // const adminProfileController = require("../controllers/profile");
 // const adminOrderController = require("../controllers/orders");
@@ -163,4 +163,22 @@ router.post("/delete-daily-menu", isAuth, adminController.postDeleteDailyMenu);
 router.post("/edit-profile", isAuth, adminProfileController.postEditProfile);
 router.get("/edit-profile/:adminId", adminProfileController.getEditProfile);
 router.get("/dashboard", isAuth, adminProfileController.getDashboard);
+
+// Daily Menu
+router.get("/add-daily-menu", isAuth, dailyMenuController.getAddDailyMenu);
+router.post("/add-daily-menu", isAuth, dailyMenuController.postAddDailyMenu);
+
+router.get(
+  "/edit-daily-menu/:dailyMenuId",
+  isAuth,
+  dailyMenuController.getEditDailyMenu
+);
+
+router.post(
+  "/edit-daily-menu",
+  isAuth,
+
+  dailyMenuController.postEditDailyMenu
+);
+// router.post("/delete-variant", dailyMenuController.postDeleteVariant);
 module.exports = router;

@@ -6,9 +6,7 @@
 
   <main class="body-content">
    
-    <%- include('../includes/navigation-bar.ejs') %> <% if (errorMessage) { %>
-    <div class="user-message user-message--error"><%= errorMessage %></div>
-    <% } %>
+    <%- include('../includes/navigation-bar.ejs') %>
     <div
       class="ms-content-wrapper"
       action="/admin/<% if (editing) { %>edit-daily-menu<% } else { %>add-daily-menu<% } %>"
@@ -32,81 +30,23 @@
 
                 
 
-             <div class="col-md-6 mb-3">
-              <label for="datepick"><%= lingua.create_product_price %></label>
-              <div class="input-group">
-                <input
-                  class="form-control <%= validationErrors.find(e => e.param === 'dailyMenuTime') ? 'invalid' : '' %>"
-                  type="text"
-                  name="datepick"
-                  id="datepick"
-                  autocomplete="off"
-                  step="0.01"
-                  value="<% if (editing || hasError) { %><%= product.dailyMenuTime %><% } %>"
-                />
-                <div class="invalid-feedback">
-                  Time 
-                </div>
-              </div>
-            </div>
+         
+
                 
 
-                  <div class="input-group mb-3 x">
-                    <select class="custom-select" id="roCategory" name="roCategory">
-                     
-                      <% if (editing && product.category.ro=='meniulZilei')  { %> 
-                        <option selected value="Meniul Zilei">Meniul Zilei</option> 
-        
-                        <% } else{ %>
-                        <option value="Meniul Zilei">Meniul Zilei</option>
-                      <% } %>
-                    </select>
-                    <div class="input-group-append">
-                      <label class="input-group-text" for="huCategory">CATEGORY RO</label>
-                    </div>
-                  </div>
-
-                  <div class="input-group mb-3 x">
-                    <select class="custom-select" id="huCategory" name="huCategory">
-                    
-                      <% if (editing && product.category.hu=='Napi Menü')  { %> 
-                        <option selected value="Napi Menü">Napi Menü</option> 
-        
-                        <% } else{ %>
-                        <option value="Napi Menü">Napi Menü</option>
-                      <% } %>
-
-                    </select>
-                    <div class="input-group-append">
-                      <label class="input-group-text" for="inputGroupSelect02">CATEGORY HU</label>
-                    </div>
-                  </div>
-
-                  <div class="input-group mb-3 x">
-                    <select class="custom-select" id="enCategory" name="enCategory">
-          
-                      <% if (editing && product.category.en=='Daily Menu')  { %> 
-                        <option selected value="Daily Menu">Daily Menu</option> 
-        
-                        <% } else{ %>
-                        <option value="Daily Menu">Daily Menu</option>
-                      <% } %>        
-                    </select>
-                    <div class="input-group-append">
-                      <label class="input-group-text" for="inputGroupSelect02">CATEGORY EN</label>
-                    </div>
-                  </div>
+            
+             
 
                   <div class="col-md-6 mb-3">
                     <label for="price"><%= lingua.create_product_price %></label>
                     <div class="input-group">
                       <input
-                        class="form-control <%= validationErrors.find(e => e.param === 'price') ? 'invalid' : '' %>"
+                        class="form-control"
                         type="number"
                         name="price"
                         id="price"
                         step="0.01"
-                        value="<% if (editing || hasError) { %><%= product.price %><% } %>"
+                        value="<% if (editing) { %><%= product[0].dailyMenuFinals[0].price %><% } %>"
                       />
                       <div class="invalid-feedback">
                         Price 
@@ -114,77 +54,10 @@
                     </div>
                   </div>
 
-                  <div class="input-group mb-3 x">
-                    <select class="custom-select" id="rodailyVegan" name="rodailyVegan">
-                      <option>Vegan..ro</option>
-                      <% if (editing && product.dailyVegan.ro=='Nu')  { %> 
-                        <option selected value="Nu">Nu</option> 
-        
-                        <% } else{ %>
-                        <option value="Nu">Nu</option>
-                      <% } %>
-
-                      <% if (editing && product.dailyVegan.ro=='Da')  { %> 
-                        <option selected value="Da">Da</option> 
-        
-                        <% } else{ %>
-                        <option value="Da">Da</option>
-                      <% } %>
-                
-                    </select>
-                    <div class="input-group-append">
-                      <label class="input-group-text" for="inputGroupSelect02">rodailyVegan</label>
-                    </div>
-                  </div>
+           
 
 
-                  <div class="input-group mb-3 x">
-                    <select class="custom-select" id="hudailyVegan" name="hudailyVegan">
-                      <option>Vegan..HU</option>
-                      <% if (editing && product.dailyVegan.hu=='Nem')  { %> 
-                        <option selected value="Nem">Nem</option> 
-        
-                        <% } else{ %>
-                        <option value="Nem">Nem</option>
-                      <% } %>
-
-                      <% if (editing && product.dailyVegan.hu=='Igen')  { %> 
-                        <option selected value="Igen">Igen</option> 
-        
-                        <% } else{ %>
-                        <option value="Igen">Igen</option>
-                      <% } %>
-                
-                    </select>
-                    <div class="input-group-append">
-                      <label class="input-group-text" for="inputGroupSelect02">hudailyVegan</label>
-                    </div>
-                  </div>
-
-                 
-
-                  <div class="input-group mb-3 x">
-                    <select class="custom-select" id="endailyVegan" name="endailyVegan">
-                      <option>Vegan..en</option>
-                      <% if (editing && product.dailyVegan.en=='No')  { %> 
-                        <option selected value="No">No</option> 
-        
-                        <% } else{ %>
-                        <option value="No">No</option>
-                      <% } %>
-
-                      <% if (editing && product.dailyVegan.en=='Yes')  { %> 
-                        <option selected value="Yes">Yes</option> 
-        
-                        <% } else{ %>
-                        <option value="Yes">Yes</option>
-                      <% } %>
-                
-                    </select>
-                    <div class="input-group-append">
-                      <label class="input-group-text" for="inputGroupSelect02">endailyVegan</label>
-                    </div>
-                  </div>
+           
 
                
 
@@ -193,12 +66,10 @@
                     <label for="roDescription"><%= lingua.create_product_description1 %></label>
                     <div class="input-group">
                       <textarea
-                        class="form-control <%= validationErrors.find(e => e.param === 'roDescription') ? 'invalid' : '' %>"
+                        class="form-control"
                         name="roDescription"
                         id="roDescription"
-                        rows="5"
-                      >
- <% if (editing || hasError) { %><%= product.description.ro %><% } %></textarea
+                        rows="5"> <% if (editing) { %><%= product[0].dailyMenuTranslations[0].description %><% } %></textarea
                       >
                       <div class="invalid-feedback">
                         Please provide a message.
@@ -210,12 +81,10 @@
                     <label for="huDescription"><%= lingua.create_product_description2 %></label>
                     <div class="input-group">
                       <textarea
-                        class="form-control <%= validationErrors.find(e => e.param === 'huDescription') ? 'invalid' : '' %>"
+                        class="form-control"
                         name="huDescription"
                         id="huDescription"
-                        rows="5"
-                      >
- <% if (editing || hasError) { %><%= product.description.hu %><% } %></textarea
+                        rows="5"> <% if (editing) { %><%= product[0].dailyMenuTranslations[1].description %><% } %></textarea
                       >
                       <div class="invalid-feedback">
                         Please provide a message.
@@ -227,12 +96,10 @@
                     <label for="enDescription"><%= lingua.create_product_description3 %></label>
                     <div class="input-group">
                       <textarea
-                        class="form-control <%= validationErrors.find(e => e.param === 'enDescription') ? 'invalid' : '' %>"
+                        class="form-control"
                         name="enDescription"
                         id="enDescription"
-                        rows="5"
-                      >
- <% if (editing || hasError) { %><%= product.description.en %><% } %></textarea
+                        rows="5"> <% if (editing) { %><%= product[0].dailyMenuTranslations[2].description %><% } %></textarea
                       >
                       <div class="invalid-feedback">
                         Please provide a message.
@@ -265,7 +132,7 @@
                 
                     <div class="carousel-inner">
                       <div class="carousel-item active">
-                        <% if (editing) { %><img src="/<%= product.imageUrl %>" alt="<%= product.price %>"><% }  %>
+                        <% if (editing) { %><img src="/<%= product[0].imageUrl %>" alt="<%= product.price %>"><% }  %>
                       </div>
                      
                       </div>
@@ -277,8 +144,8 @@
                   <% if (editing) { %>
                   <input
                     type="hidden"
-                    value="<%= product._id %>"
-                    name="productId"
+                    value="<%= dailyMenuId %>"
+                    name="dailyMenuId"
                   />
                   <% } %>
 
