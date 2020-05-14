@@ -183,7 +183,6 @@ exports.postEditProduct = async (req, res, next) => {
   let variantId = [varId];
   var filteredStatus = req.body.status.filter(Boolean);
   // Title
-  console.log("variantId", varId);
   const updatedRoTitle = req.body.roTitle;
   const updatedHuTitle = req.body.huTitle;
   const updatedEnTitle = req.body.enTitle;
@@ -193,8 +192,7 @@ exports.postEditProduct = async (req, res, next) => {
   const updatedHuDesc = req.body.huDescription;
   const updatedEnDesc = req.body.enDescription;
   //
-  const price = req.body.price;
-  console.log("price", price);
+  const updatedExtraPrice = req.body.price;
   const image = req.file;
   const Op = Sequelize.Op;
   const variants = await ProductFinal.findAll({
@@ -249,14 +247,13 @@ exports.postEditProduct = async (req, res, next) => {
         );
         if (Array.isArray(variants)) {
           const Op = Sequelize.Op;
-          for (let i = 0; i <= variants.length - 1; i++) {
+          for (let i = 0; i <= variants.length; i++) {
             let variIds = [varId[i]];
             let prodIds = [prodId];
-            console.log("priceiiii", price[i]);
             await ProductFinal.update(
               {
-                price: price[i] || 0,
-                discountedPrice: price[i] || 0,
+                price: updatedExtraPrice[i] || 0,
+                discountedPrice: updatedExtraPrice[i] || 0,
                 active: filteredStatus[i] == "on" ? 1 : 0,
               },
               {

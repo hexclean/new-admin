@@ -100,7 +100,6 @@ exports.getIndex = async (req, res, next) => {
       limit: ITEMS_PER_PAGE,
     });
   });
-  // console.log(category[0].id);
   await req.admin
     .getProductVariants()
     .then((numVariants) => {
@@ -217,6 +216,7 @@ exports.postAddVariant = async (req, res, next) => {
 
   const variant = await req.admin.createProductVariant({
     sku: sku,
+    active: 1,
   });
 
   async function productVariantTransaltion() {
@@ -496,10 +496,10 @@ exports.postDeleteVariant = (req, res, next) => {
   const prodId = req.body.variantId;
   ProductVariants.findByPk(prodId)
     .then((product) => {
-      return product.destroy();
+      product.active = 0;
+      return product.save();
     })
     .then((result) => {
-      console.log("DESTROYED PRODUCT");
       res.redirect("/admin/vr-index");
     })
     .catch((err) => console.log(err));

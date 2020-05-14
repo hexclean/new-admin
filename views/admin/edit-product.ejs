@@ -463,10 +463,10 @@ if(vidFileLength === 0){
                                  <h6 class="mb-0"><b><%= productVariant[i].variantId %></b> </h6>
                               </div>
                               <div class="col-md-12 mb-3">
-                                 <label for="price"><%= productVariant[i].variantId %></label>
+                                 <label for="price">Price</label>
                                  <div class="input-group">
                                     <input
-                                       class="price_<%= productVariant[i].id %> extra_price_input"
+                                       class="price_<%= productVariant[i].variantId %> extra_price_input"
                                        type="text"
                                        name="price"
                                        id="price"
@@ -475,6 +475,7 @@ if(vidFileLength === 0){
                                  </div>
                                  <span class="extra_error_message error_form" id="price_error_message_<%= productVariant[i].extraId %>"></span>
                               </div>
+                      
                               <div class="col-md-12 mb-3">
                                  <label for="discountedPrice"
                                     >Discounted Price</label
