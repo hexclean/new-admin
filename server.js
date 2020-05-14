@@ -31,7 +31,7 @@ const DailyMenuTranslation = require("./models/DailyMenuTranslation");
 const DailyMenuFinal = require("./models/DailyMenuFinal");
 const Allergen = require("./models/Allergen");
 const AllergenTranslation = require("./models/AllergenTranslation");
-
+const DailyMenuAllergens = require("./models/DailyMenuAllergens");
 //
 
 const app = express();
@@ -327,6 +327,20 @@ DailyMenu.belongsTo(Allergen, {
 });
 
 Allergen.hasMany(DailyMenu, { foreignKey: "allergenId" });
+
+////
+
+DailyMenuAllergens.belongsTo(DailyMenu, {
+  as: "theDmId",
+  foreignKey: "dailyMenuId",
+});
+DailyMenu.hasMany(DailyMenuAllergens, { foreignKey: "dailyMenuId" });
+
+DailyMenuAllergens.belongsTo(Allergen, {
+  as: "theAllergenMtd",
+  foreignKey: "allergenId",
+});
+Allergen.hasMany(DailyMenuAllergens, { foreignKey: "allergenId" });
 
 // app.use((error, req, res, next) => {
 //   res.status(500).render("500", {

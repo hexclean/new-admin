@@ -1,7 +1,6 @@
 const Allergen = require("../../models/Allergen");
 const AllergensTranslation = require("../../models/AllergenTranslation");
 const DailyMenu = require("../../models/DailyMenu");
-const DailyMenuFinal = require("../../models/DailyMenuFinal");
 
 exports.getAddAllergen = (req, res, next) => {
   res.render("allergen/edit-allergen", {
@@ -49,16 +48,6 @@ exports.postAddAllergen = async (req, res, next) => {
       allergenId: allergen.id,
       adminId: req.admin.id,
     });
-
-    for (let i = 0; i <= dailyMenuId.length - 1; i++) {
-      console.log("variantId[i].id", dailyMenuId[i].id);
-      await DailyMenuFinal.create({
-        active: 0,
-        allergenId: allergen.id,
-        imageUrl: dailyMenuId[i].imageUrl,
-        adminId: req.admin.id,
-      });
-    }
   }
 
   extraTransaltion()

@@ -9,13 +9,24 @@ const Allergens = require("../../models/Allergen");
 const AllergensTranslation = require("../../models/AllergenTranslation");
 
 exports.getAddDailyMenu = async (req, res, next) => {
+  const dailyMenu = await DailyMenu.findAll({
+    where: { adminId: req.admin.id },
+  });
+  const allergens = await Allergens.findAll({
+    where: { adminId: req.admin.id },
+    include: [
+      {
+        model: AllergensTranslation,
+      },
+    ],
+  });
+  console.log(dailyMenu);
   res.render("daily-menu/edit-daily-menu", {
     pageTitle: "Add Product",
     path: "/admin/add-product",
     editing: false,
-    hasError: false,
-    errorMessage: null,
-    validationErrors: [],
+    allergens: allergens,
+    dailyMenu: dailyMenu,
   });
 };
 
@@ -41,6 +52,7 @@ exports.postAddDailyMenu = async (req, res, next) => {
     dailyMenuId: dailyMenu.id,
     allergenId: 1,
   });
+  console.log(dailyMenuFinal);
 
   async function productTransaltion() {
     await DailyMenuTranslation.create({
@@ -85,6 +97,16 @@ exports.getEditDailyMenu = async (req, res, next) => {
   const dailyMId = req.params.dailyMenuId;
   let dailyMenuId = [dailyMId];
   const Op = Sequelize.Op;
+
+  const allergens = await Allergens.findAll({
+    where: { adminId: req.admin.id },
+    include: [
+      {
+        model: AllergensTranslation,
+      },
+    ],
+  });
+  console.log(allergens[0].allergenTranslations[0].name);
   let dailyMenuFinal = await DailyMenuFinal.findAll({
     where: {
       dailyMenuId: {
@@ -105,15 +127,14 @@ exports.getEditDailyMenu = async (req, res, next) => {
     ],
   })
     .then((product) => {
-      // console.log(product[0].imageUrl);
       res.render("daily-menu/edit-daily-menu", {
         pageTitle: "Edit Product",
         path: "/admin/edit-product",
         editing: editMode,
         product: product,
         dailyMenuId: dailyMId,
+        allergens: allergens,
         // variantIdByParams: prodId,
-        hasError: false,
         // productIds: prodId,
         // productId: prodId,
         // ext: productFinal,

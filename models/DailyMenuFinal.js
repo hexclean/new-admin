@@ -12,10 +12,6 @@ const DailyMenuFinal = sequelize.define("dailyMenuFinal", {
     type: Sequelize.INTEGER,
   },
   discountedPrice: Sequelize.INTEGER,
-
-  active: {
-    type: Sequelize.INTEGER,
-  },
 });
 
 module.exports = DailyMenuFinal;

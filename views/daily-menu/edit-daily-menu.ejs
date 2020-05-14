@@ -1,5 +1,26 @@
 <%- include('../includes/head.ejs') %>
-
+<script>
+                    $(function() { 
+                    $("#categoryRo").change(function() { 
+                       $("#categoryHu").val($(this).val());
+                       $("#categoryEn").val($(this).val());
+                    });
+                    });
+                  
+                    $(function() { 
+                    $("#categoryHu").change(function() { 
+                       $("#categoryRo").val($(this).val());
+                       $("#categoryEn").val($(this).val());
+                    });
+                    });
+                  
+                    $(function() { 
+                    $("#categoryEn").change(function() { 
+                       $("#categoryRo").val($(this).val());
+                       $("#categoryHu").val($(this).val());
+                    });
+                    });
+                  </script>  
 </head>
 <body class="ms-body ms-aside-left-open ms-primary-theme ms-has-quickbar">
   <%- include('../includes/navigation.ejs') %>
@@ -21,22 +42,6 @@
             </div>
             <div class="ms-panel-body">
                 <div class="form-row">
-                  <form
-                    class="product-form"
-                    action="/admin/<% if (editing) { %>edit-daily-menu<% } else { %>add-daily-menu<% } %>"
-                    method="POST"
-                    enctype="multipart/form-data"
-                  >
-
-                
-
-         
-
-                
-
-            
-             
-
                   <div class="col-md-6 mb-3">
                     <label for="price"><%= lingua.create_product_price %></label>
                     <div class="input-group">
@@ -147,6 +152,50 @@
                     value="<%= dailyMenuId %>"
                     name="dailyMenuId"
                   />
+
+                  <div class="col-md-6 mb-3">
+                    <label for="validationCustom22">HU</label>
+                    <div class="input-group">
+                      <select class="form-control" for="categoryRo" id="categoryRo" name="categoryRo">
+                       <option value="">HU</option>
+                       <% for(let i = 0; i < allergens.length; i++) { %>       
+                         <option id="categoryRo" name="categoryRo" value='<%= allergens[i].id %>'><%= allergens[i].allergenTranslations[0].name %></option>
+                       <% } %>
+                      </select>
+                     
+                    </div>
+                    <span class="error_form" id="category_error_message"></span>
+                  </div>
+
+                  <div class="col-md-6 mb-3">
+                    <label for="validationCustom22">HU</label>
+                    <div class="input-group">
+                      <select class="form-control" for="categoryHu" id="categoryHu" name="categoryHu">
+                       <option value="">HU</option>
+                       <% for(let i = 0; i < allergens.length; i++) { %>       
+                         <option id="categoryHu" name="categoryHu" value='<%= allergens[i].id %>'><%= allergens[i].allergenTranslations[1].name %></option>
+                       <% } %>
+                      </select>
+                     
+                    </div>
+                    <span class="error_form" id="category_error_message"></span>
+                  </div>
+
+                  <div class="col-md-6 mb-3">
+                    <label for="validationCustom22">HU</label>
+                    <div class="input-group">
+                      <select class="form-control" for="categoryEn" id="categoryEn" name="categoryEn">
+                       <option value="">HU</option>
+                       <% for(let i = 0; i < allergens.length; i++) { %>       
+                         <option id="categoryEn" name="categoryEn" value='<%= allergens[i].id %>'><%= allergens[i].allergenTranslations[2].name %></option>
+                       <% } %>
+                      </select>
+                     
+                    </div>
+                    <span class="error_form" id="category_error_message"></span>
+                  </div>
+
+                   
                   <% } %>
 
                   <button class="btn" type="submit">
@@ -167,4 +216,6 @@
       $("#datepick").datepicker();
   });
   </script>
+
+ 
 </body>
