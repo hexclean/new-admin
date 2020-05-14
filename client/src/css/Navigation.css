@@ -10,8 +10,11 @@
   z-index: 9;
   width: 100%;
 }
+.menu-icons {
+  width: 37px !important;
+}
 .mainnv .nav-link {
-  font-size: 14px;
+  font-size: 20px !important;
   font-weight: 500;
   color: #fff !important;
   text-transform: uppercase;
@@ -41,7 +44,7 @@
   .mainnv img {
     display: block;
     margin: auto;
-    max-width: 100%;
+    max-width: 90%;
   }
   .mainnv ul {
     align-items: center;

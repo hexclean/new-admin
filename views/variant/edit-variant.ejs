@@ -104,10 +104,6 @@
 });
 </script>
 
-<script type="text/javascript">
-   $
-</script>
-
 <script>
    $(function () {
      $("#roName_error_message").hide();
@@ -224,7 +220,14 @@
        }
      });
    });
-   </script>
+</script>
+
+
+
+
+
+
+
 </head>
 <body class="ms-body ms-aside-left-open ms-primary-theme ms-has-quickbar">
    <%- include('../includes/navigation.ejs') %>
@@ -275,48 +278,18 @@
                         </div>
 
                         <% if (editing) { %><div class="col-md-6 mb-3">
-                              
-                           <div class="col-md-6 mb-3">
-                              <label for="validationCustom22">RO</label>
-                              <div class="input-group">
-                                <select class="form-control" for="categoryRo" id="categoryRo" name="categoryRo">
-                                 <option value="">RO</option>
-                                 <% for(let i = 0; i < cat.length; i++) { %>       
-                                   <option id="categoryRo" name="categoryRo" value='<%= cat[i].id %>'><%= cat[i].productCategoryTranslations[0].name %></option>
-                                 <% } %>
-                                </select>
-                               
-                              </div>
-                              <span class="error_form" id="category_error_message"></span>
-                            </div>
-   
-                            <div class="col-md-6 mb-3">
-                              <label for="validationCustom22">HU</label>
-                              <div class="input-group">
-                                <select class="form-control" for="categoryHu" id="categoryHu" name="categoryHu">
-                                 <option value="">HU</option>
-                                 <% for(let i = 0; i < cat.length; i++) { %>       
-                                   <option id="categoryHu" name="categoryHu" value='<%= cat[i].id %>'><%= cat[i].productCategoryTranslations[1].name %></option>
-                                 <% } %>
-                                </select>
-                               
-                              </div>
-                              <span class="error_form" id="category_error_message"></span>
-                            </div>
-   
-                            <div class="col-md-6 mb-3">
-                              <label for="validationCustom22">EN</label>
-                              <div class="input-group">
-                                <select class="form-control" for="categoryEn" id="categoryEn" name="categoryEn">
-                                 <option value="">EN</option>
-                                 <% for(let i = 0; i < cat.length; i++) { %>       
-                                   <option id="categoryEn" name="categoryEn" value='<%= cat[i].id %>'><%= cat[i].productCategoryTranslations[2].name %></option>
-                                 <% } %>
-                                </select>
-                               
-                              </div>
-                              <span class="error_form" id="category_error_message"></span>
-                            </div>
+                           <label for="validationCustom22">Select Catagory</label>
+                           <div class="input-group">
+                             <select class="form-control" for="category" id="category" name="category">
+                              <option value="">jkkkjj</option>
+                              <% for(let i = 0; i < cat.length; i++) { %>       
+                                <option id="category" name="category" value='<%= cat[i].id %>'><%= cat[i].sku %></option>
+                              <% } %>
+                             </select>
+                            
+                           </div>
+                           <span class="error_form" id="category_error_message"></span>
+                         </div>
                          <% } else { %>
                            
                            <div class="col-md-6 mb-3">
@@ -332,7 +305,6 @@
                            </div>
                            <span class="error_form" id="category_error_message"></span>
                          </div>
-
                          <div class="col-md-6 mb-3">
                            <label for="validationCustom22">HU</label>
                            <div class="input-group">
@@ -346,7 +318,6 @@
                            </div>
                            <span class="error_form" id="category_error_message"></span>
                          </div>
-
                          <div class="col-md-6 mb-3">
                            <label for="validationCustom22">EN</label>
                            <div class="input-group">
@@ -360,30 +331,27 @@
                            </div>
                            <span class="error_form" id="category_error_message"></span>
                          </div>
+                         
+                         
+                         
+                         
+                         
+                         
+                         
+                         
+                         
+                         
+                         
+                         
+                         
+                         
+                         
+                         
+                         
+                         
                          <% } %>
                       
-                         <script>
-                           $(function() { //run on document.ready
-                           $("#categoryRo").change(function() { //this occurs when select 1 changes
-                              $("#categoryHu").val($(this).val());
-                              $("#categoryEn").val($(this).val());
-                           });
-                           });
-            
-                           $(function() { //run on document.ready
-                           $("#categoryHu").change(function() { //this occurs when select 1 changes
-                              $("#categoryRo").val($(this).val());
-                              $("#categoryEn").val($(this).val());
-                           });
-                           });
-            
-                           $(function() { //run on document.ready
-                           $("#categoryEn").change(function() { //this occurs when select 1 changes
-                              $("#categoryRo").val($(this).val());
-                              $("#categoryHu").val($(this).val());
-                           });
-                           });
-                        </script>
+                         
 
                       
 
@@ -447,45 +415,50 @@
                <h6>A  hozzárendelhető extrái:</h6>
             </div>
          </div>
-         <% if (editing) { %>  <% if (varToExt.length > 0) { %>
+         <% if (editing) { %>  <% if (productVarToExt.length > 0) { %>
             <div class="ms-content-wrapper">
                <div class="row">
                   <div class="col-md-12">
                      <div class="row">
-                        <% for (let i = 0; i < varToExt.length; i++) { %>
+                        <input
+                        type="hidden"
+                        value="<%= varId %>"
+                        name="varId"
+                        />  
+                        <% for (let i = 0; i < productVarToExt.length; i++) { %>
                            <input
                            type="hidden"
-                           value="<%= varToExt[i].extraId %>"
+                           value="<%= productVarToExt[i].extraId %>"
                            name="extraId"
                            />          
-                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 extra_box" data-extra="<%= varToExt[i].extraId %>">
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 extra_box" data-extra="<%= productVarToExt[i].extraId %>">
                            <div class="ms-card">
                               <div class="d-flex justify-content-center extra-margin-top">
                                     <div class="row"> 
                                       
                                        <label class="ms-switch" >                 
-                                          <input type="hidden" value="off" class="status-<%= varToExt[i].extraId %>" name="status[<%= varToExt[i].extraId %>]" >          
-                                          <input    data-extraId="<%= varToExt[i].extraId %>"  class="status-checkbox status-checkbox-<%= varToExt[i].extraId %>" type="checkbox">
+                                          <input type="hidden" value="off" class="status-<%= productVarToExt[i].extraId %>" name="status[<%= productVarToExt[i].extraId %>]" >          
+                                          <input    data-extraId="<%= productVarToExt[i].extraId %>"  class="status-checkbox status-checkbox-<%= productVarToExt[i].extraId %>" type="checkbox">
                                           <span class="ms-switch-slider ms-switch-success round"></span>
                                        </label> 
                                     </div>
                               </div>
                               <div class="ms-card-body">
                                  <div class="new d-flex justify-content-center extra-name">
-                                    <h6 class="mb-0"><b><%= varToExt[i].extraId %></b> </h6>
+                                    <h6 class="mb-0"><b><%= productVarToExt[i].extraId %></b> </h6>
                                  </div>
                                  <div class="col-md-12 mb-3">
                                     <label for="price">Price</label>
                                     <div class="input-group">
                                        <input
-                                          class="price_<%= varToExt[i].id %> extra_price_input"
+                                          class="price_<%= productVarToExt[i].extraId %> extra_price_input"
                                           type="text"
                                           name="price"
                                           id="price"
-                                          value="<% if (editing) { %><%= varToExt[i].price %><% } %>"
+                                          value="<% if (editing) { %><%= productVarToExt[i].price %><% } %>"
                                           />
                                     </div>
-                                    <span class="extra_error_message error_form" id="price_error_message_<%= varToExt[i].extraId %>"></span>
+                                    <span class="extra_error_message error_form" id="price_error_message_<%= productVarToExt[i].extraId %>"></span>
                                  </div>
                                  <div class="col-md-12 mb-3">
                                     <label for="discountedPrice"
@@ -497,7 +470,7 @@
                                           type="text"
                                           name="discountedPrice"
                                           id="discountedPrice"
-                                          value="<% if (editing) { %><%= varToExt[i].discountedPrice %><% } %>"
+                                          value="<% if (editing) { %><%= productVarToExt[i].discountedPrice %><% } %>"
                                           />
                                     </div>
                                  </div>
@@ -507,14 +480,14 @@
                                        >
                                     <div class="input-group">
                                        <input
-                                          class="qtMin_<%= varToExt[i].id %> extra_qtMin_input"
+                                          class="qtMin_<%= productVarToExt[i].extraId %> extra_qtMin_input"
                                           type="text"
                                           name="quantityMin"
                                           id="quantityMin"
-                                          value="<% if (editing) { %><%= varToExt[i].quantityMin %><% } %>"
+                                          value="<% if (editing) { %><%= productVarToExt[i].quantityMin %><% } %>"
                                           />
                                     </div>
-                                    <span class="extra_error_message error_form" id="qtMin_error_message_<%= varToExt[i].extraId %>"></span>
+                                    <span class="extra_error_message error_form" id="qtMin_error_message_<%= productVarToExt[i].extraId %>"></span>
                                  </div>
                                  <div class="col-md-12 mb-3">
                                     <label for="quantityMax"
@@ -522,14 +495,14 @@
                                        >
                                     <div class="input-group">
                                        <input
-                                          class="qtMax_<%= varToExt[i].id %> extra_qtMax_input"
+                                          class="qtMax_<%= productVarToExt[i].extraId %> extra_qtMax_input"
                                           type="text"
                                           name="quantityMax"
                                           id="quantityMax"
-                                          value="<% if (editing) { %><%= varToExt[i].quantityMax %><% } %>"
+                                          value="<% if (editing) { %><%= productVarToExt[i].quantityMax %><% } %>"
                                           />
                                     </div>
-                                    <span class="extra_error_message error_form" id="qtMax_error_message_<%= varToExt[i].extraId %>"></span>
+                                    <span class="extra_error_message error_form" id="qtMax_error_message_<%= productVarToExt[i].extraId %>"></span>
                                  </div>
                              
                               </div>

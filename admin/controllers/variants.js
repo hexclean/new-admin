@@ -152,14 +152,26 @@ exports.getAddVariant = async (req, res, next) => {
   }
 
   const cat = await Category.findAll({
-    where: { adminId: req.admin.id },
     include: [
       {
         model: CategoryTranslation,
       },
     ],
   });
-  console.log(req.admin.id);
+  // for (let i = 0; i < cat.length; i++) {
+  //   if (cat[i].id === cat[i].productCategoryTranslations[0].productCategoryId) {
+  //     console.log("cat[i].id", cat[i].id);
+  //     console.log(
+  //       "cat[i].productCategoryTranslations[0].productCategoryId",
+  //       cat[i].productCategoryTranslations[0].productCategoryId
+  //     );
+  //     console.log("YES");
+  //   } else {
+  //     console.log("NO");
+  //   }
+  // }
+  // console.log(cat[0].id);
+  // console.log(cat[0].productCategoryTranslations[0].productCategoryId);
   res.render("variant/edit-variant", {
     pageTitle: "Add Product",
     path: "/admin/add-product",
@@ -260,6 +272,7 @@ exports.postAddVariant = async (req, res, next) => {
 
 exports.postEditVariant = async (req, res, next) => {
   const extId = req.body.extraId;
+  console.log("extId", extId);
   const updatedSku = req.body.sku;
   const varId = req.body.variantId;
   const updatedExtraPrice = req.body.price;
@@ -270,6 +283,22 @@ exports.postEditVariant = async (req, res, next) => {
   const updatedHuName = req.body.huName;
   const updatedEnName = req.body.enName;
   const extTranId = req.body.extTranId;
+  const Op = Sequelize.Op;
+  const dasd = req.body.varId;
+  let variantId = [dasd];
+  // console.log("variantId", variantId[0].extraId);
+  const productVarToExt = await ProductVariantsExtras.findAll({
+    where: {
+      productVariantId: {
+        [Op.in]: variantId,
+      },
+    },
+  });
+  console.log("productVarToExt", productVarToExt[0].extraId);
+  console.log("productVarToExt", productVarToExt[1].extraId);
+
+  console.log("productVarToExt", productVarToExt[2].extraId);
+
   const ext = await req.admin.getExtras();
   ProductVariants.findAll({
     include: [
@@ -300,9 +329,9 @@ exports.postEditVariant = async (req, res, next) => {
           { where: { id: extTranId[2], languageId: 3 } }
         );
 
-        if (Array.isArray(ext)) {
+        if (Array.isArray(productVarToExt)) {
           const Op = Sequelize.Op;
-          for (let i = 0; i <= ext.length - 1; i++) {
+          for (let i = 0; i <= productVarToExt.length - 1; i++) {
             let extrasIds = [extId[i]];
             let variantId = [varId];
             await ProductVariantsExtras.update(
@@ -338,10 +367,13 @@ exports.postEditVariant = async (req, res, next) => {
 };
 
 exports.getEditVariant = async (req, res, next) => {
+  const categoryIdJoinBody = req.body.categoryIdJoin;
+
   const editMode = req.query.edit;
   if (!editMode) {
     return res.redirect("/");
   }
+
   const varId = req.params.variantId;
   let variantId = [varId];
   const Op = Sequelize.Op;
@@ -358,9 +390,58 @@ exports.getEditVariant = async (req, res, next) => {
       {
         model: CategoryTranslation,
       },
+      {
+        model: ProductVariantTranslation,
+        // where: { productVariantId: varId },
+      },
     ],
   });
+  let test = cat[0].productCategoryTranslations[0].productCategoryId;
+  console.log("test", test);
+  // console.log(
+  //   "cat[0].productCategoryTranslations[0]",
+  //   cat[0].productCategoryTranslations[0]
+  // );
+  // console.log(test[0].id);
+  // let categoryIdJoin = cat[0].productVariantTranslations[0].categoryId;
+  // console.log("categoryIdJoin", categoryIdJoin);
+  // console.log("categoryIdJoin", categoryIdJoin);
+  // console.log(cat[0].productVariantTranslations);
+  for (let i = cat.length; i >= 0; i--) {
+    // console.log(
+    //   "cat[0].productVariantTranslations[0].productVariantId",
+    //   cat[0].productVariantTranslations[0].productVariantId
+    // );
 
+    if (
+      1 == 1
+      // cat[0].productCategoryTranslations[0].productCategoryId == 1
+      // cat[i].productVariantTranslations[0].productVariantId == 2
+      // cat[i].productCategoryTranslation[0].categoryId == 3
+    ) {
+      // console.log(cat[0].productCategoryTranslations);
+      console.log("i", i);
+      // console.log(
+      //   "cat[i]",
+      //   cat[i].productCategoryTranslations[i].productCategoryId
+      // );
+      // console.log("yes", cat[i].productCategoryTranslations[i].name);
+      // console.log("yes_ID:", cat[i].productCategoryTranslations[i].id);
+    } else {
+      // next();
+      console.log("no");
+    }
+  }
+  // console.log(cat);
+  // console.log(
+  //   "cat[0].productVariantTranslations",
+  //   cat[0].productVariantTranslations
+  // );
+  // console.log(
+  //   "cat[0].productCategoryTranslations",
+  //   cat[0].productCategoryTranslations
+  // );
+  // console.log("cat", cat[0].productCategoryTranslations[0].productCategoryId);
   ProductVariants.findAll({
     where: {
       id: varId,
@@ -378,12 +459,16 @@ exports.getEditVariant = async (req, res, next) => {
         pageTitle: "Edit Product",
         path: "/admin/edit-product",
         editing: editMode,
+        test: 2,
+        varId: varId,
         variant: variant,
         variantIdByParams: varId,
+        categoryIdJoin: cat,
         hasError: false,
         ext: ext,
         varToExt: productVarToExt,
         cat: cat,
+        productVarToExt: productVarToExt,
         errorMessage: null,
         validationErrors: [],
         extTranslations: variant[0].productVariantTranslations,
