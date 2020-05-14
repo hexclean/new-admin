@@ -190,7 +190,6 @@
 
       var vidFileLength = $("#videoUploadFile")[0].files.length;
 if(vidFileLength === 0){
-    alert("No file selected.");
 }
    
        
@@ -399,6 +398,8 @@ if(vidFileLength === 0){
                            value="<%= productIds %>"
                            name="productId"
                            />
+
+                         
                         <% } %>
                         <button class="btn" type="submit">
                         <% if (editing) { %>Update Product<% } else { %>Add
@@ -406,12 +407,7 @@ if(vidFileLength === 0){
                         </button>
                      </div>
                   </div>
-                  <input
-                  type="hidden"
-                  value="dasdaas122132"
-                  name="productId"
-                  />
-                  
+                
                   <div class="col-xl-6 col-md-12">
                      <div class="row">
                         <div class="col-md-12">

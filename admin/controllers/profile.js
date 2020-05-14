@@ -12,17 +12,14 @@ exports.getEditProfile = async (req, res, next) => {
   }
 
   await Admin.findAll({
-    include: [
-      {
-        model: AdminInfo,
-        where: { adminId: req.admin.id },
-      },
-    ],
+    where: { id: req.admin.id },
   })
     .then((admin) => {
-      if (adminIdParams != adminId) {
-        return res.redirect("/");
-      }
+      // if (adminIdParams != adminId) {
+      //   return res.redirect("/");
+      // }
+      console.log(admin);
+      // console.log(admin[0].email);
 
       res.render("profile/edit-profile", {
         pageTitle: "Edit Product",

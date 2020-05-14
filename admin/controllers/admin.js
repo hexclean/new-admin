@@ -128,6 +128,7 @@ exports.getEditProduct = async (req, res, next) => {
   if (!editMode) {
     return res.redirect("/");
   }
+
   const prodId = req.params.productId;
   let productId = [prodId];
   const Op = Sequelize.Op;
@@ -159,6 +160,7 @@ exports.getEditProduct = async (req, res, next) => {
         variantIdByParams: prodId,
         hasError: false,
         productIds: prodId,
+        productId: prodId,
         ext: productFinal,
         productVariant: productFinal,
         errorMessage: null,
@@ -180,7 +182,7 @@ exports.postEditProduct = async (req, res, next) => {
   const varId = req.body.variantId;
   var filteredStatus = req.body.status.filter(Boolean);
   // Title
-  console.log(prodId);
+  console.log("variantId", varId);
   const updatedRoTitle = req.body.roTitle;
   const updatedHuTitle = req.body.huTitle;
   const updatedEnTitle = req.body.enTitle;
@@ -240,9 +242,9 @@ exports.postEditProduct = async (req, res, next) => {
           },
           { where: { productId: prodId, languageId: 3 } }
         );
-        if (Array.isArray(ext)) {
+        if (Array.isArray(varId)) {
           const Op = Sequelize.Op;
-          for (let i = 0; i <= ext.length - 1; i++) {
+          for (let i = 0; i <= varId.length - 1; i++) {
             let variIds = [varId[i]];
             let prodIds = [prodId];
             await ProductFinal.update(
@@ -262,6 +264,8 @@ exports.postEditProduct = async (req, res, next) => {
                 },
               }
             );
+            console.log("variantId", variIds);
+            console.log("prodIds", prodIds);
           }
         }
       }
