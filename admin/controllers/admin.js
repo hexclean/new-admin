@@ -100,10 +100,10 @@ exports.postAddProduct = async (req, res, next) => {
   if (Array.isArray(ext)) {
     for (let i = 0; i <= ext.length - 1; i++) {
       await ProductFinal.create({
-        price: price[i] * commissionCode || 0,
+        price: price[i] || 0,
         productId: product.id,
         variantId: extId[i],
-
+        discountedPrice: 0,
         active: filteredStatus[i] == "on" ? 1 : 0,
       });
     }
@@ -180,6 +180,7 @@ exports.getEditProduct = async (req, res, next) => {
 exports.postEditProduct = async (req, res, next) => {
   const prodId = req.body.productId;
   const varId = req.body.variantId;
+  let variantId = [varId];
   var filteredStatus = req.body.status.filter(Boolean);
   // Title
   console.log("variantId", varId);
@@ -192,13 +193,18 @@ exports.postEditProduct = async (req, res, next) => {
   const updatedHuDesc = req.body.huDescription;
   const updatedEnDesc = req.body.enDescription;
   //
-  const updatedExtraPrice = req.body.price;
-
-  const status = req.body.status;
-  const updatedPrice = req.body.priceProduct;
+  const price = req.body.price;
+  console.log("price", price);
   const image = req.file;
+  const Op = Sequelize.Op;
+  const variants = await ProductFinal.findAll({
+    where: {
+      variantId: {
+        [Op.in]: variantId,
+      },
+    },
+  });
 
-  let ext = await ProductVariant.findAll();
   Product.findAll({
     include: [
       {
@@ -212,7 +218,6 @@ exports.postEditProduct = async (req, res, next) => {
           if (product.adminId.toString() !== req.admin.id.toString()) {
             return res.redirect("/");
           }
-          product.price = updatedPrice;
           if (image) {
             fileHelper.deleteFile(product.imageUrl);
             product.imageUrl = image.path;
@@ -242,15 +247,16 @@ exports.postEditProduct = async (req, res, next) => {
           },
           { where: { productId: prodId, languageId: 3 } }
         );
-        if (Array.isArray(varId)) {
+        if (Array.isArray(variants)) {
           const Op = Sequelize.Op;
-          for (let i = 0; i <= varId.length - 1; i++) {
+          for (let i = 0; i <= variants.length - 1; i++) {
             let variIds = [varId[i]];
             let prodIds = [prodId];
+            console.log("priceiiii", price[i]);
             await ProductFinal.update(
               {
-                price: updatedExtraPrice[i] || 0,
-                discountedPrice: updatedExtraPrice[i] * 0.8 || 0,
+                price: price[i] || 0,
+                discountedPrice: price[i] || 0,
                 active: filteredStatus[i] == "on" ? 1 : 0,
               },
               {

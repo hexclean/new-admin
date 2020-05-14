@@ -20,16 +20,10 @@ exports.postAddExtra = async (req, res, next) => {
   const roName = req.body.roName;
   const huName = req.body.huName;
   const enName = req.body.enName;
-  const Op = Sequelize.Op;
+
   let variantId = await ProductVariants.findAll({
     where: { adminId: req.admin.id },
   });
-
-  let variantIdLoop = [];
-  for (let i = 0; i < variantId.length; i++) {
-    variantIdLoop[i] = variantId[i].id;
-    console.log("variantIdLoop[i]", variantIdLoop[i]);
-  }
 
   const extra = await req.admin.createExtra();
 
@@ -56,44 +50,18 @@ exports.postAddExtra = async (req, res, next) => {
     });
 
     for (let i = 0; i <= variantId.length - 1; i++) {
-      // let extrasIds = [extId[i]];
-      // let variantId = [varId];
       console.log("variantId[i].id", variantId[i].id);
-      await ProductVariantsExtras.create(
-        {
-          price: 0,
-          quantityMin: 0,
-          quantityMax: 0,
-          discountedPrice: 0,
-          active: 0,
-          productVariantId: variantId[i].id,
-          extraId: extra.id,
-          adminId: req.admin.id,
-        }
-        // {
-        //   where: {
-        //     extraId: {
-        //       [Op.in]: extrasIds,
-        //     },
-        //     productVariantId: {
-        //       [Op.in]: variantId,
-        //     },
-        //   },
-        // }
-      );
+      await ProductVariantsExtras.create({
+        price: 0,
+        quantityMin: 0,
+        quantityMax: 0,
+        discountedPrice: 0,
+        active: 0,
+        productVariantId: variantId[i].id,
+        extraId: extra.id,
+        adminId: req.admin.id,
+      });
     }
-
-    // await ProductVariantsExtras.create({
-    //   quantityMin: 0,
-    //   quantityMax: 0,
-    //   active: 0,
-    //   discountedPrice: 10,
-    //   price: 0,
-    //   productVariantId: 1,
-
-    //   extraId: 1,
-    // });
-    console.log("extraId", extra.id);
   }
 
   extraTransaltion()

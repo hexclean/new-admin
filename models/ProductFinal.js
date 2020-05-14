@@ -12,6 +12,8 @@ const ProductFinal = sequelize.define("productFinal", {
     type: Sequelize.INTEGER,
     allowNull: false,
   },
+  discountedPrice: Sequelize.INTEGER,
+
   active: {
     type: Sequelize.INTEGER,
     allowNull: false,

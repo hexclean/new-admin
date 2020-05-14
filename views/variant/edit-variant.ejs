@@ -613,7 +613,28 @@
                
                <% } %>
                
-                
+               <script>
+                  $(function() { 
+                  $("#categoryRo").change(function() { 
+                     $("#categoryHu").val($(this).val());
+                     $("#categoryEn").val($(this).val());
+                  });
+                  });
+   
+                  $(function() { 
+                  $("#categoryHu").change(function() { 
+                     $("#categoryRo").val($(this).val());
+                     $("#categoryEn").val($(this).val());
+                  });
+                  });
+   
+                  $(function() { 
+                  $("#categoryEn").change(function() { 
+                     $("#categoryRo").val($(this).val());
+                     $("#categoryHu").val($(this).val());
+                  });
+                  });
+               </script>    
                 
               
       </form>

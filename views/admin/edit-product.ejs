@@ -388,7 +388,7 @@ if(vidFileLength === 0){
                         <div class="ms-panel-body">
                            <div class="carousel-inner">
                               <div class="carousel-item active">
-                                 <% if (editing) { %><img src="/<%= product[0].imageUrl %>" alt="<%= product[0].price %>"><% }  %>
+                                 <% if (editing) { %><img src="/<%= product[0].imageUrl %>" alt="<%= product[0].id %>"><% }  %>
                               </div>
                            </div>
                         </div>
@@ -572,46 +572,6 @@ if(vidFileLength === 0){
             <% } %>
             
 
-            <select id="select1">
-               <option value="1">1day</option>
-               <option value="2">2day</option>
-               <option value="3">3day</option>
-            </select>
-            
-            <select id="select2">
-               <option value="1">1day</option>
-               <option value="2">2day</option>
-               <option value="3">3day</option>
-            </select>
-
-            <select id="select3">
-               <option value="1">1day</option>
-               <option value="2">2day</option>
-               <option value="3">3day</option>
-            </select>
-
-            <script>
-               $(function() { //run on document.ready
-               $("#select1").change(function() { //this occurs when select 1 changes
-                  $("#select2").val($(this).val());
-                  $("#select3").val($(this).val());
-               });
-               });
-
-               $(function() { //run on document.ready
-               $("#select2").change(function() { //this occurs when select 1 changes
-                  $("#select1").val($(this).val());
-                  $("#select3").val($(this).val());
-               });
-               });
-
-               $(function() { //run on document.ready
-               $("#select3").change(function() { //this occurs when select 1 changes
-                  $("#select1").val($(this).val());
-                  $("#select2").val($(this).val());
-               });
-               });
-            </script>
       </form>
    </main>
    <%- include('../includes/end.ejs') %>

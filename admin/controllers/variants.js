@@ -7,7 +7,8 @@ const Category = require("../../models/ProductCategory");
 const CategoryTranslation = require("../../models/ProductCategoryTranslation");
 const Extras = require("../../models/Extra");
 const ExtraTranslations = require("../../models/ExtraTranslation");
-
+const ProductsFinal = require("../../models/ProductFinal");
+const Products = require("../../models/Product");
 var Sequelize = require("sequelize");
 
 const ITEMS_PER_PAGE = 14;
@@ -201,6 +202,10 @@ exports.postAddVariant = async (req, res, next) => {
   var filteredStatus = req.body.status.filter(Boolean);
   const ext = await req.admin.getExtras();
 
+  let productId = await Products.findAll({
+    where: { adminId: req.admin.id },
+  });
+
   const cat = await Category.findAll({
     where: { adminId: req.admin.id },
     include: [
@@ -237,6 +242,16 @@ exports.postAddVariant = async (req, res, next) => {
       productVariantId: variant.id,
       adminId: req.admin.id,
     });
+
+    for (let i = 0; i <= productId.length - 1; i++) {
+      console.log("productId[i].id", productId[i].id);
+      await ProductsFinal.create({
+        price: 0,
+        active: 0,
+        productId: productId[i].id,
+        variantId: variant.id,
+      });
+    }
   }
 
   if (Array.isArray(ext)) {
@@ -286,7 +301,6 @@ exports.postEditVariant = async (req, res, next) => {
   const Op = Sequelize.Op;
   const dasd = req.body.varId;
   let variantId = [dasd];
-  // console.log("variantId", variantId[0].extraId);
   const productVarToExt = await ProductVariantsExtras.findAll({
     where: {
       productVariantId: {
@@ -294,10 +308,6 @@ exports.postEditVariant = async (req, res, next) => {
       },
     },
   });
-  console.log("productVarToExt", productVarToExt[0].extraId);
-  console.log("productVarToExt", productVarToExt[1].extraId);
-
-  console.log("productVarToExt", productVarToExt[2].extraId);
 
   const ext = await req.admin.getExtras();
   ProductVariants.findAll({
