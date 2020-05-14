@@ -321,11 +321,12 @@ Allergen.hasMany(AllergenTranslation, {
   foreignKey: "allergenId",
 });
 
-DailyMenuFinal.belongsTo(Allergen, {
+DailyMenu.belongsTo(Allergen, {
   as: "theAllergenId",
   foreignKey: "allergenId",
 });
-Allergen.hasMany(DailyMenuFinal, { foreignKey: "allergenId" });
+
+Allergen.hasMany(DailyMenu, { foreignKey: "allergenId" });
 
 // app.use((error, req, res, next) => {
 //   res.status(500).render("500", {

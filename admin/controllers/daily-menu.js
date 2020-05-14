@@ -31,6 +31,7 @@ exports.postAddDailyMenu = async (req, res, next) => {
   const dailyMenu = await DailyMenu.create({
     adminId: req.admin.id,
     imageUrl: imageUrl,
+    active: 0,
   });
 
   const dailyMenuFinal = await DailyMenuFinal.create({

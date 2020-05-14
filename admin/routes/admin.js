@@ -7,6 +7,8 @@ const faqController = require("../controllers/faq");
 const categoryController = require("../controllers/category");
 const adminProfileController = require("../controllers/profile");
 const dailyMenuController = require("../controllers/daily-menu");
+const allergenController = require("../controllers/allergen");
+
 // const migrationController = require("../controllers/migration");
 // const adminProfileController = require("../controllers/profile");
 // const adminOrderController = require("../controllers/orders");
@@ -180,5 +182,22 @@ router.post(
 
   dailyMenuController.postEditDailyMenu
 );
+// Allergen
+router.get("/add-allergen", isAuth, allergenController.getAddAllergen);
+router.post("/add-allergen", isAuth, allergenController.postAddAllergen);
+
+router.get(
+  "/edit-allergen/:dailyMenuId",
+  isAuth,
+  allergenController.getEditAllergen
+);
+
+router.post(
+  "/edit-allergen",
+  isAuth,
+
+  allergenController.postEditAllergen
+);
+
 // router.post("/delete-variant", dailyMenuController.postDeleteVariant);
 module.exports = router;

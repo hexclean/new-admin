@@ -8,7 +8,10 @@ const DailyMenu = sequelize.define("dailyMenu", {
     allowNull: false,
     primaryKey: true,
   },
-
+  active: {
+    type: Sequelize.STRING,
+    allowNull: false,
+  },
   imageUrl: {
     type: Sequelize.STRING,
     allowNull: false,

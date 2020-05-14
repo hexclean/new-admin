@@ -1,0 +1,178 @@
+<%- include('../includes/head.ejs') %>
+<script>
+$(function () {
+  $("#roName_error_message").hide();
+  $("#huName_error_message").hide();
+  $("#enName_password_error_message").hide();
+
+  var error_roName = false;
+  var error_huName = false;
+  var error_enName = false;
+  var error_sku = false;
+
+  $("#roName").focusout(function () {
+    check_roName();
+  });
+
+  $("#huName").focusout(function(){
+     check_huName();
+  })
+
+  $("#enName").focusout(function(){
+     check_enName();
+  })
+  
+  function check_roName() {
+    var roName_length = $("#roName").val().length;
+
+    if (roName_length < 2 || roName_length > 15) {
+      $("#roName_error_message").html(`<%= lingua.extra_ro_name_required %>`);
+      $("#roName_error_message").show();
+      error_roName = true;
+    } else {
+      $("#roName_error_message").hide();
+    }
+  }
+
+  function check_huName() {
+    var huName_length = $("#huName").val().length;
+
+    if (huName_length < 2 || huName_length > 15) {
+      $("#huName_error_message").html(`<%= lingua.extra_hu_name_required %>`);
+      $("#huName_error_message").show();
+      error_huName = true;
+    } else {
+      $("#huName_error_message").hide();
+    }
+  }
+
+  function check_enName() {
+    var enName_length = $("#enName").val().length;
+
+    if (enName_length < 2 || enName_length > 15) {
+      $("#enName_error_message").html(`<%= lingua.extra_en_name_required %>`);
+      $("#enName_error_message").show();
+      error_enName = true;
+    } else {
+      $("#enName_error_message").hide();
+    }
+  }
+ 
+  $("#registration_form").submit(function () {
+    error_roName = false;
+    error_huName = false;
+    error_enName = false;
+
+    check_roName();
+    check_huName();
+    check_enName();
+
+    if (
+      error_roName == false &&
+      error_huName == false &&
+      error_enName == false 
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  });
+});
+</script>
+<style>
+   .intro {
+      border-color: red;
+   }
+</style>
+<script>
+$(document).ready(function () {
+    $("#registration_form").submit(function () {
+        $(".extra-btn").attr("disabled", true);
+        return true;
+    });
+});
+</script>
+</head>
+<body class="ms-body ms-aside-left-open ms-primary-theme ms-has-quickbar">
+   <%- include('../includes/navigation.ejs') %>
+   <main class="body-content">
+      <%- include('../includes/navigation-bar.ejs') %>
+     
+      <form 
+         id="registration_form"
+         class="ms-content-wrapper" 
+         action="/admin/<% if (editing) { %>edit-allergen<% } else { %>add-allergen<% } %>"
+         method="POST"
+         enctype="multipart/form-data">
+         <div class="row">
+            <div class="col-xl-6 col-md-12">
+               <div class="ms-panel ms-panel-fh">
+                  <div class="ms-panel-header">
+                     <h6>Add Product Form</h6>
+                  </div>
+                  <div class="ms-panel-body">
+                     <div class="form-row">
+                        <div class="col-md-12 mb-3">
+                           <label for="roName"><%= lingua.create_product_name1 %></label>
+                           <div class="input-group">
+                              <input
+                                 class="form-control <%= validationErrors.find(e => e.param === 'roName') ? 'invalid' : '' %>"
+                                 type="text"
+                                 name="roName"
+                                 id="roName"
+                                 value="<% if (editing || hasError) { %><%= extra[0].extraTranslations[0].name %><% } %>">
+                           </div>
+                           <span class="error_form" id="roName_error_message"></span>
+                        </div>
+                        <div class="col-md-12 mb-3">
+                           <label for="huName"><%= lingua.create_product_name2 %></label>
+                           <div class="input-group">
+                              <input
+                                 class="form-control <%= validationErrors.find(e => e.param === 'huName') ? 'invalid' : '' %>"
+                                 type="text"
+                                 name="huName"
+                                 id="huName"
+                                 value="<% if (editing || hasError) { %><%= extra[0].extraTranslations[1].name %><% } %>">
+                           </div>
+                           <span class="error_form" id="huName_error_message"></span>
+                        </div>
+                        <div class="col-md-12 mb-3">
+                           <label for="enName"><%= lingua.create_product_name3 %></label>
+                           <div class="input-group">
+                              <input
+                                 class="form-control <%= validationErrors.find(e => e.param === 'enName') ? 'invalid' : '' %>"
+                                 type="text"
+                                 name="enName"
+                                 id="enName"
+                                 value="<% if (editing || hasError) { %><%= extra[0].extraTranslations[2].name %><% } %>">
+                           </div>
+                           <span class="error_form" id="enName_error_message"></span>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div class="col-xl-6 col-md-12">
+               <div class="row">
+                  <div class="col-md-12">
+                     <div class="ms-panel">
+                        <div class="ms-panel-header">
+                           <h6>Product</h6>
+                        </div>
+                        <% if (editing) { %>
+                        <input type="hidden" value="<%= extra.id %>" name="extraId">
+                        <%for (let i = 0; i < extTranslations.length; i++){%>
+                        <input type="hidden" value="<%= extTranslations[i].id %>" name="extTranId">
+                        <%}%>
+                        <% } %>
+                        <button type="submit" id="extra-btn" class="btn btn-success has-icon" ><% if (editing) { %>Update Product<% } else { %>Add Product<% } %></button>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+         </div>
+      </form>
+   </main>
+   <%- include('../includes/end.ejs') %>
+</body>
