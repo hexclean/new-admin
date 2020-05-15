@@ -51,7 +51,6 @@ exports.postAddAllergen = async (req, res, next) => {
     });
 
     for (let i = 0; i <= dailyMenuId.length - 1; i++) {
-      // console.log("")
       await DailyMenuAllergens.create({
         allergenId: allergen.id,
         dailyMenuId: dailyMenuId[i].id,
@@ -147,11 +146,6 @@ exports.postEditAllergen = async (req, res, next) => {
     ],
   })
     .then((extra) => {
-      // console.log(extra);
-      // if (extra.adminId != req.admin.id) {
-      //   return res.redirect("/");
-      // }
-
       async function msg() {
         await ExtraTranslation.update(
           { name: updatedRoName },

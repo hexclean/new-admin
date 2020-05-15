@@ -1,9 +1,7 @@
-const { validationResult } = require("express-validator/check");
 const Extra = require("../../models/Extra");
 const ExtraTranslation = require("../../models/ExtraTranslation");
 const ProductVariantsExtras = require("../../models/ProductVariantsExtras");
 const ProductVariants = require("../../models/ProductVariant");
-var Sequelize = require("sequelize");
 
 exports.getAddExtra = (req, res, next) => {
   res.render("extra/edit-extra", {

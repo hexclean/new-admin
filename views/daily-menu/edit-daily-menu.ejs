@@ -26,6 +26,24 @@
       method="POST"
       enctype="multipart/form-data"
     >
+
+    <% if (editing) { %>
+      <% for (let i = 0; i < isActive.length; i++) { %>
+         <% if (isActive[i].active ==1) { %>
+            
+            <script>
+                $(document).ready(function() {
+                var activeCheckbox ="<%= isActive[i].allergenId %>";
+                $('.status-checkbox-'+activeCheckbox).prop('checked', true);
+                $('.status-'+activeCheckbox).val('on');
+                });
+            </script>
+               
+            <% } 
+         %>
+      <% } %>
+      <% } %>
+      
       <div class="row">
         <div class="col-xl-6 col-md-12">
           <div class="ms-panel ms-panel-fh">
@@ -169,6 +187,7 @@
                               value="<%= allergens[i].id %>"
                               name="extraId"
                               />          
+                         
                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 extra_box" data-extra="<%= allergens[i].id %>">
                               <div class="ms-card">
                                  <div class="d-flex justify-content-center extra-margin-top">
@@ -183,7 +202,7 @@
                                  </div>
                                  <div class="ms-card-body">
                                     <div class="new d-flex justify-content-center extra-name">
-                                       <h6 class="mb-0"><b><%= allergens[i].extraId %></b> </h6>
+                                       <h6 class="mb-0"><b><%= currentAllergenName[i] %></b> </h6>
                                     </div>
                                 
                                    
@@ -219,7 +238,7 @@
                                </div>
                                <div class="ms-card-body">
                                   <div class="new d-flex justify-content-center extra-name">
-                                     <h6 class="mb-0"><b><%= allergens[i].extraId %></b> </h6>
+                                     <h6 class="mb-0"><b><%= currentAllergenName[i] %></b> </h6>
                                   </div>
                               
                                  
@@ -232,21 +251,14 @@
                 </div>
              </div><% } %>
 
-                  <% if (editing) { %>
-               
-                 
-                
-                
-
-                
-                  <% } %>
+              
                   <input
                   type="hidden"
                   value="<%= dailyMenuId %>"
                   name="dailyMenuId"
                 />
                  
-                  <button class="btn" type="submit">
+                  <button class="btn btn-success has-icon" type="submit">
                     <% if (editing) { %>Update Product<% } else { %>Add
                     Product<% } %>
                   </button>

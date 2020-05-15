@@ -11,6 +11,9 @@ const DailyMenuAllergens = require("../../models//DailyMenuAllergens");
 
 exports.getAddDailyMenu = async (req, res, next) => {
   const dailyMId = req.params.dailyMenuId;
+
+  let currentAllergenName = [];
+
   const dailyMenu = await DailyMenu.findAll({
     where: { adminId: req.admin.id },
   });
@@ -22,7 +25,18 @@ exports.getAddDailyMenu = async (req, res, next) => {
       },
     ],
   });
-  console.log(dailyMenu);
+
+  for (let i = 0; i < allergens.length; i++) {
+    var currentLanguage = req.cookies.language;
+
+    if (currentLanguage == "ro") {
+      currentAllergenName[i] = allergens[i].allergenTranslations[0].name;
+    } else if (currentLanguage == "hu") {
+      currentAllergenName[i] = allergens[i].allergenTranslations[1].name;
+    } else {
+      currentAllergenName[i] = allergens[i].allergenTranslations[2].name;
+    }
+  }
   res.render("daily-menu/edit-daily-menu", {
     pageTitle: "Add Product",
     path: "/admin/add-product",
@@ -30,12 +44,12 @@ exports.getAddDailyMenu = async (req, res, next) => {
     dailyMenuId: dailyMId,
     allergens: allergens,
     dailyMenu: dailyMenu,
+    currentAllergenName: currentAllergenName,
   });
 };
 
 exports.postAddDailyMenu = async (req, res, next) => {
   const dailyMId = req.body.extraId;
-  const dMid = req.body.dailyMenuId;
   const price = req.body.price;
   //
   const roDescription = req.body.roDescription;
@@ -90,9 +104,6 @@ exports.postAddDailyMenu = async (req, res, next) => {
     if (Array.isArray(allergens)) {
       for (let i = 0; i <= allergens.length - 1; i++) {
         let allergenIds = [dailyMId[i]];
-        let dailyMenuIds = [dMid];
-        console.log("allergenIds", allergenIds);
-        console.log("dailyMenuIds", dailyMenuIds);
         await DailyMenuAllergens.create({
           active: filteredStatus[i] == "on" ? 1 : 0,
           allergenId: allergenIds,
@@ -131,13 +142,28 @@ exports.getEditDailyMenu = async (req, res, next) => {
       },
     ],
   });
-  let dailyMenuFinal = await DailyMenuFinal.findAll({
+
+  let isActive = await DailyMenuAllergens.findAll({
     where: {
       dailyMenuId: {
         [Op.in]: dailyMenuId,
       },
     },
   });
+
+  let currentAllergenName = [];
+  for (let i = 0; i < allergens.length; i++) {
+    var currentLanguage = req.cookies.language;
+
+    if (currentLanguage == "ro") {
+      currentAllergenName[i] = allergens[i].allergenTranslations[0].name;
+    } else if (currentLanguage == "hu") {
+      currentAllergenName[i] = allergens[i].allergenTranslations[1].name;
+    } else {
+      currentAllergenName[i] = allergens[i].allergenTranslations[2].name;
+    }
+  }
+
   DailyMenu.findAll({
     where: {
       id: dailyMenuId,
@@ -158,17 +184,8 @@ exports.getEditDailyMenu = async (req, res, next) => {
         product: product,
         dailyMenuId: dailyMId,
         allergens: allergens,
-        // variantIdByParams: prodId,
-        // productIds: prodId,
-        // productId: prodId,
-        // ext: productFinal,
-        // productVariant: productFinal,
-        // errorMessage: null,
-        // validationErrors: [],
-
-        // extTranslations: product[0].productTranslations,
-        // isActive: product[0].allergen,
-        // isActiveVariant: productFinal,
+        isActive: isActive,
+        currentAllergenName: currentAllergenName,
       });
     })
     .catch((err) => {
@@ -181,9 +198,6 @@ exports.getEditDailyMenu = async (req, res, next) => {
 exports.postEditDailyMenu = async (req, res, next) => {
   const dailyMId = req.body.extraId;
   const dMid = req.body.dailyMenuId;
-  // const varId = req.body.variantId;
-  let dailyMenuId = [dailyMId];
-  // console.log("dailyMId", dailyMId);
   var filteredStatus = req.body.status.filter(Boolean);
 
   // Description
@@ -201,13 +215,6 @@ exports.postEditDailyMenu = async (req, res, next) => {
       },
     ],
   });
-  // const variants = await DailyMenuFinal.findAll({
-  //   where: {
-  //     variantId: {
-  //       [Op.in]: variantId,
-  //     },
-  //   },
-  // });
 
   DailyMenu.findAll({
     include: [
