@@ -2,6 +2,7 @@ const Allergen = require("../../models/Allergen");
 const AllergensTranslation = require("../../models/AllergenTranslation");
 const DailyMenu = require("../../models/DailyMenu");
 const DailyMenuAllergens = require("../../models/DailyMenuAllergens");
+const ITEMS_PER_PAGE = 15;
 
 exports.getAddAllergen = (req, res, next) => {
   res.render("allergen/edit-allergen", {
@@ -93,28 +94,24 @@ exports.getEditAllergen = (req, res, next) => {
   if (!editMode) {
     return res.redirect("/");
   }
-  const extId = req.params.extraId;
-
-  Extra.findAll({
+  const extId = req.params.allergenId;
+  console.log("extId", extId);
+  Allergen.findAll({
     where: {
       id: extId,
     },
     include: [
       {
-        model: ExtraTranslation,
+        model: AllergensTranslation,
       },
     ],
   })
     .then((extra) => {
-      console.log("extra.adminId", extra[0].adminId);
       if (extra[0].adminId !== req.admin.id) {
         return res.redirect("/");
       }
 
-      if (extra[0].adminId !== req.admin.id) {
-        return res.redirect("/");
-      }
-      res.render("extra/edit-extra", {
+      res.render("allergen/edit-allergen", {
         pageTitle: "Edit Product",
         path: "/admin/edit-product",
         editing: editMode,
@@ -122,7 +119,7 @@ exports.getEditAllergen = (req, res, next) => {
         hasError: false,
         errorMessage: null,
         validationErrors: [],
-        extTranslations: extra[0].extraTranslations,
+        extTranslations: extra[0].allergenTranslations,
       });
     })
     .catch((err) => {
@@ -137,34 +134,83 @@ exports.postEditAllergen = async (req, res, next) => {
   const updatedHuName = req.body.huName;
   const updatedEnName = req.body.enName;
   const extTranId = req.body.extTranId;
-
-  Extra.findAll({
+  console.log("extTranId", extTranId);
+  Allergen.findAll({
     include: [
       {
-        model: ExtraTranslation,
+        model: AllergensTranslation,
       },
     ],
   })
     .then((extra) => {
       async function msg() {
-        await ExtraTranslation.update(
+        await AllergensTranslation.update(
           { name: updatedRoName },
           { where: { id: extTranId[0], languageId: 1 } }
         );
 
-        await ExtraTranslation.update(
+        await AllergensTranslation.update(
           { name: updatedHuName },
           { where: { id: extTranId[1], languageId: 2 } }
         );
 
-        await ExtraTranslation.update(
+        await AllergensTranslation.update(
           { name: updatedEnName },
           { where: { id: extTranId[2], languageId: 3 } }
         );
       }
       msg();
 
-      res.redirect("/admin/vr-index");
+      res.redirect("/admin/allergen-index");
+    })
+    .catch((err) => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
+};
+
+exports.getIndex = async (req, res, next) => {
+  const page = +req.query.page || 1;
+  let totalItems;
+
+  const allergen = await Allergen.findAll({
+    where: {
+      adminId: req.admin.id,
+    },
+    include: [
+      {
+        model: AllergensTranslation,
+      },
+    ],
+  })
+    .then((numAllergen) => {
+      totalItems = numAllergen;
+      return Allergen.findAll({
+        where: {
+          adminId: req.admin.id,
+        },
+        include: [
+          {
+            model: AllergensTranslation,
+          },
+        ],
+        offset: (page - 1) * ITEMS_PER_PAGE,
+        limit: ITEMS_PER_PAGE,
+      });
+    })
+    .then((allergen) => {
+      res.render("allergen/index", {
+        pageTitle: "Admin Products",
+        path: "/admin/products",
+        currentPage: page,
+        hasNextPage: ITEMS_PER_PAGE * page < totalItems.length,
+        hasPreviousPage: page > 1,
+        nextPage: page + 1,
+        previousPage: page - 1,
+        lastPage: Math.ceil(totalItems.length / ITEMS_PER_PAGE),
+        ag: allergen,
+      });
     })
     .catch((err) => {
       const error = new Error(err);

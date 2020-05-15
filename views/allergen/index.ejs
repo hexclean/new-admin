@@ -1,0 +1,83 @@
+<%- include('../includes/head.ejs') %>
+</head>
+<body class="ms-body ms-aside-left-open ms-primary-theme ms-has-quickbar">
+   <%- include('../includes/navigation.ejs') %> 
+   <main class="body-content">
+      <%- include('../includes/navigation-bar.ejs') %>
+      <div class="ms-content-wrapper">
+         <div class="ms-profile-overview no-img-var">
+            <ul class="ms-profile-navigation nav nav-tabs tabs-bordered" role="tablist">
+               <li role="presentation"><a href="#" aria-controls="tab1" class="active show" role="tab" data-toggle="tab"> Index </a></li>
+               <li role="presentation"><a class="add-allergen" href="/admin/add-allergen">Add allergen </a></li>
+               <li role="presentation"><a href="/admin/add-extra"> Add Extra </a></li>
+               <li role="presentation"><a class="add-category" href="/admin/add-category"> Add category </a></li>
+            </ul>
+            <div class="tab-content">
+               <div class="tab-pane" id="tab1">
+               </div>
+               <div class="tab-pane" id="tab2">
+               </div>
+               <div class="tab-pane" id="tab3">
+               </div>
+            </div>
+         </div>
+      </div>
+    
+       
+      <div class="ms-content-wrapper">
+         <div class="row">
+            <div class="col-md-12">
+              
+               <div class="col-12">
+                  <div class="ms-panel">
+                     <div class="ms-panel-header">
+                        <h6> allergen List</h6>
+                     </div>
+                     <div class="ms-panel-body">
+                        <div class="table-responsive">
+                           <table class="table table-hover thead-primary">
+                              <thead>
+                                 <tr>
+                                    <th scope="col">ID</th>
+                                    <th scope="col">SKU</th>
+                                    
+                                    <th scope="col">STATUS</th>
+                                    <th scope="col" class="buttons-text-allergens">DELETE</th>
+                                    <th scope="col" >EDIT</th>
+                                 </tr>
+                              </thead>
+                              <% if (ag.length > 0) { %>
+                              <% for (let allergen of ag) { %>
+                              <tbody>
+                                 <tr>
+                                    <th scope="row"><%= allergen.id %></th>
+                                    <td><%= allergen.sku %></td>
+                                    
+                                    <td><span class="badge badge-success">AKTIV</span></td>
+                                    <td>
+                                       <form action="/admin/delete-allergen" method="POST" >
+
+                                          <input type="hidden" value="<%= allergen.id %>" name="allergenId">
+                                          <button class="btn grid-btn mt-0 btn-sm btn-primary"  type="submit" class="btn btn-primary shadow-none">Törlés</button>
+                                       </form>
+                                    </td>
+                                    <td>                              <a href="/admin/edit-allergen/<%= allergen.id %>?edit=true"class="btn grid-btn mt-0 btn-sm btn-secondary" ><%= lingua.product_action_edit %></a>
+                                    </td>
+                                 </tr>
+                              </tbody>
+                              <% } %>
+                              <% } else { %>
+                              <h1>No Products Found!</h1>
+                              <% } %>
+                           </table>
+                        </div>
+                        <%- include('../includes/pagination.ejs', {currentPage: currentPage, nextPage: nextPage, previousPage: previousPage, lastPage: lastPage, hasNextPage: hasNextPage, hasPreviousPage: hasPreviousPage}) %>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </main>
+   <%- include('../includes/end.ejs') %>
+</body>

@@ -183,11 +183,12 @@ router.post(
   dailyMenuController.postEditDailyMenu
 );
 // Allergen
+router.get("/allergen-index", isAuth, allergenController.getIndex);
 router.get("/add-allergen", isAuth, allergenController.getAddAllergen);
 router.post("/add-allergen", isAuth, allergenController.postAddAllergen);
 
 router.get(
-  "/edit-allergen/:dailyMenuId",
+  "/edit-allergen/:allergenId",
   isAuth,
   allergenController.getEditAllergen
 );
