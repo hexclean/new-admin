@@ -1,5 +1,6 @@
 const Sequelize = require("sequelize");
 const fileHelper = require("../../util/file");
+const ITEMS_PER_PAGE = 14;
 
 //
 const DailyMenu = require("../../models/DailyMenu");
@@ -59,7 +60,6 @@ exports.postAddDailyMenu = async (req, res, next) => {
   const enDescription = req.body.enDescription;
   const image = req.file;
   const imageUrl = image.path;
-  console.log("req.body", req.body);
   var filteredStatus = req.body.status.filter(Boolean);
   const allergens = await Allergens.findAll({
     where: { adminId: req.admin.id },
@@ -118,7 +118,7 @@ exports.postAddDailyMenu = async (req, res, next) => {
 
   productTransaltion()
     .then((result) => {
-      res.redirect("/admin/products");
+      res.redirect("/admin/daily-menu-index");
     })
     .catch((err) => {
       const error = new Error(err);
@@ -297,7 +297,56 @@ exports.postEditDailyMenu = async (req, res, next) => {
         }
       }
       msg();
-      res.redirect("/admin/products");
+      res.redirect("/admin/daily-menus-index");
+    })
+    .catch((err) => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
+};
+
+exports.getIndex = async (req, res, next) => {
+  const page = +req.query.page || 1;
+  let totalItems;
+
+  const allergen = await DailyMenu.findAll({
+    where: {
+      adminId: req.admin.id,
+    },
+    include: [
+      {
+        model: DailyMenuTranslation,
+      },
+    ],
+  })
+    .then((numAllergen) => {
+      totalItems = numAllergen;
+      return DailyMenu.findAll({
+        where: {
+          adminId: req.admin.id,
+        },
+        include: [
+          {
+            model: DailyMenuTranslation,
+          },
+        ],
+        offset: (page - 1) * ITEMS_PER_PAGE,
+        limit: ITEMS_PER_PAGE,
+      });
+    })
+    .then((allergen) => {
+      res.render("daily-menu/index", {
+        pageTitle: "Admin Products",
+        path: "/admin/products",
+        currentPage: page,
+        hasNextPage: ITEMS_PER_PAGE * page < totalItems.length,
+        hasPreviousPage: page > 1,
+        nextPage: page + 1,
+        previousPage: page - 1,
+        lastPage: Math.ceil(totalItems.length / ITEMS_PER_PAGE),
+        dm: allergen,
+      });
     })
     .catch((err) => {
       const error = new Error(err);

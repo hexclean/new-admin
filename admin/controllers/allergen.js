@@ -62,7 +62,7 @@ exports.postAddAllergen = async (req, res, next) => {
 
   extraTransaltion()
     .then((result) => {
-      res.redirect("/admin/vr-index");
+      res.redirect("/admin/allergen-index");
     })
     .catch((err) => {
       const error = new Error(err);

@@ -8,7 +8,7 @@
          <div class="ms-profile-overview no-img-var">
             <ul class="ms-profile-navigation nav nav-tabs tabs-bordered" role="tablist">
                <li role="presentation"><a href="#" aria-controls="tab1" class="active show" role="tab" data-toggle="tab"> Index </a></li>
-               <li role="presentation"><a class="add-allergen" href="/admin/add-allergen">Add allergen </a></li>
+               <li role="presentation"><a class="add-allergen" href="/admin/add-daily-menu">Add DailyMenu </a></li>
          
             </ul>
             <div class="tab-content">
@@ -45,17 +45,17 @@
                                     <th scope="col" >EDIT</th>
                                  </tr>
                               </thead>
-                              <% if (ag.length > 0) { %>
-                              <% for (let allergen of ag) { %>
+                              <% if (dm.length > 0) { %>
+                              <% for (let dailyMenu of dm) { %>
                               <tbody>
                                  <tr>
-                                    <th scope="row"><%= allergen.id %></th>
-                                    <td><%= allergen.sku %></td>
+                                    <th scope="row"><%= dailyMenu.id %></th>
+                                    <td><%= dailyMenu.sku %></td>
                                     
                                     <td><span class="badge badge-success">AKTIV</span></td>
                                    
                                     <td>
-                                        <a href="/admin/edit-allergen/<%= allergen.id %>?edit=true"class="btn grid-btn mt-0 btn-sm btn-secondary" ><%= lingua.product_action_edit %></a>
+                                        <a href="/admin/edit-daily-menu/<%= dailyMenu.id %>?edit=true"class="btn grid-btn mt-0 btn-sm btn-secondary" ><%= lingua.product_action_edit %></a>
                                     </td>
                                  </tr>
                               </tbody>

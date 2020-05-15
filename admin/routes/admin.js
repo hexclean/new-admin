@@ -167,6 +167,8 @@ router.get("/edit-profile/:adminId", adminProfileController.getEditProfile);
 router.get("/dashboard", isAuth, adminProfileController.getDashboard);
 
 // Daily Menu
+router.get("/daily-menus-index", isAuth, dailyMenuController.getIndex);
+
 router.get("/add-daily-menu", isAuth, dailyMenuController.getAddDailyMenu);
 router.post("/add-daily-menu", isAuth, dailyMenuController.postAddDailyMenu);
 
@@ -200,5 +202,4 @@ router.post(
   allergenController.postEditAllergen
 );
 
-// router.post("/delete-variant", dailyMenuController.postDeleteVariant);
 module.exports = router;
