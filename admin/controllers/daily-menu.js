@@ -17,6 +17,7 @@ exports.getAddDailyMenu = async (req, res, next) => {
   const dailyMenu = await DailyMenu.findAll({
     where: { adminId: req.admin.id },
   });
+
   const allergens = await Allergens.findAll({
     where: { adminId: req.admin.id },
     include: [
@@ -51,12 +52,14 @@ exports.getAddDailyMenu = async (req, res, next) => {
 exports.postAddDailyMenu = async (req, res, next) => {
   const dailyMId = req.body.extraId;
   const price = req.body.price;
+  const datepicker = req.body.datepicker;
   //
   const roDescription = req.body.roDescription;
   const huDescription = req.body.huDescription;
   const enDescription = req.body.enDescription;
   const image = req.file;
   const imageUrl = image.path;
+  console.log("req.body", req.body);
   var filteredStatus = req.body.status.filter(Boolean);
   const allergens = await Allergens.findAll({
     where: { adminId: req.admin.id },
@@ -75,7 +78,7 @@ exports.postAddDailyMenu = async (req, res, next) => {
   const dailyMenuFinal = await DailyMenuFinal.create({
     price: price,
     discountedPrice: 1,
-
+    time: datepicker,
     dailyMenuId: dailyMenu.id,
   });
   console.log(dailyMenuFinal);
@@ -199,6 +202,7 @@ exports.postEditDailyMenu = async (req, res, next) => {
   const dailyMId = req.body.extraId;
   const dMid = req.body.dailyMenuId;
   var filteredStatus = req.body.status.filter(Boolean);
+  const datepicker = req.body.datepicker;
 
   // Description
   const updatedRoDesc = req.body.roDescription;
@@ -259,6 +263,7 @@ exports.postEditDailyMenu = async (req, res, next) => {
         await DailyMenuFinal.update(
           {
             price: price,
+            time: datepicker,
           },
           {
             where: {

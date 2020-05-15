@@ -12,6 +12,11 @@
   });
 </script>
 
+  <script>
+  $( function() {
+    $( "#datepicker" ).datepicker();
+  } );
+  </script>
 
 </head>
 <body class="ms-body ms-aside-left-open ms-primary-theme ms-has-quickbar">
@@ -60,9 +65,29 @@
                   >
 
                 
-
+                  <script>
+                    $( function() {
+                      $( "#datepicker" ).datepicker();
+                    } );
+                    </script>
+                  
          
-
+                <div class="col-md-12 mb-3">
+                  <label for="datepicker">datepicker</label>
+                  <div class="input-group">
+                    <input
+                      class="form-control"
+                      type="text"
+                      id="datepicker"
+                      name="datepicker"
+                      autocomplete="off"
+                      value="<% if (editing) { %><%= product[0].dailyMenuFinals[0].time %><% } %>"
+                    />
+                    <div class="invalid-feedback">
+                      datepicker 
+                    </div>
+                  </div>
+                </div>
                 
 
             
