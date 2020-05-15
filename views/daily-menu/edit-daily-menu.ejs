@@ -1,26 +1,18 @@
 <%- include('../includes/head.ejs') %>
 <script>
-                    $(function() { 
-                    $("#categoryRo").change(function() { 
-                       $("#categoryHu").val($(this).val());
-                       $("#categoryEn").val($(this).val());
-                    });
-                    });
-                  
-                    $(function() { 
-                    $("#categoryHu").change(function() { 
-                       $("#categoryRo").val($(this).val());
-                       $("#categoryEn").val($(this).val());
-                    });
-                    });
-                  
-                    $(function() { 
-                    $("#categoryEn").change(function() { 
-                       $("#categoryRo").val($(this).val());
-                       $("#categoryHu").val($(this).val());
-                    });
-                    });
-                  </script>  
+  $(document).ready(function() {
+     $('.status-checkbox').click(function() {
+        var extraId = $(this).attr('data-extraId');
+        if($(this).is(':checked')) {
+           $('.status-'+extraId).val('on');
+        } else {
+           $('.status-'+extraId).val('off');
+        }
+     });
+  });
+</script>
+
+
 </head>
 <body class="ms-body ms-aside-left-open ms-primary-theme ms-has-quickbar">
   <%- include('../includes/navigation.ejs') %>
@@ -42,6 +34,22 @@
             </div>
             <div class="ms-panel-body">
                 <div class="form-row">
+                  <form
+                    class="product-form"
+                    action="/admin/<% if (editing) { %>edit-daily-menu<% } else { %>add-daily-menu<% } %>"
+                    method="POST"
+                    enctype="multipart/form-data"
+                  >
+
+                
+
+         
+
+                
+
+            
+             
+
                   <div class="col-md-6 mb-3">
                     <label for="price"><%= lingua.create_product_price %></label>
                     <div class="input-group">
@@ -146,58 +154,98 @@
                     </div>
                   
                 </div>
+
+
+
+
+                <% if (editing) { %>    <div class="ms-content-wrapper">
+                  <div class="row">
+                     <div class="col-md-12">
+                        <div class="row">
+                         
+                           <% for (let i = 0; i < allergens.length; i++) { %>
+                              <input
+                              type="hidden"
+                              value="<%= allergens[i].id %>"
+                              name="extraId"
+                              />          
+                           <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 extra_box" data-extra="<%= allergens[i].id %>">
+                              <div class="ms-card">
+                                 <div class="d-flex justify-content-center extra-margin-top">
+                                       <div class="row"> 
+                                         
+                                          <label class="ms-switch" >                 
+                                             <input type="hidden" value="off" class="status-<%= allergens[i].id %>" name="status[<%= allergens[i].id %>]" >          
+                                             <input    data-extraId="<%= allergens[i].id %>"  class="status-checkbox status-checkbox-<%= allergens[i].id %>" type="checkbox">
+                                             <span class="ms-switch-slider ms-switch-success round"></span>
+                                          </label> 
+                                       </div>
+                                 </div>
+                                 <div class="ms-card-body">
+                                    <div class="new d-flex justify-content-center extra-name">
+                                       <h6 class="mb-0"><b><%= allergens[i].extraId %></b> </h6>
+                                    </div>
+                                
+                                   
+                                 </div>
+                              </div>
+                           </div>
+                           <% } %>
+                        </div>
+                     </div>
+                  </div>
+               </div><% } else { %>    <div class="ms-content-wrapper">
+                <div class="row">
+                   <div class="col-md-12">
+                      <div class="row">
+                       
+                         <% for (let i = 0; i < allergens.length; i++) { %>
+                            <input
+                            type="hidden"
+                            value="<%= allergens[i].id %>"
+                            name="extraId"
+                            />          
+                         <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 extra_box" data-extra="<%= allergens[i].id %>">
+                            <div class="ms-card">
+                               <div class="d-flex justify-content-center extra-margin-top">
+                                     <div class="row"> 
+                                       
+                                        <label class="ms-switch" >                 
+                                           <input type="hidden" value="off" class="status-<%= allergens[i].id %>" name="status[<%= allergens[i].id %>]" >          
+                                           <input    data-extraId="<%= allergens[i].id %>"  class="status-checkbox status-checkbox-<%= allergens[i].id %>" type="checkbox">
+                                           <span class="ms-switch-slider ms-switch-success round"></span>
+                                        </label> 
+                                     </div>
+                               </div>
+                               <div class="ms-card-body">
+                                  <div class="new d-flex justify-content-center extra-name">
+                                     <h6 class="mb-0"><b><%= allergens[i].extraId %></b> </h6>
+                                  </div>
+                              
+                                 
+                               </div>
+                            </div>
+                         </div>
+                         <% } %>
+                      </div>
+                   </div>
+                </div>
+             </div><% } %>
+
                   <% if (editing) { %>
-                  <input
-                    type="hidden"
-                    value="<%= dailyMenuId %>"
-                    name="dailyMenuId"
-                  />
+               
+                 
+                
+                
 
-                  <div class="col-md-6 mb-3">
-                    <label for="validationCustom22">HU</label>
-                    <div class="input-group">
-                      <select class="form-control" for="categoryRo" id="categoryRo" name="categoryRo">
-                       <option value="">HU</option>
-                       <% for(let i = 0; i < allergens.length; i++) { %>       
-                         <option id="categoryRo" name="categoryRo" value='<%= allergens[i].id %>'><%= allergens[i].allergenTranslations[0].name %></option>
-                       <% } %>
-                      </select>
-                     
-                    </div>
-                    <span class="error_form" id="category_error_message"></span>
-                  </div>
-
-                  <div class="col-md-6 mb-3">
-                    <label for="validationCustom22">HU</label>
-                    <div class="input-group">
-                      <select class="form-control" for="categoryHu" id="categoryHu" name="categoryHu">
-                       <option value="">HU</option>
-                       <% for(let i = 0; i < allergens.length; i++) { %>       
-                         <option id="categoryHu" name="categoryHu" value='<%= allergens[i].id %>'><%= allergens[i].allergenTranslations[1].name %></option>
-                       <% } %>
-                      </select>
-                     
-                    </div>
-                    <span class="error_form" id="category_error_message"></span>
-                  </div>
-
-                  <div class="col-md-6 mb-3">
-                    <label for="validationCustom22">HU</label>
-                    <div class="input-group">
-                      <select class="form-control" for="categoryEn" id="categoryEn" name="categoryEn">
-                       <option value="">HU</option>
-                       <% for(let i = 0; i < allergens.length; i++) { %>       
-                         <option id="categoryEn" name="categoryEn" value='<%= allergens[i].id %>'><%= allergens[i].allergenTranslations[2].name %></option>
-                       <% } %>
-                      </select>
-                     
-                    </div>
-                    <span class="error_form" id="category_error_message"></span>
-                  </div>
-
-                   
+                
                   <% } %>
-
+                  <input
+                  type="hidden"
+                  value="<%= dailyMenuId %>"
+                  name="dailyMenuId"
+                />
+                 
                   <button class="btn" type="submit">
                     <% if (editing) { %>Update Product<% } else { %>Add
                     Product<% } %>
@@ -217,5 +265,26 @@
   });
   </script>
 
- 
+<script>
+  $(function() { 
+  $("#categoryRo").change(function() { 
+     $("#categoryHu").val($(this).val());
+     $("#categoryEn").val($(this).val());
+  });
+  });
+
+  $(function() { 
+  $("#categoryHu").change(function() { 
+     $("#categoryRo").val($(this).val());
+     $("#categoryEn").val($(this).val());
+  });
+  });
+
+  $(function() { 
+  $("#categoryEn").change(function() { 
+     $("#categoryRo").val($(this).val());
+     $("#categoryHu").val($(this).val());
+  });
+  });
+</script>    
 </body>

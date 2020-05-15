@@ -7,8 +7,10 @@ const DailyMenuTranslation = require("../../models/DailyMenuTranslation");
 const DailyMenuFinal = require("../../models/DailyMenuFinal");
 const Allergens = require("../../models/Allergen");
 const AllergensTranslation = require("../../models/AllergenTranslation");
+const DailyMenuAllergens = require("../../models//DailyMenuAllergens");
 
 exports.getAddDailyMenu = async (req, res, next) => {
+  const dailyMId = req.params.dailyMenuId;
   const dailyMenu = await DailyMenu.findAll({
     where: { adminId: req.admin.id },
   });
@@ -25,12 +27,15 @@ exports.getAddDailyMenu = async (req, res, next) => {
     pageTitle: "Add Product",
     path: "/admin/add-product",
     editing: false,
+    dailyMenuId: dailyMId,
     allergens: allergens,
     dailyMenu: dailyMenu,
   });
 };
 
 exports.postAddDailyMenu = async (req, res, next) => {
+  const dailyMId = req.body.extraId;
+  const dMid = req.body.dailyMenuId;
   const price = req.body.price;
   //
   const roDescription = req.body.roDescription;
@@ -38,7 +43,15 @@ exports.postAddDailyMenu = async (req, res, next) => {
   const enDescription = req.body.enDescription;
   const image = req.file;
   const imageUrl = image.path;
-
+  var filteredStatus = req.body.status.filter(Boolean);
+  const allergens = await Allergens.findAll({
+    where: { adminId: req.admin.id },
+    include: [
+      {
+        model: AllergensTranslation,
+      },
+    ],
+  });
   const dailyMenu = await DailyMenu.create({
     adminId: req.admin.id,
     imageUrl: imageUrl,
@@ -48,9 +61,8 @@ exports.postAddDailyMenu = async (req, res, next) => {
   const dailyMenuFinal = await DailyMenuFinal.create({
     price: price,
     discountedPrice: 1,
-    active: 1,
+
     dailyMenuId: dailyMenu.id,
-    allergenId: 1,
   });
   console.log(dailyMenuFinal);
 
@@ -75,6 +87,19 @@ exports.postAddDailyMenu = async (req, res, next) => {
       dailyMenuId: dailyMenu.id,
       languageId: 3,
     });
+    if (Array.isArray(allergens)) {
+      for (let i = 0; i <= allergens.length - 1; i++) {
+        let allergenIds = [dailyMId[i]];
+        let dailyMenuIds = [dMid];
+        console.log("allergenIds", allergenIds);
+        console.log("dailyMenuIds", dailyMenuIds);
+        await DailyMenuAllergens.create({
+          active: filteredStatus[i] == "on" ? 1 : 0,
+          allergenId: allergenIds,
+          dailyMenuId: dailyMenu.id,
+        });
+      }
+    }
   }
 
   productTransaltion()
@@ -106,7 +131,6 @@ exports.getEditDailyMenu = async (req, res, next) => {
       },
     ],
   });
-  console.log(allergens[0].allergenTranslations[0].name);
   let dailyMenuFinal = await DailyMenuFinal.findAll({
     where: {
       dailyMenuId: {
@@ -155,11 +179,12 @@ exports.getEditDailyMenu = async (req, res, next) => {
 };
 
 exports.postEditDailyMenu = async (req, res, next) => {
-  const dailyMId = req.body.dailyMenuId;
+  const dailyMId = req.body.extraId;
+  const dMid = req.body.dailyMenuId;
   // const varId = req.body.variantId;
   let dailyMenuId = [dailyMId];
   // console.log("dailyMId", dailyMId);
-  // var filteredStatus = req.body.status.filter(Boolean);
+  var filteredStatus = req.body.status.filter(Boolean);
 
   // Description
   const updatedRoDesc = req.body.roDescription;
@@ -168,7 +193,14 @@ exports.postEditDailyMenu = async (req, res, next) => {
   //
   const price = req.body.price;
   const image = req.file;
-  const Op = Sequelize.Op;
+  const allergens = await Allergens.findAll({
+    where: { adminId: req.admin.id },
+    include: [
+      {
+        model: AllergensTranslation,
+      },
+    ],
+  });
   // const variants = await DailyMenuFinal.findAll({
   //   where: {
   //     variantId: {
@@ -186,7 +218,7 @@ exports.postEditDailyMenu = async (req, res, next) => {
   })
     .then((result) => {
       async function msg() {
-        await DailyMenu.findByPk(dailyMId).then((product) => {
+        await DailyMenu.findByPk(dMid).then((product) => {
           if (product.adminId.toString() !== req.admin.id.toString()) {
             return res.redirect("/");
           }
@@ -200,48 +232,59 @@ exports.postEditDailyMenu = async (req, res, next) => {
           {
             description: updatedRoDesc,
           },
-          { where: { dailyMenuId: dailyMId, languageId: 1 } }
+          { where: { dailyMenuId: dMid, languageId: 1 } }
         );
 
         await DailyMenuTranslation.update(
           {
             description: updatedHuDesc,
           },
-          { where: { dailyMenuId: dailyMId, languageId: 2 } }
+          { where: { dailyMenuId: dMid, languageId: 2 } }
         );
 
         await DailyMenuTranslation.update(
           {
             description: updatedEnDesc,
           },
-          { where: { dailyMenuId: dailyMId, languageId: 3 } }
+          { where: { dailyMenuId: dMid, languageId: 3 } }
         );
-        // if (Array.isArray(variants)) {
-        //   const Op = Sequelize.Op;
-        //   for (let i = 0; i <= variants.length; i++) {
-        //     let variIds = [varId[i]];
-        //     let prodIds = [prodId];
-        //     await ProductFinal.update(
-        //       {
-        //         price: updatedExtraPrice[i] || 0,
-        //         discountedPrice: updatedExtraPrice[i] || 0,
-        //         active: filteredStatus[i] == "on" ? 1 : 0,
-        //       },
-        //       {
-        //         where: {
-        //           variantId: {
-        //             [Op.in]: variIds,
-        //           },
-        //           productId: {
-        //             [Op.in]: prodIds,
-        //           },
-        //         },
-        //       }
-        //     );
-        //     console.log("variantId", variIds);
-        //     console.log("prodIds", prodIds);
-        //   }
-        // }
+
+        await DailyMenuFinal.update(
+          {
+            price: price,
+          },
+          {
+            where: {
+              dailyMenuId: dailyMId,
+            },
+          }
+        );
+        if (Array.isArray(allergens)) {
+          const Op = Sequelize.Op;
+          for (let i = 0; i <= allergens.length - 1; i++) {
+            let allergenIds = [dailyMId[i]];
+            let dailyMenuIds = [dMid];
+            console.log("allergenIds", allergenIds);
+            console.log("dailyMenuIds", dailyMenuIds);
+            await DailyMenuAllergens.update(
+              {
+                active: filteredStatus[i] == "on" ? 1 : 0,
+                allergenId: allergenIds,
+                dailyMenuId: dailyMenuIds,
+              },
+              {
+                where: {
+                  allergenId: {
+                    [Op.in]: allergenIds,
+                  },
+                  dailyMenuId: {
+                    [Op.in]: dailyMenuIds,
+                  },
+                },
+              }
+            );
+          }
+        }
       }
       msg();
       res.redirect("/admin/products");

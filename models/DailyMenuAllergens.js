@@ -8,6 +8,7 @@ const DailyMenuAllergens = sequelize.define("dailyMenuAllergens", {
     allowNull: false,
     primaryKey: true,
   },
+  active: Sequelize.INTEGER,
 });
 
 module.exports = DailyMenuAllergens;
