@@ -26,7 +26,7 @@
             $('.add-product').click(function () {return false;});
          </script>
     <div class="alert alert-danger" role="alert">
-      <i class="flaticon-alert-1"></i> <strong>Oh snap!</strong> eloszor varians kell legyen addig nem lehet termeket feltolteni
+      <i class="flaticon-alert-1"></i> <strong class="alert-message-popup">Oh snap! eloszor varians kell legyen addig nem lehet termeket feltolteni</strong>
     </div>
    <% } %>
       <div class="ms-content-wrapper">
@@ -52,29 +52,34 @@
                </div>
                <% if (prods.length > 0) { %>
                <div class="row">
-                  <% for (let product of prods) { %>
-                  <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
-                     <div class="ms-card">
-                        <div class="ms-card-img">
-                           <%= lingua.language %>
-                           <img src="/<%= product.imageUrl %>" alt="<%= product.title %>">
-                        </div>
-                        <div class="ms-card-body">
-                           <div class="new">
-                              <h6 class="mb-0"></h6>
-                              <h6 class="ms-text-primary mb-0"><%= product.price %> lej</h6>
-                           </div>
-                           <p>fd</p>
-                           <div class="new mb-0">
+                  <% for (let i =0; i < prods.length; i++) { %>
+                     <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
+                        <div class="ms-card">
+                          <div class="ms-card-img">
+                           <img src="/<%= prods[i].imageUrl %>" alt="<%= prods.title %>">
+                          </div>
+                          <div class="ms-card-body">
+      
+                            <div class="new">
+                              <h6 class="mb-0 product-title-size"><%= currentProductName[i] %></h6>
+                              <h6 class="ms-text-primary mb-0"><%= prods[i].productFinals[0].price %> lej</h6>
+                            </div>
+                            <div class="new meta">
+                              <p class="product-description-size">Id: <%= prods[i].id %></p>
+                              <span class="badge badge-success">In Stock</span>
+                            </div>
+                            <p class="product-description-size"><%= currentProductDescription[i] %></p>
+                            <div class="new mb-0">
                               <form action="/admin/delete-product" method="POST">
-                                 <input type="hidden" value="<%= product.id %>" name="productId">
+                                 <input type="hidden" value="<%= prods[i].id %>" name="productId">
                                  <button class="btn grid-btn mt-0 btn-sm btn-primary" type="submit"><%= lingua.product_action_delete %></button>
                               </form>
-                              <a href="/admin/edit-product/<%= product.id %>?edit=true"class="btn grid-btn mt-0 btn-sm btn-secondary" ><%= lingua.product_action_edit %></a>
+                              <a href="/admin/edit-product/<%= prods[i].id %>?edit=true"class="btn grid-btn mt-0 btn-sm btn-secondary" ><%= lingua.product_action_edit %></a>
                            </div>
+                          </div>
                         </div>
-                     </div>
-                  </div>
+                      </div>
+            
                   <% } %>
                </div>
             </div>

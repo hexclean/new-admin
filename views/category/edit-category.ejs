@@ -4,12 +4,12 @@ $(function () {
   $("#roName_error_message").hide();
   $("#huName_error_message").hide();
   $("#enName_error_message").hide();
-  $("#sku_error_message").hide();
+
 
   var error_roName = false;
   var error_huName = false;
   var error_enName = false;
-  var error_sku = false;
+
 
   $("#roName").focusout(function () {
     check_roName();
@@ -23,9 +23,7 @@ $(function () {
      check_enName();
   })
 
-  $("#sku").focusout(function(){
-     check_sku();
-  })
+ 
   
   function check_roName() {
     var roName_length = $("#roName").val().length;
@@ -63,34 +61,22 @@ $(function () {
     }
   }
 
-  function check_sku() {
-    var sku_length = $("#sku").val().length;
-
-    if (sku_length < 2 || sku_length > 15) {
-      $("#sku_error_message").html("sku");
-      $("#sku_error_message").show();
-      error_sku = true;
-    } else {
-      $("#sku_error_message").hide();
-    }
-  }
  
   $("#registration_form").submit(function () {
     error_roName = false;
     error_huName = false;
     error_enName = false;
-    error_sku = false;
+   
 
     check_roName();
     check_huName();
     check_enName();
-    check_sku();
+  
 
     if (
       error_roName == false &&
       error_huName == false &&
-      error_enName == false &&
-      error_sku == false
+      error_enName == false 
     ) {
       return true;
     } else {
@@ -132,18 +118,7 @@ $(document).ready(function () {
                   </div>
                   <div class="ms-panel-body">
                      <div class="form-row">
-                        <div class="col-md-12 mb-3">
-                           <label for="sku">sku</label>
-                           <div class="input-group">
-                              <input
-                                 class="form-control"
-                                 type="text"
-                                 name="sku"
-                                 id="sku"
-                                 value="<% if (editing) { %><%= cat[0].sku %><% } %>">
-                           </div>
-                           <span class="error_form" id="sku_error_message"></span>
-                        </div>
+                       
                         <div class="col-md-12 mb-3">
                            <label for="roName"><%= lingua.create_product_name1 %></label>
                            <div class="input-group">

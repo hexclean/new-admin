@@ -16,11 +16,9 @@ exports.postAddCategory = async (req, res, next) => {
   const roName = req.body.roName;
   const huName = req.body.huName;
   const enName = req.body.enName;
-  const sku = req.body.sku;
 
   const category = await Category.create({
     adminId: req.admin.id,
-    sku: sku,
   });
 
   async function extraTransaltion() {

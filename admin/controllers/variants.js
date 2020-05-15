@@ -53,7 +53,8 @@ exports.searchExtraByKeyword = async (req, res, next) => {
 exports.getIndex = async (req, res, next) => {
   const page = +req.query.page || 1;
   let totalItems;
-
+  let currentExtraName = [];
+  let currentCategoryName = [];
   const checkExtraLength = await Extras.findAll({
     where: { adminId: req.admin.id },
   });
@@ -86,20 +87,56 @@ exports.getIndex = async (req, res, next) => {
       limit: ITEMS_PER_PAGE,
     });
   });
+  console.log("catL", category);
   const extras = await ProductExtra.findAll({
     where: {
       adminId: req.admin.id,
     },
+    include: [
+      {
+        model: ExtraTranslations,
+      },
+    ],
   }).then((numExtras) => {
     totalItems = numExtras;
     return ProductExtra.findAll({
       where: {
         adminId: req.admin.id,
       },
+      include: [
+        {
+          model: ExtraTranslations,
+        },
+      ],
       offset: (page - 1) * ITEMS_PER_PAGE,
       limit: ITEMS_PER_PAGE,
     });
   });
+
+  for (let i = 0; i < extras.length; i++) {
+    var currentLanguage = req.cookies.language;
+
+    if (currentLanguage == "ro") {
+      currentExtraName[i] = extras[i].extraTranslations[0].name;
+    } else if (currentLanguage == "hu") {
+      currentExtraName[i] = extras[i].extraTranslations[1].name;
+    } else {
+      currentExtraName[i] = extras[i].extraTranslations[2].name;
+    }
+  }
+
+  for (let i = 0; i < category.length; i++) {
+    var currentLanguage = req.cookies.language;
+
+    if (currentLanguage == "ro") {
+      currentCategoryName[i] = category[i].productCategoryTranslations[0].name;
+    } else if (currentLanguage == "hu") {
+      currentCategoryName[i] = category[i].productCategoryTranslations[1].name;
+    } else {
+      currentCategoryName[i] = category[i].productCategoryTranslations[2].name;
+    }
+  }
+
   await req.admin
     .getProductVariants()
     .then((numVariants) => {
@@ -124,6 +161,8 @@ exports.getIndex = async (req, res, next) => {
         vr: vr,
         cat: category,
         extras: extras,
+        currentExtraName: currentExtraName,
+        currentCategoryName: currentCategoryName,
       });
     })
     .catch((err) => {

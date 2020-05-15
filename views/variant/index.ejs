@@ -29,7 +29,7 @@
                   $('.add-variant').click(function () {return false;});
                </script>
           <div class="alert alert-danger" role="alert">
-            <i class="flaticon-alert-1"></i> <strong>Oh snap!</strong> eloszor extrat letre kell hoznod majd azutan tudsz varianst letrehozni
+            <i class="flaticon-alert-1 alert-message-popup"></i> <strong class="alert-message-popup">Oh snap! eloszor extrat letre kell hoznod majd azutan tudsz varianst letrehozni</strong>
           </div>
          <% } %>
 
@@ -38,7 +38,7 @@
                $('.add-variant').click(function () {return false;});
             </script>
        <div class="alert alert-danger" role="alert">
-         <i class="flaticon-alert-1"></i> <strong>Oh snap!</strong> eloszor KATEGORIAT letre kell hoznod majd azutan tudsz varianst letrehozni
+         <i class="flaticon-alert-1"></i> <strong class="alert-message-popup">Oh snap! eloszor KATEGORIAT letre kell hoznod majd azutan tudsz varianst letrehozni</strong >
        </div>
       <% } %>
        
@@ -105,49 +105,21 @@
                                  <tr>
                                     <th scope="col">ID</th>
                                    
-                                    
+                                    <th scope="col"> name </th>
                                     <th scope="col">STATUS</th>
-                                    <th scope="col" class="buttons-text-variants">DELETE</th>
                                     <th scope="col" >EDIT</th>
                                  </tr>
                               </thead>
                               <% if (extras.length > 0) { %>
-                              <% for (let variant of extras) { %>
+                              <% for (let i=0; i < extras.length; i++ ) { %>
                               <tbody>
                                  <tr>
-                                    <th scope="row"><%= variant.id %></th>
+                                    <th scope="row"><%= extras[i].id %></th>
                                     
-                                   
+                                   <td><%= currentExtraName[i] %></td>
                                     <td><span class="badge badge-success">AKTIV</span></td>
                                     <td>
-                                       <form action="/admin/delete-variant" method="POST">
-                                       <div class="col-md-3 col-sm-6 ">
-                                          
-                                          <input type="hidden" value="<%= variant.id %>" name="variantId">
-                                          <button  class="btn grid-btn mt-0 btn-sm btn-secondary imp-delete-colour "  data-toggle="modal" data-target="#modal-2"> DELETE </button>
-                                       </div>
-                                       <div class="modal fade" id="modal-2" tabindex="-1" role="dialog" aria-labelledby="modal-2">
-                                          <div class="modal-dialog modal-dialog-centered" role="document">
-                                             <div class="modal-content">
-                                                <div class="modal-header">
-                                                   <h3 class="modal-title has-icon ms-icon-round "><i class="flaticon-placeholder bg-primary text-white"></i> Really?</h3>
-                                                   <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                                </div>
-                                                <div class="modal-body">
-                                                   <p>Lorem ipsum is simply Dummy text of the printing and typing industry. Lorem ipsum has been the industry's standard for dummy text.</p>
-                                                </div>
-                                                <div class="modal-footer">
-                                                 
-                                                      <input type="hidden" value="<%= variant.id %>" name="variantId">
-                                                      <button type="submit" class="btn btn-primary shadow-none">Deletsddsdsdsae</button>
-                                                   </form>
-                                                   <button type="button" class="btn btn-light" data-dismiss="modal">Cancel</button>
-                                                </div>
-                                             </div>
-                                          </div>
-                                        </div>
-                                    </td>
-                                    <td>                              <a href="/admin/edit-extra/<%= variant.id %>?edit=true"class="btn grid-btn mt-0 btn-sm btn-secondary" ><%= lingua.product_action_edit %></a>
+                                       <a href="/admin/edit-extra/<%= extras[i].id %>?edit=true"class="btn grid-btn mt-0 btn-sm btn-secondary" ><%= lingua.product_action_edit %></a>
                                     </td>
                                  </tr>
                               </tbody>
@@ -172,52 +144,24 @@
                               <thead>
                                  <tr>
                                     <th scope="col">ID</th>
-                                    <th scope="col">SKU</th>
+                                    <th scope="col">Name</th>
                                     
                                     <th scope="col">STATUS</th>
-                                    <th scope="col" class="buttons-text-variants">DELETE</th>
                                     <th scope="col" >EDIT</th>
                                  </tr>
                               </thead>
                               <% if (cat.length > 0) { %>
                               <% for (let i = 0; i < cat.length; i++) { %>
                               <tbody>
-                                 <tr>
+                                
                                     <th scope="row"><%= cat[i].id %></th>
-                                    <td><%= cat[i].sku %></td>
+                                    <td><%= currentCategoryName[i] %></td>
                                     
                                     <td><span class="badge badge-success">AKTIV</span></td>
-                                    <td>
-                                       <form action="/admin/delete-variant" method="POST">
-                                       <div class="col-md-3 col-sm-6 ">
-                                          
-                                          <input type="hidden" value="<%= cat[i].id %>" name="variantId">
-                                          <button  class="btn grid-btn mt-0 btn-sm btn-secondary imp-delete-colour "  data-toggle="modal" data-target="#modal-2"> DELETE </button>
-                                       </div>
-                                       <div class="modal fade" id="modal-2" tabindex="-1" role="dialog" aria-labelledby="modal-2">
-                                          <div class="modal-dialog modal-dialog-centered" role="document">
-                                             <div class="modal-content">
-                                                <div class="modal-header">
-                                                   <h3 class="modal-title has-icon ms-icon-round "><i class="flaticon-placeholder bg-primary text-white"></i> Really?</h3>
-                                                   <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                                </div>
-                                                <div class="modal-body">
-                                                   <p>Lorem ipsum is simply Dummy text of the printing and typing industry. Lorem ipsum has been the industry's standard for dummy text.</p>
-                                                </div>
-                                                <div class="modal-footer">
-                                                 
-                                                      <input type="hidden" value="<%= cat[i].id %>" name="variantId">
-                                                      <button type="submit" class="btn btn-primary shadow-none">Deletsddsdsdsae</button>
-                                                   </form>
-                                                   <button type="button" class="btn btn-light" data-dismiss="modal">Cancel</button>
-                                                </div>
-                                             </div>
-                                          </div>
-                                        </div>
-                                    </td>
+                                  
                                     <td>                              <a href="/admin/edit-category/<%= cat[i].id %>?edit=true"class="btn grid-btn mt-0 btn-sm btn-secondary" ><%= lingua.product_action_edit %></a>
                                     </td>
-                                 </tr>
+                             
                               </tbody>
                               <% } %>
                               <% } else { %>

@@ -2889,6 +2889,12 @@ input:checked + .ms-switch-slider.ms-switch-dark {
   color: #4f8dca;
   border-color: #4f8dca;
 }
+.product-title-size {
+  font-size: 22px !important;
+}
+.product-description-size {
+font-size: 15px;
+}
 .alert.alert-warning {
   background-color: #fef6e3;
   color: #fda600;
@@ -2898,6 +2904,10 @@ input:checked + .ms-switch-slider.ms-switch-dark {
   background-color: #ffebea;
   color: #f9423c;
   border-color: #f9423c;
+}
+
+.alert-message-popup {
+  font-size: 16px !important;
 }
 .alert.alert-brand {
   background-color: #eaedff;

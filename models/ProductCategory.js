@@ -8,10 +8,7 @@ const ProductCategory = sequelize.define("productCategory", {
     allowNull: false,
     primaryKey: true,
   },
-  sku: {
-    type: Sequelize.STRING,
-    allowNull: false,
-  },
+
   adminId: {
     type: Sequelize.INTEGER,
     allowNull: false,

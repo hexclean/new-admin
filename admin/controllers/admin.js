@@ -139,6 +139,17 @@ exports.getEditProduct = async (req, res, next) => {
       },
     },
   });
+  const test = await Product.findAll({
+    where: { adminId: req.admin.id },
+    include: [
+      {
+        model: ProductTranslation,
+      },
+      { model: ProductFinal },
+    ],
+  });
+  console.log("productFinal", test);
+
   Product.findAll({
     where: {
       id: prodId,
@@ -267,8 +278,6 @@ exports.postEditProduct = async (req, res, next) => {
                 },
               }
             );
-            console.log("variantId", variIds);
-            console.log("prodIds", prodIds);
           }
         }
       }
@@ -281,33 +290,57 @@ exports.postEditProduct = async (req, res, next) => {
       return next(error);
     });
 };
+
 exports.getProducts = async (req, res, next) => {
+  let currentProductName = [];
+  let currentProductDescription = [];
+
   const checkVariantLength = await ProductVariants.findAll({
     where: { adminId: req.admin.id },
   });
-  req.admin
-    .getProducts({
-      include: [
-        {
-          model: ProductTranslation,
-        },
-      ],
-    })
+  await Product.findAll({
+    where: { adminId: req.admin.id },
+    include: [
+      {
+        model: ProductTranslation,
+      },
+      { model: ProductFinal },
+    ],
+  })
+
     .then((product) => {
-      // console.log(products[2].title);
-      var currentLanguage = req.cookies.language;
-      if (currentLanguage == "ro") {
-        currentLanguage = 0;
-      } else if (currentLanguage == "hu") {
-        currentLanguage = 1;
-      } else {
-        currentLanguage = 2;
+      for (let i = 0; i < product.length; i++) {
+        var currentLanguage = req.cookies.language;
+
+        if (currentLanguage == "ro") {
+          currentProductName[i] = product[i].productTranslations[0].title;
+        } else if (currentLanguage == "hu") {
+          currentProductName[i] = product[i].productTranslations[1].title;
+        } else {
+          currentProductName[i] = product[i].productTranslations[2].title;
+        }
       }
 
+      for (let i = 0; i < product.length; i++) {
+        var currentLanguage = req.cookies.language;
+
+        if (currentLanguage == "ro") {
+          currentProductDescription[i] =
+            product[i].productTranslations[0].description;
+        } else if (currentLanguage == "hu") {
+          currentProductDescription[i] =
+            product[i].productTranslations[1].description;
+        } else {
+          currentProductDescription[i] =
+            product[i].productTranslations[2].description;
+        }
+      }
       res.render("admin/products", {
         prods: product,
         checkVariantLength: checkVariantLength,
         currentLanguage: currentLanguage,
+        currentProductName: currentProductName,
+        currentProductDescription: currentProductDescription,
         pageTitle: "Admin Products",
         path: "/admin/products",
       });
