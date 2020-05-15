@@ -134,7 +134,6 @@ router.post("/delete-product", isAuth, adminController.postDeleteProduct);
 //   isAuth,
 //   adminDailyMenuController.postEditDailyMenu
 // );
-router.post("/delete-daily-menu", isAuth, adminController.postDeleteDailyMenu);
 
 // router.get("/add-daily-menu", adminDailyMenuController.getAddDailyMenu);
 // router.post(
@@ -168,6 +167,7 @@ router.get("/dashboard", isAuth, adminProfileController.getDashboard);
 
 // Daily Menu
 router.get("/daily-menus-index", isAuth, dailyMenuController.getIndex);
+router.post("/delete-daily-menu", dailyMenuController.postDeleteDailyMenu);
 
 router.get("/add-daily-menu", isAuth, dailyMenuController.getAddDailyMenu);
 router.post("/add-daily-menu", isAuth, dailyMenuController.postAddDailyMenu);

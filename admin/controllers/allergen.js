@@ -173,8 +173,30 @@ exports.postEditAllergen = async (req, res, next) => {
 exports.getIndex = async (req, res, next) => {
   const page = +req.query.page || 1;
   let totalItems;
+  let currentAllergenName = [];
 
-  const allergen = await Allergen.findAll({
+  const allergens = await Allergen.findAll({
+    where: { adminId: req.admin.id },
+    include: [
+      {
+        model: AllergensTranslation,
+      },
+    ],
+  });
+
+  for (let i = 0; i < allergens.length; i++) {
+    var currentLanguage = req.cookies.language;
+
+    if (currentLanguage == "ro") {
+      currentAllergenName[i] = allergens[i].allergenTranslations[0].name;
+    } else if (currentLanguage == "hu") {
+      currentAllergenName[i] = allergens[i].allergenTranslations[1].name;
+    } else {
+      currentAllergenName[i] = allergens[i].allergenTranslations[2].name;
+    }
+  }
+
+  await Allergen.findAll({
     where: {
       adminId: req.admin.id,
     },
@@ -210,6 +232,7 @@ exports.getIndex = async (req, res, next) => {
         previousPage: page - 1,
         lastPage: Math.ceil(totalItems.length / ITEMS_PER_PAGE),
         ag: allergen,
+        currentAllergenName: currentAllergenName,
       });
     })
     .catch((err) => {

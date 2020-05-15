@@ -41,7 +41,7 @@
                                     <th scope="col">SKU</th>
                                     
                                     <th scope="col">STATUS</th>
-                                    
+                                    <th scope="col">DEDDLETE</th>
                                     <th scope="col" >EDIT</th>
                                  </tr>
                               </thead>
@@ -53,7 +53,10 @@
                                     <td><%= dailyMenu.sku %></td>
                                     
                                     <td><span class="badge badge-success">AKTIV</span></td>
-                                   
+                                   <td> <form action="/admin/delete-daily-menu" method="POST">
+                                    <input type="hidden" value="<%= dailyMenu.id %>" name="dailyMenuId">
+                                    <button class="btn grid-btn mt-0 btn-sm btn-primary" type="submit"><%= lingua.product_action_delete %></button>
+                                 </form></td>
                                     <td>
                                         <a href="/admin/edit-daily-menu/<%= dailyMenu.id %>?edit=true"class="btn grid-btn mt-0 btn-sm btn-secondary" ><%= lingua.product_action_edit %></a>
                                     </td>

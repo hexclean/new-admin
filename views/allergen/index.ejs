@@ -46,16 +46,16 @@
                                  </tr>
                               </thead>
                               <% if (ag.length > 0) { %>
-                              <% for (let allergen of ag) { %>
+                              <% for (let i = 0; i < ag.length; i++) { %>
                               <tbody>
                                  <tr>
-                                    <th scope="row"><%= allergen.id %></th>
-                                    <td><%= allergen.sku %></td>
+                                    <th scope="row"><%= ag[i].id %></th>
+                                    <td><%= currentAllergenName[i] %></td>
                                     
                                     <td><span class="badge badge-success">AKTIV</span></td>
                                    
                                     <td>
-                                        <a href="/admin/edit-allergen/<%= allergen.id %>?edit=true"class="btn grid-btn mt-0 btn-sm btn-secondary" ><%= lingua.product_action_edit %></a>
+                                        <a href="/admin/edit-allergen/<%= ag[i].id %>?edit=true"class="btn grid-btn mt-0 btn-sm btn-secondary" ><%= lingua.product_action_edit %></a>
                                     </td>
                                  </tr>
                               </tbody>

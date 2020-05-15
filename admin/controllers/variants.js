@@ -134,7 +134,16 @@ exports.getIndex = async (req, res, next) => {
 };
 
 exports.getAddVariant = async (req, res, next) => {
-  const ext = await req.admin.getExtras();
+  let currentExtraName = [];
+  const ext = await Extras.findAll({
+    where: { adminId: req.admin.id },
+    include: [
+      {
+        model: ExtraTranslations,
+      },
+    ],
+  });
+  console.log("ext", ext);
   const checkExtraLength = await Extras.findAll({
     where: { adminId: req.admin.id },
   });
@@ -158,6 +167,17 @@ exports.getAddVariant = async (req, res, next) => {
       },
     ],
   });
+  for (let i = 0; i < ext.length; i++) {
+    var currentLanguage = req.cookies.language;
+
+    if (currentLanguage == "ro") {
+      currentExtraName[i] = ext[i].extraTranslations[0].name;
+    } else if (currentLanguage == "hu") {
+      currentExtraName[i] = ext[i].extraTranslations[1].name;
+    } else {
+      currentExtraName[i] = ext[i].extraTranslations[2].name;
+    }
+  }
   // for (let i = 0; i < cat.length; i++) {
   //   if (cat[i].id === cat[i].productCategoryTranslations[0].productCategoryId) {
   //     console.log("cat[i].id", cat[i].id);
@@ -178,6 +198,7 @@ exports.getAddVariant = async (req, res, next) => {
     editing: false,
     hasError: false,
     ext: ext,
+    currentExtraName: currentExtraName,
     cat: cat,
     errorMessage: null,
     validationErrors: [],
@@ -377,24 +398,42 @@ exports.postEditVariant = async (req, res, next) => {
 };
 
 exports.getEditVariant = async (req, res, next) => {
-  const categoryIdJoinBody = req.body.categoryIdJoin;
-
   const editMode = req.query.edit;
   if (!editMode) {
     return res.redirect("/");
   }
-
+  let currentExtraName = [];
   const varId = req.params.variantId;
   let variantId = [varId];
   const Op = Sequelize.Op;
-  const productVarToExt = await ProductVariantsExtras.findAll({
-    where: {
-      productVariantId: {
-        [Op.in]: variantId,
+
+  const productVarToExt = await Extras.findAll({
+    where: { adminId: req.admin.id },
+    include: [
+      {
+        model: ExtraTranslations,
       },
-    },
+      { model: ProductVariantsExtras },
+    ],
   });
-  const ext = await req.admin.getExtras();
+  console.log("productVarToExt", productVarToExt);
+  // const productVarToExt = await ProductVariantsExtras.findAll({
+  //   where: {
+  //     productVariantId: {
+  //       [Op.in]: variantId,
+  //     },
+  //   },
+  // });
+
+  const ext = await Extras.findAll({
+    where: { adminId: req.admin.id },
+    include: [
+      {
+        model: ExtraTranslations,
+      },
+    ],
+  });
+
   const cat = await Category.findAll({
     include: [
       {
@@ -406,8 +445,7 @@ exports.getEditVariant = async (req, res, next) => {
       },
     ],
   });
-  let test = cat[0].productCategoryTranslations[0].productCategoryId;
-  console.log("test", test);
+  // let test = cat[0].productCategoryTranslations[0].productCategoryId;
   // console.log(
   //   "cat[0].productCategoryTranslations[0]",
   //   cat[0].productCategoryTranslations[0]
@@ -417,31 +455,31 @@ exports.getEditVariant = async (req, res, next) => {
   // console.log("categoryIdJoin", categoryIdJoin);
   // console.log("categoryIdJoin", categoryIdJoin);
   // console.log(cat[0].productVariantTranslations);
-  for (let i = cat.length; i >= 0; i--) {
-    // console.log(
-    //   "cat[0].productVariantTranslations[0].productVariantId",
-    //   cat[0].productVariantTranslations[0].productVariantId
-    // );
+  // for (let i = cat.length; i >= 0; i--) {
+  //   // console.log(
+  //   //   "cat[0].productVariantTranslations[0].productVariantId",
+  //   //   cat[0].productVariantTranslations[0].productVariantId
+  //   // );
 
-    if (
-      1 == 1
-      // cat[0].productCategoryTranslations[0].productCategoryId == 1
-      // cat[i].productVariantTranslations[0].productVariantId == 2
-      // cat[i].productCategoryTranslation[0].categoryId == 3
-    ) {
-      // console.log(cat[0].productCategoryTranslations);
-      console.log("i", i);
-      // console.log(
-      //   "cat[i]",
-      //   cat[i].productCategoryTranslations[i].productCategoryId
-      // );
-      // console.log("yes", cat[i].productCategoryTranslations[i].name);
-      // console.log("yes_ID:", cat[i].productCategoryTranslations[i].id);
-    } else {
-      // next();
-      console.log("no");
-    }
-  }
+  //   if (
+  //     1 == 1
+  //     // cat[0].productCategoryTranslations[0].productCategoryId == 1
+  //     // cat[i].productVariantTranslations[0].productVariantId == 2
+  //     // cat[i].productCategoryTranslation[0].categoryId == 3
+  //   ) {
+  //     // console.log(cat[0].productCategoryTranslations);
+  //     console.log("i", i);
+  //     // console.log(
+  //     //   "cat[i]",
+  //     //   cat[i].productCategoryTranslations[i].productCategoryId
+  //     // );
+  //     // console.log("yes", cat[i].productCategoryTranslations[i].name);
+  //     // console.log("yes_ID:", cat[i].productCategoryTranslations[i].id);
+  //   } else {
+  //     // next();
+  //     console.log("no");
+  //   }
+  // }
   // console.log(cat);
   // console.log(
   //   "cat[0].productVariantTranslations",
@@ -452,6 +490,18 @@ exports.getEditVariant = async (req, res, next) => {
   //   cat[0].productCategoryTranslations
   // );
   // console.log("cat", cat[0].productCategoryTranslations[0].productCategoryId);
+  for (let i = 0; i < productVarToExt.length; i++) {
+    var currentLanguage = req.cookies.language;
+
+    if (currentLanguage == "ro") {
+      currentExtraName[i] = productVarToExt[i].extraTranslations[0].name;
+    } else if (currentLanguage == "hu") {
+      currentExtraName[i] = productVarToExt[i].extraTranslations[1].name;
+    } else {
+      currentExtraName[i] = productVarToExt[i].extraTranslations[2].name;
+    }
+  }
+
   ProductVariants.findAll({
     where: {
       id: varId,
@@ -476,13 +526,13 @@ exports.getEditVariant = async (req, res, next) => {
         categoryIdJoin: cat,
         hasError: false,
         ext: ext,
-        varToExt: productVarToExt,
         cat: cat,
         productVarToExt: productVarToExt,
         errorMessage: null,
         validationErrors: [],
         extTranslations: variant[0].productVariantTranslations,
         isActive: variant[0].productVariantsExtras,
+        currentExtraName: currentExtraName,
       });
     })
     .catch((err) => {

@@ -72,7 +72,7 @@ exports.postAddDailyMenu = async (req, res, next) => {
   const dailyMenu = await DailyMenu.create({
     adminId: req.admin.id,
     imageUrl: imageUrl,
-    active: 0,
+    active: 1,
   });
 
   const dailyMenuFinal = await DailyMenuFinal.create({
@@ -118,7 +118,7 @@ exports.postAddDailyMenu = async (req, res, next) => {
 
   productTransaltion()
     .then((result) => {
-      res.redirect("/admin/daily-menu-index");
+      res.redirect("/admin/daily-menus-index");
     })
     .catch((err) => {
       const error = new Error(err);
@@ -313,6 +313,7 @@ exports.getIndex = async (req, res, next) => {
   const allergen = await DailyMenu.findAll({
     where: {
       adminId: req.admin.id,
+      active: 1,
     },
     include: [
       {
@@ -321,10 +322,12 @@ exports.getIndex = async (req, res, next) => {
     ],
   })
     .then((numAllergen) => {
+      console.log("numAllergen", numAllergen);
       totalItems = numAllergen;
       return DailyMenu.findAll({
         where: {
           adminId: req.admin.id,
+          active: 1,
         },
         include: [
           {
@@ -346,6 +349,26 @@ exports.getIndex = async (req, res, next) => {
         previousPage: page - 1,
         lastPage: Math.ceil(totalItems.length / ITEMS_PER_PAGE),
         dm: allergen,
+      });
+    })
+    .catch((err) => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
+};
+
+exports.postDeleteDailyMenu = (req, res, next) => {
+  const prodId = req.body.dailyMenuId;
+  console.log("productId", prodId);
+  DailyMenu.findByPk(prodId)
+    .then((product) => {
+      if (!product) {
+        return next(new Error("Product not found."));
+      }
+      product.active = 0;
+      return product.save().then((result) => {
+        res.redirect("/admin/daily-menus-index");
       });
     })
     .catch((err) => {

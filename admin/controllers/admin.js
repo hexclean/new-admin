@@ -337,22 +337,3 @@ exports.postDeleteProduct = (req, res, next) => {
       return next(error);
     });
 };
-
-exports.postDeleteDailyMenu = (req, res, next) => {
-  const prodId = req.body.productId;
-  Product.findById(prodId)
-    .then((product) => {
-      if (!product) {
-        return next(new Error("Product not found."));
-      }
-      product.active = 0;
-      return product.save().then((result) => {
-        res.redirect("/admin/daily-menus");
-      });
-    })
-    .catch((err) => {
-      const error = new Error(err);
-      error.httpStatusCode = 500;
-      return next(error);
-    });
-};
