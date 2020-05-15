@@ -50,7 +50,6 @@ exports.postAddExtra = async (req, res, next) => {
     });
 
     for (let i = 0; i <= variantId.length - 1; i++) {
-      console.log("variantId[i].id", variantId[i].id);
       await ProductVariantsExtras.create({
         price: 0,
         quantityMin: 0,

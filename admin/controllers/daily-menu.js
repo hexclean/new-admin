@@ -264,8 +264,6 @@ exports.postEditDailyMenu = async (req, res, next) => {
           for (let i = 0; i <= allergens.length - 1; i++) {
             let allergenIds = [dailyMId[i]];
             let dailyMenuIds = [dMid];
-            console.log("allergenIds", allergenIds);
-            console.log("dailyMenuIds", dailyMenuIds);
             await DailyMenuAllergens.update(
               {
                 active: filteredStatus[i] == "on" ? 1 : 0,
