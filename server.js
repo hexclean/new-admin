@@ -100,7 +100,7 @@ app.set("views", "views");
 const adminRoutes = require("./admin/routes/admin");
 const indexRoutes = require("./admin/routes/index");
 const authRoutes = require("./admin/routes/auth");
-// const superRoutes = require("./admin/routes/superadmin");
+const superRoutes = require("./admin/routes/super-admin");
 app.use(express.static(path.join(__dirname, "public")));
 app.use("/images", express.static(path.join(__dirname, "images")));
 app.use(
@@ -142,7 +142,7 @@ app.use(
 app.use(bodyParser.urlencoded({ extended: false }));
 // app.use(expressValidator());
 app.use("/admin", adminRoutes);
-// app.use("/super-admin", superRoutes);
+app.use("/super-admin", superRoutes);
 app.use(indexRoutes);
 app.use(authRoutes);
 app.get("/500", errorController.get500);
