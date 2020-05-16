@@ -20,7 +20,8 @@ const ProductVariant = require("./models/ProductVariant");
 const Extra = require("./models/Extra");
 const ExtraTranslation = require("./models/ExtraTranslation");
 const ProductFinal = require("./models/ProductFinal");
-
+const AdminLocation = require("./models/AdminLocation");
+const AdminLocationTranslation = require("./models/AdminLocationTranslation");
 const ProductVariantsExtras = require("./models/ProductVariantsExtras");
 const Language = require("./models/Language");
 const Admin = require("./models/Admin");
@@ -335,6 +336,26 @@ DailyMenuAllergens.belongsTo(Allergen, {
 });
 
 Allergen.hasMany(DailyMenuAllergens, { foreignKey: "allergenId" });
+
+AdminLocationTranslation.belongsTo(AdminLocation, {
+  as: "adminLTrans",
+  foreignKey: "adminLocationId",
+});
+AdminLocation.hasMany(AdminLocationTranslation, {
+  foreignKey: "adminLocationId",
+});
+
+Language.hasMany(AdminLocationTranslation, { foreignKey: "languageId" });
+
+// Admin.belongsTo(AdminLocationTranslation, {
+//   as: "theAdminInfo",
+//   foreignKey: "adminId",
+// });
+// Admin.belongsTo(AdminLocationTranslation, {
+//   constrains: true,
+//   onDelete: "CASCADE",
+// });
+// AdminLocationTranslation.hasMany(Admini, { foreignKey: "adminId" });
 
 // app.use((error, req, res, next) => {
 //   res.status(500).render("500", {

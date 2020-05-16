@@ -137,6 +137,12 @@ exports.getEditProduct = async (req, res, next) => {
       productId: {
         [Op.in]: productId,
       },
+      // include: [
+      //   {
+      //     model: ProductTranslation,
+      //   },
+      //   { model: ProductFinal },
+      // ],
     },
   });
   const test = await Product.findAll({
@@ -148,7 +154,7 @@ exports.getEditProduct = async (req, res, next) => {
       { model: ProductFinal },
     ],
   });
-  console.log("productFinal", test);
+  console.log("productFinal", productFinal);
 
   Product.findAll({
     where: {
