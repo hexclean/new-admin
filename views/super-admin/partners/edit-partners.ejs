@@ -31,51 +31,85 @@
                                     <div class="card">                      
                                         <div class="card-body">
 
+                                                 <div class="form-group">
+                                                   <label for="inputText3" class="col-form-label"><%= partners[0].fullName %> <strong>ID</strong></label>
+                                                   <input id="inputText3" name="roName" type="text" class="form-control" disabled value="<% if (editing) { %><%= partners[0].id %><% } %>">
+                                                 </div>
+
                                                 <div class="form-group">
-                                                   <label for="inputText3" class="col-form-label">Partner <strong>neve</strong></label>
-                                                   <input id="inputText3" name="roName" type="text" class="form-control" value="<% if (editing) { %><%= partners[0].fullName %><% } %>">
+                                                   <label for="inputText3" class="col-form-label">Név</label>
+                                                   <input id="inputText3" name="fullName" type="text" class="form-control" value="<% if (editing) { %><%= partners[0].fullName %><% } %>">
                                                 </div>
 
                                                 <div class="form-group">
-                                                   <label for="inputText3" class="col-form-label">Partner <strong>telefonszáma</strong></label>
-                                                   <input id="inputText3" name="huName" type="text" class="form-control" value="<% if (editing) { %><%= partners[0].phoneNumber %><% } %>">
+                                                   <label for="inputText3" class="col-form-label"><%= partners[0].fullName %> <strong>telefonszáma</strong></label>
+                                                   <input id="inputText3" name="phoneNumber" type="text" class="form-control" value="<% if (editing) { %><%= partners[0].phoneNumber %><% } %>">
                                                 </div>
 
                                                 <div class="form-group">
-                                                   <label for="inputText3" class="col-form-label">Partner <strong>e-mail címe</strong></label>
-                                                   <input id="inputText3" name="enName" type="text" class="form-control" value="<% if (editing) { %><%= partners[0].email %><% } %>">
+                                                   <label for="inputText3" class="col-form-label"><%= partners[0].fullName %> <strong>e-mail címe</strong></label>
+                                                   <input id="inputText3" name="email" type="text" class="form-control" value="<% if (editing) { %><%= partners[0].email %><% } %>">
                                                 </div>   
                                                 
                                                 <div class="form-group">
-                                                    <label for="inputText3" class="col-form-label">Partner <strong>jutaléka</strong></label>
-                                                    <input id="inputText3" name="enName" type="text" class="form-control" value="<% if (editing) { %><%= partners[0].commission %><% } %>">
+                                                    <label for="inputText3" class="col-form-label"><%= partners[0].fullName %> <strong>jutaléka</strong></label>
+                                                    <input id="inputText3" name="commission" type="text" class="form-control" value="<% if (editing) { %><%= partners[0].commission %><% } %>">
                                                 </div>
 
                                                 <div class="form-group">
-                                                    <label for="inputText3" class="col-form-label">Partner <strong>nyitás</strong></label>
-                                                    <input id="inputText3" name="enName" type="text" class="form-control" value="<% if (editing) { %><%= partners[0].open %><% } %>">
+                                                    <label for="inputText3" class="col-form-label"><%= partners[0].fullName %> <strong>nyitási idő</strong></label>
+                                                    <input id="inputText3" name="open" type="text" class="form-control" value="<% if (editing) { %><%= partners[0].open %><% } %>">
                                                 </div>
 
                                                 <div class="form-group">
-                                                    <label for="inputText3" class="col-form-label">Partner <strong>zárás</strong></label>
-                                                    <input id="inputText3" name="enName" type="text" class="form-control" value="<% if (editing) { %><%= partners[0].close %><% } %>">
+                                                    <label for="inputText3" class="col-form-label"><%= partners[0].fullName %> <strong>zárási idő</strong></label>
+                                                    <input id="inputText3" name="close" type="text" class="form-control" value="<% if (editing) { %><%= partners[0].close %><% } %>">
                                                 </div>
 
                                                 <div class="form-group">
-                                                    <label for="inputText3" class="col-form-label">Partner rövid <strong>román</strong> leírása</label>
-                                                    <input id="inputText3" name="enName" type="text" class="form-control" value="<% if (editing) { %><%= partnerShortDescRo %><% } %>">
+                                                    <label for="inputText3" class="col-form-label"><%= partners[0].fullName %> rövid <strong>angol</strong> bemutatkozása</label>
+                                                    <textarea
+                                                        name="partnerShortDescRoView"
+                                                        type="text"
+                                                        class="form-control">
+                                                        <% if (editing || hasError) { %><%= partnerShortDescRoView %><% } %></textarea>
                                                 </div>
 
                                                 <div class="form-group">
-                                                    <label for="inputText3" class="col-form-label">Partner <strong>jutaléka</strong></label>
-                                                    <input id="inputText3" name="enName" type="text" class="form-control" value="<% if (editing) { %><%= partners[0].commission %><% } %>">
+                                                    <label for="inputText3" class="col-form-label"><%= partners[0].fullName %> rövid <strong>angol</strong> bemutatkozása</label>
+                                                    <textarea                            
+                                                        name="partnerShortDescHuView"
+                                                        type="text"
+                                                        class="form-control">
+                                                        <% if (editing || hasError) { %><%= partnerShortDescHuView %><% } %></textarea>
                                                 </div>
 
+                                                <div class="form-group">
+                                                    <label for="inputText3" class="col-form-label"><%= partners[0].fullName %> rövid <strong>angol</strong> bemutatkozása</label>
+                                                    <textarea                                                        
+                                                        name="partnerShortDescEnView"
+                                                        type="text"
+                                                        class="form-control test">
+                                                        <% if (editing || hasError) { %><%= partnerShortDescEnView %><% } %></textarea>
+                                                </div>
 
+                                                <div class="form-group">
+                                                    <label for="inputText3" class="col-form-label"><%= partners[0].fullName %> <strong>román</strong> címe</label>
+                                                    <input id="inputText3" name="addressRo" type="text" class="form-control" value="<% if (editing) { %><%= partnerAdressRoView %><% } %>">
+                                                </div>
 
+                                                <div class="form-group">
+                                                    <label for="inputText3" class="col-form-label"><%= partners[0].fullName %> <strong>magyar</strong> címe</label>
+                                                    <input id="inputText3" name="addressHu" type="text" class="form-control" value="<% if (editing) { %><%= partnerAdressHuView %><% } %>">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="inputText3" class="col-form-label"><%= partners[0].fullName %> <strong>angol</strong> címe</label>
+                                                    <input id="inputText3" name="addressEn" type="text" class="form-control" value="<% if (editing) { %><%= partnerAdressEnView %><% } %>">
+                                                </div>
                                         </div>
                                     </div>
-                                    <button type="submit" id="extra-btn" class="btn btn-success has-icon" ><% if (editing) { %>Város frissítése<% } else { %>Város létrehozása<% } %></button>
+                                    <button type="submit" id="extra-btn" class="btn btn-success has-icon" ><% if (editing) { %><%= partners[0].fullName %> adatok frissítése<% } else { %>Város létrehozása<% } %></button>
                                 </div>
                             </div>
                         </div>

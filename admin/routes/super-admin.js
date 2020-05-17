@@ -2,6 +2,8 @@ const express = require("express");
 const spLocationController = require("../controllers/super-admin/spLocation");
 const spDashboardController = require("../controllers/super-admin/spDashboard");
 const spPartnerController = require("../controllers/super-admin/spPartner");
+const spProductController = require("../controllers/super-admin/spProduct");
+
 const isAuth = require("../../middleware/is-auth");
 const router = express.Router();
 
@@ -32,10 +34,13 @@ router.get(
   spPartnerController.getEditPartner
 );
 router.post(
-  "/edit-location",
+  "/edit-partner",
   isAuth,
 
-  spLocationController.postEditLocation
+  spPartnerController.postEditPartner
 );
+
+// Products
+router.get("/products", isAuth, spProductController.getProducts);
 
 module.exports = router;

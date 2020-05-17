@@ -78,6 +78,7 @@ Version: 1.0.0
 ===========================*/
 
 /* ============= Keyframes ================*/
+
 @-webkit-keyframes notesMembers {
   0% {
     transform: scale(0.5);
@@ -2893,7 +2894,7 @@ input:checked + .ms-switch-slider.ms-switch-dark {
   font-size: 22px !important;
 }
 .product-description-size {
-font-size: 15px;
+  font-size: 15px;
 }
 .alert.alert-warning {
   background-color: #fef6e3;

@@ -1,7 +1,7 @@
-const Partners = require("../../../models/Admin");
-const PartnersTranslation = require("../../../models/AdminInfo");
+const Products = require("../../../models/Product");
+const ProductsTranslation = require("../../../models/ProductTranslation");
 
-exports.getPartners = (req, res, next) => {
+exports.getProducts = (req, res, next) => {
   Partners.findAll({
     include: [
       {
