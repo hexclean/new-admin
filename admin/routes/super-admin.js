@@ -42,5 +42,9 @@ router.post(
 
 // Products
 router.get("/products", isAuth, spProductController.getProducts);
-
+router.get(
+  "/edit-product/:productId",
+  isAuth,
+  spProductController.getEditProduct
+);
 module.exports = router;

@@ -2,16 +2,16 @@ const Products = require("../../../models/Product");
 const ProductsTranslation = require("../../../models/ProductTranslation");
 
 exports.getProducts = (req, res, next) => {
-  Partners.findAll({
+  Products.findAll({
     include: [
       {
-        model: PartnersTranslation,
+        model: ProductsTranslation,
       },
     ],
   })
-    .then((partners) => {
-      res.render("super-admin/partners/partners", {
-        part: partners,
+    .then((products) => {
+      res.render("super-admin/products/products", {
+        prod: products,
         pageTitle: "Admin Products",
         path: "/admin/products",
       });
@@ -23,149 +23,146 @@ exports.getProducts = (req, res, next) => {
     });
 };
 
-exports.getEditPartner = async (req, res, next) => {
+exports.getEditProduct = async (req, res, next) => {
   const editMode = req.query.edit;
   if (!editMode) {
     return res.redirect("/");
   }
 
-  let partnerShortDescRoView;
-  let partnerShortDescHuView;
-  let partnerShortDescEnView;
-  let partnerAdressRoView;
-  let partnerAdressHuView;
-  let partnerAdressEnView;
+  let productTitleRoView;
+  let productTitleHuView;
+  let productTitleEnView;
+  let productDescriptionRo;
+  let productDescriptionHu;
+  let productDescriptionEn;
 
-  const partId = req.params.partnerId;
+  const prodId = req.params.productId;
 
-  const partnerShortDescRo = await Partners.findAll({
-    where: { id: partId },
+  const productTitRo = await Products.findAll({
+    where: { id: prodId },
     include: [
       {
-        model: PartnersTranslation,
+        model: ProductsTranslation,
         where: { languageId: 1 },
       },
     ],
   });
 
-  async function getPartnerShortDescRo() {
-    for (let i = 0; i < partnerShortDescRo.length; i++) {
-      partnerShortDescRoView =
-        partnerShortDescRo[i].adminInfos[0].shortCompanyDesc;
+  async function getproductTitRo() {
+    for (let i = 0; i < productTitRo.length; i++) {
+      productTitleRoView = productTitRo[i].productTranslations[0].title;
     }
   }
 
-  const partnerShortDescHu = await Partners.findAll({
-    where: { id: partId },
+  const productTitHu = await Products.findAll({
+    where: { id: prodId },
     include: [
       {
-        model: PartnersTranslation,
+        model: ProductsTranslation,
         where: { languageId: 2 },
       },
     ],
   });
 
-  async function getPartnerShortDescHu() {
-    for (let i = 0; i < partnerShortDescHu.length; i++) {
-      partnerShortDescHuView =
-        partnerShortDescHu[i].adminInfos[0].shortCompanyDesc;
+  async function getproductTitHu() {
+    for (let i = 0; i < productTitHu.length; i++) {
+      productTitleHuView = productTitHu[i].productTranslations[0].title;
     }
   }
 
-  const partnerShortDescEn = await Partners.findAll({
-    where: { id: partId },
+  const productTitEn = await Products.findAll({
+    where: { id: prodId },
     include: [
       {
-        model: PartnersTranslation,
+        model: ProductsTranslation,
         where: { languageId: 3 },
       },
     ],
   });
 
-  async function getPartnerShortDescEn() {
-    for (let i = 0; i < partnerShortDescEn.length; i++) {
-      partnerShortDescEnView =
-        partnerShortDescEn[i].adminInfos[0].shortCompanyDesc;
+  async function getproductTitEn() {
+    for (let i = 0; i < productTitEn.length; i++) {
+      productTitleEnView = productTitEn[i].productTranslations[0].title;
     }
   }
 
-  const partnerAdressRo = await Partners.findAll({
-    where: { id: partId },
+  // const partnerAdressRo = await Partners.findAll({
+  //   where: { id: partId },
+  //   include: [
+  //     {
+  //       model: PartnersTranslation,
+  //       where: { languageId: 1 },
+  //     },
+  //   ],
+  // });
+
+  // async function getPartnerAdressRo() {
+  //   for (let i = 0; i < partnerAdressRo.length; i++) {
+  //     partnerAdressRoView = partnerAdressRo[i].adminInfos[0].adress;
+  //   }
+  // }
+
+  // const partnerAdressHu = await Partners.findAll({
+  //   where: { id: partId },
+  //   include: [
+  //     {
+  //       model: PartnersTranslation,
+  //       where: { languageId: 2 },
+  //     },
+  //   ],
+  // });
+
+  // async function getPartnerAddressHu() {
+  //   for (let i = 0; i < partnerAdressHu.length; i++) {
+  //     partnerAdressHuView = partnerAdressHu[i].adminInfos[0].adress;
+  //   }
+  // }
+
+  // const partnerAdressEn = await Partners.findAll({
+  //   where: { id: partId },
+  //   include: [
+  //     {
+  //       model: PartnersTranslation,
+  //       where: { languageId: 3 },
+  //     },
+  //   ],
+  // });
+
+  // async function getPartnerAddressEn() {
+  //   for (let i = 0; i < partnerAdressEn.length; i++) {
+  //     partnerAdressEnView = partnerAdressEn[i].adminInfos[0].adress;
+  //   }
+  // }
+
+  Products.findAll({
+    where: { id: prodId },
     include: [
       {
-        model: PartnersTranslation,
-        where: { languageId: 1 },
-      },
-    ],
-  });
-
-  async function getPartnerAdressRo() {
-    for (let i = 0; i < partnerAdressRo.length; i++) {
-      partnerAdressRoView = partnerAdressRo[i].adminInfos[0].adress;
-    }
-  }
-
-  const partnerAdressHu = await Partners.findAll({
-    where: { id: partId },
-    include: [
-      {
-        model: PartnersTranslation,
-        where: { languageId: 2 },
-      },
-    ],
-  });
-
-  async function getPartnerAddressHu() {
-    for (let i = 0; i < partnerAdressHu.length; i++) {
-      partnerAdressHuView = partnerAdressHu[i].adminInfos[0].adress;
-    }
-  }
-
-  const partnerAdressEn = await Partners.findAll({
-    where: { id: partId },
-    include: [
-      {
-        model: PartnersTranslation,
-        where: { languageId: 3 },
-      },
-    ],
-  });
-
-  async function getPartnerAddressEn() {
-    for (let i = 0; i < partnerAdressEn.length; i++) {
-      partnerAdressEnView = partnerAdressEn[i].adminInfos[0].adress;
-    }
-  }
-
-  Partners.findAll({
-    where: { id: partId },
-    include: [
-      {
-        model: PartnersTranslation,
+        model: ProductsTranslation,
       },
     ],
   })
-    .then((partners) => {
-      getPartnerShortDescRo();
-      getPartnerShortDescHu();
-      getPartnerShortDescEn();
-      getPartnerAdressRo();
-      getPartnerAddressHu();
-      getPartnerAddressEn();
-      res.render("super-admin/partners/edit-partners", {
+    .then((product) => {
+      getproductTitRo();
+      getproductTitHu();
+      getproductTitEn();
+      // getPartnerAdressRo();
+      // getPartnerAddressHu();
+      // getPartnerAddressEn();
+      res.render("super-admin/products/edit-product", {
         pageTitle: "Edit Product",
         path: "/admin/edit-product",
         editing: editMode,
-        partnerId: partId,
-        partners: partners,
+        productId: prodId,
+        product: product,
 
-        partnerShortDescRoView: partnerShortDescRoView,
-        partnerShortDescHuView: partnerShortDescHuView,
-        partnerShortDescEnView: partnerShortDescEnView,
+        productTitleRoView: productTitleRoView,
+        productTitleHuView: productTitleHuView,
+        productTitleEnView: productTitleEnView,
 
-        partnerAdressRoView: partnerAdressRoView,
-        partnerAdressHuView: partnerAdressHuView,
-        partnerAdressEnView: partnerAdressEnView,
+        // partnerAdressRoView: partnerAdressRoView,
+        // partnerAdressHuView: partnerAdressHuView,
+        // partnerAdressEnView: partnerAdressEnView,
       });
     })
     .catch((err) => {
@@ -175,79 +172,79 @@ exports.getEditPartner = async (req, res, next) => {
     });
 };
 
-exports.postEditPartner = async (req, res, next) => {
-  const partId = req.body.partnerId;
-  // Title
-  const fullName = req.body.fullName;
-  const phoneNumber = req.body.phoneNumber;
-  const email = req.body.email;
-  const commission = req.body.commission;
-  const open = req.body.open;
-  const close = req.body.close;
+// exports.postEditPartner = async (req, res, next) => {
+//   const partId = req.body.partnerId;
+//   // Title
+//   const fullName = req.body.fullName;
+//   const phoneNumber = req.body.phoneNumber;
+//   const email = req.body.email;
+//   const commission = req.body.commission;
+//   const open = req.body.open;
+//   const close = req.body.close;
 
-  const partnerShortDescRoView = req.body.partnerShortDescRoView;
-  const partnerShortDescHuView = req.body.partnerShortDescHuView;
-  const partnerShortDescEnView = req.body.partnerShortDescEnView;
+//   const partnerShortDescRoView = req.body.partnerShortDescRoView;
+//   const partnerShortDescHuView = req.body.partnerShortDescHuView;
+//   const partnerShortDescEnView = req.body.partnerShortDescEnView;
 
-  const addressRo = req.body.addressRo;
-  const addressHu = req.body.addressHu;
-  const addressEn = req.body.addressEn;
+//   const addressRo = req.body.addressRo;
+//   const addressHu = req.body.addressHu;
+//   const addressEn = req.body.addressEn;
 
-  Partners.findAll({
-    include: [
-      {
-        model: PartnersTranslation,
-      },
-    ],
-  })
-    .then((result) => {
-      async function updateLocationName() {
-        await Partners.update(
-          {
-            fullName: fullName,
-            phoneNumber: phoneNumber,
-            email: email,
-            commission: commission,
-            open: open,
-            close: close,
-            partnerShortDescRoView: partnerShortDescRoView,
-            partnerShortDescHuView: partnerShortDescHuView,
-            partnerShortDescEnView: partnerShortDescEnView,
-          },
-          { where: { id: partId } }
-        );
+//   Partners.findAll({
+//     include: [
+//       {
+//         model: PartnersTranslation,
+//       },
+//     ],
+//   })
+//     .then((result) => {
+//       async function updateLocationName() {
+//         await Partners.update(
+//           {
+//             fullName: fullName,
+//             phoneNumber: phoneNumber,
+//             email: email,
+//             commission: commission,
+//             open: open,
+//             close: close,
+//             partnerShortDescRoView: partnerShortDescRoView,
+//             partnerShortDescHuView: partnerShortDescHuView,
+//             partnerShortDescEnView: partnerShortDescEnView,
+//           },
+//           { where: { id: partId } }
+//         );
 
-        await PartnersTranslation.update(
-          {
-            shortCompanyDesc: partnerShortDescRoView,
-            adress: addressRo,
-          },
-          { where: { adminId: partId, languageId: 1 } }
-        );
+//         await PartnersTranslation.update(
+//           {
+//             shortCompanyDesc: partnerShortDescRoView,
+//             adress: addressRo,
+//           },
+//           { where: { adminId: partId, languageId: 1 } }
+//         );
 
-        await PartnersTranslation.update(
-          {
-            shortCompanyDesc: partnerShortDescHuView,
-            adress: addressHu,
-          },
-          { where: { adminId: partId, languageId: 2 } }
-        );
+//         await PartnersTranslation.update(
+//           {
+//             shortCompanyDesc: partnerShortDescHuView,
+//             adress: addressHu,
+//           },
+//           { where: { adminId: partId, languageId: 2 } }
+//         );
 
-        await PartnersTranslation.update(
-          {
-            shortCompanyDesc: partnerShortDescEnView,
-            adress: addressEn,
-          },
-          { where: { adminId: partId, languageId: 3 } }
-        );
-      }
-      updateLocationName();
-      console.log(req.body);
-      res.redirect("/super-admin/partners");
-    })
-    .catch((err) => {
-      const error = new Error(err);
-      error.httpStatusCode = 500;
-      return next(error);
-    });
-};
+//         await PartnersTranslation.update(
+//           {
+//             shortCompanyDesc: partnerShortDescEnView,
+//             adress: addressEn,
+//           },
+//           { where: { adminId: partId, languageId: 3 } }
+//         );
+//       }
+//       updateLocationName();
+//       console.log(req.body);
+//       res.redirect("/super-admin/partners");
+//     })
+//     .catch((err) => {
+//       const error = new Error(err);
+//       error.httpStatusCode = 500;
+//       return next(error);
+//     });
+// };
