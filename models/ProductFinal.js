@@ -18,6 +18,7 @@ const ProductFinal = sequelize.define("productFinal", {
     type: Sequelize.INTEGER,
     allowNull: false,
   },
+  sku: Sequelize.STRING,
 });
 
 module.exports = ProductFinal;

@@ -23,7 +23,6 @@ exports.postAddAllergen = async (req, res, next) => {
   let dailyMenuId = await DailyMenu.findAll({
     where: { adminId: req.admin.id },
   });
-  console.log(dailyMenuId);
 
   const allergen = await Allergen.create({
     adminId: req.admin.id,
@@ -134,7 +133,7 @@ exports.postEditAllergen = async (req, res, next) => {
   const updatedHuName = req.body.huName;
   const updatedEnName = req.body.enName;
   const extTranId = req.body.extTranId;
-  console.log("extTranId", extTranId);
+
   Allergen.findAll({
     include: [
       {

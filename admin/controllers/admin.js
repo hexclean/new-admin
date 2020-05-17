@@ -1,6 +1,8 @@
 const fileHelper = require("../../util/file");
 const Product = require("../../models/Product");
 const ProductVariant = require("../../models/ProductVariant");
+const ProductVariantTranslation = require("../../models/ProductVariantTranslation");
+
 const ProductTranslation = require("../../models/ProductTranslation");
 const ProductFinal = require("../../models/ProductFinal");
 const Admin = require("../../models/Admin");
@@ -12,7 +14,13 @@ exports.getAddProduct = async (req, res, next) => {
     where: {
       adminId: req.admin.id,
     },
+    include: [
+      {
+        model: ProductVariantTranslation,
+      },
+    ],
   });
+  console.log("ext", ext);
   const checkVariantLength = await ProductVariants.findAll({
     where: { adminId: req.admin.id },
   });
@@ -137,12 +145,6 @@ exports.getEditProduct = async (req, res, next) => {
       productId: {
         [Op.in]: productId,
       },
-      // include: [
-      //   {
-      //     model: ProductTranslation,
-      //   },
-      //   { model: ProductFinal },
-      // ],
     },
   });
   const test = await Product.findAll({

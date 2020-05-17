@@ -4,21 +4,21 @@ const isAuth = require("../../middleware/is-auth");
 const router = express.Router();
 
 // Location
-// router.get("/allergen-index", isAuth, spLocationController.getIndex);
-router.get("/add-location", isAuth, spLocationController.getAddAllergen);
+router.get("/locations", isAuth, spLocationController.getLocations);
+router.get("/add-location", isAuth, spLocationController.getAddLocation);
 router.post("/add-location", isAuth, spLocationController.postAddLocation);
 
-// router.get(
-//   "/edit-allergen/:allergenId",
-//   isAuth,
-//   spLocationController.getEditAllergen
-// );
+router.get(
+  "/edit-location/:locationId",
+  isAuth,
+  spLocationController.getEditLocation
+);
 
-// router.post(
-//   "/edit-allergen",
-//   isAuth,
+router.post(
+  "/edit-location",
+  isAuth,
 
-//   spLocationController.postEditAllergen
-// );
+  spLocationController.postEditLocation
+);
 
 module.exports = router;

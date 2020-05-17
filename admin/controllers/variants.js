@@ -50,6 +50,7 @@ exports.searchExtraByKeyword = async (req, res, next) => {
       });
   }
 };
+
 exports.getIndex = async (req, res, next) => {
   const page = +req.query.page || 1;
   let totalItems;
@@ -182,7 +183,7 @@ exports.getAddVariant = async (req, res, next) => {
       },
     ],
   });
-  console.log("ext", ext);
+
   const checkExtraLength = await Extras.findAll({
     where: { adminId: req.admin.id },
   });
@@ -306,6 +307,7 @@ exports.postAddVariant = async (req, res, next) => {
     for (let i = 0; i <= productId.length - 1; i++) {
       console.log("productId[i].id", productId[i].id);
       await ProductsFinal.create({
+        sku: sku,
         price: 0,
         active: 0,
         productId: productId[i].id,
