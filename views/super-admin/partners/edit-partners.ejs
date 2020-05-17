@@ -1,0 +1,92 @@
+<%- include('../includes/head.ejs') %>
+</head>
+
+<body>
+    <div class="dashboard-main-wrapper">
+      <%- include('../includes/navigation.ejs') %>
+      <%- include('../includes/menu.ejs') %>
+      <form 
+         id="registration_form"
+         class="ms-content-wrapper" 
+         action="/super-admin/<% if (editing) { %>edit-partner<% } else { %>add-location<% } %>"
+         method="POST"
+         enctype="multipart/form-data">
+
+         <% if (editing) { %>
+            <input
+               type="hidden"
+               value="<%= partnerId %>"
+               name="partnerId" />
+        <% } %>
+              
+               <div class="dashboard-wrapper">
+                <div class="container-fluid dashboard-content">
+                    <div class="row">
+                        <div class="col-xl-10">
+                            <div class="row">
+                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                    <div class="section-block" id="basicform">
+                                        <h3 class="section-title">Partner szerkesztése</h3>
+                                    </div>
+                                    <div class="card">                      
+                                        <div class="card-body">
+
+                                                <div class="form-group">
+                                                   <label for="inputText3" class="col-form-label">Partner <strong>neve</strong></label>
+                                                   <input id="inputText3" name="roName" type="text" class="form-control" value="<% if (editing) { %><%= partners[0].fullName %><% } %>">
+                                                </div>
+
+                                                <div class="form-group">
+                                                   <label for="inputText3" class="col-form-label">Partner <strong>telefonszáma</strong></label>
+                                                   <input id="inputText3" name="huName" type="text" class="form-control" value="<% if (editing) { %><%= partners[0].phoneNumber %><% } %>">
+                                                </div>
+
+                                                <div class="form-group">
+                                                   <label for="inputText3" class="col-form-label">Partner <strong>e-mail címe</strong></label>
+                                                   <input id="inputText3" name="enName" type="text" class="form-control" value="<% if (editing) { %><%= partners[0].email %><% } %>">
+                                                </div>   
+                                                
+                                                <div class="form-group">
+                                                    <label for="inputText3" class="col-form-label">Partner <strong>jutaléka</strong></label>
+                                                    <input id="inputText3" name="enName" type="text" class="form-control" value="<% if (editing) { %><%= partners[0].commission %><% } %>">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="inputText3" class="col-form-label">Partner <strong>nyitás</strong></label>
+                                                    <input id="inputText3" name="enName" type="text" class="form-control" value="<% if (editing) { %><%= partners[0].open %><% } %>">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="inputText3" class="col-form-label">Partner <strong>zárás</strong></label>
+                                                    <input id="inputText3" name="enName" type="text" class="form-control" value="<% if (editing) { %><%= partners[0].close %><% } %>">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="inputText3" class="col-form-label">Partner rövid <strong>román</strong> leírása</label>
+                                                    <input id="inputText3" name="enName" type="text" class="form-control" value="<% if (editing) { %><%= partnerShortDescRo %><% } %>">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="inputText3" class="col-form-label">Partner <strong>jutaléka</strong></label>
+                                                    <input id="inputText3" name="enName" type="text" class="form-control" value="<% if (editing) { %><%= partners[0].commission %><% } %>">
+                                                </div>
+
+
+
+                                        </div>
+                                    </div>
+                                    <button type="submit" id="extra-btn" class="btn btn-success has-icon" ><% if (editing) { %>Város frissítése<% } else { %>Város létrehozása<% } %></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+          </div>
+        </form>
+    </body>
+</html>
+
+<%- include('../includes/end.ejs') %>
+
+

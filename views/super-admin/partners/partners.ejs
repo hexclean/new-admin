@@ -9,7 +9,7 @@
                     <div class="row">
                         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                             <div class="page-header">
-                                <h2 class="pageheader-title">Városok</h2>
+                                <h2 class="pageheader-title">Partnerek</h2>
                             </div>
                         </div>
                     </div>
@@ -26,13 +26,13 @@
                                                     <th>Szerkesztés</th>
                                                 </tr>
                                             </thead>
-                                            <% for (let i=0; i< loc.length; i++) { %>
+                                            <% for (let i=0; i< part.length; i++) { %>
                                             <tbody>
                                                 <tr>
-                                                    <td><%= loc[i].id %></td>
-                                                    <td><%= loc[i].adminLocationTranslations[1].name %></td>
+                                                    <td><%= part[i].id %></td>
+                                                    <td><%= part[i].id %></td>
                                                     <td>
-                                                        <a href="/super-admin/edit-location/<%= loc[i].id %>?edit=true"class="btn grid-btn mt-0 btn-sm btn-primary" >Szerkesztés</a>
+                                                        <a href="/super-admin/edit-partner/<%= part[i].id %>?edit=true"class="btn grid-btn mt-0 btn-sm btn-primary" >Szerkesztés</a>
                                                     </td>
                                                 </tbody>
                                                 <% } %>

@@ -31,20 +31,20 @@
                                     <div class="card">                      
                                         <div class="card-body">
                                                 <div class="form-group">
-                                                    <label for="inputText3" class="col-form-label">Input Text</label>
+                                                    <label for="inputText3" class="col-form-label">Város <strong>román</strong> neve</label>
                                                     <input id="inputText3" name="roName" type="text" class="form-control" value="<% if (editing) { %><%= location[0].adminLocationTranslations[0].name %><% } %>">
                                                 </div>
                                                 <div class="form-group">
-                                                  <label for="inputText3" class="col-form-label">Input Text</label>
+                                                  <label for="inputText3" class="col-form-label">Város <strong>magyar</strong> neve</label>
                                                   <input id="inputText3" name="huName" type="text" class="form-control" value="<% if (editing) { %><%= location[0].adminLocationTranslations[1].name %><% } %>">
                                               </div>
                                               <div class="form-group">
-                                                <label for="inputText3" class="col-form-label">Input Text</label>
+                                                <label for="inputText3" class="col-form-label">Város <strong>angol</strong> neve</label>
                                                 <input id="inputText3" name="enName" type="text" class="form-control" value="<% if (editing) { %><%= location[0].adminLocationTranslations[2].name %><% } %>">
                                             </div>                                           
                                         </div>
                                     </div>
-                                    <button type="submit" id="extra-btn" class="btn btn-success has-icon" ><% if (editing) { %>Update Product<% } else { %>Add Product<% } %></button>
+                                    <button type="submit" id="extra-btn" class="btn btn-success has-icon" ><% if (editing) { %>Város frissítése<% } else { %>Város létrehozása<% } %></button>
                                 </div>
                             </div>
                         </div>
