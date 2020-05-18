@@ -47,7 +47,7 @@ exports.getEditVariant = async (req, res, next) => {
 
   async function getVariantDescRo() {
     for (let i = 0; i < variantNameRo.length; i++) {
-      variantNameRoView = variantNameRo[i].dailyMenuTranslations[0].description;
+      variantNameRoView = variantNameRo[i].productVariantTranslations[0].name;
     }
   }
 
@@ -63,7 +63,7 @@ exports.getEditVariant = async (req, res, next) => {
 
   async function getVariantDescHu() {
     for (let i = 0; i < variantNameHu.length; i++) {
-      variantNameHuView = variantNameHu[i].dailyMenuTranslations[0].description;
+      variantNameHuView = variantNameHu[i].productVariantTranslations[0].name;
     }
   }
 
@@ -79,11 +79,11 @@ exports.getEditVariant = async (req, res, next) => {
 
   async function getVariantDescEn() {
     for (let i = 0; i < variantNameEn.length; i++) {
-      variantNameEnView = variantNameEn[i].dailyMenuTranslations[0].description;
+      variantNameEnView = variantNameEn[i].productVariantTranslations[0].name;
     }
   }
 
-  DailyMenus.findAll({
+  Variants.findAll({
     where: { id: varId },
     include: [
       {
@@ -91,7 +91,7 @@ exports.getEditVariant = async (req, res, next) => {
       },
     ],
   })
-    .then((dailyMenu) => {
+    .then((variant) => {
       getVariantDescRo();
       getVariantDescHu();
       getVariantDescEn();
@@ -99,8 +99,8 @@ exports.getEditVariant = async (req, res, next) => {
         pageTitle: "Edit Product",
         path: "/admin/edit-product",
         editing: editMode,
-        dailyMenuId: dailyM,
-        dailyMenu: dailyMenu,
+        variantId: varId,
+        variant: variant,
 
         variantNameRoView: variantNameRoView,
         variantNameHuView: variantNameHuView,
@@ -114,46 +114,46 @@ exports.getEditVariant = async (req, res, next) => {
     });
 };
 
-exports.postEditDailyMenu = async (req, res, next) => {
-  const dailyM = req.body.dailyMenuId;
+exports.postEditVariant = async (req, res, next) => {
+  const varId = req.body.variantId;
 
   // Description
-  const dailyMenuDescriptionRoView = req.body.dailyMenuDescriptionRoView;
-  const productTitleHuView = req.body.productTitleHuView;
-  const productTitleEnView = req.body.productTitleEnView;
+  const variantNameRoView = req.body.variantNameRoView;
+  const variantNameHuView = req.body.variantNameHuView;
+  const variantNameEnView = req.body.variantNameEnView;
 
-  DailyMenus.findAll({
+  Variants.findAll({
     include: [
       {
-        model: DailyMenusTranslation,
+        model: VariantsTranslation,
       },
     ],
   })
     .then((result) => {
       async function updateDailyMenuDescription() {
-        await DailyMenusTranslation.update(
+        await VariantsTranslation.update(
           {
-            description: dailyMenuDescriptionRoView,
+            name: variantNameRoView,
           },
-          { where: { dailyMenuId: dailyM, languageId: 1 } }
+          { where: { productVariantId: varId, languageId: 1 } }
         );
 
-        await DailyMenusTranslation.update(
+        await VariantsTranslation.update(
           {
-            description: productTitleHuView,
+            name: variantNameHuView,
           },
-          { where: { dailyMenuId: dailyM, languageId: 2 } }
+          { where: { productVariantId: varId, languageId: 2 } }
         );
 
-        await DailyMenusTranslation.update(
+        await VariantsTranslation.update(
           {
-            description: productTitleEnView,
+            name: variantNameEnView,
           },
-          { where: { dailyMenuId: dailyM, languageId: 3 } }
+          { where: { productVariantId: varId, languageId: 3 } }
         );
       }
       updateDailyMenuDescription();
-      res.redirect("/super-admin/daily-menus");
+      res.redirect("/super-admin/variants");
     })
     .catch((err) => {
       const error = new Error(err);

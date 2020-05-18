@@ -9,7 +9,7 @@
                     <div class="row">
                         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                             <div class="page-header">
-                                <h2 class="pageheader-title">Napi Menük</h2>
+                                <h2 class="pageheader-title">Extrák</h2>
                             </div>
                         </div>
                     </div>
@@ -26,13 +26,13 @@
                                                     <th>Szerkesztés</th>
                                                 </tr>
                                             </thead>
-                                            <% for (let i=0; i< dailyM.length; i++) { %>
+                                            <% for (let i=0; i< ext.length; i++) { %>
                                             <tbody>
                                                 <tr>
-                                                    <td><%= dailyM[i].id %></td>
-                                                    <td><%= dailyM[i].dailyMenuTranslations[1].description %></td>
+                                                    <td><%= ext[i].id %></td>
+                                                    <td><%= ext[i].extraTranslations[1].name %></td>
                                                     <td>
-                                                        <a href="/super-admin/edit-daily-menu/<%= dailyM[i].id %>?edit=true"class="btn grid-btn mt-0 btn-sm btn-primary" >Szerkesztés</a>
+                                                        <a href="/super-admin/edit-extra/<%= ext[i].id %>?edit=true"class="btn grid-btn mt-0 btn-sm btn-primary" >Szerkesztés</a>
                                                     </td>
                                                 </tbody>
                                                 <% } %>

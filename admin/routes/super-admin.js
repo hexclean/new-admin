@@ -5,6 +5,8 @@ const spPartnerController = require("../controllers/super-admin/spPartner");
 const spProductController = require("../controllers/super-admin/spProduct");
 const spDailyMenuController = require("../controllers/super-admin/spDailyMenu");
 const spVariantController = require("../controllers/super-admin/spVariant");
+const spExtraController = require("../controllers/super-admin/spExtra");
+const spCategoryController = require("../controllers/super-admin/spCategory");
 
 const isAuth = require("../../middleware/is-auth");
 const router = express.Router();
@@ -77,10 +79,20 @@ router.get(
   isAuth,
   spVariantController.getEditVariant
 );
-router.post(
-  "/edit-daily-menu",
-  isAuth,
+router.post("/edit-variant", isAuth, spVariantController.postEditVariant);
 
-  spDailyMenuController.postEditDailyMenu
+// Extras
+router.get("/extras", isAuth, spExtraController.getExtras);
+router.get("/edit-extra/:extraId", isAuth, spExtraController.getEditExtra);
+router.post("/edit-extra", isAuth, spExtraController.postEditExtra);
+
+// Category
+router.get("/categorys", isAuth, spCategoryController.getCategory);
+router.get(
+  "/edit-category/:categoryId",
+  isAuth,
+  spCategoryController.getEditCategory
 );
+router.post("/edit-category", isAuth, spCategoryController.postEditCategory);
+
 module.exports = router;

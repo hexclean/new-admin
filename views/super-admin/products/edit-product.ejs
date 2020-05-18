@@ -26,33 +26,33 @@
                             <div class="row">
                                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                     <div class="section-block" id="basicform">
-                                        <h3 class="section-title">Partner szerkesztése</h3>
+                                        <h3 class="section-title">Termék szerkesztése</h3>
                                     </div>
                                     <div class="card">                      
                                         <div class="card-body">
 
                                                  <div class="form-group">
-                                                   <label class="col-form-label"><%= productTitleHuView %> <strong>ID</strong></label>
+                                                   <label class="col-form-label">Termék <strong>Id</strong></label>
                                                    <input name="id" type="text" class="form-control" disabled value="<% if (editing) { %><%= product[0].id %><% } %>">
                                                  </div>
 
                                                 <div class="form-group">
-                                                    <label class="col-form-label"><%= productTitleHuView %> <strong>román</strong> neve</label>
+                                                    <label class="col-form-label">Termék <strong>román</strong> neve</label>
                                                    <input name="productTitleRoView" type="text" class="form-control" value="<% if (editing) { %><%= productTitleRoView %><% } %>">
                                                 </div>
 
                                                 <div class="form-group">
-                                                   <label class="col-form-label"><%= productTitleRoView %> <strong>magyar</strong> neve</label>
+                                                   <label class="col-form-label">Termék <strong>magyar</strong> neve</label>
                                                    <input name="productTitleHuView" type="text" class="form-control" value="<% if (editing) { %><%= productTitleHuView %><% } %>">
                                                 </div>
 
                                                 <div class="form-group">
-                                                   <label class="col-form-label"><%= productTitleHuView %> <strong>angol</strong> neve</label>
+                                                   <label class="col-form-label">Termék <strong>angol</strong> neve</label>
                                                    <input name="productTitleEnView" type="text" class="form-control" value="<% if (editing) { %><%= productTitleEnView %><% } %>">
                                                 </div>   
                                                 <hr class="hr-products"/>
                                                 <div class="form-group">
-                                                    <label class="col-form-label"><%= productTitleHuView %> <strong>román</strong> leírása</label>
+                                                    <label class="col-form-label">Termék <strong>román</strong> leírása</label>
                                                     <input name="productDescriptionRoView" type="text" class="form-control" value="<% if (editing) { %><%= productDescriptionRoView %><% } %>">
                                                 </div>
 
@@ -62,12 +62,12 @@
                                                 </div>
 
                                                 <div class="form-group">
-                                                    <label class="col-form-label"><%= productTitleHuView %> <strong>angol</strong> leírása</label>
+                                                    <label class="col-form-label">Termék <strong>angol</strong> leírása</label>
                                                     <input name="productDescriptionEnView" type="text" class="form-control" value="<% if (editing) { %><%= productDescriptionEnView %><% } %>">
                                                 </div>
                                         </div>
                                     </div>
-                                    <button type="submit" id="extra-btn" class="btn btn-success has-icon" ><% if (editing) { %><%= productTitleHuView %> frissítése<% } else { %>Város létrehozása<% } %></button>
+                                    <button type="submit" id="extra-btn" class="btn btn-success has-icon" ><% if (editing) { %>Termék frissítése<% } else { %>Város létrehozása<% } %></button>
                                 </div>
                             </div>
                         </div>

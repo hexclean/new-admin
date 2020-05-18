@@ -8,15 +8,15 @@
       <form 
          id="registration_form"
          class="ms-content-wrapper" 
-         action="/super-admin/<% if (editing) { %>edit-daily-menu<% } %>"
+         action="/super-admin/<% if (editing) { %>edit-category<% } %>"
          method="POST"
          enctype="multipart/form-data">
 
          <% if (editing) { %>
             <input
                type="hidden"
-               value="<%= dailyMenuId %>"
-               name="dailyMenuId" />
+               value="<%= categoryId %>"
+               name="categoryId" />
         <% } %>
               
                <div class="dashboard-wrapper">
@@ -26,33 +26,32 @@
                             <div class="row">
                                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                     <div class="section-block" id="basicform">
-                                        <h3 class="section-title">Napi Menü szerkesztése</h3>
+                                        <h3 class="section-title">Kategória szerkesztése</h3>
                                     </div>
                                     <div class="card">                      
                                         <div class="card-body">
-
-                                                 <div class="form-group">
-                                                   <label class="col-form-label">Napi menü <strong>Id</strong></label>
-                                                   <input name="id" type="text" class="form-control" disabled value="<% if (editing) { %><%= dailyMenu[0].id %><% } %>">
-                                                 </div>
-
                                                 <div class="form-group">
-                                                    <label class="col-form-label">Napi menü <strong>román</strong> neve</label>
-                                                   <input name="dailyMenuDescriptionRoView" type="text" class="form-control" value="<% if (editing) { %><%= dailyMenuDescriptionRoView %><% } %>">
+                                                   <label class="col-form-label">Kategória <strong>Id</strong></label>
+                                                   <input name="id" type="text" class="form-control" disabled value="<% if (editing) { %><%= category[0].id %><% } %>">
                                                 </div>
 
                                                 <div class="form-group">
-                                                   <label class="col-form-label">Napi menü <strong>magyar</strong> neve</label>
-                                                   <input name="productTitleHuView" type="text" class="form-control" value="<% if (editing) { %><%= dailyMenuDescriptionHuView %><% } %>">
+                                                   <label class="col-form-label">Kategória <strong>román</strong> neve</label>
+                                                   <input name="categoryNameRoView" type="text" class="form-control" value="<% if (editing) { %><%= categoryNameRoView %><% } %>">
                                                 </div>
 
                                                 <div class="form-group">
-                                                   <label class="col-form-label">Napi menü <strong>angol</strong> neve</label>
-                                                   <input name="productTitleEnView" type="text" class="form-control" value="<% if (editing) { %><%= dailyMenuDescriptionEnView %><% } %>">
+                                                   <label class="col-form-label">Kategória <strong>magyar</strong> neve</label>
+                                                   <input name="categoryNameHuView" type="text" class="form-control" value="<% if (editing) { %><%= categoryNameHuView %><% } %>">
+                                                </div>
+
+                                                <div class="form-group">
+                                                   <label class="col-form-label">Kategória <strong>angol</strong> neve</label>
+                                                   <input name="categoryNameEnView" type="text" class="form-control" value="<% if (editing) { %><%= categoryNameEnView %><% } %>">
                                                 </div> 
                                         </div>
                                     </div>
-                                    <button type="submit" id="extra-btn" class="btn btn-success has-icon" ><% if (editing) { %>Napi menü frissítése<% } %></button>
+                                    <button type="submit" id="extra-btn" class="btn btn-success has-icon" ><% if (editing) { %>Kategória frissítése<% } %></button>
                                 </div>
                             </div>
                         </div>
