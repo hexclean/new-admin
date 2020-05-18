@@ -284,7 +284,9 @@ input[type="file"] {
 
 input {
 }
-
+.check-input {
+  color: red;
+}
 button {
 }
 

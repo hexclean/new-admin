@@ -10,98 +10,146 @@ const spCategoryController = require("../controllers/super-admin/spCategory");
 const spAllergenController = require("../controllers/super-admin/spAllergen");
 
 const isAuth = require("../../middleware/is-auth");
+const superAdmin = require("../../middleware/is-super");
+
 const router = express.Router();
 
 // Dashboard
-router.get("/dashboard", isAuth, spDashboardController.getIndex);
+router.get("/dashboard", isAuth, superAdmin, spDashboardController.getIndex);
 
 // Location
-router.get("/locations", isAuth, spLocationController.getLocations);
-router.get("/add-location", isAuth, spLocationController.getAddLocation);
-router.post("/add-location", isAuth, spLocationController.postAddLocation);
+router.get("/locations", isAuth, superAdmin, spLocationController.getLocations);
+router.get(
+  "/add-location",
+  isAuth,
+  superAdmin,
+  spLocationController.getAddLocation
+);
+router.post(
+  "/add-location",
+  isAuth,
+  superAdmin,
+  spLocationController.postAddLocation
+);
 router.get(
   "/edit-location/:locationId",
   isAuth,
+  superAdmin,
   spLocationController.getEditLocation
 );
 router.post(
   "/edit-location",
   isAuth,
+  superAdmin,
 
   spLocationController.postEditLocation
 );
 
 // Partners
-router.get("/partners", isAuth, spPartnerController.getPartners);
+router.get("/partners", isAuth, superAdmin, spPartnerController.getPartners);
 router.get(
   "/edit-partner/:partnerId",
   isAuth,
+  superAdmin,
   spPartnerController.getEditPartner
 );
 router.post(
   "/edit-partner",
   isAuth,
+  superAdmin,
 
   spPartnerController.postEditPartner
 );
 
 // Products
-router.get("/products", isAuth, spProductController.getProducts);
+router.get("/products", isAuth, superAdmin, spProductController.getProducts);
 router.get(
   "/edit-product/:productId",
   isAuth,
+  superAdmin,
   spProductController.getEditProduct
 );
 router.post(
   "/edit-product",
   isAuth,
+  superAdmin,
 
   spProductController.postEditProduct
 );
 
 // Daily Menu
-router.get("/daily-menus", isAuth, spDailyMenuController.getDailyMenus);
+router.get(
+  "/daily-menus",
+  isAuth,
+  superAdmin,
+  spDailyMenuController.getDailyMenus
+);
 router.get(
   "/edit-daily-menu/:dailyMenuId",
   isAuth,
+  superAdmin,
   spDailyMenuController.getEditDailyMenu
 );
 router.post(
   "/edit-daily-menu",
   isAuth,
+  superAdmin,
 
   spDailyMenuController.postEditDailyMenu
 );
 
 // Variants
-router.get("/variants", isAuth, spVariantController.getVariants);
+router.get("/variants", isAuth, superAdmin, spVariantController.getVariants);
 router.get(
   "/edit-variant/:variantId",
   isAuth,
+  superAdmin,
   spVariantController.getEditVariant
 );
-router.post("/edit-variant", isAuth, spVariantController.postEditVariant);
+router.post(
+  "/edit-variant",
+  isAuth,
+  superAdmin,
+  spVariantController.postEditVariant
+);
 
 // Extras
-router.get("/extras", isAuth, spExtraController.getExtras);
-router.get("/edit-extra/:extraId", isAuth, spExtraController.getEditExtra);
-router.post("/edit-extra", isAuth, spExtraController.postEditExtra);
+router.get("/extras", isAuth, superAdmin, spExtraController.getExtras);
+router.get(
+  "/edit-extra/:extraId",
+  isAuth,
+  superAdmin,
+  spExtraController.getEditExtra
+);
+router.post("/edit-extra", isAuth, superAdmin, spExtraController.postEditExtra);
 
 // Category
-router.get("/categorys", isAuth, spCategoryController.getCategory);
+router.get("/categorys", isAuth, superAdmin, spCategoryController.getCategory);
 router.get(
   "/edit-category/:categoryId",
   isAuth,
+  superAdmin,
   spCategoryController.getEditCategory
 );
-router.post("/edit-category", isAuth, spCategoryController.postEditCategory);
+router.post(
+  "/edit-category",
+  isAuth,
+  superAdmin,
+  spCategoryController.postEditCategory
+);
 
 // Allergens
-router.get("/allergens", isAuth, spAllergenController.getAllergens);
+router.get("/allergens", isAuth, superAdmin, spAllergenController.getAllergens);
 router.get(
   "/edit-allergen/:allergenId",
   isAuth,
+  superAdmin,
   spAllergenController.getEditAllergen
 );
-router.post("/edit-allergen", isAuth, spAllergenController.postEditAllergen);
+router.post(
+  "/edit-allergen",
+  isAuth,
+  superAdmin,
+  spAllergenController.postEditAllergen
+);
 module.exports = router;

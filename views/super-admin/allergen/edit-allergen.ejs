@@ -1,4 +1,95 @@
 <%- include('../includes/head.ejs') %>
+<script>
+$(function () {
+  $("#allergenNameRoView_error_message").hide();
+  $("#allergenNameHuView_error_message").hide();
+  $("#allergenNameEnView_error_message").hide();
+
+  var allergenNameRoView = false;
+  var allergenNameHuView = false;
+  var allergenNameEnView = false;
+
+  $("#allergenNameRoView").focusout(function () {
+    check_allergenNameRoView();
+  });
+
+  $("#allergenNameHuView").focusout(function(){
+    check_allergenNameHuView();
+  });
+
+  $("#allergenNameEnView").focusout(function(){
+    check_allergenNameEnView();
+  });
+
+
+  
+  function check_allergenNameRoView() {
+    var allergenNameRoView_length = $("#allergenNameRoView").val().length;
+
+    if (allergenNameRoView_length < 2 || allergenNameRoView_length > 20) {
+      $("#allergenNameRoView_error_message").html("Allergén neve 2 és 25 karakter között kell lennie");
+      $("#allergenNameRoView_error_message").show();
+      allergenNameRoView = true;
+    } else {
+      $("#allergenNameRoView_error_message").hide();
+    }
+  }
+
+  function check_allergenNameHuView() {
+    var allergenNameHuView_length = $("#allergenNameHuView").val().length;
+
+    if (allergenNameHuView_length < 2 || allergenNameHuView_length > 20) {
+      $("#allergenNameHuView_error_message").html("Allergén neve 2 és 25 karakter között kell lennie");
+      $("#allergenNameHuView_error_message").show();
+      allergenNameHuView = true;
+    } else {
+      $("#allergenNameHuView_error_message").hide();
+    }
+  }
+
+  function check_allergenNameEnView() {
+    var allergenNameEnView_length = $("#allergenNameEnView").val().length;
+
+    if (allergenNameEnView_length < 2 || allergenNameEnView_length > 20) {
+      $("#allergenNameEnView_error_message").html("Allergén neve 2 és 25 karakter között kell lennie");
+      $("#allergenNameEnView_error_message").show();
+      allergenNameHuView = true;
+    } else {
+      $("#allergenNameEnView_error_message").hide();
+    }
+  }
+
+
+  $("#edit-allergen").submit(function () {
+    allergenNameRoView = false;
+    allergenNameHuView = false;
+    allergenNameEnView = false;
+
+    check_allergenNameRoView();
+    check_allergenNameHuView();
+    check_allergenNameEnView();
+
+    if (
+      allergenNameRoView == false &&
+      allergenNameHuView == false &&
+      allergenNameEnView == false
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  });
+});
+</script>
+
+<script>
+$(document).ready(function () {
+    $("#edit-allergen").submit(function () {
+        $(".allergen-btn").attr("disabled", true);
+        return true;
+    });
+});
+</script>
 </head>
 
 <body>
@@ -6,7 +97,8 @@
       <%- include('../includes/navigation.ejs') %>
       <%- include('../includes/menu.ejs') %>
       <form 
-         id="registration_form"
+         id="edit-allergen"
+         name="edit-allergen"
          class="ms-content-wrapper" 
          action="/super-admin/<% if (editing) { %>edit-allergen<% } %>"
          method="POST"
@@ -32,7 +124,7 @@
                                         <div class="card-body">
                                                 <div class="form-group">
                                                    <label class="col-form-label">Allergén <strong>Id</strong></label>
-                                                   <input name="id" type="text" class="form-control" disabled value="<% if (editing) { %><%= allergen[0].id %><% } %>">
+                                                   <input name="id" type="text" class="form-control" disabled value="<% if (editing) { %><%= allergen[0].id %><% } %>">  
                                                 </div>
 
                                                 <div class="form-group">
@@ -42,21 +134,25 @@
 
                                                 <div class="form-group">
                                                    <label class="col-form-label">Allergén <strong>román</strong> neve</label>
-                                                   <input name="allergenNameRoView" type="text" class="form-control" value="<% if (editing) { %><%= allergenNameRoView %><% } %>">
+                                                   <input name="allergenNameRoView" id="allergenNameRoView" type="text" class="form-control" value="<% if (editing) { %><%= allergenNameRoView %><% } %>">
+                                                   <span class="check-input error_form intro" id="allergenNameRoView_error_message"></span>
+
                                                 </div>
 
                                                 <div class="form-group">
                                                    <label class="col-form-label">Allergén <strong>magyar</strong> neve</label>
-                                                   <input name="allergenNameHuView" type="text" class="form-control" value="<% if (editing) { %><%= allergenNameHuView %><% } %>">
+                                                   <input name="allergenNameHuView" id="allergenNameHuView" type="text" class="form-control" value="<% if (editing) { %><%= allergenNameHuView %><% } %>">
+                                                   <span class="check-input error_form intro" id="allergenNameHuView_error_message"></span>
                                                 </div>
 
                                                 <div class="form-group">
                                                    <label class="col-form-label">Allergén <strong>angol</strong> neve</label>
-                                                   <input name="allergenNameEnView" type="text" class="form-control" value="<% if (editing) { %><%= allergenNameEnView %><% } %>">
+                                                   <input name="allergenNameEnView" id="allergenNameEnView" type="text" class="form-control" value="<% if (editing) { %><%= allergenNameEnView %><% } %>">
+                                                   <span class="check-input error_form intro" id="allergenNameEnView_error_message"></span>
                                                 </div> 
                                         </div>
                                     </div>
-                                    <button type="submit" id="extra-btn" class="btn btn-success has-icon" ><% if (editing) { %>Allergén frissítése<% } %></button>
+                                    <button type="submit" id="allergen-btn" class="btn btn-success has-icon" ><% if (editing) { %>Allergén frissítése<% } %></button>
                                 </div>
                             </div>
                         </div>
