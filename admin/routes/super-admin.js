@@ -7,6 +7,7 @@ const spDailyMenuController = require("../controllers/super-admin/spDailyMenu");
 const spVariantController = require("../controllers/super-admin/spVariant");
 const spExtraController = require("../controllers/super-admin/spExtra");
 const spCategoryController = require("../controllers/super-admin/spCategory");
+const spAllergenController = require("../controllers/super-admin/spAllergen");
 
 const isAuth = require("../../middleware/is-auth");
 const router = express.Router();
@@ -95,4 +96,12 @@ router.get(
 );
 router.post("/edit-category", isAuth, spCategoryController.postEditCategory);
 
+// Allergens
+router.get("/allergens", isAuth, spAllergenController.getAllergens);
+router.get(
+  "/edit-allergen/:allergenId",
+  isAuth,
+  spAllergenController.getEditAllergen
+);
+router.post("/edit-allergen", isAuth, spAllergenController.postEditAllergen);
 module.exports = router;
