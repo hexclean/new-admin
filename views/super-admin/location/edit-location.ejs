@@ -1,4 +1,6 @@
 <%- include('../includes/head.ejs') %>
+<%- include('../includes/input-validation/edit-location.ejs') %>
+
 </head>
 
 <body>
@@ -6,7 +8,7 @@
       <%- include('../includes/navigation.ejs') %>
       <%- include('../includes/menu.ejs') %>
       <form 
-         id="registration_form"
+         id="edit-location"
          class="ms-content-wrapper" 
          action="/super-admin/<% if (editing) { %>edit-location<% } else { %>add-location<% } %>"
          method="POST"
@@ -26,25 +28,28 @@
                             <div class="row">
                                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                     <div class="section-block" id="basicform">
-                                        <h3 class="section-title">Város létrehozás</h3>
+                                        <h3 class="section-title"><% if (editing) { %>Város frissítése<% } else { %>Város létrehozása<% } %></h3>
                                     </div>
                                     <div class="card">                      
                                         <div class="card-body">
                                                 <div class="form-group">
-                                                    <label for="inputText3" class="col-form-label">Város <strong>román</strong> neve</label>
-                                                    <input id="inputText3" name="roName" type="text" class="form-control" value="<% if (editing) { %><%= location[0].adminLocationTranslations[0].name %><% } %>">
+                                                    <label class="col-form-label">Város <strong>román</strong> neve</label>
+                                                    <input id="roName" name="roName" type="text" class="form-control" value="<% if (editing) { %><%= location[0].adminLocationTranslations[0].name %><% } %>">
+                                                    <span class="check-input error_form intro" id="roName_error_message"></span>
                                                 </div>
                                                 <div class="form-group">
-                                                  <label for="inputText3" class="col-form-label">Város <strong>magyar</strong> neve</label>
-                                                  <input id="inputText3" name="huName" type="text" class="form-control" value="<% if (editing) { %><%= location[0].adminLocationTranslations[1].name %><% } %>">
+                                                  <label class="col-form-label">Város <strong>magyar</strong> neve</label>
+                                                  <input id="huName" name="huName" type="text" class="form-control" value="<% if (editing) { %><%= location[0].adminLocationTranslations[1].name %><% } %>">
+                                                  <span class="check-input error_form intro" id="huName_error_message"></span>
                                               </div>
                                               <div class="form-group">
-                                                <label for="inputText3" class="col-form-label">Város <strong>angol</strong> neve</label>
-                                                <input id="inputText3" name="enName" type="text" class="form-control" value="<% if (editing) { %><%= location[0].adminLocationTranslations[2].name %><% } %>">
+                                                <label class="col-form-label">Város <strong>angol</strong> neve</label>
+                                                <input id="enName" name="enName" type="text" class="form-control" value="<% if (editing) { %><%= location[0].adminLocationTranslations[2].name %><% } %>">
+                                                <span class="check-input error_form intro" id="enName_error_message"></span>
                                             </div>                                           
                                         </div>
                                     </div>
-                                    <button type="submit" id="extra-btn" class="btn btn-success has-icon" ><% if (editing) { %>Város frissítése<% } else { %>Város létrehozása<% } %></button>
+                                    <button type="submit" id="location-btn" class="btn btn-success has-icon" ><% if (editing) { %>Város frissítése<% } else { %>Város létrehozása<% } %></button>
                                 </div>
                             </div>
                         </div>
