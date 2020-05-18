@@ -122,8 +122,8 @@ exports.postEditDailyMenu = async (req, res, next) => {
 
   // Description
   const dailyMenuDescriptionRoView = req.body.dailyMenuDescriptionRoView;
-  const productTitleHuView = req.body.productTitleHuView;
-  const productTitleEnView = req.body.productTitleEnView;
+  const dailyMenuDescriptionHuView = req.body.dailyMenuDescriptionHuView;
+  const dailyMenuDescriptionEnView = req.body.dailyMenuDescriptionEnView;
 
   DailyMenus.findAll({
     include: [
@@ -143,14 +143,14 @@ exports.postEditDailyMenu = async (req, res, next) => {
 
         await DailyMenusTranslation.update(
           {
-            description: productTitleHuView,
+            description: dailyMenuDescriptionHuView,
           },
           { where: { dailyMenuId: dailyM, languageId: 2 } }
         );
 
         await DailyMenusTranslation.update(
           {
-            description: productTitleEnView,
+            description: dailyMenuDescriptionEnView,
           },
           { where: { dailyMenuId: dailyM, languageId: 3 } }
         );

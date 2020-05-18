@@ -1,0 +1,111 @@
+<%# Daily Menu validation %>
+<script>
+  $(function () {
+    $("#dailyMenuDescriptionRoView_error_message").hide();
+    $("#dailyMenuDescriptionHuView_error_message").hide();
+    $("#dailyMenuDescriptionEnView_error_message").hide();
+
+    var dailyMenuDescriptionRoView = false;
+    var dailyMenuDescriptionHuView = false;
+    var dailyMenuDescriptionEnView = false;
+
+    $("#dailyMenuDescriptionRoView").focusout(function () {
+      check_dailyMenuNameRoView();
+    });
+
+    $("#dailyMenuDescriptionHuView").focusout(function () {
+      check_dailyMenuNameHuView();
+    });
+
+    $("#dailyMenuDescriptionEnView").focusout(function () {
+      check_dailyMenuNameEnView();
+    });
+
+    function check_dailyMenuNameRoView() {
+      var dailyMenuDescriptionRoView_length = $(
+        "#dailyMenuDescriptionRoView"
+      ).val().length;
+
+      if (
+        dailyMenuDescriptionRoView_length < 5 ||
+        dailyMenuDescriptionRoView_length > 75
+      ) {
+        $("#dailyMenuDescriptionRoView_error_message").html(
+          "Napi Menü leírása 5 és 75 karakter között kell lennie"
+        );
+        $("#dailyMenuDescriptionRoView_error_message").show();
+        dailyMenuDescriptionRoView = true;
+      } else {
+        $("#dailyMenuDescriptionRoView_error_message").hide();
+      }
+    }
+
+    function check_dailyMenuNameHuView() {
+      var dailyMenuDescriptionHuView_length = $(
+        "#dailyMenuDescriptionHuView"
+      ).val().length;
+
+      if (
+        dailyMenuDescriptionHuView_length < 5 ||
+        dailyMenuDescriptionHuView_length > 75
+      ) {
+        $("#dailyMenuDescriptionHuView_error_message").html(
+          "Napi Menü leírása 5 és 75 karakter között kell lennie"
+        );
+        $("#dailyMenuDescriptionHuView_error_message").show();
+        dailyMenuDescriptionHuView = true;
+      } else {
+        $("#dailyMenuDescriptionHuView_error_message").hide();
+      }
+    }
+
+    function check_dailyMenuNameEnView() {
+      var dailyMenuDescriptionEnViewlength = $(
+        "#dailyMenuDescriptionEnView"
+      ).val().length;
+
+      if (
+        dailyMenuDescriptionEnViewlength < 5 ||
+        dailyMenuDescriptionEnViewlength > 75
+      ) {
+        $("#dailyMenuDescriptionEnView_error_message").html(
+          "Napi Menü leírása 5 és 75 karakter között kell lennie"
+        );
+        $("#dailyMenuDescriptionEnView_error_message").show();
+        dailyMenuDescriptionEnView = true;
+      } else {
+        $("#dailyMenuDescriptionEnView_error_message").hide();
+      }
+    }
+
+    $("#edit-daily-menu").submit(function () {
+      dailyMenuDescriptionRoView = false;
+      dailyMenuDescriptionHuView = false;
+      dailyMenuDescriptionEnView = false;
+
+      check_dailyMenuNameRoView();
+      check_dailyMenuNameHuView();
+      check_dailyMenuNameEnView();
+      if (
+        dailyMenuDescriptionRoView == false &&
+        dailyMenuDescriptionHuView == false &&
+        dailyMenuDescriptionEnView == false
+      ) {
+        return true;
+      } else {
+        return false;
+      }
+    });
+  });
+</script>
+
+<script>
+  $(document).ready(function () {
+    $("#edit-daily-menu").submit(function () {
+      $(".daily-menu-btn").attr("disabled", true);
+      return true;
+    });
+  });
+</script>
+
+<%# End Daily Menu validation %>

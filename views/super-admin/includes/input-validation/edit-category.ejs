@@ -1,0 +1,96 @@
+<%# Category validation %>
+<script>
+  $(function () {
+    $("#categoryNameRoView_error_message").hide();
+    $("#categoryNameHuView_error_message").hide();
+    $("#categoryNameEnView_error_message").hide();
+
+    var categoryNameRoView = false;
+    var categoryNameHuView = false;
+    var categoryNameEnView = false;
+
+    $("#categoryNameRoView").focusout(function () {
+      check_categoryNameRoView();
+    });
+
+    $("#categoryNameHuView").focusout(function () {
+      check_categoryNameHuView();
+    });
+
+    $("#categoryNameEnView").focusout(function () {
+      check_categoryNameEnView();
+    });
+
+    function check_categoryNameRoView() {
+      var categoryNameRoView_length = $("#categoryNameRoView").val().length;
+
+      if (categoryNameRoView_length < 2 || categoryNameRoView_length > 20) {
+        $("#categoryNameRoView_error_message").html(
+          "Kategória neve 2 és 25 karakter között kell lennie"
+        );
+        $("#categoryNameRoView_error_message").show();
+        categoryNameRoView = true;
+      } else {
+        $("#categoryNameRoView_error_message").hide();
+      }
+    }
+
+    function check_categoryNameHuView() {
+      var categoryNameHuView_length = $("#categoryNameHuView").val().length;
+
+      if (categoryNameHuView_length < 2 || categoryNameHuView_length > 20) {
+        $("#categoryNameHuView_error_message").html(
+          "Kategória neve 2 és 25 karakter között kell lennie"
+        );
+        $("#categoryNameHuView_error_message").show();
+        categoryNameHuView = true;
+      } else {
+        $("#categoryNameHuView_error_message").hide();
+      }
+    }
+
+    function check_categoryNameEnView() {
+      var categoryNameEnView_length = $("#categoryNameEnView").val().length;
+
+      if (categoryNameEnView_length < 2 || categoryNameEnView_length > 20) {
+        $("#categoryNameEnView_error_message").html(
+          "Kategória neve 2 és 25 karakter között kell lennie"
+        );
+        $("#categoryNameEnView_error_message").show();
+        categoryNameEnView = true;
+      } else {
+        $("#categoryNameEnView_error_message").hide();
+      }
+    }
+
+    $("#edit-category").submit(function () {
+      categoryNameRoView = false;
+      categoryNameHuView = false;
+      categoryNameEnView = false;
+
+      check_categoryNameRoView();
+      check_categoryNameHuView();
+      check_categoryNameEnView();
+      if (
+        categoryNameRoView == false &&
+        categoryNameHuView == false &&
+        categoryNameEnView == false
+      ) {
+        return true;
+      } else {
+        return false;
+      }
+    });
+  });
+</script>
+
+<script>
+  $(document).ready(function () {
+    $("#edit-category").submit(function () {
+      $(".category-btn").attr("disabled", true);
+      return true;
+    });
+  });
+</script>
+
+<%# End Category validation %>

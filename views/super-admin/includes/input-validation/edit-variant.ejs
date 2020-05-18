@@ -1,0 +1,96 @@
+<%# Variant validation %>
+<script>
+  $(function () {
+    $("#variantNameRoView_error_message").hide();
+    $("#variantNameHuView_error_message").hide();
+    $("#variantNameEnView_error_message").hide();
+
+    var variantNameRoView = false;
+    var variantNameHuView = false;
+    var variantNameEnView = false;
+
+    $("#variantNameRoView").focusout(function () {
+      check_variantNameRoView();
+    });
+
+    $("#variantNameHuView").focusout(function () {
+      check_variantNameHuView();
+    });
+
+    $("#variantNameEnView").focusout(function () {
+      check_variantNameEnView();
+    });
+
+    function check_variantNameRoView() {
+      var variantNameRoView_length = $("#variantNameRoView").val().length;
+
+      if (variantNameRoView_length < 2 || variantNameRoView_length > 20) {
+        $("#variantNameRoView_error_message").html(
+          "Variáns neve 2 és 25 karakter között kell lennie"
+        );
+        $("#variantNameRoView_error_message").show();
+        variantNameRoView = true;
+      } else {
+        $("#variantNameRoView_error_message").hide();
+      }
+    }
+
+    function check_variantNameHuView() {
+      var variantNameHuView_length = $("#variantNameHuView").val().length;
+
+      if (variantNameHuView_length < 2 || variantNameHuView_length > 20) {
+        $("#variantNameHuView_error_message").html(
+          "Variáns neve 2 és 25 karakter között kell lennie"
+        );
+        $("#variantNameHuView_error_message").show();
+        variantNameHuView = true;
+      } else {
+        $("#variantNameHuView_error_message").hide();
+      }
+    }
+
+    function check_variantNameEnView() {
+      var variantNameEnView_length = $("#variantNameEnView").val().length;
+
+      if (variantNameEnView_length < 2 || variantNameEnView_length > 20) {
+        $("#variantNameEnView_error_message").html(
+          "Kategória neve 2 és 25 karakter között kell lennie"
+        );
+        $("#variantNameEnView_error_message").show();
+        variantNameEnView = true;
+      } else {
+        $("#variantNameEnView_error_message").hide();
+      }
+    }
+
+    $("#edit-variant").submit(function () {
+      variantNameRoView = false;
+      variantNameHuView = false;
+      variantNameEnView = false;
+
+      check_variantNameRoView();
+      check_variantNameHuView();
+      check_variantNameEnView();
+      if (
+        variantNameRoView == false &&
+        variantNameHuView == false &&
+        variantNameEnView == false
+      ) {
+        return true;
+      } else {
+        return false;
+      }
+    });
+  });
+</script>
+
+<script>
+  $(document).ready(function () {
+    $("#edit-variant").submit(function () {
+      $(".variant-btn").attr("disabled", true);
+      return true;
+    });
+  });
+</script>
+
+<%# End Variant validation %>

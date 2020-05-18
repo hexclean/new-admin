@@ -1,4 +1,6 @@
 <%- include('../includes/head.ejs') %>
+<%- include('../includes/input-validation/edit-variant.ejs') %>
+
 </head>
 
 <body>
@@ -6,7 +8,7 @@
       <%- include('../includes/navigation.ejs') %>
       <%- include('../includes/menu.ejs') %>
       <form 
-         id="registration_form"
+         id="edit-variant"
          class="ms-content-wrapper" 
          action="/super-admin/<% if (editing) { %>edit-variant<% } %>"
          method="POST"
@@ -43,21 +45,24 @@
 
                                                 <div class="form-group">
                                                     <label class="col-form-label">Varáns <strong>román</strong> neve</label>
-                                                   <input name="variantNameRoView" type="text" class="form-control" value="<% if (editing) { %><%= variantNameRoView %><% } %>">
+                                                   <input name="variantNameRoView" id="variantNameRoView" type="text" class="form-control" value="<% if (editing) { %><%= variantNameRoView %><% } %>">
+                                                   <span class="check-input error_form intro" id="variantNameRoView_error_message"></span>
                                                 </div>
 
                                                 <div class="form-group">
                                                    <label class="col-form-label">Varáns <strong>magyar</strong> neve</label>
-                                                   <input name="variantNameHuView" type="text" class="form-control" value="<% if (editing) { %><%= variantNameHuView %><% } %>">
+                                                   <input name="variantNameHuView" id="variantNameHuView" type="text" class="form-control" value="<% if (editing) { %><%= variantNameHuView %><% } %>">
+                                                   <span class="check-input error_form intro" id="variantNameHuView_error_message"></span>
                                                 </div>
 
                                                 <div class="form-group">
                                                    <label class="col-form-label">Varáns <strong>angol</strong> neve</label>
-                                                   <input name="variantNameEnView" type="text" class="form-control" value="<% if (editing) { %><%= variantNameEnView %><% } %>">
+                                                   <input name="variantNameEnView" id="variantNameEnView" type="text" class="form-control" value="<% if (editing) { %><%= variantNameEnView %><% } %>">
+                                                   <span class="check-input error_form intro" id="variantNameEnView_error_message"></span>
                                                 </div> 
                                         </div>
                                     </div>
-                                    <button type="submit" id="extra-btn" class="btn btn-success has-icon" ><% if (editing) { %>Variáns frissítése<% } %></button>
+                                    <button type="submit" id="variant-btn" class="btn btn-success has-icon" ><% if (editing) { %>Variáns frissítése<% } %></button>
                                 </div>
                             </div>
                         </div>

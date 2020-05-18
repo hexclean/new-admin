@@ -1,4 +1,6 @@
 <%- include('../includes/head.ejs') %>
+<%- include('../includes/input-validation/edit-category.ejs') %>
+
 </head>
 
 <body>
@@ -6,7 +8,7 @@
       <%- include('../includes/navigation.ejs') %>
       <%- include('../includes/menu.ejs') %>
       <form 
-         id="registration_form"
+         id="edit-category"
          class="ms-content-wrapper" 
          action="/super-admin/<% if (editing) { %>edit-category<% } %>"
          method="POST"
@@ -42,21 +44,25 @@
 
                                                 <div class="form-group">
                                                    <label class="col-form-label">Kategória <strong>román</strong> neve</label>
-                                                   <input name="categoryNameRoView" type="text" class="form-control" value="<% if (editing) { %><%= categoryNameRoView %><% } %>">
+                                                   <input name="categoryNameRoView" id="categoryNameRoView" type="text" class="form-control" value="<% if (editing) { %><%= categoryNameRoView %><% } %>">
+                                                   <span class="check-input error_form intro" id="categoryNameRoView_error_message"></span>
+
                                                 </div>
 
                                                 <div class="form-group">
                                                    <label class="col-form-label">Kategória <strong>magyar</strong> neve</label>
-                                                   <input name="categoryNameHuView" type="text" class="form-control" value="<% if (editing) { %><%= categoryNameHuView %><% } %>">
+                                                   <input name="categoryNameHuView" id="categoryNameHuView" type="text" class="form-control" value="<% if (editing) { %><%= categoryNameHuView %><% } %>">
+                                                   <span class="check-input error_form intro" id="categoryNameHuView_error_message"></span>
                                                 </div>
 
                                                 <div class="form-group">
                                                    <label class="col-form-label">Kategória <strong>angol</strong> neve</label>
-                                                   <input name="categoryNameEnView" type="text" class="form-control" value="<% if (editing) { %><%= categoryNameEnView %><% } %>">
+                                                   <input name="categoryNameEnView" id="categoryNameEnView" type="text" class="form-control" value="<% if (editing) { %><%= categoryNameEnView %><% } %>">
+                                                   <span class="check-input error_form intro" id="categoryNameEnView_error_message"></span>
                                                 </div> 
                                         </div>
                                     </div>
-                                    <button type="submit" id="extra-btn" class="btn btn-success has-icon" ><% if (editing) { %>Kategória frissítése<% } %></button>
+                                    <button type="submit" id="category-btn" class="btn btn-success has-icon" ><% if (editing) { %>Kategória frissítése<% } %></button>
                                 </div>
                             </div>
                         </div>

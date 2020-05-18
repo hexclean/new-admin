@@ -1,4 +1,6 @@
 <%- include('../includes/head.ejs') %>
+<%- include('../includes/input-validation/edit-daily-menu.ejs') %>
+
 </head>
 
 <body>
@@ -6,7 +8,7 @@
       <%- include('../includes/navigation.ejs') %>
       <%- include('../includes/menu.ejs') %>
       <form 
-         id="registration_form"
+         id="edit-daily-menu"
          class="ms-content-wrapper" 
          action="/super-admin/<% if (editing) { %>edit-daily-menu<% } %>"
          method="POST"
@@ -43,21 +45,24 @@
 
                                                 <div class="form-group">
                                                     <label class="col-form-label">Napi menü <strong>román</strong> neve</label>
-                                                   <input name="dailyMenuDescriptionRoView" type="text" class="form-control" value="<% if (editing) { %><%= dailyMenuDescriptionRoView %><% } %>">
+                                                   <input name="dailyMenuDescriptionRoView" id="dailyMenuDescriptionRoView" type="text" class="form-control" value="<% if (editing) { %><%= dailyMenuDescriptionRoView %><% } %>">
+                                                   <span class="check-input error_form intro" id="dailyMenuDescriptionRoView_error_message"></span>
                                                 </div>
 
                                                 <div class="form-group">
                                                    <label class="col-form-label">Napi menü <strong>magyar</strong> neve</label>
-                                                   <input name="productTitleHuView" type="text" class="form-control" value="<% if (editing) { %><%= dailyMenuDescriptionHuView %><% } %>">
+                                                   <input name="dailyMenuDescriptionHuView" id="dailyMenuDescriptionHuView" type="text" class="form-control" value="<% if (editing) { %><%= dailyMenuDescriptionHuView %><% } %>">
+                                                   <span class="check-input error_form intro" id="dailyMenuDescriptionHuView_error_message"></span>
                                                 </div>
 
                                                 <div class="form-group">
                                                    <label class="col-form-label">Napi menü <strong>angol</strong> neve</label>
-                                                   <input name="productTitleEnView" type="text" class="form-control" value="<% if (editing) { %><%= dailyMenuDescriptionEnView %><% } %>">
+                                                   <input name="dailyMenuDescriptionEnView" id="dailyMenuDescriptionEnView" type="text" class="form-control" value="<% if (editing) { %><%= dailyMenuDescriptionEnView %><% } %>">
+                                                   <span class="check-input error_form intro" id="dailyMenuDescriptionEnView_error_message"></span>
                                                 </div> 
                                         </div>
                                     </div>
-                                    <button type="submit" id="extra-btn" class="btn btn-success has-icon" ><% if (editing) { %>Napi menü frissítése<% } %></button>
+                                    <button type="submit" id="daily-menu-btn" class="btn btn-success has-icon" ><% if (editing) { %>Napi menü frissítése<% } %></button>
                                 </div>
                             </div>
                         </div>
