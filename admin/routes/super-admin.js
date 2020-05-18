@@ -3,6 +3,8 @@ const spLocationController = require("../controllers/super-admin/spLocation");
 const spDashboardController = require("../controllers/super-admin/spDashboard");
 const spPartnerController = require("../controllers/super-admin/spPartner");
 const spProductController = require("../controllers/super-admin/spProduct");
+const spDailyMenuController = require("../controllers/super-admin/spDailyMenu");
+const spVariantController = require("../controllers/super-admin/spVariant");
 
 const isAuth = require("../../middleware/is-auth");
 const router = express.Router();
@@ -46,5 +48,39 @@ router.get(
   "/edit-product/:productId",
   isAuth,
   spProductController.getEditProduct
+);
+router.post(
+  "/edit-product",
+  isAuth,
+
+  spProductController.postEditProduct
+);
+
+// Daily Menu
+router.get("/daily-menus", isAuth, spDailyMenuController.getDailyMenus);
+router.get(
+  "/edit-daily-menu/:dailyMenuId",
+  isAuth,
+  spDailyMenuController.getEditDailyMenu
+);
+router.post(
+  "/edit-daily-menu",
+  isAuth,
+
+  spDailyMenuController.postEditDailyMenu
+);
+
+// Variants
+router.get("/variants", isAuth, spVariantController.getVariants);
+router.get(
+  "/edit-variant/:variantId",
+  isAuth,
+  spVariantController.getEditVariant
+);
+router.post(
+  "/edit-daily-menu",
+  isAuth,
+
+  spDailyMenuController.postEditDailyMenu
 );
 module.exports = router;

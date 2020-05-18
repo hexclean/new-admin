@@ -32,9 +32,9 @@ exports.getEditProduct = async (req, res, next) => {
   let productTitleRoView;
   let productTitleHuView;
   let productTitleEnView;
-  let productDescriptionRo;
-  let productDescriptionHu;
-  let productDescriptionEn;
+  let productDescriptionRoView;
+  let productDescriptionHuView;
+  let productDescriptionEnView;
 
   const prodId = req.params.productId;
 
@@ -48,7 +48,7 @@ exports.getEditProduct = async (req, res, next) => {
     ],
   });
 
-  async function getproductTitRo() {
+  async function getProductTitRo() {
     for (let i = 0; i < productTitRo.length; i++) {
       productTitleRoView = productTitRo[i].productTranslations[0].title;
     }
@@ -64,7 +64,7 @@ exports.getEditProduct = async (req, res, next) => {
     ],
   });
 
-  async function getproductTitHu() {
+  async function getProductTitHu() {
     for (let i = 0; i < productTitHu.length; i++) {
       productTitleHuView = productTitHu[i].productTranslations[0].title;
     }
@@ -80,59 +80,64 @@ exports.getEditProduct = async (req, res, next) => {
     ],
   });
 
-  async function getproductTitEn() {
+  async function getProductTitEn() {
     for (let i = 0; i < productTitEn.length; i++) {
       productTitleEnView = productTitEn[i].productTranslations[0].title;
     }
   }
 
-  // const partnerAdressRo = await Partners.findAll({
-  //   where: { id: partId },
-  //   include: [
-  //     {
-  //       model: PartnersTranslation,
-  //       where: { languageId: 1 },
-  //     },
-  //   ],
-  // });
+  //
 
-  // async function getPartnerAdressRo() {
-  //   for (let i = 0; i < partnerAdressRo.length; i++) {
-  //     partnerAdressRoView = partnerAdressRo[i].adminInfos[0].adress;
-  //   }
-  // }
+  const productDescriptionRo = await Products.findAll({
+    where: { id: prodId },
+    include: [
+      {
+        model: ProductsTranslation,
+        where: { languageId: 1 },
+      },
+    ],
+  });
 
-  // const partnerAdressHu = await Partners.findAll({
-  //   where: { id: partId },
-  //   include: [
-  //     {
-  //       model: PartnersTranslation,
-  //       where: { languageId: 2 },
-  //     },
-  //   ],
-  // });
+  async function getProductDescriptionRo() {
+    for (let i = 0; i < productDescriptionRo.length; i++) {
+      productDescriptionRoView =
+        productDescriptionRo[i].productTranslations[0].description;
+    }
+  }
 
-  // async function getPartnerAddressHu() {
-  //   for (let i = 0; i < partnerAdressHu.length; i++) {
-  //     partnerAdressHuView = partnerAdressHu[i].adminInfos[0].adress;
-  //   }
-  // }
+  const productDescriptionHu = await Products.findAll({
+    where: { id: prodId },
+    include: [
+      {
+        model: ProductsTranslation,
+        where: { languageId: 2 },
+      },
+    ],
+  });
 
-  // const partnerAdressEn = await Partners.findAll({
-  //   where: { id: partId },
-  //   include: [
-  //     {
-  //       model: PartnersTranslation,
-  //       where: { languageId: 3 },
-  //     },
-  //   ],
-  // });
+  async function getProductDescriptionHu() {
+    for (let i = 0; i < productDescriptionHu.length; i++) {
+      productDescriptionHuView =
+        productDescriptionHu[i].productTranslations[0].description;
+    }
+  }
 
-  // async function getPartnerAddressEn() {
-  //   for (let i = 0; i < partnerAdressEn.length; i++) {
-  //     partnerAdressEnView = partnerAdressEn[i].adminInfos[0].adress;
-  //   }
-  // }
+  const productDescriptionEn = await Products.findAll({
+    where: { id: prodId },
+    include: [
+      {
+        model: ProductsTranslation,
+        where: { languageId: 3 },
+      },
+    ],
+  });
+
+  async function getProductDescriptionEn() {
+    for (let i = 0; i < productDescriptionEn.length; i++) {
+      productDescriptionEnView =
+        productDescriptionEn[i].productTranslations[0].description;
+    }
+  }
 
   Products.findAll({
     where: { id: prodId },
@@ -143,12 +148,13 @@ exports.getEditProduct = async (req, res, next) => {
     ],
   })
     .then((product) => {
-      getproductTitRo();
-      getproductTitHu();
-      getproductTitEn();
-      // getPartnerAdressRo();
-      // getPartnerAddressHu();
-      // getPartnerAddressEn();
+      getProductTitRo();
+      getProductTitHu();
+      getProductTitEn();
+      getProductDescriptionRo();
+      getProductDescriptionHu();
+      getProductDescriptionEn();
+      console.log;
       res.render("super-admin/products/edit-product", {
         pageTitle: "Edit Product",
         path: "/admin/edit-product",
@@ -160,9 +166,9 @@ exports.getEditProduct = async (req, res, next) => {
         productTitleHuView: productTitleHuView,
         productTitleEnView: productTitleEnView,
 
-        // partnerAdressRoView: partnerAdressRoView,
-        // partnerAdressHuView: partnerAdressHuView,
-        // partnerAdressEnView: partnerAdressEnView,
+        productDescriptionRoView: productDescriptionRoView,
+        productDescriptionHuView: productDescriptionHuView,
+        productDescriptionEnView: productDescriptionEnView,
       });
     })
     .catch((err) => {
@@ -172,79 +178,58 @@ exports.getEditProduct = async (req, res, next) => {
     });
 };
 
-// exports.postEditPartner = async (req, res, next) => {
-//   const partId = req.body.partnerId;
-//   // Title
-//   const fullName = req.body.fullName;
-//   const phoneNumber = req.body.phoneNumber;
-//   const email = req.body.email;
-//   const commission = req.body.commission;
-//   const open = req.body.open;
-//   const close = req.body.close;
+exports.postEditProduct = async (req, res, next) => {
+  const prodId = req.body.productId;
 
-//   const partnerShortDescRoView = req.body.partnerShortDescRoView;
-//   const partnerShortDescHuView = req.body.partnerShortDescHuView;
-//   const partnerShortDescEnView = req.body.partnerShortDescEnView;
+  // Title
+  const productTitleRoView = req.body.productTitleRoView;
+  const productTitleHuView = req.body.productTitleHuView;
+  const productTitleEnView = req.body.productTitleEnView;
 
-//   const addressRo = req.body.addressRo;
-//   const addressHu = req.body.addressHu;
-//   const addressEn = req.body.addressEn;
+  // Description
+  const productDescriptionRoView = req.body.productDescriptionRoView;
+  const productDescriptionHuView = req.body.productDescriptionHuView;
+  const productDescriptionEnView = req.body.productDescriptionEnView;
 
-//   Partners.findAll({
-//     include: [
-//       {
-//         model: PartnersTranslation,
-//       },
-//     ],
-//   })
-//     .then((result) => {
-//       async function updateLocationName() {
-//         await Partners.update(
-//           {
-//             fullName: fullName,
-//             phoneNumber: phoneNumber,
-//             email: email,
-//             commission: commission,
-//             open: open,
-//             close: close,
-//             partnerShortDescRoView: partnerShortDescRoView,
-//             partnerShortDescHuView: partnerShortDescHuView,
-//             partnerShortDescEnView: partnerShortDescEnView,
-//           },
-//           { where: { id: partId } }
-//         );
+  Products.findAll({
+    include: [
+      {
+        model: ProductsTranslation,
+      },
+    ],
+  })
+    .then((result) => {
+      async function updateLocationName() {
+        await ProductsTranslation.update(
+          {
+            title: productTitleRoView,
+            description: productDescriptionRoView,
+          },
+          { where: { productId: prodId, languageId: 1 } }
+        );
 
-//         await PartnersTranslation.update(
-//           {
-//             shortCompanyDesc: partnerShortDescRoView,
-//             adress: addressRo,
-//           },
-//           { where: { adminId: partId, languageId: 1 } }
-//         );
+        await ProductsTranslation.update(
+          {
+            title: productTitleHuView,
+            description: productDescriptionHuView,
+          },
+          { where: { productId: prodId, languageId: 2 } }
+        );
 
-//         await PartnersTranslation.update(
-//           {
-//             shortCompanyDesc: partnerShortDescHuView,
-//             adress: addressHu,
-//           },
-//           { where: { adminId: partId, languageId: 2 } }
-//         );
-
-//         await PartnersTranslation.update(
-//           {
-//             shortCompanyDesc: partnerShortDescEnView,
-//             adress: addressEn,
-//           },
-//           { where: { adminId: partId, languageId: 3 } }
-//         );
-//       }
-//       updateLocationName();
-//       console.log(req.body);
-//       res.redirect("/super-admin/partners");
-//     })
-//     .catch((err) => {
-//       const error = new Error(err);
-//       error.httpStatusCode = 500;
-//       return next(error);
-//     });
-// };
+        await ProductsTranslation.update(
+          {
+            title: productTitleEnView,
+            description: productDescriptionEnView,
+          },
+          { where: { productId: prodId, languageId: 3 } }
+        );
+      }
+      updateLocationName();
+      res.redirect("/super-admin/products");
+    })
+    .catch((err) => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
+};

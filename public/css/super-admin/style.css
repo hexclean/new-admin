@@ -1228,7 +1228,10 @@ Top Header
   -webkit-transition: all 0.3s ease;
   min-height: 60px;
 }
-
+.hr-products {
+  border-top: 1px solid #fe8f01;
+  margin-bottom: 3px;
+}
 .navbar-brand {
   display: inline-block;
   margin-right: 1rem;

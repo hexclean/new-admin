@@ -8,7 +8,7 @@
       <form 
          id="registration_form"
          class="ms-content-wrapper" 
-         action="/super-admin/<% if (editing) { %>edit-partner<% } else { %>add-location<% } %>"
+         action="/super-admin/<% if (editing) { %>edit-product<% } else { %>add-location<% } %>"
          method="POST"
          enctype="multipart/form-data">
 
@@ -32,38 +32,38 @@
                                         <div class="card-body">
 
                                                  <div class="form-group">
-                                                   <label for="inputText3" class="col-form-label"><%= product.id %> <strong>ID</strong></label>
-                                                   <input id="inputText3" name="roName" type="text" class="form-control" disabled value="<% if (editing) { %><%= product.id %><% } %>">
+                                                   <label class="col-form-label"><%= productTitleHuView %> <strong>ID</strong></label>
+                                                   <input name="id" type="text" class="form-control" disabled value="<% if (editing) { %><%= product[0].id %><% } %>">
                                                  </div>
 
                                                 <div class="form-group">
-                                                   <label for="inputText3" class="col-form-label">Név</label>
-                                                   <input id="inputText3" name="fullName" type="text" class="form-control" value="<% if (editing) { %><%= productTitleRoView %><% } %>">
+                                                    <label class="col-form-label"><%= productTitleHuView %> <strong>román</strong> neve</label>
+                                                   <input name="productTitleRoView" type="text" class="form-control" value="<% if (editing) { %><%= productTitleRoView %><% } %>">
                                                 </div>
 
                                                 <div class="form-group">
-                                                   <label for="inputText3" class="col-form-label"><%= productTitleHuView %> <strong>telefonszáma</strong></label>
-                                                   <input id="inputText3" name="phoneNumber" type="text" class="form-control" value="<% if (editing) { %><%= productTitleHuView %><% } %>">
+                                                   <label class="col-form-label"><%= productTitleRoView %> <strong>magyar</strong> neve</label>
+                                                   <input name="productTitleHuView" type="text" class="form-control" value="<% if (editing) { %><%= productTitleHuView %><% } %>">
                                                 </div>
 
                                                 <div class="form-group">
-                                                   <label for="inputText3" class="col-form-label"><%= productTitleHuView %> <strong>e-mail címe</strong></label>
-                                                   <input id="inputText3" name="email" type="text" class="form-control" value="<% if (editing) { %><%= productTitleEnView %><% } %>">
+                                                   <label class="col-form-label"><%= productTitleHuView %> <strong>angol</strong> neve</label>
+                                                   <input name="productTitleEnView" type="text" class="form-control" value="<% if (editing) { %><%= productTitleEnView %><% } %>">
                                                 </div>   
-                                                
+                                                <hr class="hr-products"/>
                                                 <div class="form-group">
-                                                    <label for="inputText3" class="col-form-label"><%= productTitleHuView %> <strong>jutaléka</strong></label>
-                                                    <input id="inputText3" name="commission" type="text" class="form-control" value="<% if (editing) { %><%= productTitleEnView %><% } %>">
+                                                    <label class="col-form-label"><%= productTitleHuView %> <strong>román</strong> leírása</label>
+                                                    <input name="productDescriptionRoView" type="text" class="form-control" value="<% if (editing) { %><%= productDescriptionRoView %><% } %>">
                                                 </div>
 
                                                 <div class="form-group">
-                                                    <label for="inputText3" class="col-form-label"><%= productTitleHuView %> <strong>nyitási idő</strong></label>
-                                                    <input id="inputText3" name="open" type="text" class="form-control" value="<% if (editing) { %><%= productTitleEnView %><% } %>">
+                                                    <label class="col-form-label"><%= productTitleHuView %> <strong>magyar</strong> leírása</label>
+                                                    <input name="productDescriptionHuView" type="text" class="form-control" value="<% if (editing) { %><%= productDescriptionHuView %><% } %>">
                                                 </div>
 
                                                 <div class="form-group">
-                                                    <label for="inputText3" class="col-form-label"><%= productTitleHuView %> <strong>zárási idő</strong></label>
-                                                    <input id="inputText3" name="close" type="text" class="form-control" value="<% if (editing) { %><%= productTitleEnView %><% } %>">
+                                                    <label class="col-form-label"><%= productTitleHuView %> <strong>angol</strong> leírása</label>
+                                                    <input name="productDescriptionEnView" type="text" class="form-control" value="<% if (editing) { %><%= productDescriptionEnView %><% } %>">
                                                 </div>
                                         </div>
                                     </div>
