@@ -1,4 +1,6 @@
 <%- include('../includes/head.ejs') %>
+<%- include('../includes/input-validation/edit-product.ejs') %>
+
 </head>
 
 <body>
@@ -6,9 +8,9 @@
       <%- include('../includes/navigation.ejs') %>
       <%- include('../includes/menu.ejs') %>
       <form 
-         id="registration_form"
+         id="edit-product"
          class="ms-content-wrapper" 
-         action="/super-admin/<% if (editing) { %>edit-product<% } else { %>add-location<% } %>"
+         action="/super-admin/<% if (editing) { %>edit-product<% } %>"
          method="POST"
          enctype="multipart/form-data">
 
@@ -43,36 +45,42 @@
 
                                                 <div class="form-group">
                                                     <label class="col-form-label">Termék <strong>román</strong> neve</label>
-                                                   <input name="productTitleRoView" type="text" class="form-control" value="<% if (editing) { %><%= productTitleRoView %><% } %>">
+                                                   <input name="productTitleRoView" id="productTitleRoView" type="text" class="form-control" value="<% if (editing) { %><%= productTitleRoView %><% } %>">
+                                                   <span class="check-input error_form intro" id="productTitleRoView_error_message"></span>
                                                 </div>
 
                                                 <div class="form-group">
                                                    <label class="col-form-label">Termék <strong>magyar</strong> neve</label>
-                                                   <input name="productTitleHuView" type="text" class="form-control" value="<% if (editing) { %><%= productTitleHuView %><% } %>">
+                                                   <input name="productTitleHuView" id="productTitleHuView" type="text" class="form-control" value="<% if (editing) { %><%= productTitleHuView %><% } %>">
+                                                   <span class="check-input error_form intro" id="productTitleHuView_error_message"></span>
                                                 </div>
 
                                                 <div class="form-group">
                                                    <label class="col-form-label">Termék <strong>angol</strong> neve</label>
-                                                   <input name="productTitleEnView" type="text" class="form-control" value="<% if (editing) { %><%= productTitleEnView %><% } %>">
+                                                   <input name="productTitleEnView" id="productTitleEnView" type="text" class="form-control" value="<% if (editing) { %><%= productTitleEnView %><% } %>">
+                                                   <span class="check-input error_form intro" id="productTitleEnView_error_message"></span>
                                                 </div>   
                                                 <hr class="hr-products"/>
                                                 <div class="form-group">
                                                     <label class="col-form-label">Termék <strong>román</strong> leírása</label>
-                                                    <input name="productDescriptionRoView" type="text" class="form-control" value="<% if (editing) { %><%= productDescriptionRoView %><% } %>">
+                                                    <input name="productDescriptionRoView" id="productDescriptionRoView" type="text" class="form-control" value="<% if (editing) { %><%= productDescriptionRoView %><% } %>">
+                                                    <span class="check-input error_form intro" id="productDescriptionRoView_error_message"></span>
                                                 </div>
 
                                                 <div class="form-group">
                                                     <label class="col-form-label"><%= productTitleHuView %> <strong>magyar</strong> leírása</label>
-                                                    <input name="productDescriptionHuView" type="text" class="form-control" value="<% if (editing) { %><%= productDescriptionHuView %><% } %>">
+                                                    <input name="productDescriptionHuView" id="productDescriptionHuView" type="text" class="form-control" value="<% if (editing) { %><%= productDescriptionHuView %><% } %>">
+                                                    <span class="check-input error_form intro" id="productDescriptionHuView_error_message"></span>
                                                 </div>
 
                                                 <div class="form-group">
                                                     <label class="col-form-label">Termék <strong>angol</strong> leírása</label>
-                                                    <input name="productDescriptionEnView" type="text" class="form-control" value="<% if (editing) { %><%= productDescriptionEnView %><% } %>">
+                                                    <input name="productDescriptionEnView" id="productDescriptionEnView" type="text" class="form-control" value="<% if (editing) { %><%= productDescriptionEnView %><% } %>">
+                                                    <span class="check-input error_form intro" id="productDescriptionEnView_error_message"></span>
                                                 </div>
                                         </div>
                                     </div>
-                                    <button type="submit" id="extra-btn" class="btn btn-success has-icon" ><% if (editing) { %>Termék frissítése<% } else { %>Város létrehozása<% } %></button>
+                                    <button type="submit" id="product-btn" class="btn btn-success has-icon" ><% if (editing) { %>Termék frissítése<% } %></button>
                                 </div>
                             </div>
                         </div>
