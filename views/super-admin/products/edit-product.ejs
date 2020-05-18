@@ -36,6 +36,11 @@
                                                    <input name="id" type="text" class="form-control" disabled value="<% if (editing) { %><%= product[0].id %><% } %>">
                                                  </div>
 
+                                                 <div class="form-group">
+                                                    <label class="col-form-label">Partner <strong>Id</strong></label>
+                                                    <input name="adminId" type="text" class="form-control" disabled value="<% if (editing) { %><%= product[0].adminId %><% } %>">
+                                                  </div>
+
                                                 <div class="form-group">
                                                     <label class="col-form-label">Termék <strong>román</strong> neve</label>
                                                    <input name="productTitleRoView" type="text" class="form-control" value="<% if (editing) { %><%= productTitleRoView %><% } %>">

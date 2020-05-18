@@ -23,6 +23,7 @@
                                                 <tr>
                                                     <th>Id</th>
                                                     <th>Név</th>
+                                                    <th>Partner Id</th>
                                                     <th>Szerkesztés</th>
                                                 </tr>
                                             </thead>
@@ -31,6 +32,7 @@
                                                 <tr>
                                                     <td><%= ext[i].id %></td>
                                                     <td><%= ext[i].extraTranslations[1].name %></td>
+                                                    <td><%= ext[i].adminId %></td>
                                                     <td>
                                                         <a href="/super-admin/edit-extra/<%= ext[i].id %>?edit=true"class="btn grid-btn mt-0 btn-sm btn-primary" >Szerkesztés</a>
                                                     </td>

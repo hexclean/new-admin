@@ -26,32 +26,37 @@
                             <div class="row">
                                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                     <div class="section-block" id="basicform">
-                                        <h3 class="section-title">Extra szerkesztése</h3>
+                                        <h3 class="section-title">Allergén szerkesztése</h3>
                                     </div>
                                     <div class="card">                      
                                         <div class="card-body">
                                                 <div class="form-group">
-                                                   <label class="col-form-label">Extra <strong>Id</strong></label>
+                                                   <label class="col-form-label">Allergén <strong>Id</strong></label>
                                                    <input name="id" type="text" class="form-control" disabled value="<% if (editing) { %><%= allergen[0].id %><% } %>">
                                                 </div>
 
                                                 <div class="form-group">
-                                                   <label class="col-form-label">Extra <strong>román</strong> neve</label>
+                                                    <label class="col-form-label">Partner <strong>Id</strong></label>
+                                                    <input name="adminId" type="text" class="form-control" disabled value="<% if (editing) { %><%= allergen[0].adminId %><% } %>">
+                                                 </div>
+
+                                                <div class="form-group">
+                                                   <label class="col-form-label">Allergén <strong>román</strong> neve</label>
                                                    <input name="allergenNameRoView" type="text" class="form-control" value="<% if (editing) { %><%= allergenNameRoView %><% } %>">
                                                 </div>
 
                                                 <div class="form-group">
-                                                   <label class="col-form-label">Extra <strong>magyar</strong> neve</label>
+                                                   <label class="col-form-label">Allergén <strong>magyar</strong> neve</label>
                                                    <input name="allergenNameHuView" type="text" class="form-control" value="<% if (editing) { %><%= allergenNameHuView %><% } %>">
                                                 </div>
 
                                                 <div class="form-group">
-                                                   <label class="col-form-label">Extra <strong>angol</strong> neve</label>
+                                                   <label class="col-form-label">Allergén <strong>angol</strong> neve</label>
                                                    <input name="allergenNameEnView" type="text" class="form-control" value="<% if (editing) { %><%= allergenNameEnView %><% } %>">
                                                 </div> 
                                         </div>
                                     </div>
-                                    <button type="submit" id="extra-btn" class="btn btn-success has-icon" ><% if (editing) { %>Napi menü frissítése<% } %></button>
+                                    <button type="submit" id="extra-btn" class="btn btn-success has-icon" ><% if (editing) { %>Allergén frissítése<% } %></button>
                                 </div>
                             </div>
                         </div>

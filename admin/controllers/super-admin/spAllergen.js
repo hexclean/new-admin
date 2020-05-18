@@ -114,45 +114,45 @@ exports.getEditAllergen = async (req, res, next) => {
 };
 
 exports.postEditAllergen = async (req, res, next) => {
-  const catId = req.body.categoryId;
+  const allId = req.body.allergenId;
 
   // Description
-  const categoryNameRoView = req.body.categoryNameRoView;
-  const categoryNameHuView = req.body.categoryNameHuView;
-  const categoryNameEnView = req.body.categoryNameEnView;
+  const allergenNameRoView = req.body.allergenNameRoView;
+  const allergenNameHuView = req.body.allergenNameHuView;
+  const allergenNameEnView = req.body.allergenNameEnView;
 
-  Category.findAll({
+  Allergens.findAll({
     include: [
       {
-        model: CategoryTranslation,
+        model: AllergensTranslation,
       },
     ],
   })
     .then((result) => {
-      async function updateExtra() {
-        await CategoryTranslation.update(
+      async function updateAllergen() {
+        await AllergensTranslation.update(
           {
-            name: categoryNameRoView,
+            name: allergenNameRoView,
           },
-          { where: { productCategoryId: catId, languageId: 1 } }
+          { where: { allergenId: allId, languageId: 1 } }
         );
 
-        await CategoryTranslation.update(
+        await AllergensTranslation.update(
           {
-            name: categoryNameHuView,
+            name: allergenNameHuView,
           },
-          { where: { productCategoryId: catId, languageId: 2 } }
+          { where: { allergenId: allId, languageId: 2 } }
         );
 
-        await CategoryTranslation.update(
+        await AllergensTranslation.update(
           {
-            name: categoryNameEnView,
+            name: allergenNameEnView,
           },
-          { where: { productCategoryId: catId, languageId: 3 } }
+          { where: { allergenId: allId, languageId: 3 } }
         );
       }
-      updateExtra();
-      res.redirect("/super-admin/categorys");
+      updateAllergen();
+      res.redirect("/super-admin/allergens");
     })
     .catch((err) => {
       const error = new Error(err);
