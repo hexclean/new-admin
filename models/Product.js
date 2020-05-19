@@ -12,6 +12,9 @@ const Product = sequelize.define("product", {
     type: Sequelize.STRING,
     allowNull: false,
   },
+  active: {
+    type: Sequelize.INTEGER,
+  },
   allergen: {
     type: Sequelize.INTEGER,
   },

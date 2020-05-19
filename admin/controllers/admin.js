@@ -75,6 +75,7 @@ exports.postAddProduct = async (req, res, next) => {
 
   const product = await req.admin.createProduct({
     imageUrl: imageUrl,
+    active: 1,
     allergen: typeof status !== "undefined" ? 1 : 0,
   });
 
@@ -153,7 +154,6 @@ exports.getEditProduct = async (req, res, next) => {
       },
     ],
   });
-  // console.log("test33", test33);
   let productFinal = await ProductFinal.findAll({
     where: {
       productId: {
@@ -174,7 +174,6 @@ exports.getEditProduct = async (req, res, next) => {
     ],
   })
     .then((product) => {
-      console.log("productFinal", productFinal);
       res.render("admin/edit-product", {
         pageTitle: "Edit Product",
         path: "/admin/edit-product",
@@ -204,10 +203,7 @@ exports.getEditProduct = async (req, res, next) => {
 exports.postEditProduct = async (req, res, next) => {
   const prodId = req.body.productId;
   const varId = req.body.variantIdUp;
-  let variantId = [varId];
-  // const varId = req.body.variantId;
 
-  // console.log("variantId", variantId);
   var filteredStatus = req.body.status.filter(Boolean);
   // Title
   const updatedRoTitle = req.body.roTitle;
@@ -221,7 +217,6 @@ exports.postEditProduct = async (req, res, next) => {
   //
   const updatedExtraPrice = req.body.price;
   const image = req.file;
-  const Op = Sequelize.Op;
 
   const variants = await ProductVariants.findAll({
     where: {
@@ -232,13 +227,6 @@ exports.postEditProduct = async (req, res, next) => {
         model: ProductFinal,
       },
     ],
-  });
-  const varddiants = await ProductFinal.findAll({
-    where: {
-      variantId: {
-        [Op.in]: variantId,
-      },
-    },
   });
 
   Product.findAll({
@@ -310,9 +298,15 @@ exports.postEditProduct = async (req, res, next) => {
           }
         }
       }
-      msg();
-      // console.log("req.body", req.body);
-      res.redirect("/admin/products");
+      msg()
+        .then((result) => {
+          res.redirect("/admin/products");
+        })
+        .catch((err) => {
+          const error = new Error(err);
+          error.httpStatusCode = 500;
+          return next(error);
+        });
     })
     .catch((err) => {
       const error = new Error(err);
@@ -329,7 +323,7 @@ exports.getProducts = async (req, res, next) => {
     where: { adminId: req.admin.id },
   });
   await Product.findAll({
-    where: { adminId: req.admin.id },
+    where: { adminId: req.admin.id, active: 1 },
     include: [
       {
         model: ProductTranslation,
@@ -339,6 +333,7 @@ exports.getProducts = async (req, res, next) => {
   })
 
     .then((product) => {
+      console.log(product);
       for (let i = 0; i < product.length; i++) {
         var currentLanguage = req.cookies.language;
 
@@ -384,7 +379,7 @@ exports.getProducts = async (req, res, next) => {
 
 exports.postDeleteProduct = (req, res, next) => {
   const prodId = req.body.productId;
-  Product.findById(prodId)
+  Product.findByPk(prodId)
     .then((product) => {
       if (!product) {
         return next(new Error("Product not found."));

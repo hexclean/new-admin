@@ -9,11 +9,11 @@ const ProductVariantsExtras = sequelize.define("productVariantsExtras", {
     primaryKey: true,
   },
   price: {
-    type: Sequelize.INTEGER,
+    type: Sequelize.FLOAT,
     allowNull: false,
   },
   discountedPrice: {
-    type: Sequelize.INTEGER,
+    type: Sequelize.FLOAT,
     allowNull: false,
   },
   quantityMin: {

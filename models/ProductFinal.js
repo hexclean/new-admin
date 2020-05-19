@@ -9,16 +9,15 @@ const ProductFinal = sequelize.define("productFinal", {
     primaryKey: true,
   },
   price: {
-    type: Sequelize.INTEGER,
+    type: Sequelize.FLOAT,
     allowNull: false,
   },
-  discountedPrice: Sequelize.INTEGER,
+  discountedPrice: Sequelize.FLOAT,
 
   active: {
     type: Sequelize.INTEGER,
     allowNull: false,
   },
-  sku: Sequelize.STRING,
 });
 
 module.exports = ProductFinal;

@@ -305,9 +305,7 @@ exports.postAddVariant = async (req, res, next) => {
     });
 
     for (let i = 0; i <= productId.length - 1; i++) {
-      console.log("productId[i].id", productId[i].id);
       await ProductsFinal.create({
-        sku: sku,
         price: 0,
         active: 0,
         productId: productId[i].id,
@@ -332,8 +330,6 @@ exports.postAddVariant = async (req, res, next) => {
   }
   productVariantTransaltion()
     .then((result) => {
-      console.log("updatedExtraPrice", updatedExtraPrice);
-
       res.redirect("/admin/vr-index"),
         {
           ext: ext,
