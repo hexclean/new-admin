@@ -20,7 +20,8 @@ exports.getAddProduct = async (req, res, next) => {
       },
     ],
   });
-  console.log("ext", ext);
+
+  console.log(ext);
   const checkVariantLength = await ProductVariants.findAll({
     where: { adminId: req.admin.id },
   });
@@ -140,6 +141,19 @@ exports.getEditProduct = async (req, res, next) => {
   const prodId = req.params.productId;
   let productId = [prodId];
   const Op = Sequelize.Op;
+
+  const test33 = await ProductVariants.findAll({
+    where: {
+      adminId: req.admin.id,
+    },
+    include: [
+      {
+        model: ProductFinal,
+      },
+    ],
+  });
+
+  console.log("test", test33[0].productFinals);
   let productFinal = await ProductFinal.findAll({
     where: {
       productId: {
@@ -147,17 +161,7 @@ exports.getEditProduct = async (req, res, next) => {
       },
     },
   });
-  const test = await Product.findAll({
-    where: { adminId: req.admin.id },
-    include: [
-      {
-        model: ProductTranslation,
-      },
-      { model: ProductFinal },
-    ],
-  });
   console.log("productFinal", productFinal);
-
   Product.findAll({
     where: {
       id: prodId,
@@ -171,6 +175,7 @@ exports.getEditProduct = async (req, res, next) => {
     ],
   })
     .then((product) => {
+      console.log("productFinal", productFinal);
       res.render("admin/edit-product", {
         pageTitle: "Edit Product",
         path: "/admin/edit-product",
@@ -181,7 +186,7 @@ exports.getEditProduct = async (req, res, next) => {
         productIds: prodId,
         productId: prodId,
         ext: productFinal,
-        productVariant: productFinal,
+        productVariant: test33,
         errorMessage: null,
         validationErrors: [],
 
