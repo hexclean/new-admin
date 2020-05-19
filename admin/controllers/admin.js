@@ -107,6 +107,7 @@ exports.postAddProduct = async (req, res, next) => {
   }
 
   if (Array.isArray(ext)) {
+    console.log(ext);
     for (let i = 0; i <= ext.length - 1; i++) {
       await ProductFinal.create({
         price: price[i] || 0,
@@ -152,8 +153,7 @@ exports.getEditProduct = async (req, res, next) => {
       },
     ],
   });
-
-  console.log("test", test33[0].productFinals);
+  // console.log("test33", test33);
   let productFinal = await ProductFinal.findAll({
     where: {
       productId: {
@@ -161,7 +161,6 @@ exports.getEditProduct = async (req, res, next) => {
       },
     },
   });
-  console.log("productFinal", productFinal);
   Product.findAll({
     where: {
       id: prodId,
@@ -201,10 +200,14 @@ exports.getEditProduct = async (req, res, next) => {
       return next(error);
     });
 };
+
 exports.postEditProduct = async (req, res, next) => {
   const prodId = req.body.productId;
-  const varId = req.body.variantId;
+  const varId = req.body.variantIdUp;
   let variantId = [varId];
+  // const varId = req.body.variantId;
+
+  // console.log("variantId", variantId);
   var filteredStatus = req.body.status.filter(Boolean);
   // Title
   const updatedRoTitle = req.body.roTitle;
@@ -219,7 +222,18 @@ exports.postEditProduct = async (req, res, next) => {
   const updatedExtraPrice = req.body.price;
   const image = req.file;
   const Op = Sequelize.Op;
-  const variants = await ProductFinal.findAll({
+
+  const variants = await ProductVariants.findAll({
+    where: {
+      adminId: req.admin.id,
+    },
+    include: [
+      {
+        model: ProductFinal,
+      },
+    ],
+  });
+  const varddiants = await ProductFinal.findAll({
     where: {
       variantId: {
         [Op.in]: variantId,
@@ -271,9 +285,11 @@ exports.postEditProduct = async (req, res, next) => {
         );
         if (Array.isArray(variants)) {
           const Op = Sequelize.Op;
-          for (let i = 0; i <= variants.length; i++) {
+          for (let i = 0; i < variants.length; i++) {
             let variIds = [varId[i]];
             let prodIds = [prodId];
+            console.log("variIds", variIds);
+            console.log("prodIds", prodIds);
             await ProductFinal.update(
               {
                 price: updatedExtraPrice[i] || 0,
@@ -295,6 +311,7 @@ exports.postEditProduct = async (req, res, next) => {
         }
       }
       msg();
+      // console.log("req.body", req.body);
       res.redirect("/admin/products");
     })
     .catch((err) => {

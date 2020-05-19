@@ -349,7 +349,6 @@ exports.postAddVariant = async (req, res, next) => {
 
 exports.postEditVariant = async (req, res, next) => {
   const extId = req.body.extraId;
-  console.log("extId", extId);
   const updatedSku = req.body.sku;
   const varId = req.body.variantId;
   const updatedExtraPrice = req.body.price;
