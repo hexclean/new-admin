@@ -380,7 +380,7 @@ h2 {
   width: 100%;
 }
 .mainnv .nav-link {
-  font-size: 14px;
+  font-size: 20px;
   font-weight: 500;
   color: #fff !important;
   text-transform: uppercase;
@@ -425,32 +425,6 @@ h2 {
     display: inline-block !important;
   }
 }
-
-.footer-social {
-  margin: 0px;
-  padding: 0px;
-  color: #fff;
-  list-style-type: none;
-}
-.footer-social li {
-  margin-bottom: 10px;
-}
-.footer-social li a {
-  color: #fff;
-  font-family: "montserratsemibold";
-}
-.footer-social li i {
-  background: #fff;
-  width: 25px;
-  height: 25px;
-  line-height: 25px;
-  display: inline-block;
-  text-align: center;
-  margin-right: 5px;
-  border-radius: 50%;
-  color: #1c1c1c;
-}
-/* css for banner-section Starts */
 
 .piza-section {
   position: relative;
@@ -611,9 +585,7 @@ img {
   color: #fff;
   font-family: "montserratsemibold";
 }
-.footer-bottom {
-  padding-top: 55px;
-}
+
 .newletter input[type="text"] {
   text-align: left;
   padding: 12px 20px;
@@ -693,20 +665,6 @@ img {
   .piza-bg {
     background-size: cover;
   }
-  .footer-body h2 {
-    padding-bottom: 15px !important;
-    padding-top: 15px;
-    font-size: 15px;
-  }
-  .footer-bottom {
-    padding-top: 30px;
-  }
-  .footer-bottom p {
-    font-size: 16px !important;
-  }
-  footer {
-    padding: 30px 0px 15px !important;
-  }
 }
 
 /* Styles for wrapping the search box */
@@ -733,19 +691,10 @@ img {
   color: #aaa;
 }
 
-footer {
-  padding: 50px 0px 15px;
-}
 .newletter {
   margin-bottom: 80px;
 }
-.footer-body h2 {
-  padding-bottom: 60px;
-  margin: 0px;
-}
-.footer-bottom p {
-  font-size: 20px;
-}
+
 .happymen-left img {
   max-width: 40%;
 }
@@ -988,9 +937,7 @@ footer {
   h2 {
     font-size: 25px;
   }
-  footer {
-    text-align: center;
-  }
+
   svg {
     position: relative;
   }
@@ -1062,9 +1009,7 @@ footer {
   h2 {
     font-size: 25px;
   }
-  footer {
-    text-align: center;
-  }
+
   .partner-inkbx {
     margin-bottom: 15px;
   }
@@ -1204,4 +1149,13 @@ footer {
     margin-left: -60px;
     margin-right: -60px;
   }
+}
+
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+  .banner-section {
+    margin-top: -101px;
+  }
+}
+.wave1bottom {
+  margin-bottom: -12px;
 }

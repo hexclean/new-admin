@@ -6,29 +6,6 @@ export const Footer = () => (
     <footer className="black-bg">
       <div className="container">
         <div className="row">
-          <div className="col-md-12">
-            <div className="newletter text-center">
-              <h2 className="text-white babas-regular">
-                IRATKOZZ FEL HÍRLEVELEINKRE ÉS
-                <br />
-                <span className="babas-regular">
-                  ERTESÜLJ ELSŐKÉNT LEGÚJABB PARTNEREINKRŐL!
-                </span>
-              </h2>
-              <form action="#" method="Post">
-                <input
-                  type="text"
-                  name="mail"
-                  placeholder="Enter Your Email Id"
-                />
-                <button type="button" className="btn-yellow">
-                  FELÍRATKOZÁS!
-                </button>
-              </form>
-            </div>
-          </div>
-        </div>
-        <div className="row">
           <div className="col-md-6">
             <div className="footer-body">
               <h2 className="text-yellow">KÖVESS MINKET:</h2>

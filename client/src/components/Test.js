@@ -7,10 +7,9 @@ function Test() {
     axios
       .get("/api/restaurants")
       .then((response) => {
-        console.log("responseresponseresponse", response);
-        if (response.users) {
-          console.log("responseresponseresponse", response);
-          setUsers(response.users);
+        if (response.data) {
+          console.log("res.d", response.data);
+          setUsers(response.data);
         }
       })
       .catch((err) => {
@@ -20,10 +19,12 @@ function Test() {
 
   const getHeroes = () => {
     const heroesList = [];
-    console.log("users", users);
-
-    users.map((users, index) =>
-      heroesList.push(<div index={index} key={users.id} users={users} />)
+    users.map((user, index) =>
+      heroesList.push(
+        <h1 key={user.id}>
+          {user.id} {user.adminInfos[0].adress}
+        </h1>
+      )
     );
     return heroesList;
   };
@@ -31,7 +32,7 @@ function Test() {
   return (
     <div className="App">
       das
-      <h2>{users && getHeroes()}</h2>
+      <h2>{getHeroes()}</h2>
     </div>
   );
 }

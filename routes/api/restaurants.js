@@ -3,14 +3,20 @@ const request = require("request");
 const config = require("config");
 const router = express.Router();
 const Admin = require("../../models/Admin");
-const Product = require("../../models/Product");
+const AdminInfo = require("../../models/AdminInfo");
 
 // @route    GET api/restaurants
 // @desc     Get all restaurants
 // @access   Public
 router.get("/", async (req, res) => {
   try {
-    const restaurants = await Admin.findAll();
+    const restaurants = await Admin.findAll({
+      include: [
+        {
+          model: AdminInfo,
+        },
+      ],
+    });
     res.json(restaurants);
   } catch (err) {
     console.error(err.message);
