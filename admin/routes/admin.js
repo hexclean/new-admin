@@ -8,6 +8,7 @@ const categoryController = require("../controllers/category");
 const adminProfileController = require("../controllers/profile");
 const dailyMenuController = require("../controllers/daily-menu");
 const allergenController = require("../controllers/allergen");
+const deletedItemsController = require("../controllers/deleted-items");
 
 // const migrationController = require("../controllers/migration");
 // const adminProfileController = require("../controllers/profile");
@@ -200,6 +201,16 @@ router.post(
   isAuth,
 
   allergenController.postEditAllergen
+);
+
+// Deleted Items
+router.get("/deleted-items", isAuth, deletedItemsController.getIndex);
+
+router.get("/deleted-products", isAuth, deletedItemsController.getProducts);
+router.post(
+  "/restore-product",
+  isAuth,
+  deletedItemsController.postRestoreProduct
 );
 
 module.exports = router;

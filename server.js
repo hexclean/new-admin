@@ -139,7 +139,7 @@ app.use(
 // app.use("/api/profile", require("./routes/api/profile"));
 // app.use("/api/order", require("./routes/api/order"));
 // app.use("/api/products", require("./routes/api/products"));
-// app.use("/api/restaurants", require("./routes/api/restaurants"));
+app.use("/api/restaurants", require("./routes/api/restaurants"));
 app.use(bodyParser.urlencoded({ extended: false }));
 // app.use(expressValidator());
 app.use("/admin", adminRoutes);
@@ -347,15 +347,27 @@ AdminLocation.hasMany(AdminLocationTranslation, {
 
 Language.hasMany(AdminLocationTranslation, { foreignKey: "languageId" });
 
-// Admin.belongsTo(AdminLocationTranslation, {
+// Admin.belongsTo(AdminLocation, {
 //   as: "theAdminInfo",
 //   foreignKey: "adminId",
 // });
+// AdminLocation.hasMany(Admin, { foreignKey: "adminId" });
+// AdminLocation.belongsTo(Admin, { constrains: true, onDelete: "CASCADE" });
+///
+
+Admin.belongsTo(AdminLocation, {
+  as: "adminLTrans",
+  foreignKey: "adminId",
+});
+
+AdminLocation.hasOne(Admin, { foreignKey: "locationId" });
+
 // Admin.belongsTo(AdminLocationTranslation, {
 //   constrains: true,
 //   onDelete: "CASCADE",
 // });
-// AdminLocationTranslation.hasMany(Admini, { foreignKey: "adminId" });
+
+// AdminLocationTranslation.hasMany(Admin, { foreignKey: "adminId" });
 
 // app.use((error, req, res, next) => {
 //   res.status(500).render("500", {

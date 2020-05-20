@@ -1,2 +1,0 @@
-1) 1 uj tabla: nevezes, price, status: enable or not
-2) koztes benne lesz a termek id es a 1) -id amit hozza raktak --- pizza id:1 +szalami

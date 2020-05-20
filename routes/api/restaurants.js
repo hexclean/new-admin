@@ -10,7 +10,7 @@ const Product = require("../../models/Product");
 // @access   Public
 router.get("/", async (req, res) => {
   try {
-    const restaurants = await Admin.find();
+    const restaurants = await Admin.findAll();
     res.json(restaurants);
   } catch (err) {
     console.error(err.message);
