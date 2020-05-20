@@ -3,744 +3,409 @@ import "../css/Products.css";
 
 import wave1 from "../wave1.svg";
 import wave2 from "../wave2.svg";
-import Navigation from "./Navigation";
+// import Navigation from "./Navigation";
 
 export const Products = () => (
   <div>
-    <Navigation />
-    <body>
-      <div class="banner-section">
-        <div class="container">
-          <div class="row">
-            <div class="col-md-3">
-              <div class="white-radiusbox">
-                <img src="images/rexo.png" />
+    <div className="mainnv">
+      <div className="container">
+        <div className="row">
+          <div className="col-md-12">
+            <nav className="navbar navbar-expand-lg navbar-light">
+              <button
+                className="navbar-toggler"
+                type="button"
+                data-toggle="collapse"
+                data-target="#collapsibleNavbar"
+              >
+                <span className="navbar-toggler-icon"></span>
+              </button>
+
+              <div className="collapse navbar-collapse" id="collapsibleNavbar">
+                <ul className="navbar-nav mr-auto mt-2 mt-lg-0 col-md-5 col-lg-5">
+                  <li className="nav-item active">
+                    <a className="nav-link" href="#">
+                      Restaurants <span className="sr-only">(current)</span>
+                    </a>
+                  </li>
+                  <li className="nav-item">
+                    <a className="nav-link" href="#">
+                      Subscription
+                    </a>
+                  </li>
+                  <li className="nav-item">
+                    <a className="nav-link disabled text-yellow" href="#">
+                      Download App
+                    </a>
+                  </li>
+                </ul>
+
+                <div className="mx-auto col-md-4 col-lg-5">
+                  <a href="#" className="navbar-brand">
+                    <img src="images/foodnet_logo.png" />
+                  </a>
+                  <a className="nav-link text-yellow" href="#">
+                    Be my partner
+                  </a>
+                </div>
+
+                <ul className="navbar-nav ml-auto col-md-3 mt-2 mt-lg-0 align-right col-lg-2">
+                  <li className="nav-item">
+                    <a className="nav-link" href="#">
+                      <img src="images/profile.png" />
+                    </a>
+                  </li>
+                  <li className="nav-item">
+                    <a className="nav-link disabled" href="#">
+                      <img src="images/cart.png" />
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div className="banner-section">
+      <div className="container">
+        <div className="row">
+          <div className="col-md-3">
+            <div className="white-radiusbox">
+              <img src="images/rexo.png" />
+            </div>
+          </div>
+          <div className="col-md-9">
+            <h2 className="text-yellow">CE DELICII DELIVERY</h2>
+            <p>
+              Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+              amet,consectetuer Lorem ipsum dolor. consectetuer adipiscing elit.
+            </p>
+            <ul className="info-list">
+              <li>
+                <img src="images/icon-1.png" />
+                12:00 - 22:00
+              </li>
+              <li>
+                <img src="images/icon-2.png" />
+                10-15 min
+              </li>
+              <li>
+                <img src="images/icon-3.png" />
+                25 RON+
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div className="margtp50">
+        <img src={wave1} />
+      </div>
+    </div>
+
+    <div className="product-section partner-ink black-yellow">
+      <div className="container">
+        <div className="row">
+          <div className="col-md-10 mx-auto">
+            <div className="search-box">
+              <div className="main">
+                <div className="row">
+                  <div className="col-md-6">
+                    <h2 className="text-white">KÍnálatunk</h2>
+                  </div>
+                  <div className="col-md-6 search-box">
+                    <div className="input-group">
+                      <div className="input-group-append">
+                        <button className="btn btn-secondary" type="button">
+                          <img src="images/search-icon.png" />
+                        </button>
+                      </div>
+                      <input
+                        type="text"
+                        className="form-control"
+                        placeholder="KERESÉS..."
+                      />
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
-            <div class="col-md-9">
-              <h2 class="text-yellow">CE DELICII DELIVERY</h2>
-              <p>
-                Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
-                amet,consectetuer Lorem ipsum dolor. consectetuer adipiscing
-                elit.
-              </p>
-              <ul class="info-list">
+          </div>
+        </div>
+
+        <div className="tab-main">
+          <div className="row">
+            <div className="col-1 menulist menu-list-first menu9169">
+              <div className="yellow-graybx">
+                <a href="#">
+                  <img src="images/nextrest.png" />
+                </a>
+              </div>
+            </div>
+            <div className="col-10 listmenus">
+              <div className="yellow-graybx tabbx menu-resp new523m newMen">
+                <a href="#">
+                  <img className="img-chicken" src="images/kaja1.png" />
+                </a>
+                <a href="#">
+                  <img className="img-chicken" src="images/kaja2.png" />
+                </a>
+
+                <a href="#">
+                  <img className="img-chicken" src="images/kaja3.png" />
+                </a>
+                <a href="#">
+                  <img className="img-chicken" src="images/kaja4.png" />
+                </a>
+                <a href="#">
+                  <img className="img-chicken" src="images/kaja5.png" />
+                </a>
+
+                <a href="#">
+                  <img className="img-chicken" src="images/kaja6.png" />
+                </a>
+                <a href="#">
+                  <img className="img-chicken" src="images/kaja7.png" />
+                </a>
+              </div>
+            </div>
+            <div className="col-1 menulist-ri menu-list-second menu91692">
+              <div className="yellow-graybx">
+                <a href="#">
+                  <img src="images/allergen.png" />
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="row">
+          <div className="col-sm-12 col-md-12">
+            <div className="row">
+              <div className="col-md-6 products-down padding-right">
+                <div className="partner-inkbxtp margbtm-15">
+                  <div className="partner-inkbx">
+                    <div className="partner-inkbxlft">
+                      <img src="images/cover.png" />
+                    </div>
+                    <div className="partner-inkbxrht">
+                      <h3>SÜLT POLIPKAROK</h3>
+                      <p>
+                        Lorem ipsum dolor sit amet, conse-ctetuer adipiscing. SI
+                        ipsum dolor sit amet Lorem DOlor Si marto.
+                      </p>
+                      <ul className="wh-radius">
+                        <li>
+                          <a href="#">gramaj:&nbsp;700g</a>
+                        </li>
+                        <li>
+                          <a href="#">17.00 RON</a>
+                        </li>
+                      </ul>
+                      <ul className="size-list">
+                        <li className="between-variants">
+                          <a href="#">SMALL</a>
+                        </li>
+                        <li className="between-variants">
+                          <a href="#">MEDIUM</a>
+                        </li>
+                        <li className="between-variants">
+                          <a href="#">LARGE</a>
+                        </li>
+                        <li className="between-variants">
+                          <a href="#">SMALL</a>
+                        </li>
+                        <li className="between-variants">
+                          <a href="#">MEDIUM</a>
+                        </li>
+                        <li className="between-variants">
+                          <a href="#">LARGE</a>
+                        </li>
+                        <li>
+                          <a href="#">
+                            VÉLEMÉNYEK&nbsp;
+                            <img src="images/drop-arrowsm.png" />
+                          </a>
+                        </li>
+                        <li>
+                          <a href="#" className="small-cart">
+                            <img src="images/cart-small.png" />
+                            KOSÁRBA RAKOM
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                    <div className="clear"></div>
+                  </div>
+                  <div className="text-center">
+                    <a href="#" className="extra-btn">
+                      EXTRÁK <img src="images/drop-arrow.png" />
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <div className="col-md-6 padding-right">
+                <div className="partner-inkbxtp margbtm-15">
+                  <div className="partner-inkbx">
+                    <div className="partner-inkbxlft">
+                      <img src="images/icon-img-1.png" />
+                    </div>
+                    <div className="partner-inkbxrht">
+                      <h3>PARADICSOMSZENDVICS</h3>
+                      <p>
+                        Lorem ipsum dolor sit amet, conse-ctetuer adipiscing. SI
+                        ipsum dolor sit amet Lorem DOlor Si marto.
+                      </p>
+                      <ul className="wh-radius">
+                        <li>
+                          <a href="#">gramaj:&nbsp;700g</a>
+                        </li>
+                        <li>
+                          <a href="#">17.00 RON</a>
+                        </li>
+                      </ul>
+                      <ul className="size-list">
+                        <li>
+                          <a href="#">SMALL</a>
+                        </li>
+                        <li>
+                          <a href="#">MEDIUM</a>
+                        </li>
+                        <li>
+                          <a href="#">LARGE</a>
+                        </li>
+                        <li>
+                          <a href="#">
+                            VÉLEMÉNYEK&nbsp;
+                            <img src="images/drop-arrowsm.png" />
+                          </a>
+                        </li>
+                        <li>
+                          <a href="#">
+                            <img src="images/cart-small.png" />
+                            KOSÁRBA RAKOM
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                    <div className="clear"></div>
+                  </div>
+                  <div className="text-center">
+                    <a href="#" className="extra-btn">
+                      EXTRÁK <img src="images/drop-arrow.png" />
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div className="piza-section">
+      <div>
+        <img src={wave2} />
+      </div>
+      <div className="container">
+        <div className="row">
+          <div className="col-md-9 mx-auto">
+            <div className="piza-bg">
+              <div className="row">
+                <div className="col-md-12">
+                  <div className="col-md-12 text-center">
+                    <h2 className="text-white babas-regular">
+                      SPÓROLJ MEG HAVI 10%-ot!
+                    </h2>
+                  </div>
+                </div>
+              </div>
+              <div className="row">
+                <div className="col-md-6">
+                  <img src="images/home-pizza10.png" />
+                </div>
+                <div className="col-md-6">
+                  <p>
+                    Lorem ipsum dolor sit amet, consectetuer adipiscing elit sed
+                    diam MOLENO MANO ET.
+                  </p>
+                  <p>
+                    ipsum dolor sit amet,consectetuer adipiscing elit,sed diam
+                    MOLENO MANO ET.
+                  </p>
+                  <a href="#" className="btn-yellow">
+                    PRÓBÁLD KI!
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer className="black-bg">
+      <div className="container">
+        <div className="row">
+          <div className="col-md-6">
+            <div className="footer-body">
+              <h2 className="text-yellow">KÖVESS MINKET:</h2>
+
+              <ul className="footer-social">
                 <li>
-                  <img src="images/icon-1.png" />
-                  12:00 - 22:00
+                  <a href="#">
+                    <i className="fa fa-facebook" aria-hidden="true"></i>
+                    /foodnetofﬁcial
+                  </a>
                 </li>
                 <li>
-                  <img src="images/icon-2.png" />
-                  10-15 min
+                  <a href="#">
+                    <i className="fa fa-instagram" aria-hidden="true"></i>
+                    @foodnetofﬁcial
+                  </a>
                 </li>
                 <li>
-                  <img src="images/icon-3.png" />
-                  25 RON+
+                  <a href="#">
+                    <i className="fa fa-youtube-play" aria-hidden="true"></i>
+                    /foodnetofﬁcial
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div className="col-md-6">
+            <div className="footer-body">
+              <h2 className="text-yellow">EGYÉB OLDALAK:</h2>
+              <ul className="normal-list">
+                <li>
+                  <a href="#">Termeni și Condiții</a>
+                </li>
+                <li>
+                  <a href="#">Politica de conﬁdențialitate</a>
+                </li>
+                <li>
+                  <a href="#">Returnare produse</a>
+                </li>
+                <li>
+                  <a href="#">Drepturi de autor</a>
+                </li>
+                <li>
+                  <a href="#">ANPC</a>
                 </li>
               </ul>
             </div>
           </div>
         </div>
-        <div class="margtp50">
-          <img src={wave1} />
-        </div>
-      </div>
-      <div class="product-section partner-ink black-yellow">
-        <div class="container">
-          <div class="row">
-            <div class="col-md-10 mx-auto">
-              <div class="search-box">
-                <div class="main">
-                  <div class="row">
-                    <div class="col-md-6">
-                      <h2 class="text-white">KÍnálatunk</h2>
-                    </div>
-                    <div class="col-md-6">
-                      <div class="input-group">
-                        <div class="input-group-append">
-                          <button class="btn btn-secondary" type="button">
-                            <img src="images/search-icon.png" />
-                          </button>
-                        </div>
-                        <input
-                          type="text"
-                          class="form-control"
-                          placeholder="KERESÉS..."
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="tab-main">
-            <div class="row">
-              <div class="col-1">
-                <div class="yellow-graybx">
-                  <a href="#">
-                    <img src="images/nextrest.png" />
-                  </a>
-                </div>
-              </div>
-              <div class="col-10">
-                <div class="yellow-graybx tabbx">
-                  <a href="#" className="img-min-res-menu">
-                    <img className="img-size-menu" src="images/kaja1.png" />
-                  </a>
-                  <a href="#" className="img-min-res-menu">
-                    <img className="img-size-menu" src="images/kaja2.png" />
-                  </a>
-
-                  <a href="#" className="img-min-res-menu">
-                    <img className="img-size-menu" src="images/kaja3.png" />
-                  </a>
-                  <a href="#">
-                    <img className="img-size-menu" src="images/kaja4.png" />
-                  </a>
-                  <a href="#" className="img-min-res-menu">
-                    <img className="img-size-menu" src="images/kaja5.png" />
-                  </a>
-
-                  <a href="#" className="img-min-res-menu">
-                    <img className="img-size-menu" src="images/kaja6.png" />
-                  </a>
-                  <a href="#" className="img-min-res-menu">
-                    <img className="img-size-menu" src="images/kaja7.png" />
-                  </a>
-                </div>
-              </div>
-              <div class="col-1">
-                <div class="yellow-graybx">
-                  <a href="#">
-                    <img src="images/allergen.png" />
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-sm-12 col-md-12">
-              <div class="row">
-                <div class="col-md-6 padding-right">
-                  <div class="partner-inkbxtp margbtm-15">
-                    <div class="partner-inkbx">
-                      <div class="partner-inkbxlft">
-                        <img src="images/cover.png" />
-                      </div>
-                      <div class="partner-inkbxrht">
-                        <h3>SÜLT POLIPKAROK</h3>
-                        <p>
-                          Lorem ipsum dolor sit amet, conse-ctetuer adipiscing.
-                          SI ipsum dolor sit amet Lorem DOlor Si marto.
-                        </p>
-                        <ul class="wh-radius">
-                          <li>
-                            <a href="#">gramaj:&nbsp;700g</a>
-                          </li>
-                          <li>
-                            <a href="#">17.00 RON</a>
-                          </li>
-                        </ul>
-                        <ul class="size-list">
-                          <li>
-                            <a href="#">SMALL</a>
-                          </li>
-                          <li>
-                            <a href="#">MEDIUM</a>
-                          </li>
-                          <li>
-                            <a href="#">LARGE</a>
-                          </li>
-                          <li>
-                            <a href="#">SMALL</a>
-                          </li>
-                          <li>
-                            <a href="#">MEDIUM</a>
-                          </li>
-                          <li>
-                            <a href="#">LARGE</a>
-                          </li>
-                          <li>
-                            <a href="#">
-                              VÉLEMÉNYEK&nbsp;
-                              <img src="images/drop-arrowsm.png" />
-                            </a>
-                          </li>
-                          <li>
-                            <a href="#" class="small-cart">
-                              <img src="images/cart-small.png" />
-                              KOSÁRBA RAKOM
-                            </a>
-                          </li>
-                        </ul>
-                      </div>
-                      <div class="clear"></div>
-                    </div>
-                    <div class="text-center">
-                      <a href="#" class="extra-btn">
-                        EXTRÁK <img src="images/drop-arrow.png" />
-                      </a>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-6 padding-right">
-                  <div class="partner-inkbxtp margbtm-15">
-                    <div class="partner-inkbx">
-                      <div class="partner-inkbxlft">
-                        <img src="images/icon-img-1.png" />
-                      </div>
-                      <div class="partner-inkbxrht">
-                        <h3>PARADICSOMSZENDVICS</h3>
-                        <p>
-                          Lorem ipsum dolor sit amet, conse-ctetuer adipiscing.
-                          SI ipsum dolor sit amet Lorem DOlor Si marto.
-                        </p>
-                        <ul class="wh-radius">
-                          <li>
-                            <a href="#">gramaj:&nbsp;700g</a>
-                          </li>
-                          <li>
-                            <a href="#">17.00 RON</a>
-                          </li>
-                        </ul>
-                        <ul class="size-list">
-                          <li>
-                            <a href="#">SMALL</a>
-                          </li>
-                          <li>
-                            <a href="#">MEDIUM</a>
-                          </li>
-                          <li>
-                            <a href="#">LARGE</a>
-                          </li>
-                          <li>
-                            <a href="#">
-                              VÉLEMÉNYEK&nbsp;
-                              <img src="images/drop-arrowsm.png" />
-                            </a>
-                          </li>
-                          <li>
-                            <a href="#">
-                              <img src="images/cart-small.png" />
-                              KOSÁRBA RAKOM
-                            </a>
-                          </li>
-                        </ul>
-                      </div>
-                      <div class="clear"></div>
-                    </div>
-                    <div class="text-center">
-                      <a href="#" class="extra-btn">
-                        EXTRÁK <img src="images/drop-arrow.png" />
-                      </a>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="col-md-6 padding-right">
-                  <div class="partner-inkbxtp margbtm-15">
-                    <div class="partner-inkbx">
-                      <div class="partner-inkbxlft">
-                        <img src="images/cover.png" />
-                      </div>
-                      <div class="partner-inkbxrht">
-                        <h3>SÜLT POLIPKAROK</h3>
-                        <p>
-                          Lorem ipsum dolor sit amet, conse-ctetuer adipiscing.
-                          SI ipsum dolor sit amet Lorem DOlor Si marto.
-                        </p>
-                        <ul class="wh-radius">
-                          <li>
-                            <a href="#">gramaj:&nbsp;700g</a>
-                          </li>
-                          <li>
-                            <a href="#">17.00 RON</a>
-                          </li>
-                        </ul>
-                        <ul class="size-list">
-                          <li>
-                            <a href="#">SMALL</a>
-                          </li>
-                          <li>
-                            <a href="#">MEDIUM</a>
-                          </li>
-                          <li>
-                            <a href="#">LARGE</a>
-                          </li>
-                          <li>
-                            <a href="#">
-                              VÉLEMÉNYEK&nbsp;
-                              <img src="images/drop-arrowsm.png" />
-                            </a>
-                          </li>
-                          <li>
-                            <a href="#">
-                              <img src="images/cart-small.png" />
-                              KOSÁRBA RAKOM
-                            </a>
-                          </li>
-                        </ul>
-                      </div>
-                      <div class="clear"></div>
-                    </div>
-                    <div class="text-center">
-                      <ul class="bottom-list tt">
-                        <li>
-                          <div class="box-c">
-                            <img src="images/ico.png" class="img-fluid" />
-                            <p>
-                              LOREM IPSUM <span>+ 12 LEJ</span>
-                            </p>
-                          </div>
-                          <div class="box-c">
-                            <img src="images/ico.png" class="img-fluid" />
-                            <p>
-                              LOREM IPSUM <span>+ 12 LEJ</span>
-                            </p>
-                          </div>
-                        </li>
-                        <li>
-                          <div class="box-c">
-                            <img src="images/ico.png" class="img-fluid" />
-                            <p>
-                              LOREM IPSUM <span>+ 12 LEJ</span>
-                            </p>
-                          </div>
-                          <div class="box-c">
-                            <img src="images/ico.png" class="img-fluid" />
-                            <p>
-                              LOREM IPSUM <span>+ 12 LEJ</span>
-                            </p>
-                          </div>
-                        </li>
-                        <li>
-                          <div class="box-c">
-                            <img src="images/ico.png" class="img-fluid" />
-                            <p>
-                              LOREM IPSUM <span>+ 12 LEJ</span>
-                            </p>
-                          </div>
-                          <div class="box-c">
-                            <img src="images/ico.png" class="img-fluid" />
-                            <p>
-                              LOREM IPSUM <span>+ 12 LEJ</span>
-                            </p>
-                          </div>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-6 padding-right">
-                  <div class="partner-inkbxtp margbtm-15">
-                    <div class="partner-inkbx">
-                      <div class="partner-inkbxlft">
-                        <img src="images/icon-img-1.png" />
-                      </div>
-                      <div class="partner-inkbxrht">
-                        <h3>PARADICSOMSZENDVICS</h3>
-                        <p>
-                          Lorem ipsum dolor sit amet, conse-ctetuer adipiscing.
-                          SI ipsum dolor sit amet Lorem DOlor Si marto.
-                        </p>
-                        <ul class="wh-radius">
-                          <li>
-                            <a href="#">gramaj:&nbsp;700g</a>
-                          </li>
-                          <li>
-                            <a href="#">17.00 RON</a>
-                          </li>
-                        </ul>
-                        <ul class="size-list">
-                          <li>
-                            <a href="#">SMALL</a>
-                          </li>
-                          <li>
-                            <a href="#">MEDIUM</a>
-                          </li>
-                          <li>
-                            <a href="#">LARGE</a>
-                          </li>
-                          <li>
-                            <a href="#">
-                              VÉLEMÉNYEK&nbsp;
-                              <img src="images/drop-arrowsm.png" />
-                            </a>
-                          </li>
-                          <li>
-                            <a href="#">
-                              <img src="images/cart-small.png" />
-                              KOSÁRBA RAKOM
-                            </a>
-                          </li>
-                        </ul>
-                      </div>
-                      <div class="clear"></div>
-                    </div>
-                    <div class="text-center">
-                      <a href="#" class="extra-btn">
-                        EXTRÁK <img src="images/drop-arrow.png" />
-                      </a>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-6 padding-right">
-                  <div class="partner-inkbxtp margbtm-15">
-                    <div class="partner-inkbx">
-                      <div class="partner-inkbxlft">
-                        <img src="images/cover.png" />
-                      </div>
-                      <div class="partner-inkbxrht">
-                        <h3>SÜLT POLIPKAROK</h3>
-                        <p>
-                          Lorem ipsum dolor sit amet, conse-ctetuer adipiscing.
-                          SI ipsum dolor sit amet Lorem DOlor Si marto.
-                        </p>
-                        <ul class="wh-radius">
-                          <li>
-                            <a href="#">gramaj:&nbsp;700g</a>
-                          </li>
-                          <li>
-                            <a href="#">17.00 RON</a>
-                          </li>
-                        </ul>
-                        <ul class="size-list">
-                          <li>
-                            <a href="#">SMALL</a>
-                          </li>
-                          <li>
-                            <a href="#">MEDIUM</a>
-                          </li>
-                          <li>
-                            <a href="#">LARGE</a>
-                          </li>
-                          <li>
-                            <a href="#">
-                              VÉLEMÉNYEK&nbsp;
-                              <img src="images/drop-arrowsm.png" />
-                            </a>
-                          </li>
-                          <li>
-                            <a href="#">
-                              <img src="images/cart-small.png" />
-                              KOSÁRBA RAKOM
-                            </a>
-                          </li>
-                        </ul>
-                      </div>
-                      <div class="clear"></div>
-                    </div>
-                    <div class="text-center">
-                      <a href="#" class="extra-btn">
-                        EXTRÁK <img src="images/drop-arrow.png" />
-                      </a>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-6 padding-right">
-                  <div class="partner-inkbxtp margbtm-15">
-                    <div class="partner-inkbx">
-                      <div class="partner-inkbxlft">
-                        <img src="images/icon-img-1.png" />
-                      </div>
-                      <div class="partner-inkbxrht">
-                        <h3>PARADICSOMSZENDVICS</h3>
-                        <p>
-                          Lorem ipsum dolor sit amet, conse-ctetuer adipiscing.
-                          SI ipsum dolor sit amet Lorem DOlor Si marto.
-                        </p>
-                        <ul class="wh-radius">
-                          <li>
-                            <a href="#">gramaj:&nbsp;700g</a>
-                          </li>
-                          <li>
-                            <a href="#">17.00 RON</a>
-                          </li>
-                        </ul>
-                        <ul class="size-list">
-                          <li>
-                            <a href="#">SMALL</a>
-                          </li>
-                          <li>
-                            <a href="#">MEDIUM</a>
-                          </li>
-                          <li>
-                            <a href="#">LARGE</a>
-                          </li>
-                          <li>
-                            <a href="#">
-                              VÉLEMÉNYEK&nbsp;
-                              <img src="images/drop-arrowsm.png" />
-                            </a>
-                          </li>
-                          <li>
-                            <a href="#">
-                              <img src="images/cart-small.png" />
-                              KOSÁRBA RAKOM
-                            </a>
-                          </li>
-                        </ul>
-                      </div>
-                      <div class="clear"></div>
-                    </div>
-                    <div class="text-center">
-                      <a href="#" class="extra-btn">
-                        EXTRÁK <img src="images/drop-arrow.png" />
-                      </a>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-6 padding-right">
-                  <div class="partner-inkbxtp margbtm-15">
-                    <div class="partner-inkbx">
-                      <div class="partner-inkbxlft">
-                        <img src="images/cover.png" />
-                      </div>
-                      <div class="partner-inkbxrht">
-                        <h3>SÜLT POLIPKAROK</h3>
-                        <p>
-                          Lorem ipsum dolor sit amet, conse-ctetuer adipiscing.
-                          SI ipsum dolor sit amet Lorem DOlor Si marto.
-                        </p>
-                        <ul class="wh-radius">
-                          <li>
-                            <a href="#">gramaj:&nbsp;700g</a>
-                          </li>
-                          <li>
-                            <a href="#">17.00 RON</a>
-                          </li>
-                        </ul>
-                        <ul class="size-list">
-                          <li>
-                            <a href="#">SMALL</a>
-                          </li>
-                          <li>
-                            <a href="#">MEDIUM</a>
-                          </li>
-                          <li>
-                            <a href="#">LARGE</a>
-                          </li>
-                          <li>
-                            <a href="#">
-                              VÉLEMÉNYEK&nbsp;
-                              <img src="images/drop-arrowsm.png" />
-                            </a>
-                          </li>
-                          <li>
-                            <a href="#">
-                              <img src="images/cart-small.png" />
-                              KOSÁRBA RAKOM
-                            </a>
-                          </li>
-                        </ul>
-                      </div>
-                      <div class="clear"></div>
-                    </div>
-                    <div class="text-center">
-                      <ul class="bottom-list tt">
-                        <li>
-                          <div class="box-c">
-                            <img src="images/ico.png" class="img-fluid" />
-                            <p>
-                              LOREM IPSUM <span>+ 12 LEJ</span>
-                            </p>
-                          </div>
-                          <div class="box-c">
-                            <img src="images/ico.png" class="img-fluid" />
-                            <p>
-                              LOREM IPSUM <span>+ 12 LEJ</span>
-                            </p>
-                          </div>
-                        </li>
-                        <li>
-                          <div class="box-c">
-                            <img src="images/ico.png" class="img-fluid" />
-                            <p>
-                              LOREM IPSUM <span>+ 12 LEJ</span>
-                            </p>
-                          </div>
-                          <div class="box-c">
-                            <img src="images/ico.png" class="img-fluid" />
-                            <p>
-                              LOREM IPSUM <span>+ 12 LEJ</span>
-                            </p>
-                          </div>
-                        </li>
-                        <li>
-                          <div class="box-c">
-                            <img src="images/ico.png" class="img-fluid" />
-                            <p>
-                              LOREM IPSUM <span>+ 12 LEJ</span>
-                            </p>
-                          </div>
-                          <div class="box-c">
-                            <img src="images/ico.png" class="img-fluid" />
-                            <p>
-                              LOREM IPSUM <span>+ 12 LEJ</span>
-                            </p>
-                          </div>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-6 padding-right">
-                  <div class="comment-box">
-                    <div class="desc-section">
-                      <h3>KELEMEN JÁNOS</h3>
-                      <p>
-                        “Lorem ipsum dolor sit amet, consectetuer adipiscing. SI
-                        ipsum dolor sit amet Lorem DOlor Si marto. consectetuer
-                        adipiscing. consectetuer adipiscing.”
-                      </p>
-
-                      <h3 class="border-head">Jánosi ANITA</h3>
-                      <p>
-                        “Lorem ipsum dolor sit amet, consectetuer adipiscing. SI
-                        ipsum dolor sit amet Lorem DOlor Si marto.”
-                      </p>
-
-                      <h3 class="border-head">Jánosi ANITA</h3>
-                      <p>
-                        “Lorem ipsum dolor sit amet, consectetuer adipiscing. SI
-                        ipsum dolor sit amet Lorem DOlor Si marto.”
-                      </p>
-                    </div>
-                    <h3 class="border-head margtp20">BLÉNESI MÁRTON</h3>
-                    <textarea rows="3" cols="3" class="form-control">
-                      {" "}
-                    </textarea>
-                    <div class="text-center pos-re">
-                      <button type="button" class="yel-btn">
-                        VÉLEMÉNY ELKÜLDÉSE
-                      </button>
-                      <a href="#" class="pull-right caret-dwn">
-                        <i class="fa fa-caret-up"></i>
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-md-12 text-center">
-              <a href="#" class="text-white expand-link">
-                TOVÁBBI ÉTTERMEK
-                <img src="images/drop-arrow.png" />
-              </a>
+        <div className="row">
+          <div className="col-md-12">
+            <div className="footer-bottom text-center">
+              <p>©2020-2021 foodnet.ro - Minden jog fenntartva.</p>
             </div>
           </div>
         </div>
       </div>
-
-      <div class="piza-section">
-        <div>
-          <img src={wave2} />
-        </div>
-        <div class="container">
-          <div class="row">
-            <div class="col-md-9 mx-auto">
-              <div class="piza-bg">
-                <div class="row">
-                  <div class="col-md-12">
-                    <div class="col-md-12 text-center">
-                      <h2 class="text-white babas-regular">
-                        SPÓROLJ MEG HAVI 10%-ot!
-                      </h2>
-                    </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-6">
-                    <img src="images/home-pizza10.png" />
-                  </div>
-                  <div class="col-md-6">
-                    <p>
-                      Lorem ipsum dolor sit amet, consectetuer adipiscing elit
-                      sed diam MOLENO MANO ET.
-                    </p>
-                    <p>
-                      ipsum dolor sit amet,consectetuer adipiscing elit,sed diam
-                      MOLENO MANO ET.
-                    </p>
-                    <a href="#" class="btn-yellow">
-                      PRÓBÁLD KI!
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <footer class="black-bg">
-        <div class="container">
-          <div class="row">
-            <div class="col-md-6">
-              <div class="footer-body">
-                <h2 class="text-yellow">KÖVESS MINKET:</h2>
-
-                <ul class="footer-social">
-                  <li>
-                    <a href="#">
-                      <i class="fa fa-facebook" aria-hidden="true"></i>
-                      /foodnetofﬁcial
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      <i class="fa fa-instagram" aria-hidden="true"></i>
-                      @foodnetofﬁcial
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      <i class="fa fa-youtube-play" aria-hidden="true"></i>
-                      /foodnetofﬁcial
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="footer-body">
-                <h2 class="text-yellow">EGYÉB OLDALAK:</h2>
-                <ul class="normal-list">
-                  <li>
-                    <a href="#">Termeni și Condiții</a>
-                  </li>
-                  <li>
-                    <a href="#">Politica de conﬁdențialitate</a>
-                  </li>
-                  <li>
-                    <a href="#">Returnare produse</a>
-                  </li>
-                  <li>
-                    <a href="#">Drepturi de autor</a>
-                  </li>
-                  <li>
-                    <a href="#">ANPC</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-12">
-              <div class="footer-bottom text-center">
-                <p>©2020-2021 foodnet.ro - Minden jog fenntartva.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </footer>
-    </body>
+    </footer>
   </div>
 );
 

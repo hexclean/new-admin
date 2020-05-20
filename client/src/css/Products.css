@@ -120,7 +120,7 @@ body {
   border-radius: 8px;
   color: #000;
   display: block;
-  font-size: 11px;
+  font-size: 14px;
   line-height: 21px;
 }
 
@@ -133,7 +133,7 @@ body {
 .size-list li:nth-child(1),
 .size-list li:nth-child(2),
 .size-list li:nth-child(3) {
-  width: 63px;
+  width: 66px;
 }
 
 .extra-btn img {
@@ -345,7 +345,7 @@ p {
   clear: both;
 }
 .black-bg {
-  background: #1c1c1c url("/images/wave-bl.svg") no-repeat center bottom fixed;
+  background: #1c1c1c no-repeat center bottom fixed;
 }
 h2 {
   font-size: 30px;
@@ -477,7 +477,7 @@ h2 {
 .piza-bg {
   position: relative;
   padding: 70px 30px 70px;
-  background: url(/images/home-pizzabg.png) no-repeat center center;
+  background: url("/images/home-pizzabg.png") no-repeat center center;
   background-size: contain;
 }
 .search-box .input-group {
@@ -563,7 +563,7 @@ img {
   font-family: "bebas_neuebold";
   color: #000;
   display: block;
-  font-size: 13px;
+  font-size: 15px;
   line-height: 16px;
 }
 .wh-radius li {
@@ -668,6 +668,10 @@ img {
   }
   .newletter input[type="text"] {
     width: 90%;
+  }
+  .img-chicken {
+    width: 29px !important;
+    margin-right: 4px !important;
   }
 }
 @media (max-width: 440px) {
@@ -835,7 +839,7 @@ footer {
     max-width: 85%;
   }
   .tabbx a {
-    margin-right: 10px;
+    margin-right: 19px;
   }
   .tab-main .col-10 {
     padding: 0px 3px;
@@ -855,7 +859,7 @@ footer {
 
   .size-list li a {
     padding: 3px 9px;
-    font-size: 10px;
+    font-size: 13px;
   }
   .size-list li:nth-child(1),
   .size-list li:nth-child(2),
@@ -905,7 +909,7 @@ footer {
     padding-right: 0px;
   }
 }
-
+/* Ez kell csak */
 @media only screen and (max-width: 768px) {
   .tabbx a {
     margin-right: 10px;
@@ -916,7 +920,17 @@ footer {
   .wh-radius {
     padding: 2px 13px;
   }
+  .menulist {
+    padding-left: 13px !important;
+    max-width: 93% !important;
+    left: 49px !important;
+  }
 
+  .menulist-ri {
+    padding-left: 13px !important;
+    max-width: 93% !important;
+    right: 58px !important;
+  }
   .wh-radius li:first-child a::after {
     background: #000;
     width: 1px;
@@ -936,7 +950,7 @@ footer {
     margin: auto;
   }
   .tab-main .col-10 {
-    padding: 0px 3px;
+    padding: 0px 67px;
   }
   .tab-main .col-1 {
     padding: 0px;
@@ -1077,16 +1091,117 @@ footer {
   }
 }
 
-@media only screen and (min-width: 280px) and (max-width: 326px) {
-  .img-min-res-menu {
-    margin-right: 15px !important;
+/* By Joco */
+.between-variants {
+  margin-right: 5px !important;
+}
+
+@media only screen and (min-width: 524px) and (max-width: 767px) {
+  .menu-list-first {
+    margin-left: -32px !important;
+    padding-left: 0px !important;
   }
-  .img-size-menu {
-    width: 31px !important;
+  .menu-list-second {
+    left: 18px !important;
+    padding-left: 0px !important;
   }
 
-  .yellow-graybx {
-    height: 98px;
-    line-height: 51px;
+  .listmenus {
+    padding-right: 0px !important;
+  }
+  .search-box {
+    margin-top: 10px;
+  }
+  .tabbx a img {
+    width: 32px !important;
+  }
+}
+
+@media only screen and (min-width: 524px) and (max-width: 991px) {
+  .menu9169 {
+    left: -12px;
+  }
+
+  .menu91692 {
+    right: -12px;
+  }
+}
+
+@media only screen and (min-width: 466px) and (max-width: 523px) {
+  .menulist-ri {
+    /* right: 58px !important; */
+    padding-left: 0px !important;
+    margin-left: -10px;
+  }
+
+  .menulist {
+    padding-left: 0px !important;
+  }
+  .products-down {
+    margin-top: 5px;
+  }
+
+  .menulist {
+    left: 0px !important;
+  }
+  .img-chicken {
+    width: 30px !important;
+  }
+
+  .listmenus {
+    padding-right: 22px !important;
+    padding-left: 72px !important;
+  }
+
+  .new523m {
+    margin-left: -60px !important;
+  }
+
+  .menulist-ri {
+    right: 0px !important;
+  }
+}
+
+@media only screen and (min-width: 433px) and (max-width: 465px) {
+  .menulist-ri {
+    margin-left: 0px;
+
+    padding-left: 0px !important;
+    left: 6px;
+  }
+
+  .menulist {
+    padding-left: 0px !important;
+    left: -4px !important;
+  }
+  .listmenus {
+    padding-left: 9px;
+  }
+
+  .newMen {
+    margin-left: -60px;
+    margin-right: -60px;
+  }
+}
+
+@media only screen and (min-width: 111px) and (max-width: 432px) {
+  .menulist-ri {
+    margin-left: 0px;
+
+    padding-left: 0px !important;
+    left: 6px;
+  }
+
+  .menulist {
+    padding-left: 0px !important;
+    left: -4px !important;
+  }
+  .listmenus {
+    padding-left: 9px;
+  }
+
+  .newMen {
+    margin-left: -60px;
+    margin-right: -60px;
   }
 }

@@ -92,9 +92,9 @@ p {
 .clear {
   clear: both;
 }
-.black-bg {
+/* .black-bg {
   background: #1c1c1c url("/images/wave-bl.svg") no-repeat center bottom fixed;
-}
+} */
 h2 {
   font-size: 30px;
   font-family: "montserratextrabold";
