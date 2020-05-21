@@ -5,10 +5,9 @@ function Test() {
   let [users, setUsers] = useState([]);
   useEffect(() => {
     axios
-      .get("/api/restaurants")
+      .get("/api/products")
       .then((response) => {
         if (response.data) {
-          console.log("res.d", response.data);
           setUsers(response.data);
         }
       })
@@ -22,7 +21,7 @@ function Test() {
     users.map((user, index) =>
       heroesList.push(
         <h1 key={user.id}>
-          {user.id} {user.adminInfos[0].adress}
+          {user.id} {user.productFinals[0].id}
         </h1>
       )
     );

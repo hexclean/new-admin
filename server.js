@@ -138,7 +138,7 @@ app.use(
 // app.use("/api/users", require("./routes/api/users"));
 // app.use("/api/profile", require("./routes/api/profile"));
 // app.use("/api/order", require("./routes/api/order"));
-// app.use("/api/products", require("./routes/api/products"));
+app.use("/api/products", require("./routes/api/products"));
 app.use("/api/restaurants", require("./routes/api/restaurants"));
 app.use(bodyParser.urlencoded({ extended: false }));
 // app.use(expressValidator());

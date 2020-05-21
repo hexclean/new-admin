@@ -2,13 +2,25 @@ const express = require("express");
 const router = express.Router();
 
 const Product = require("../../models/Product");
+const ProductFinal = require("../../models/ProductFinal");
+
+const ProductTranslation = require("../../models/ProductTranslation");
 
 // @route    GET api/products
 // @desc    Get all products
 // @access   Private
 router.get("/", async (req, res) => {
   try {
-    const products = await Product.find();
+    const products = await Product.findAll({
+      include: [
+        {
+          model: ProductTranslation,
+        },
+        {
+          model: ProductFinal,
+        },
+      ],
+    });
     res.json(products);
   } catch (err) {
     console.error(err.message);
@@ -26,7 +38,7 @@ router.get("/:admin_id", async (req, res) => {
     const product = await Product.find({ adminId: id });
     if (!product) {
       return res.status(404).json({
-        msg: "Product not foudasdndr33333"
+        msg: "Product not foudasdndr33333",
       });
     }
     res.json(product);
@@ -34,7 +46,7 @@ router.get("/:admin_id", async (req, res) => {
     console.error(err.message);
     if (err.kind === "ObjectId") {
       return res.status(404).json({
-        msg: "Product not found!!!!!"
+        msg: "Product not found!!!!!",
       });
     }
     res.status(500).send("Server error");
