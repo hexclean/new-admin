@@ -11,7 +11,7 @@ var SequelizeStore = require("connect-session-sequelize")(session.Store);
 var Sequelize = require("sequelize");
 const ProductCategory = require("./models/ProductCategory");
 const ProductCategoryTranslation = require("./models/ProductCategoryTranslation");
-
+const database233 = require("./util/database");
 const sequelize = require("./util/database");
 const Product = require("./models/Product");
 const ProductTranslation = require("./models/ProductTranslation");
@@ -34,8 +34,13 @@ const Allergen = require("./models/Allergen");
 const AllergenTranslation = require("./models/AllergenTranslation");
 const DailyMenuAllergens = require("./models/DailyMenuAllergens");
 //
+const AdminOpeningHours = require("./models/AdminOpeningHours");
+const AdminOpeningHoursTranslation = require("./models/AdminOpeningHoursTranslation");
+
+//
 
 const app = express();
+
 const db = new Sequelize("foodnet", "root", "y7b5uwFOODNET", {
   host: "localhost",
   dialect: "mysql",
@@ -361,6 +366,32 @@ Admin.belongsTo(AdminLocation, {
 });
 
 AdminLocation.hasOne(Admin, { foreignKey: "locationId" });
+
+// Admin Hours
+AdminOpeningHours.belongsTo(Admin, { constrains: true, onDelete: "CASCADE" });
+AdminOpeningHoursTranslation.belongsTo(Admin, {
+  constrains: true,
+  onDelete: "CASCADE",
+});
+Admin.hasMany(AdminOpeningHoursTranslation, { foreignKey: "adminId" });
+
+Admin.hasMany(AdminOpeningHours, { foreignKey: "adminId" });
+AdminOpeningHoursTranslation.belongsTo(AdminOpeningHours, {
+  as: "TheTranslation",
+  foreignKey: "adminOpeningHoursId",
+});
+
+AdminOpeningHours.hasMany(AdminOpeningHoursTranslation, {
+  foreignKey: "adminOpeningHoursId",
+});
+
+//
+AdminOpeningHoursTranslation.belongsTo(Language, {
+  as: "TheLanguage",
+  foreignKey: "languageId",
+});
+
+Language.hasMany(AdminOpeningHoursTranslation, { foreignKey: "languageId" });
 
 // Admin.belongsTo(AdminLocationTranslation, {
 //   constrains: true,

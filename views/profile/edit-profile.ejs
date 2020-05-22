@@ -6,23 +6,18 @@
   <main class="body-content">
 
     <%- include('../includes/navigation-bar.ejs') %>
-     <% if (errorMessage) { %>
-    <div class="user-message user-message--error"><%= errorMessage %></div>
-    <% } %>
+    
     <div >
     <div class="ms-content-wrapper editprofiledown">
       <div class="ms-profile-overview">
         <div class="ms-profile-cover">
-   <img class="ms-profile-img" src="/<%= admin.imageUrl %>" alt="<%= admin.fullName %>">
+       <img class="ms-profile-img" src="/<%= admin.imageUrl %>" alt="<%= admin.fullName %>">
           
           <div class="ms-profile-user-info">
             <h3 class="ms-profile-username text-white"><%= admin.fullName %></h3>           
           </div>        
         </div>
-        <ul class="ms-profile-navigation nav nav-tabs tabs-bordered" role="tablist">
-          <li role="presentation"><a href="/admin/dashboard" aria-controls="tab1"> Overview </a></li>
-          <li role="presentation"><a class="active show" href="/admin/edit-profile/<%= admin.id %>?edit=true"> <%= lingua.product_action_edit %> </a></li>
-        </ul>
+     
         <div class="tab-content">
           <div class="tab-pane" id="tab1">
           </div>
@@ -76,26 +71,8 @@
                   value="<% if (editing) { %><%= admin[0].phoneNumber %><% } %>"
                 />
                 </div>
-                <div class="form-group">
-                  <label for="open">Open</label>
-                  <input
-                  class="form-control"
-                  type="text"
-                  name="open"
-                  id="open"
-                  value="<% if (editing) { %><%= admin[0].open %><% } %>"
-                />
-                </div>
-                <div class="form-group">
-                  <label for="close">Clsoed</label>
-                  <input
-                  class="form-control"
-                  type="text"
-                  name="close"
-                  id="close"
-                  value="<% if (editing) { %><%= admin[0].close %><% } %>"
-                />
-                </div>
+                
+               
 
                 <div class="form-group">
                   <label for="commission">commission</label>

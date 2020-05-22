@@ -19,6 +19,9 @@ const Admin = sequelize.define("admin", {
   password: Sequelize.STRING,
   fullName: Sequelize.STRING,
   imageUrl: Sequelize.STRING,
+  minimumOrderUser: Sequelize.FLOAT,
+  minimumOrderSubscriber: Sequelize.FLOAT,
+  avgTransport: Sequelize.STRING,
 });
 
 module.exports = Admin;

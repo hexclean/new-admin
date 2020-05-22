@@ -1,11 +1,12 @@
 const fileHelper = require("../../util/file");
 const Admin = require("../../models/Admin");
 const AdminInfo = require("../../models/AdminInfo");
+const OpeningHours = require("../../models/AdminOpeningHours");
+const OpeningHoursTranslation = require("../../models/AdminOpeningHoursTranslation");
 
 exports.getEditProfile = async (req, res, next) => {
   adminId = req.admin.id;
   adminIdParams = req.params.adminId;
-  console.log("adminId", adminId);
   const editMode = req.query.edit;
   if (!editMode) {
     return res.redirect("/");
@@ -13,14 +14,13 @@ exports.getEditProfile = async (req, res, next) => {
 
   await Admin.findAll({
     where: { id: req.admin.id },
+    include: [
+      {
+        model: AdminInfo,
+      },
+    ],
   })
     .then((admin) => {
-      // if (adminIdParams != adminId) {
-      //   return res.redirect("/");
-      // }
-      console.log(admin);
-      // console.log(admin[0].email);
-
       res.render("profile/edit-profile", {
         pageTitle: "Edit Product",
         path: "/admin/edit-product",
@@ -38,12 +38,45 @@ exports.getEditProfile = async (req, res, next) => {
     });
 };
 
+exports.getEditOpeningHours = async (req, res, next) => {
+  adminId = req.admin.id;
+  adminIdParams = req.params.adminId;
+  const editMode = req.query.edit;
+  if (!editMode) {
+    return res.redirect("/");
+  }
+
+  await Admin.findAll({
+    // where: { id: req.admin.id },
+    include: [
+      {
+        model: OpeningHours,
+      },
+      {
+        model: OpeningHoursTranslation,
+      },
+    ],
+  })
+    .then((admin) => {
+      console.log("admin", admin);
+      res.render("profile/edit-opening-hours", {
+        pageTitle: "Edit Product",
+        path: "/admin/edit-product",
+        editing: editMode,
+        admin: admin,
+      });
+    })
+    .catch((err) => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
+};
+
 exports.postEditProfile = async (req, res, next) => {
-  const adminId = req.body.adminId;
   const fullName = req.body.fullName;
   const phoneNumber = req.body.phoneNumber;
-  const open = req.body.open;
-  const close = req.body.close;
+
   const roAdress = req.body.roAdress;
   const huAdress = req.body.huAdress;
   const enAdress = req.body.enAdress;
@@ -60,17 +93,16 @@ exports.postEditProfile = async (req, res, next) => {
     ],
   })
     .then((admin) => {
-      // console.log(extra);
+      // console.log("req.adminid", req.admin.id);
+      // console.log(admin);
       // if (extra.adminId != req.admin.id) {
       //   return res.redirect("/");
       // }
-      console.log(admin);
       async function msg() {
         await Admin.update(
           {
             phoneNumber: phoneNumber,
-            open: open,
-            close: close,
+
             fullName: fullName,
           },
           { where: { id: req.admin.id } }
@@ -106,14 +138,11 @@ exports.getDashboard = (req, res, next) => {
   const editMode = req.query.edit;
   const adminId = req.admin.id;
 
-  console.log("adminId", adminId);
-  console.log("req.admin.id", req.admin.id);
   Admin.findByPk(adminId)
     .then((admin) => {
       if (!admin) {
         return res.redirect("/admin/products");
       }
-      console.log(admin);
       res.render("profile/dashboard", {
         pageTitle: "Edit admin",
         editing: editMode,

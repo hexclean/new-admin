@@ -1,8 +1,9 @@
 const express = require("express");
 const router = express.Router();
-
+const db = require("../../server");
 const Product = require("../../models/Product");
 const ProductFinal = require("../../models/ProductFinal");
+const Variants = require("../../models/ProductVariant");
 
 const ProductTranslation = require("../../models/ProductTranslation");
 
@@ -18,10 +19,13 @@ router.get("/", async (req, res) => {
         },
         {
           model: ProductFinal,
+          // model: Variants,
         },
       ],
     });
+
     res.json(products);
+    console.log("products", products);
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Server error");
