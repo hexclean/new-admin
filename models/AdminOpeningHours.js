@@ -8,6 +8,7 @@ const AdminOpeningHours = sequelize.define("adminOpeningHours", {
     allowNull: false,
     primaryKey: true,
   },
+  day: Sequelize.STRING,
   open: Sequelize.STRING,
   close: Sequelize.STRING,
 });

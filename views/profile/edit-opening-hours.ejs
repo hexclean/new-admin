@@ -1,0 +1,268 @@
+<%- include('../includes/head.ejs') %>
+</head>
+<body class="ms-body ms-aside-left-open ms-primary-theme ms-has-quickbar">
+   <%- include('../includes/navigation.ejs') %> 
+   <main class="body-content">
+      <%- include('../includes/navigation-bar.ejs') %>
+      <div >
+         <div class="ms-content-wrapper editprofiledown">
+            <div class="ms-profile-overview">
+               <div class="ms-profile-cover">
+                  <img class="ms-profile-img" src="/<%= admin.imageUrl %>" alt="<%= admin.fullName %>">
+                  <div class="ms-profile-user-info">
+                     <h3 class="ms-profile-username text-white"><%= admin.fullName %></h3>
+                  </div>
+               </div>
+               <div class="tab-content">
+                  <div class="tab-pane" id="tab1">
+                  </div>
+                  <div class="tab-pane" id="tab2">
+                  </div>
+                  <div class="tab-pane" id="tab3">
+                  </div>
+               </div>
+            </div>
+            <form 
+               class="ms-content-wrapper"
+               action="/admin/<% if (editing) { %>edit-opening-hours<% } %>"
+               method="POST"
+               enctype="multipart/form-data"
+               >
+               <% for(let i = 0; i < admin.length; i++) { %>
+               <div class="row">
+                  <div class="col-md-6">
+                     <div class="ms-panel">
+                        <div class="ms-panel-header">
+                           <h6>Hétfő</h6>
+                        </div>
+                        <div class="ms-panel-body">
+                           <div class="form-group">
+                              <label for="roAdress">nyitas</label>
+                              <input
+                                 class="form-control"
+                                 type="text"
+                                 name="mondayOpen"
+                                 id="roAdress"
+                                 value="<% if (editing ) { %><%= admin[i].adminOpeningHours[0].open %><% } %>"
+                                 />
+                           </div>
+                           <div class="form-group">
+                              <label for="huAdress">zaras</label>
+                              <input
+                                 class="form-control"
+                                 type="text"
+                                 name="mondayClose"
+                                 id="huAdress"
+                                 value="<% if (editing) { %><%= admin[0].adminOpeningHours[0].close %><% } %>"
+                                 />
+                           </div>
+                          
+                        </div>
+                     </div>
+
+
+
+                   
+                  </div>
+                  <div class="col-md-6">
+                     <div class="ms-panel">
+                        <div class="ms-panel-header">
+                           <h6>Kedd</h6>
+                        </div>
+                        <div class="ms-panel-body">
+                           <div class="form-group">
+                              <label for="roAdress">nyitas</label>
+                              <input
+                                 class="form-control"
+                                 type="text"
+                                 name="tuesdayOpen"
+                                 id="roAdress"
+                                 value="<% if (editing ) { %><%= admin[i].adminOpeningHours[1].open %><% } %>"
+                                 />
+                           </div>
+                           <div class="form-group">
+                              <label for="huAdress">zaras</label>
+                              <input
+                                 class="form-control"
+                                 type="text"
+                                 name="tuesdayClose"
+                                 id="huAdress"
+                                 value="<% if (editing) { %><%= admin[i].adminOpeningHours[1].close %><% } %>"
+                                 />
+                           </div>
+                          
+                        </div>
+                     </div>
+                  </div>
+
+                  <div class="col-md-6">
+                    <div class="ms-panel">
+                       <div class="ms-panel-header">
+                          <h6>Szerda</h6>
+                       </div>
+                       <div class="ms-panel-body">
+                          <div class="form-group">
+                             <label for="roAdress">nyitas</label>
+                             <input
+                                class="form-control"
+                                type="text"
+                                name="wednesdayOpen"
+                                id="roAdress"
+                                value="<% if (editing ) { %><%= admin[i].adminOpeningHours[2].open %><% } %>"
+                                />
+                          </div>
+                          <div class="form-group">
+                             <label for="huAdress">zaras</label>
+                             <input
+                                class="form-control"
+                                type="text"
+                                name="wednesdayClose"
+                                id="huAdress"
+                                value="<% if (editing) { %><%= admin[i].adminOpeningHours[2].close %><% } %>"
+                                />
+                          </div>
+                          
+                       </div>
+                    </div>
+                 </div>
+                 <div class="col-md-6">
+                    <div class="ms-panel">
+                       <div class="ms-panel-header">
+                          <h6>Csutortok</h6>
+                       </div>
+                       <div class="ms-panel-body">
+                          <div class="form-group">
+                             <label for="roAdress">nyitas</label>
+                             <input
+                                class="form-control"
+                                type="text"
+                                name="thursdayOpen"
+                                id="roAdress"
+                                value="<% if (editing ) { %><%= admin[i].adminOpeningHours[3].open %><% } %>"
+                                />
+                          </div>
+                          <div class="form-group">
+                             <label for="huAdress">zaras</label>
+                             <input
+                                class="form-control"
+                                type="text"
+                                name="thursdayClose"
+                                id="huAdress"
+                                value="<% if (editing) { %><%= admin[i].adminOpeningHours[3].close %><% } %>"
+                                />
+                          </div>
+                          
+                       </div>
+                    </div>
+                 </div>
+                 <div class="col-md-6">
+                    <div class="ms-panel">
+                       <div class="ms-panel-header">
+                          <h6>Pentek</h6>
+                       </div>
+                       <div class="ms-panel-body">
+                          <div class="form-group">
+                             <label for="roAdress">nyitas</label>
+                             <input
+                                class="form-control"
+                                type="text"
+                                name="fridayOpen"
+                                id="roAdress"
+                                value="<% if (editing ) { %><%= admin[i].adminOpeningHours[4].open %><% } %>"
+                                />
+                          </div>
+                          <div class="form-group">
+                             <label for="huAdress">zaras</label>
+                             <input
+                                class="form-control"
+                                type="text"
+                                name="fridayClose"
+                                id="huAdress"
+                                value="<% if (editing) { %><%= admin[i].adminOpeningHours[4].close %><% } %>"
+                                />
+                          </div>
+                          
+                       </div>
+                    </div>
+                 </div>
+                 <div class="col-md-6">
+                    <div class="ms-panel">
+                       <div class="ms-panel-header">
+                          <h6>szombat</h6>
+                       </div>
+                       <div class="ms-panel-body">
+                          <div class="form-group">
+                             <label for="roAdress">nyitas</label>
+                             <input
+                                class="form-control"
+                                type="text"
+                                name="saturdayOpen"
+                                id="roAdress"
+                                value="<% if (editing ) { %><%= admin[i].adminOpeningHours[5].open %><% } %>"
+                                />
+                          </div>
+                          <div class="form-group">
+                             <label for="huAdress">zaras</label>
+                             <input
+                                class="form-control"
+                                type="text"
+                                name="saturdayClose"
+                                id="huAdress"
+                                value="<% if (editing) { %><%= admin[i].adminOpeningHours[5].close %><% } %>"
+                                />
+                          </div>
+                          
+                       </div>
+                    </div>
+                 </div>
+                 <div class="col-md-6">
+                    <div class="ms-panel">
+                       <div class="ms-panel-header">
+                          <h6>vasarnap</h6>
+                       </div>
+                       <div class="ms-panel-body">
+                          <div class="form-group">
+                             <label for="roAdress">nyitas</label>
+                             <input
+                                class="form-control"
+                                type="text"
+                                name="sundayOpen"
+                                id="roAdress"
+                                value="<% if (editing ) { %><%= admin[i].adminOpeningHours[6].open %><% } %>"
+                                />
+                          </div>
+                          <div class="form-group">
+                             <label for="huAdress">zaras</label>
+                             <input
+                                class="form-control"
+                                type="text"
+                                name="sundayClose"
+                                id="huAdress"
+                                value="<% if (editing) { %><%= admin[i].adminOpeningHours[6].close %><% } %>"
+                                />
+                          </div>
+                          
+                       </div>
+                    </div>
+                    <% } %>
+                    <% if (editing) { %>
+                     <input
+                        type="hidden"
+                        value="<%= admin.id %>"
+                        name="adminId"
+                        />
+                     <% } %>
+                     <button class="btn btn-success" type="submit">
+                     <% if (editing) { %><%= lingua.update_profile %><% } else { %>Add
+                     Product<% } %>
+                     </button>
+                 </div>
+                 
+                 
+               </div>
+         </div>
+      </div>
+      </form>
+   </main>
+   <%- include('../includes/end.ejs') %>
+</body>

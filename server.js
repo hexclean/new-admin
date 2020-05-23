@@ -35,7 +35,6 @@ const AllergenTranslation = require("./models/AllergenTranslation");
 const DailyMenuAllergens = require("./models/DailyMenuAllergens");
 //
 const AdminOpeningHours = require("./models/AdminOpeningHours");
-const AdminOpeningHoursTranslation = require("./models/AdminOpeningHoursTranslation");
 
 //
 
@@ -369,29 +368,8 @@ AdminLocation.hasOne(Admin, { foreignKey: "locationId" });
 
 // Admin Hours
 AdminOpeningHours.belongsTo(Admin, { constrains: true, onDelete: "CASCADE" });
-AdminOpeningHoursTranslation.belongsTo(Admin, {
-  constrains: true,
-  onDelete: "CASCADE",
-});
-Admin.hasMany(AdminOpeningHoursTranslation, { foreignKey: "adminId" });
 
 Admin.hasMany(AdminOpeningHours, { foreignKey: "adminId" });
-AdminOpeningHoursTranslation.belongsTo(AdminOpeningHours, {
-  as: "TheTranslation",
-  foreignKey: "adminOpeningHoursId",
-});
-
-AdminOpeningHours.hasMany(AdminOpeningHoursTranslation, {
-  foreignKey: "adminOpeningHoursId",
-});
-
-//
-AdminOpeningHoursTranslation.belongsTo(Language, {
-  as: "TheLanguage",
-  foreignKey: "languageId",
-});
-
-Language.hasMany(AdminOpeningHoursTranslation, { foreignKey: "languageId" });
 
 // Admin.belongsTo(AdminLocationTranslation, {
 //   constrains: true,

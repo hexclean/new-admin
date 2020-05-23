@@ -1,6 +1,7 @@
 const bcrypt = require("bcryptjs");
 const Admin = require("../../models/Admin");
 const AdminInfo = require("../../models/AdminInfo");
+const AdminOpeningHours = require("../../models/AdminOpeningHours");
 
 const { validationResult } = require("express-validator/check");
 
@@ -104,6 +105,48 @@ exports.postSignup = async (req, res, next) => {
           adress: "",
           languageId: 3,
           shortCompanyDesc: "",
+        });
+        await AdminOpeningHours.create({
+          day: "Monday",
+          open: "-",
+          close: "-",
+          adminId: admin.id,
+        });
+        await AdminOpeningHours.create({
+          day: "Tuesday",
+          open: "-",
+          close: "-",
+          adminId: admin.id,
+        });
+        await AdminOpeningHours.create({
+          day: "Wednesday",
+          open: "-",
+          close: "-",
+          adminId: admin.id,
+        });
+        await AdminOpeningHours.create({
+          day: "Thursday",
+          open: "-",
+          close: "-",
+          adminId: admin.id,
+        });
+        await AdminOpeningHours.create({
+          day: "Friday",
+          open: "-",
+          close: "-",
+          adminId: admin.id,
+        });
+        await AdminOpeningHours.create({
+          day: "Saturday",
+          open: "-",
+          close: "-",
+          adminId: admin.id,
+        });
+        await AdminOpeningHours.create({
+          day: "Sunday",
+          open: "-",
+          close: "-",
+          adminId: admin.id,
         });
       }
       createAdmin();

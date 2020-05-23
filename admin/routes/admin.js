@@ -52,12 +52,16 @@ router.post("/edit-product", isAuth, adminController.postEditProduct);
 router.post("/delete-product", isAuth, adminController.postDeleteProduct);
 
 // Profile
+
 router.get(
   "/edit-opening-hours/:adminId",
   adminProfileController.getEditOpeningHours
 );
-
-//
+router.post(
+  "/edit-opening-hours",
+  isAuth,
+  adminProfileController.postEditOpeningHours
+);
 router.post("/edit-profile", isAuth, adminProfileController.postEditProfile);
 router.get("/edit-profile/:adminId", adminProfileController.getEditProfile);
 router.get("/dashboard", isAuth, adminProfileController.getDashboard);
