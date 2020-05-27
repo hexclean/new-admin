@@ -13,14 +13,11 @@ const User = require("../../models/User");
 router.post(
   "/",
   [
-    check("name", "Name is required")
-      .not()
-      .isEmpty(),
-    check("email", "Please include a valid email").isEmail(),
+    check("username", "Please include a valid email").isEmail(),
     check(
       "password",
       "Please enter a password with 6 or more characters"
-    ).isLength({ min: 6 })
+    ).isLength({ min: 6 }),
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -28,10 +25,10 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { name, email, password, phoneNumber } = req.body;
+    const { username, password } = req.body;
 
     try {
-      let user = await User.findOne({ email });
+      let user = await User.findOne({ where: { username } });
 
       if (user) {
         return res
@@ -40,12 +37,8 @@ router.post(
       }
 
       user = new User({
-        name,
-        phoneNumber,
-        email,
-        dbOrder: 0,
-        totalOrder: 0,
-        password
+        username: username,
+        password: password,
       });
 
       const salt = await bcrypt.genSalt(10);
@@ -56,8 +49,8 @@ router.post(
 
       const payload = {
         user: {
-          id: user.id
-        }
+          id: user.id,
+        },
       };
 
       jwt.sign(

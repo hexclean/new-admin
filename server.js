@@ -11,7 +11,6 @@ var SequelizeStore = require("connect-session-sequelize")(session.Store);
 var Sequelize = require("sequelize");
 const ProductCategory = require("./models/ProductCategory");
 const ProductCategoryTranslation = require("./models/ProductCategoryTranslation");
-const database233 = require("./util/database");
 const sequelize = require("./util/database");
 const Product = require("./models/Product");
 const ProductTranslation = require("./models/ProductTranslation");
@@ -35,7 +34,8 @@ const AllergenTranslation = require("./models/AllergenTranslation");
 const DailyMenuAllergens = require("./models/DailyMenuAllergens");
 //
 const AdminOpeningHours = require("./models/AdminOpeningHours");
-
+const User = require("./models/User");
+const UserDeliveryAdress = require("./models/UserDeliveryAdress");
 //
 
 const app = express();
@@ -136,10 +136,10 @@ app.use(
 );
 // Define Routes
 // app.use("/users", require("./routes/users"));
-// app.use("/api/auth", require("./routes/api/auth"));
+app.use("/api/auth", require("./routes/api/auth"));
 // app.use("/api/deliveryadress", require("./routes/api/delivery-adress"));
 // // app.use("/api/products", require("./routes/api/products"));
-// app.use("/api/users", require("./routes/api/users"));
+app.use("/api/users", require("./routes/api/users"));
 // app.use("/api/profile", require("./routes/api/profile"));
 // app.use("/api/order", require("./routes/api/order"));
 app.use("/api/products", require("./routes/api/products"));
@@ -385,6 +385,13 @@ Admin.hasMany(AdminOpeningHours, { foreignKey: "adminId" });
 //     isAuthenticated: req.session.isLoggedIn,
 //   });
 // });
+
+UserDeliveryAdress.belongsTo(User, {
+  as: "userDelAdress",
+  foreignKey: "userId",
+});
+
+User.hasMany(UserDeliveryAdress, { foreignKey: "userId" });
 // Config PORT
 const PORT = process.env.PORT || 5000;
 

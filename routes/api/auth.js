@@ -13,7 +13,7 @@ const User = require("../../models/User");
 // @access   Private
 router.get("/", auth, async (req, res) => {
   try {
-    const user = await User.findById(req.user.id).select("-password");
+    const user = await User.findByPk(req.user.id).select("-password");
     res.json(user);
   } catch (err) {
     console.error(err.message);
@@ -27,8 +27,8 @@ router.get("/", auth, async (req, res) => {
 router.post(
   "/",
   [
-    check("email", "Please include a valid email").isEmail(),
-    check("password", "Password is required").exists()
+    check("username", "Please include a valid username").isEmail(),
+    check("password", "Password is required").exists(),
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -36,10 +36,10 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { email, password } = req.body;
+    const { username, password } = req.body;
 
     try {
-      let user = await User.findOne({ email });
+      let user = await User.findOne({ where: { username } });
 
       if (!user) {
         return res
@@ -57,14 +57,14 @@ router.post(
 
       const payload = {
         user: {
-          id: user.id
-        }
+          id: user.id,
+        },
       };
 
       jwt.sign(
         payload,
         config.get("jwtSecret"),
-        { expiresIn: 360000 },
+        { expiresIn: "5 days" },
         (err, token) => {
           if (err) throw err;
           res.json({ token });
