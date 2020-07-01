@@ -25,6 +25,21 @@ router.get("/", async (req, res) => {
   }
 });
 
+//get /restaurants/:id
+router.get("/restautants/:id", async (req, res) => {
+  try {
+    const restautants = await Admin.findAll({
+      where: { locationId: req.params.id },
+    });
+
+    res.json(restautants);
+  } catch (err) {
+    console.error(err.message);
+
+    res.status(500).send("Server Error");
+  }
+});
+
 router.get("/products", async (req, res) => {
   try {
     const product = await Product.find();

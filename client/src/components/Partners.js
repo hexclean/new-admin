@@ -1,13 +1,6 @@
 import "../css/Partners.css";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import wave1 from "../wave1.svg";
-import wave2 from "../wave2.svg";
-import wave3 from "../wave3.svg";
-import wave4 from "../wave4.svg";
-import { Link } from "react-router-dom";
-
-import Navigation from "./Navigation";
 
 function Partners() {
   const [heroes, setHeroes] = useState([]);
@@ -29,30 +22,45 @@ function Partners() {
     const heroesList = [];
     heroes.map((hero) =>
       heroesList.push(
-        <div className="col-md-6 padding-right" key={hero.id}>
-          <div className="partner-inkbx margbtm-15">
-            <div className="partner-inkbxlft">
-              <img src={hero.imageUrl} alt="" />
-            </div>
-            <div className="partner-inkbxrht">
-              <h3>{hero.fullName}</h3>
-              <ul className="icon-list">
-                <li>
-                  <img src="images/info-info-icon-1.png" alt="" />
-                  {hero.open} - {hero.close}
-                </li>
-                <li>
-                  <img src="images/info-icon-2.png" alt="" />
-                  {hero.avgTransport} min
-                </li>
-                <li>
-                  <img src="images/info-icon-3.png" alt="" />
-                  50 RON+
-                </li>
-              </ul>
-            </div>
-            <div className="clear"></div>
+        <div class="product-infobx">
+          <div class="product-infoleft">
+            <img src={hero.imageUrl} />
           </div>
+          <div class="product-infocenter">
+            <h4>Duo Food Bar Pizzeria</h4>
+            <p>
+              9 years with us pizza, hamburger, hungarian, italian, american,
+              algida
+            </p>
+            <ul class="info-list">
+              <li>
+                <div>
+                  <h5>8.4</h5>
+                  <h6>259 reviews</h6>
+                </div>
+              </li>
+              <li>
+                <div>
+                  <h5>MIN. ORDER</h5>
+                  <h6>1 950 Ft</h6>
+                </div>
+              </li>
+              <li>
+                <div>
+                  <h5>SHIPPING FEE</h5>
+                  <h6>0 Ft</h6>
+                </div>
+              </li>
+              <div class="clear"></div>
+            </ul>
+          </div>
+          <div class="product-inforight">
+            <a href="#" class="menu-btn">
+              Menu
+            </a>
+            <div class="discount">-&nbsp;8%</div>
+          </div>
+          <div class="clear"></div>
         </div>
       )
     );
@@ -61,212 +69,306 @@ function Partners() {
 
   return (
     <div>
-      <Navigation />
-      <div className="banner-section">
+      <div className="main-container">
         <div className="container">
           <div className="row">
-            <div className="col-md-7">
-              <h2 className="text-yellow">LEGJOBB KAJA LEGJOBB ÉRTÉK</h2>
-              <p>
-                Lorem ipsum dolor sit amet,
-                <br />
-                consectetuer adipiscing elit,
-                <br />
-                sed diam MOLENO MANO ET.
-              </p>
-              <a href="#" className="btn-yellow">
-                PRÓBÁLD KI!
-              </a>
-            </div>
-            <div className="col-md-5">
-              <img src="images/burger.png" alt="" />
-            </div>
-          </div>
-        </div>
-        <div className="margtp50">
-          <img src={wave1} alt="" />
-        </div>
-      </div>
+            <div className="col-md-4">
+              <div className="whitebox margin-bottom-30">
+                <div className="graybox-heading">CURRENT FILTERS</div>
+                <div className="graybox-body">
+                  <ul className="chip-list">
+                    <li>
+                      <div className="chip">
+                        <div className="chip-content">Hamburger</div>
+                        <div className="chip-close">
+                          <i className="fa fa-times" aria-hidden="true"></i>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
 
-      <div className="partner-ink black-yellow">
-        <div className="container">
-          <div className="row">
-            <div className="col-md-12 text-center">
-              <h2 className="text-white babas-regular">PARNTEREINK</h2>
-            </div>
-          </div>
-          <div className="row">
-            <div className="col-sm-12 col-md-10 mx-auto">
-              <div className="row"> {getHeroes()}</div>
-            </div>
-          </div>
-
-          <div className="row">
-            <div className="col-md-12 text-center">
-              <a href="#" className="text-white expand-link">
-                TOVÁBBI ÉTTERMEK
-                <img src="images/drop-arrow.png" alt="" />
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="black-bg">
-        <div>
-          <img src={wave2} alt="" />
-        </div>
-
-        <div className="container">
-          <div className="row">
-            <div className="col-md-12 text-center">
-              <h2 className="text-yellow babas-regular">
-                SPÓROLJ MEG HAVI 10%-ot!
-              </h2>
-            </div>
-          </div>
-          <div className="row">
-            <div className="col-md-6">
-              <img src="images/home-pizza10.png" alt="" />
-            </div>
-            <div className="col-md-6">
-              <p>
-                Lorem ipsum dolor sit amet, consectetuer adipiscing elit,
-                <br /> sed diam MOLENO MANO ET.
-                <br />
-                ipsum dolor sit amet, consectetuer adipiscing elit.{" "}
-              </p>
-              <a href="#" className="btn-yellow">
-                PRÓBÁLD KI!
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="black-yellow happy-men">
-        <div>
-          <img src={wave3} alt="" />
-
-          <div className="container">
-            <div className="row">
-              <div className="col-md-6">
-                <div className="happymen-left paddtpbtm-100 ">
-                  <h2 className="text-white">
-                    TEDD EGYSZERŰBBÉ
-                    <br />A VÁSÁRLÁST!
-                  </h2>
-                  <h3>
-                    PRÓBÁLD KI INGYENES APPLIKÁCIÓNKAT,
-                    <br />
-                    MELY ELÉRHETŐ ANDROID ÉS IOS
-                    <br />
-                    KÉSZÜLÉKEKRE IS!{" "}
-                  </h3>
-                  <a href="#" className="margrht20">
-                    <img src="images/appstore.png" alt="" />
-                  </a>
-                  <a href="#" className="">
-                    <img src="images/googleplay.png" alt="" />
+                  <a href="#" className="more-button">
+                    CLEAR ALL FILTERS
                   </a>
                 </div>
               </div>
-              <div className="col-md-6">
-                <div className="happymen-right">
-                  <img src="images/happymen.png" alt="" />
+
+              <div className="graybox margin-bottom-30">
+                <div className="graybox-heading">USEFUL</div>
+                <div className="graybox-body">
+                  <ul className="check-list">
+                    <li>
+                      {" "}
+                      <div className="checkbox">
+                        <input id="checkbox1" type="checkbox" />
+                        <label for="checkbox1">No shipping cost (40)</label>
+                      </div>
+                    </li>
+                    <li>
+                      {" "}
+                      <div className="checkbox">
+                        <input id="checkbox2" type="checkbox" />
+                        <label for="checkbox2">Within 35 minutes (47)</label>
+                      </div>
+                    </li>
+                    <li>
+                      {" "}
+                      <div className="checkbox">
+                        <input id="checkbox3" type="checkbox" />
+                        <label for="checkbox3">Photo menu (67)</label>
+                      </div>
+                    </li>
+                    <li>
+                      {" "}
+                      <div className="checkbox">
+                        <input id="checkbox4" type="checkbox" />
+                        <label for="checkbox4">Food (12)</label>
+                      </div>
+                    </li>
+                    <li>
+                      <div className="checkbox">
+                        <input id="checkbox5" type="checkbox" />
+                        <label for="checkbox5">News (16)</label>
+                      </div>{" "}
+                    </li>
+                    <li>
+                      <div className="checkbox">
+                        <input id="checkbox6" type="checkbox" />
+                        <label for="checkbox6">NetWaiter GO (38)</label>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+              <div className="graybox margin-bottom-30">
+                <div className="graybox-heading"> KITCHENS</div>
+                <div className="graybox-body">
+                  <ul className="check-list">
+                    <li>
+                      {" "}
+                      <div className="checkbox">
+                        <input id="checkbox1" type="checkbox" />
+                        <label for="checkbox1">Hamburger (57)</label>
+                      </div>
+                    </li>
+                    <li>
+                      {" "}
+                      <div className="checkbox">
+                        <input id="checkbox2" type="checkbox" />
+                        <label for="checkbox2">Pizza (59)</label>
+                      </div>
+                    </li>
+                    <li>
+                      {" "}
+                      <div className="checkbox">
+                        <input id="checkbox3" type="checkbox" />
+                        <label for="checkbox3">Algida (10)</label>
+                      </div>
+                    </li>
+                    <li>
+                      {" "}
+                      <div className="checkbox">
+                        <input id="checkbox4" type="checkbox" />
+                        <label for="checkbox4">Hungarian (65)</label>
+                      </div>
+                    </li>
+                    <li>
+                      <div className="checkbox">
+                        <input id="checkbox5" type="checkbox" />
+                        <label for="checkbox5">Thai (7)</label>
+                      </div>{" "}
+                    </li>
+                    <li>
+                      <div className="checkbox">
+                        <input id="checkbox6" type="checkbox" />
+                        <label for="checkbox6">Italian (32)</label>
+                      </div>
+                    </li>
+
+                    <li>
+                      <div className="checkbox">
+                        <input id="checkbox6" type="checkbox" />
+                        <label for="checkbox6">Mexican (12)</label>
+                      </div>
+                    </li>
+
+                    <li>
+                      <div className="checkbox">
+                        <input id="checkbox6" type="checkbox" />
+                        <label for="checkbox6">Indian (3)</label>
+                      </div>
+                    </li>
+
+                    <li>
+                      <div className="checkbox">
+                        <input id="checkbox6" type="checkbox" />
+                        <label for="checkbox6">Chinese (5)</label>
+                      </div>
+                    </li>
+
+                    <li>
+                      <div className="checkbox">
+                        <input id="checkbox6" type="checkbox" />
+                        <label for="checkbox6">Japan (5)</label>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div className="graybox margin-bottom-30">
+                <div className="graybox-heading"> PAYMENT OPTIONS</div>
+                <div className="graybox-body">
+                  <ul className="check-list">
+                    <li>
+                      {" "}
+                      <div className="checkbox">
+                        <input id="checkbox1" type="checkbox" />
+                        <label for="checkbox1">Cash (138)</label>
+                      </div>
+                    </li>
+
+                    <li>
+                      {" "}
+                      <div className="checkbox">
+                        <input id="checkbox1" type="checkbox" />
+                        <label for="checkbox1">
+                          Credit card (1 click payment also) - recommended (183)
+                        </label>
+                      </div>
+                    </li>
+                    <li>
+                      {" "}
+                      <div className="checkbox">
+                        <input id="checkbox1" type="checkbox" />
+                        <label for="checkbox1">NICE card (167)</label>
+                      </div>
+                    </li>
+                  </ul>
                 </div>
               </div>
             </div>
-          </div>
-          <div>
-            <img src={wave4} alt="" />
-          </div>
-        </div>
-      </div>
-
-      <footer className="black-bg">
-        <div className="container">
-          <div className="row">
-            <div className="col-md-12">
-              <div className="newletter text-center">
-                <h2 className="text-white babas-regular">
-                  IRATKOZZ FEL HÍRLEVELEINKRE ÉS
-                  <br />
-                  <span className="babas-regular">
-                    ERTESÜLJ ELSŐKÉNT LEGÚJABB PARTNEREINKRŐL!
-                  </span>
-                </h2>
-                <form action="#" method="Post">
-                  <input
-                    type="text"
-                    name="mail"
-                    placeholder="Enter Your Email Id"
-                  />
-                  <button type="button" className="btn-yellow">
-                    FELÍRATKOZÁS!
-                  </button>
-                </form>
-              </div>
-            </div>
-          </div>
-          <div className="row">
-            <div className="col-md-6">
-              <div className="footer-body">
-                <h2 className="text-yellow">KÖVESS MINKET:</h2>
-
-                <ul className="footer-social">
+            <div className="col-md-8">
+              <div className="tab-menu">
+                <ul>
                   <li>
                     <a href="#">
-                      <i className="fa fa-facebook" aria-hidden="true"></i>
-                      /foodnetofﬁcial
+                      <img src="images/photo-line.png" />
+                      <p>Photo menu</p>
                     </a>
                   </li>
                   <li>
                     <a href="#">
-                      <i className="fa fa-instagram" aria-hidden="true"></i>
-                      @foodnetofﬁcial
+                      <img src="images/hamburger-line.png" />
+                      <p>Hamburger</p>
                     </a>
                   </li>
                   <li>
                     <a href="#">
-                      <i className="fa fa-youtube-play" aria-hidden="true"></i>
-                      /foodnetofﬁcial
+                      <img src="images/pizza-line.png" />
+                      <p>Pizza</p>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#">
+                      <img src="images/ice-cream-line.png" />
+                      <p>Algida</p>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#">
+                      <img src="images/food-line.png" />
+                      <p>Food</p>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#">
+                      <img src="images/hungarian-line.png" />
+                      <p>Hungarian</p>
+                    </a>
+                  </li>
+
+                  <li>
+                    <a href="#">
+                      <img src="images/thai-line.png" />
+                      <p>Thai</p>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#">
+                      <img src="images/italian-line.png" />
+                      <p>Italian</p>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#">
+                      <img src="images/shop-list-cuisines-more.min.png" />
+                      <p>More kitchens</p>
                     </a>
                   </li>
                 </ul>
               </div>
-            </div>
-            <div className="col-md-6">
-              <div className="footer-body">
-                <h2 className="text-yellow">EGYÉB OLDALAK:</h2>
-                <ul className="normal-list">
-                  <li>
-                    <a href="#">Termeni și Condiții</a>
-                  </li>
-                  <li>
-                    <a href="#">Politica de conﬁdențialitate</a>
-                  </li>
-                  <li>
-                    <a href="#">Returnare produse</a>
-                  </li>
-                  <li>
-                    <a href="#">Drepturi de autor</a>
-                  </li>
-                  <li>
-                    <a href="#">ANPC</a>
-                  </li>
-                </ul>
+              <div className="product-search">
+                <div className="container">
+                  <div className="row">
+                    <div className="col-md-9">
+                      <form
+                        className="example"
+                        action="../../action_page.php.html"
+                      >
+                        <button type="submit">
+                          <i className="fa fa-search"></i>
+                        </button>
+                        <input
+                          type="text"
+                          placeholder="Find a restaurant"
+                          name="search"
+                        />
+                        <div className="info-box">
+                          <span>181 hotels found</span>
+                        </div>
+                      </form>
+                    </div>
+                    <div className="col-md-3">
+                      <div className="dropdown">
+                        <button
+                          className="btn btn-primary dropdown-toggle"
+                          type="button"
+                          data-toggle="dropdown"
+                        >
+                          Sort by
+                          <span className="caret"></span>
+                        </button>
+                        <ul className="dropdown-menu">
+                          <li>
+                            <a href="#">By name</a>
+                          </li>
+                          <li>
+                            <a href="#">According to evaluation</a>
+                          </li>
+                          <li>
+                            <a href="#">By price category</a>
+                          </li>
+                          <li>
+                            <a href="#">According to shipping cost</a>
+                          </li>
+                          <li>
+                            <a href="#">By delivery time</a>
+                          </li>
+                          <li>
+                            <a href="#">Default</a>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-          <div className="row">
-            <div className="col-md-12">
-              <div className="footer-bottom text-center">
-                <p>©2020-2021 foodnet.ro - Minden jog fenntartva.</p>
-              </div>
+              {getHeroes()}
             </div>
           </div>
         </div>
-      </footer>
+      </div>
     </div>
   );
 }

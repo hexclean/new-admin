@@ -21,7 +21,6 @@ exports.getAddProduct = async (req, res, next) => {
     ],
   });
 
-  console.log(ext);
   const checkVariantLength = await ProductVariants.findAll({
     where: { adminId: req.admin.id },
   });
