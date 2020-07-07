@@ -1,0 +1,143 @@
+body {
+  font-family: "Open Sans", sans-serif;
+}
+* {
+  box-sizing: border-box;
+}
+h2 {
+  font-size: 22px;
+  line-height: 26px;
+  font-weight: 800;
+  margin-bottom: 30px !important;
+  text-transform: uppercase;
+  color: #292929;
+}
+.main-content {
+  background-color: #f5f5f5;
+  padding: 25px 0;
+}
+.white-box {
+  background-color: #fff;
+  border-radius: 3px;
+  border: 1px solid #ebebeb;
+  padding: 40px;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+
+.btn-green {
+  display: inline-block;
+  text-align: center;
+  text-transform: uppercase;
+  text-decoration: none;
+  letter-spacing: 0.5px;
+  font-weight: 700;
+  border-radius: 3px;
+  background-color: #4ab981;
+  color: #fff;
+  padding: 10px;
+  width: 100%;
+  display: block;
+  transition: all 0.25s;
+  border: none;
+  word-break: break-all;
+}
+
+.btn-blue {
+  display: inline-block;
+  text-align: center;
+  text-transform: uppercase;
+  text-decoration: none;
+  letter-spacing: 0.5px;
+  font-weight: 700;
+  border-radius: 3px;
+  background-color: #3b5998;
+  color: #fff;
+  padding: 10px;
+  width: 100%;
+  display: block;
+  transition: all 0.25s;
+  border: none;
+  word-break: break-all;
+}
+.btn-blue:hover {
+  color: #fff;
+}
+.personal-data label span {
+  color: red;
+  font-weight: 700;
+}
+.personal-data .form-control {
+  margin-bottom: 10px;
+}
+
+.tabs-left {
+  border-bottom: none;
+  border-right: 1px solid #ddd;
+}
+
+.tabs-left > li {
+  float: none;
+  margin: 0px 0px 5px 0px;
+  position: relative;
+}
+.white-box .tabs-left {
+  border: none;
+  word-break: break-all;
+}
+.white-box .tabs-left > li > a,
+.white-box .nav-tabs {
+  display: block;
+}
+.tabs-left > li.active > a,
+.tabs-left > li.active > a:hover,
+.tabs-left > li.active > a:focus {
+  border-bottom-color: #ddd;
+  border-right-color: transparent;
+  border: none;
+  border-radius: 0px;
+  margin: 0px;
+}
+.nav-tabs > li > a {
+  padding: 10px;
+  background: #f3f3f3;
+  color: #000;
+  font-weight: 500;
+}
+.nav-tabs > li > a:hover {
+  text-decoration: none;
+  background: #f90;
+  /* margin-right: 2px; */
+  line-height: 1.42857143;
+  border: 1px solid transparent;
+  /* border-radius: 4px 4px 0 0; */
+  color: #fff;
+}
+.tabs-left > li:hover a::after {
+  content: "";
+  position: absolute;
+  top: 10px;
+  right: -10px;
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+
+  border-left: 10px solid #f90;
+  display: block;
+  width: 0;
+}
+
+/* BY JOCO */
+.my-details {
+  padding-bottom: 20px;
+  padding-top: 20px;
+}
+
+.my-details-title {
+  font-size: 15px;
+}
+.my-details-desc {
+  font-size: 12px;
+}
+.menu-list {
+  font-size: 15px;
+}
