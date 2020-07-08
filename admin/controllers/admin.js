@@ -2,7 +2,6 @@ const fileHelper = require("../../util/file");
 const Product = require("../../models/Product");
 const ProductVariant = require("../../models/ProductVariant");
 const ProductVariantTranslation = require("../../models/ProductVariantTranslation");
-
 const ProductTranslation = require("../../models/ProductTranslation");
 const ProductFinal = require("../../models/ProductFinal");
 const Admin = require("../../models/Admin");

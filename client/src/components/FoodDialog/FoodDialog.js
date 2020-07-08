@@ -1,6 +1,11 @@
 import React from "react";
 
-export function FoodDialog() {
+export function FoodDialog({ openFood, setOpenFood }) {
+  function close() {
+    setOpenFood();
+  }
+  //   if (!openFood) return null;
+
   return (
     <div class="modal modal-lg" role="dialog" id="myModal">
       <div class="modal-dialog" role="document">
@@ -173,7 +178,7 @@ export function FoodDialog() {
             </div>
           </div>
           <div class="modal-footer text-center">
-            <button type="button" class="btn-red">
+            <button type="button" class="btn-red" onClick={close}>
               Close
             </button>
             <button type="button" class="btn-green">

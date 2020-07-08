@@ -4,12 +4,29 @@ const db = require("../../server");
 const Product = require("../../models/Product");
 const ProductFinal = require("../../models/ProductFinal");
 const Variants = require("../../models/ProductVariant");
-
+const Sequelize = require("sequelize");
 const ProductTranslation = require("../../models/ProductTranslation");
 
-// @route    GET api/products
-// @desc    Get all products
-// @access   Private
+router.get("/test", async (req, res) => {
+  const sequelize = new Sequelize("foodnet", "root", "y7b5uwFOODNET", {
+    host: "localhost",
+    dialect: "mysql",
+  });
+
+  sequelize
+    .query(
+      "SELECT * FROM foodnet.productFinals as prodFin INNER JOIN foodnet.products as prod ON prodFin.productId = prod.id INNER JOIN foodnet.productTranslations as prodTrans ON prodTrans.productId = prod.id INNER JOIN foodnet.productVariants as var ON prodFin.variantId = var.id INNER JOIN foodnet.productVariantTranslations as varTrans ON varTrans.productVariantId = var.id"
+    )
+    .then((results) => {
+      res.json(results);
+      console.log(results);
+    });
+  // const { QueryTypes } = require("sequelize");
+  // const test = await sequelize.query("SELECT * FROM admins", {
+  //   type: QueryTypes.SELECT,
+  // });
+});
+
 router.get("/", async (req, res) => {
   try {
     const products = await Product.findAll({

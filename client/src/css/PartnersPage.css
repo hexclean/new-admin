@@ -536,7 +536,7 @@ ul {
   top: 4px;
 }
 .extra-optional {
-  font-size: 14px;
+  font-size: 12px;
   margin-top: 9px;
 }
 .check-list .checkbox input[type="checkbox"]:checked + label::after {
@@ -1189,4 +1189,13 @@ input[type="radio"]:disabled + .label-text:before {
 #myModal .btn-red {
   display: inline-block;
   width: auto;
+}
+
+/* Joco */
+.short-desc {
+  font-size: 13px;
+}
+
+.search-box {
+  font-size: 13px;
 }
