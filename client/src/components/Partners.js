@@ -4,7 +4,10 @@ import axios from "axios";
 
 function Partners() {
   const [heroes, setHeroes] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [search, setSearch] = useState("");
   useEffect(() => {
+    // setLoading(true);
     setHeroes([]);
     axios
       .get("/api/restaurants")
@@ -18,16 +21,18 @@ function Partners() {
         console.log(err);
       });
   }, []);
+
   const getHeroes = () => {
+    // setLoading(true);
     const heroesList = [];
-    heroes.map((hero) =>
+    filteredPartners.map((hero) =>
       heroesList.push(
         <div class="product-infobx">
           <div class="product-infoleft">
             <img src={hero.imageUrl} />
           </div>
           <div class="product-infocenter">
-            <h4>Duo Food Bar Pizzeria</h4>
+            <h4>{hero.fullName}</h4>
             <p className="short-desc-comp">
               9 years with us pizza, hamburger, hungarian, italian, american,
               algida
@@ -66,6 +71,14 @@ function Partners() {
     );
     return heroesList;
   };
+
+  if (loading) {
+    return <p>Loading partners...</p>;
+  }
+
+  const filteredPartners = heroes.filter((hero) => {
+    return hero.fullName.toLowerCase().includes(search.toLowerCase());
+  });
 
   return (
     <div>
@@ -329,6 +342,7 @@ function Partners() {
                           type="text"
                           placeholder="Étterem keresése"
                           name="search"
+                          onChange={(e) => setSearch(e.target.value)}
                         />
                         <div className="info-box">
                           <span>181 találat</span>

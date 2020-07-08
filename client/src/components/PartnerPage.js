@@ -22,7 +22,9 @@ function PartnerPage() {
   }, []);
 
   const getHeroes = () => {
-    console.log("dsadasdasdasdasdas");
+    for (var i = 0; i < heroes.id; i++) {
+      console.log("heroes", heroes);
+    }
   };
   // const getHeroes = () => {
   //   const heroesList = [];
