@@ -6,6 +6,7 @@ function Partners() {
   const [heroes, setHeroes] = useState([]);
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState("");
+  const [filteredPartners, setFilteredPartners] = useState([]);
   useEffect(() => {
     // setLoading(true);
     setHeroes([]);
@@ -21,6 +22,14 @@ function Partners() {
         console.log(err);
       });
   }, []);
+
+  useEffect(() => {
+    setFilteredPartners(
+      heroes.filter((hero) => {
+        return hero.fullName.toLowerCase().includes(search.toLowerCase());
+      })
+    );
+  }, [search, heroes]);
 
   const getHeroes = () => {
     // setLoading(true);
@@ -75,10 +84,6 @@ function Partners() {
   if (loading) {
     return <p>Loading partners...</p>;
   }
-
-  const filteredPartners = heroes.filter((hero) => {
-    return hero.fullName.toLowerCase().includes(search.toLowerCase());
-  });
 
   return (
     <div>
