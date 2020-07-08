@@ -943,7 +943,7 @@ input[type="radio"]:disabled + .label-text:before {
 }
 
 .check-list li label {
-  font-size: 17px;
+  font-size: 13px;
 }
 #custom-search-input .btn-danger {
   height: 42px;
@@ -1198,4 +1198,12 @@ input[type="radio"]:disabled + .label-text:before {
 
 .search-box {
   font-size: 13px;
+}
+
+.order-button {
+  font-size: 12px;
+}
+
+.empty-car {
+  margin-top: 10px;
 }

@@ -16,6 +16,7 @@ const App = () => {
       <Fragment>
         {/* <Route exact path="/" component={Home} /> */}
         <Route exact path="/products" component={Products} />
+        <Route exact path="/partners" component={Partners} />
         <Route exact path="/" component={Partners} />
         <Route exact path="/login" component={Login} />
         <Route exact path="/registration" component={SignUp} />

@@ -28,34 +28,34 @@ function Partners() {
           </div>
           <div class="product-infocenter">
             <h4>Duo Food Bar Pizzeria</h4>
-            <p>
+            <p className="short-desc-comp">
               9 years with us pizza, hamburger, hungarian, italian, american,
               algida
             </p>
-            <ul class="info-list">
-              <li>
+            <ul class="info-list info-panel">
+              <li className="avg-delivery">
                 <div>
-                  <h5>8.4</h5>
-                  <h6>259 reviews</h6>
+                  <h5>Átlag szállítási idő</h5>
+                  <h6>100 perc</h6>
                 </div>
               </li>
-              <li>
+              <li className="avg-order">
                 <div>
-                  <h5>MIN. ORDER</h5>
-                  <h6>1 950 Ft</h6>
+                  <h5>Min. Rendelés</h5>
+                  <h6>25 Lei</h6>
                 </div>
               </li>
-              <li>
+              <li className="delivery-price">
                 <div>
-                  <h5>SHIPPING FEE</h5>
-                  <h6>0 Ft</h6>
+                  <h5>Szállítási díj</h5>
+                  <h6>0 Lei</h6>
                 </div>
               </li>
               <div class="clear"></div>
             </ul>
           </div>
           <div class="product-inforight">
-            <a href="#" class="menu-btn">
+            <a href="#" class="menu-btn text-menu">
               Menu
             </a>
             <div class="discount">-&nbsp;8%</div>
@@ -69,10 +69,16 @@ function Partners() {
 
   return (
     <div>
+      <div class="container-bg">
+        <div class="container">
+          {/* <img src="images/foodnet.png" /> */}
+          dsad
+        </div>
+      </div>
       <div className="main-container">
         <div className="container">
           <div className="row">
-            <div className="col-md-4">
+            <div className="col-md-3">
               <div className="whitebox margin-bottom-30">
                 <div className="graybox-heading">CURRENT FILTERS</div>
                 <div className="graybox-body">
@@ -248,7 +254,7 @@ function Partners() {
                 </div>
               </div>
             </div>
-            <div className="col-md-8">
+            <div className="col-md-9">
               <div className="tab-menu">
                 <ul>
                   <li>
@@ -317,15 +323,15 @@ function Partners() {
                         action="../../action_page.php.html"
                       >
                         <button type="submit">
-                          <i className="fa fa-search"></i>
+                          <i className="fa fa-search search-black"></i>
                         </button>
                         <input
                           type="text"
-                          placeholder="Find a restaurant"
+                          placeholder="Étterem keresése"
                           name="search"
                         />
                         <div className="info-box">
-                          <span>181 hotels found</span>
+                          <span>181 találat</span>
                         </div>
                       </form>
                     </div>
@@ -336,7 +342,7 @@ function Partners() {
                           type="button"
                           data-toggle="dropdown"
                         >
-                          Sort by
+                          Rendezés
                           <span className="caret"></span>
                         </button>
                         <ul className="dropdown-menu">

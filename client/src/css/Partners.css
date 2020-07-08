@@ -385,8 +385,8 @@ body {
   margin-bottom: 20px;
   padding: 15px;
   border-radius: 3px;
-  background-color: #fff;
-  color: #292929;
+  background-color: #fff !important;
+  color: red;
   box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.15);
   border-bottom: 1px solid #e3e3e3;
   position: relative;
@@ -413,14 +413,14 @@ body {
   clear: both;
 }
 .product-infoleft img {
-  width: 100%;
+  width: 67%;
 }
 .tab-menu {
   margin-bottom: 20px;
 }
 .info-list li {
   float: left;
-  width: 28%;
+  /* width: 28%; */
   margin-right: 15px;
   padding-right: 10px;
   border-right: 1px solid #e3e3e3;
@@ -437,7 +437,8 @@ body {
 }
 .info-list li h6 {
   color: #292929;
-  font-size: 11px;
+  font-size: 14px;
+  font-weight: 700;
 }
 
 .graybox-heading {
@@ -669,7 +670,7 @@ form.example button {
   float: left;
   width: 12%;
   padding: 10px;
-  background: #4ab981;
+  background: #e3e3e3;
   color: white;
   font-size: 17px;
   border: none;
@@ -768,4 +769,39 @@ form.example::after {
     width: 100%;
     float: none;
   }
+}
+
+/* JOCO */
+
+.short-desc-comp {
+  font-weight: 500 !important;
+  font-size: 14px;
+}
+
+.info-panel {
+  margin-top: 14px;
+}
+
+.avg-delivery {
+  width: 35% !important;
+}
+
+.avg-order {
+  width: 26% !important;
+}
+
+.delivery-price {
+  width: 26% !important;
+}
+
+.search-black {
+  color: #000 !important;
+}
+
+.text-menu {
+  color: white !important;
+}
+
+.container-bg {
+  background: #f99b39;
 }

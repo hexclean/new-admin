@@ -1,9 +1,77 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../css/PartnersPage.css";
 import { FoodDialog } from "./FoodDialog/FoodDialog";
+import axios from "axios";
+
 function PartnerPage() {
   const [openFood, setOpenFood] = useState();
+  const [heroes, setHeroes] = useState([]);
+  useEffect(() => {
+    setHeroes([]);
+    axios
+      .get("/api/products/test")
+      .then((response) => {
+        console.log("response", response);
+        if (response.data) {
+          setHeroes(response.data);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
+  const getHeroes = () => {
+    console.log("dsadasdasdasdasdas");
+  };
+  // const getHeroes = () => {
+  //   const heroesList = [];
+  //   for (var i = 0; i < heroes.TextRow[0].id; i++) {
+  //     console.log("i", i);
+  //   }
+  //   // heroes.map((hero) =>
+  //   //   heroesList.push(
+  //   //     <div class="product-infobx">
+  //   //       <div class="product-infoleft">
+  //   //         <img src={hero.id} />
+  //   //       </div>
+  //   //       <div class="product-infocenter">
+  //   //         <h4>{hero.TextRow}</h4>
+  //   //         <p>{hero.id}</p>
+  //   //         <ul class="info-list">
+  //   //           <li>
+  //   //             <div>
+  //   //               <h5>8.4</h5>
+  //   //               <h6>259 reviews</h6>
+  //   //             </div>
+  //   //           </li>
+  //   //           <li>
+  //   //             <div>
+  //   //               <h5>MIN. ORDER</h5>
+  //   //               <h6>1 950 Ft</h6>
+  //   //             </div>
+  //   //           </li>
+  //   //           <li>
+  //   //             <div>
+  //   //               <h5>SHIPPING FEE</h5>
+  //   //               <h6>0 Ft</h6>
+  //   //             </div>
+  //   //           </li>
+  //   //           <div class="clear"></div>
+  //   //         </ul>
+  //   //       </div>
+  //   //       <div class="product-inforight">
+  //   //         <a href="#" class="menu-btn">
+  //   //           Menu
+  //   //         </a>
+  //   //         <div class="discount">-&nbsp;8%</div>
+  //   //       </div>
+  //   //       <div class="clear"></div>
+  //   //     </div>
+  //   //   )
+  //   // );
+  //   // return heroesList;
+  // };
   return (
     <div>
       <div>{openFood}</div>
@@ -148,7 +216,7 @@ function PartnerPage() {
 
             <div className="col-md-6">
               <div className="page-header">
-                <h2>Pizzák (32 cm)</h2>
+                <h2>{getHeroes()}</h2>
               </div>
 
               <div className="product-infobx">
@@ -167,7 +235,9 @@ function PartnerPage() {
                   </div>
                   <div className="product-inforight">
                     <div className="incre-box">
-                      <div className="incre-left">100,99</div>
+                      <div className="incre-left d-flex justify-content-center">
+                        18,99
+                      </div>
                       <div className="incre-right">+</div>
                       <div className="clear"></div>
                     </div>
@@ -188,7 +258,7 @@ function PartnerPage() {
                 <a href="#" data-toggle="modal" data-target="#myModal">
                   <h4>Duo Food Bar Pizzeria</h4>
                   <div className="product-infoleft">
-                    <img src="images/item2.png" />
+                    <img src="images/kaja1.png" />
                   </div>
                   <div className="product-infocenter">
                     <p className="short-desc">
@@ -200,7 +270,9 @@ function PartnerPage() {
                   </div>
                   <div className="product-inforight">
                     <div className="incre-box">
-                      <div className="incre-left">100,34</div>
+                      <div className="incre-left d-flex justify-content-center">
+                        100,34
+                      </div>
                       <div
                         className="incre-right"
                         onClick={() => setOpenFood()}
@@ -226,7 +298,7 @@ function PartnerPage() {
                 <div className="graybox-body">
                   <p>Your cart is still empty, choose something delicious!</p>
 
-                  <a href="#" className="btn-gray">
+                  <a href="#" className="btn-gray empty-car">
                     Min: 0 Ft
                   </a>
                 </div>
@@ -306,7 +378,7 @@ function PartnerPage() {
                       <div className="clear"></div>
                     </div>
                     <div className="product-row">
-                      <a href="#" className="btn-green">
+                      <a href="#" className="btn-green order-button">
                         MEGRENDELEM
                       </a>
                     </div>
