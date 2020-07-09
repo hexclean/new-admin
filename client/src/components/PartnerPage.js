@@ -7,6 +7,8 @@ import { Link } from "react-router-dom";
 function PartnerPage(props) {
   const [openFood, setOpenFood] = useState();
   const [heroes, setHeroes] = useState([]);
+  const [search, setSearch] = useState("");
+  const [filteredProducts, setFilteredProducts] = useState([]);
   useEffect(() => {
     setHeroes([]);
     axios
@@ -22,6 +24,14 @@ function PartnerPage(props) {
       });
   }, []);
 
+  // useEffect(() => {
+  //   setFilteredProducts(
+  //     heroes.filter((hero) => {
+  //       return hero.fullName.toLowerCase().includes(search.toLowerCase());
+  //     })
+  //   );
+  // }, [search, heroes]);
+
   const getHeroes = () => {
     const heroesList = [];
     for (var i = 0; i < heroes.length; i++) {
@@ -29,96 +39,44 @@ function PartnerPage(props) {
       for (let j = 0; j < test; j++) {
         // console.log("heroes+categoryName", heroes[i][j].categoryName);
         heroesList.push(
-          <div className="product-infobx">
-            <div className="product-infoleft">
-              <img src={heroes[i][j].productId} />
+          <div>
+            <div className="page-header">
+              <h2>{heroes[i][j].categoryName}</h2>
             </div>
-            <div className="product-infocenter">
-              <h4>{heroes[i][j].productId}</h4>
-              <p>{heroes[i][j].productId}</p>
-              <ul className="info-list">
-                <li>
-                  <div>
-                    <h5>8.4</h5>
-                    <h6>259 reviews</h6>
+            <div className="product-infobx">
+              <a href="#" data-toggle="modal" data-target="#myModal">
+                <h4>{heroes[i][j].productTitle}</h4>
+                <div className="product-infoleft">
+                  <img src={"/" + heroes[i][j].productImageUrl} />
+                </div>
+                <div className="product-infocenter">
+                  <p className="short-desc">{heroes[i][j].productDesc}</p>
+                </div>
+                <div className="product-inforight">
+                  <div className="incre-box">
+                    <div className="incre-left d-flex justify-content-center">
+                      {heroes[i][j].productFinalPrice}
+                    </div>
+                    <div className="incre-right" onClick={() => setOpenFood()}>
+                      +
+                    </div>
+                    <div className="clear"></div>
                   </div>
-                </li>
-                <li>
-                  <div>
-                    <h5>MIN. ORDER</h5>
-                    <h6>{heroes[i][j].productId}</h6>
+
+                  <div className="extra-optional d-flex justify-content-center">
+                    extra elérhető
                   </div>
-                </li>
-                <li>
-                  <div>
-                    <h5>SHIPPING FEE</h5>
-                    <h6>0 Ft</h6>
-                  </div>
-                </li>
+                </div>
                 <div className="clear"></div>
-              </ul>
-            </div>
-            <div className="product-inforight">
-              <a href="#" className="menu-btn">
-                Menu
               </a>
-              <div className="discount">-&nbsp;8%</div>
             </div>
-            <div className="clear"></div>
           </div>
         );
       }
     }
     return heroesList;
   };
-  // const getHeroes = () => {
-  //   const heroesList = [];
-  //   // for (var i = 0; i < heroes.TextRow[0].id; i++) {
-  //   //   console.log("i", i);
-  //   // }
-  //   heroes.map((hero) =>
-  //     heroesList.push(
-  // <div className="product-infobx">
-  //   <div className="product-infoleft">
-  //     <img src={hero.productImageUrl} />
-  //   </div>
-  //   <div className="product-infocenter">
-  //     <h4>{hero.productImageUrl}</h4>
-  //     <p>{hero.productImageUrl}</p>
-  //     <ul className="info-list">
-  //       <li>
-  //         <div>
-  //           <h5>8.4</h5>
-  //           <h6>259 reviews</h6>
-  //         </div>
-  //       </li>
-  //       <li>
-  //         <div>
-  //           <h5>MIN. ORDER</h5>
-  //           <h6>{hero.productVarExtraId}</h6>
-  //         </div>
-  //       </li>
-  //       <li>
-  //         <div>
-  //           <h5>SHIPPING FEE</h5>
-  //           <h6>0 Ft</h6>
-  //         </div>
-  //       </li>
-  //       <div className="clear"></div>
-  //     </ul>
-  //   </div>
-  //   <div className="product-inforight">
-  //     <a href="#" className="menu-btn">
-  //       Menu
-  //     </a>
-  //     <div className="discount">-&nbsp;8%</div>
-  //   </div>
-  //   <div className="clear"></div>
-  // </div>
-  //     )
-  //   );
-  //   return heroesList;
-  // };
+
   return (
     <div>
       <div className="container-bg">
@@ -300,7 +258,7 @@ function PartnerPage(props) {
                   </button>
                   <input
                     type="text"
-                    placeholder="Étterem keresése"
+                    placeholder="Termék keresés"
                     name="search"
                     // onChange={(e) => setSearch(e.target.value)}
                   />
@@ -313,76 +271,7 @@ function PartnerPage(props) {
                 <h2>{getHeroes()}</h2>
               </div>
 
-              <div className="product-infobx">
-                <a href="#">
-                  <h4>Duo Food Bar Pizzeria</h4>
-                  <div className="product-infoleft">
-                    <img src="images/item3.png" />
-                  </div>
-                  <div className="product-infocenter">
-                    <p className="short-desc">
-                      Beef patty 2 pieces, bacon, Maredsous cheese slices,
-                      tomatoes, sliced &#8203;&#8203;sweet potato salad, red
-                      onion, lemon sandwich sauce, hamburger buns with sesame
-                      and poppy seeds sprinkled.
-                    </p>
-                  </div>
-                  <div className="product-inforight">
-                    <div className="incre-box">
-                      <div className="incre-left d-flex justify-content-center">
-                        18,99
-                      </div>
-                      <div className="incre-right">+</div>
-                      <div className="clear"></div>
-                    </div>
-
-                    <div className="extra-optional d-flex justify-content-center">
-                      extra elérhető
-                    </div>
-                  </div>
-                  <div className="clear"></div>
-                </a>
-              </div>
-
-              <div className="page-header">
-                <h2>Hamburgerek</h2>
-              </div>
-
-              <div className="product-infobx">
-                <a href="#" data-toggle="modal" data-target="#myModal">
-                  <h4>Duo Food Bar Pizzeria</h4>
-                  <div className="product-infoleft">
-                    <img src="images/kaja1.png" />
-                  </div>
-                  <div className="product-infocenter">
-                    <p className="short-desc">
-                      Beef patty 2 pieces, bacon, Maredsous cheese slices,
-                      tomatoes, sliced &#8203;&#8203;sweet potato salad, red
-                      onion, lemon sandwich sauce, hamburger buns with sesame
-                      and poppy seeds sprinkled.
-                    </p>
-                  </div>
-                  <div className="product-inforight">
-                    <div className="incre-box">
-                      <div className="incre-left d-flex justify-content-center">
-                        100,34
-                      </div>
-                      <div
-                        className="incre-right"
-                        onClick={() => setOpenFood()}
-                      >
-                        +
-                      </div>
-                      <div className="clear"></div>
-                    </div>
-
-                    <div className="extra-optional d-flex justify-content-center">
-                      extra elérhető
-                    </div>
-                  </div>
-                  <div className="clear"></div>
-                </a>
-              </div>
+              {/* dasdas????????? */}
             </div>
 
             {/* Cart */}
