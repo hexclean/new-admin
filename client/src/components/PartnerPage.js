@@ -2,13 +2,14 @@ import React, { useState, useEffect } from "react";
 import "../css/PartnersPage.css";
 import { FoodDialog } from "./FoodDialog/FoodDialog";
 import axios from "axios";
-import { Link } from "react-router-dom";
-
-function PartnerPage(props) {
+import Cart from "./Order/Order";
+import { useOpenFood } from "./Hooks/useOpenFood";
+// import FoodDialog from "./FoodDialog/FoodDialog";
+// {props.match.params.partnerId}
+function PartnerPage() {
   const [openFood, setOpenFood] = useState();
   const [heroes, setHeroes] = useState([]);
-  const [search, setSearch] = useState("");
-  const [filteredProducts, setFilteredProducts] = useState([]);
+
   useEffect(() => {
     setHeroes([]);
     axios
@@ -93,7 +94,6 @@ function PartnerPage(props) {
         </div>
       </div>
 
-      <div>{openFood}</div>
       <FoodDialog />
       <div className="main-container">
         <div className="container">
@@ -105,7 +105,7 @@ function PartnerPage(props) {
                     <img src="images/logo1.png" alt="KFC Óbuda" />
                   </div>
                   <div className="info short">
-                    <h1>{props.match.params.partnerId}</h1>
+                    <h1>fdsfdsf</h1>
                     <div className="adress-header">
                       1030 Budapest Szentendrei út 104
                     </div>
@@ -260,7 +260,6 @@ function PartnerPage(props) {
                     type="text"
                     placeholder="Termék keresés"
                     name="search"
-                    // onChange={(e) => setSearch(e.target.value)}
                   />
                   <div className="info-box">
                     <span>181 találat</span>
@@ -270,104 +269,11 @@ function PartnerPage(props) {
               <div className="page-header">
                 <h2>{getHeroes()}</h2>
               </div>
-
-              {/* dasdas????????? */}
             </div>
 
             {/* Cart */}
             <div className="col-md-3">
-              <div className="whitebox margin-bottom-30 cart-box">
-                <div className="graybox-heading">ORDER</div>
-                <div className="graybox-body">
-                  <p>Your cart is still empty, choose something delicious!</p>
-
-                  <a href="#" className="btn-gray empty-car">
-                    Min: 0 Ft
-                  </a>
-                </div>
-              </div>
-
-              <div className="whitebox margin-bottom-30 rendel-box">
-                <div className="graybox-heading">RENDELESEM</div>
-                <div className="graybox-body">
-                  <div className="product-row">
-                    <div className="product-no">1</div>
-                    <div className="product-name">
-                      Genorous Jack
-                      <p>Lorem Ipsum Lorem Ipsum.</p>
-                    </div>
-                    <div className="product-size">
-                      <b>1450 Ft</b>
-                    </div>
-                    <div className="product-close">&#10006;</div>
-                    <div className="clear"></div>
-                  </div>
-                  <div className="product-row">
-                    <div className="product-no">1</div>
-                    <div className="product-name">
-                      Genorous Jack
-                      <p>Lorem Ipsum Lorem Ipsum.</p>
-                    </div>
-                    <div className="product-size">
-                      <b>1450 Ft</b>
-                    </div>
-                    <div className="product-close">&#10006;</div>
-                    <div className="clear"></div>
-                  </div>
-                  <div className="product-row">
-                    <div className="product-no">1</div>
-                    <div className="product-name">
-                      Genorous Jack
-                      <p>Lorem Ipsum Lorem Ipsum.</p>
-                    </div>
-                    <div className="product-size">
-                      <b>1450 Ft</b>
-                    </div>
-                    <div className="product-close">&#10006;</div>
-                    <div className="clear"></div>
-                  </div>
-                </div>
-                <div className="fizetendo">
-                  <div className="graybox-heading">FIZETENDO</div>
-                  <div className="graybox-body">
-                    <div className="product-row">
-                      <div className="product-name">
-                        <b>Genorous Jack</b>
-                      </div>
-                      <div className="product-size">
-                        <b>1450 Ft</b>
-                      </div>
-
-                      <div className="clear"></div>
-                    </div>
-                    <div className="product-row">
-                      <div className="product-name">
-                        <b>Genorous Jack</b>
-                      </div>
-                      <div className="product-size">
-                        <b>1450 Ft</b>
-                      </div>
-
-                      <div className="clear"></div>
-                    </div>
-                    <div className="product-row">
-                      <div className="product-name">
-                        <b>Genorous Jack</b>
-                      </div>
-                      <div className="product-size">
-                        <b>1450 Ft</b>
-                      </div>
-
-                      <div className="clear"></div>
-                    </div>
-                    <div className="product-row">
-                      <a href="#" className="btn-green order-button">
-                        MEGRENDELEM
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <Cart />
             </div>
           </div>
         </div>

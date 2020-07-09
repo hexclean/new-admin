@@ -1,10 +1,18 @@
 import React from "react";
 
-export function FoodDialog({ openFood, setOpenFood }) {
-  function close() {
-    setOpenFood();
-  }
+export function FoodDialog({ openFood, setOpenFood, setOrders, orders }) {
+  // function close() {
+  //   setOpenFood();
+  // }
   //   if (!openFood) return null;
+
+  const order = {
+    name: "teszt",
+  };
+  function addToOrder() {
+    setOrders([...orders, order]);
+    console.log("dsadasdass");
+  }
 
   return (
     <div className="modal modal-lg" role="dialog" id="myModal">
@@ -178,10 +186,10 @@ export function FoodDialog({ openFood, setOpenFood }) {
             </div>
           </div>
           <div className="modal-footer text-center">
-            <button type="button" className="btn-red" onClick={close}>
+            <button type="button" className="btn-red">
               Close
             </button>
-            <button type="button" className="btn-green">
+            <button type="button" className="btn-green" onClick={addToOrder}>
               This is a Button
             </button>
           </div>

@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 // import Home from "./components/Home";
 // import Cart from "./components/Cart";
@@ -10,7 +10,7 @@ import Partners from "./components/Partners";
 import DeliveryAdress from "./components/UserProfile/DeliveryAdressList";
 import NewDeliveryAdress from "./components/UserProfile/AddDeliveryAdress";
 
-const App = () => {
+function App() {
   return (
     <Router>
       <Fragment>
@@ -27,6 +27,6 @@ const App = () => {
       </Fragment>
     </Router>
   );
-};
+}
 
 export default App;
