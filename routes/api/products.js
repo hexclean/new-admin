@@ -4,28 +4,76 @@ const db = require("../../server");
 const Product = require("../../models/Product");
 const ProductFinal = require("../../models/ProductFinal");
 const Variants = require("../../models/ProductVariant");
-const Sequelize = require("sequelize");
+const VariantsTranslation = require("../../models/ProductVariantTranslation");
 const ProductTranslation = require("../../models/ProductTranslation");
-
+const ProductCategories = require("../../models/ProductCategory");
 router.get("/test", async (req, res) => {
-  const sequelize = new Sequelize("foodnet", "root", "y7b5uwFOODNET", {
-    host: "localhost",
-    dialect: "mysql",
-  });
-
-  sequelize
-    .query(
-      "SELECT * FROM foodnet.productFinals as prodFin INNER JOIN foodnet.products as prod ON prodFin.productId = prod.id INNER JOIN foodnet.productTranslations as prodTrans ON prodTrans.productId = prod.id INNER JOIN foodnet.productVariants as var ON prodFin.variantId = var.id INNER JOIN foodnet.productVariantTranslations as varTrans ON varTrans.productVariantId = var.id"
-    )
-    .then((results) => {
-      res.json(results);
-      console.log(results);
+  try {
+    const products = await ProductFinal.findAll({
+      include: [
+        {
+          model: Product,
+          include: [
+            {
+              model: Variants,
+              include: [
+                {
+                  model: VariantsTranslation,
+                  include: [
+                    {
+                      model: ProductCategories,
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+          as: "theProductId",
+          include: [
+            {
+              model: ProductTranslation,
+            },
+          ],
+        },
+      ],
     });
+
+    res.json(products);
+    console.log("products", products);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server error");
+  }
+  // const sequelize = new Sequelize("foodnet", "root", "y7b5uwFOODNET", {
+  //   host: "localhost",
+  //   dialect: "mysql",
+  // });
+  // sequelize
+  //   .query(
+  //     "SELECT *, name  FROM foodnet.productFinals as prodFin INNER JOIN foodnet.products as prod ON prodFin.productId = prod.id INNER JOIN foodnet.productTranslations as prodTrans ON prodTrans.productId = prod.id INNER JOIN foodnet.productVariants as var ON prodFin.variantId = var.id INNER JOIN foodnet.productVariantTranslations as varTrans ON varTrans.productVariantId = var.id"
+  //   )
+  //   .then((results) => {
+  //     res.json(results);
+  //     console.log(results);
+  //   });
   // const { QueryTypes } = require("sequelize");
   // const test = await sequelize.query("SELECT * FROM admins", {
   //   type: QueryTypes.SELECT,
   // });
 });
+
+// Product.findAll({
+//   where: {
+//     id: prodId,
+//     adminId: req.admin.id,
+//   },
+//   include: [
+//     {
+//       model: ProductTranslation,
+//     },
+//     { model: ProductFinal },
+//   ],
+// });
 
 router.get("/", async (req, res) => {
   try {

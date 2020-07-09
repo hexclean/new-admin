@@ -7,22 +7,22 @@ export function FoodDialog({ openFood, setOpenFood }) {
   //   if (!openFood) return null;
 
   return (
-    <div class="modal modal-lg" role="dialog" id="myModal">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Modal title</h5>
+    <div className="modal modal-lg" role="dialog" id="myModal">
+      <div className="modal-dialog" role="document">
+        <div className="modal-content">
+          <div className="modal-header">
+            <h5 className="modal-title">Modal title</h5>
             <button
               type="button"
-              class="close"
+              className="close"
               data-dismiss="modal"
               aria-label="Close"
             >
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          <div class="modal-body">
-            <div class="modal-desc">
+          <div className="modal-body">
+            <div className="modal-desc">
               <h4>What is Lorem Ipsum?</h4>
               <p>
                 Lorem Ipsum is simply dummy text of the printing and typesetting
@@ -31,157 +31,157 @@ export function FoodDialog({ openFood, setOpenFood }) {
                 of type and scrambled it to make a type specimen book.
               </p>
             </div>
-            <div class="modal-mainbx">
+            <div className="modal-mainbx">
               <h4>What is Lorem Ipsum?</h4>
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="row-line">
-                    <div class="wid-10">
+              <div className="row">
+                <div className="col-md-6">
+                  <div className="row-line">
+                    <div className="wid-10">
                       <b>O Ft </b>
                     </div>
-                    <div class="wid-70">
+                    <div className="wid-70">
                       Lorem Ipsum is simply dummy text of the printing
                     </div>
-                    <div class="wid-10">
-                      <button class="bt-gray">
-                        <span class="fa fa-trash"></span>
+                    <div className="wid-10">
+                      <button className="bt-gray">
+                        <span className="fa fa-trash"></span>
                       </button>
                     </div>
-                    <div class="wid-10">
-                      <button class="bt-gray">+</button>
+                    <div className="wid-10">
+                      <button className="bt-gray">+</button>
                     </div>
-                    <div class="clear"></div>
+                    <div className="clear"></div>
                   </div>
-                  <div class="row-line">
-                    <div class="wid-10">
+                  <div className="row-line">
+                    <div className="wid-10">
                       <b>O Ft </b>
                     </div>
-                    <div class="wid-70">
+                    <div className="wid-70">
                       Lorem Ipsum is simply dummy text of the printing
                     </div>
-                    <div class="wid-10">
-                      <button class="bt-gray">
-                        <span class="fa fa-trash"></span>
+                    <div className="wid-10">
+                      <button className="bt-gray">
+                        <span className="fa fa-trash"></span>
                       </button>
                     </div>
-                    <div class="wid-10">
-                      <button class="bt-gray">+</button>
+                    <div className="wid-10">
+                      <button className="bt-gray">+</button>
                     </div>
-                    <div class="clear"></div>
+                    <div className="clear"></div>
                   </div>
-                  <div class="row-line">
-                    <div class="wid-10">
+                  <div className="row-line">
+                    <div className="wid-10">
                       <b>O Ft </b>
                     </div>
-                    <div class="wid-70">
+                    <div className="wid-70">
                       Lorem Ipsum is simply dummy text of the printing
                     </div>
-                    <div class="wid-10">
-                      <button class="bt-gray">
-                        <span class="fa fa-trash"></span>
+                    <div className="wid-10">
+                      <button className="bt-gray">
+                        <span className="fa fa-trash"></span>
                       </button>
                     </div>
-                    <div class="wid-10">
-                      <button class="bt-gray">+</button>
+                    <div className="wid-10">
+                      <button className="bt-gray">+</button>
                     </div>
-                    <div class="clear"></div>
+                    <div className="clear"></div>
                   </div>
-                  <div class="row-line">
-                    <div class="wid-10">
+                  <div className="row-line">
+                    <div className="wid-10">
                       <b>O Ft </b>
                     </div>
-                    <div class="wid-70">
+                    <div className="wid-70">
                       Lorem Ipsum is simply dummy text of the printing
                     </div>
-                    <div class="wid-10">
-                      <button class="bt-gray">
-                        <span class="fa fa-trash"></span>
+                    <div className="wid-10">
+                      <button className="bt-gray">
+                        <span className="fa fa-trash"></span>
                       </button>
                     </div>
-                    <div class="wid-10">
-                      <button class="bt-gray">+</button>
+                    <div className="wid-10">
+                      <button className="bt-gray">+</button>
                     </div>
-                    <div class="clear"></div>
+                    <div className="clear"></div>
                   </div>
                 </div>
-                <div class="col-md-6">
-                  <div class="row-line">
-                    <div class="wid-10">
+                <div className="col-md-6">
+                  <div className="row-line">
+                    <div className="wid-10">
                       <b>O Ft </b>
                     </div>
-                    <div class="wid-70">
+                    <div className="wid-70">
                       Lorem Ipsum is simply dummy text of the printing
                     </div>
-                    <div class="wid-10">
-                      <button class="bt-gray">
-                        <span class="fa fa-trash"></span>
+                    <div className="wid-10">
+                      <button className="bt-gray">
+                        <span className="fa fa-trash"></span>
                       </button>
                     </div>
-                    <div class="wid-10">
-                      <button class="bt-gray">+</button>
+                    <div className="wid-10">
+                      <button className="bt-gray">+</button>
                     </div>
-                    <div class="clear"></div>
+                    <div className="clear"></div>
                   </div>
-                  <div class="row-line">
-                    <div class="wid-10">
+                  <div className="row-line">
+                    <div className="wid-10">
                       <b>O Ft </b>
                     </div>
-                    <div class="wid-70">
+                    <div className="wid-70">
                       Lorem Ipsum is simply dummy text of the printing
                     </div>
-                    <div class="wid-10">
-                      <button class="bt-gray">
-                        <span class="fa fa-trash"></span>
+                    <div className="wid-10">
+                      <button className="bt-gray">
+                        <span className="fa fa-trash"></span>
                       </button>
                     </div>
-                    <div class="wid-10">
-                      <button class="bt-gray">+</button>
+                    <div className="wid-10">
+                      <button className="bt-gray">+</button>
                     </div>
-                    <div class="clear"></div>
+                    <div className="clear"></div>
                   </div>
-                  <div class="row-line">
-                    <div class="wid-10">
+                  <div className="row-line">
+                    <div className="wid-10">
                       <b>O Ft </b>
                     </div>
-                    <div class="wid-70">
+                    <div className="wid-70">
                       Lorem Ipsum is simply dummy text of the printing
                     </div>
-                    <div class="wid-10">
-                      <button class="bt-gray">
-                        <span class="fa fa-trash"></span>
+                    <div className="wid-10">
+                      <button className="bt-gray">
+                        <span className="fa fa-trash"></span>
                       </button>
                     </div>
-                    <div class="wid-10">
-                      <button class="bt-gray">+</button>
+                    <div className="wid-10">
+                      <button className="bt-gray">+</button>
                     </div>
-                    <div class="clear"></div>
+                    <div className="clear"></div>
                   </div>
-                  <div class="row-line">
-                    <div class="wid-10">
+                  <div className="row-line">
+                    <div className="wid-10">
                       <b>O Ft </b>
                     </div>
-                    <div class="wid-70">
+                    <div className="wid-70">
                       Lorem Ipsum is simply dummy text of the printing
                     </div>
-                    <div class="wid-10">
-                      <button class="bt-gray">
-                        <span class="fa fa-trash"></span>
+                    <div className="wid-10">
+                      <button className="bt-gray">
+                        <span className="fa fa-trash"></span>
                       </button>
                     </div>
-                    <div class="wid-10">
-                      <button class="bt-gray">+</button>
+                    <div className="wid-10">
+                      <button className="bt-gray">+</button>
                     </div>
-                    <div class="clear"></div>
+                    <div className="clear"></div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          <div class="modal-footer text-center">
-            <button type="button" class="btn-red" onClick={close}>
+          <div className="modal-footer text-center">
+            <button type="button" className="btn-red" onClick={close}>
               Close
             </button>
-            <button type="button" class="btn-green">
+            <button type="button" className="btn-green">
               This is a Button
             </button>
           </div>

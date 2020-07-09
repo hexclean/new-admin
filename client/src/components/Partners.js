@@ -1,14 +1,13 @@
 import "../css/Partners.css";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-
+import { Link } from "react-router-dom";
+import ShopMenu from "../components/Shared/ShopMenu";
 function Partners() {
   const [heroes, setHeroes] = useState([]);
-  const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState("");
   const [filteredPartners, setFilteredPartners] = useState([]);
   useEffect(() => {
-    // setLoading(true);
     setHeroes([]);
     axios
       .get("/api/restaurants")
@@ -69,10 +68,12 @@ function Partners() {
             </ul>
           </div>
           <div class="product-inforight">
-            <a href="#" class="menu-btn text-menu">
-              Menu
+            <a class="menu-btn text-menu">
+              <Link to={"/products/" + hero.fullName.replace(/%20/g, "-")}>
+                Étlap
+              </Link>
             </a>
-            <div class="discount">-&nbsp;8%</div>
+            <div class="discount">-&nbsp;8 lej</div>
           </div>
           <div class="clear"></div>
         </div>
@@ -81,18 +82,9 @@ function Partners() {
     return heroesList;
   };
 
-  if (loading) {
-    return <p>Loading partners...</p>;
-  }
-
   return (
     <div>
-      <div class="container-bg">
-        <div class="container">
-          {/* <img src="images/foodnet.png" /> */}
-          dsad
-        </div>
-      </div>
+      <ShopMenu />
       <div className="main-container">
         <div className="container">
           <div className="row">

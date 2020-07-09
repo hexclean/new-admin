@@ -1281,7 +1281,7 @@ h2 {
   font-size: 22px;
   line-height: 26px;
   font-weight: 800;
-  margin-bottom: 30px !important;
+  margin-bottom: 23px !important;
   text-transform: uppercase;
   color: #292929;
 }
@@ -1303,7 +1303,7 @@ h2 {
   margin-bottom: 40px;
 }
 .hero-header .shadow {
-  height: 140px;
+  height: 183px;
   background: url(/images/hero-image-shadow.png) repeat-x 0 100%;
   padding: 20px 15px;
   border-radius: 0 0 3px 3px;

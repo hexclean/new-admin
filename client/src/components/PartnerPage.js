@@ -2,8 +2,10 @@ import React, { useState, useEffect } from "react";
 import "../css/PartnersPage.css";
 import { FoodDialog } from "./FoodDialog/FoodDialog";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
-function PartnerPage() {
+function PartnerPage(props) {
+  console.log("props", props);
   const [openFood, setOpenFood] = useState();
   const [heroes, setHeroes] = useState([]);
   useEffect(() => {
@@ -22,8 +24,8 @@ function PartnerPage() {
   }, []);
 
   const getHeroes = () => {
-    for (var i = 0; i < heroes.id; i++) {
-      console.log("heroes", heroes);
+    for (var i = 0; i < heroes.length; i++) {
+      console.log("heroes", heroes[i].id);
     }
   };
   // const getHeroes = () => {
@@ -76,10 +78,41 @@ function PartnerPage() {
   // };
   return (
     <div>
+      <div className="container-bg">
+        <div className="container">
+          {/* <img src="images/foodnet.png" /> */}
+          FOODNET
+        </div>
+      </div>
+
+      <div className="back">
+        <div className="container">
+          {/* <img src="images/foodnet.png" /> */}
+          Vissza a listahoz
+        </div>
+      </div>
+
       <div>{openFood}</div>
       <FoodDialog />
       <div className="main-container">
         <div className="container">
+          <div className="row">
+            <div className="col-md-12 col-lg-12 col-xl-9">
+              <div className="hero-header">
+                <div className="shadow">
+                  <div className="logo">
+                    <img src="images/logo1.png" alt="KFC Óbuda" />
+                  </div>
+                  <div className="info short">
+                    <h1>{props.match.params.partnerId}</h1>
+                    <div className="adress-header">
+                      1030 Budapest Szentendrei út 104
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
           <div className="row">
             <div className="col-md-3">
               <div className="graybox margin-bottom-30">
@@ -109,7 +142,7 @@ function PartnerPage() {
                       <li>
                         <div className="form-check">
                           <label>
-                            <input type="radio" name="radio" checked />
+                            <input type="radio" name="radio" />
                             <span className="label-text ">Full range</span>
                           </label>
                         </div>
@@ -217,6 +250,22 @@ function PartnerPage() {
             </div>
 
             <div className="col-md-6">
+              <div className="col-md-9 product-search">
+                <form className="example" action="../../action_page.php.html">
+                  <button type="submit">
+                    <i className="fa fa-search search-black"></i>
+                  </button>
+                  <input
+                    type="text"
+                    placeholder="Étterem keresése"
+                    name="search"
+                    // onChange={(e) => setSearch(e.target.value)}
+                  />
+                  <div className="info-box">
+                    <span>181 találat</span>
+                  </div>
+                </form>
+              </div>
               <div className="page-header">
                 <h2>{getHeroes()}</h2>
               </div>

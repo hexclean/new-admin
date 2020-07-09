@@ -536,6 +536,7 @@ ul {
   top: 4px;
 }
 .extra-optional {
+  color: #000;
   font-size: 12px;
   margin-top: 9px;
 }
@@ -958,6 +959,7 @@ input[type="radio"]:disabled + .label-text:before {
   border: 1px solid #4ab981;
 }
 .incre-left {
+  color: #000;
   float: left;
   height: 38px;
   width: 70%;
@@ -1000,7 +1002,7 @@ input[type="radio"]:disabled + .label-text:before {
   border-top: 2px solid #ee2638;
 }
 .product-infobx a {
-  color: #292929;
+  color: white;
   display: block;
 }
 .product-infobx a:hover {
@@ -1206,4 +1208,21 @@ input[type="radio"]:disabled + .label-text:before {
 
 .empty-car {
   margin-top: 10px;
+}
+
+.hero-header {
+  background: url(/images/hero.png) repeat-x 0 100%;
+}
+
+.adress-header {
+  background-color: white;
+  color: black;
+  font-size: 14px;
+}
+.back {
+  opacity: 0, 5;
+}
+
+.product-search {
+  max-width: 100%;
 }

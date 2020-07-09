@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "../css/SignUp.css";
 import axios from "axios";
-// import Footer from "./Footer";
+import ShopMenu from "../components/Shared/ShopMenu";
 const Register = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -61,6 +61,7 @@ const Register = () => {
     // </div>
 
     <div>
+      <ShopMenu />
       <div className="main-container new-page">
         <div className="container">
           <div className="row">

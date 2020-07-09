@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "../css/Home.css";
 import axios from "axios";
+import createHistory from "history/createBrowserHistory";
+import { createBrowserHistory } from "history";
+import { Redirect } from "react-router-dom";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -23,6 +26,7 @@ const Login = () => {
               token: token,
             })
           );
+
           console.log(token);
           console.log("react localstorage: ", localStorage);
         } catch (error) {

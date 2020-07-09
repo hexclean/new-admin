@@ -465,7 +465,7 @@ body {
   display: block;
 }
 .check-list {
-  padding: 0px 25px !important;
+  /* padding: 0px 25px !important; */
 }
 
 ul {
@@ -804,4 +804,10 @@ form.example::after {
 
 .container-bg {
   background: #f99b39;
+  height: 69px;
+}
+
+.logo-header {
+  max-width: 7%;
+  height: auto;
 }
