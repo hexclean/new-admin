@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../../server");
+const Sequelize = require("sequelize");
+
 const Product = require("../../models/Product");
 const ProductFinal = require("../../models/ProductFinal");
 const Variants = require("../../models/ProductVariant");
@@ -8,58 +10,58 @@ const VariantsTranslation = require("../../models/ProductVariantTranslation");
 const ProductTranslation = require("../../models/ProductTranslation");
 const ProductCategories = require("../../models/ProductCategory");
 router.get("/test", async (req, res) => {
-  try {
-    const products = await ProductFinal.findAll({
-      include: [
-        {
-          model: Product,
-          include: [
-            {
-              model: Variants,
-              include: [
-                {
-                  model: VariantsTranslation,
-                  include: [
-                    {
-                      model: ProductCategories,
-                    },
-                  ],
-                },
-              ],
-            },
-          ],
-          as: "theProductId",
-          include: [
-            {
-              model: ProductTranslation,
-            },
-          ],
-        },
-      ],
-    });
-
-    res.json(products);
-    console.log("products", products);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send("Server error");
-  }
-  // const sequelize = new Sequelize("foodnet", "root", "y7b5uwFOODNET", {
-  //   host: "localhost",
-  //   dialect: "mysql",
-  // });
-  // sequelize
-  //   .query(
-  //     "SELECT *, name  FROM foodnet.productFinals as prodFin INNER JOIN foodnet.products as prod ON prodFin.productId = prod.id INNER JOIN foodnet.productTranslations as prodTrans ON prodTrans.productId = prod.id INNER JOIN foodnet.productVariants as var ON prodFin.variantId = var.id INNER JOIN foodnet.productVariantTranslations as varTrans ON varTrans.productVariantId = var.id"
-  //   )
-  //   .then((results) => {
-  //     res.json(results);
-  //     console.log(results);
+  // try {
+  //   const products = await ProductFinal.findAll({
+  //     include: [
+  //       {
+  //         model: Product,
+  //         include: [
+  //           {
+  //             model: Variants,
+  //             include: [
+  //               {
+  //                 model: VariantsTranslation,
+  //                 include: [
+  //                   {
+  //                     model: ProductCategories,
+  //                   },
+  //                 ],
+  //               },
+  //             ],
+  //           },
+  //         ],
+  //         as: "theProductId",
+  //         include: [
+  //           {
+  //             model: ProductTranslation,
+  //           },
+  //         ],
+  //       },
+  //     ],
   //   });
-  // const { QueryTypes } = require("sequelize");
-  // const test = await sequelize.query("SELECT * FROM admins", {
-  //   type: QueryTypes.SELECT,
-  // });
+
+  //   res.json(products);
+  //   console.log("products", products);
+  // } catch (err) {
+  //   console.error(err.message);
+  //   res.status(500).send("Server error");
+  // }
+  const sequelize = new Sequelize("foodnet", "root", "y7b5uwFOODNET", {
+    host: "localhost",
+    dialect: "mysql",
+  });
+  sequelize
+    .query(
+      "SELECT prodFin.id as productFinalId, prodFin.price as productFinalPrice, prodFin.discountedPrice as productFinalDiscPrice, var.id as variantId, var.active as variantActive, prod.imageUrl as productImageUrl, prod.id as productId, prodTrans.id as productTranslationId, prodVarExt.id as productVarExtraId, prodVarExt.price as productVarExtraPrice, prodVarExt.discountedPrice as productVarExtraDiscPrice, prodVarExt.quantityMax as productVarExtraMax, prodVarExt.quantityMin as productVarExtraMin, prodVarExt.active as productVarExtraActive, prodTrans.description as productTranslationDesc FROM foodnet.productFinals as prodFin INNER JOIN foodnet.products as prod ON prodFin.productId = prod.id INNER JOIN foodnet.productTranslations as prodTrans ON prodTrans.productId = prod.id INNER JOIN foodnet.productVariants as var ON prodFin.variantId = var.id INNER JOIN foodnet.productVariantTranslations as varTrans ON varTrans.productVariantId = var.id INNER JOIN foodnet.productCategories as cat ON cat.id = varTrans.categoryId inner join foodnet.productCategoryTranslations as catTrans ON catTrans.productCategoryId = cat.id INNER JOIN foodnet.productVariantsExtras as prodVarExt on prodVarExt.productVariantId = varTrans.id INNER JOIN foodnet.extras as ext on ext.id = prodVarExt.extraId INNER JOIN foodnet.extraTranslations as extTrans  on extTrans.extraId = ext.id where prodTrans.languageId =1 and varTrans.languageId =1 and catTrans.languageId =1 and extTrans.languageId =1;"
+    )
+    .then((results) => {
+      res.json(results);
+      console.log(results);
+    });
+  const { QueryTypes } = require("sequelize");
+  const test = await sequelize.query("SELECT * FROM admins", {
+    type: QueryTypes.SELECT,
+  });
 });
 
 // Product.findAll({
