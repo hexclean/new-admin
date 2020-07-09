@@ -5,7 +5,6 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 
 function PartnerPage(props) {
-  console.log("props", props);
   const [openFood, setOpenFood] = useState();
   const [heroes, setHeroes] = useState([]);
   useEffect(() => {
@@ -24,57 +23,101 @@ function PartnerPage(props) {
   }, []);
 
   const getHeroes = () => {
+    const heroesList = [];
     for (var i = 0; i < heroes.length; i++) {
-      console.log("heroes", heroes[i].id);
+      var test = heroes[i].length;
+      for (let j = 0; j < test; j++) {
+        // console.log("heroes+categoryName", heroes[i][j].categoryName);
+        heroesList.push(
+          <div className="product-infobx">
+            <div className="product-infoleft">
+              <img src={heroes[i][j].productId} />
+            </div>
+            <div className="product-infocenter">
+              <h4>{heroes[i][j].productId}</h4>
+              <p>{heroes[i][j].productId}</p>
+              <ul className="info-list">
+                <li>
+                  <div>
+                    <h5>8.4</h5>
+                    <h6>259 reviews</h6>
+                  </div>
+                </li>
+                <li>
+                  <div>
+                    <h5>MIN. ORDER</h5>
+                    <h6>{heroes[i][j].productId}</h6>
+                  </div>
+                </li>
+                <li>
+                  <div>
+                    <h5>SHIPPING FEE</h5>
+                    <h6>0 Ft</h6>
+                  </div>
+                </li>
+                <div className="clear"></div>
+              </ul>
+            </div>
+            <div className="product-inforight">
+              <a href="#" className="menu-btn">
+                Menu
+              </a>
+              <div className="discount">-&nbsp;8%</div>
+            </div>
+            <div className="clear"></div>
+          </div>
+        );
+      }
     }
+    return heroesList;
   };
   // const getHeroes = () => {
   //   const heroesList = [];
-  //   for (var i = 0; i < heroes.TextRow[0].id; i++) {
-  //     console.log("i", i);
-  //   }
-  //   // heroes.map((hero) =>
-  //   //   heroesList.push(
-  //   //     <div class="product-infobx">
-  //   //       <div class="product-infoleft">
-  //   //         <img src={hero.id} />
-  //   //       </div>
-  //   //       <div class="product-infocenter">
-  //   //         <h4>{hero.TextRow}</h4>
-  //   //         <p>{hero.id}</p>
-  //   //         <ul class="info-list">
-  //   //           <li>
-  //   //             <div>
-  //   //               <h5>8.4</h5>
-  //   //               <h6>259 reviews</h6>
-  //   //             </div>
-  //   //           </li>
-  //   //           <li>
-  //   //             <div>
-  //   //               <h5>MIN. ORDER</h5>
-  //   //               <h6>1 950 Ft</h6>
-  //   //             </div>
-  //   //           </li>
-  //   //           <li>
-  //   //             <div>
-  //   //               <h5>SHIPPING FEE</h5>
-  //   //               <h6>0 Ft</h6>
-  //   //             </div>
-  //   //           </li>
-  //   //           <div class="clear"></div>
-  //   //         </ul>
-  //   //       </div>
-  //   //       <div class="product-inforight">
-  //   //         <a href="#" class="menu-btn">
-  //   //           Menu
-  //   //         </a>
-  //   //         <div class="discount">-&nbsp;8%</div>
-  //   //       </div>
-  //   //       <div class="clear"></div>
-  //   //     </div>
-  //   //   )
-  //   // );
-  //   // return heroesList;
+  //   // for (var i = 0; i < heroes.TextRow[0].id; i++) {
+  //   //   console.log("i", i);
+  //   // }
+  //   heroes.map((hero) =>
+  //     heroesList.push(
+  // <div className="product-infobx">
+  //   <div className="product-infoleft">
+  //     <img src={hero.productImageUrl} />
+  //   </div>
+  //   <div className="product-infocenter">
+  //     <h4>{hero.productImageUrl}</h4>
+  //     <p>{hero.productImageUrl}</p>
+  //     <ul className="info-list">
+  //       <li>
+  //         <div>
+  //           <h5>8.4</h5>
+  //           <h6>259 reviews</h6>
+  //         </div>
+  //       </li>
+  //       <li>
+  //         <div>
+  //           <h5>MIN. ORDER</h5>
+  //           <h6>{hero.productVarExtraId}</h6>
+  //         </div>
+  //       </li>
+  //       <li>
+  //         <div>
+  //           <h5>SHIPPING FEE</h5>
+  //           <h6>0 Ft</h6>
+  //         </div>
+  //       </li>
+  //       <div className="clear"></div>
+  //     </ul>
+  //   </div>
+  //   <div className="product-inforight">
+  //     <a href="#" className="menu-btn">
+  //       Menu
+  //     </a>
+  //     <div className="discount">-&nbsp;8%</div>
+  //   </div>
+  //   <div className="clear"></div>
+  // </div>
+  //     )
+  //   );
+  //   return heroesList;
   // };
   return (
     <div>
