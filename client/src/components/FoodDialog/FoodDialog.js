@@ -1,27 +1,26 @@
 import React from "react";
 import { useState } from "react";
 
-export function FoodDialog({ openFood, setOpenFood }) {
-  const [orders, setOrders] = useState([]);
-  // function close() {
-  //   setOpenFood();
-  // }
-  //   if (!openFood) return null;
-
+export function FoodDialog({
+  openFood,
+  setOpenFood,
+  setOrders,
+  orders,
+  products,
+}) {
   const order = {
     name: "teszt",
   };
   function addToOrder() {
     setOrders([...orders, order]);
-    console.log("dsadasdass");
   }
 
-  return (
+  return openFood ? (
     <div className="modal modal-lg" role="dialog" id="myModal">
       <div className="modal-dialog" role="document">
         <div className="modal-content">
           <div className="modal-header">
-            <h5 className="modal-title">Modal title</h5>
+            <h5 className="modal-title">bhjbjbjh</h5>
             <button
               type="button"
               className="close"
@@ -198,5 +197,5 @@ export function FoodDialog({ openFood, setOpenFood }) {
         </div>
       </div>
     </div>
-  );
+  ) : null;
 }

@@ -41,7 +41,10 @@ export function ProductItem({ openFood, setOpenFood, products, setProducts }) {
                     <div className="incre-left d-flex justify-content-center">
                       {products[i][j].productFinalPrice}
                     </div>
-                    <div className="incre-right" onClick={() => setOpenFood()}>
+                    <div
+                      className="incre-right"
+                      onClick={() => setOpenFood(products)}
+                    >
                       +
                     </div>
                     <div className="clear"></div>
