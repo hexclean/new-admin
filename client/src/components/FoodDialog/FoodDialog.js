@@ -3,16 +3,17 @@ import { useState } from "react";
 import { QuantityInput } from "./QuantityInput";
 import { useQuantity } from "../Hooks/useQuantity";
 
-export function FoodDialogContainer({
+export function getPrice(order) {
+  return order.quantity * order.price;
+}
+
+function FoodDialogContainer({
   openFood,
   setOpenFood,
   setOrders,
   orders,
   products,
 }) {
-  function getPrice(order) {
-    return order.quantity * order.price;
-  }
   const quantity = useQuantity(openFood && openFood.quantity);
   const order = {
     name: "teszt",
@@ -21,6 +22,10 @@ export function FoodDialogContainer({
   };
   function addToOrder() {
     setOrders([...orders, order]);
+  }
+
+  function close() {
+    setOpenFood();
   }
 
   return (
