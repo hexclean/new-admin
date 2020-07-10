@@ -1,82 +1,16 @@
 import React, { useState, useEffect } from "react";
 import "../css/PartnersPage.css";
 import { FoodDialog } from "./FoodDialog/FoodDialog";
-import axios from "axios";
+
 import Cart from "./Order/Order";
+import { useOrders } from "./Hooks/useOrders";
 import { useOpenFood } from "./Hooks/useOpenFood";
-// import FoodDialog from "./FoodDialog/FoodDialog";
-// {props.match.params.partnerId}
+import ProductItem from "./Product/ProductItem";
+import { useProducts } from "./Hooks/useProducts";
 function PartnerPage() {
-  const [openFood, setOpenFood] = useState();
-  const [heroes, setHeroes] = useState([]);
-
-  useEffect(() => {
-    setHeroes([]);
-    axios
-      .get("/api/products/test")
-      .then((response) => {
-        console.log("response", response);
-        if (response.data) {
-          setHeroes(response.data);
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
-
-  // useEffect(() => {
-  //   setFilteredProducts(
-  //     heroes.filter((hero) => {
-  //       return hero.fullName.toLowerCase().includes(search.toLowerCase());
-  //     })
-  //   );
-  // }, [search, heroes]);
-
-  const getHeroes = () => {
-    const heroesList = [];
-    for (var i = 0; i < heroes.length; i++) {
-      var test = heroes[i].length;
-      for (let j = 0; j < test; j++) {
-        // console.log("heroes+categoryName", heroes[i][j].categoryName);
-        heroesList.push(
-          <div>
-            <div className="page-header">
-              <h2>{heroes[i][j].categoryName}</h2>
-            </div>
-            <div className="product-infobx">
-              <a href="#" data-toggle="modal" data-target="#myModal">
-                <h4>{heroes[i][j].productTitle}</h4>
-                <div className="product-infoleft">
-                  <img src={"/" + heroes[i][j].productImageUrl} />
-                </div>
-                <div className="product-infocenter">
-                  <p className="short-desc">{heroes[i][j].productDesc}</p>
-                </div>
-                <div className="product-inforight">
-                  <div className="incre-box">
-                    <div className="incre-left d-flex justify-content-center">
-                      {heroes[i][j].productFinalPrice}
-                    </div>
-                    <div className="incre-right" onClick={() => setOpenFood()}>
-                      +
-                    </div>
-                    <div className="clear"></div>
-                  </div>
-
-                  <div className="extra-optional d-flex justify-content-center">
-                    extra elérhető
-                  </div>
-                </div>
-                <div className="clear"></div>
-              </a>
-            </div>
-          </div>
-        );
-      }
-    }
-    return heroesList;
-  };
+  const openFood = useOpenFood();
+  const orders = useOrders();
+  const products = useProducts();
 
   return (
     <div>
@@ -94,7 +28,7 @@ function PartnerPage() {
         </div>
       </div>
 
-      <FoodDialog />
+      <FoodDialog {...openFood} {...orders} />
       <div className="main-container">
         <div className="container">
           <div className="row">
@@ -267,13 +201,12 @@ function PartnerPage() {
                 </form>
               </div>
               <div className="page-header">
-                <h2>{getHeroes()}</h2>
+                <ProductItem {...openFood} {...products} />
               </div>
             </div>
 
-            {/* Cart */}
             <div className="col-md-3">
-              <Cart />
+              <Cart {...orders} />
             </div>
           </div>
         </div>

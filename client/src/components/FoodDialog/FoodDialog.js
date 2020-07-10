@@ -1,6 +1,8 @@
 import React from "react";
+import { useState } from "react";
 
-export function FoodDialog({ openFood, setOpenFood, setOrders, orders }) {
+export function FoodDialog({ openFood, setOpenFood }) {
+  const [orders, setOrders] = useState([]);
   // function close() {
   //   setOpenFood();
   // }
