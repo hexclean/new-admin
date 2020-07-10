@@ -1,21 +1,29 @@
 import React from "react";
 import { useState } from "react";
+import { QuantityInput } from "./QuantityInput";
+import { useQuantity } from "../Hooks/useQuantity";
 
-export function FoodDialog({
+export function FoodDialogContainer({
   openFood,
   setOpenFood,
   setOrders,
   orders,
   products,
 }) {
+  function getPrice(order) {
+    return order.quantity * order.price;
+  }
+  const quantity = useQuantity(openFood && openFood.quantity);
   const order = {
     name: "teszt",
+    price: 5,
+    quantity: quantity.value,
   };
   function addToOrder() {
     setOrders([...orders, order]);
   }
 
-  return openFood ? (
+  return (
     <div className="modal modal-lg" role="dialog" id="myModal">
       <div className="modal-dialog" role="document">
         <div className="modal-content">
@@ -33,6 +41,7 @@ export function FoodDialog({
           <div className="modal-body">
             <div className="modal-desc">
               <h4>What is Lorem Ipsum?</h4>
+              <QuantityInput quantity={quantity} />
               <p>
                 Lorem Ipsum is simply dummy text of the printing and typesetting
                 industry. Lorem Ipsum has been the industry's standard dummy
@@ -191,11 +200,16 @@ export function FoodDialog({
               Close
             </button>
             <button type="button" className="btn-green" onClick={addToOrder}>
-              This is a Button
+              This is a Button: {getPrice(order)}
             </button>
           </div>
         </div>
       </div>
     </div>
-  ) : null;
+  );
+}
+
+export function FoodDialog(props) {
+  if (!props.openFood) return null;
+  return <FoodDialogContainer {...props} />;
 }
