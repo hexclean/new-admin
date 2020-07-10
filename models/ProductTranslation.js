@@ -15,9 +15,6 @@ const ProductTranslation = sequelize.define("productTranslation", {
   description: {
     type: Sequelize.STRING,
   },
-  category: {
-    type: Sequelize.ENUM("dailyMenu", "pizza", "chicken"),
-  },
   allergen: {
     type: Sequelize.INTEGER,
   },

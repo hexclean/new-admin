@@ -1,39 +1,35 @@
 import React from "react";
-import { useState } from "react";
-import { QuantityInput } from "./QuantityInput";
-import { useQuantity } from "../Hooks/useQuantity";
+// import { QuantityInput } from "./QuantityInput";
+// import { useQuantity } from "../Hooks/useQuantity";
 
-export function getPrice(order) {
-  return order.quantity * order.price;
-}
+// export function getPrice(order) {
+//   return order.quantity * order.price;
+// }
 
-function FoodDialogContainer({
-  openFood,
-  setOpenFood,
-  setOrders,
-  orders,
-  products,
-}) {
-  const quantity = useQuantity(openFood && openFood.quantity);
-  const order = {
-    name: "teszt",
-    price: 5,
-    quantity: quantity.value,
-  };
-  function addToOrder() {
-    setOrders([...orders, order]);
-  }
+export function FoodDialog({ openFood }) {
+  // const quantity = useQuantity(openFood && openFood.quantity);
 
-  function close() {
-    setOpenFood();
-  }
+  // const order = {
+  //   name: "jhbhjbhjbhjbjhbhjbhjb",
+  //   price: 5,
+  //   quantity: quantity.value,
+  // };
 
-  return (
-    <div className="modal modal-lg" role="dialog" id="myModal">
+  // function addToOrder() {
+  //   console.log("productsList", products);
+  //   setOrders([...orders, order]);
+  // }
+
+  // function close() {
+  //   setOpenFood();
+  // }
+
+  return openFood ? (
+    <div className="modal modal-lg">
       <div className="modal-dialog" role="document">
         <div className="modal-content">
           <div className="modal-header">
-            <h5 className="modal-title">bhjbjbjh</h5>
+            <h5 className="modal-title">dasda</h5>
             <button
               type="button"
               className="close"
@@ -46,7 +42,7 @@ function FoodDialogContainer({
           <div className="modal-body">
             <div className="modal-desc">
               <h4>What is Lorem Ipsum?</h4>
-              <QuantityInput quantity={quantity} />
+              {/* <QuantityInput /> */}
               <p>
                 Lorem Ipsum is simply dummy text of the printing and typesetting
                 industry. Lorem Ipsum has been the industry's standard dummy
@@ -204,17 +200,19 @@ function FoodDialogContainer({
             <button type="button" className="btn-red">
               Close
             </button>
-            <button type="button" className="btn-green" onClick={addToOrder}>
-              This is a Button: {getPrice(order)}
+            <button type="button" className="btn-green">
+              This is a Button:
             </button>
           </div>
         </div>
       </div>
     </div>
-  );
+  ) : null;
 }
 
-export function FoodDialog(props) {
-  if (!props.openFood) return null;
-  return <FoodDialogContainer {...props} />;
-}
+// export function FoodDialog(props) {
+//   if (!props.openFood) return null;
+//   return <FoodDialogContainer {...props} />;
+// }
+
+export default FoodDialog;

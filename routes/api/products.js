@@ -52,16 +52,13 @@ router.get("/test", async (req, res) => {
   });
   sequelize
     .query(
-      "SELECT prodFin.id as productFinalId, prodFin.price as productFinalPrice, prodFin.discountedPrice as productFinalDiscPrice, var.id as variantId, var.active as variantActive, prod.imageUrl as productImageUrl, prod.id as productId, prodTrans.id as productTranslationId, prodVarExt.id as productVarExtraId, prodVarExt.price as productVarExtraPrice, prodVarExt.discountedPrice as productVarExtraDiscPrice, prodVarExt.quantityMax as productVarExtraMax, prodVarExt.quantityMin as productVarExtraMin, prodVarExt.active as productVarExtraActive, prodTrans.description as productTranslationDesc, prodTrans.title as productTitle, prodTrans.description as productDesc, catTrans.name as categoryName  FROM foodnet.productFinals as prodFin INNER JOIN foodnet.products as prod ON prodFin.productId = prod.id INNER JOIN foodnet.productTranslations as prodTrans ON prodTrans.productId = prod.id INNER JOIN foodnet.productVariants as var ON prodFin.variantId = var.id INNER JOIN foodnet.productVariantTranslations as varTrans ON varTrans.productVariantId = var.id INNER JOIN foodnet.productCategories as cat ON cat.id = varTrans.categoryId inner join foodnet.productCategoryTranslations as catTrans ON catTrans.productCategoryId = cat.id INNER JOIN foodnet.productVariantsExtras as prodVarExt on prodVarExt.productVariantId = varTrans.id INNER JOIN foodnet.extras as ext on ext.id = prodVarExt.extraId INNER JOIN foodnet.extraTranslations as extTrans  on extTrans.extraId = ext.id where prodTrans.languageId =1 and varTrans.languageId =1 and catTrans.languageId =1 and extTrans.languageId =1;"
+      "SELECT * FROM foodnet.productFinals as prodFin INNER JOIN foodnet.products as prod ON prodFin.productId = prod.id INNER JOIN foodnet.productTranslations as prodTrans ON prodTrans.productId = prod.id INNER JOIN foodnet.productVariants as var ON prodFin.variantId = var.id INNER JOIN foodnet.productVariantTranslations as varTrans ON varTrans.productVariantId = var.id INNER JOIN foodnet.productCategories as cat ON cat.id = varTrans.categoryId inner join foodnet.productCategoryTranslations as catTrans ON catTrans.productCategoryId = cat.id inner join foodnet.productVariantsExtras AS varExtras ON varExtras.productVariantId = varTrans.productVariantId inner join foodnet.extras as ext on ext.id = varExtras.extraId inner join foodnet.extraTranslations as extTrans on extTrans.extraId = ext.id WHERE catTrans.languageId =2 AND varTrans.languageId =2 AND extTrans.languageId=2  and prodTrans.languageId =2 and prodFin.active= 1",
+      { type: Sequelize.QueryTypes.SELECT }
     )
     .then((results) => {
       res.json(results);
       console.log(results);
     });
-  const { QueryTypes } = require("sequelize");
-  const test = await sequelize.query("SELECT * FROM admins", {
-    type: QueryTypes.SELECT,
-  });
 });
 
 // Product.findAll({

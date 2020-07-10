@@ -1,53 +1,24 @@
 import React, { useState, useEffect } from "react";
 import "../css/PartnersPage.css";
 import { FoodDialog } from "./FoodDialog/FoodDialog";
-
+import Banner from "./PartnerBanner";
 import Cart from "./Order/Order";
-import { useOrders } from "./Hooks/useOrders";
-import { useOpenFood } from "./Hooks/useOpenFood";
+// import { useOrders } from "./Hooks/useOrders";
+// import { useOpenFood } from "./Hooks/useOpenFood";
 import ProductItem from "./Product/ProductItem";
-import { useProducts } from "./Hooks/useProducts";
+// import { useProducts } from "./Hooks/useProducts";
 function PartnerPage() {
-  const openFood = useOpenFood();
-  const orders = useOrders();
-  const products = useProducts();
+  const [openFood, setOpenFood] = useState();
+  // const openFood = useOpenFood();
+  // const orders = useOrders();
+  // const products = useProducts();
 
   return (
     <div>
-      <div className="container-bg">
-        <div className="container">
-          {/* <img src="images/foodnet.png" /> */}
-          FOODNET
-        </div>
-      </div>
-
-      <div className="back">
-        <div className="container">
-          {/* <img src="images/foodnet.png" /> */}
-          Vissza a listahoz
-        </div>
-      </div>
-
-      <FoodDialog {...openFood} {...orders} />
+      <FoodDialog openFood={openFood} />
       <div className="main-container">
         <div className="container">
-          <div className="row">
-            <div className="col-md-12 col-lg-12 col-xl-9">
-              <div className="hero-header">
-                <div className="shadow">
-                  <div className="logo">
-                    <img src="images/logo1.png" alt="KFC Óbuda" />
-                  </div>
-                  <div className="info short">
-                    <h1>fdsfdsf</h1>
-                    <div className="adress-header">
-                      1030 Budapest Szentendrei út 104
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          <Banner />
           <div className="row">
             <div className="col-md-3">
               <div className="graybox margin-bottom-30">
@@ -201,13 +172,11 @@ function PartnerPage() {
                 </form>
               </div>
               <div className="page-header">
-                <ProductItem {...openFood} {...products} />
+                <ProductItem setOpenFood={setOpenFood} />
               </div>
             </div>
 
-            <div className="col-md-3">
-              <Cart {...orders} />
-            </div>
+            <div className="col-md-3">{/* <Cart /> */}</div>
           </div>
         </div>
       </div>

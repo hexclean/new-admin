@@ -2,9 +2,9 @@ import React from "react";
 
 export function QuantityInput({ quantity }) {
   return (
-    <div class="container">
-      <div class="row">
-        <div class="col-sm">
+    <div className="container">
+      <div className="row">
+        <div className="col-sm">
           <button
             disabled={quantity.value === 1}
             onClick={() => {
@@ -14,10 +14,10 @@ export function QuantityInput({ quantity }) {
             -
           </button>
         </div>
-        <div class="col-sm">
+        <div className="col-sm">
           <input type="text" {...quantity} />
         </div>
-        <div class="col-sm">
+        <div className="col-sm">
           <button
             onClick={() => {
               quantity.setValue(quantity.value + 1);
