@@ -8,11 +8,17 @@ import Index from "../components/PartnerPage/Index";
 import Partners from "../components/Partners";
 import DeliveryAdress from "../components/UserProfile/DeliveryAdressList";
 import NewDeliveryAdress from "../components/UserProfile/AddDeliveryAdress";
+import Header from "../components/Header/Header";
 
 function Routes() {
+  const [loggedIn, setLoggedIn] = useState(
+    Boolean(localStorage.getItem("foodnetToken"))
+  );
+
   return (
     <Router>
       <Fragment>
+        <Header loggedIn={loggedIn} setLoggedIn={setLoggedIn} />
         <Route exact path="/products/:partnerId" component={Index} />
         <Route exact path="/partners" component={Partners} />
         <Route exact path="/" component={Partners} />

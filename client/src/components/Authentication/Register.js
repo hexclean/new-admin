@@ -4,37 +4,107 @@ import "../../css/SignUp.css";
 import Axios from "axios";
 import HeaderLoggedIn from "../Header/HeaderLoggedIn";
 import HeaderLoggedOut from "../Header/HeaderLoggedOut";
+import { useImmerReducer } from "use-immer";
+import { CSSTransition } from "react-transition-group";
 
 function Register() {
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
-  const [fullName, setFullName] = useState();
-  const [phoneNumber, setPhoneNumber] = useState();
-  const [loggedIn, setLoggedIn] = useState(
-    Boolean(localStorage.getItem("foodnetToken"))
-  );
+  const initialState = {
+    email: {
+      value: "",
+      hasErrors: false,
+      message: "",
+      isUnique: false,
+      checkCount: 0,
+    },
+    password: {
+      value: "",
+      hasErrors: false,
+      message: "",
+    },
+    fullName: {
+      value: "",
+      hasErrors: false,
+      message: "",
+      isUnique: false,
+      checkCount: 0,
+    },
+    phoneNumber: {
+      value: "",
+      hasErrors: false,
+      message: "",
+      isUnique: false,
+      phoneNumber: 0,
+    },
+    submitCoun: 0,
+  };
 
-  async function handleSubmit(e) {
-    e.preventDefault();
-    try {
-      await Axios.post("/api/register", {
-        email: email,
-        password: password,
-        fullName: fullName,
-        phoneNumber: phoneNumber,
-      });
-    } catch (error) {
-      console.log(error);
+  function ourReducer(draft, action) {
+    switch (action.type) {
+      case "emailImmediately":
+        draft.email.hasErrors = false;
+        draft.email.value = action.value;
+        if (draft.email.value.length > 30) {
+          draft.email.hasErrors = true;
+          draft.email.message = "Email long";
+        }
+        if (draft.email.value && !/^([a-zA-Z0-9]+)$/.test(draft.email.value)) {
+          draft.email.hasErrors = true;
+          draft.email.message = "Email can only contains letters and numbers";
+        }
+        return;
+      case "emailAfterDelay":
+        return;
+      case "emailUniqueResult":
+        return;
+
+      case "passwordImmediately":
+        draft.password.hasErrors = false;
+        draft.password.value = action.value;
+        return;
+      case "passwordAfterDelay":
+        return;
+
+      case "fullNameImmediately":
+        draft.fullName.hasErrors = false;
+        draft.fullName.value = action.value;
+        return;
+      case "fullNameAfterDelay":
+        return;
+      case "fullNameUniqueResult":
+        return;
+
+      case "phoneNumberImmediately":
+        draft.phoneNumber.hasErrors = false;
+        draft.phoneNumber.value = action.value;
+        return;
+      case "phoneNumberAfterDelay":
+        return;
+      case "phoneNumberUniqueResult":
+        return;
+
+      case "submitForm":
+        return;
     }
   }
 
+  async function handleSubmit(e) {
+    e.preventDefault();
+    // try {
+    //   await Axios.post("/api/register", {
+    //     email: email,
+    //     password: password,
+    //     fullName: fullName,
+    //     phoneNumber: phoneNumber,
+    //   });
+    // } catch (error) {
+    //   console.log(error);
+    // }
+  }
+
+  const [state, dispatch] = useImmerReducer(ourReducer, initialState);
+
   return (
     <div>
-      {loggedIn ? (
-        <HeaderLoggedIn setLoggedIn={setLoggedIn} />
-      ) : (
-        <HeaderLoggedOut setLoggedIn={setLoggedIn} />
-      )}
       <div className="main-container new-page">
         <div className="container">
           <div className="row">
@@ -53,11 +123,26 @@ function Register() {
                     <div className="col-md-8 ">
                       <div className="form-group ">
                         <input
-                          onChange={(e) => setEmail(e.target.value)}
+                          onChange={(e) =>
+                            dispatch({
+                              type: "emailImmediately",
+                              value: e.target.value,
+                            })
+                          }
                           type="text"
                           className="form-control"
                           id="email"
                         />
+                        <CSSTransition
+                          in={state.email.hasErrors}
+                          timeout={330}
+                          classNames="liveValidateMessage"
+                          unmountOnExit
+                        >
+                          <div className="alert alert-danger small liveValidateMessage">
+                            {state.email.message}
+                          </div>
+                        </CSSTransition>
                         <p className="short-desc">
                           Később az email címed segítségével tudsz belépni
                           hozzánk.
@@ -84,7 +169,12 @@ function Register() {
                     <div className="col-md-8">
                       <div className="form-group">
                         <input
-                          onChange={(e) => setPassword(e.target.value)}
+                          onChange={(e) =>
+                            dispatch({
+                              type: "passwordImmediately",
+                              value: e.target.value,
+                            })
+                          }
                           type="text"
                           className="form-control"
                           id="password"
@@ -116,7 +206,12 @@ function Register() {
                     <div className="col-md-8">
                       <div className="form-group">
                         <input
-                          onChange={(e) => setFullName(e.target.value)}
+                          onChange={(e) =>
+                            dispatch({
+                              type: "fullNameImmediately",
+                              value: e.target.value,
+                            })
+                          }
                           type="text"
                           className="form-control"
                           id="fullName"
@@ -141,7 +236,12 @@ function Register() {
                     <div className="col-md-8">
                       <div className="form-group">
                         <input
-                          onChange={(e) => setPhoneNumber(e.target.value)}
+                          onChange={(e) =>
+                            dispatch({
+                              type: "phoneNumberImmediately",
+                              value: e.target.value,
+                            })
+                          }
                           type="text"
                           className="form-control"
                           id="phoneNumber"
