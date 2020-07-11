@@ -111,8 +111,9 @@ router.post(
 
       if (user) {
         return res.json(true);
+      } else {
+        return res.json(false);
       }
-      return res.json(false);
     } catch (err) {
       console.error(err.message);
       res.status(500).send("Server error");
