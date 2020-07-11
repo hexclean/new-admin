@@ -10,7 +10,9 @@ function Register() {
   const [password, setPassword] = useState();
   const [fullName, setFullName] = useState();
   const [phoneNumber, setPhoneNumber] = useState();
-  const [loggedIn, setLoggedIn] = useState();
+  const [loggedIn, setLoggedIn] = useState(
+    Boolean(localStorage.getItem("foodnetToken"))
+  );
 
   async function handleSubmit(e) {
     e.preventDefault();
