@@ -2,7 +2,7 @@ import React, { Fragment, useState } from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 
 import Login from "../components/Login";
-import SignUp from "../components/Register";
+import Register from "../components/Authentication/Register";
 import Profile from "../components/UserProfile/Profile";
 import Index from "../components/PartnerPage/Index";
 import Partners from "../components/Partners";
@@ -17,7 +17,7 @@ function Routes() {
         <Route exact path="/partners" component={Partners} />
         <Route exact path="/" component={Partners} />
         <Route exact path="/login" component={Login} />
-        <Route exact path="/registration" component={SignUp} />
+        <Route exact path="/registration" component={Register} />
         <Route exact path="/my-profile" component={Profile} />
         <Route exact path="/my-adress" component={DeliveryAdress} />
         <Route exact path="/new-adress" component={NewDeliveryAdress} />
