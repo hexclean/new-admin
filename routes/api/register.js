@@ -75,4 +75,17 @@ router.post(
   }
 );
 
+router.post("/doesUsernameExist", async (req, res) => {
+  const { email } = req.body;
+  await User.findOne({
+    where: { email },
+  })
+    .then(function () {
+      res.json(true);
+    })
+    .catch(function (e) {
+      res.json(false);
+    });
+});
+
 module.exports = router;

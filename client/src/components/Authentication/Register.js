@@ -43,18 +43,24 @@ function Register() {
       case "emailImmediately":
         draft.email.hasErrors = false;
         draft.email.value = action.value;
-        if (draft.email.value.length > 30) {
-          draft.email.hasErrors = true;
-          draft.email.message = "Email long";
-        }
-        if (draft.email.value && !/^([a-zA-Z0-9]+)$/.test(draft.email.value)) {
-          draft.email.hasErrors = true;
-          draft.email.message = "Email can only contains letters and numbers";
-        }
         return;
       case "emailAfterDelay":
+        if (!/^\S+@\S+$/.test(draft.email.value)) {
+          draft.email.hasErrors = true;
+          draft.email.message = "You must provide a valid email address.";
+        }
+        if (!draft.email.hasErrors && !action.noRequest) {
+          draft.email.checkCount++;
+        }
         return;
-      case "emailUniqueResult":
+      case "emailUniqueResults":
+        if (action.value) {
+          draft.email.hasErrors = true;
+          draft.email.isUnique = false;
+          draft.email.message = "That email is already being used.";
+        } else {
+          draft.email.isUnique = true;
+        }
         return;
 
       case "passwordImmediately":
@@ -68,6 +74,7 @@ function Register() {
         draft.fullName.hasErrors = false;
         draft.fullName.value = action.value;
         return;
+
       case "fullNameAfterDelay":
         return;
       case "fullNameUniqueResult":
@@ -87,6 +94,38 @@ function Register() {
     }
   }
 
+  const [state, dispatch] = useImmerReducer(ourReducer, initialState);
+
+  useEffect(() => {
+    if (state.email.value) {
+      const delay = setTimeout(
+        () => dispatch({ type: "emailAfterDelay" }),
+        800
+      );
+      return () => clearTimeout(delay);
+    }
+  }, [state.email.value]);
+
+  useEffect(() => {
+    if (state.email.checkCount) {
+      const ourRequest = Axios.CancelToken.source();
+      async function fetchResults() {
+        try {
+          const response = await Axios.post(
+            "/api/register/doesUsernameExist",
+            { email: state.email.value },
+            { cancelToken: ourRequest.token }
+          );
+          dispatch({ type: "emailUniqueResults", value: response.data });
+        } catch (e) {
+          console.log("There was a problem or the request was cancelled.");
+        }
+      }
+      fetchResults();
+      return () => ourRequest.cancel();
+    }
+  }, [state.email.checkCount]);
+
   async function handleSubmit(e) {
     e.preventDefault();
     // try {
@@ -100,8 +139,6 @@ function Register() {
     //   console.log(error);
     // }
   }
-
-  const [state, dispatch] = useImmerReducer(ourReducer, initialState);
 
   return (
     <div>
@@ -123,6 +160,7 @@ function Register() {
                     <div className="col-md-8 ">
                       <div className="form-group ">
                         <input
+                          autoComplete="off"
                           onChange={(e) =>
                             dispatch({
                               type: "emailImmediately",
@@ -169,6 +207,7 @@ function Register() {
                     <div className="col-md-8">
                       <div className="form-group">
                         <input
+                          autoComplete="off"
                           onChange={(e) =>
                             dispatch({
                               type: "passwordImmediately",
@@ -206,6 +245,7 @@ function Register() {
                     <div className="col-md-8">
                       <div className="form-group">
                         <input
+                          autoComplete="off"
                           onChange={(e) =>
                             dispatch({
                               type: "fullNameImmediately",
@@ -236,6 +276,7 @@ function Register() {
                     <div className="col-md-8">
                       <div className="form-group">
                         <input
+                          autoComplete="off"
                           onChange={(e) =>
                             dispatch({
                               type: "phoneNumberImmediately",
