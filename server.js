@@ -37,7 +37,7 @@ const AdminOpeningHours = require("./models/AdminOpeningHours");
 const User = require("./models/User");
 const UserDeliveryAdress = require("./models/UserDeliveryAdress");
 //
-var cors = require("cors");
+const UserProfile = require("./models/UserProfile");
 
 const app = express();
 app.use((req, res, next) => {
@@ -149,10 +149,10 @@ app.use(
 // Define Routes
 // app.use("/users", require("./routes/users"));
 app.use("/api/login", require("./routes/api/login"));
-// app.use("/api/deliveryadress", require("./routes/api/delivery-adress"));
+app.use("/api/deliveryadress", require("./routes/api/delivery-adress"));
 // app.use("/api/products", require("./routes/api/products"));
 app.use("/api/register", require("./routes/api/register"));
-// app.use("/api/profile", require("./routes/api/profile"));
+app.use("/api/profile", require("./routes/api/profile"));
 // app.use("/api/order", require("./routes/api/order"));
 app.use("/api/products", require("./routes/api/products"));
 app.use("/api/restaurants", require("./routes/api/restaurants"));
@@ -363,25 +363,17 @@ AdminLocation.hasMany(AdminLocationTranslation, {
 
 Language.hasMany(AdminLocationTranslation, { foreignKey: "languageId" });
 
-// Admin.belongsTo(AdminLocation, {
-//   as: "theAdminInfo",
-//   foreignKey: "adminId",
-// });
-// AdminLocation.hasMany(Admin, { foreignKey: "adminId" });
-// AdminLocation.belongsTo(Admin, { constrains: true, onDelete: "CASCADE" });
-///
-
-Admin.belongsTo(AdminLocation, {
-  as: "adminLTrans",
-  foreignKey: "adminId",
-});
-
-AdminLocation.hasOne(Admin, { foreignKey: "locationId" });
-
 // Admin Hours
 AdminOpeningHours.belongsTo(Admin, { constrains: true, onDelete: "CASCADE" });
 
 Admin.hasMany(AdminOpeningHours, { foreignKey: "adminId" });
+
+AdminLocation.belongsTo(Admin, {
+  as: "adminLocation",
+  foreignKey: "adminId",
+});
+
+Admin.hasMany(AdminLocation, { foreignKey: "adminId" });
 
 // Admin.belongsTo(AdminLocationTranslation, {
 //   constrains: true,
@@ -397,6 +389,13 @@ Admin.hasMany(AdminOpeningHours, { foreignKey: "adminId" });
 //     isAuthenticated: req.session.isLoggedIn,
 //   });
 // });
+
+UserProfile.belongsTo(User, {
+  as: "userProfile",
+  foreignKey: "userId",
+});
+
+User.hasOne(UserProfile, { foreignKey: "userId" });
 
 UserDeliveryAdress.belongsTo(User, {
   as: "userDelAdress",

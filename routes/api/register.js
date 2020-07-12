@@ -7,7 +7,7 @@ const { check, validationResult } = require("express-validator");
 
 const User = require("../../models/User");
 
-// @route    POST api/users
+// @route    POST api/register
 // @desc     Register user
 // @access   Public
 router.post(
@@ -119,6 +119,12 @@ router.post(
       res.status(500).send("Server error");
     }
   }
+
+  //use case felahsznalo admin milyen lehetsoegei vannk
+  //tanulmany hogyan mukodnek  mik az elonyok hatranyok
+  //kategoria, kereses, motorhoz, villamossagi
+  //5 oldal 1-1 webshop letesztelni a funkcionalitasat
+  //full torles, vagy inaktiv torles
 );
 
 module.exports = router;

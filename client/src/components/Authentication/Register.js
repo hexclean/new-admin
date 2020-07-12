@@ -1,13 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import "../../css/SignUp.css";
 import Axios from "axios";
+import DispatchContext from "./DispatchContext";
 import HeaderLoggedIn from "../Header/HeaderLoggedIn";
 import HeaderLoggedOut from "../Header/HeaderLoggedOut";
 import { useImmerReducer } from "use-immer";
 import { CSSTransition } from "react-transition-group";
 
 function Register() {
+  const appDispatch = useContext(DispatchContext);
   const initialState = {
     email: {
       value: "",
@@ -35,7 +37,7 @@ function Register() {
       isUnique: false,
       phoneNumber: 0,
     },
-    submitCoun: 0,
+    submitCount: 0,
   };
 
   function ourReducer(draft, action) {
@@ -66,30 +68,100 @@ function Register() {
       case "passwordImmediately":
         draft.password.hasErrors = false;
         draft.password.value = action.value;
+        if (draft.password.value.length > 50) {
+          draft.password.hasErrors = true;
+          draft.password.message = "Password cannot exceed 50 characters.";
+        }
         return;
       case "passwordAfterDelay":
+        if (draft.password.value.length < 12) {
+          draft.password.hasErrors = true;
+          draft.password.message = "Password must be at least 12 characters.";
+        }
         return;
 
       case "fullNameImmediately":
         draft.fullName.hasErrors = false;
         draft.fullName.value = action.value;
+        if (draft.fullName.value.length > 30) {
+          draft.fullName.hasErrors = true;
+          draft.fullName.message = "fullName cannot exceed 30 characters.";
+        }
+        if (
+          draft.fullName.value &&
+          !/^([a-zA-Z0-9]+)$/.test(draft.fullName.value)
+        ) {
+          draft.fullName.hasErrors = true;
+          draft.fullName.message =
+            "fullName can only contain letters and numbers.";
+        }
         return;
 
       case "fullNameAfterDelay":
+        if (draft.fullName.value.length < 3) {
+          draft.fullName.hasErrors = true;
+          draft.fullName.message = "fullName must be at least 3 characters.";
+        }
+        if (!draft.hasErrors && !action.noRequest) {
+          draft.fullName.checkCount++;
+        }
         return;
       case "fullNameUniqueResult":
+        if (action.value) {
+          draft.fullName.hasErrors = true;
+          draft.fullName.isUnique = false;
+          draft.fullName.message = "That fullName is already taken.";
+        } else {
+          draft.fullName.isUnique = true;
+        }
         return;
 
       case "phoneNumberImmediately":
         draft.phoneNumber.hasErrors = false;
         draft.phoneNumber.value = action.value;
+        if (draft.phoneNumber.value.length > 30) {
+          draft.phoneNumber.hasErrors = true;
+          draft.phoneNumber.message =
+            "phoneNumber cannot exceed 30 characters.";
+        }
+        if (
+          draft.phoneNumber.value &&
+          !/^([a-zA-Z0-9]+)$/.test(draft.phoneNumber.value)
+        ) {
+          draft.phoneNumber.hasErrors = true;
+          draft.phoneNumber.message =
+            "phoneNumber can only contain letters and numbers.";
+        }
         return;
       case "phoneNumberAfterDelay":
+        if (draft.phoneNumber.value.length < 3) {
+          draft.phoneNumber.hasErrors = true;
+          draft.phoneNumber.message =
+            "phoneNumber must be at least 3 characters.";
+        }
+        if (!draft.hasErrors && !action.noRequest) {
+          draft.phoneNumber.checkCount++;
+        }
         return;
       case "phoneNumberUniqueResult":
+        if (action.value) {
+          draft.phoneNumber.hasErrors = true;
+          draft.phoneNumber.isUnique = false;
+          draft.phoneNumber.message = "That phoneNumber is already taken.";
+        } else {
+          draft.phoneNumber.isUnique = true;
+        }
         return;
 
       case "submitForm":
+        if (
+          !draft.email.hasErrors &&
+          !draft.fullName.hasErrors &&
+          !draft.phoneNumber.hasErrors &&
+          !draft.password.hasErrors
+        ) {
+          draft.submitCount++;
+        }
         return;
     }
   }
@@ -105,6 +177,36 @@ function Register() {
       return () => clearTimeout(delay);
     }
   }, [state.email.value]);
+
+  useEffect(() => {
+    if (state.phoneNumber.value) {
+      const delay = setTimeout(
+        () => dispatch({ type: "phoneNumberAfterDelay" }),
+        800
+      );
+      return () => clearTimeout(delay);
+    }
+  }, [state.phoneNumber.value]);
+
+  useEffect(() => {
+    if (state.password.value) {
+      const delay = setTimeout(
+        () => dispatch({ type: "passwordAfterDelay" }),
+        800
+      );
+      return () => clearTimeout(delay);
+    }
+  }, [state.password.value]);
+
+  useEffect(() => {
+    if (state.fullName.value) {
+      const delay = setTimeout(
+        () => dispatch({ type: "fullNameAfterDelay" }),
+        800
+      );
+      return () => clearTimeout(delay);
+    }
+  }, [state.fullName.value]);
 
   useEffect(() => {
     if (state.email.checkCount) {
@@ -126,18 +228,63 @@ function Register() {
     }
   }, [state.email.checkCount]);
 
+  useEffect(() => {
+    if (state.submitCount) {
+      const ourRequest = Axios.CancelToken.source();
+      async function fetchResults() {
+        try {
+          const response = await Axios.post(
+            "/api/register",
+            {
+              email: state.email.value,
+              fullName: state.fullName.value,
+              password: state.password.value,
+              phoneNumber: state.phoneNumber.value,
+            },
+            { cancelToken: ourRequest.token }
+          );
+          appDispatch({ type: "login", data: response.data });
+        } catch (e) {
+          console.log("There was a problem or the request was cancelled.");
+        }
+      }
+      fetchResults();
+      return () => ourRequest.cancel();
+    }
+  }, [state.submitCount]);
+
   async function handleSubmit(e) {
     e.preventDefault();
-    // try {
-    //   await Axios.post("/api/register", {
-    //     email: email,
-    //     password: password,
-    //     fullName: fullName,
-    //     phoneNumber: phoneNumber,
-    //   });
-    // } catch (error) {
-    //   console.log(error);
-    // }
+    dispatch({ type: "fullNameImmediately", value: state.fullName.value });
+    dispatch({
+      type: "fullNameAfterDelay",
+      value: state.fullName.value,
+      noRequest: true,
+    });
+
+    dispatch({ type: "emailImmediately", value: state.email.value });
+    dispatch({
+      type: "emailAfterDelay",
+      value: state.email.value,
+      noRequest: true,
+    });
+
+    dispatch({
+      type: "phoneNumberImmediately",
+      value: state.phoneNumber.value,
+    });
+    dispatch({
+      type: "phoneNumberAfterDelay",
+      value: state.phoneNumber.value,
+      noRequest: true,
+    });
+
+    dispatch({ type: "passwordImmediately", value: state.password.value });
+    dispatch({
+      type: "passwordAfterDelay",
+      value: state.password.value,
+    });
+    dispatch({ type: "submitForm" });
   }
 
   return (
@@ -218,6 +365,16 @@ function Register() {
                           className="form-control"
                           id="password"
                         />
+                        <CSSTransition
+                          in={state.password.hasErrors}
+                          timeout={330}
+                          classNames="liveValidateMessage"
+                          unmountOnExit
+                        >
+                          <div className="alert alert-danger small liveValidateMessage">
+                            {state.password.message}
+                          </div>
+                        </CSSTransition>
                         <p className="short-desc">
                           A jelszavadnak legalább 5 karakter hosszúnak kell
                           lennie. A fiókod biztonsága érdekében kerüld az
@@ -256,6 +413,16 @@ function Register() {
                           className="form-control"
                           id="fullName"
                         />
+                        <CSSTransition
+                          in={state.fullName.hasErrors}
+                          timeout={330}
+                          classNames="liveValidateMessage"
+                          unmountOnExit
+                        >
+                          <div className="alert alert-danger small liveValidateMessage">
+                            {state.fullName.message}
+                          </div>
+                        </CSSTransition>
                         <p className="short-desc">
                           A teljes nevedet érdemes megadni, hogy így könnyebben
                           elérjünk, és a kiszállításkor is gond nélkül
@@ -287,6 +454,16 @@ function Register() {
                           className="form-control"
                           id="phoneNumber"
                         />
+                        <CSSTransition
+                          in={state.phoneNumber.hasErrors}
+                          timeout={330}
+                          classNames="liveValidateMessage"
+                          unmountOnExit
+                        >
+                          <div className="alert alert-danger small liveValidateMessage">
+                            {state.phoneNumber.message}
+                          </div>
+                        </CSSTransition>
                         <p className="short-desc">
                           Mobiltelefonszámot érdemes megadnod, így közvetlenül
                           téged tudunk keresni. A telefonszám helyes formátuma:

@@ -4,12 +4,10 @@ const bcrypt = require("bcryptjs");
 const auth = require("../../middleware/auth");
 const jwt = require("jsonwebtoken");
 const config = require("config");
-var cors = require("cors");
 const { check, validationResult } = require("express-validator");
-
 const User = require("../../models/User");
 
-// @route    GET api/auth
+// @route    GET api/login
 // @desc     Get user by token
 // @access   Private
 router.get("/", auth, async (req, res) => {
@@ -22,7 +20,7 @@ router.get("/", auth, async (req, res) => {
   }
 });
 
-// @route    POST api/auth
+// @route    POST api/login
 // @desc     Authenticate user & get token
 // @access   Public
 router.post(
@@ -53,7 +51,7 @@ router.post(
       if (!isMatch) {
         return res
           .status(400)
-          .json({ errors: [{ msg: "Invalid Credentials" }] });
+          .json({ errors: [{ msg: "Invalid Credentials..." }] });
       }
 
       const payload = {
@@ -65,7 +63,7 @@ router.post(
       jwt.sign(
         payload,
         config.get("jwtSecret"),
-        { expiresIn: "5 days" },
+        { expiresIn: "60 days" },
         (err, token) => {
           if (err) throw err;
           res.json({ token });

@@ -1,6 +1,6 @@
 import React, { Fragment, useState } from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
-
+import Home from "../components/Authentication/Home";
 import Login from "../components/Login";
 import Register from "../components/Authentication/Register";
 import Profile from "../components/UserProfile/Profile";
@@ -21,7 +21,9 @@ function Routes() {
         <Header loggedIn={loggedIn} setLoggedIn={setLoggedIn} />
         <Route exact path="/products/:partnerId" component={Index} />
         <Route exact path="/partners" component={Partners} />
-        <Route exact path="/" component={Partners} />
+        <Route exact path="/">
+          {loggedIn ? <Home /> : <Profile />}
+        </Route>
         <Route exact path="/login" component={Login} />
         <Route exact path="/registration" component={Register} />
         <Route exact path="/my-profile" component={Profile} />

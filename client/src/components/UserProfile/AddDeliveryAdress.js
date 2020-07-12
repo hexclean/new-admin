@@ -1,10 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "../../css/UserProfile/AddDeliveryAdress.css";
-import axios from "axios";
+import Axios from "axios";
 import Menu from "../Shared/Menu";
 
 const AddDeliveryAdress = () => {
+  async function handleSubmit(e) {
+    e.preventDefault();
+    try {
+      await Axios.post("/api/", {
+        title: "sadsada",
+        token: localStorage.getItem("foodnetToken"),
+      });
+      console.log("ok");
+    } catch (error) {
+      console.log(error);
+    }
+  }
   return (
     <div>
       <div className="main-content new-address">
@@ -13,13 +25,13 @@ const AddDeliveryAdress = () => {
             <Menu />
             <div className="col-12 col-lg-8">
               <div className="white-box">
-                <form action="">
+                <form onSubmit={handleSubmit}>
                   <h2 className="text-center">NEW ADDRESS</h2>
 
                   <div className="row">
                     <div className="col-md-6">
                       <div className="form-group">
-                        <label for="title">
+                        <label htmlFor="title">
                           Title name <span>*</span>:
                         </label>
                         <input
@@ -32,7 +44,7 @@ const AddDeliveryAdress = () => {
 
                     <div className="col-md-6">
                       <div className="form-group">
-                        <label for="settlement">
+                        <label htmlFor="settlement">
                           settlement <span>*</span>:
                         </label>
                         <select className="form-control" id="settlement">
@@ -48,7 +60,7 @@ const AddDeliveryAdress = () => {
                   <div className="row">
                     <div className="col-md-12">
                       <div className="form-group">
-                        <label for="street">
+                        <label htmlFor="street">
                           Street, public area <span>*</span>:
                         </label>
                         <input
@@ -62,12 +74,12 @@ const AddDeliveryAdress = () => {
                   <div className="row">
                     <div className="col-md-12">
                       <div className="form-group">
-                        <label for="street">
+                        <label htmlFor="street">
                           Title details <span>*</span>:
                         </label>
                         <div className="row">
                           <div className="col-md-4">
-                            <label for="house-number">
+                            <label htmlFor="house-number">
                               House number <span>*</span>:
                             </label>
                             <input
@@ -77,7 +89,7 @@ const AddDeliveryAdress = () => {
                             />
                           </div>
                           <div className="col-md-4">
-                            <label for="floor">
+                            <label htmlFor="floor">
                               {" "}
                               Floor <span>*</span>:
                             </label>
@@ -89,7 +101,7 @@ const AddDeliveryAdress = () => {
                           </div>
 
                           <div className="col-md-4">
-                            <label for="door">
+                            <label htmlFor="door">
                               {" "}
                               Door <span>*</span>:
                             </label>
@@ -107,7 +119,7 @@ const AddDeliveryAdress = () => {
                   <div className="row">
                     <div className="col-md-12">
                       <div className="form-group">
-                        <label for="door-bell">
+                        <label htmlFor="door-bell">
                           door bell <span>*</span>:
                         </label>
                         <input
