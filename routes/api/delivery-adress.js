@@ -45,16 +45,43 @@ router.get("/", auth, async (req, res) => {
 });
 
 // @route    GET api/delivery adress
-// @desc     Delete delivery adress
+// @desc     Get delivery adress
 // @access   Private
 router.get("/", auth, async (req, res) => {
   try {
-    const deliveryAdress = await UserDeliveryAdress.findByPk(req.param.id);
+    const deliveryAdress = await UserDeliveryAdress.findByPk(req.params.id);
 
     if (!deliveryAdress) {
       return res.status(404).json({ msg: "Delivery Adress not found" });
     }
     res.json(deliveryAdress);
+  } catch (err) {
+    console.log(err.message);
+    if (err.kind === "ObjecId") {
+      return res.status(404).json({ msg: "Delivery Adress not found" });
+    }
+    res.status(500).send("server error");
+  }
+});
+
+// @route    DELETE api/delivery adress
+// @desc     Delete delivery adress
+// @access   Private
+router.delete("/:id", auth, async (req, res) => {
+  try {
+    const deliveryAdress = await UserDeliveryAdress.findByPk(req.params.id);
+
+    if (!deliveryAdress) {
+      return res.status(404).json({ msg: "Delivey Adress not found" });
+    }
+
+    if (deliveryAdress.userId !== req.user.id) {
+      return res.status(401).json({ msg: "User not authorized" });
+    }
+
+    await deliveryAdress.destroy();
+
+    res.json({ msg: "Delivey Adress removed" });
   } catch (err) {
     console.log(err.message);
     if (err.kind === "ObjecId") {
