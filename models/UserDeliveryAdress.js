@@ -10,6 +10,28 @@ const UserDeliveryAdress = sequelize.define("userDeliveryAdress", {
   },
   name: {
     type: Sequelize.STRING,
+    allowNull: false,
+  },
+  city: {
+    type: Sequelize.STRING,
+    allowNull: false,
+  },
+  street: {
+    type: Sequelize.STRING,
+    allowNull: false,
+  },
+  houseNumber: {
+    type: Sequelize.STRING,
+    allowNull: false,
+  },
+  floor: {
+    type: Sequelize.STRING,
+  },
+  doorNumber: {
+    type: Sequelize.STRING,
+  },
+  doorBell: {
+    type: Sequelize.STRING,
   },
 });
 

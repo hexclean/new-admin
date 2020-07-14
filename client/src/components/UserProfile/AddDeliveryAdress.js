@@ -1,18 +1,36 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "../../css/UserProfile/AddDeliveryAdress.css";
-import Axios from "axios";
+import { withRouter } from "react-router-dom";
 import Menu from "../Shared/Menu";
 import api from "../utils/api";
-const AddDeliveryAdress = () => {
+
+const AddDeliveryAdress = (props) => {
+  const [name, setName] = useState();
+  const [city, setCity] = useState();
+  const [street, setStreet] = useState();
+  const [houseNumber, setHouseNuber] = useState();
+  const [floor, setFloor] = useState();
+  const [doorNumber, setDoorNumber] = useState();
+  const [doorBell, setDoorBell] = useState();
+
   async function handleSubmit(e) {
     e.preventDefault();
-    console.log("token", localStorage.getItem("token"));
+
     try {
       await api.post("/deliveryadress", {
-        name: "sadsada",
+        name: name,
+        city: city,
+        street: street,
+        houseNumber: houseNumber,
+        floor: floor,
+        doorBell: doorBell,
+        doorNumber: doorNumber,
         token: localStorage.getItem("token"),
       });
+      // Redirect to another page
+      props.history.push("/partners");
+      props.addFlashessage("Sikeres letrehozas");
     } catch (error) {
       console.log(error);
     }
@@ -32,9 +50,10 @@ const AddDeliveryAdress = () => {
                     <div className="col-md-6">
                       <div className="form-group">
                         <label htmlFor="title">
-                          Title name <span>*</span>:
+                          Cím neve <span>*</span>:
                         </label>
                         <input
+                          onChange={(e) => setName(e.target.value)}
                           type="text"
                           className="form-control"
                           id="email"
@@ -47,9 +66,10 @@ const AddDeliveryAdress = () => {
                     <div className="col-md-12">
                       <div className="form-group">
                         <label htmlFor="street">
-                          Street, public area <span>*</span>:
+                          Település <span>*</span>:
                         </label>
                         <input
+                          onChange={(e) => setCity(e.target.value)}
                           type="text"
                           className="form-control"
                           id="street"
@@ -61,14 +81,30 @@ const AddDeliveryAdress = () => {
                     <div className="col-md-12">
                       <div className="form-group">
                         <label htmlFor="street">
-                          Title details <span>*</span>:
+                          Utca, közterület <span>*</span>:
+                        </label>
+                        <input
+                          onChange={(e) => setStreet(e.target.value)}
+                          type="text"
+                          className="form-control"
+                          id="street"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="col-md-12">
+                      <div className="form-group">
+                        <label htmlFor="street">
+                          Cím részletek <span>*</span>:
                         </label>
                         <div className="row">
                           <div className="col-md-4">
                             <label htmlFor="house-number">
-                              House number <span>*</span>:
+                              Házszám <span>*</span>:
                             </label>
                             <input
+                              onChange={(e) => setHouseNuber(e.target.value)}
                               type="text"
                               className="form-control"
                               id="house-number"
@@ -77,9 +113,10 @@ const AddDeliveryAdress = () => {
                           <div className="col-md-4">
                             <label htmlFor="floor">
                               {" "}
-                              Floor <span>*</span>:
+                              Emelet <span>*</span>:
                             </label>
                             <input
+                              onChange={(e) => setFloor(e.target.value)}
                               type="text"
                               className="form-control"
                               id="floor"
@@ -89,9 +126,10 @@ const AddDeliveryAdress = () => {
                           <div className="col-md-4">
                             <label htmlFor="door">
                               {" "}
-                              Door <span>*</span>:
+                              Ajtó <span>*</span>:
                             </label>
                             <input
+                              onChange={(e) => setDoorNumber(e.target.value)}
                               type="text"
                               className="form-control"
                               id="door"
@@ -106,9 +144,10 @@ const AddDeliveryAdress = () => {
                     <div className="col-md-12">
                       <div className="form-group">
                         <label htmlFor="door-bell">
-                          door bell <span>*</span>:
+                          Kapucsengő <span>*</span>:
                         </label>
                         <input
+                          onChange={(e) => setDoorBell(e.target.value)}
                           type="text"
                           className="form-control"
                           id="door-bell"
@@ -136,4 +175,4 @@ const AddDeliveryAdress = () => {
   );
 };
 
-export default AddDeliveryAdress;
+export default withRouter(AddDeliveryAdress);

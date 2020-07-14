@@ -9,14 +9,20 @@ const User = require("../../models/User");
 // @desc     Create delivery adress
 // @access   Private
 router.post("/", auth, async (req, res) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
-  }
-  console.log("re.user", req.user);
+  // const errors = validationResult(req);
+  // if (!errors.isEmpty()) {
+  //   return res.status(400).json({ errors: errors.array() });
+  // }
+  console.log("req.body", req.body);
   try {
     const newDeliveryAdress = new UserDeliveryAdress({
       name: req.body.name,
+      city: req.body.city,
+      street: req.body.street,
+      houseNumber: req.body.houseNumber,
+      floor: req.body.floor,
+      doorBell: req.body.doorBell,
+      doorNumber: req.body.doorNumber,
       userId: req.user.id,
     });
     const deliveryAdress = await newDeliveryAdress.save();
