@@ -3,16 +3,16 @@ import { Link } from "react-router-dom";
 import "../../css/UserProfile/AddDeliveryAdress.css";
 import Axios from "axios";
 import Menu from "../Shared/Menu";
-
+import api from "../utils/api";
 const AddDeliveryAdress = () => {
   async function handleSubmit(e) {
     e.preventDefault();
+    console.log("token", localStorage.getItem("token"));
     try {
-      await Axios.post("/api/", {
-        title: "sadsada",
-        token: localStorage.getItem("foodnetToken"),
+      await api.post("/deliveryadress", {
+        name: "sadsada",
+        token: localStorage.getItem("token"),
       });
-      console.log("ok");
     } catch (error) {
       console.log(error);
     }
@@ -39,20 +39,6 @@ const AddDeliveryAdress = () => {
                           className="form-control"
                           id="email"
                         />
-                      </div>
-                    </div>
-
-                    <div className="col-md-6">
-                      <div className="form-group">
-                        <label htmlFor="settlement">
-                          settlement <span>*</span>:
-                        </label>
-                        <select className="form-control" id="settlement">
-                          <option>Budapest - I. (1010)</option>
-                          <option>Budapest - I. (1010)</option>
-                          <option>Budapest - I. (1010)</option>
-                          <option>Budapest - I. (1010)</option>
-                        </select>
                       </div>
                     </div>
                   </div>

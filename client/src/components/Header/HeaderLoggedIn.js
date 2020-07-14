@@ -3,7 +3,7 @@ import React from "react";
 function HeaderLoggedIn(props) {
   function handleLogout() {
     props.setLoggedIn(false);
-    localStorage.removeItem("foodnetToken");
+    localStorage.removeItem("token");
   }
 
   return (

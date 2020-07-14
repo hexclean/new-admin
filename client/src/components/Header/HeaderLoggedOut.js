@@ -13,7 +13,7 @@ function HeaderLoggedOut(props) {
         password: password,
       });
       if (response.data) {
-        localStorage.setItem("foodnetToken", response.data.token);
+        localStorage.setItem("token", response.data.token);
         props.setLoggedIn(true);
       } else {
         console.log("Incorect");

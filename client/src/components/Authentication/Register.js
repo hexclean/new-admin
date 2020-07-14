@@ -1,12 +1,13 @@
 import React, { useEffect, useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import "../../css/SignUp.css";
-import Axios from "axios";
 import DispatchContext from "./DispatchContext";
 import HeaderLoggedIn from "../Header/HeaderLoggedIn";
 import HeaderLoggedOut from "../Header/HeaderLoggedOut";
 import { useImmerReducer } from "use-immer";
 import { CSSTransition } from "react-transition-group";
+import api from "../utils/api";
+import Axios from "axios";
 
 function Register() {
   const appDispatch = useContext(DispatchContext);
@@ -213,8 +214,8 @@ function Register() {
       const ourRequest = Axios.CancelToken.source();
       async function fetchResults() {
         try {
-          const response = await Axios.post(
-            "/api/register/doesUsernameExist",
+          const response = await api.post(
+            "/register/doesUsernameExist",
             { email: state.email.value },
             { cancelToken: ourRequest.token }
           );
@@ -233,8 +234,8 @@ function Register() {
       const ourRequest = Axios.CancelToken.source();
       async function fetchResults() {
         try {
-          const response = await Axios.post(
-            "/api/register",
+          const response = await api.post(
+            "/register",
             {
               email: state.email.value,
               fullName: state.fullName.value,

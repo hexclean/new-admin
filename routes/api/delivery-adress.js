@@ -13,14 +13,14 @@ router.post("/", auth, async (req, res) => {
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
   }
-
-  const { name } = req.body;
+  console.log("re.user", req.user);
   try {
     const newDeliveryAdress = new UserDeliveryAdress({
       name: req.body.name,
       userId: req.user.id,
     });
     const deliveryAdress = await newDeliveryAdress.save();
+
     res.json(deliveryAdress);
   } catch (err) {
     console.log(err.message);

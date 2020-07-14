@@ -1,7 +1,6 @@
 import React, { Fragment, useState } from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import Home from "../components/Authentication/Home";
-import Login from "../components/Login";
 import Register from "../components/Authentication/Register";
 import Profile from "../components/UserProfile/Profile";
 import Index from "../components/PartnerPage/Index";
@@ -12,7 +11,7 @@ import Header from "../components/Header/Header";
 
 function Routes() {
   const [loggedIn, setLoggedIn] = useState(
-    Boolean(localStorage.getItem("foodnetToken"))
+    Boolean(localStorage.getItem("token"))
   );
 
   return (
@@ -24,7 +23,6 @@ function Routes() {
         <Route exact path="/">
           {loggedIn ? <Home /> : <Profile />}
         </Route>
-        <Route exact path="/login" component={Login} />
         <Route exact path="/registration" component={Register} />
         <Route exact path="/my-profile" component={Profile} />
         <Route exact path="/my-adress" component={DeliveryAdress} />
