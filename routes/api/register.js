@@ -18,8 +18,6 @@ router.post(
       "password",
       "Please enter a password with 6 or more characters"
     ).isLength({ min: 6 }),
-    check("fullName", "This name is already exist").exists(),
-    check("phoneNumber", "This phoneNumber is already exist").exists(),
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -30,9 +28,7 @@ router.post(
     const { email, password, fullName, phoneNumber } = req.body;
 
     try {
-      let user = await User.findOne({
-        where: { email },
-      });
+      let user = await User.findOne({ where: { email } });
 
       if (user) {
         return res

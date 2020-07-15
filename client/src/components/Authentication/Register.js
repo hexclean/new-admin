@@ -1,16 +1,13 @@
 import React, { useEffect, useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import "../../css/SignUp.css";
-import DispatchContext from "./DispatchContext";
-import HeaderLoggedIn from "../Header/HeaderLoggedIn";
-import HeaderLoggedOut from "../Header/HeaderLoggedOut";
+
 import { useImmerReducer } from "use-immer";
 import { CSSTransition } from "react-transition-group";
 import api from "../utils/api";
 import Axios from "axios";
 
 function Register() {
-  const appDispatch = useContext(DispatchContext);
   const initialState = {
     email: {
       value: "",
@@ -244,8 +241,9 @@ function Register() {
             },
             { cancelToken: ourRequest.token }
           );
-          appDispatch({ type: "login", data: response.data });
+          // appDispatch({ type: "login", data: response.data });
         } catch (e) {
+          console.log(e);
           console.log("There was a problem or the request was cancelled.");
         }
       }

@@ -9,11 +9,10 @@ const User = require("../../models/User");
 // @desc     Create delivery adress
 // @access   Private
 router.post("/", auth, async (req, res) => {
-  // const errors = validationResult(req);
-  // if (!errors.isEmpty()) {
-  //   return res.status(400).json({ errors: errors.array() });
-  // }
-  console.log("req.body", req.body);
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
   try {
     const newDeliveryAdress = new UserDeliveryAdress({
       name: req.body.name,
@@ -51,7 +50,7 @@ router.get("/", auth, async (req, res) => {
 });
 
 // @route    GET api/delivery adress
-// @desc     Get delivery adress
+// @desc     Get delivery adress by user
 // @access   Private
 router.get("/", auth, async (req, res) => {
   try {

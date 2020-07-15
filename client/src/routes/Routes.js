@@ -6,10 +6,12 @@ import Profile from "../components/UserProfile/Profile";
 import Index from "../components/PartnerPage/Index";
 import Partners from "../components/Partners";
 import DeliveryAdress from "../components/UserProfile/DeliveryAdressList";
+
 import NewDeliveryAdress from "../components/UserProfile/AddDeliveryAdress";
 import Header from "../components/Header/Header";
 import ViewSingleDeliveryAdress from "../components/UserProfile/ViewSingleDeliveryAdress";
 import FlashMessages from "../components/Shared/FlashMessages";
+
 function Routes() {
   const [loggedIn, setLoggedIn] = useState(
     Boolean(localStorage.getItem("token"))
@@ -33,6 +35,9 @@ function Routes() {
         </Route>
         <Route exact path="/delivery-adress/:id">
           <ViewSingleDeliveryAdress />
+        </Route>
+        <Route exact path="/delivery-adress/:id/edit">
+          <Partners />
         </Route>
         <Route exact path="/registration" component={Register} />
         <Route exact path="/my-profile" component={Profile} />

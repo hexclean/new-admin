@@ -1,77 +1,85 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useReducer } from "react";
 import { Link } from "react-router-dom";
 import "../../css/UserProfile/DeliveryAdressList.css";
-import axios from "axios";
+import api from "../utils/api";
 import Menu from "../Shared/Menu";
+import HamburgerLoading from "../Shared/HamburgerLoading";
+function DeliveryAdressList() {
+  const [addresses, setAddresses] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-const DeliveryAdressList = () => {
+  useEffect(() => {
+    setAddresses([]);
+    api
+      .get("/deliveryadress")
+      .then((response) => {
+        setIsLoading(false);
+        console.log("response", response);
+        if (response.data) {
+          setAddresses(response.data);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
+  const getAddresses = () => {
+    const addressesList = [];
+    addresses.map((adress) =>
+      addressesList.push(
+        <div key={adress.id} className="col-6">
+          <div className="contact-box text-center">
+            <Link to="/" className="radius-50 custom-address">
+              <i className="fa fa-home" aria-hidden="true"></i>
+            </Link>
+            <h4>{adress.name}</h4>
+            <p>
+              {adress.city} - {adress.street}
+            </p>
+            <p>
+              <Link to={`/delivery-adress/${adress.id}/edit`}>Edit</Link>
+              <Link onClick={deleteHandler} to="/">
+                Delete
+              </Link>
+            </p>
+          </div>
+        </div>
+      )
+    );
+    return addressesList;
+  };
+
+  function deleteHandler() {
+    const areYouSure = window.confirm(
+      "Do you really want to delete this post?"
+    );
+    if (areYouSure) {
+      try {
+        //  const response = api.delete(`/deliveryadress/${id}`, {data: {token: useRe}})
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }
+  if (isLoading) return <HamburgerLoading />;
   return (
     <div>
-      <div class="main-content cimet-page">
-        <div class="container">
-          <div class="row">
+      <div className="main-content cimet-page">
+        <div className="container">
+          <div className="row">
             <Menu />
-            <div class="col-md-8">
-              <div class="white-box">
+            <div className="col-md-8">
+              <div className="white-box">
                 <form action="">
-                  <h2 class="text-center">Title Goes Here</h2>
+                  <h2 className="text-center">Title Goes Here</h2>
 
-                  <div class="row">
-                    <div class="col-6">
-                      <div class="contact-box text-center">
-                        <a href="#" class="radius-50 custom-address">
-                          <i class="fa fa-home" aria-hidden="true"></i>
-                        </a>
-                        <h4>This is Title</h4>
-                        <p>Lorem Ipsum is simply dummy text of the printing.</p>
-                        <p>
-                          <a href="#">Link 1</a> <a href="#">Link 2</a>
-                        </p>
-                      </div>
-                    </div>
-
-                    <div class="col-6">
-                      <div class="contact-box text-center">
-                        <a href="#" class="radius-50 custom-address">
-                          <i class="fa fa-home" aria-hidden="true"></i>
-                        </a>
-                        <h4>This is Title</h4>
-                        <p>Lorem Ipsum is simply dummy text of the printing.</p>
-                        <p>
-                          <a href="#">Link 1</a> <a href="#">Link 2</a>
-                        </p>
-                      </div>
-                    </div>
-                    <div class="col-6">
-                      <div class="contact-box text-center">
-                        <a href="#" class="radius-50 custom-address">
-                          <i class="fa fa-home" aria-hidden="true"></i>
-                        </a>
-                        <h4>This is Title</h4>
-                        <p>Lorem Ipsum is simply dummy text of the printing.</p>
-                        <p>
-                          <a href="#">Link 1</a> <a href="#">Link 2</a>
-                        </p>
-                      </div>
-                    </div>
-                    <div class="col-6">
-                      <div class="contact-box text-center">
-                        <a href="#" class="radius-50 custom-address">
-                          <i class="fa fa-home" aria-hidden="true"></i>
-                        </a>
-                        <h4>This is Title</h4>
-                        <p>Lorem Ipsum is simply dummy text of the printing.</p>
-                        <p>
-                          <a href="#">Link 1</a> <a href="#">Link 2</a>
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-md-12">
-                      <div class="form-group text-center">
+                  <div className="row">{getAddresses()}</div>
+                  <div className="row">
+                    <div className="col-md-12">
+                      <div className="form-group text-center">
                         <Link to={"/new-adress"}>
-                          <button type="submit" class="btn-green">
+                          <button type="submit" className="btn-green">
                             This is a button
                           </button>
                         </Link>
@@ -86,6 +94,6 @@ const DeliveryAdressList = () => {
       </div>
     </div>
   );
-};
+}
 
 export default DeliveryAdressList;

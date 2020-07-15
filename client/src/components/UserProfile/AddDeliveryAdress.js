@@ -29,8 +29,8 @@ const AddDeliveryAdress = (props) => {
         token: localStorage.getItem("token"),
       });
       // Redirect to another page
-      props.history.push("/partners");
-      props.addFlashessage("Sikeres letrehozas");
+      props.addFlashMessage("Sikeres letrehozas");
+      props.history.push("/my-adress");
     } catch (error) {
       console.log(error);
     }
