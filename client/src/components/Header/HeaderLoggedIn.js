@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
+import DispatchContext from "../../DispatchContext";
 
 function HeaderLoggedIn(props) {
+  const appDispatch = useContext(DispatchContext);
+
   function handleLogout() {
-    props.setLoggedIn(false);
+    appDispatch({ type: "logout" });
     localStorage.removeItem("token");
   }
 

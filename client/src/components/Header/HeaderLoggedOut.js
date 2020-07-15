@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import Axios from "axios";
+import DispatchContext from "../../DispatchContext";
 
 function HeaderLoggedOut(props) {
+  const appDispatch = useContext(DispatchContext);
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
 
@@ -14,7 +16,7 @@ function HeaderLoggedOut(props) {
       });
       if (response.data) {
         localStorage.setItem("token", response.data.token);
-        props.setLoggedIn(true);
+        appDispatch({ type: "login" });
       } else {
         console.log("Incorect");
       }

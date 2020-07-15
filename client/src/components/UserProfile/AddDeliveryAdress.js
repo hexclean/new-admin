@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import "../../css/UserProfile/AddDeliveryAdress.css";
 import { withRouter } from "react-router-dom";
 import Menu from "../Shared/Menu";
 import api from "../utils/api";
+import DispatchContext from "../../DispatchContext";
 
 const AddDeliveryAdress = (props) => {
   const [name, setName] = useState();
@@ -13,6 +14,7 @@ const AddDeliveryAdress = (props) => {
   const [floor, setFloor] = useState();
   const [doorNumber, setDoorNumber] = useState();
   const [doorBell, setDoorBell] = useState();
+  const appDispatch = useContext(DispatchContext);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -28,8 +30,9 @@ const AddDeliveryAdress = (props) => {
         doorNumber: doorNumber,
         token: localStorage.getItem("token"),
       });
+
+      appDispatch({ type: "flashMessage", value: "Sikeresen letrejott" });
       // Redirect to another page
-      props.addFlashMessage("Sikeres letrehozas");
       props.history.push("/my-adress");
     } catch (error) {
       console.log(error);

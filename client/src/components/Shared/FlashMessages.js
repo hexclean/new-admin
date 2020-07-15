@@ -1,10 +1,16 @@
 import React from "react";
-
+import "../../css/Loading/FlashMessage.css";
 function FlashMessages(props) {
   return (
-    <div className="alert alert-success" role="alert">
+    <div role="alert">
       {props.messages.map((msg, index) => {
-        return <div key={index}>{msg}</div>;
+        return (
+          <div key={index}>
+            <div className="popup">
+              <h2>{msg}</h2>
+            </div>
+          </div>
+        );
       })}
     </div>
   );
