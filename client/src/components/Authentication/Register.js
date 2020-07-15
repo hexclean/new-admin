@@ -1,13 +1,14 @@
 import React, { useEffect, useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import "../../css/SignUp.css";
-
+import DisapatchContext from "../../DispatchContext";
 import { useImmerReducer } from "use-immer";
 import { CSSTransition } from "react-transition-group";
 import api from "../utils/api";
 import Axios from "axios";
 
-function Register() {
+function Register(props) {
+  const appDispatch = useContext(DisapatchContext);
   const initialState = {
     email: {
       value: "",
@@ -72,9 +73,9 @@ function Register() {
         }
         return;
       case "passwordAfterDelay":
-        if (draft.password.value.length < 12) {
+        if (draft.password.value.length < 7) {
           draft.password.hasErrors = true;
-          draft.password.message = "Password must be at least 12 characters.";
+          draft.password.message = "Password must be at least 7 characters.";
         }
         return;
 
@@ -241,7 +242,14 @@ function Register() {
             },
             { cancelToken: ourRequest.token }
           );
-          // appDispatch({ type: "login", data: response.data });
+
+          appDispatch({ type: "login", data: response.data });
+          appDispatch({
+            type: "flashMessage",
+            value: "Siekresen beregisztraltal",
+          });
+          // Redirect to another page
+          props.history.push("/my-adress");
         } catch (e) {
           console.log(e);
           console.log("There was a problem or the request was cancelled.");
