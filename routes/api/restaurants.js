@@ -4,7 +4,8 @@ const config = require("config");
 const router = express.Router();
 const Admin = require("../../models/Admin");
 const AdminInfo = require("../../models/AdminInfo");
-
+const Locations = require("../../models/AdminLocation");
+const Sequelize = require("sequelize");
 // @route    GET api/restaurants
 // @desc     Get all restaurants
 // @access   Public
@@ -14,7 +15,11 @@ router.get("/", async (req, res) => {
       include: [
         {
           model: AdminInfo,
+          model: Locations,
         },
+        // {
+        //   model: Locations,
+        // },
       ],
     });
     console.log(restaurants);
@@ -27,27 +32,18 @@ router.get("/", async (req, res) => {
 
 //get /restaurants/:id
 router.get("/restautants/:id", async (req, res) => {
-  try {
-    const restautants = await Admin.findAll({
-      where: { locationId: req.params.id },
+  const sequelize = new Sequelize("foodnet", "root", "y7b5uwFOODNET", {
+    host: "localhost",
+    dialect: "mysql",
+  });
+  sequelize
+    .query("Select * from foodnet.admins", {
+      type: Sequelize.QueryTypes.SELECT,
+    })
+    .then((results) => {
+      res.json(results);
+      console.log(results);
     });
-
-    res.json(restautants);
-  } catch (err) {
-    console.error(err.message);
-
-    res.status(500).send("Server Error");
-  }
-});
-
-router.get("/products", async (req, res) => {
-  try {
-    const product = await Product.find();
-    res.json(product);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send("Server Error");
-  }
 });
 // @route    GET api/profile/user/:user_id
 // @desc     Get profile by user ID

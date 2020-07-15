@@ -14,8 +14,6 @@ const Admin = sequelize.define("admin", {
   phoneNumber: Sequelize.STRING,
   email: Sequelize.STRING,
   password: Sequelize.STRING,
-  open: Sequelize.STRING,
-  close: Sequelize.STRING,
   password: Sequelize.STRING,
   fullName: Sequelize.STRING,
   imageUrl: Sequelize.STRING,
