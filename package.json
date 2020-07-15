@@ -34,6 +34,7 @@
     "express-validator": "^6.4.0",
     "fetch": "^1.1.0",
     "i": "^0.3.6",
+    "immer": "^7.0.5",
     "js-datepicker": "^5.5.1",
     "jsonwebtoken": "^8.5.1",
     "lingua": "^0.4.0",
