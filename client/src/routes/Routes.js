@@ -1,5 +1,5 @@
-import React, { useReducer, useEffect } from "react";
-import { BrowserRouter, Switch, Route } from "react-router-dom";
+import React, { useEffect } from "react";
+import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
 import { useImmerReducer } from "use-immer";
 import Home from "../components/Authentication/Home";
 import Register from "../components/Authentication/Register";
@@ -13,8 +13,7 @@ import ViewSingleDeliveryAdress from "../components/UserProfile/ViewSingleDelive
 import FlashMessages from "../components/Shared/FlashMessages";
 import DispatchContext from "../DispatchContext";
 import StateContext from "../StateContext";
-
-function Routes() {
+function Routes(props) {
   const initialState = {
     loggedIn: Boolean(localStorage.getItem("token")),
     flashMessages: [],
@@ -66,7 +65,13 @@ function Routes() {
             </Route>
             <Route exact path="/registration" component={Register} />
             <Route exact path="/my-profile" component={Profile} />
-            <Route exact path="/my-adress" component={DeliveryAdress} />
+            <Route path="/my-adress">
+              {!state.loggedIn ? (
+                <Redirect to={"/partners"} />
+              ) : (
+                <DeliveryAdress />
+              )}
+            </Route>
             <Route path="/new-adress">
               <NewDeliveryAdress />
             </Route>

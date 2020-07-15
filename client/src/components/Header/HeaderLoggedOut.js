@@ -1,5 +1,7 @@
 import React, { useContext, useState } from "react";
 import Axios from "axios";
+import api from "../utils/api";
+
 import DispatchContext from "../../DispatchContext";
 
 function HeaderLoggedOut(props) {
@@ -16,8 +18,17 @@ function HeaderLoggedOut(props) {
       });
       if (response.data) {
         appDispatch({ type: "login", data: response.data });
+        appDispatch({
+          type: "flashMessage",
+          value: "You have successfully logged in.",
+        });
+        // Redirect to another page
+        props.history.push("/my-adress");
       } else {
-        console.log("Incorect username / password");
+        appDispatch({
+          type: "flashMessage",
+          value: "Invalid username / password.",
+        });
       }
     } catch (e) {
       console.log(e);
