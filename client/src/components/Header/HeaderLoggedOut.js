@@ -15,10 +15,9 @@ function HeaderLoggedOut(props) {
         password: password,
       });
       if (response.data) {
-        localStorage.setItem("token", response.data.token);
-        appDispatch({ type: "login" });
+        appDispatch({ type: "login", data: response.data });
       } else {
-        console.log("Incorect");
+        console.log("Incorect username / password");
       }
     } catch (e) {
       console.log(e);

@@ -5,6 +5,7 @@ import { withRouter } from "react-router-dom";
 import Menu from "../Shared/Menu";
 import api from "../utils/api";
 import DispatchContext from "../../DispatchContext";
+import StateContext from "../../StateContext";
 
 const AddDeliveryAdress = (props) => {
   const [name, setName] = useState();
@@ -15,6 +16,7 @@ const AddDeliveryAdress = (props) => {
   const [doorNumber, setDoorNumber] = useState();
   const [doorBell, setDoorBell] = useState();
   const appDispatch = useContext(DispatchContext);
+  const appState = useContext(StateContext);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -28,7 +30,7 @@ const AddDeliveryAdress = (props) => {
         floor: floor,
         doorBell: doorBell,
         doorNumber: doorNumber,
-        token: localStorage.getItem("token"),
+        token: appState.user.token,
       });
 
       appDispatch({ type: "flashMessage", value: "Sikeresen letrejott" });

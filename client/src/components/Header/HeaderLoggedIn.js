@@ -1,12 +1,13 @@
 import React, { useContext } from "react";
 import DispatchContext from "../../DispatchContext";
+import StateContext from "../../StateContext";
 
 function HeaderLoggedIn(props) {
   const appDispatch = useContext(DispatchContext);
+  const appState = useContext(StateContext);
 
   function handleLogout() {
     appDispatch({ type: "logout" });
-    localStorage.removeItem("token");
   }
 
   return (
@@ -25,7 +26,7 @@ function HeaderLoggedIn(props) {
         />
       </a>
       <a className="btn btn-sm btn-success mr-2" href="/create-post">
-        Create Post
+        {appState.user.id}
       </a>
       <button onClick={handleLogout} className="btn btn-sm btn-secondary">
         Sign Out
