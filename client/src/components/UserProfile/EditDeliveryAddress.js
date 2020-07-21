@@ -1,8 +1,9 @@
-import React, { useEffect, useState, useContext } from "react";
-import { useParams } from "react-router-dom";
+import React, { useEffect, useContext } from "react";
+import { useParams, Link, withRouter } from "react-router-dom";
 import "../../css/UserProfile/AddDeliveryAdress.css";
 import Menu from "../Shared/Menu";
 import api from "../utils/api";
+import NotFound from "../Shared/NotFound";
 import { useImmerReducer } from "use-immer";
 import Axios from "axios";
 import HamburgerLoading from "../Shared/HamburgerLoading";
@@ -53,6 +54,7 @@ function EditDeliveryAddress(props) {
     isSaving: false,
     id: useParams().id,
     sendCount: 0,
+    notFound: false,
   };
 
   function ourReducer(draft, action) {
@@ -68,12 +70,14 @@ function EditDeliveryAddress(props) {
         draft.isFetching = false;
         return;
       case "nameChange":
+        draft.name.hasErrors = false;
         draft.name.value = action.value;
         return;
       case "streetChange":
         draft.street.value = action.value;
         return;
       case "cityChange":
+        draft.city.hasErrors = false;
         draft.city.value = action.value;
         return;
       case "doorBellChange":
@@ -89,13 +93,30 @@ function EditDeliveryAddress(props) {
         draft.houseNumber.value = action.value;
         return;
       case "submitRequest":
-        draft.sendCount++;
+        if (!draft.name.hasErrors && !draft.city.hasErrors) {
+          draft.sendCount++;
+        }
         return;
       case "saveRequestStarted":
         draft.isSaving = true;
         return;
       case "saveRequestFinished":
         draft.isSaving = false;
+        return;
+      case "nameRules":
+        if (!action.value.trim()) {
+          draft.name.hasErrors = true;
+          draft.name.message = "Nem lehet ures";
+        }
+        return;
+      case "cityRules":
+        if (!action.value.trim()) {
+          draft.city.hasErrors = true;
+          draft.city.message = "Nem lehet ures";
+        }
+        return;
+      case "notFound":
+        draft.notFound = true;
         return;
     }
   }
@@ -104,6 +125,14 @@ function EditDeliveryAddress(props) {
 
   function submitHandler(e) {
     e.preventDefault();
+    dispatch({
+      type: "nameRules",
+      value: state.name.value,
+    });
+    dispatch({
+      type: "cityRules",
+      value: state.city.value,
+    });
     dispatch({ type: "submitRequest" });
   }
   useEffect(() => {
@@ -116,7 +145,17 @@ function EditDeliveryAddress(props) {
             cancelToken: ourRequest.token,
           }
         );
-        dispatch({ type: "fetchComplete", value: response.data });
+        console.log(response);
+        if (response.data) {
+          dispatch({ type: "fetchComplete", value: response.data });
+          if (appState.user.id != response.data.user.id) {
+            appDispatch({ type: "flashMessage", value: "nincs jogod" });
+            //redirect to homegae
+            props.history.push("/");
+          }
+        } else {
+          dispatch({ type: "notFound" });
+        }
       } catch (e) {
         console.log("There was a problem or the request was cancelled.");
       }
@@ -149,7 +188,6 @@ function EditDeliveryAddress(props) {
               cancelToken: ourRequest.token,
             }
           );
-
           dispatch({ type: "saveRequestFinished" });
           appDispatch({ type: "flashMessage", value: "Sikeresen mentetted" });
         } catch (e) {
@@ -165,6 +203,10 @@ function EditDeliveryAddress(props) {
   }, [state.sendCount]);
 
   if (state.isFetching) return <HamburgerLoading />;
+
+  if (state.notFound) {
+    return <NotFound />;
+  }
 
   return (
     <div>
@@ -183,6 +225,12 @@ function EditDeliveryAddress(props) {
                           Cím neve <span>*</span>:
                         </label>
                         <input
+                          onBlur={(e) =>
+                            dispatch({
+                              type: "nameRules",
+                              value: e.target.value,
+                            })
+                          }
                           onChange={(e) =>
                             dispatch({
                               type: "nameChange",
@@ -192,8 +240,13 @@ function EditDeliveryAddress(props) {
                           value={state.name.value}
                           type="text"
                           className="form-control"
-                          id="email"
+                          id="name"
                         />
+                        {state.name.hasErrors && (
+                          <div className="alert alert-danger small liveValidateMessage">
+                            {state.name.message}
+                          </div>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -205,6 +258,12 @@ function EditDeliveryAddress(props) {
                           Település <span>*</span>:
                         </label>
                         <input
+                          onBlur={(e) =>
+                            dispatch({
+                              type: "cityRules",
+                              value: e.target.value,
+                            })
+                          }
                           onChange={(e) =>
                             dispatch({
                               type: "cityChange",
@@ -216,6 +275,11 @@ function EditDeliveryAddress(props) {
                           className="form-control"
                           id="city"
                         />
+                        {state.city.hasErrors && (
+                          <div className="alert alert-danger small liveValidateMessage">
+                            {state.city.message}
+                          </div>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -349,4 +413,4 @@ function EditDeliveryAddress(props) {
   );
 }
 
-export default EditDeliveryAddress;
+export default withRouter(EditDeliveryAddress);

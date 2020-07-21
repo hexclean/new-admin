@@ -30,7 +30,10 @@ function DeliveryAdressList() {
       addressesList.push(
         <div key={adress.id} className="col-6">
           <div className="contact-box text-center">
-            <Link to="/" className="radius-50 custom-address">
+            <Link
+              to={`/delivery-adress/${adress.id}/edit`}
+              className="radius-50 custom-address"
+            >
               <i className="fa fa-home" aria-hidden="true"></i>
             </Link>
             <h4>{adress.name}</h4>
@@ -80,7 +83,7 @@ function DeliveryAdressList() {
                       <div className="form-group text-center">
                         <Link to={"/new-adress"}>
                           <button type="submit" className="btn-green">
-                            This is a button
+                            Create new delivery adress
                           </button>
                         </Link>
                       </div>
