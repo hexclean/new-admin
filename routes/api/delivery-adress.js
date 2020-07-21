@@ -96,4 +96,61 @@ router.delete("/:id", auth, async (req, res) => {
   }
 });
 
+router.get("/delivery-adress/:id", auth, async (req, res) => {
+  try {
+    let deliveryAddress = await UserDeliveryAdress.findByPk(req.params.id);
+
+    if (!deliveryAddress) {
+      return res.status(404).json({ msg: "Delivey Adress not found" });
+    }
+
+    if (deliveryAddress.userId !== req.user.id) {
+      return res.status(401).json({ msg: "User not authorized" });
+    }
+
+    res.json(deliveryAddress);
+  } catch (err) {
+    console.log(err.message);
+    if (err.kind === "ObjecId") {
+      return res.status(404).json({ msg: "Delivery Adress not found" });
+    }
+    res.status(500).send("server error");
+  }
+});
+
+router.post("/delivery-adress/:id/edit", auth, async (req, res) => {
+  try {
+    let deliveryAddressParamsId = await UserDeliveryAdress.findByPk(
+      req.params.id
+    );
+
+    if (!deliveryAddressParamsId) {
+      return res.status(404).json({ msg: "Delivey Adress not found" });
+    }
+
+    if (deliveryAddressParamsId.userId !== req.user.id) {
+      return res.status(401).json({ msg: "User not authorized" });
+    }
+
+    const result = await UserDeliveryAdress.update(
+      {
+        name: req.body.name,
+        city: req.body.city,
+        street: req.body.street,
+        houseNumber: req.body.houseNumber,
+        floor: req.body.floor,
+        doorBell: req.body.doorBell,
+        doorNumber: req.body.doorNumber,
+        userId: req.user.id,
+      },
+      { where: { id: deliveryAddressParamsId.id } }
+    );
+
+    res.json(result);
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).send("server error");
+  }
+});
+
 module.exports = router;
