@@ -9,43 +9,8 @@ const Variants = require("../../models/ProductVariant");
 const VariantsTranslation = require("../../models/ProductVariantTranslation");
 const ProductTranslation = require("../../models/ProductTranslation");
 const ProductCategories = require("../../models/ProductCategory");
-router.get("/test", async (req, res) => {
-  // try {
-  //   const products = await ProductFinal.findAll({
-  //     include: [
-  //       {
-  //         model: Product,
-  //         include: [
-  //           {
-  //             model: Variants,
-  //             include: [
-  //               {
-  //                 model: VariantsTranslation,
-  //                 include: [
-  //                   {
-  //                     model: ProductCategories,
-  //                   },
-  //                 ],
-  //               },
-  //             ],
-  //           },
-  //         ],
-  //         as: "theProductId",
-  //         include: [
-  //           {
-  //             model: ProductTranslation,
-  //           },
-  //         ],
-  //       },
-  //     ],
-  //   });
 
-  //   res.json(products);
-  //   console.log("products", products);
-  // } catch (err) {
-  //   console.error(err.message);
-  //   res.status(500).send("Server error");
-  // }
+router.get("/test", async (req, res) => {
   const sequelize = new Sequelize("foodnet", "root", "y7b5uwFOODNET", {
     host: "localhost",
     dialect: "mysql",
@@ -60,19 +25,6 @@ router.get("/test", async (req, res) => {
       console.log(results);
     });
 });
-
-// Product.findAll({
-//   where: {
-//     id: prodId,
-//     adminId: req.admin.id,
-//   },
-//   include: [
-//     {
-//       model: ProductTranslation,
-//     },
-//     { model: ProductFinal },
-//   ],
-// });
 
 router.get("/", async (req, res) => {
   try {

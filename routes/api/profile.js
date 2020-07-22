@@ -6,16 +6,12 @@ const { check, validationResult } = require("express-validator");
 const User = require("../../models/User");
 const UserDeliveryAdress = require("../../models/UserDeliveryAdress");
 
-const UserProfile = require("../../models/UserProfile");
-
 // @route    GET api/profile/me
 // @desc     Get current users profile
 // @access   Private
 router.get("/me", auth, async (req, res) => {
   try {
-    const profile = await UserProfile.findOne({
-      user: req.user.id,
-    });
+    const profile = await User.findByPk(req.user.id);
 
     if (!profile) {
       return res.status(400).json({ msg: "There is no profile for this user" });
@@ -28,6 +24,35 @@ router.get("/me", auth, async (req, res) => {
   }
 });
 
+//Edit Profile
+router.post("/me", auth, async (req, res) => {
+  try {
+    const profile = await User.findAll({
+      where: {
+        id: req.user.id,
+      },
+    });
+
+    if (!profile) {
+      return res.status(400).json({ msg: "There is no profile for this user" });
+    }
+
+    const result = await User.update(
+      {
+        email: req.body.email,
+        fullName: req.body.fullName,
+        phoneNumber: req.body.phoneNumber,
+        id: req.user.id,
+      },
+      { where: { id: req.user.id } }
+    );
+
+    res.json(result);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
 // @route    DELETE api/profile/
 // @desc     Delete profile, user & posts
 // @access   Private
