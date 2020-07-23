@@ -153,6 +153,7 @@ app.use("/api/deliveryadress", require("./routes/api/delivery-adress"));
 // app.use("/api/products", require("./routes/api/products"));
 app.use("/api/register", require("./routes/api/register"));
 app.use("/api/profile", require("./routes/api/profile"));
+app.use("/api/locations", require("./routes/api/locations"));
 // app.use("/api/order", require("./routes/api/order"));
 app.use("/api/products", require("./routes/api/products"));
 app.use("/api/restaurants", require("./routes/api/restaurants"));

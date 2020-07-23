@@ -19,16 +19,19 @@ function EditDeliveryAddress(props) {
       value: "",
       hasErrors: false,
       message: "",
+      checkCount: 0,
     },
     phoneNumber: {
       value: "",
       hasErrors: false,
       message: "",
+      checkCount: 0,
     },
     fullName: {
       value: "",
       hasErrors: false,
       message: "",
+      checkCount: 0,
     },
     isFetching: true,
     isSaving: false,
@@ -114,6 +117,7 @@ function EditDeliveryAddress(props) {
     });
     dispatch({ type: "submitRequest" });
   }
+
   useEffect(() => {
     const ourRequest = Axios.CancelToken.source();
     async function fetchProfileData() {
@@ -142,6 +146,26 @@ function EditDeliveryAddress(props) {
       ourRequest.cancel();
     };
   }, []);
+
+  // useEffect(() => {
+  //   if (state.email.checkCount) {
+  //     const ourRequest = Axios.CancelToken.source();
+  //     async function fetchResults() {
+  //       try {
+  //         const response = await api.post(
+  //           "/register/doesUsernameExist",
+  //           { email: state.email.value },
+  //           { cancelToken: ourRequest.token }
+  //         );
+  //         dispatch({ type: "emailUniqueResults", value: response.data });
+  //       } catch (e) {
+  //         console.log("There was a problem or the request was cancelled.");
+  //       }
+  //     }
+  //     fetchResults();
+  //     return () => ourRequest.cancel();
+  //   }
+  // }, [state.email.checkCount]);
 
   useEffect(() => {
     if (state.sendCount) {
@@ -183,10 +207,6 @@ function EditDeliveryAddress(props) {
 
   return (
     <div>
-      <div className="container">
-        <h1>My First Bootstrap Page</h1>
-        <p>This is some text.</p>
-      </div>
       <div className="main-content personal-data">
         <div className="container">
           <div className="row">
@@ -203,7 +223,7 @@ function EditDeliveryAddress(props) {
                     legközelebb!
                   </p>
                   <div className="d-flex justify-content-center">
-                    <div className="row my-details">Személyes adataim</div>
+                    {/* <div className="row my-details">Személyes adataim</div> */}
                   </div>
                   <div className="row">
                     <div className="col-md-6">
@@ -312,7 +332,7 @@ function EditDeliveryAddress(props) {
                         <p className="my-details-desc">
                           Mobiltelefonszámot érdemes megadnod, így közvetlenül
                           téged tudunk keresni. A telefonszám helyes formátuma:
-                          +40753541070
+                          0753541070
                         </p>
 
                         {/* <p>

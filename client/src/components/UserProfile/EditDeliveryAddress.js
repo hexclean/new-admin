@@ -190,6 +190,8 @@ function EditDeliveryAddress(props) {
           );
           dispatch({ type: "saveRequestFinished" });
           appDispatch({ type: "flashMessage", value: "Sikeresen mentetted" });
+          //Redirect to
+          props.history.push("/my-profile");
         } catch (e) {
           console.log(e);
           console.log("There was a problem or the request was cancelled.");

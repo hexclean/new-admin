@@ -86,7 +86,7 @@ router.delete("/:id", auth, async (req, res) => {
 
     await deliveryAdress.destroy();
 
-    res.json({ msg: "Delivey Adress removed" });
+    res.json({ msg: "Success" });
   } catch (err) {
     console.log(err.message);
     if (err.kind === "ObjecId") {

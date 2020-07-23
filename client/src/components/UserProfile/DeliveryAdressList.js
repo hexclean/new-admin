@@ -1,20 +1,27 @@
-import React, { useEffect, useState, useReducer } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState, useContext } from "react";
+import { Link, withRouter, useParams } from "react-router-dom";
 import "../../css/UserProfile/DeliveryAdressList.css";
 import api from "../utils/api";
 import Menu from "../Shared/Menu";
 import HamburgerLoading from "../Shared/HamburgerLoading";
-function DeliveryAdressList() {
+import DispatchContext from "../../DispatchContext";
+import StateContext from "../../StateContext";
+import Axios from "axios";
+
+function DeliveryAdressList(props) {
   const [addresses, setAddresses] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const appDispatch = useContext(DispatchContext);
+  const appState = useContext(StateContext);
+  const { id } = useParams();
 
   useEffect(() => {
     setAddresses([]);
     api
       .get("/deliveryadress")
       .then((response) => {
+        console.log(response);
         setIsLoading(false);
-        console.log("response", response);
         if (response.data) {
           setAddresses(response.data);
         }
@@ -23,6 +30,32 @@ function DeliveryAdressList() {
         console.log(err);
       });
   }, []);
+
+  async function deleteHandler() {
+    const areYouSure = window.confirm(
+      "Do you really want to delete this post?"
+    );
+    if (areYouSure) {
+      try {
+        const response = await api.delete(`/deliveryadress/${id}`, {
+          data: { token: appState.user.token },
+        });
+        console.log("response.data", response.data);
+        if (true) {
+          // 1. display a flash message
+          appDispatch({
+            type: "flashMessage",
+            value: "Post was successfully deleted.",
+          });
+
+          // 2. redirect back to the current user's profile
+          props.history.push("/my-profile");
+        }
+      } catch (e) {
+        console.log("There was a problem.");
+      }
+    }
+  }
 
   const getAddresses = () => {
     const addressesList = [];
@@ -42,9 +75,7 @@ function DeliveryAdressList() {
             </p>
             <p>
               <Link to={`/delivery-adress/${adress.id}/edit`}>Edit</Link>
-              <Link onClick={deleteHandler} to="/">
-                Delete
-              </Link>
+              <a onClick={deleteHandler}>Delete</a>
             </p>
           </div>
         </div>
@@ -53,18 +84,6 @@ function DeliveryAdressList() {
     return addressesList;
   };
 
-  function deleteHandler() {
-    const areYouSure = window.confirm(
-      "Do you really want to delete this post?"
-    );
-    if (areYouSure) {
-      try {
-        //  const response = api.delete(`/deliveryadress/${id}`, {data: {token: useRe}})
-      } catch (error) {
-        console.log(error);
-      }
-    }
-  }
   if (isLoading) return <HamburgerLoading />;
   return (
     <div>
@@ -99,4 +118,4 @@ function DeliveryAdressList() {
   );
 }
 
-export default DeliveryAdressList;
+export default withRouter(DeliveryAdressList);
