@@ -3,10 +3,11 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import ShopMenu from "../components/Shared/ShopMenu";
-function Partners() {
+function Partners(props) {
   const [heroes, setHeroes] = useState([]);
   const [search, setSearch] = useState("");
   const [filteredPartners, setFilteredPartners] = useState([]);
+
   useEffect(() => {
     setHeroes([]);
     axios
@@ -35,17 +36,17 @@ function Partners() {
     const heroesList = [];
     filteredPartners.map((hero) =>
       heroesList.push(
-        <div class="product-infobx">
-          <div class="product-infoleft">
+        <div key={hero.id} className="product-infobx">
+          <div className="product-infoleft">
             <img src={hero.imageUrl} />
           </div>
-          <div class="product-infocenter">
+          <div className="product-infocenter">
             <h4>{hero.fullName}</h4>
             <p className="short-desc-comp">
               9 years with us pizza, hamburger, hungarian, italian, american,
               algida
             </p>
-            <ul class="info-list info-panel">
+            <ul className="info-list info-panel">
               <li className="avg-delivery">
                 <div>
                   <h5>Átlag szállítási idő</h5>
@@ -64,18 +65,19 @@ function Partners() {
                   <h6>0 Lei</h6>
                 </div>
               </li>
-              <div class="clear"></div>
+              <div className="clear"></div>
             </ul>
           </div>
-          <div class="product-inforight">
-            <a class="menu-btn text-menu">
-              <Link to={"/products/" + hero.fullName.replace(/%20/g, "-")}>
-                Étlap
-              </Link>
-            </a>
-            <div class="discount">-&nbsp;8 lej</div>
+          <div className="product-inforight">
+            <Link
+              to={"/products/" + hero.fullName.replace(/%20/g, "-")}
+              className="menu-btn text-menu"
+            >
+              Étlap
+            </Link>
+            <div className="discount">-&nbsp;8 lej</div>
           </div>
-          <div class="clear"></div>
+          <div className="clear"></div>
         </div>
       )
     );
@@ -103,9 +105,9 @@ function Partners() {
                     </li>
                   </ul>
 
-                  <a href="#" className="more-button">
+                  <Link to="/" className="more-button">
                     CLEAR ALL FILTERS
-                  </a>
+                  </Link>
                 </div>
               </div>
 
@@ -117,40 +119,42 @@ function Partners() {
                       {" "}
                       <div className="checkbox">
                         <input id="checkbox1" type="checkbox" />
-                        <label for="checkbox1">No shipping cost (40)</label>
+                        <label htmlFor="checkbox1">No shipping cost (40)</label>
                       </div>
                     </li>
                     <li>
                       {" "}
                       <div className="checkbox">
                         <input id="checkbox2" type="checkbox" />
-                        <label for="checkbox2">Within 35 minutes (47)</label>
+                        <label htmlFor="checkbox2">
+                          Within 35 minutes (47)
+                        </label>
                       </div>
                     </li>
                     <li>
                       {" "}
                       <div className="checkbox">
                         <input id="checkbox3" type="checkbox" />
-                        <label for="checkbox3">Photo menu (67)</label>
+                        <label htmlFor="checkbox3">Photo menu (67)</label>
                       </div>
                     </li>
                     <li>
                       {" "}
                       <div className="checkbox">
                         <input id="checkbox4" type="checkbox" />
-                        <label for="checkbox4">Food (12)</label>
+                        <label htmlFor="checkbox4">Food (12)</label>
                       </div>
                     </li>
                     <li>
                       <div className="checkbox">
                         <input id="checkbox5" type="checkbox" />
-                        <label for="checkbox5">News (16)</label>
+                        <label htmlFor="checkbox5">News (16)</label>
                       </div>{" "}
                     </li>
                     <li>
                       <div className="checkbox">
                         <input id="checkbox6" type="checkbox" />
-                        <label for="checkbox6">NetWaiter GO (38)</label>
+                        <label htmlFor="checkbox6">NetWaiter GO (38)</label>
                       </div>
                     </li>
                   </ul>
@@ -165,68 +169,68 @@ function Partners() {
                       {" "}
                       <div className="checkbox">
                         <input id="checkbox1" type="checkbox" />
-                        <label for="checkbox1">Hamburger (57)</label>
+                        <label htmlFor="checkbox1">Hamburger (57)</label>
                       </div>
                     </li>
                     <li>
                       {" "}
                       <div className="checkbox">
                         <input id="checkbox2" type="checkbox" />
-                        <label for="checkbox2">Pizza (59)</label>
+                        <label htmlFor="checkbox2">Pizza (59)</label>
                       </div>
                     </li>
                     <li>
                       {" "}
                       <div className="checkbox">
                         <input id="checkbox3" type="checkbox" />
-                        <label for="checkbox3">Algida (10)</label>
+                        <label htmlFor="checkbox3">Algida (10)</label>
                       </div>
                     </li>
                     <li>
                       {" "}
                       <div className="checkbox">
                         <input id="checkbox4" type="checkbox" />
-                        <label for="checkbox4">Hungarian (65)</label>
+                        <label htmlFor="checkbox4">Hungarian (65)</label>
                       </div>
                     </li>
                     <li>
                       <div className="checkbox">
                         <input id="checkbox5" type="checkbox" />
-                        <label for="checkbox5">Thai (7)</label>
+                        <label htmlFor="checkbox5">Thai (7)</label>
                       </div>{" "}
                     </li>
                     <li>
                       <div className="checkbox">
                         <input id="checkbox6" type="checkbox" />
-                        <label for="checkbox6">Italian (32)</label>
+                        <label htmlFor="checkbox6">Italian (32)</label>
                       </div>
                     </li>
 
                     <li>
                       <div className="checkbox">
                         <input id="checkbox6" type="checkbox" />
-                        <label for="checkbox6">Mexican (12)</label>
+                        <label htmlFor="checkbox6">Mexican (12)</label>
                       </div>
                     </li>
 
                     <li>
                       <div className="checkbox">
                         <input id="checkbox6" type="checkbox" />
-                        <label for="checkbox6">Indian (3)</label>
+                        <label htmlFor="checkbox6">Indian (3)</label>
                       </div>
                     </li>
 
                     <li>
                       <div className="checkbox">
                         <input id="checkbox6" type="checkbox" />
-                        <label for="checkbox6">Chinese (5)</label>
+                        <label htmlFor="checkbox6">Chinese (5)</label>
                       </div>
                     </li>
 
                     <li>
                       <div className="checkbox">
                         <input id="checkbox6" type="checkbox" />
-                        <label for="checkbox6">Japan (5)</label>
+                        <label htmlFor="checkbox6">Japan (5)</label>
                       </div>
                     </li>
                   </ul>
@@ -240,7 +244,7 @@ function Partners() {
                       {" "}
                       <div className="checkbox">
                         <input id="checkbox1" type="checkbox" />
-                        <label for="checkbox1">Cash (138)</label>
+                        <label htmlFor="checkbox1">Cash (138)</label>
                       </div>
                     </li>
 
@@ -248,7 +252,7 @@ function Partners() {
                       {" "}
                       <div className="checkbox">
                         <input id="checkbox1" type="checkbox" />
-                        <label for="checkbox1">
+                        <label htmlFor="checkbox1">
                           Credit card (1 click payment also) - recommended (183)
                         </label>
                       </div>
@@ -257,7 +261,7 @@ function Partners() {
                       {" "}
                       <div className="checkbox">
                         <input id="checkbox1" type="checkbox" />
-                        <label for="checkbox1">NICE card (167)</label>
+                        <label htmlFor="checkbox1">NICE card (167)</label>
                       </div>
                     </li>
                   </ul>
@@ -268,59 +272,59 @@ function Partners() {
               <div className="tab-menu">
                 <ul>
                   <li>
-                    <a href="#">
+                    <Link to="/">
                       <img src="images/photo-line.png" />
                       <p>Photo menu</p>
-                    </a>
+                    </Link>
                   </li>
                   <li>
-                    <a href="#">
+                    <Link to="/">
                       <img src="images/hamburger-line.png" />
                       <p>Hamburger</p>
-                    </a>
+                    </Link>
                   </li>
                   <li>
-                    <a href="#">
+                    <Link to="/">
                       <img src="images/pizza-line.png" />
                       <p>Pizza</p>
-                    </a>
+                    </Link>
                   </li>
                   <li>
-                    <a href="#">
+                    <Link to="/">
                       <img src="images/ice-cream-line.png" />
                       <p>Algida</p>
-                    </a>
+                    </Link>
                   </li>
                   <li>
-                    <a href="#">
+                    <Link to="/">
                       <img src="images/food-line.png" />
                       <p>Food</p>
-                    </a>
+                    </Link>
                   </li>
                   <li>
-                    <a href="#">
+                    <Link to="/">
                       <img src="images/hungarian-line.png" />
                       <p>Hungarian</p>
-                    </a>
+                    </Link>
                   </li>
 
                   <li>
-                    <a href="#">
+                    <Link to="/">
                       <img src="images/thai-line.png" />
                       <p>Thai</p>
-                    </a>
+                    </Link>
                   </li>
                   <li>
-                    <a href="#">
+                    <Link to="/">
                       <img src="images/italian-line.png" />
                       <p>Italian</p>
-                    </a>
+                    </Link>
                   </li>
                   <li>
-                    <a href="#">
+                    <Link to="/">
                       <img src="images/shop-list-cuisines-more.min.png" />
                       <p>More kitchens</p>
-                    </a>
+                    </Link>
                   </li>
                 </ul>
               </div>
@@ -342,7 +346,7 @@ function Partners() {
                           onChange={(e) => setSearch(e.target.value)}
                         />
                         <div className="info-box">
-                          <span>181 találat</span>
+                          <span>{heroes.id} találat</span>
                         </div>
                       </form>
                     </div>
@@ -358,22 +362,22 @@ function Partners() {
                         </button>
                         <ul className="dropdown-menu">
                           <li>
-                            <a href="#">By name</a>
+                            <Link to="/">By name</Link>
                           </li>
                           <li>
-                            <a href="#">According to evaluation</a>
+                            <Link to="/">According to evaluation</Link>
                           </li>
                           <li>
-                            <a href="#">By price category</a>
+                            <Link to="/">By price category</Link>
                           </li>
                           <li>
-                            <a href="#">According to shipping cost</a>
+                            <Link to="/">According to shipping cost</Link>
                           </li>
                           <li>
-                            <a href="#">By delivery time</a>
+                            <Link to="/">By delivery time</Link>
                           </li>
                           <li>
-                            <a href="#">Default</a>
+                            <Link to="/">Default</Link>
                           </li>
                         </ul>
                       </div>

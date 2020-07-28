@@ -2,33 +2,33 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 export const ShopMenu = () => (
-  <nav class="navbar container-bg navbar-expand-lg  static-top">
-    <div class="container">
-      <a class="navbar-brand" href="#">
+  <nav className="navbar container-bg navbar-expand-lg  static-top">
+    <div className="container">
+      <Link className="navbar-brand" to="/">
         <img className="logo-header" src="images/foodnet.png" alt="" />
-      </a>
+      </Link>
       <button
-        class="navbar-toggler"
+        className="navbar-toggler"
         type="button"
         data-toggle="collapse"
-        data-target="#navbarResponsive"
+        data-target="/navbarResponsive"
         aria-controls="navbarResponsive"
         aria-expanded="false"
         aria-label="Toggle navigation"
       >
-        <span class="navbar-toggler-icon"></span>
+        <span className="navbar-toggler-icon"></span>
       </button>
-      <div class="collapse navbar-collapse" id="navbarResponsive">
-        <ul class="navbar-nav ml-auto">
-          <li class="nav-item active">
-            <a class="nav-link" href="#">
+      <div className="collapse navbar-collapse" id="navbarResponsive">
+        <ul className="navbar-nav ml-auto">
+          <li className="nav-item active">
+            <Link className="nav-link" to="/">
               <Link to={"/registration/"}>REGISZTRÁCIÓ</Link>
-            </a>
+            </Link>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">
+          <li className="nav-item">
+            <Link className="nav-link" to="/">
               BELÉPÉS
-            </a>
+            </Link>
           </li>
         </ul>
       </div>

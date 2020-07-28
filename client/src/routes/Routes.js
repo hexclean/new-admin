@@ -54,12 +54,15 @@ function Routes(props) {
           <Header />
           <Switch>
             <Route exact path="/products/:partnerId" component={Index} />
-            <Route exact path="/partners" component={Partners} />
+            {/* <Route exact path="/partners" component={Partners} /> */}
             <Route exact path="/">
-              {state.loggedIn ? <Home /> : <Profile />}
+              {state.loggedIn ? <Home /> : <Home />}
             </Route>
             <Route exact path="/delivery-adress/:id">
               <ViewSingleDeliveryAdress />
+            </Route>
+            <Route exact path="/:locationName">
+              <Partners />
             </Route>
             <Route exact path="/delivery-adress/:id/edit">
               <EditDeliveryAddress />

@@ -27,7 +27,10 @@ export function ProductItem() {
         <div key={Math.random().toString(36).substring(7)}>
           <div className="page-header">
             <div>{openFood}</div>
-            <h2>{products[i].categoryTranslationName}</h2>
+            <h2>
+              {products[i].categoryTranslationName} -
+              {products[i].variantTranslationName}
+            </h2>
           </div>
           <div className="product-infobx pointer">
             <h4>{products[i].productTitle}</h4>
@@ -42,7 +45,7 @@ export function ProductItem() {
             <div className="product-inforight">
               <div className="incre-box">
                 <div className="incre-left d-flex justify-content-center">
-                  {products[i].productTranslationTitle}
+                  {products[i].productFinalPrice}
                 </div>
                 <div
                   className="incre-right"
