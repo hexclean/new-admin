@@ -14,7 +14,7 @@ import FlashMessages from "../components/Shared/FlashMessages";
 import DispatchContext from "../DispatchContext";
 import StateContext from "../StateContext";
 import EditDeliveryAddress from "../components/UserProfile/EditDeliveryAddress";
-function Routes() {
+function Routes(props) {
   const initialState = {
     loggedIn: Boolean(localStorage.getItem("token")),
     flashMessages: [],
@@ -52,9 +52,19 @@ function Routes() {
         <BrowserRouter>
           <FlashMessages messages={state.flashMessages} />
           <Header />
+
           <Switch>
-            <Route exact path="/products/:partnerId" component={Index} />
-            {/* <Route exact path="/partners" component={Partners} /> */}
+            <Route
+              exact
+              // path={`/${props.locationName}/:partnerId`}
+              path="/Szekelyudvarhely/:partnerId"
+              component={Index}
+            />
+            {/* <Route
+              exact
+              path={{ pathname: `/${props.locationName}` } + "/:partnerId"}
+              component={Index}
+            /> */}
             <Route exact path="/">
               {state.loggedIn ? <Home /> : <Home />}
             </Route>

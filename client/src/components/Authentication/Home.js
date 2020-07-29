@@ -4,24 +4,7 @@ import { Link } from "react-router-dom";
 
 function Home() {
   const [display, setDisplay] = useState(false);
-  const [options, setOptions] = useState([]);
-  const [search, setSearch] = useState("");
-  // const { locationName } = useParams();
 
-  // useEffect(() => {
-  //   const locations = [];
-  //   const promises = new Array(10)
-  //     .fill()
-  //     .map((v, i) => fetch("http://localhost:5000/api/locations"));
-
-  //   Promise.all(promises).then((locationsArr) => {
-  //     return locationsArr.map((value) =>
-  //       value.json().then(({ name }) => locations.push({ name }))
-  //     );
-  //   });
-  //   console.log("locations", locations);
-  //   setOptions(locations);
-  // }, []);
   const [location, setLocations] = useState([]);
   useEffect(() => {
     setLocations([]);
@@ -43,7 +26,7 @@ function Home() {
     const locationList = [];
     location.map((loc) =>
       locationList.push(
-        <Link key={loc.id} to={`/${loc.adminLocationTranslationName}`}>
+        <Link key={loc.adminId} to={`/${loc.adminLocationTranslationName}`}>
           <div>{loc.adminLocationTranslationName}</div>
         </Link>
       )

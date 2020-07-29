@@ -2,16 +2,10 @@ import React, { useState, useEffect } from "react";
 import "../css/PartnersPage.css";
 import { FoodDialog } from "./FoodDialog/FoodDialog";
 import Banner from "./PartnerBanner";
-import Cart from "./Order/Order";
-// import { useOrders } from "./Hooks/useOrders";
-// import { useOpenFood } from "./Hooks/useOpenFood";
 import ProductItem from "./Product/ProductItem";
-// import { useProducts } from "./Hooks/useProducts";
+
 function PartnerPage() {
   const [openFood, setOpenFood] = useState();
-  // const openFood = useOpenFood();
-  // const orders = useOrders();
-  // const products = useProducts();
 
   return (
     <div>

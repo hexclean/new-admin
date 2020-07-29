@@ -9,47 +9,12 @@ const Variants = require("../../models/ProductVariant");
 const VariantsTranslation = require("../../models/ProductVariantTranslation");
 const ProductTranslation = require("../../models/ProductTranslation");
 const ProductCategories = require("../../models/ProductCategory");
+const sequelize = new Sequelize("foodnet", "root", "y7b5uwFOODNET", {
+  host: "localhost",
+  dialect: "mysql",
+});
 
 router.get("/test", async (req, res) => {
-  // try {
-  // const products = await Product.findAll({
-  //   include: [
-  //     {
-  //       model: ProductTranslation,
-  //     },
-  //     {
-  //       model: ProductFinal,
-  //       // model: Variants,
-  //     },
-  //   ],
-  // });
-
-  // const categories = await Categories.findAll({ where: { adminId: 1 } });
-  // const variants = await Variants.findAll({
-  //   include: [
-  //     {
-  //       model: VariantsTranslation,
-  //     },
-  //   ],
-  // });
-  // const products = await Product.findAll({
-  //   include: [
-  //     {
-  //       model: ProductTranslation,
-  //     },
-  //   ],
-  // });
-
-  //   console.log("products", products);
-  //   // res.json(products);
-  // } catch (err) {
-  //   console.error(err.message);
-  //   res.status(500).send("Server error");
-  // }
-  const sequelize = new Sequelize("foodnet", "root", "y7b5uwFOODNET", {
-    host: "localhost",
-    dialect: "mysql",
-  });
   const egy = 1;
   return sequelize
     .query(

@@ -13,6 +13,7 @@ export function ProductItem() {
         if (response.data) {
           setProducts(response.data);
         }
+        console.log("products", response.data.productName);
       })
       .catch((err) => {
         console.log(err);
@@ -23,6 +24,7 @@ export function ProductItem() {
     const productsList = [];
 
     for (var i = 0; i < products.length; i++) {
+      console.log("products", products);
       productsList.push(
         <div key={Math.random().toString(36).substring(7)}>
           <div className="page-header">

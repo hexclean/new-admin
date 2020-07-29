@@ -6,28 +6,6 @@ const Admin = require("../../models/Admin");
 const AdminInfo = require("../../models/AdminInfo");
 const Locations = require("../../models/AdminLocation");
 const Sequelize = require("sequelize");
-// @route    GET api/restaurants
-// @desc     Get all restaurants
-// @access   Public
-router.get("/", async (req, res) => {
-  // try {
-  //   const restaurants = await Admin.findAll({
-  //     include: [
-  //       {
-  //         model: AdminInfo,
-  //         model: Locations,
-  //       },
-  //       // {
-  //       //   model: Locations,
-  //       // },
-  //     ],
-  //   });
-  //   res.json(restaurants);
-  // } catch (err) {
-  //   console.error(err.message);
-  //   res.status(500).send("Server Error");
-  // }
-});
 
 router.get("/test", async (req, res) => {
   const sequelize = new Sequelize("foodnet", "root", "y7b5uwFOODNET", {
