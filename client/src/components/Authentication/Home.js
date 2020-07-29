@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useParams } from "react";
 import api from "../utils/api";
 import { Link } from "react-router-dom";
 
@@ -6,6 +6,7 @@ function Home() {
   const [display, setDisplay] = useState(false);
   const [options, setOptions] = useState([]);
   const [search, setSearch] = useState("");
+  // const { locationName } = useParams();
 
   // useEffect(() => {
   //   const locations = [];
@@ -25,9 +26,10 @@ function Home() {
   useEffect(() => {
     setLocations([]);
     api
-      .get("/locations")
+      .get("/restaurants/test")
       .then((response) => {
-        console.log("response", response);
+        console.log("resp", response);
+
         if (response.data) {
           setLocations(response.data);
         }
@@ -38,15 +40,15 @@ function Home() {
   }, []);
 
   const getHeroes = () => {
-    const heroesList = [];
+    const locationList = [];
     location.map((loc) =>
-      heroesList.push(
-        <Link key={loc.id} to={`/${loc.email}`}>
-          <div>{loc.email}</div>
+      locationList.push(
+        <Link key={loc.id} to={`/${loc.adminLocationTranslationName}`}>
+          <div>{loc.adminLocationTranslationName}</div>
         </Link>
       )
     );
-    return heroesList;
+    return locationList;
   };
 
   return (

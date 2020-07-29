@@ -1,18 +1,133 @@
 import "../css/Partners.css";
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useContext, useState } from "react";
+import { useImmerReducer } from "use-immer";
+
+import { useParams, Link, withRouter } from "react-router-dom";
 import axios from "axios";
-import { Link } from "react-router-dom";
 import ShopMenu from "../components/Shared/ShopMenu";
+import StateContext from "../StateContext";
+import DispatchContext from "../DispatchContext";
+import api from "./utils/api";
+
 function Partners(props) {
+  const appState = useContext(StateContext);
+  const appDispatch = useContext(DispatchContext);
   const [heroes, setHeroes] = useState([]);
   const [search, setSearch] = useState("");
   const [filteredPartners, setFilteredPartners] = useState([]);
-
+  const originalState = {
+    street: {
+      value: "",
+      hasErrors: false,
+      message: "",
+    },
+    name: {
+      value: "",
+      hasErrors: false,
+      message: "",
+    },
+    doorBell: {
+      value: "",
+      hasErrors: false,
+      message: "",
+    },
+    doorNumber: {
+      value: "",
+      hasErrors: false,
+      message: "",
+    },
+    floor: {
+      value: "",
+      hasErrors: false,
+      message: "",
+    },
+    city: {
+      value: "",
+      hasErrors: false,
+      message: "",
+    },
+    houseNumber: {
+      value: "",
+      hasErrors: false,
+      message: "",
+    },
+    isFetching: true,
+    isSaving: false,
+    locationName: useParams().locationName,
+    sendCount: 0,
+    notFound: false,
+  };
+  const [state, dispatch] = useImmerReducer(ourReducer, originalState);
+  function ourReducer(draft, action) {
+    switch (action.type) {
+      case "fetchComplete":
+        draft.street.value = action.value.street;
+        draft.city.value = action.value.city;
+        draft.name.value = action.value.name;
+        draft.doorBell.value = action.value.doorBell;
+        draft.doorNumber.value = action.value.doorNumber;
+        draft.floor.value = action.value.floor;
+        draft.houseNumber.value = action.value.houseNumber;
+        draft.isFetching = false;
+        return;
+      case "nameChange":
+        draft.name.hasErrors = false;
+        draft.name.value = action.value;
+        return;
+      case "streetChange":
+        draft.street.value = action.value;
+        return;
+      case "cityChange":
+        draft.city.hasErrors = false;
+        draft.city.value = action.value;
+        return;
+      case "doorBellChange":
+        draft.doorBell.value = action.value;
+        return;
+      case "doorNumberChange":
+        draft.doorNumber.value = action.value;
+        return;
+      case "floorChange":
+        draft.floor.value = action.value;
+        return;
+      case "houseNumberChange":
+        draft.houseNumber.value = action.value;
+        return;
+      case "submitRequest":
+        if (!draft.name.hasErrors && !draft.city.hasErrors) {
+          draft.sendCount++;
+        }
+        return;
+      case "saveRequestStarted":
+        draft.isSaving = true;
+        return;
+      case "saveRequestFinished":
+        draft.isSaving = false;
+        return;
+      case "nameRules":
+        if (!action.value.trim()) {
+          draft.name.hasErrors = true;
+          draft.name.message = "Nem lehet ures";
+        }
+        return;
+      case "cityRules":
+        if (!action.value.trim()) {
+          draft.city.hasErrors = true;
+          draft.city.message = "Nem lehet ures";
+        }
+        return;
+      case "notFound":
+        draft.notFound = true;
+        return;
+    }
+  }
+  // let { adminFullName } = useParams();
   useEffect(() => {
     setHeroes([]);
-    axios
-      .get("/api/restaurants")
+    api
+      .get(`/restaurants/test/${state.locationName}`)
       .then((response) => {
+        console.log("${state.locationName}", state.locationName);
         console.log("response", response);
         if (response.data) {
           setHeroes(response.data);
@@ -26,7 +141,7 @@ function Partners(props) {
   useEffect(() => {
     setFilteredPartners(
       heroes.filter((hero) => {
-        return hero.fullName.toLowerCase().includes(search.toLowerCase());
+        return hero.adminFullName.toLowerCase().includes(search.toLowerCase());
       })
     );
   }, [search, heroes]);
@@ -41,7 +156,7 @@ function Partners(props) {
             <img src={hero.imageUrl} />
           </div>
           <div className="product-infocenter">
-            <h4>{hero.fullName}</h4>
+            <h4>{hero.adminFullName}</h4>
             <p className="short-desc-comp">
               9 years with us pizza, hamburger, hungarian, italian, american,
               algida
@@ -70,7 +185,7 @@ function Partners(props) {
           </div>
           <div className="product-inforight">
             <Link
-              to={"/products/" + hero.fullName.replace(/%20/g, "-")}
+              to={"/products/" + hero.adminFullName.replace(/%20/g, "-")}
               className="menu-btn text-menu"
             >
               Étlap

@@ -10,24 +10,71 @@ const Sequelize = require("sequelize");
 // @desc     Get all restaurants
 // @access   Public
 router.get("/", async (req, res) => {
-  try {
-    const restaurants = await Admin.findAll({
-      include: [
-        {
-          model: AdminInfo,
-          model: Locations,
-        },
-        // {
-        //   model: Locations,
-        // },
-      ],
+  // try {
+  //   const restaurants = await Admin.findAll({
+  //     include: [
+  //       {
+  //         model: AdminInfo,
+  //         model: Locations,
+  //       },
+  //       // {
+  //       //   model: Locations,
+  //       // },
+  //     ],
+  //   });
+  //   res.json(restaurants);
+  // } catch (err) {
+  //   console.error(err.message);
+  //   res.status(500).send("Server Error");
+  // }
+});
+
+router.get("/test", async (req, res) => {
+  const sequelize = new Sequelize("foodnet", "root", "y7b5uwFOODNET", {
+    host: "localhost",
+    dialect: "mysql",
+  });
+  return sequelize
+    .query(
+      `SELECT  ad.id as adminId, ad.fullName AS adminFullName, adLoc.id as adminLocId, adLocTrans.id as adminLocationTranslationId, adLocTrans.name as adminLocationTranslationName, adLocTrans.languageId as adminLocationTranslationLanguageId
+      FROM foodnet.admins as ad
+      INNER JOIN foodnet.adminLocations as adLoc
+      ON ad.id = adLoc.adminId
+      INNER JOIN foodnet.adminLocationTranslations as adLocTrans
+      ON adLoc.id = adLocTrans.adminLocationId
+      where adLocTrans.languageId =2
+      group by adLocTrans.name;`,
+      { type: Sequelize.QueryTypes.SELECT }
+    )
+    .then((results) => {
+      return res.json(results);
     });
-    console.log(restaurants);
-    res.json(restaurants);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send("Server Error");
-  }
+});
+
+router.get("/test/:locationName", async (req, res) => {
+  const sequelize = new Sequelize("foodnet", "root", "y7b5uwFOODNET", {
+    host: "localhost",
+    dialect: "mysql",
+  });
+  const params = req.params.locationName;
+  console.log(params);
+  return sequelize
+    .query(
+      `SELECT  ad.id as adminId, ad.fullName AS adminFullName, adLoc.id as adminLocId, adLocTrans.id as adminLocationTranslationId, adLocTrans.name as adminLocationTranslationName, adLocTrans.languageId as adminLocationTranslationLanguageId
+      FROM foodnet.admins as ad
+      INNER JOIN foodnet.adminLocations as adLoc
+      ON ad.id = adLoc.adminId
+      INNER JOIN foodnet.adminLocationTranslations as adLocTrans
+      ON adLoc.id = adLocTrans.adminLocationId
+      where adLocTrans.languageId =2 and adLocTrans.name LIKE '%${params}%'
+      `,
+      { type: Sequelize.QueryTypes.SELECT }
+    )
+    .then((results) => {
+      console.log(results);
+      console.log(params);
+      return res.json(results);
+    });
 });
 
 //get /restaurants/:id
