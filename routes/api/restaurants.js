@@ -1,17 +1,13 @@
 const express = require("express");
-const request = require("request");
-const config = require("config");
 const router = express.Router();
-const Admin = require("../../models/Admin");
-const AdminInfo = require("../../models/AdminInfo");
-const Locations = require("../../models/AdminLocation");
 const Sequelize = require("sequelize");
 
+const sequelize = new Sequelize("foodnet", "root", "y7b5uwFOODNET", {
+  host: "localhost",
+  dialect: "mysql",
+});
+
 router.get("/test", async (req, res) => {
-  const sequelize = new Sequelize("foodnet", "root", "y7b5uwFOODNET", {
-    host: "localhost",
-    dialect: "mysql",
-  });
   return sequelize
     .query(
       `SELECT  ad.id as adminId, ad.fullName AS adminFullName, adLoc.id as adminLocId, adLocTrans.id as adminLocationTranslationId, adLocTrans.name as adminLocationTranslationName, adLocTrans.languageId as adminLocationTranslationLanguageId
@@ -20,8 +16,7 @@ router.get("/test", async (req, res) => {
       ON ad.id = adLoc.adminId
       INNER JOIN foodnet.adminLocationTranslations as adLocTrans
       ON adLoc.id = adLocTrans.adminLocationId
-      where adLocTrans.languageId =2
-      group by adLocTrans.name;`,
+      where adLocTrans.languageId =2;`,
       { type: Sequelize.QueryTypes.SELECT }
     )
     .then((results) => {
@@ -30,10 +25,6 @@ router.get("/test", async (req, res) => {
 });
 
 router.get("/test/:locationName", async (req, res) => {
-  const sequelize = new Sequelize("foodnet", "root", "y7b5uwFOODNET", {
-    host: "localhost",
-    dialect: "mysql",
-  });
   const params = req.params.locationName;
   console.log(params);
   return sequelize

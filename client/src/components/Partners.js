@@ -36,10 +36,9 @@ function Partners() {
   }, [search, heroes]);
 
   const getHeroes = () => {
-    // setLoading(true);
-    const heroesList = [];
+    const restaurantList = [];
     filteredPartners.map((restaurant) =>
-      heroesList.push(
+      restaurantList.push(
         <div key={restaurant.adminId} className="product-infobx">
           <div className="product-infoleft">
             <img src={restaurant.adminFullName} />
@@ -85,7 +84,7 @@ function Partners() {
         </div>
       )
     );
-    return heroesList;
+    return restaurantList;
   };
 
   // if (isFetching) return <HamburgerLoading />;
