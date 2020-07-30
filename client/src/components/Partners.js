@@ -73,7 +73,10 @@ function Partners() {
           </div>
           <div className="product-inforight">
             <Link
-              to={`/${locationName}/` + restaurant.adminFullName}
+              to={
+                `/${locationName}/` +
+                restaurant.adminFullName.split(" ").join("-")
+              }
               className="menu-btn text-menu"
             >
               Étlap

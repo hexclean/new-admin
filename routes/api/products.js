@@ -15,7 +15,7 @@ const sequelize = new Sequelize("foodnet", "root", "y7b5uwFOODNET", {
 });
 
 router.get("/:locationName/:partnerId", async (req, res) => {
-  const params = req.params.partnerId;
+  const params = req.params.partnerId.split("-").join(" ");
   console.log("params", params);
   const egy = 1;
   return sequelize
@@ -29,7 +29,8 @@ router.get("/:locationName/:partnerId", async (req, res) => {
           variantTranslationName,
           categoryTranslationName,
         } = currentValue;
-        const key = categoryTranslationName + " - " + variantTranslationName;
+        // const key = categoryTranslationName + " - " + variantTranslationName;
+        const key = categoryTranslationName;
         accumulator[key] = accumulator[key] || [];
         accumulator[key].push(currentValue);
         return accumulator;

@@ -85,6 +85,7 @@ exports.postSignup = async (req, res, next) => {
         const admin = await Admin.create({
           email: email,
           password: hashedPassword,
+          fullName: "-",
         });
         await AdminInfo.create({
           adminId: admin.id,
