@@ -29,7 +29,7 @@ router.get("/test/:locationName", async (req, res) => {
   console.log(params);
   return sequelize
     .query(
-      `SELECT  ad.id as adminId, ad.fullName AS adminFullName, adLoc.id as adminLocId, adLocTrans.id as adminLocationTranslationId, adLocTrans.name as adminLocationTranslationName, adLocTrans.languageId as adminLocationTranslationLanguageId
+      `SELECT ad.imageUrl as adminImageUrl, ad.id as adminId, ad.fullName AS adminFullName, adLoc.id as adminLocId, adLocTrans.id as adminLocationTranslationId, adLocTrans.name as adminLocationTranslationName, adLocTrans.languageId as adminLocationTranslationLanguageId
       FROM foodnet.admins as ad
       INNER JOIN foodnet.adminLocations as adLoc
       ON ad.id = adLoc.adminId

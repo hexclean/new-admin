@@ -41,7 +41,7 @@ function Partners() {
       restaurantList.push(
         <div key={restaurant.adminId} className="product-infobx">
           <div className="product-infoleft">
-            <img src={restaurant.adminFullName} />
+            <img src={restaurant.adminImageUrl} />
           </div>
           <div className="product-infocenter">
             <h4>{restaurant.adminFullName}</h4>
