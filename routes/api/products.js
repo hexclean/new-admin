@@ -14,7 +14,9 @@ const sequelize = new Sequelize("foodnet", "root", "y7b5uwFOODNET", {
   dialect: "mysql",
 });
 
-router.get("/test", async (req, res) => {
+router.get("/:locationName/:partnerId", async (req, res) => {
+  const params = req.params.partnerId;
+  console.log("params", params);
   const egy = 1;
   return sequelize
     .query(

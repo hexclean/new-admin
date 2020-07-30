@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useParams, Link } from "react-router-dom";
 
 export function ProductItem() {
   const [products, setProducts] = useState([]);
   const [openFood, setOpenFood] = useState();
+  const partnerId = useParams().partnerId;
+
   useEffect(() => {
     setProducts([]);
     axios
-      .get("/api/products/test")
+      .get(`/api/products/:locationName/${partnerId}`)
       .then((response) => {
         console.log("response", response);
         if (response.data) {
@@ -22,32 +25,30 @@ export function ProductItem() {
 
   const getProducts = () => {
     const productsList = [];
-
-    for (var i = 0; i < products.length; i++) {
-      console.log("products", products);
+    var k = Object.keys(products);
+    for (var i = 0; i < k.length; i++) {
+      console.log(k[i] + ": " + products[k[i]]);
+      console.log("k[0]", k[0]);
       productsList.push(
-        <div key={Math.random().toString(36).substring(7)}>
+        <div key={k[i]}>
           <div className="page-header">
             <div>{openFood}</div>
-            <h2>
-              {products[i].categoryTranslationName} -
-              {products[i].variantTranslationName}
-            </h2>
+            <h2>{k[i]}</h2>
           </div>
           <div className="product-infobx pointer">
-            <h4>{products[i].productTitle}</h4>
+            {/* <h4>{products[i].productTitle}</h4> */}
             <div className="product-infoleft">
-              <img src={"/" + products[i].productTranslationTitle} />
+              {/* <img src={"/" + products[i].productTranslationTitle} /> */}
             </div>
             <div className="product-infocenter">
               <p className="short-desc">
-                {products[i].productTranslationTitle}
+                {/* {products[i].productTranslationTitle} */}
               </p>
             </div>
             <div className="product-inforight">
               <div className="incre-box">
                 <div className="incre-left d-flex justify-content-center">
-                  {products[i].productFinalPrice}
+                  {/* {products[i].productFinalPrice} */}
                 </div>
                 <div
                   className="incre-right"
