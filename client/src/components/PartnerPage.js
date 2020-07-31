@@ -1,11 +1,54 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "../css/PartnersPage.css";
 import { FoodDialog } from "./FoodDialog/FoodDialog";
 import Banner from "./PartnerBanner";
 import ProductItem from "./Product/ProductItem";
+import api from "./utils/api";
+import { useParams, Link } from "react-router-dom";
 
 function PartnerPage() {
   const [openFood, setOpenFood] = useState();
+  const [category, setCategory] = useState([]);
+  const partnerId = useParams().partnerId;
+  useEffect(() => {
+    setCategory([]);
+    api
+      .get(`/category/:locationName/${partnerId}`)
+      .then((response) => {
+        console.log("category", response);
+        if (response.data) {
+          setCategory(response.data);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
+  const getHeroes = () => {
+    const categoryList = [];
+    category.map((cat) =>
+      categoryList.push(
+        <div className="graybox-body">
+          <form>
+            <ul className="check-list">
+              <li>
+                <div className="form-check">
+                  <label>
+                    <input type="radio" name="radio" />
+                    <span className="label-text ">
+                      {cat.categoryTranslationName}
+                    </span>
+                  </label>
+                </div>
+              </li>
+            </ul>
+          </form>
+        </div>
+      )
+    );
+    return categoryList;
+  };
 
   return (
     <div>
@@ -36,116 +79,7 @@ function PartnerPage() {
 
               <div className="graybox margin-bottom-30 mobi-hide">
                 <div className="graybox-heading">SELECTION</div>
-                <div className="graybox-body">
-                  <form>
-                    <ul className="check-list">
-                      <li>
-                        <div className="form-check">
-                          <label>
-                            <input type="radio" name="radio" />
-                            <span className="label-text ">Full range</span>
-                          </label>
-                        </div>
-                      </li>
-
-                      <li>
-                        <div className="form-check">
-                          <label>
-                            <input type="radio" name="radio" />
-                            <span className="label-text">
-                              Our special offer
-                            </span>
-                          </label>
-                        </div>
-                      </li>
-                      <li>
-                        <div className="form-check">
-                          <label>
-                            <input type="radio" name="radio" />
-                            <span className="label-text">McMenü®</span>
-                          </label>
-                        </div>
-                      </li>
-                      <li>
-                        <div className="form-check">
-                          <label>
-                            <input type="radio" name="radio" />
-                            <span className="label-text">
-                              Sandwiches & Wraps
-                            </span>
-                          </label>
-                        </div>
-                      </li>
-
-                      <li>
-                        <div className="form-check">
-                          <label>
-                            <input type="radio" name="radio" />
-                            <span className="label-text">
-                              McMoment® & 1 + 1 menu
-                            </span>
-                          </label>
-                        </div>
-                      </li>
-
-                      <li>
-                        <div className="form-check">
-                          <label>
-                            <input type="radio" name="radio" />
-                            <span className="label-text">Happy Meal</span>
-                          </label>
-                        </div>
-                      </li>
-
-                      <li>
-                        <div className="form-check">
-                          <label>
-                            <input type="radio" name="radio" />
-                            <span className="label-text">Desserts</span>
-                          </label>
-                        </div>
-                      </li>
-
-                      <li>
-                        <div className="form-check">
-                          <label>
-                            <input type="radio" name="radio" />
-                            <span className="label-text">Fries & Snacks</span>
-                          </label>
-                        </div>
-                      </li>
-
-                      <li>
-                        <div className="form-check">
-                          <label>
-                            <input type="radio" name="radio" />
-                            <span className="label-text">
-                              Sauces & dressings
-                            </span>
-                          </label>
-                        </div>
-                      </li>
-
-                      <li>
-                        <div className="form-check">
-                          <label>
-                            <input type="radio" name="radio" />
-                            <span className="label-text">salads</span>
-                          </label>
-                        </div>
-                      </li>
-
-                      <li>
-                        <div className="form-check">
-                          <label>
-                            <input type="radio" name="radio" />
-                            <span className="label-text">Cold drinks</span>
-                          </label>
-                        </div>
-                      </li>
-                    </ul>
-                  </form>
-                </div>
+                {getHeroes()}
               </div>
             </div>
 

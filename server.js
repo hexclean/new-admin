@@ -152,6 +152,8 @@ app.use("/api/login", require("./routes/api/login"));
 app.use("/api/deliveryadress", require("./routes/api/delivery-adress"));
 // app.use("/api/products", require("./routes/api/products"));
 app.use("/api/register", require("./routes/api/register"));
+app.use("/api/category", require("./routes/api/category"));
+
 app.use("/api/profile", require("./routes/api/profile"));
 app.use("/api/locations", require("./routes/api/locations"));
 // app.use("/api/order", require("./routes/api/order"));

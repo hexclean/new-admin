@@ -201,6 +201,9 @@ exports.getAddVariant = async (req, res, next) => {
   }
 
   const cat = await Category.findAll({
+    where: {
+      adminId: req.admin.id,
+    },
     include: [
       {
         model: CategoryTranslation,
@@ -471,9 +474,11 @@ exports.getEditVariant = async (req, res, next) => {
   });
 
   const cat = await Category.findAll({
+    where: { adminId: req.admin.id },
     include: [
       {
         model: CategoryTranslation,
+        where: { adminId: req.admin.id },
       },
       {
         model: ProductVariantTranslation,
