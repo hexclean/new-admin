@@ -26,14 +26,15 @@ export function ProductItem() {
     const productsList = [];
     var k = Object.keys(products);
     for (var i = 0; i < k.length; i++) {
+      productsList.push(
+        <div key={k[i]} className="page-header">
+          <div>{openFood}</div>
+          <h2>{k[i]}</h2>
+        </div>
+      );
       for (var j = 0; j < products[k[i]].length; j++) {
-        console.log(products[k[i]][j].extraTranslationName);
         productsList.push(
           <div key={k[i]}>
-            <div className="page-header">
-              <div>{openFood}</div>
-              <h2>{k[i]}</h2>
-            </div>
             <div className="product-infobx pointer">
               <h4>{products[k[i]][j].productTranslationTitle}</h4>
               <div className="product-infoleft">
@@ -47,7 +48,7 @@ export function ProductItem() {
               <div className="product-inforight">
                 <div className="incre-box">
                   <div className="incre-left d-flex justify-content-center">
-                    {products[k[i]][j].productFinalPrice}
+                    {products[k[i]][j].productFinalPrice} lei
                   </div>
                   <div
                     className="incre-right"
