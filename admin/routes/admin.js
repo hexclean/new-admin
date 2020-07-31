@@ -62,6 +62,18 @@ router.post(
   isAuth,
   adminProfileController.postEditOpeningHours
 );
+
+// search settings
+router.get(
+  "/edit-search-settings/:adminId",
+  adminProfileController.getEditSearchSettings
+);
+// router.post(
+//   "/edit-search-settings",
+//   isAuth,
+//   adminProfileController.postEditOpeningHours
+// );
+//
 router.post("/edit-profile", isAuth, adminProfileController.postEditProfile);
 router.get("/edit-profile/:adminId", adminProfileController.getEditProfile);
 router.get("/dashboard", isAuth, adminProfileController.getDashboard);

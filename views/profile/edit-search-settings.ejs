@@ -1,0 +1,57 @@
+<%- include('../includes/head.ejs') %>
+</head>
+<body class="ms-body ms-aside-left-open ms-primary-theme ms-has-quickbar">
+   <%- include('../includes/navigation.ejs') %> 
+   <main class="body-content">
+      <%- include('../includes/navigation-bar.ejs') %>
+      <div >
+         <div class="ms-content-wrapper editprofiledown">
+          
+            <form 
+               class="ms-content-wrapper"
+               action="/admin/<% if (editing) { %>edit-search-settings<% } %>"
+               method="POST"
+               enctype="multipart/form-data"
+               >
+               <div class="ms-content-wrapper">
+                <div class="row">
+                   <div class="col-md-12">
+                    <h2>Hasznos</h2> 
+                      <div class="row">
+                            <input
+                            type="hidden"
+                            value="4"
+                            name="extraId"
+                            /> 
+                          
+                         
+                            <% for(let i = 0; i < search.length; i++) { %>    
+                         <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 extra_box" data-extra="4">
+                            <div class="ms-card">
+                               <div class="d-flex justify-content-center extra-margin-top">
+                                     <div class="row"> 
+                                        <label class="ms-switch" >                 
+                                           <input type="hidden" value="off" class="status-4" name="status[4]" >          
+                                           <input    data-extraId="4"  class="status-checkbox status-checkbox-4" type="checkbox"> <span class="ms-switch-slider ms-switch-success round"></span>
+                                        </label> 
+                                     </div>
+                               </div>
+                               <div class="ms-card-body">
+                                  <div class="new d-flex justify-content-center extra-name">
+                                     <h6 class="mb-0"><b><%=currentSearchName[i] %></b> </h6>
+                                  </div>
+                               </div>
+                            </div>
+                         </div>
+                         <% } %>
+                      
+                      </div>
+                   </div>
+                </div>
+             </div>
+         </div>
+      </div>
+      </form>
+   </main>
+   <%- include('../includes/end.ejs') %>
+</body>

@@ -23,6 +23,8 @@ const AdminLocation = require("./models/AdminLocation");
 const AdminLocationTranslation = require("./models/AdminLocationTranslation");
 const ProductVariantsExtras = require("./models/ProductVariantsExtras");
 const Language = require("./models/Language");
+const adminHomeSearch = require("./models/adminHomeSearch");
+const adminHomeSearchTranslation = require("./models/adminHomeSearchTranslation");
 const Admin = require("./models/Admin");
 const AdminInfo = require("./models/AdminInfo");
 // Daily Menu
@@ -269,12 +271,6 @@ ProductVariantTranslation.belongsTo(Language, {
 });
 Language.hasMany(ProductVariantTranslation, { foreignKey: "languageId" });
 
-//
-
-///
-
-//
-
 Admin.hasMany(Product);
 
 ProductVariant.belongsTo(Admin, { constrains: true, onDelete: "CASCADE" });
@@ -378,12 +374,16 @@ AdminLocation.belongsTo(Admin, {
 
 Admin.hasMany(AdminLocation, { foreignKey: "adminId" });
 
-// Admin.belongsTo(AdminLocationTranslation, {
-//   constrains: true,
-//   onDelete: "CASCADE",
-// });
+Admin.hasMany(adminHomeSearch, { foreignKey: "adminId" });
+adminHomeSearchTranslation.belongsTo(adminHomeSearch, {
+  as: "adminLTrans",
+  foreignKey: "adminHomeSearchId",
+});
+adminHomeSearch.hasMany(adminHomeSearchTranslation, {
+  foreignKey: "adminHomeSearchId",
+});
 
-// AdminLocationTranslation.hasMany(Admin, { foreignKey: "adminId" });
+Language.hasMany(adminHomeSearchTranslation, { foreignKey: "languageId" });
 
 // app.use((error, req, res, next) => {
 //   res.status(500).render("500", {

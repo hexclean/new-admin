@@ -456,13 +456,6 @@ exports.getEditVariant = async (req, res, next) => {
     ],
   });
   console.log("productVarToExt", productVarToExt);
-  // const productVarToExt = await ProductVariantsExtras.findAll({
-  //   where: {
-  //     productVariantId: {
-  //       [Op.in]: variantId,
-  //     },
-  //   },
-  // });
 
   const ext = await Extras.findAll({
     where: { adminId: req.admin.id },
@@ -486,51 +479,7 @@ exports.getEditVariant = async (req, res, next) => {
       },
     ],
   });
-  // let test = cat[0].productCategoryTranslations[0].productCategoryId;
-  // console.log(
-  //   "cat[0].productCategoryTranslations[0]",
-  //   cat[0].productCategoryTranslations[0]
-  // );
-  // console.log(test[0].id);
-  // let categoryIdJoin = cat[0].productVariantTranslations[0].categoryId;
-  // console.log("categoryIdJoin", categoryIdJoin);
-  // console.log("categoryIdJoin", categoryIdJoin);
-  // console.log(cat[0].productVariantTranslations);
-  // for (let i = cat.length; i >= 0; i--) {
-  //   // console.log(
-  //   //   "cat[0].productVariantTranslations[0].productVariantId",
-  //   //   cat[0].productVariantTranslations[0].productVariantId
-  //   // );
 
-  //   if (
-  //     1 == 1
-  //     // cat[0].productCategoryTranslations[0].productCategoryId == 1
-  //     // cat[i].productVariantTranslations[0].productVariantId == 2
-  //     // cat[i].productCategoryTranslation[0].categoryId == 3
-  //   ) {
-  //     // console.log(cat[0].productCategoryTranslations);
-  //     console.log("i", i);
-  //     // console.log(
-  //     //   "cat[i]",
-  //     //   cat[i].productCategoryTranslations[i].productCategoryId
-  //     // );
-  //     // console.log("yes", cat[i].productCategoryTranslations[i].name);
-  //     // console.log("yes_ID:", cat[i].productCategoryTranslations[i].id);
-  //   } else {
-  //     // next();
-  //     console.log("no");
-  //   }
-  // }
-  // console.log(cat);
-  // console.log(
-  //   "cat[0].productVariantTranslations",
-  //   cat[0].productVariantTranslations
-  // );
-  // console.log(
-  //   "cat[0].productCategoryTranslations",
-  //   cat[0].productCategoryTranslations
-  // );
-  // console.log("cat", cat[0].productCategoryTranslations[0].productCategoryId);
   for (let i = 0; i < productVarToExt.length; i++) {
     var currentLanguage = req.cookies.language;
 

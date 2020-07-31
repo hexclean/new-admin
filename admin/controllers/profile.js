@@ -1,7 +1,8 @@
-const fileHelper = require("../../util/file");
 const Admin = require("../../models/Admin");
 const AdminInfo = require("../../models/AdminInfo");
 const OpeningHours = require("../../models/AdminOpeningHours");
+const AdminHomeSearch = require("../../models/adminHomeSearch");
+const AdminHomeSearchTranslation = require("../../models/adminHomeSearchTranslation");
 
 exports.getEditProfile = async (req, res, next) => {
   adminId = req.admin.id;
@@ -72,7 +73,6 @@ exports.getEditOpeningHours = async (req, res, next) => {
 exports.postEditOpeningHours = async (req, res, next) => {
   const mondayOpen = req.body.mondayOpen;
   const mondayClose = req.body.mondayClose;
-
   const tuesdayOpen = req.body.tuesdayOpen;
   const tuesdayClose = req.body.tuesdayClose;
   const wednesdayOpen = req.body.wednesdayOpen;
@@ -223,4 +223,47 @@ exports.getDashboard = (req, res, next) => {
       error.httpStatusCode = 500;
       return next(error);
     });
+};
+
+// Admin search filters settings
+exports.getEditSearchSettings = async (req, res, next) => {
+  let currentSearchName = [];
+  adminId = req.admin.id;
+  adminIdParams = req.params.adminId;
+  const editMode = req.query.edit;
+  if (!editMode) {
+    return res.redirect("/");
+  }
+
+  const search = await AdminHomeSearch.findAll({
+    where: { adminId: req.admin.id },
+    include: [
+      {
+        model: AdminHomeSearchTranslation,
+      },
+    ],
+  });
+
+  for (let i = 0; i < search.length; i++) {
+    var currentLanguage = req.cookies.language;
+
+    if (currentLanguage == "ro") {
+      currentSearchName[i] =
+        search[i].adminHomeSearchTranslations[0].searchName;
+    } else if (currentLanguage == "hu") {
+      currentSearchName[i] =
+        search[i].adminHomeSearchTranslations[1].searchName;
+    } else {
+      currentSearchName[i] =
+        search[i].adminHomeSearchTranslations[2].searchName;
+    }
+  }
+
+  res.render("profile/edit-search-settings", {
+    pageTitle: "Edit Product",
+    path: "/admin/edit-product",
+    editing: editMode,
+    search: search,
+    currentSearchName: currentSearchName,
+  });
 };
