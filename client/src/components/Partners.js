@@ -118,156 +118,125 @@ function Partners() {
               </div>
 
               <div className="graybox margin-bottom-30">
-                <div className="graybox-heading">USEFUL</div>
+                <div className="graybox-heading">Hasznos</div>
                 <div className="graybox-body">
                   <ul className="check-list">
                     <li>
-                      {" "}
-                      <div className="checkbox">
-                        <input id="checkbox1" type="checkbox" />
-                        <label htmlFor="checkbox1">No shipping cost (40)</label>
-                      </div>
-                    </li>
-                    <li>
-                      {" "}
-                      <div className="checkbox">
-                        <input id="checkbox2" type="checkbox" />
-                        <label htmlFor="checkbox2">
-                          Within 35 minutes (47)
-                        </label>
-                      </div>
-                    </li>
-                    <li>
-                      {" "}
-                      <div className="checkbox">
-                        <input id="checkbox3" type="checkbox" />
-                        <label htmlFor="checkbox3">Photo menu (67)</label>
-                      </div>
-                    </li>
-                    <li>
-                      {" "}
-                      <div className="checkbox">
-                        <input id="checkbox4" type="checkbox" />
-                        <label htmlFor="checkbox4">Food (12)</label>
-                      </div>
-                    </li>
-                    <li>
-                      <div className="checkbox">
-                        <input id="checkbox5" type="checkbox" />
-                        <label htmlFor="checkbox5">News (16)</label>
-                      </div>{" "}
-                    </li>
-                    <li>
-                      <div className="checkbox">
-                        <input id="checkbox6" type="checkbox" />
-                        <label htmlFor="checkbox6">NetWaiter GO (38)</label>
-                      </div>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-
-              <div className="graybox margin-bottom-30">
-                <div className="graybox-heading"> KITCHENS</div>
-                <div className="graybox-body">
-                  <ul className="check-list">
-                    <li>
-                      {" "}
-                      <div className="checkbox">
-                        <input id="checkbox1" type="checkbox" />
-                        <label htmlFor="checkbox1">Hamburger (57)</label>
-                      </div>
-                    </li>
-                    <li>
-                      {" "}
-                      <div className="checkbox">
-                        <input id="checkbox2" type="checkbox" />
-                        <label htmlFor="checkbox2">Pizza (59)</label>
-                      </div>
-                    </li>
-                    <li>
-                      {" "}
-                      <div className="checkbox">
-                        <input id="checkbox3" type="checkbox" />
-                        <label htmlFor="checkbox3">Algida (10)</label>
-                      </div>
-                    </li>
-                    <li>
-                      {" "}
-                      <div className="checkbox">
-                        <input id="checkbox4" type="checkbox" />
-                        <label htmlFor="checkbox4">Hungarian (65)</label>
-                      </div>
-                    </li>
-                    <li>
-                      <div className="checkbox">
-                        <input id="checkbox5" type="checkbox" />
-                        <label htmlFor="checkbox5">Thai (7)</label>
-                      </div>{" "}
-                    </li>
-                    <li>
-                      <div className="checkbox">
-                        <input id="checkbox6" type="checkbox" />
-                        <label htmlFor="checkbox6">Italian (32)</label>
-                      </div>
-                    </li>
-
-                    <li>
-                      <div className="checkbox">
-                        <input id="checkbox6" type="checkbox" />
-                        <label htmlFor="checkbox6">Mexican (12)</label>
-                      </div>
-                    </li>
-
-                    <li>
-                      <div className="checkbox">
-                        <input id="checkbox6" type="checkbox" />
-                        <label htmlFor="checkbox6">Indian (3)</label>
-                      </div>
-                    </li>
-
-                    <li>
-                      <div className="checkbox">
-                        <input id="checkbox6" type="checkbox" />
-                        <label htmlFor="checkbox6">Chinese (5)</label>
-                      </div>
-                    </li>
-
-                    <li>
-                      <div className="checkbox">
-                        <input id="checkbox6" type="checkbox" />
-                        <label htmlFor="checkbox6">Japan (5)</label>
-                      </div>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-              <div className="graybox margin-bottom-30">
-                <div className="graybox-heading"> PAYMENT OPTIONS</div>
-                <div className="graybox-body">
-                  <ul className="check-list">
-                    <li>
-                      {" "}
-                      <div className="checkbox">
-                        <input id="checkbox1" type="checkbox" />
-                        <label htmlFor="checkbox1">Cash (138)</label>
-                      </div>
-                    </li>
-
-                    <li>
-                      {" "}
                       <div className="checkbox">
                         <input id="checkbox1" type="checkbox" />
                         <label htmlFor="checkbox1">
-                          Credit card (1 click payment also) - recommended (183)
+                          Nincs szállítási költség (40)
                         </label>
                       </div>
                     </li>
                     <li>
-                      {" "}
+                      <div className="checkbox">
+                        <input id="checkbox2" type="checkbox" />
+                        <label htmlFor="checkbox2">1 órán belül (47)</label>
+                      </div>
+                    </li>
+                    <li>
+                      <div className="checkbox">
+                        <input id="checkbox3" type="checkbox" />
+                        <label htmlFor="checkbox3">Fényképes étlap (67)</label>
+                      </div>
+                    </li>
+                    <li>
+                      <div className="checkbox">
+                        <input id="checkbox3" type="checkbox" />
+                        <label htmlFor="checkbox3">Újdonságok (67)</label>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+              <div className="graybox margin-bottom-30">
+                <div className="graybox-heading">Konyhák</div>
+                <div className="graybox-body">
+                  <ul className="check-list">
+                    <li>
                       <div className="checkbox">
                         <input id="checkbox1" type="checkbox" />
-                        <label htmlFor="checkbox1">NICE card (167)</label>
+                        <label htmlFor="checkbox1">Pizza (57)</label>
+                      </div>
+                    </li>
+                    <li>
+                      <div className="checkbox">
+                        <input id="checkbox2" type="checkbox" />
+                        <label htmlFor="checkbox2">Hamburger (59)</label>
+                      </div>
+                    </li>
+                    <li>
+                      <div className="checkbox">
+                        <input id="checkbox3" type="checkbox" />
+                        <label htmlFor="checkbox3">Vegán (10)</label>
+                      </div>
+                    </li>
+                    <li>
+                      <div className="checkbox">
+                        <input id="checkbox4" type="checkbox" />
+                        <label htmlFor="checkbox4">Vegetáriánus (65)</label>
+                      </div>
+                    </li>
+                    <li>
+                      <div className="checkbox">
+                        <input id="checkbox5" type="checkbox" />
+                        <label htmlFor="checkbox5">Szendvics (7)</label>
+                      </div>{" "}
+                    </li>
+                    <li>
+                      <div className="checkbox">
+                        <input id="checkbox6" type="checkbox" />
+                        <label htmlFor="checkbox6">Saláta (32)</label>
+                      </div>
+                    </li>
+
+                    <li>
+                      <div className="checkbox">
+                        <input id="checkbox6" type="checkbox" />
+                        <label htmlFor="checkbox6">Halétel (12)</label>
+                      </div>
+                    </li>
+
+                    <li>
+                      <div className="checkbox">
+                        <input id="checkbox6" type="checkbox" />
+                        <label htmlFor="checkbox6">Grill (3)</label>
+                      </div>
+                    </li>
+
+                    <li>
+                      <div className="checkbox">
+                        <input id="checkbox6" type="checkbox" />
+                        <label htmlFor="checkbox6">Gyros (5)</label>
+                      </div>
+                    </li>
+
+                    <li>
+                      <div className="checkbox">
+                        <input id="checkbox6" type="checkbox" />
+                        <label htmlFor="checkbox6">Reggelizőhely (5)</label>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div className="graybox margin-bottom-30">
+                <div className="graybox-heading">Fizetési lehetőségek</div>
+                <div className="graybox-body">
+                  <ul className="check-list">
+                    <li>
+                      <div className="checkbox">
+                        <input id="checkbox1" type="checkbox" />
+                        <label htmlFor="checkbox1">Készpénz (138)</label>
+                      </div>
+                    </li>
+
+                    <li>
+                      <div className="checkbox">
+                        <input id="checkbox1" type="checkbox" />
+                        <label htmlFor="checkbox1">Bankkártya (183)</label>
                       </div>
                     </li>
                   </ul>
