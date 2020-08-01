@@ -45,7 +45,7 @@ router.get("/search", async (req, res) => {
     });
 });
 
-router.get("/test/:locationName", async (req, res) => {
+router.get("/list/:locationName", async (req, res) => {
   const params = req.params.locationName;
   console.log(params);
   return sequelize
