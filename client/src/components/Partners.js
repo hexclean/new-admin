@@ -4,10 +4,12 @@ import { useParams, Link } from "react-router-dom";
 import ShopMenu from "../components/Shared/ShopMenu";
 import api from "./utils/api";
 import { getFilteredProducts } from "./test12";
+import { useTranslation } from "react-i18next";
 
 import HamburgerLoading from "./Shared/HamburgerLoading";
 import Checkbox from "./Checkbox";
 function Partners() {
+  const { t } = useTranslation();
   const [heroes, setHeroes] = useState([]);
   const [search, setSearch] = useState("");
   const [filteredPartners, setFilteredPartners] = useState([]);
@@ -18,12 +20,13 @@ function Partners() {
   const [filteredResult, setfilteredResult] = useState(0);
 
   const locationName = useParams().locationName;
+
+  // Amikor a listából kiválasztom a várost akkor hívódik meg
   useEffect(() => {
     setHeroes([]);
     api
       .get(`/restaurants/test/${locationName}`)
       .then((response) => {
-        console.log("response", response);
         if (response.data) {
           setHeroes(response.data);
         }
@@ -33,12 +36,12 @@ function Partners() {
       });
   }, []);
 
+  // Keresési feltételek listázása
   useEffect(() => {
     setCategories([]);
     api
       .get("/restaurants/search")
       .then((response) => {
-        console.log("response", response);
         if (response.data) {
           setCategories(response.data);
         }
@@ -48,21 +51,7 @@ function Partners() {
       });
   }, []);
 
-  useEffect(() => {
-    setfilteredResult([]);
-    api
-      .post("/restaurants/ok12")
-      .then((response) => {
-        console.log("response", response);
-        if (response.data) {
-          setfilteredResult(response.data);
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
-
+  // Amikor az inputba keresek név szerint az étteremre akkor hívódik meg
   useEffect(() => {
     setFilteredPartners(
       heroes.filter((restaurant) => {
@@ -73,9 +62,23 @@ function Partners() {
     );
   }, [search, heroes]);
 
+  // Kereseses
+  useEffect(() => {
+    setfilteredResult([]);
+    api
+      .post("/restaurants/ok12")
+      .then((response) => {
+        console.log("/restaurants/ok12", response);
+        if (response.data) {
+          setfilteredResult(response.data);
+        }
+      })
+      .catch((err) => {
+        console.log("nem hivodik");
+        console.log(err);
+      });
+  }, []);
   const handleFilters = (filters, filterBy) => {
-    // console.log("Partners", filters, filterBy);
-    console.log("THIS IS FILTER", filters);
     const newFilters = { ...myFilters };
     newFilters.filters[filterBy] = filters;
     loadFilteredResults(myFilters.filters);
@@ -83,10 +86,19 @@ function Partners() {
   };
 
   const loadFilteredResults = (newFilters) => {
-    getFilteredProducts(newFilters).then((data) => {
-      setfilteredResult(data);
-    });
+    console.log("---");
+    console.log("newFilters", newFilters);
+    console.log("+++++++++++");
   };
+
+  // const loadFilteredResults = (newFilters) => {
+  //   const list = [];
+  //   newFilters.map((restaurant) =>
+  //     list.push(<div className="product-infobx">{restaurant.id}</div>)
+  //   );
+  //   console.log("list", list);
+  //   return list;
+  // };
 
   const getHeroes = () => {
     const restaurantList = [];
@@ -146,6 +158,7 @@ function Partners() {
   // if (isFetching) return <HamburgerLoading />;
   return (
     <div>
+      {loadFilteredResults()}
       {JSON.stringify(filteredResult)}
       <div className="main-container">
         <div className="container">
@@ -355,7 +368,9 @@ function Partners() {
                           onChange={(e) => setSearch(e.target.value)}
                         />
                         <div className="info-box">
-                          <span>{heroes.id} találat</span>
+                          <span>
+                            {heroes.id} {t("Thanks.1")}
+                          </span>
                         </div>
                       </form>
                     </div>

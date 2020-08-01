@@ -40,49 +40,7 @@ router.get("/search", async (req, res) => {
       { type: Sequelize.QueryTypes.SELECT }
     )
     .then((results) => {
-      return res.json(results);
-    });
-});
-
-router.get("/search/by/category", async (req, res) => {
-  let findArgs = {};
-
-  for (let key in req.body.filters) {
-    if (req.body.filters[key].length > 0) {
-      findArgs[key] = req.body.filters[key];
-    }
-  }
-
-  // Product.find(findArgs)
-  //   .select("-photo")
-  //   .populate("category")
-  //   .sort([[sortBy, order]])
-  //   .skip(skip)
-  //   .limit(limit)
-  //   .exec((err, data) => {
-  //     if (err) {
-  //       return res.status(400).json({
-  //         error: "Products not found",
-  //       });
-  //     }
-  //     res.json({
-  //       size: data.length,
-  //       data,
-  //     });
-  //   });
-
-  return sequelize
-    .query(
-      `SELECT  *
-      FROM foodnet.admins as ad
-      INNER JOIN foodnet.adminHomeSearches as sc
-      ON ad.id = sc.adminId
-      INNER JOIN foodnet.adminHomeSearchTranslations as sctrans
-      ON sc.id = sctrans.adminHomeSearchId
-      where sctrans.languageId =2 and sctrans.active=1`,
-      { type: Sequelize.QueryTypes.SELECT }
-    )
-    .then((results) => {
+      console.log("ez hivodik meg a kereso listanak");
       return res.json(results);
     });
 });
@@ -130,16 +88,7 @@ router.get("/ok12", async (req, res) => {
 
   for (let key in req.body.filters) {
     if (req.body.filters[key].length > 0) {
-      if (key === "price") {
-        // gte -  greater than price [0-10]
-        // lte - less than
-        findArgs[key] = {
-          $gte: req.body.filters[key][0],
-          $lte: req.body.filters[key][1],
-        };
-      } else {
-        findArgs[key] = req.body.filters[key];
-      }
+      findArgs[key] = req.body.filters[key];
     }
   }
 
@@ -161,7 +110,7 @@ router.get("/ok12", async (req, res) => {
     });
 
     res.json(products);
-    console.log("products", products);
+    console.log("ez a vegso keresett parnerek ");
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Server error");
