@@ -1,6 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const Sequelize = require("sequelize");
+const Admin = require("../../models/Admin");
+const adminHomeSearch = require("../../models/adminHomeSearch");
+const adminHomeSearchTranslation = require("../../models/adminHomeSearchTranslation");
 
 const sequelize = new Sequelize("foodnet", "root", "y7b5uwFOODNET", {
   host: "localhost",
@@ -25,6 +28,49 @@ router.get("/test", async (req, res) => {
 });
 
 router.get("/search", async (req, res) => {
+  return sequelize
+    .query(
+      `SELECT  *
+      FROM foodnet.admins as ad
+      INNER JOIN foodnet.adminHomeSearches as sc
+      ON ad.id = sc.adminId
+      INNER JOIN foodnet.adminHomeSearchTranslations as sctrans
+      ON sc.id = sctrans.adminHomeSearchId
+      where sctrans.languageId =2 and sctrans.active=1`,
+      { type: Sequelize.QueryTypes.SELECT }
+    )
+    .then((results) => {
+      return res.json(results);
+    });
+});
+
+router.get("/search/by/category", async (req, res) => {
+  let findArgs = {};
+
+  for (let key in req.body.filters) {
+    if (req.body.filters[key].length > 0) {
+      findArgs[key] = req.body.filters[key];
+    }
+  }
+
+  // Product.find(findArgs)
+  //   .select("-photo")
+  //   .populate("category")
+  //   .sort([[sortBy, order]])
+  //   .skip(skip)
+  //   .limit(limit)
+  //   .exec((err, data) => {
+  //     if (err) {
+  //       return res.status(400).json({
+  //         error: "Products not found",
+  //       });
+  //     }
+  //     res.json({
+  //       size: data.length,
+  //       data,
+  //     });
+  //   });
+
   return sequelize
     .query(
       `SELECT  *
@@ -78,22 +124,47 @@ router.get("/restautants/:id", async (req, res) => {
       console.log(results);
     });
 });
-// @route    GET api/profile/user/:user_id
-// @desc     Get profile by user ID
-// @access   Public
-router.get("/:id", async (req, res) => {
-  try {
-    const products = await Product.find(req.params.adminId);
 
-    if (!products) return res.status(400).json({ msg: "products not found" });
+router.get("/ok12", async (req, res) => {
+  let findArgs = [16, 17];
+
+  for (let key in req.body.filters) {
+    if (req.body.filters[key].length > 0) {
+      if (key === "price") {
+        // gte -  greater than price [0-10]
+        // lte - less than
+        findArgs[key] = {
+          $gte: req.body.filters[key][0],
+          $lte: req.body.filters[key][1],
+        };
+      } else {
+        findArgs[key] = req.body.filters[key];
+      }
+    }
+  }
+
+  try {
+    const products = await Admin.findAll({
+      include: [
+        {
+          model: adminHomeSearch,
+          include: [
+            {
+              model: adminHomeSearchTranslation,
+              where: {
+                id: { [Sequelize.Op.in]: findArgs },
+              },
+            },
+          ],
+        },
+      ],
+    });
 
     res.json(products);
+    console.log("products", products);
   } catch (err) {
     console.error(err.message);
-    if (err.kind == "ObjectId") {
-      return res.status(400).json({ msg: "products not found" });
-    }
-    res.status(500).send("Server Error");
+    res.status(500).send("Server error");
   }
 });
 

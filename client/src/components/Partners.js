@@ -3,6 +3,8 @@ import React, { useEffect, useContext, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import ShopMenu from "../components/Shared/ShopMenu";
 import api from "./utils/api";
+import { getFilteredProducts } from "./test12";
+
 import HamburgerLoading from "./Shared/HamburgerLoading";
 import Checkbox from "./Checkbox";
 function Partners() {
@@ -13,6 +15,7 @@ function Partners() {
   const [myFilters, setMyFilters] = useState({
     filters: { category: [] },
   });
+  const [filteredResult, setfilteredResult] = useState(0);
 
   const locationName = useParams().locationName;
   useEffect(() => {
@@ -46,6 +49,21 @@ function Partners() {
   }, []);
 
   useEffect(() => {
+    setfilteredResult([]);
+    api
+      .post("/restaurants/ok12")
+      .then((response) => {
+        console.log("response", response);
+        if (response.data) {
+          setfilteredResult(response.data);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
+  useEffect(() => {
     setFilteredPartners(
       heroes.filter((restaurant) => {
         return restaurant.adminFullName
@@ -57,6 +75,7 @@ function Partners() {
 
   const handleFilters = (filters, filterBy) => {
     // console.log("Partners", filters, filterBy);
+    console.log("THIS IS FILTER", filters);
     const newFilters = { ...myFilters };
     newFilters.filters[filterBy] = filters;
     loadFilteredResults(myFilters.filters);
@@ -64,7 +83,9 @@ function Partners() {
   };
 
   const loadFilteredResults = (newFilters) => {
-    console.log("newFilters", newFilters);
+    getFilteredProducts(newFilters).then((data) => {
+      setfilteredResult(data);
+    });
   };
 
   const getHeroes = () => {
@@ -125,7 +146,7 @@ function Partners() {
   // if (isFetching) return <HamburgerLoading />;
   return (
     <div>
-      {JSON.stringify(myFilters)}
+      {JSON.stringify(filteredResult)}
       <div className="main-container">
         <div className="container">
           <div className="row">
