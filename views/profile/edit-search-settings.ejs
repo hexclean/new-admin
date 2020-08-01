@@ -1,4 +1,16 @@
 <%- include('../includes/head.ejs') %>
+<script>
+    $(document).ready(function() {
+       $('.status-checkbox').click(function() {
+          var searchId = $(this).attr('data-searchId');
+          if($(this).is(':checked')) {
+             $('.status-'+searchId).val('on');
+          } else {
+             $('.status-'+searchId).val('off');
+          }
+       });
+    });
+ </script>
 </head>
 <body class="ms-body ms-aside-left-open ms-primary-theme ms-has-quickbar">
    <%- include('../includes/navigation.ejs') %> 
@@ -21,18 +33,38 @@
                             <input
                             type="hidden"
                             value="4"
-                            name="extraId"
+                            name="searchId"
                             /> 
-                          
+                            <% if (editing) { %>
+                                <% for (let i = 0; i < isActive.length; i++) { %>
+                                   <% if (isActive[i].active ==1) { %>
+                                      
+                                      <script>
+                                          $(document).ready(function() {
+                                          var activeCheckbox ="<%= isActive[i].active %>";
+                                          $('.status-checkbox-'+activeCheckbox).prop('checked', true);
+                                          $('.status-'+activeCheckbox).val('on');
+                                          });
+                                      </script>
+                                         
+                                      <% } 
+                                   %>
+                                <% } %>
+                                <% } %>
                          
-                            <% for(let i = 0; i < search.length; i++) { %>    
+                            <% for(let i = 0; i < search.length; i++) { %>
+                                <input
+                                type="hidden"
+                                value="<%= search[i].adminHomeSearchTranslations[0].searchId %>"
+                                name="searchId"
+                                />    
                          <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 extra_box" data-extra="4">
                             <div class="ms-card">
                                <div class="d-flex justify-content-center extra-margin-top">
                                      <div class="row"> 
                                         <label class="ms-switch" >                 
-                                           <input type="hidden" value="off" class="status-4" name="status[4]" >          
-                                           <input    data-extraId="4"  class="status-checkbox status-checkbox-4" type="checkbox"> <span class="ms-switch-slider ms-switch-success round"></span>
+                                           <input type="hidden" value="off" class="status-<%= search[i].adminHomeSearchTranslations[0].active %>" name="status[<%= search[i].adminHomeSearchTranslations[0].active %>]" >          
+                                           <input data-searchId="<%= search[i].adminHomeSearchTranslations[0].active %>" class="status-checkbox status-checkbox-<%= search[i].adminHomeSearchTranslations[0].active %>" type="checkbox"> <span class="ms-switch-slider ms-switch-success round"></span>
                                         </label> 
                                      </div>
                                </div>
@@ -44,7 +76,10 @@
                             </div>
                          </div>
                          <% } %>
-                      
+                         <button class="btn btn-success has-icon" id="votebutton" type="submit">
+                            <% if (editing) { %>Update Product<% } else { %>Add
+                            Product<% } %>
+                            </button>
                       </div>
                    </div>
                 </div>

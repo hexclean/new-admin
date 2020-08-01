@@ -13,60 +13,60 @@ const adminHomeSearchTranslation = sequelize.define(
     searchName: {
       type: Sequelize.STRING,
     },
-    name: {
-      type: Sequelize.STRING,
-    },
-    freeDelivery: {
-      type: Sequelize.INTEGER,
-    },
-    fastDelivery: {
-      type: Sequelize.INTEGER,
-    },
-    photoMenu: {
-      type: Sequelize.INTEGER,
-    },
-    newest: {
-      type: Sequelize.INTEGER,
-    },
-    pizza: {
-      type: Sequelize.INTEGER,
-    },
-    hamburger: {
-      type: Sequelize.INTEGER,
-    },
-    vegan: {
-      type: Sequelize.INTEGER,
-    },
-    vegetarian: {
-      type: Sequelize.INTEGER,
-    },
-    sandwich: {
-      type: Sequelize.INTEGER,
-    },
-    salad: {
-      type: Sequelize.INTEGER,
-    },
-    fish: {
-      type: Sequelize.INTEGER,
-    },
-    grill: {
-      type: Sequelize.INTEGER,
-    },
-    gyros: {
-      type: Sequelize.INTEGER,
-    },
-    breakfast: {
-      type: Sequelize.INTEGER,
-    },
-    money: {
-      type: Sequelize.INTEGER,
-    },
-    card: {
-      type: Sequelize.INTEGER,
-    },
-    courier: {
-      type: Sequelize.INTEGER,
-    },
+    // name: {
+    //   type: Sequelize.STRING,
+    // },
+    // freeDelivery: {
+    //   type: Sequelize.INTEGER,
+    // },
+    // fastDelivery: {
+    //   type: Sequelize.INTEGER,
+    // },
+    // photoMenu: {
+    //   type: Sequelize.INTEGER,
+    // },
+    // newest: {
+    //   type: Sequelize.INTEGER,
+    // },
+    // pizza: {
+    //   type: Sequelize.INTEGER,
+    // },
+    // hamburger: {
+    //   type: Sequelize.INTEGER,
+    // },
+    // vegan: {
+    //   type: Sequelize.INTEGER,
+    // },
+    // vegetarian: {
+    //   type: Sequelize.INTEGER,
+    // },
+    // sandwich: {
+    //   type: Sequelize.INTEGER,
+    // },
+    // salad: {
+    //   type: Sequelize.INTEGER,
+    // },
+    // fish: {
+    //   type: Sequelize.INTEGER,
+    // },
+    // grill: {
+    //   type: Sequelize.INTEGER,
+    // },
+    // gyros: {
+    //   type: Sequelize.INTEGER,
+    // },
+    // breakfast: {
+    //   type: Sequelize.INTEGER,
+    // },
+    // money: {
+    //   type: Sequelize.INTEGER,
+    // },
+    // card: {
+    //   type: Sequelize.INTEGER,
+    // },
+    // courier: {
+    //   type: Sequelize.INTEGER,
+    // },
     active: {
       type: Sequelize.INTEGER,
     },

@@ -3,6 +3,7 @@ const AdminInfo = require("../../models/AdminInfo");
 const OpeningHours = require("../../models/AdminOpeningHours");
 const AdminHomeSearch = require("../../models/adminHomeSearch");
 const AdminHomeSearchTranslation = require("../../models/adminHomeSearchTranslation");
+const Sequelize = require("sequelize");
 
 exports.getEditProfile = async (req, res, next) => {
   adminId = req.admin.id;
@@ -230,6 +231,7 @@ exports.getEditSearchSettings = async (req, res, next) => {
   let currentSearchName = [];
   adminId = req.admin.id;
   adminIdParams = req.params.adminId;
+  console.log("adminIdParams", adminIdParams);
   const editMode = req.query.edit;
   if (!editMode) {
     return res.redirect("/");
@@ -265,5 +267,52 @@ exports.getEditSearchSettings = async (req, res, next) => {
     editing: editMode,
     search: search,
     currentSearchName: currentSearchName,
+    isActive: search[0].adminHomeSearchTranslations,
   });
+};
+
+exports.postEditxd = async (req, res, next) => {
+  const searchedId = [1, 2, 3, 4, 5];
+  var filteredStatus = req.body.status.filter(Boolean);
+  console.log("filteredStatus", filteredStatus);
+
+  const productVarToExt = AdminHomeSearch.findAll({
+    include: [
+      {
+        model: AdminHomeSearchTranslation,
+      },
+    ],
+  })
+    .then((variant) => {
+      async function msg() {
+        if (true) {
+          const Op = Sequelize.Op;
+          for (let i = 0; i <= 5; i++) {
+            // console.log("i", i);
+            // console.log("filteredStatus[i]", filteredStatus[i]);
+            let srcId = [searchedId[i]];
+            console.log("filteredStatus[i]", filteredStatus[i]);
+            await AdminHomeSearchTranslation.update(
+              {
+                active: filteredStatus[i] == "on" ? 1 : 0,
+              },
+              {
+                where: {
+                  adminHomeSearchId: {
+                    [Op.in]: srcId,
+                  },
+                },
+              }
+            );
+          }
+        }
+      }
+      msg();
+      res.redirect("http://localhost:5000/");
+    })
+    .catch((err) => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
 };

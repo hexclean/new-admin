@@ -24,6 +24,23 @@ router.get("/test", async (req, res) => {
     });
 });
 
+router.get("/search", async (req, res) => {
+  return sequelize
+    .query(
+      `SELECT  *
+      FROM foodnet.admins as ad
+      INNER JOIN foodnet.adminHomeSearches as sc
+      ON ad.id = sc.adminId
+      INNER JOIN foodnet.adminHomeSearchTranslations as sctrans
+      ON sc.id = sctrans.adminHomeSearchId
+      where sctrans.languageId =2;`,
+      { type: Sequelize.QueryTypes.SELECT }
+    )
+    .then((results) => {
+      return res.json(results);
+    });
+});
+
 router.get("/test/:locationName", async (req, res) => {
   const params = req.params.locationName;
   console.log(params);

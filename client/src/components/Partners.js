@@ -4,11 +4,13 @@ import { useParams, Link } from "react-router-dom";
 import ShopMenu from "../components/Shared/ShopMenu";
 import api from "./utils/api";
 import HamburgerLoading from "./Shared/HamburgerLoading";
-
+import Checkbox from "./Checkbox";
 function Partners() {
   const [heroes, setHeroes] = useState([]);
   const [search, setSearch] = useState("");
   const [filteredPartners, setFilteredPartners] = useState([]);
+  const [categories, setCategories] = useState([]);
+
   const locationName = useParams().locationName;
   useEffect(() => {
     setHeroes([]);
@@ -26,6 +28,21 @@ function Partners() {
   }, []);
 
   useEffect(() => {
+    setCategories([]);
+    api
+      .get("/restaurants/search")
+      .then((response) => {
+        console.log("response", response);
+        if (response.data) {
+          setCategories(response.data);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
+  useEffect(() => {
     setFilteredPartners(
       heroes.filter((restaurant) => {
         return restaurant.adminFullName
@@ -34,6 +51,23 @@ function Partners() {
       })
     );
   }, [search, heroes]);
+
+  // const getCategories = () => {
+  //   const categoryList = [];
+  //   categories.map((cat) =>
+  //     categoryList.push(
+  //       <ul className="check-list">
+  //         <li>
+  //           <div className="checkbox">
+  //             <input id="checkbox1" type="checkbox" />
+  //             <label htmlFor="checkbox1">{cat.searchName}</label>
+  //           </div>
+  //         </li>
+  //       </ul>
+  //     )
+  //   );
+  //   return categoryList;
+  // };
 
   const getHeroes = () => {
     const restaurantList = [];
@@ -121,37 +155,12 @@ function Partners() {
                 <div className="graybox-heading">Hasznos</div>
                 <div className="graybox-body">
                   <ul className="check-list">
-                    <li>
-                      <div className="checkbox">
-                        <input id="checkbox1" type="checkbox" />
-                        <label htmlFor="checkbox1">
-                          Nincs szállítási költség (40)
-                        </label>
-                      </div>
-                    </li>
-                    <li>
-                      <div className="checkbox">
-                        <input id="checkbox2" type="checkbox" />
-                        <label htmlFor="checkbox2">1 órán belül (47)</label>
-                      </div>
-                    </li>
-                    <li>
-                      <div className="checkbox">
-                        <input id="checkbox3" type="checkbox" />
-                        <label htmlFor="checkbox3">Fényképes étlap (67)</label>
-                      </div>
-                    </li>
-                    <li>
-                      <div className="checkbox">
-                        <input id="checkbox3" type="checkbox" />
-                        <label htmlFor="checkbox3">Újdonságok (67)</label>
-                      </div>
-                    </li>
+                    <Checkbox categories={categories} />
                   </ul>
                 </div>
               </div>
 
-              <div className="graybox margin-bottom-30">
+              {/* <div className="graybox margin-bottom-30">
                 <div className="graybox-heading">Konyhák</div>
                 <div className="graybox-body">
                   <ul className="check-list">
@@ -241,7 +250,7 @@ function Partners() {
                     </li>
                   </ul>
                 </div>
-              </div>
+              </div> */}
             </div>
             <div className="col-md-9">
               <div className="tab-menu">
