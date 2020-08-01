@@ -10,6 +10,9 @@ function Partners() {
   const [search, setSearch] = useState("");
   const [filteredPartners, setFilteredPartners] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [myFilters, setMyFilters] = useState({
+    filters: { category: [] },
+  });
 
   const locationName = useParams().locationName;
   useEffect(() => {
@@ -52,22 +55,17 @@ function Partners() {
     );
   }, [search, heroes]);
 
-  // const getCategories = () => {
-  //   const categoryList = [];
-  //   categories.map((cat) =>
-  //     categoryList.push(
-  //       <ul className="check-list">
-  //         <li>
-  //           <div className="checkbox">
-  //             <input id="checkbox1" type="checkbox" />
-  //             <label htmlFor="checkbox1">{cat.searchName}</label>
-  //           </div>
-  //         </li>
-  //       </ul>
-  //     )
-  //   );
-  //   return categoryList;
-  // };
+  const handleFilters = (filters, filterBy) => {
+    // console.log("Partners", filters, filterBy);
+    const newFilters = { ...myFilters };
+    newFilters.filters[filterBy] = filters;
+    loadFilteredResults(myFilters.filters);
+    setMyFilters(newFilters);
+  };
+
+  const loadFilteredResults = (newFilters) => {
+    console.log("newFilters", newFilters);
+  };
 
   const getHeroes = () => {
     const restaurantList = [];
@@ -127,6 +125,7 @@ function Partners() {
   // if (isFetching) return <HamburgerLoading />;
   return (
     <div>
+      {JSON.stringify(myFilters)}
       <div className="main-container">
         <div className="container">
           <div className="row">
@@ -155,7 +154,12 @@ function Partners() {
                 <div className="graybox-heading">Hasznos</div>
                 <div className="graybox-body">
                   <ul className="check-list">
-                    <Checkbox categories={categories} />
+                    <Checkbox
+                      categories={categories}
+                      handleFilters={(filters) =>
+                        handleFilters(filters, "category")
+                      }
+                    />
                   </ul>
                 </div>
               </div>

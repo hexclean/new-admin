@@ -33,7 +33,7 @@ router.get("/search", async (req, res) => {
       ON ad.id = sc.adminId
       INNER JOIN foodnet.adminHomeSearchTranslations as sctrans
       ON sc.id = sctrans.adminHomeSearchId
-      where sctrans.languageId =2;`,
+      where sctrans.languageId =2 and sctrans.active=1`,
       { type: Sequelize.QueryTypes.SELECT }
     )
     .then((results) => {
