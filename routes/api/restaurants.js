@@ -47,7 +47,6 @@ router.get("/search", async (req, res) => {
 
 router.get("/list/:locationName", async (req, res) => {
   const params = req.params.locationName;
-  console.log(params);
   return sequelize
     .query(
       `SELECT ad.imageUrl as adminImageUrl, ad.id as adminId, ad.fullName AS adminFullName, adLoc.id as adminLocId, adLocTrans.id as adminLocationTranslationId, adLocTrans.name as adminLocationTranslationName, adLocTrans.languageId as adminLocationTranslationLanguageId
@@ -61,8 +60,6 @@ router.get("/list/:locationName", async (req, res) => {
       { type: Sequelize.QueryTypes.SELECT }
     )
     .then((results) => {
-      console.log(results);
-      console.log(params);
       return res.json(results);
     });
 });
@@ -83,8 +80,8 @@ router.get("/restautants/:id", async (req, res) => {
     });
 });
 
-router.get("/ok12", async (req, res) => {
-  let findArgs = [16, 17];
+router.post("/ok12", async (req, res) => {
+  let findArgs = [2, 16, 17];
 
   for (let key in req.body.filters) {
     if (req.body.filters[key].length > 0) {
@@ -102,6 +99,7 @@ router.get("/ok12", async (req, res) => {
               model: adminHomeSearchTranslation,
               where: {
                 id: { [Sequelize.Op.in]: findArgs },
+                active: 1,
               },
             },
           ],

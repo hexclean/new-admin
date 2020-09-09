@@ -9,14 +9,14 @@ import Checkbox from "./Checkbox";
 
 function Partners() {
   const { t } = useTranslation();
-  const [heroes, setRestaurants] = useState([]);
+  const [restaurants, setRestaurants] = useState([]);
   const [search, setSearch] = useState("");
   const [filteredRestaurants, setfilteredRestaurants] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [filteredResults, setFilteredResults] = useState(0);
   const [myFilters, setMyFilters] = useState({
     filters: { category: [] },
   });
-
   const locationName = useParams().locationName;
 
   // Amikor a listából kiválasztom a várost akkor hívódik meg
@@ -50,21 +50,17 @@ function Partners() {
   }, []);
 
   // Amikor az inputba keresek név szerint az étteremre akkor hívódik meg
+  // És az éttermek listázása
   useEffect(() => {
     setfilteredRestaurants(
-      heroes.filter((restaurant) => {
+      restaurants.filter((restaurant) => {
         return restaurant.adminFullName
           .toLowerCase()
           .includes(search.toLowerCase());
       })
     );
-  }, [search, heroes]);
-
-  const handleFilters = (filters, filterBy) => {
-    const newFilters = { ...myFilters };
-    newFilters.filters[filterBy] = filters;
-    setMyFilters(newFilters);
-  };
+    loadFilteredResult(myFilters.filters);
+  }, [search, restaurants]);
 
   // Az éttermeket összegyűjti egy listába
   const getRestaurants = () => {
@@ -122,10 +118,37 @@ function Partners() {
     return restaurantList;
   };
 
+  //  Összegyűjtöm a keresett id-t
+  const handleFilters = (filters, filterBy) => {
+    const newFilters = { ...myFilters };
+    newFilters.filters[filterBy] = filters;
+    loadFilteredResult(myFilters.filters);
+    setMyFilters(newFilters);
+  };
+
+  useEffect(() => {
+    setFilteredResults([]);
+    api
+      .post("/restaurants/ok12")
+      .then((response) => {
+        if (response.data) {
+          setFilteredResults(response.data);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
+  const loadFilteredResult = (newFilters) => {
+    setFilteredResults(filteredResults);
+    console.log("filteredResults", filteredResults);
+  };
+
   // if (isFetching) return <HamburgerLoading />;
   return (
     <div>
-      {JSON.stringify(myFilters)}
+      {JSON.stringify(filteredResults)}
       <div className="main-container">
         <div className="container">
           <div className="row">
@@ -335,7 +358,7 @@ function Partners() {
                         />
                         <div className="info-box">
                           <span>
-                            {heroes.id} {t("Thanks.1")}
+                            {restaurants.id} {t("Thanks.1")}
                           </span>
                         </div>
                       </form>

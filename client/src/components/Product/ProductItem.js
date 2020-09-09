@@ -2,9 +2,8 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams, Link } from "react-router-dom";
 
-export function ProductItem() {
+export function ProductItem({ setOpenFood }) {
   const [products, setProducts] = useState([]);
-  const [openFood, setOpenFood] = useState();
   const partnerId = useParams().partnerId;
 
   useEffect(() => {
@@ -28,45 +27,39 @@ export function ProductItem() {
     for (var i = 0; i < k.length; i++) {
       productsList.push(
         <div key={k[i]} className="page-header">
-          <div>{openFood}</div>
           <h2>{k[i]}</h2>
         </div>
       );
       for (var j = 0; j < products[k[i]].length; j++) {
         productsList.push(
           <div key={k[i]}>
-            <div className="product-infobx pointer">
-              <h4>{products[k[i]][j].productTranslationTitle}</h4>
-              <div className="product-infoleft">
-                <img src={"/" + products[k[i]][j].productImageUrl} />
-              </div>
-              <div className="product-infocenter">
-                <p className="short-desc">
-                  {products[k[i]][j].productTranslationDescription}
-                </p>
-              </div>
-              <div className="product-inforight">
-                <div className="incre-box">
-                  <div className="incre-left d-flex justify-content-center">
-                    {products[k[i]][j].productFinalPrice} lei
-                  </div>
-                  <div
-                    className="incre-right"
-                    onClick={() => {
-                      setOpenFood(products);
-                    }}
-                  >
-                    +
-                  </div>
-                  <div className="clear"></div>
+            <a href="#" data-toggle="modal" data-target="#myModal">
+              <div className="product-infobx pointer">
+                <h4>{products[k[i]][j].productTitle}</h4>
+                <div className="product-infoleft">
+                  <img src={"/" + products[k[i]][j].productImageUrl} />
                 </div>
+                <div className="product-infocenter">
+                  <p className="short-desc">
+                    {products[k[i]][j].productDescription}
+                  </p>
+                </div>
+                <div className="product-inforight">
+                  <div className="incre-box">
+                    <div className="incre-left d-flex justify-content-center">
+                      {products[k[i]][j].productPrice} lei
+                    </div>
+                    <div className="incre-right">+</div>
+                    <div className="clear"></div>
+                  </div>
 
-                <div className="extra-optional d-flex justify-content-center">
-                  extra elérhető
+                  <div className="extra-optional d-flex justify-content-center">
+                    extra elérhető
+                  </div>
                 </div>
+                <div className="clear"></div>
               </div>
-              <div className="clear"></div>
-            </div>
+            </a>
           </div>
         );
       }

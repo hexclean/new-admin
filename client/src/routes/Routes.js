@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
 import { useImmerReducer } from "use-immer";
 import Home from "../components/Authentication/Home";
@@ -14,6 +14,7 @@ import FlashMessages from "../components/Shared/FlashMessages";
 import DispatchContext from "../DispatchContext";
 import StateContext from "../StateContext";
 import EditDeliveryAddress from "../components/UserProfile/EditDeliveryAddress";
+import { FoodDialog } from "../components/FoodDialog/FoodDialog";
 
 function Routes() {
   const initialState = {

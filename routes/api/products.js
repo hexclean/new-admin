@@ -20,18 +20,25 @@ router.get("/:locationName/:partnerId", async (req, res) => {
   const egy = 1;
   return sequelize
     .query(
-      `SELECT adm.fullName as adminFullName, prod.id as productName, prod.imageUrl as productImageUrl, prod.active as productActive, prodTrans.id as productTranslationId, prodTrans.title as productTranslationTitle, prodTrans.description productTranslationDescription, prodFin.id as productFinalId, prodFin.price as productFinalPrice, prodFin.discountedPrice as productFinalDiscountedPrice, prodFin.active as productFinalActive,  varTrans.id as variantTranslationId, varTrans.name as variantTranslationName, varExtras.discountedPrice as varinatExtrasDiscountedPrice, varExtras.price as variantExtrasPrice, varExtras.quantityMax as variantExtrasQuantityMax, varExtras.quantityMin as variantExtrasQuantityMin, varExtras.active as variantExtrasActive, catTrans.id as categoryTranslationId, catTrans.name as categoryTranslationName, extTrans.id as extraTranslationId, extTrans.name as extraTranslationName FROM foodnet.productFinals as prodFin INNER JOIN foodnet.products as prod ON prodFin.productId = prod.id INNER JOIN foodnet.admins as adm On prod.adminId = adm.id INNER JOIN foodnet.productTranslations as prodTrans ON prodTrans.productId = prod.id INNER JOIN foodnet.productVariants as var ON prodFin.variantId = var.id INNER JOIN foodnet.productVariantTranslations as varTrans ON varTrans.productVariantId = var.id INNER JOIN foodnet.productCategories as cat ON cat.id = varTrans.categoryId inner join foodnet.productCategoryTranslations as catTrans ON catTrans.productCategoryId = cat.id inner join foodnet.productVariantsExtras AS varExtras ON varExtras.productVariantId = varTrans.productVariantId inner join foodnet.extras as ext on ext.id = varExtras.extraId inner join foodnet.extraTranslations as extTrans on extTrans.extraId = ext.id WHERE catTrans.languageId =2 AND varTrans.languageId =2 AND extTrans.languageId=2  and prodTrans.languageId =2 and prodFin.active= ${egy} and adm.fullName LIKE '%${params}%';`,
+      `SELECT prodFin.variantId as VRID, catTrans.name as categoryName, adm.fullName as partnerName, prod.id as productId, prod.imageUrl as productImageUrl, prodTrans.title as productTitle, prodTrans.description productDescription, prodFin.price as productPrice, prodFin.discountedPrice as productDiscountedPrice FROM foodnet.productFinals as prodFin INNER JOIN foodnet.products as prod ON prodFin.productId = prod.id INNER JOIN foodnet.admins as adm On prod.adminId = adm.id INNER JOIN foodnet.productTranslations as prodTrans ON prodTrans.productId = prod.id INNER JOIN foodnet.productVariants as var ON prodFin.variantId = var.id INNER JOIN foodnet.productVariantTranslations as varTrans ON varTrans.productVariantId = var.id INNER JOIN foodnet.productCategories as cat ON cat.id = varTrans.categoryId inner join foodnet.productCategoryTranslations as catTrans ON catTrans.productCategoryId = cat.id inner join foodnet.productVariantsExtras AS varExtras ON varExtras.productVariantId = varTrans.productVariantId inner join foodnet.extras as ext on ext.id = varExtras.extraId inner join foodnet.extraTranslations as extTrans on extTrans.extraId = ext.id WHERE catTrans.languageId =2 AND varTrans.languageId =2 AND extTrans.languageId=2  and prodTrans.languageId =2 and prodFin.active=${egy}  and adm.fullName LIKE '%${params}%';`,
       { type: Sequelize.QueryTypes.SELECT }
     )
     .then((results) => {
       const done = results.reduce((accumulator, currentValue) => {
-        const {
-          variantTranslationName,
-          categoryTranslationName,
-        } = currentValue;
-        // const key = categoryTranslationName + " - " + variantTranslationName;
-        const key = categoryTranslationName;
+        const { variantTranslationName, categoryName } = currentValue;
+        // const key = categoryName + " - " + variantTranslationName;
+        const key = categoryName;
         accumulator[key] = accumulator[key] || [];
+        currentValue[
+          "extra"
+        ] = sequelize
+          .query(
+            `SELECT extTrans.name FROM foodnet.extras as ext INNER JOIN foodnet.extraTranslations as extTrans on ext.id = extTrans.extraId INNER JOIN  foodnet.productVariantsExtras as prodVariant ON ext.id = prodVariant.extraId WHERE prodVariant.id =${currentValue["VRID"]} ;`,
+            { type: Sequelize.QueryTypes.SELECT }
+          )
+          .then(function (value) {
+            console.log(JSON.stringify(value));
+          });
         accumulator[key].push(currentValue);
         return accumulator;
       }, Object.create(null));

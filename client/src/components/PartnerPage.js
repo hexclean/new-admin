@@ -7,9 +7,9 @@ import api from "./utils/api";
 import { useParams, Link } from "react-router-dom";
 
 function PartnerPage() {
-  const [openFood, setOpenFood] = useState();
   const [category, setCategory] = useState([]);
   const partnerId = useParams().partnerId;
+  const [openFood, setOpenFood] = useState();
   useEffect(() => {
     setCategory([]);
     api
@@ -30,20 +30,18 @@ function PartnerPage() {
     category.map((cat) =>
       categoryList.push(
         <div className="graybox-body">
-          <form>
-            <ul className="check-list">
-              <li>
-                <div className="form-check">
-                  <label>
-                    <input type="radio" name="radio" />
-                    <span className="label-text ">
-                      {cat.categoryTranslationName}
-                    </span>
-                  </label>
-                </div>
-              </li>
-            </ul>
-          </form>
+          <ul className="check-list">
+            <li>
+              <div className="form-check">
+                <label>
+                  <input type="radio" name="radio" />
+                  <span className="label-text ">
+                    {cat.categoryTranslationName}
+                  </span>
+                </label>
+              </div>
+            </li>
+          </ul>
         </div>
       )
     );
@@ -78,7 +76,8 @@ function PartnerPage() {
               </div>
 
               <div className="graybox margin-bottom-30 mobi-hide">
-                <div className="graybox-heading">SELECTION</div>
+                <div>{openFood}</div>
+                <div className="graybox-heading">SELECfgdgfdfgdgfdTION</div>
                 {getHeroes()}
               </div>
             </div>
