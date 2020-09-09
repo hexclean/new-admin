@@ -46,7 +46,13 @@ export function ProductItem({ setOpenFood }) {
                 </div>
                 <div className="product-inforight">
                   <div className="incre-box">
-                    <div className="incre-left d-flex justify-content-center">
+                    <div
+                      onClick={() => {
+                        setOpenFood("dsddsd");
+                        // console.log("hellooo");
+                      }}
+                      className="incre-left d-flex justify-content-center"
+                    >
                       {products[k[i]][j].productPrice} lei
                     </div>
                     <div className="incre-right">+</div>

@@ -1,14 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 
-export function FoodDialog({ openFood }) {
-  // return openFood ? (
-  return (
-    <div>
-      <div className="modal modal-lg" role="dialog" id="myModal">
-        <div className="modal-dialog" role="document">
+export function FoodDialog({ openFood, setOpenFood }) {
+  function close() {
+    setOpenFood();
+  }
+
+  // if (!openFood) return null;
+  return openFood ? (
+    <div onClick={close}>fsdfds</div>
+  ) : /*     
+      <div className="modal modal-lg">
+        <div className="modal-dialog">
           <div className="modal-content">
             <div className="modal-header">
-              <h5 className="modal-title">OK</h5>
+              <h5 className="modal-title">Kaja</h5>
               <button
                 type="button"
                 className="close"
@@ -187,8 +192,8 @@ export function FoodDialog({ openFood }) {
         </div>
       </div>
     </div>
-  );
-  // ) : null;
+   */
+  null;
 }
 
 export default FoodDialog;

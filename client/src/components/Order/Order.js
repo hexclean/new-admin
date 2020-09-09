@@ -26,20 +26,18 @@ export function Order() {
               <div className="graybox-heading">FIZETENDO</div>
               <div className="graybox-body">
                 <div class="product-row">
-                  {/* {orders.map((order) => (
-                    <div>
-                      <div class="product-no">{order.quantity}</div>
-                      <div class="product-name">
-                        {order.name}
-                        <p>{subtotal}</p>
-                      </div>
-                      <div class="product-size">
-                        <b>33 Ft</b>
-                      </div>
-                      <div class="product-close">&#10006;</div>
-                      <div class="clear"></div>
+                  <div>
+                    <div class="product-no">fds</div>
+                    <div class="product-name">
+                      {order.name}
+                      <p>fsd</p>
                     </div>
-                  ))} */}
+                    <div class="product-size">
+                      <b>33 Ft</b>
+                    </div>
+                    <div class="product-close">&#10006;</div>
+                    <div class="clear"></div>
+                  </div>
                 </div>
 
                 <div className="product-row">

@@ -50,7 +50,9 @@ function PartnerPage() {
 
   return (
     <div>
-      <FoodDialog openFood={openFood} />
+      <div>hello:::::------{openFood}------:::::::</div>
+      <FoodDialog openFood={openFood} setOpenFood={setOpenFood} />
+      {/* <ProductItem openFood={openFood} /> */}
       <div className="main-container">
         <div className="container">
           <Banner />
@@ -76,7 +78,7 @@ function PartnerPage() {
               </div>
 
               <div className="graybox margin-bottom-30 mobi-hide">
-                <div>{openFood}</div>
+                {/* <div>{openFood}</div> */}
                 <div className="graybox-heading">SELECfgdgfdfgdgfdTION</div>
                 {getHeroes()}
               </div>

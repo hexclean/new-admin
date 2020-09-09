@@ -33,7 +33,7 @@ router.get("/:locationName/:partnerId", async (req, res) => {
           "extra"
         ] = sequelize
           .query(
-            `SELECT extTrans.name FROM foodnet.extras as ext INNER JOIN foodnet.extraTranslations as extTrans on ext.id = extTrans.extraId INNER JOIN  foodnet.productVariantsExtras as prodVariant ON ext.id = prodVariant.extraId WHERE prodVariant.id =${currentValue["VRID"]} ;`,
+            `SELECT extTrans.name FROM foodnet.extras as ext INNER JOIN foodnet.extraTranslations as extTrans on ext.id = extTrans.extraId INNER JOIN  foodnet.productVariantsExtras as prodVariant ON ext.id = prodVariant.extraId WHERE prodVariant.productVariantId =${currentValue["VRID"]} ;`,
             { type: Sequelize.QueryTypes.SELECT }
           )
           .then(function (value) {
