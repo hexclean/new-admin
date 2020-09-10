@@ -419,6 +419,15 @@ Version: 1.0.0
   color: #d9534f;
 }
 
+.allergen-name {
+  font-size: 20px;
+}
+
+.border-allergen {
+  border-color: red !important;
+  border-radius: 3px red !important;
+}
+
 .ms-dark-theme .ms-text-danger {
   color: #ffffff;
 }

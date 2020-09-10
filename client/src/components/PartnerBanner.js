@@ -13,7 +13,7 @@ export function PartnerBanner() {
               <div className="info short">
                 <h1>fdsfdsf</h1>
                 <div className="adress-header">
-                  1030 Budapest Szentendrei út 104
+                  1030das Budapest Szentendrei út 104
                 </div>
               </div>
             </div>

@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import FoodDialog from "../FoodDialog/FoodDialog";
+import React from "react";
 import PartnerPage from "../PartnerPage";
 
 function Index() {

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
 import { useImmerReducer } from "use-immer";
 import Home from "../components/Authentication/Home";
@@ -14,7 +14,6 @@ import FlashMessages from "../components/Shared/FlashMessages";
 import DispatchContext from "../DispatchContext";
 import StateContext from "../StateContext";
 import EditDeliveryAddress from "../components/UserProfile/EditDeliveryAddress";
-import { FoodDialog } from "../components/FoodDialog/FoodDialog";
 
 function Routes() {
   const initialState = {
@@ -54,25 +53,7 @@ function Routes() {
         <BrowserRouter>
           <FlashMessages messages={state.flashMessages} />
           <Header />
-
           <Switch>
-            <Route exact path="/:locationName/:partnerId" component={Index} />
-            <Route exact path="/">
-              {state.loggedIn ? <Home /> : <Home />}
-            </Route>
-            <Route exact path="/delivery-adress/:id">
-              <ViewSingleDeliveryAdress />
-            </Route>
-            <Route path="/:locationName">
-              <Partners />
-            </Route>
-            <Route exact path="/delivery-adress/:id/edit">
-              <EditDeliveryAddress />
-            </Route>
-            <Route path="/registration">
-              <Register />
-            </Route>
-            <Route exact path="/my-profile" component={Profile} />
             <Route path="/my-adress">
               {!state.loggedIn ? (
                 <Redirect to={"/partners"} />
@@ -80,9 +61,39 @@ function Routes() {
                 <DeliveryAdress />
               )}
             </Route>
+            <Route path="/registration">
+              {state.loggedIn ? <Redirect to={"/"} /> : <DeliveryAdress />}
+              <Register />
+            </Route>
+            <Route exact path="/my-profile" component={Profile} />
             <Route path="/new-adress">
               <NewDeliveryAdress />
             </Route>
+            <Route
+              exact
+              path="/delivery-adress/:id/edit"
+              component={EditDeliveryAddress}
+            />
+            <Route
+              exact
+              path="/delivery-adress/:id/edit"
+              component={EditDeliveryAddress}
+            />
+            <Route exact path="/:locationName/:partnerId" component={Index} />
+            <Route exact path="/">
+              {state.loggedIn ? <Home /> : <Home />}
+            </Route>
+            <Route
+              exact
+              path="/delivery-adress/:id"
+              component={ViewSingleDeliveryAdress}
+            />
+            <Route path="/:locationName" component={Partners} />
+            <Route
+              exact
+              path="/delivery-adress/:id/edit"
+              component={EditDeliveryAddress}
+            />
             />
           </Switch>
         </BrowserRouter>

@@ -30,9 +30,10 @@ export function ProductItem({ setOpenFood }) {
           <h2>{k[i]}</h2>
         </div>
       );
+      // alert(products[k[i]].length);
       for (var j = 0; j < products[k[i]].length; j++) {
         productsList.push(
-          <div key={k[i]}>
+          <div key={k[i] + Math.random()}>
             <a href="#" data-toggle="modal" data-target="#myModal">
               <div className="product-infobx pointer">
                 <h4>{products[k[i]][j].productTitle}</h4>
@@ -46,16 +47,22 @@ export function ProductItem({ setOpenFood }) {
                 </div>
                 <div className="product-inforight">
                   <div className="incre-box">
+                    <div className="incre-left d-flex justify-content-center">
+                      =====>{products[k[i]][j].productPrice} lei
+                    </div>
                     <div
                       onClick={() => {
-                        setOpenFood("dsa");
+                        console.log(products[k[i]][j].productTitle);
+                        console.log(i);
+                        console.log(k[i]);
+                        // console.log(products[k[i]]);
+                        // setOpenFood(products[k[i]]);
                         // console.log("hellooo");
                       }}
-                      className="incre-left d-flex justify-content-center"
+                      className="incre-right"
                     >
-                      {products[k[i]][j].productPrice} lei
+                      +
                     </div>
-                    <div className="incre-right">+</div>
                     <div className="clear"></div>
                   </div>
 

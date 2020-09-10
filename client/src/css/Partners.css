@@ -457,6 +457,10 @@ body {
   font-family: Raleway, sans-serif;
 }
 
+.empty-cart {
+  font-size: 13px;
+}
+
 .graybox-body,
 .graybox-body ul li {
   margin-bottom: 8px;

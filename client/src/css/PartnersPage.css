@@ -1106,6 +1106,7 @@ input[type="radio"]:disabled + .label-text:before {
   margin: 0px 5px;
 }
 .product-close {
+  cursor: pointer;
   width: 8%;
   float: left;
   margin: 0px 5px;
@@ -1203,7 +1204,7 @@ input[type="radio"]:disabled + .label-text:before {
 }
 
 .order-button {
-  font-size: 12px;
+  font-size: 11px;
 }
 
 .empty-car {

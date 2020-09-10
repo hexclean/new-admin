@@ -55,7 +55,6 @@ function PartnerPage() {
   return (
     <div>
       <FoodDialog {...openFood} {...orders} />
-      {/* <ProductItem openFood={openFood} /> */}
       <div className="main-container">
         <div className="container">
           <Banner />
