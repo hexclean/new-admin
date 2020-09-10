@@ -2,9 +2,9 @@ import React from "react";
 import { getPrice } from "../FoodDialog/FoodDialog";
 
 export function Order({ orders }) {
-  // const subtotal = orders.reduce((total, order) => {
-  //   return total + getPrice(order);
-  // }, 0);
+  const subtotal = orders.reduce((total, order) => {
+    return total + getPrice(order);
+  }, 0);
 
   return (
     <div>
@@ -45,7 +45,7 @@ export function Order({ orders }) {
                     </div>
                   ))}
                 </div>
-                Total: 1335 lej
+                Total: {subtotal} lej
                 <div className="product-row">
                   <a href="#" className="btn-green order-button">
                     MEGRENDELEM
