@@ -5,6 +5,7 @@ export function Order({ orders }) {
   // const subtotal = orders.reduce((total, order) => {
   //   return total + getPrice(order);
   // }, 0);
+
   return (
     <div>
       {orders.length === 0 ? (
@@ -26,19 +27,25 @@ export function Order({ orders }) {
               <div className="graybox-heading">FIZETENDO</div>
               <div className="graybox-body">
                 <div class="product-row">
-                  <div>
-                    <div class="product-no">{orders.length}x</div>
-                    <div class="product-name">
-                      Gordon bleu <p>ds</p>
-                    </div>
-                    <div class="product-size">
-                      <b>33 Ft</b>
-                    </div>
-                    <div class="product-close">&#10006;</div>
-                    <div class="clear"></div>
-                  </div>
-                </div>
+                  {orders.map((order) => (
+                    <div>
+                      <div class="product-no">{order.quantity}x</div>
+                      <div class="product-name">
+                        Gordon bleu <p>Sajt</p>
+                        <p>Gomba</p>
+                        <p>Orda</p>
+                        <p>Mustar</p>
+                      </div>
+                      <div class="product-size">
+                        <b>{getPrice(order)}</b>
+                      </div>
+                      <div class="product-close">&#10006;</div>
 
+                      <div class="clear"></div>
+                    </div>
+                  ))}
+                </div>
+                Total: 1335 lej
                 <div className="product-row">
                   <a href="#" className="btn-green order-button">
                     MEGRENDELEM
