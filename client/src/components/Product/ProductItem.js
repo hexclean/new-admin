@@ -48,7 +48,7 @@ export function ProductItem({ setOpenFood }) {
                   <div className="incre-box">
                     <div
                       onClick={() => {
-                        setOpenFood("dsddsd");
+                        setOpenFood("dsa");
                         // console.log("hellooo");
                       }}
                       className="incre-left d-flex justify-content-center"

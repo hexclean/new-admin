@@ -1,13 +1,13 @@
 import React from "react";
 import { getPrice } from "../FoodDialog/FoodDialog";
 
-export function Order() {
+export function Order({ orders }) {
   // const subtotal = orders.reduce((total, order) => {
   //   return total + getPrice(order);
   // }, 0);
   return (
     <div>
-      {true === 0 ? (
+      {orders.length === 0 ? (
         <div className="whitebox margin-bottom-30 cart-box">
           <div className="graybox-heading">ORDER</div>
           <div className="graybox-body">
@@ -27,10 +27,9 @@ export function Order() {
               <div className="graybox-body">
                 <div class="product-row">
                   <div>
-                    <div class="product-no">fds</div>
+                    <div class="product-no">{orders.length}x</div>
                     <div class="product-name">
-                      {order.name}
-                      <p>fsd</p>
+                      Gordon bleu <p>ds</p>
                     </div>
                     <div class="product-size">
                       <b>33 Ft</b>

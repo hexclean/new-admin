@@ -4,12 +4,16 @@ import { FoodDialog } from "./FoodDialog/FoodDialog";
 import Banner from "./PartnerBanner";
 import ProductItem from "./Product/ProductItem";
 import api from "./utils/api";
+import Cart from "./Order/Order";
 import { useParams, Link } from "react-router-dom";
+import { useOpenFood } from "./Hooks/useOpenFood";
+import { useOrders } from "./Hooks/useOrders";
 
 function PartnerPage() {
   const [category, setCategory] = useState([]);
   const partnerId = useParams().partnerId;
-  const [openFood, setOpenFood] = useState();
+  const openFood = useOpenFood();
+  const orders = useOrders();
   useEffect(() => {
     setCategory([]);
     api
@@ -50,8 +54,7 @@ function PartnerPage() {
 
   return (
     <div>
-      <div>hello:::::------{openFood}------:::::::</div>
-      <FoodDialog openFood={openFood} setOpenFood={setOpenFood} />
+      <FoodDialog {...openFood} {...orders} />
       {/* <ProductItem openFood={openFood} /> */}
       <div className="main-container">
         <div className="container">
@@ -101,11 +104,13 @@ function PartnerPage() {
                 </form>
               </div>
               <div className="page-header">
-                <ProductItem setOpenFood={setOpenFood} />
+                <ProductItem {...openFood} />
               </div>
             </div>
 
-            <div className="col-md-3">{/* <Cart /> */}</div>
+            <div className="col-md-3">
+              <Cart {...orders} />
+            </div>
           </div>
         </div>
       </div>
