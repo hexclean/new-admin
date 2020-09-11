@@ -267,17 +267,7 @@ if(vidFileLength === 0){
 
             <% if (editing) { %>
                                       
-               <% if (isActive ==1) { %>
-                  
-                  <script>
-                      $(document).ready(function() {
-                      $('.status-checkbox-allergen').prop('checked', true);
-                      $('.statusAllergen').val('on');
-                      });
-                  </script>
-                     
-                  <% } 
-               %>
+           
             <% } %>
             
          <div class="row">
@@ -408,88 +398,33 @@ if(vidFileLength === 0){
                      </div>
                   </div>
                 
-                  <div class="col-xl-12 col-md-12">
-                     <div class="ms-panel ms-panel-fh">
-                       <div class="ms-panel-header">
-                         <h6>Allergének</h6>
-                       </div>
-                       <div class="ms-panel-body">
+                  <div class="ms-panel-body">
+                     <p class="ms-directions">Use <code>.ms-switch-{state}</code> in <code>.ms-switch-slider</code>
+                     </p>
+                     <form>
+                     
+                       <div class="row">
+                         <div class="col-md-6">
+                           <ul class="ms-list ms-list-display">
+                            
+                             <li>
+                               <label class="ms-switch">
+                                 <input type="checkbox" checked> <span class="ms-switch-slider ms-switch-success round"></span>
+                               </label> <span> Success </span>
+                             </li>
+                             
+                            
+                           </ul>
+                         </div>
                         
-                         <form>
-                          
-                           <div class="row">
-                              <div class="col-md-6">
-                                <ul class="ms-list ms-list-display">
-            
-                                  <li >
-                                    <hr/>
-                                    <label class="ms-switch">
-                                      <input type="checkbox" checked> <span class=" ms-switch-slider ms-switch-success round"></span>
-                                    </label> <span class="allergen-name">Gluten </span>
-                                    <hr/>
-                                  </li>
-                                  <li>
-                                    <label class="ms-switch">
-                                      <input type="checkbox" checked> <span class="ms-switch-slider ms-switch-success round"></span>
-                                    </label> <span> Crustacee </span>
-                                  </li>
-                                  <li>
-                                    <label class="ms-switch">
-                                      <input type="checkbox" checked> <span class="ms-switch-slider ms-switch-success round"></span>
-                                    </label> <span> Moluşte </span>
-                                  </li>  <li>
-                                    <label class="ms-switch">
-                                      <input type="checkbox" checked> <span class="ms-switch-slider ms-switch-success round"></span>
-                                    </label> <span> Peşte </span>
-                                  </li>  <li>
-                                    <label class="ms-switch">
-                                      <input type="checkbox" checked> <span class="ms-switch-slider ms-switch-success round"></span>
-                                    </label> <span> Alune </span>
-                                  </li>  <li>
-                                    <label class="ms-switch">
-                                      <input type="checkbox" checked> <span class="ms-switch-slider ms-switch-success round"></span>
-                                    </label> <span> Lupin </span>
-                                  </li>  <li>
-                                    <label class="ms-switch">
-                                      <input type="checkbox" checked> <span class="ms-switch-slider ms-switch-success round"></span>
-                                    </label> <span> Alune de copac </span>
-                                  </li>  <li>
-                                    <label class="ms-switch">
-                                      <input type="checkbox" checked> <span class="ms-switch-slider ms-switch-success round"></span>
-                                    </label> <span> Soia </span>
-                                  </li>  <li>
-                                    <label class="ms-switch">
-                                      <input type="checkbox" checked> <span class="ms-switch-slider ms-switch-success round"></span>
-                                    </label> <span> Ouă </span>
-                                  </li>  <li>
-                                    <label class="ms-switch">
-                                      <input type="checkbox" checked> <span class="ms-switch-slider ms-switch-success round"></span>
-                                    </label> <span> Lapte </span>
-                                  </li>  <li>
-                                    <label class="ms-switch">
-                                      <input type="checkbox" checked> <span class="ms-switch-slider ms-switch-success round"></span>
-                                    </label> <span> Ţelină </span>
-                                  </li>  <li>
-                                    <label class="ms-switch">
-                                      <input type="checkbox" checked> <span class="ms-switch-slider ms-switch-success round"></span>
-                                    </label> <span> Muştar </span>
-                                  </li>  <li>
-                                    <label class="ms-switch">
-                                      <input type="checkbox" checked> <span class="ms-switch-slider ms-switch-success round"></span>
-                                    </label> <span> Susan </span>
-                                  </li>  <li>
-                                    <label class="ms-switch">
-                                      <input type="checkbox" checked> <span class="ms-switch-slider ms-switch-success round"></span>
-                                    </label> <span> Dioxid </span>
-                                  </li> 
-                                 
-                                </ul>
-                              </div>
-                            </div>
-                         </form>
                        </div>
-                     </div>
+                     </form>
                    </div>
+
+
+
+
+
                </div>
             </div>
          </div>

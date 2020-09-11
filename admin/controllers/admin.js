@@ -51,7 +51,6 @@ exports.postAddProduct = async (req, res, next) => {
   const huDescription = req.body.huDescription;
   const enDescription = req.body.enDescription;
   //
-  const status = req.body.statusAllergen;
   const image = req.file;
   const imageUrl = image.path;
 
@@ -74,7 +73,6 @@ exports.postAddProduct = async (req, res, next) => {
   const product = await req.admin.createProduct({
     imageUrl: imageUrl,
     active: 1,
-    allergen: typeof status !== "undefined" ? 1 : 0,
   });
 
   async function productTransaltion() {
@@ -84,7 +82,6 @@ exports.postAddProduct = async (req, res, next) => {
       description: roDescription,
       productId: product.id,
       category: roCategory,
-      allergen: typeof status !== "undefined" ? 1 : 0,
     });
     await ProductTranslation.create({
       title: huTitle,
@@ -92,7 +89,6 @@ exports.postAddProduct = async (req, res, next) => {
       description: huDescription,
       productId: product.id,
       category: huCategory,
-      allergen: typeof status !== "undefined" ? 1 : 0,
     });
 
     await ProductTranslation.create({
@@ -101,7 +97,6 @@ exports.postAddProduct = async (req, res, next) => {
       description: enDescription,
       productId: product.id,
       category: enCategory,
-      allergen: typeof status !== "undefined" ? 1 : 0,
     });
   }
 
@@ -187,7 +182,6 @@ exports.getEditProduct = async (req, res, next) => {
         validationErrors: [],
 
         extTranslations: product[0].productTranslations,
-        isActive: product[0].allergen,
         isActiveVariant: productFinal,
       });
     })
