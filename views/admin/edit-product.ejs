@@ -1,3 +1,4 @@
+
 <%- include('../includes/head.ejs') %>
 <script>
    $(document).ready(function() {
@@ -15,7 +16,7 @@
 <script>
    $(document).ready(function () {
   $(".status-checkbox").click(function () {
-   var extraId = $(this).data("extraid");
+   var extraId = $(this).data("extraId");
     $("#price_error_message_"+extraId).hide();
    
     var error_price = false;
@@ -51,7 +52,6 @@
       }
    
   });
-
   $("#product-form").submit(function () {
       error_price = false;
      
@@ -101,7 +101,6 @@
      $("#roDescription").focusout(function () {
        check_roDescription();
      });
-
      $("#huDescription").focusout(function () {
        check_huDescription();
      });
@@ -116,7 +115,7 @@
      function check_roName() {
        var roName_length = $("#roTitle").val().length;
    
-       if (roName_length < 2 || roName_length > 50) {
+       if (roName_length < 2 || roName_length > 15) {
          $("#roName_error_message").html("ro");
          $("#roName_error_message").show();
          error_roName = true;
@@ -128,7 +127,7 @@
      function check_huName() {
        var huName_length = $("#huTitle").val().length;
    
-       if (huName_length < 2 || huName_length > 50) {
+       if (huName_length < 2 || huName_length > 15) {
          $("#huName_error_message").html("hu");
          $("#huName_error_message").show();
          error_huName = true;
@@ -140,7 +139,7 @@
      function check_enName() {
        var enName_length = $("#enTitle").val().length;
    
-       if (enName_length < 2 || enName_length > 50) {
+       if (enName_length < 2 || enName_length > 15) {
          $("#enName_error_message").html("en");
          $("#enName_error_message").show();
          error_enName = true;
@@ -160,7 +159,6 @@
          $("#roDescription_error_message").hide();
        }
      }
-
      function check_huDescription() {
        var huDescription_length = $("#huDescription");
    
@@ -172,7 +170,6 @@
          $("#huDescription_error_message").hide();
        }
      }
-
      function check_enDescription() {
        var huDescription_length = $("#enDescription");
    
@@ -184,10 +181,7 @@
          $("#enDescription_error_message").hide();
        }
      }
-
      function check_file() {
-
-
       var vidFileLength = $("#videoUploadFile")[0].files.length;
 if(vidFileLength === 0){
 }
@@ -213,7 +207,6 @@ if(vidFileLength === 0){
        check_huDescription();
        check_enDescription();
        check_file();
-
        if (
          error_roName == false &&
          error_huName == false &&
@@ -267,7 +260,17 @@ if(vidFileLength === 0){
 
             <% if (editing) { %>
                                       
-           
+               <% if (isActive ==1) { %>
+                  
+                  <script>
+                      $(document).ready(function() {
+                      $('.status-checkbox-allergen').prop('checked', true);
+                      $('.statusAllergen').val('on');
+                      });
+                  </script>
+                     
+                  <% } 
+               %>
             <% } %>
             
          <div class="row">
@@ -388,7 +391,6 @@ if(vidFileLength === 0){
                            value="<%= productIds %>"
                            name="productId"
                            />
-
                          
                         <% } %>
                         <button class="btn" type="submit">
@@ -398,33 +400,23 @@ if(vidFileLength === 0){
                      </div>
                   </div>
                 
-                  <div class="ms-panel-body">
-                     <p class="ms-directions">Use <code>.ms-switch-{state}</code> in <code>.ms-switch-slider</code>
-                     </p>
-                     <form>
-                     
-                       <div class="row">
-                         <div class="col-md-6">
-                           <ul class="ms-list ms-list-display">
-                            
-                             <li>
-                               <label class="ms-switch">
-                                 <input type="checkbox" checked> <span class="ms-switch-slider ms-switch-success round"></span>
-                               </label> <span> Success </span>
-                             </li>
-                             
-                            
-                           </ul>
-                         </div>
-                        
-                       </div>
-                     </form>
-                   </div>
-
-
-
-
-
+                  <div class="col-xl-6 col-md-12">
+                     <div class="row">
+                        <div class="col-md-12">
+                           <div class="ms-panel">
+                              <div class="ms-panel-header alergen-border">
+                                 <h6>Allergens</h6>
+                              </div>
+                              
+                              <div class="ms-panel-body alergen-border">
+                                 <label class="ms-switch" >              
+                                 <input class="status-checkbox-allergen" type="checkbox" name="statusAllergen" id="statusAllergen" > <span class="ms-switch-slider ms-switch-success round"></span>
+                                 </label> 
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
                </div>
             </div>
          </div>
@@ -432,10 +424,11 @@ if(vidFileLength === 0){
 
        <div class="ms-panel ms-btn-display">
          <div class="ms-panel-header">
-            <h6>A termékhez választható variánsok:</h6>
+            <h6>A  hozzárendelhető extrái:</h6>
          </div>
       </div>
       <% if (editing) { %>  <% if (productVariant.length > 0) { %>
+         SDSADASDSADADSADSSD
          <div class="ms-content-wrapper">
             <div class="row">
                <div class="col-md-12">
@@ -505,6 +498,7 @@ if(vidFileLength === 0){
          <% } %><% } else { %>
             
             <% if (ext.length > 0) { %>
+               IDEEE????
                <div class="ms-content-wrapper">
                   <div class="row">
                      <div class="col-md-12">

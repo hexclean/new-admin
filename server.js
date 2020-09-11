@@ -328,9 +328,10 @@ DailyMenuFinal.belongsTo(DailyMenu, {
 DailyMenu.hasMany(DailyMenuFinal, { foreignKey: "dailyMenuId" });
 
 Allergen.belongsTo(Admin, { constrains: true, onDelete: "CASCADE" });
+// Allergen.belongsTo(Product, { foreignKey: "allergenId" });
 
 AllergenTranslation.belongsTo(Allergen, {
-  as: "dailyAllTrans",
+  as: "allergenTran",
   foreignKey: "allergenId",
 });
 Allergen.hasMany(AllergenTranslation, {

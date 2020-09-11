@@ -13,40 +13,16 @@ const DailyMenuAllergens = require("../../models//DailyMenuAllergens");
 exports.getAddDailyMenu = async (req, res, next) => {
   const dailyMId = req.params.dailyMenuId;
 
-  let currentAllergenName = [];
-
   const dailyMenu = await DailyMenu.findAll({
     where: { adminId: req.admin.id },
   });
 
-  const allergens = await Allergens.findAll({
-    where: { adminId: req.admin.id },
-    include: [
-      {
-        model: AllergensTranslation,
-      },
-    ],
-  });
-
-  for (let i = 0; i < allergens.length; i++) {
-    var currentLanguage = req.cookies.language;
-
-    if (currentLanguage == "ro") {
-      currentAllergenName[i] = allergens[i].allergenTranslations[0].name;
-    } else if (currentLanguage == "hu") {
-      currentAllergenName[i] = allergens[i].allergenTranslations[1].name;
-    } else {
-      currentAllergenName[i] = allergens[i].allergenTranslations[2].name;
-    }
-  }
   res.render("daily-menu/edit-daily-menu", {
     pageTitle: "Add Product",
     path: "/admin/add-product",
     editing: false,
     dailyMenuId: dailyMId,
-    allergens: allergens,
     dailyMenu: dailyMenu,
-    currentAllergenName: currentAllergenName,
   });
 };
 
@@ -55,20 +31,15 @@ exports.postAddDailyMenu = async (req, res, next) => {
   const price = req.body.price;
   const datepicker = req.body.datepicker;
   //
+  const roTitle = req.body.roTitle;
+  const huTitle = req.body.huTitle;
+  const enTitle = req.body.enTitle;
   const roDescription = req.body.roDescription;
   const huDescription = req.body.huDescription;
   const enDescription = req.body.enDescription;
   const image = req.file;
   const imageUrl = image.path;
-  var filteredStatus = req.body.status.filter(Boolean);
-  const allergens = await Allergens.findAll({
-    where: { adminId: req.admin.id },
-    include: [
-      {
-        model: AllergensTranslation,
-      },
-    ],
-  });
+
   const dailyMenu = await DailyMenu.create({
     adminId: req.admin.id,
     imageUrl: imageUrl,
@@ -81,13 +52,13 @@ exports.postAddDailyMenu = async (req, res, next) => {
     time: datepicker,
     dailyMenuId: dailyMenu.id,
   });
-  console.log(dailyMenuFinal);
 
   async function productTransaltion() {
     await DailyMenuTranslation.create({
       description: roDescription,
       adminId: req.admin.id,
       dailyMenuId: dailyMenu.id,
+      title: roTitle,
       languageId: 1,
     });
 
@@ -95,6 +66,7 @@ exports.postAddDailyMenu = async (req, res, next) => {
       description: huDescription,
       adminId: req.admin.id,
       dailyMenuId: dailyMenu.id,
+      title: huTitle,
       languageId: 2,
     });
 
@@ -102,18 +74,9 @@ exports.postAddDailyMenu = async (req, res, next) => {
       description: enDescription,
       adminId: req.admin.id,
       dailyMenuId: dailyMenu.id,
+      title: enTitle,
       languageId: 3,
     });
-    if (Array.isArray(allergens)) {
-      for (let i = 0; i <= allergens.length - 1; i++) {
-        let allergenIds = [dailyMId[i]];
-        await DailyMenuAllergens.create({
-          active: filteredStatus[i] == "on" ? 1 : 0,
-          allergenId: allergenIds,
-          dailyMenuId: dailyMenu.id,
-        });
-      }
-    }
   }
 
   productTransaltion()
@@ -135,37 +98,6 @@ exports.getEditDailyMenu = async (req, res, next) => {
 
   const dailyMId = req.params.dailyMenuId;
   let dailyMenuId = [dailyMId];
-  const Op = Sequelize.Op;
-
-  const allergens = await Allergens.findAll({
-    where: { adminId: req.admin.id },
-    include: [
-      {
-        model: AllergensTranslation,
-      },
-    ],
-  });
-
-  let isActive = await DailyMenuAllergens.findAll({
-    where: {
-      dailyMenuId: {
-        [Op.in]: dailyMenuId,
-      },
-    },
-  });
-
-  let currentAllergenName = [];
-  for (let i = 0; i < allergens.length; i++) {
-    var currentLanguage = req.cookies.language;
-
-    if (currentLanguage == "ro") {
-      currentAllergenName[i] = allergens[i].allergenTranslations[0].name;
-    } else if (currentLanguage == "hu") {
-      currentAllergenName[i] = allergens[i].allergenTranslations[1].name;
-    } else {
-      currentAllergenName[i] = allergens[i].allergenTranslations[2].name;
-    }
-  }
 
   DailyMenu.findAll({
     where: {
@@ -186,9 +118,6 @@ exports.getEditDailyMenu = async (req, res, next) => {
         editing: editMode,
         product: product,
         dailyMenuId: dailyMId,
-        allergens: allergens,
-        isActive: isActive,
-        currentAllergenName: currentAllergenName,
       });
     })
     .catch((err) => {
@@ -199,11 +128,12 @@ exports.getEditDailyMenu = async (req, res, next) => {
 };
 
 exports.postEditDailyMenu = async (req, res, next) => {
-  const dailyMId = req.body.extraId;
+  const dailyMId = req.body.dailyMenuId;
   const dMid = req.body.dailyMenuId;
-  var filteredStatus = req.body.status.filter(Boolean);
   const datepicker = req.body.datepicker;
-
+  const roTitle = req.body.roTitle;
+  const huTitle = req.body.huTitle;
+  const enTitle = req.body.enTitle;
   // Description
   const updatedRoDesc = req.body.roDescription;
   const updatedHuDesc = req.body.huDescription;
@@ -211,14 +141,6 @@ exports.postEditDailyMenu = async (req, res, next) => {
   //
   const price = req.body.price;
   const image = req.file;
-  const allergens = await Allergens.findAll({
-    where: { adminId: req.admin.id },
-    include: [
-      {
-        model: AllergensTranslation,
-      },
-    ],
-  });
 
   DailyMenu.findAll({
     include: [
@@ -241,6 +163,7 @@ exports.postEditDailyMenu = async (req, res, next) => {
         });
         await DailyMenuTranslation.update(
           {
+            title: roTitle,
             description: updatedRoDesc,
           },
           { where: { dailyMenuId: dMid, languageId: 1 } }
@@ -248,6 +171,7 @@ exports.postEditDailyMenu = async (req, res, next) => {
 
         await DailyMenuTranslation.update(
           {
+            title: huTitle,
             description: updatedHuDesc,
           },
           { where: { dailyMenuId: dMid, languageId: 2 } }
@@ -255,6 +179,7 @@ exports.postEditDailyMenu = async (req, res, next) => {
 
         await DailyMenuTranslation.update(
           {
+            title: enTitle,
             description: updatedEnDesc,
           },
           { where: { dailyMenuId: dMid, languageId: 3 } }
@@ -271,30 +196,6 @@ exports.postEditDailyMenu = async (req, res, next) => {
             },
           }
         );
-        if (Array.isArray(allergens)) {
-          const Op = Sequelize.Op;
-          for (let i = 0; i <= allergens.length - 1; i++) {
-            let allergenIds = [dailyMId[i]];
-            let dailyMenuIds = [dMid];
-            await DailyMenuAllergens.update(
-              {
-                active: filteredStatus[i] == "on" ? 1 : 0,
-                allergenId: allergenIds,
-                dailyMenuId: dailyMenuIds,
-              },
-              {
-                where: {
-                  allergenId: {
-                    [Op.in]: allergenIds,
-                  },
-                  dailyMenuId: {
-                    [Op.in]: dailyMenuIds,
-                  },
-                },
-              }
-            );
-          }
-        }
       }
       msg();
       res.redirect("/admin/daily-menus-index");
@@ -322,7 +223,6 @@ exports.getIndex = async (req, res, next) => {
     ],
   })
     .then((numAllergen) => {
-      console.log("numAllergen", numAllergen);
       totalItems = numAllergen;
       return DailyMenu.findAll({
         where: {
@@ -360,7 +260,10 @@ exports.getIndex = async (req, res, next) => {
 
 exports.postDeleteDailyMenu = (req, res, next) => {
   const prodId = req.body.dailyMenuId;
-  console.log("productId", prodId);
+  console.log(
+    "productIdproductIdproductIdproductIdproductIdproductIdproductId",
+    prodId
+  );
   DailyMenu.findByPk(prodId)
     .then((product) => {
       if (!product) {

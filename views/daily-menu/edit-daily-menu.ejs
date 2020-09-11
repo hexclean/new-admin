@@ -1,327 +1,206 @@
+
+
 <%- include('../includes/head.ejs') %>
 <script>
-  $(document).ready(function() {
-     $('.status-checkbox').click(function() {
-        var extraId = $(this).attr('data-extraId');
-        if($(this).is(':checked')) {
-           $('.status-'+extraId).val('on');
-        } else {
-           $('.status-'+extraId).val('off');
-        }
-     });
-  });
+   $( function() {
+     $( "#datepicker" ).datepicker();
+   } );
 </script>
-
-  <script>
-  $( function() {
-    $( "#datepicker" ).datepicker();
-  } );
-  </script>
-
 </head>
 <body class="ms-body ms-aside-left-open ms-primary-theme ms-has-quickbar">
-  <%- include('../includes/navigation.ejs') %>
-
-  <main class="body-content">
-   
-    <%- include('../includes/navigation-bar.ejs') %>
-    <div
-      class="ms-content-wrapper"
-      action="/admin/<% if (editing) { %>edit-daily-menu<% } else { %>add-daily-menu<% } %>"
-      method="POST"
-      enctype="multipart/form-data"
-    >
-
-    <% if (editing) { %>
-      <% for (let i = 0; i < isActive.length; i++) { %>
-         <% if (isActive[i].active ==1) { %>
-            
-            <script>
-                $(document).ready(function() {
-                var activeCheckbox ="<%= isActive[i].allergenId %>";
-                $('.status-checkbox-'+activeCheckbox).prop('checked', true);
-                $('.status-'+activeCheckbox).val('on');
-                });
-            </script>
-               
-            <% } 
-         %>
-      <% } %>
-      <% } %>
-      
-      <div class="row">
-        <div class="col-xl-6 col-md-12">
-          <div class="ms-panel ms-panel-fh">
-            <div class="ms-panel-header">
-              <h6>Add Product Form</h6>
-            </div>
-            <div class="ms-panel-body">
-                <div class="form-row">
-                  <form
-                    class="product-form"
-                    action="/admin/<% if (editing) { %>edit-daily-menu<% } else { %>add-daily-menu<% } %>"
-                    method="POST"
-                    enctype="multipart/form-data"
-                  >
-
-                
-                  <script>
-                    $( function() {
-                      $( "#datepicker" ).datepicker();
-                    } );
-                    </script>
-                  
-         
-                <div class="col-md-12 mb-3">
-                  <label for="datepicker">datepicker</label>
-                  <div class="input-group">
-                    <input
-                      class="form-control"
-                      type="text"
-                      id="datepicker"
-                      name="datepicker"
-                      autocomplete="off"
-                      value="<% if (editing) { %><%= product[0].dailyMenuFinals[0].time %><% } %>"
-                    />
-                    <div class="invalid-feedback">
-                      datepicker 
-                    </div>
+   <%- include('../includes/navigation.ejs') %>
+   <main class="body-content">
+      <%- include('../includes/navigation-bar.ejs') %>
+      <div
+         class="ms-content-wrapper"
+         action="/admin/<% if (editing) { %>edit-daily-menu<% } else { %>add-daily-menu<% } %>"
+         method="POST"
+         enctype="multipart/form-data"
+         >
+         <div class="row">
+            <div class="col-xl-6 col-md-12">
+               <div class="ms-panel ms-panel-fh">
+                  <div class="ms-panel-header">
+                     <h6>Napi menu letrehozas</h6>
                   </div>
-                </div>
-                
-
-            
-             
-
-                  <div class="col-md-6 mb-3">
-                    <label for="price"><%= lingua.create_product_price %></label>
-                    <div class="input-group">
-                      <input
-                        class="form-control"
-                        type="number"
-                        name="price"
-                        id="price"
-                        step="0.01"
-                        value="<% if (editing) { %><%= product[0].dailyMenuFinals[0].price %><% } %>"
-                      />
-                      <div class="invalid-feedback">
-                        Price 
-                      </div>
-                    </div>
-                  </div>
-
-           
-
-
-           
-
-               
-
-                 
-                  <div class="col-md-12 mb-3">
-                    <label for="roDescription"><%= lingua.create_product_description1 %></label>
-                    <div class="input-group">
-                      <textarea
-                        class="form-control"
-                        name="roDescription"
-                        id="roDescription"
-                        rows="5"> <% if (editing) { %><%= product[0].dailyMenuTranslations[0].description %><% } %></textarea
-                      >
-                      <div class="invalid-feedback">
-                        Please provide a message.
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="col-md-12 mb-3">
-                    <label for="huDescription"><%= lingua.create_product_description2 %></label>
-                    <div class="input-group">
-                      <textarea
-                        class="form-control"
-                        name="huDescription"
-                        id="huDescription"
-                        rows="5"> <% if (editing) { %><%= product[0].dailyMenuTranslations[1].description %><% } %></textarea
-                      >
-                      <div class="invalid-feedback">
-                        Please provide a message.
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="col-md-12 mb-3">
-                    <label for="enDescription"><%= lingua.create_product_description3 %></label>
-                    <div class="input-group">
-                      <textarea
-                        class="form-control"
-                        name="enDescription"
-                        id="enDescription"
-                        rows="5"> <% if (editing) { %><%= product[0].dailyMenuTranslations[2].description %><% } %></textarea
-                      >
-                      <div class="invalid-feedback">
-                        Please provide a message.
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-12 mb-3">
-                    <label for="validationCustom12"><%= lingua.create_product_image %></label>
-                    <div class="custom-file">
-                      <input type="file" name="image" id="image" />
-                    </div>
-                  </div>
-                </div>
-            
-            </div>
-          </div>
-        </div>
-
-
-     
-
-        <div class="col-xl-6 col-md-12">
-          <div class="row">
-            <div class="col-md-12">
-              <div class="ms-panel">
-                <div class="ms-panel-header">
-                  <h6>Product</h6>
-                </div>
-                <div class="ms-panel-body">
-                
-                    <div class="carousel-inner">
-                      <div class="carousel-item active">
-                        <% if (editing) { %><img src="/<%= product[0].imageUrl %>" alt="<%= product.price %>"><% }  %>
-                      </div>
-                     
-                      </div>
-                     
-                    
-                    </div>
-                  
-                </div>
-
-
-
-
-                <% if (editing) { %>    <div class="ms-content-wrapper">
-                  <div class="row">
-                     <div class="col-md-12">
-                        <div class="row">
-                         
-                           <% for (let i = 0; i < allergens.length; i++) { %>
+                  <div class="ms-panel-body">
+                     <div class="form-row">
+                        <form
+                           class="product-form"
+                           action="/admin/<% if (editing) { %>edit-daily-menu<% } else { %>add-daily-menu<% } %>"
+                           method="POST"
+                           enctype="multipart/form-data"
+                           >
+                           <label for="roTitle">Ro name</label>
+                           <div class="input-group">
                               <input
-                              type="hidden"
-                              value="<%= allergens[i].id %>"
-                              name="extraId"
-                              />          
-                         
-                           <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 extra_box" data-extra="<%= allergens[i].id %>">
-                              <div class="ms-card">
-                                 <div class="d-flex justify-content-center extra-margin-top">
-                                       <div class="row"> 
-                                         
-                                          <label class="ms-switch" >                 
-                                             <input type="hidden" value="off" class="status-<%= allergens[i].id %>" name="status[<%= allergens[i].id %>]" >          
-                                             <input    data-extraId="<%= allergens[i].id %>"  class="status-checkbox status-checkbox-<%= allergens[i].id %>" type="checkbox">
-                                             <span class="ms-switch-slider ms-switch-success round"></span>
-                                          </label> 
-                                       </div>
-                                 </div>
-                                 <div class="ms-card-body">
-                                    <div class="new d-flex justify-content-center extra-name">
-                                       <h6 class="mb-0"><b><%= currentAllergenName[i] %></b> </h6>
-                                    </div>
-                                
-                                   
+                                 class="form-control"
+                                 type="text"
+                                 name="roTitle"
+                                 id="roTitle"
+                                 value="<% if (editing) { %><%= product[0].dailyMenuTranslations[0].title %><% } %>">
+                           </div>
+                           <label for="huTitle">Hu name</label>
+                           <div class="input-group">
+                              <input
+                                 class="form-control"
+                                 type="text"
+                                 name="huTitle"
+                                 id="huTitle"
+                                 value="<% if (editing) { %><%= product[0].dailyMenuTranslations[1].title %><% } %>">
+                           </div>
+                           <label for="enTitle">Eng name</label>
+                           <div class="input-group">
+                              <input
+                                 class="form-control"
+                                 type="text"
+                                 name="enTitle"
+                                 id="enTitle"
+                                 value="<% if (editing) { %><%= product[0].dailyMenuTranslations[2].title %><% } %>">
+                           </div>
+                           <div class="col-md-12 mb-3">
+                              <label for="datepicker">datepicker</label>
+                              <div class="input-group">
+                                 <input
+                                    class="form-control"
+                                    type="text"
+                                    id="datepicker"
+                                    name="datepicker"
+                                    autocomplete="off"
+                                    value="<% if (editing) { %><%= product[0].dailyMenuFinals[0].time %><% } %>"
+                                    />
+                                 <div class="invalid-feedback">
+                                    datepicker 
                                  </div>
                               </div>
                            </div>
-                           <% } %>
-                        </div>
+                           <div class="col-md-6 mb-3">
+                              <label for="price"><%= lingua.create_product_price %></label>
+                              <div class="input-group">
+                                 <input
+                                    class="form-control"
+                                    type="number"
+                                    name="price"
+                                    id="price"
+                                    step="0.01"
+                                    value="<% if (editing) { %><%= product[0].dailyMenuFinals[0].price %><% } %>"
+                                    />
+                                 <div class="invalid-feedback">
+                                    Price 
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="col-md-12 mb-3">
+                              <label for="roDescription"><%= lingua.create_product_description1 %></label>
+                              <div class="input-group">
+                                 <textarea
+                                    class="form-control"
+                                    name="roDescription"
+                                    id="roDescription"
+                                    rows="5"> <% if (editing) { %><%= product[0].dailyMenuTranslations[0].description %><% } %></textarea
+                                    >
+                                 <div class="invalid-feedback">
+                                    Please provide a message.
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="col-md-12 mb-3">
+                              <label for="huDescription"><%= lingua.create_product_description2 %></label>
+                              <div class="input-group">
+                                 <textarea
+                                    class="form-control"
+                                    name="huDescription"
+                                    id="huDescription"
+                                    rows="5"> <% if (editing) { %><%= product[0].dailyMenuTranslations[1].description %><% } %></textarea
+                                    >
+                                 <div class="invalid-feedback">
+                                    Please provide a message.
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="col-md-12 mb-3">
+                              <label for="enDescription"><%= lingua.create_product_description3 %></label>
+                              <div class="input-group">
+                                 <textarea
+                                    class="form-control"
+                                    name="enDescription"
+                                    id="enDescription"
+                                    rows="5"> <% if (editing) { %><%= product[0].dailyMenuTranslations[2].description %><% } %></textarea
+                                    >
+                                 <div class="invalid-feedback">
+                                    Please provide a message.
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="col-md-12 mb-3">
+                              <label for="validationCustom12"><%= lingua.create_product_image %></label>
+                              <div class="custom-file">
+                                 <input accept="image/png, image/jpeg,image/jpeg" type="file" name="image" id="image" />
+                              </div>
+                           </div>
                      </div>
                   </div>
-               </div><% } else { %>    <div class="ms-content-wrapper">
-                <div class="row">
-                   <div class="col-md-12">
-                      <div class="row">
-                       
-                         <% for (let i = 0; i < allergens.length; i++) { %>
-                            <input
-                            type="hidden"
-                            value="<%= allergens[i].id %>"
-                            name="extraId"
-                            />          
-                         <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 extra_box" data-extra="<%= allergens[i].id %>">
-                            <div class="ms-card">
-                               <div class="d-flex justify-content-center extra-margin-top">
-                                     <div class="row"> 
-                                       
-                                        <label class="ms-switch" >                 
-                                           <input type="hidden" value="off" class="status-<%= allergens[i].id %>" name="status[<%= allergens[i].id %>]" >          
-                                           <input    data-extraId="<%= allergens[i].id %>"  class="status-checkbox status-checkbox-<%= allergens[i].id %>" type="checkbox">
-                                           <span class="ms-switch-slider ms-switch-success round"></span>
-                                        </label> 
-                                     </div>
-                               </div>
-                               <div class="ms-card-body">
-                                  <div class="new d-flex justify-content-center extra-name">
-                                     <h6 class="mb-0"><b><%= currentAllergenName[i] %></b> </h6>
-                                  </div>
-                              
-                                 
-                               </div>
-                            </div>
-                         </div>
-                         <% } %>
-                      </div>
-                   </div>
-                </div>
-             </div><% } %>
-
-              
-                  <input
-                  type="hidden"
-                  value="<%= dailyMenuId %>"
-                  name="dailyMenuId"
-                />
-                 
-                  <button class="btn btn-success has-icon" type="submit">
-                    <% if (editing) { %>Update Product<% } else { %>Add
-                    Product<% } %>
-                  </button>
-                </form>
-                </div>
-              </div>
+               </div>
             </div>
-          </div>
-        </div>
+            <div class="col-xl-6 col-md-12">
+            <div class="row">
+            <div class="col-md-12">
+            <div class="ms-panel">
+            <div class="ms-panel-header">
+            <h6>Product</h6>
+            </div>
+            <div class="ms-panel-body">
+            <div class="carousel-inner">
+            <div class="carousel-item active">
+            <% if (editing) { %><img src="/<%= product[0].imageUrl %>" alt="<%= product.price %>"><% }  %>
+            </div>
+            </div>
+            </div>
+            </div>
+            <input
+               type="hidden"
+               value="<%= dailyMenuId %>"
+               name="dailyMenuId"
+               />
+            <button class="btn btn-success has-icon" type="submit">
+            <% if (editing) { %>Update Product<% } else { %>Add
+            Product<% } %>
+            </button>
+            </form>
+            </div>
+            </div>
+            </div>
+         </div>
       </div>
-    </div>
-  </main>
-  <script>
-    $(document).ready(function() {
-      $("#datepick").datepicker();
-  });
-  </script>
-
-<script>
-  $(function() { 
-  $("#categoryRo").change(function() { 
-     $("#categoryHu").val($(this).val());
-     $("#categoryEn").val($(this).val());
-  });
-  });
-
-  $(function() { 
-  $("#categoryHu").change(function() { 
-     $("#categoryRo").val($(this).val());
-     $("#categoryEn").val($(this).val());
-  });
-  });
-
-  $(function() { 
-  $("#categoryEn").change(function() { 
-     $("#categoryRo").val($(this).val());
-     $("#categoryHu").val($(this).val());
-  });
-  });
-</script>    
+      </div>
+      </div>
+   </main>
+   <script>
+      $(document).ready(function() {
+        $("#datepick").datepicker();
+      });
+   </script>
+   <script>
+      $(function() { 
+      $("#categoryRo").change(function() { 
+         $("#categoryHu").val($(this).val());
+         $("#categoryEn").val($(this).val());
+      });
+      });
+      
+      $(function() { 
+      $("#categoryHu").change(function() { 
+         $("#categoryRo").val($(this).val());
+         $("#categoryEn").val($(this).val());
+      });
+      });
+      
+      $(function() { 
+      $("#categoryEn").change(function() { 
+         $("#categoryRo").val($(this).val());
+         $("#categoryHu").val($(this).val());
+      });
+      });
+   </script>    
 </body>
+

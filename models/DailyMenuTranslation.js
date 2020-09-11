@@ -8,6 +8,9 @@ const DailyMenuTranslation = sequelize.define("dailyMenuTranslation", {
     allowNull: false,
     primaryKey: true,
   },
+  title: {
+    type: Sequelize.STRING,
+  },
   description: {
     type: Sequelize.STRING,
   },

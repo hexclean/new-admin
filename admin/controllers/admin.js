@@ -51,6 +51,7 @@ exports.postAddProduct = async (req, res, next) => {
   const huDescription = req.body.huDescription;
   const enDescription = req.body.enDescription;
   //
+  const status = req.body.statusAllergen;
   const image = req.file;
   const imageUrl = image.path;
 
@@ -73,6 +74,7 @@ exports.postAddProduct = async (req, res, next) => {
   const product = await req.admin.createProduct({
     imageUrl: imageUrl,
     active: 1,
+    allergen: typeof status !== "undefined" ? 1 : 0,
   });
 
   async function productTransaltion() {
@@ -82,6 +84,7 @@ exports.postAddProduct = async (req, res, next) => {
       description: roDescription,
       productId: product.id,
       category: roCategory,
+      allergen: typeof status !== "undefined" ? 1 : 0,
     });
     await ProductTranslation.create({
       title: huTitle,
@@ -89,6 +92,7 @@ exports.postAddProduct = async (req, res, next) => {
       description: huDescription,
       productId: product.id,
       category: huCategory,
+      allergen: typeof status !== "undefined" ? 1 : 0,
     });
 
     await ProductTranslation.create({
@@ -97,12 +101,16 @@ exports.postAddProduct = async (req, res, next) => {
       description: enDescription,
       productId: product.id,
       category: enCategory,
+      allergen: typeof status !== "undefined" ? 1 : 0,
     });
   }
 
   if (Array.isArray(ext)) {
-    console.log(ext);
     for (let i = 0; i <= ext.length - 1; i++) {
+      console.log(
+        "----------------------------------------------------------------------------------------------------------------------------------------"
+      );
+      console.log("price in for", price[i]);
       await ProductFinal.create({
         price: price[i] || 0,
         productId: product.id,
@@ -137,7 +145,7 @@ exports.getEditProduct = async (req, res, next) => {
   let productId = [prodId];
   const Op = Sequelize.Op;
 
-  const test33 = await ProductVariants.findAll({
+  const prodVariant = await ProductVariants.findAll({
     where: {
       adminId: req.admin.id,
     },
@@ -147,6 +155,7 @@ exports.getEditProduct = async (req, res, next) => {
       },
     ],
   });
+  console.log("prodVariant", prodVariant);
   let productFinal = await ProductFinal.findAll({
     where: {
       productId: {
@@ -177,11 +186,11 @@ exports.getEditProduct = async (req, res, next) => {
         productIds: prodId,
         productId: prodId,
         ext: productFinal,
-        productVariant: test33,
+        productVariant: prodVariant,
         errorMessage: null,
         validationErrors: [],
-
         extTranslations: product[0].productTranslations,
+        isActive: product[0].allergen,
         isActiveVariant: productFinal,
       });
     })
@@ -268,8 +277,7 @@ exports.postEditProduct = async (req, res, next) => {
           for (let i = 0; i < variants.length; i++) {
             let variIds = [varId[i]];
             let prodIds = [prodId];
-            console.log("variIds", variIds);
-            console.log("prodIds", prodIds);
+
             await ProductFinal.update(
               {
                 price: updatedExtraPrice[i] || 0,
@@ -325,7 +333,6 @@ exports.getProducts = async (req, res, next) => {
   })
 
     .then((product) => {
-      console.log(product);
       for (let i = 0; i < product.length; i++) {
         var currentLanguage = req.cookies.language;
 
