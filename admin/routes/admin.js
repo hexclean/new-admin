@@ -92,6 +92,7 @@ router.post(
 );
 
 // Allergen
+router.get("/allergen/search", isAuth, allergenController.getSearch);
 router.get("/allergen-index", isAuth, allergenController.getIndex);
 router.get("/add-allergen", isAuth, allergenController.getAddAllergen);
 router.post("/add-allergen", isAuth, allergenController.postAddAllergen);

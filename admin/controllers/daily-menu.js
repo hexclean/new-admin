@@ -219,11 +219,13 @@ exports.getIndex = async (req, res, next) => {
     include: [
       {
         model: DailyMenuTranslation,
+        model: DailyMenuFinal,
       },
     ],
   })
     .then((numAllergen) => {
       totalItems = numAllergen;
+      console.log(numAllergen[0].dailyMenuFinals[0].time);
       return DailyMenu.findAll({
         where: {
           adminId: req.admin.id,
@@ -249,6 +251,7 @@ exports.getIndex = async (req, res, next) => {
         previousPage: page - 1,
         lastPage: Math.ceil(totalItems.length / ITEMS_PER_PAGE),
         dm: allergen,
+        time: allergen,
       });
     })
     .catch((err) => {

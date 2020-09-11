@@ -32,6 +32,10 @@
                      <div class="ms-panel-header">
                         <h6> allergen List</h6>
                      </div>
+                     <form action="/admin/allergen/search">
+                        <input type="search" name="term" placeholder="Valami"/>
+                        <input type="submit" value="Search"/>
+                     </form>
                      <div class="ms-panel-body">
                         <div class="table-responsive">
                            <table class="table table-hover thead-primary">
@@ -40,9 +44,11 @@
                                     <th scope="col">ID</th>
                                     <th scope="col">SKU</th>
                                     
-                                    <th scope="col">STATUS</th>
+                                   
                                     
                                     <th scope="col" >EDIT</th>
+                                    <th scope="col" >Created</th>
+                                    <th scope="col" >Updated</th>
                                  </tr>
                               </thead>
                               <% if (ag.length > 0) { %>
@@ -52,11 +58,13 @@
                                     <th scope="row"><%= ag[i].id %></th>
                                     <td><%= currentAllergenName[i] %></td>
                                     
-                                    <td><span class="badge badge-success">AKTIV</span></td>
+                                   
                                    
                                     <td>
                                         <a href="/admin/edit-allergen/<%= ag[i].id %>?edit=true"class="btn grid-btn mt-0 btn-sm btn-secondary" ><%= lingua.product_action_edit %></a>
                                     </td>
+                                     <td><span class="badge badge-success"><%= ag[i].createdAt %></span></td>
+                                     <td><span class="badge badge-success"><%= ag[i].updatedAt %></span></td>
                                  </tr>
                               </tbody>
                               <% } %>

@@ -2,9 +2,12 @@
 
 <%- include('../includes/head.ejs') %>
 <script>
+  
    $( function() {
-     $( "#datepicker" ).datepicker();
+     $( "#datepicker" ).datepicker({ minDate: 0 });
    } );
+   
+   
 </script>
 </head>
 <body class="ms-body ms-aside-left-open ms-primary-theme ms-has-quickbar">
@@ -176,11 +179,6 @@
       </div>
    </main>
    <script>
-      $(document).ready(function() {
-        $("#datepick").datepicker();
-      });
-   </script>
-   <script>
       $(function() { 
       $("#categoryRo").change(function() { 
          $("#categoryHu").val($(this).val());
@@ -203,4 +201,3 @@
       });
    </script>    
 </body>
-
