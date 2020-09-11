@@ -70,7 +70,7 @@
                                     id="datepicker"
                                     name="datepicker"
                                     autocomplete="off"
-                                    value="<% if (editing) { %><%= product[0].dailyMenuFinals[0].time %><% } %>"
+                                    value="<% if (editing) { %><%= product[0].dailyMenuFinals[0].time.toUTCString() %><% } %>"
                                     />
                                  <div class="invalid-feedback">
                                     datepicker 

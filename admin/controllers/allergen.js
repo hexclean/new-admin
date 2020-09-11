@@ -4,8 +4,7 @@ const DailyMenu = require("../../models/DailyMenu");
 const DailyMenuAllergens = require("../../models/DailyMenuAllergens");
 const Sequelize = require("sequelize");
 const Op = Sequelize.Op;
-const ITEMS_PER_PAGE = 15;
-
+const ITEMS_PER_PAGE = 20;
 exports.getAddAllergen = async (req, res, next) => {
   res.render("allergen/edit-allergen", {
     pageTitle: "Add Product",
