@@ -68,28 +68,14 @@ exports.postAddAllergen = async (req, res, next) => {
     });
 
     if (Array.isArray(totalExtras)) {
-      const Op = Sequelize.Op;
-
       for (let i = 0; i <= totalExtras.length - 1; i++) {
         console.log("totalExtras[i].id", totalExtras[i].id);
-        await ExtraHasAllergen.create(
-          {
-            active: 0,
-            adminId: req.admin.id,
-            allergenId: allergen.id,
-            extraId: totalExtras[i].id,
-          }
-          // {
-          //   where: {
-          //     extraId: {
-          //       [Op.in]: extrasIds,
-          //     },
-          //     productVariantId: {
-          //       [Op.in]: variantId,
-          //     },
-          //   },
-          // }
-        );
+        await ExtraHasAllergen.create({
+          active: 0,
+          adminId: req.admin.id,
+          allergenId: allergen.id,
+          extraId: totalExtras[i].id,
+        });
       }
     } else {
       return;

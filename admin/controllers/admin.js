@@ -6,9 +6,23 @@ const ProductTranslation = require("../../models/ProductTranslation");
 const ProductFinal = require("../../models/ProductFinal");
 const Admin = require("../../models/Admin");
 var Sequelize = require("sequelize");
+const Allergen = require("../../models/Allergen");
+const ProductHasAllergen = require("../../models/ProductHasAllergen");
 const ProductVariants = require("../../models/ProductVariant");
+const AllegenTranslation = require("../../models/AllergenTranslation");
 
 exports.getAddProduct = async (req, res, next) => {
+  const allergen = await Allergen.findAll({
+    where: {
+      adminId: req.admin.id,
+    },
+    include: [
+      {
+        model: AllegenTranslation,
+      },
+    ],
+  });
+
   const ext = await ProductVariant.findAll({
     where: {
       adminId: req.admin.id,
@@ -35,12 +49,16 @@ exports.getAddProduct = async (req, res, next) => {
     ext: ext,
     checkVariantLength: checkVariantLength,
     hasError: false,
+    allergenArray: allergen,
     errorMessage: null,
     validationErrors: [],
   });
 };
 
 exports.postAddProduct = async (req, res, next) => {
+  const allergenId = req.body.allergenId;
+  var filteredStatus = req.body.status.filter(Boolean);
+
   const roTitle = req.body.roTitle;
   const huTitle = req.body.huTitle;
   const enTitle = req.body.enTitle;
@@ -64,6 +82,17 @@ exports.postAddProduct = async (req, res, next) => {
   var filteredStatus = req.body.status.filter(Boolean);
   const commission = await Admin.findByPk(req.admin.id);
   let commissionCode = commission.commissionCode;
+
+  const allergen = await Allergen.findAll({
+    where: {
+      adminId: req.admin.id,
+    },
+    include: [
+      {
+        model: AllegenTranslation,
+      },
+    ],
+  });
 
   const ext = await ProductVariant.findAll({
     where: {
@@ -107,10 +136,6 @@ exports.postAddProduct = async (req, res, next) => {
 
   if (Array.isArray(ext)) {
     for (let i = 0; i <= ext.length - 1; i++) {
-      console.log(
-        "----------------------------------------------------------------------------------------------------------------------------------------"
-      );
-      console.log("price in for", price[i]);
       await ProductFinal.create({
         price: price[i] || 0,
         productId: product.id,
@@ -118,6 +143,16 @@ exports.postAddProduct = async (req, res, next) => {
         discountedPrice: 0,
         active: filteredStatus[i] == "on" ? 1 : 0,
       });
+    }
+    if (Array.isArray(allergen)) {
+      for (let i = 0; i <= allergen.length - 1; i++) {
+        await ProductHasAllergen.create({
+          productId: product.id,
+          allergenId: allergenId[i],
+          active: filteredStatus[i] == "on" ? 1 : 0,
+          adminId: req.admin.id,
+        });
+      }
     }
   }
 
@@ -137,13 +172,40 @@ exports.postAddProduct = async (req, res, next) => {
 
 exports.getEditProduct = async (req, res, next) => {
   const editMode = req.query.edit;
+  const prodId = req.params.productId;
+  let productId = [prodId];
+  const Op = Sequelize.Op;
+
   if (!editMode) {
     return res.redirect("/");
   }
 
-  const prodId = req.params.productId;
-  let productId = [prodId];
-  const Op = Sequelize.Op;
+  const allergen = await Allergen.findAll({
+    where: {
+      adminId: req.admin.id,
+    },
+    include: [
+      {
+        model: AllegenTranslation,
+      },
+      { model: ProductHasAllergen },
+    ],
+  });
+
+  const allergenTest = await Allergen.findAll({
+    where: {
+      adminId: req.admin.id,
+    },
+    include: [
+      {
+        model: AllegenTranslation,
+      },
+      {
+        model: ProductHasAllergen,
+        where: { productId: { [Op.in]: productId }, adminId: req.admin.id },
+      },
+    ],
+  });
 
   const prodVariant = await ProductVariants.findAll({
     where: {
@@ -177,9 +239,11 @@ exports.getEditProduct = async (req, res, next) => {
   })
     .then((product) => {
       res.render("admin/edit-product", {
+        isActiveAllergen: allergenTest,
         pageTitle: "Edit Product",
         path: "/admin/edit-product",
         editing: editMode,
+        allergenArray: allergen,
         product: product,
         variantIdByParams: prodId,
         hasError: false,
@@ -204,8 +268,8 @@ exports.getEditProduct = async (req, res, next) => {
 exports.postEditProduct = async (req, res, next) => {
   const prodId = req.body.productId;
   const varId = req.body.variantIdUp;
-
-  var filteredStatus = req.body.status.filter(Boolean);
+  const allergenId = req.body.allergenId;
+  const filteredStatusAllergen = req.body.status.filter(Boolean);
   // Title
   const updatedRoTitle = req.body.roTitle;
   const updatedHuTitle = req.body.huTitle;
@@ -218,6 +282,17 @@ exports.postEditProduct = async (req, res, next) => {
   //
   const updatedExtraPrice = req.body.price;
   const image = req.file;
+  const filteredStatus = req.body.status.filter(Boolean);
+  const Op = Sequelize.Op;
+  const productArray = [prodId];
+  //
+  const productHasAllergen = await ProductHasAllergen.findAll({
+    where: {
+      productId: {
+        [Op.in]: productArray,
+      },
+    },
+  });
 
   const variants = await ProductVariants.findAll({
     where: {
@@ -291,6 +366,30 @@ exports.postEditProduct = async (req, res, next) => {
                   },
                   productId: {
                     [Op.in]: prodIds,
+                  },
+                },
+              }
+            );
+          }
+        }
+        if (Array.isArray(productHasAllergen)) {
+          const Op = Sequelize.Op;
+          for (let i = 0; i <= productHasAllergen.length - 1; i++) {
+            let productIds = [allergenId[i]];
+            let productId = [prodId];
+
+            await ProductHasAllergen.update(
+              {
+                active: filteredStatusAllergen[i] == "on" ? 1 : 0,
+              },
+              {
+                where: {
+                  adminId: req.admin.id,
+                  allergenId: {
+                    [Op.in]: productIds,
+                  },
+                  productId: {
+                    [Op.in]: productId,
                   },
                 },
               }

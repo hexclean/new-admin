@@ -258,20 +258,7 @@ if(vidFileLength === 0){
             <% } %>
 
 
-            <% if (editing) { %>
-                                      
-               <% if (isActive ==1) { %>
-                  
-                  <script>
-                      $(document).ready(function() {
-                      $('.status-checkbox-allergen').prop('checked', true);
-                      $('.statusAllergen').val('on');
-                      });
-                  </script>
-                     
-                  <% } 
-               %>
-            <% } %>
+       
             
          <div class="row">
             <div class="col-xl-6 col-md-12">
@@ -400,27 +387,58 @@ if(vidFileLength === 0){
                      </div>
                   </div>
                 
-                  <div class="col-xl-6 col-md-12">
-                     <div class="row">
-                        <div class="col-md-12">
-                           <div class="ms-panel">
-                              <div class="ms-panel-header alergen-border">
-                                 <h6>Allergens</h6>
-                              </div>
-                              
-                              <div class="ms-panel-body alergen-border">
-                                 <label class="ms-switch" >              
-                                 <input class="status-checkbox-allergen" type="checkbox" name="statusAllergen" id="statusAllergen" > <span class="ms-switch-slider ms-switch-success round"></span>
-                                 </label> 
-                              </div>
+                  <div class="col-xl-12 col-md-12">
+                     <div class="ms-panel ms-panel-fh">
+                       <div class="ms-panel-header">
+                         <h6>Allergén hozzárendelése extrához</h6>
+                       </div>
+                       <div class="ms-panel-body">
+                         <p class="ms-directions"><code>Nem elfelejteni bejelölni a termekhez hozzátartozó allergéneket</code>
+                         </p>
+                           <div class="row">
+                             <div class="col-md-12">
+                               <ul class="ms-list ms-list-display">
+                                 <%  for (let i = 0; i <allergenArray.length; i++) { %>
+                                    <input
+                                    type="hidden"
+                                    value="<%= allergenArray[i].id %>"
+                                    name="allergenId"
+                                    /> 
+                                 <li>
+                                   <label class="ms-switch" data-extra="<%= allergenArray[i].id %>">
+                                    <input type="hidden" value="off" class="status-<%= allergenArray[i].id %>" name="status[<%= allergenArray[i].id %>]" > 
+                                     <input data-extraId="<%= allergenArray[i].id %>"  class="status-checkbox status-checkbox-<%= allergenArray[i].id %>" type="checkbox"> <span class="ms-switch-slider ms-switch-success round"></span>
+                                   </label> <span> <%= allergenArray[i].allergenTranslations[0].name %> </span>
+                                 </li>
+                                 <% } %>
+                               </ul>
+                             </div>
                            </div>
-                        </div>
+                       </div>
                      </div>
-                  </div>
+                   </div>
+                 
                </div>
             </div>
          </div>
          </div>
+
+         <% if (editing) { %>
+            <% for (let i = 0; i < isActiveAllergen.length; i++) { %>
+               <% if (isActiveAllergen[i].productHasAllergens[0].active == 1) { %>
+                  
+                  <script>
+                      $(document).ready(function() {
+                      var activeCheckbox ="<%= isActiveAllergen[i].productHasAllergens[0].allergenId %>";
+                      $('.status-checkbox-'+activeCheckbox).prop('checked', true);
+                      $('.status-'+activeCheckbox).val('on');
+                      });
+                  </script>
+                     
+                  <% } 
+               %>
+            <% } %>
+            <% } %>
 
        <div class="ms-panel ms-btn-display">
          <div class="ms-panel-header">
@@ -428,7 +446,7 @@ if(vidFileLength === 0){
          </div>
       </div>
       <% if (editing) { %>  <% if (productVariant.length > 0) { %>
-         SDSADASDSADADSADSSD
+         
          <div class="ms-content-wrapper">
             <div class="row">
                <div class="col-md-12">

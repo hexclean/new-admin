@@ -15,9 +15,6 @@ const Product = sequelize.define("product", {
   active: {
     type: Sequelize.INTEGER,
   },
-  allergen: {
-    type: Sequelize.INTEGER,
-  },
 });
 
 module.exports = Product;

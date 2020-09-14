@@ -8,6 +8,10 @@ const ProductHasAllergen = sequelize.define("productHasAllergen", {
     allowNull: false,
     primaryKey: true,
   },
+  active: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+  },
 });
 
 module.exports = ProductHasAllergen;
