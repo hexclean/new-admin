@@ -223,13 +223,13 @@ $(document).ready(function () {
                            <%  for (let i = 0; i <allergenArray.length; i++) { %>
                               <input
                               type="hidden"
-                              value="<%= allergenArray[i].extraHasAllergens[0].allergenId %>"
+                              value="<%= allergenArray[i].id %>"
                               name="allergenId"
                               /> 
                            <li>
-                             <label class="ms-switch" data-extra="<%= allergenArray[i].extraHasAllergens[0].allergenId %>">
-                              <input type="hidden" value="off" class="status-<%= allergenArray[i].extraHasAllergens[0].allergenId %>" name="status[<%= allergenArray[i].extraHasAllergens[0].allergenId %>]" > 
-                               <input data-extraId="<%= allergenArray[i].extraHasAllergens[0].allergenId %>"  class="status-checkbox status-checkbox-<%= allergenArray[i].extraHasAllergens[0].allergenId %>" type="checkbox"> <span class="ms-switch-slider ms-switch-success round"></span>
+                             <label class="ms-switch" data-extra="<%= allergenArray[i].id %>">
+                              <input type="hidden" value="off" class="status-<%= allergenArray[i].id %>" name="status[<%= allergenArray[i].id %>]" > 
+                               <input data-extraId="<%= allergenArray[i].id %>"  class="status-checkbox status-checkbox-<%= allergenArray[i].id %>" type="checkbox"> <span class="ms-switch-slider ms-switch-success round"></span>
                              </label> <span> <%= allergenArray[i].allergenTranslations[0].name %> </span>
                            </li>
                            <% } %>

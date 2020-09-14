@@ -150,7 +150,8 @@ exports.getEditExtra = async (req, res, next) => {
 
   Extra.findAll({
     where: {
-      id: test,
+      id: extId,
+      adminId: req.admin.id,
     },
     include: [
       {
@@ -199,6 +200,7 @@ exports.postEditExtra = async (req, res, next) => {
   const filteredStatus = req.body.status.filter(Boolean);
   const Op = Sequelize.Op;
   const extraArray = [extraIdEditing];
+  //
   const extrasHasAllergen = await ExtraHasAllergen.findAll({
     where: {
       extraId: {
