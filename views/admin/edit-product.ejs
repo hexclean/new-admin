@@ -424,6 +424,15 @@ if(vidFileLength === 0){
          </div>
 
          <% if (editing) { %>
+            <input
+            type="hidden"
+            value="<%= extraIdEditing %>"
+            name="extraIdEditing"
+            />  
+
+            <% } %>
+            
+         <% if (editing) { %>
             <% for (let i = 0; i < isActiveAllergen.length; i++) { %>
                <% if (isActiveAllergen[i].productHasAllergens[0].active == 1) { %>
                   

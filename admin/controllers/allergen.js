@@ -5,6 +5,8 @@ const DailyMenuAllergens = require("../../models/DailyMenuAllergens");
 const Sequelize = require("sequelize");
 const Extra = require("../../models/Extra");
 const ExtraHasAllergen = require("../../models/ExtraHasAllergen");
+const Product = require("../../models/Product");
+const ProductHasAllergen = require("../../models/ProductHasAllergen");
 
 const Op = Sequelize.Op;
 const ITEMS_PER_PAGE = 20;
@@ -66,15 +68,30 @@ exports.postAddAllergen = async (req, res, next) => {
     const totalExtras = await Extra.findAll({
       where: { adminId: req.admin.id },
     });
+    const totalProducts = await Product.findAll({
+      where: { adminId: req.admin.id },
+    });
 
     if (Array.isArray(totalExtras)) {
       for (let i = 0; i <= totalExtras.length - 1; i++) {
-        console.log("totalExtras[i].id", totalExtras[i].id);
         await ExtraHasAllergen.create({
           active: 0,
           adminId: req.admin.id,
           allergenId: allergen.id,
           extraId: totalExtras[i].id,
+        });
+      }
+    } else {
+      return;
+    }
+
+    if (Array.isArray(totalProducts)) {
+      for (let i = 0; i <= totalProducts.length - 1; i++) {
+        await ProductHasAllergen.create({
+          active: 0,
+          adminId: req.admin.id,
+          allergenId: allergen.id,
+          productId: totalProducts[i].id,
         });
       }
     } else {
