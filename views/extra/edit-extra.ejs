@@ -1,5 +1,18 @@
 <%- include('../includes/head.ejs') %>
 <script>
+   $(document).ready(function() {
+      $('.status-checkbox').click(function() {
+         var extraId = $(this).attr('data-extraId');
+         if($(this).is(':checked')) {
+            $('.status-'+extraId).val('on');
+         } else {
+            $('.status-'+extraId).val('off');
+         }
+      });
+   });
+</script>
+
+<script>
 $(function () {
   $("#roName_error_message").hide();
   $("#huName_error_message").hide();
@@ -25,7 +38,7 @@ $(function () {
   function check_roName() {
     var roName_length = $("#roName").val().length;
 
-    if (roName_length < 2 || roName_length > 15) {
+    if (roName_length < 2 || roName_length > 40) {
       $("#roName_error_message").html(`<%= lingua.extra_ro_name_required %>`);
       $("#roName_error_message").show();
       error_roName = true;
@@ -37,7 +50,7 @@ $(function () {
   function check_huName() {
     var huName_length = $("#huName").val().length;
 
-    if (huName_length < 2 || huName_length > 15) {
+    if (huName_length < 2 || huName_length > 40) {
       $("#huName_error_message").html(`<%= lingua.extra_hu_name_required %>`);
       $("#huName_error_message").show();
       error_huName = true;
@@ -49,7 +62,7 @@ $(function () {
   function check_enName() {
     var enName_length = $("#enName").val().length;
 
-    if (enName_length < 2 || enName_length > 15) {
+    if (enName_length < 2 || enName_length > 40) {
       $("#enName_error_message").html(`<%= lingua.extra_en_name_required %>`);
       $("#enName_error_message").show();
       error_enName = true;
@@ -110,6 +123,7 @@ $(document).ready(function () {
                   <div class="ms-panel-header">
                      <h6>Add Product Form</h6>
                   </div>
+                  
                   <div class="ms-panel-body">
                      <div class="form-row">
                         <div class="col-md-12 mb-3">
@@ -150,15 +164,7 @@ $(document).ready(function () {
                         </div>
                      </div>
                   </div>
-               </div>
-            </div>
-            <div class="col-xl-6 col-md-12">
-               <div class="row">
-                  <div class="col-md-12">
-                     <div class="ms-panel">
-                        <div class="ms-panel-header">
-                           <h6>Product</h6>
-                        </div>
+                     <div class="d-flex justify-content-center">
                         <% if (editing) { %>
                         <input type="hidden" value="<%= extra.id %>" name="extraId">
                         <%for (let i = 0; i < extTranslations.length; i++){%>
@@ -167,9 +173,67 @@ $(document).ready(function () {
                         <% } %>
                         <button type="submit" id="extra-btn" class="btn btn-success has-icon" ><% if (editing) { %>Update Product<% } else { %>Add Product<% } %></button>
                      </div>
-                  </div>
                </div>
+               
             </div>
+
+
+
+                <% if (editing) { %>
+                  <input
+                  type="hidden"
+                  value="<%= extraIdEditing %>"
+                  name="extraIdEditing"
+                  />  
+            <% for (let i = 0; i < allergenArray.length; i++) { %>
+               <% if (allergenArray[i].extraHasAllergens[0].active == 1) { %>
+                  
+                  <script>
+                      $(document).ready(function() {
+                      var activeCheckbox ="<%= allergenArray[i].extraHasAllergens[0].allergenId %>";
+                      $('.status-checkbox-'+activeCheckbox).prop('checked', true);
+                      $('.status-'+activeCheckbox).val('on');
+                      });
+                  </script>
+                     
+                  <% } 
+               %>
+            <% } %>
+            <% } %>
+
+
+
+            <div class="col-xl-6 col-md-12">
+               <div class="ms-panel ms-panel-fh">
+                 <div class="ms-panel-header">
+                   <h6>Allergén hozzárendelése extrához</h6>
+                 </div>
+                 <div class="ms-panel-body">
+                   <p class="ms-directions"><code>Nem elfelejteni bejelölni az extrához hozzátartozó allergéneket</code>
+                   </p>
+                     <div class="row">
+                       <div class="col-md-12">
+                         <ul class="ms-list ms-list-display">
+                           <%  for (let i = 0; i <allergenArray.length; i++) { %>
+                              <input
+                              type="hidden"
+                              value="<%= allergenArray[i].id %>"
+                              name="allergenId"
+                              /> 
+                           <li>
+                             <label class="ms-switch data-extra="<%= allergenArray[i].id %>"">
+                              <input type="hidden" value="off" class="status-<%= allergenArray[i].id %>" name="status[<%= allergenArray[i].id %>]" > 
+                               <input data-extraId="<%= allergenArray[i].id %>"  class="status-checkbox status-checkbox-<%= allergenArray[i].id %>" type="checkbox"> <span class="ms-switch-slider ms-switch-success round"></span>
+                             </label> <span> <%= allergenArray[i].allergenTranslations[0].name %> </span>
+                           </li>
+                           <% } %>
+                         </ul>
+                       </div>
+                     </div>
+                 </div>
+               </div>
+             </div>
+           
          </div>
          </div>
       </form>

@@ -1,30 +1,55 @@
 const Extra = require("../../models/Extra");
 const ExtraTranslation = require("../../models/ExtraTranslation");
-const ProductVariantsExtras = require("../../models/ProductVariantsExtras");
-const ProductVariants = require("../../models/ProductVariant");
+const Allergen = require("../../models/Allergen");
+const AllegenTranslation = require("../../models/AllergenTranslation");
+const ExtraHasAllergen = require("../../models/ExtraHasAllergen");
+var Sequelize = require("sequelize");
 
-exports.getAddExtra = (req, res, next) => {
+// Betölti az extra létrehozás oldalt
+exports.getAddExtra = async (req, res, next) => {
+  const allergen = await Allergen.findAll({
+    where: {
+      adminId: req.admin.id,
+    },
+    include: [
+      {
+        model: AllegenTranslation,
+      },
+    ],
+  });
+
+  console.log("allergne", allergen);
+
   res.render("extra/edit-extra", {
     pageTitle: "Add Product",
     path: "/admin/add-product",
     editing: false,
     hasError: false,
     errorMessage: null,
+    allergenArray: allergen,
     validationErrors: [],
   });
 };
 
+// Létrehoz egy extrát
 exports.postAddExtra = async (req, res, next) => {
+  const allergenId = req.body.allergenId;
   const roName = req.body.roName;
   const huName = req.body.huName;
   const enName = req.body.enName;
-
-  let variantId = await ProductVariants.findAll({
-    where: { adminId: req.admin.id },
+  var filteredStatus = req.body.status.filter(Boolean);
+  const allergen = await Allergen.findAll({
+    where: {
+      adminId: req.admin.id,
+    },
+    include: [
+      {
+        model: AllegenTranslation,
+      },
+    ],
   });
 
   const extra = await req.admin.createExtra();
-
   async function extraTransaltion() {
     await ExtraTranslation.create({
       name: roName,
@@ -46,16 +71,14 @@ exports.postAddExtra = async (req, res, next) => {
       extraId: extra.id,
       adminId: req.admin.id,
     });
+  }
 
-    for (let i = 0; i <= variantId.length - 1; i++) {
-      await ProductVariantsExtras.create({
-        price: 0,
-        quantityMin: 0,
-        quantityMax: 0,
-        discountedPrice: 0,
-        active: 0,
-        productVariantId: variantId[i].id,
+  if (Array.isArray(allergen)) {
+    for (let i = 0; i <= allergen.length - 1; i++) {
+      await ExtraHasAllergen.create({
         extraId: extra.id,
+        allergenId: allergenId[i],
+        active: filteredStatus[i] == "on" ? 1 : 0,
         adminId: req.admin.id,
       });
     }
@@ -63,9 +86,10 @@ exports.postAddExtra = async (req, res, next) => {
 
   extraTransaltion()
     .then((result) => {
-      console.log(extra.id);
-
-      res.redirect("/admin/vr-index");
+      res.redirect("/admin/vr-index"),
+        {
+          allergenArray: allergen,
+        };
     })
     .catch((err) => {
       const error = new Error(err);
@@ -92,13 +116,26 @@ exports.getExtras = (req, res, next) => {
     });
 };
 
-exports.getEditExtra = (req, res, next) => {
+exports.getEditExtra = async (req, res, next) => {
   const editMode = req.query.edit;
   if (!editMode) {
     return res.redirect("/");
   }
-  const extId = req.params.extraId;
 
+  const allergen = await Allergen.findAll({
+    where: {
+      adminId: req.admin.id,
+    },
+    include: [
+      {
+        model: AllegenTranslation,
+      },
+      { model: ExtraHasAllergen },
+    ],
+  });
+
+  const extId = req.params.extraId;
+  console.log("extraIdEditing", extId);
   Extra.findAll({
     where: {
       id: extId,
@@ -110,7 +147,7 @@ exports.getEditExtra = (req, res, next) => {
     ],
   })
     .then((extra) => {
-      console.log("extra.adminId", extra[0].adminId);
+      console.log("extra.adminId", extId);
       if (extra[0].adminId !== req.admin.id) {
         return res.redirect("/");
       }
@@ -125,7 +162,10 @@ exports.getEditExtra = (req, res, next) => {
         extra: extra,
         hasError: false,
         errorMessage: null,
+        extraIdEditing: extId,
         validationErrors: [],
+        allergenArray: allergen,
+        isActive: allergen[0].extraHasAllergens,
         extTranslations: extra[0].extraTranslations,
       });
     })
@@ -137,11 +177,23 @@ exports.getEditExtra = (req, res, next) => {
 };
 
 exports.postEditExtra = async (req, res, next) => {
+  const allergenId = req.body.allergenId;
+  const extraIdEditing = req.body.extraIdEditing;
+
   const updatedRoName = req.body.roName;
   const updatedHuName = req.body.huName;
   const updatedEnName = req.body.enName;
   const extTranId = req.body.extTranId;
-
+  const filteredStatus = req.body.status.filter(Boolean);
+  const Op = Sequelize.Op;
+  const extraArray = [extraIdEditing];
+  const extrasHasAllergen = await ExtraHasAllergen.findAll({
+    where: {
+      extraId: {
+        [Op.in]: extraArray,
+      },
+    },
+  });
   Extra.findAll({
     include: [
       {
@@ -150,11 +202,6 @@ exports.postEditExtra = async (req, res, next) => {
     ],
   })
     .then((extra) => {
-      // console.log(extra);
-      // if (extra.adminId != req.admin.id) {
-      //   return res.redirect("/");
-      // }
-
       async function msg() {
         await ExtraTranslation.update(
           { name: updatedRoName },
@@ -170,10 +217,37 @@ exports.postEditExtra = async (req, res, next) => {
           { name: updatedEnName },
           { where: { id: extTranId[2], languageId: 3 } }
         );
+
+        if (Array.isArray(extrasHasAllergen)) {
+          const Op = Sequelize.Op;
+          for (let i = 0; i <= extrasHasAllergen.length - 1; i++) {
+            let allergenIds = [allergenId[i]];
+            let extraId = [extraIdEditing];
+            console.log("filteredStatus[i]", filteredStatus[i]);
+            await ExtraHasAllergen.update(
+              {
+                active: filteredStatus[i] == "on" ? 1 : 0,
+              },
+              {
+                where: {
+                  allergenId: {
+                    [Op.in]: allergenIds,
+                  },
+                  extraId: {
+                    [Op.in]: extraId,
+                  },
+                },
+              }
+            );
+          }
+        }
       }
       msg();
 
-      res.redirect("/admin/vr-index");
+      res.redirect("/admin/vr-index"),
+        {
+          allergenArray: 1,
+        };
     })
     .catch((err) => {
       const error = new Error(err);
