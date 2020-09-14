@@ -185,21 +185,27 @@ $(document).ready(function () {
                   value="<%= extraIdEditing %>"
                   name="extraIdEditing"
                   />  
-            <% for (let i = 0; i < allergenArray.length; i++) { %>
-               <% if (allergenArray[i].extraHasAllergens[0].active == 1) { %>
-                  
-                  <script>
-                      $(document).ready(function() {
-                      var activeCheckbox ="<%= allergenArray[i].extraHasAllergens[0].allergenId %>";
-                      $('.status-checkbox-'+activeCheckbox).prop('checked', true);
-                      $('.status-'+activeCheckbox).val('on');
-                      });
-                  </script>
+
+                  <% } %>
+        
+
+                  <% if (editing) { %>
+                     <% for (let i = 0; i < isActive.length; i++) { %>
+                        <% if (isActive[i].extraHasAllergens[0].active == 1) { %>
+                           
+                           <script>
+                               $(document).ready(function() {
+                               var activeCheckbox ="<%= isActive[i].extraHasAllergens[0].allergenId %>";
+                               $('.status-checkbox-'+activeCheckbox).prop('checked', true);
+                               $('.status-'+activeCheckbox).val('on');
+                               });
+                           </script>
+                              
+                           <% } 
+                        %>
+                     <% } %>
+                     <% } %>
                      
-                  <% } 
-               %>
-            <% } %>
-            <% } %>
 
 
 
@@ -217,13 +223,13 @@ $(document).ready(function () {
                            <%  for (let i = 0; i <allergenArray.length; i++) { %>
                               <input
                               type="hidden"
-                              value="<%= allergenArray[i].id %>"
+                              value="<%= allergenArray[i].extraHasAllergens[0].allergenId %>"
                               name="allergenId"
                               /> 
                            <li>
-                             <label class="ms-switch data-extra="<%= allergenArray[i].id %>"">
-                              <input type="hidden" value="off" class="status-<%= allergenArray[i].id %>" name="status[<%= allergenArray[i].id %>]" > 
-                               <input data-extraId="<%= allergenArray[i].id %>"  class="status-checkbox status-checkbox-<%= allergenArray[i].id %>" type="checkbox"> <span class="ms-switch-slider ms-switch-success round"></span>
+                             <label class="ms-switch" data-extra="<%= allergenArray[i].extraHasAllergens[0].allergenId %>">
+                              <input type="hidden" value="off" class="status-<%= allergenArray[i].extraHasAllergens[0].allergenId %>" name="status[<%= allergenArray[i].extraHasAllergens[0].allergenId %>]" > 
+                               <input data-extraId="<%= allergenArray[i].extraHasAllergens[0].allergenId %>"  class="status-checkbox status-checkbox-<%= allergenArray[i].extraHasAllergens[0].allergenId %>" type="checkbox"> <span class="ms-switch-slider ms-switch-success round"></span>
                              </label> <span> <%= allergenArray[i].allergenTranslations[0].name %> </span>
                            </li>
                            <% } %>

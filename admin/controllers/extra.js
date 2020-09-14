@@ -121,7 +121,9 @@ exports.getEditExtra = async (req, res, next) => {
   if (!editMode) {
     return res.redirect("/");
   }
-
+  const Op = Sequelize.Op;
+  const extId = req.params.extraId;
+  const test = [extId];
   const allergen = await Allergen.findAll({
     where: {
       adminId: req.admin.id,
@@ -134,11 +136,21 @@ exports.getEditExtra = async (req, res, next) => {
     ],
   });
 
-  const extId = req.params.extraId;
-  console.log("extraIdEditing", extId);
+  const allergenTest = await Allergen.findAll({
+    where: {
+      adminId: req.admin.id,
+    },
+    include: [
+      {
+        model: AllegenTranslation,
+      },
+      { model: ExtraHasAllergen, where: { extraId: { [Op.in]: test } } },
+    ],
+  });
+
   Extra.findAll({
     where: {
-      id: extId,
+      id: test,
     },
     include: [
       {
@@ -147,7 +159,7 @@ exports.getEditExtra = async (req, res, next) => {
     ],
   })
     .then((extra) => {
-      console.log("extra.adminId", extId);
+      console.log("allergenTest", allergenTest);
       if (extra[0].adminId !== req.admin.id) {
         return res.redirect("/");
       }
@@ -165,7 +177,7 @@ exports.getEditExtra = async (req, res, next) => {
         extraIdEditing: extId,
         validationErrors: [],
         allergenArray: allergen,
-        isActive: allergen[0].extraHasAllergens,
+        isActive: allergenTest,
         extTranslations: extra[0].extraTranslations,
       });
     })
