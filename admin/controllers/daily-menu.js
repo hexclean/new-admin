@@ -225,7 +225,6 @@ exports.getIndex = async (req, res, next) => {
   })
     .then((numAllergen) => {
       totalItems = numAllergen;
-      console.log(numAllergen[0].dailyMenuFinals[0].time);
       return DailyMenu.findAll({
         where: {
           adminId: req.admin.id,

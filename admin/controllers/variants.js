@@ -88,7 +88,6 @@ exports.getIndex = async (req, res, next) => {
       limit: ITEMS_PER_PAGE,
     });
   });
-  console.log("catL", category);
   const extras = await ProductExtra.findAll({
     where: {
       adminId: req.admin.id,

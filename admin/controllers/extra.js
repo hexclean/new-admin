@@ -17,9 +17,6 @@ exports.getAddExtra = async (req, res, next) => {
       },
     ],
   });
-
-  console.log("allergne", allergen);
-
   res.render("extra/edit-extra", {
     pageTitle: "Add Product",
     path: "/admin/add-product",
@@ -144,7 +141,10 @@ exports.getEditExtra = async (req, res, next) => {
       {
         model: AllegenTranslation,
       },
-      { model: ExtraHasAllergen, where: { extraId: { [Op.in]: test } } },
+      {
+        model: ExtraHasAllergen,
+        where: { extraId: { [Op.in]: test }, adminId: req.admin.id },
+      },
     ],
   });
 
@@ -160,7 +160,6 @@ exports.getEditExtra = async (req, res, next) => {
     ],
   })
     .then((extra) => {
-      console.log("allergenTest", allergenTest);
       if (extra[0].adminId !== req.admin.id) {
         return res.redirect("/");
       }
@@ -192,7 +191,6 @@ exports.getEditExtra = async (req, res, next) => {
 exports.postEditExtra = async (req, res, next) => {
   const allergenId = req.body.allergenId;
   const extraIdEditing = req.body.extraIdEditing;
-
   const updatedRoName = req.body.roName;
   const updatedHuName = req.body.huName;
   const updatedEnName = req.body.enName;
@@ -238,12 +236,15 @@ exports.postEditExtra = async (req, res, next) => {
             let allergenIds = [allergenId[i]];
             let extraId = [extraIdEditing];
             console.log("filteredStatus[i]", filteredStatus[i]);
+            console.log("allergenIds", allergenIds);
+            console.log("extraId", extraId);
             await ExtraHasAllergen.update(
               {
                 active: filteredStatus[i] == "on" ? 1 : 0,
               },
               {
                 where: {
+                  adminId: req.admin.id,
                   allergenId: {
                     [Op.in]: allergenIds,
                   },
