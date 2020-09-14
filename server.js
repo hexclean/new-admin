@@ -35,6 +35,8 @@ const Allergen = require("./models/Allergen");
 const AllergenTranslation = require("./models/AllergenTranslation");
 const DailyMenuAllergens = require("./models/DailyMenuAllergens");
 //
+const ProductHasAllergen = require("./models/ProductHasAllergen");
+const ExtraHasAllergen = require("./models/ExtraHasAllergen");
 const AdminOpeningHours = require("./models/AdminOpeningHours");
 const User = require("./models/User");
 const UserDeliveryAdress = require("./models/UserDeliveryAdress");
@@ -329,6 +331,8 @@ DailyMenu.hasMany(DailyMenuFinal, { foreignKey: "dailyMenuId" });
 
 Allergen.belongsTo(Admin, { constrains: true, onDelete: "CASCADE" });
 // Allergen.belongsTo(Product, { foreignKey: "allergenId" });
+ExtraHasAllergen.belongsTo(Admin, { constrains: true, onDelete: "CASCADE" });
+ProductHasAllergen.belongsTo(Admin, { constrains: true, onDelete: "CASCADE" });
 
 AllergenTranslation.belongsTo(Allergen, {
   as: "allergenTran",
@@ -336,6 +340,38 @@ AllergenTranslation.belongsTo(Allergen, {
 });
 Allergen.hasMany(AllergenTranslation, {
   foreignKey: "allergenId",
+});
+///
+ExtraHasAllergen.belongsTo(Allergen, {
+  as: "allergenIdExtra",
+  foreignKey: "allergenId",
+});
+Allergen.hasMany(ExtraHasAllergen, {
+  foreignKey: "allergenId",
+});
+
+ExtraHasAllergen.belongsTo(Extra, {
+  as: "extraIdAllergen",
+  foreignKey: "extraId",
+});
+Extra.hasMany(ExtraHasAllergen, {
+  foreignKey: "extraId",
+});
+////
+ProductHasAllergen.belongsTo(Allergen, {
+  as: "allergenIdProduct",
+  foreignKey: "allergenId",
+});
+Allergen.hasMany(ProductHasAllergen, {
+  foreignKey: "allergenId",
+});
+
+ProductHasAllergen.belongsTo(Extra, {
+  as: "productAllergen",
+  foreignKey: "productId",
+});
+Extra.hasMany(ProductHasAllergen, {
+  foreignKey: "productId",
 });
 
 Language.hasMany(AllergenTranslation, { foreignKey: "languageId" });
