@@ -58,7 +58,6 @@ exports.getAddProduct = async (req, res, next) => {
 exports.postAddProduct = async (req, res, next) => {
   const allergenId = req.body.allergenId;
   var filteredStatus = req.body.status.filter(Boolean);
-
   const roTitle = req.body.roTitle;
   const huTitle = req.body.huTitle;
   const enTitle = req.body.enTitle;
@@ -73,9 +72,6 @@ exports.postAddProduct = async (req, res, next) => {
   const image = req.file;
   const imageUrl = image.path;
 
-  const roCategory = req.body.roCategory;
-  const huCategory = req.body.huCategory;
-  const enCategory = req.body.enCategory;
   //
   // Add Variant elements
   const extId = req.body.extraId;
@@ -103,7 +99,6 @@ exports.postAddProduct = async (req, res, next) => {
   const product = await req.admin.createProduct({
     imageUrl: imageUrl,
     active: 1,
-    allergen: typeof status !== "undefined" ? 1 : 0,
   });
 
   async function productTransaltion() {
@@ -112,16 +107,12 @@ exports.postAddProduct = async (req, res, next) => {
       languageId: 1,
       description: roDescription,
       productId: product.id,
-      category: roCategory,
-      allergen: typeof status !== "undefined" ? 1 : 0,
     });
     await ProductTranslation.create({
       title: huTitle,
       languageId: 2,
       description: huDescription,
       productId: product.id,
-      category: huCategory,
-      allergen: typeof status !== "undefined" ? 1 : 0,
     });
 
     await ProductTranslation.create({
@@ -129,23 +120,30 @@ exports.postAddProduct = async (req, res, next) => {
       languageId: 3,
       description: enDescription,
       productId: product.id,
-      category: enCategory,
-      allergen: typeof status !== "undefined" ? 1 : 0,
     });
   }
 
-  if (Array.isArray(ext)) {
-    for (let i = 0; i <= ext.length - 1; i++) {
-      await ProductFinal.create({
-        price: price[i] || 0,
-        productId: product.id,
-        variantId: extId[i],
-        discountedPrice: 0,
-        active: filteredStatus[i] == "on" ? 1 : 0,
-      });
+  async function variants() {
+    if (Array.isArray(ext)) {
+      for (let i = 0; i <= ext.length - 1; i++) {
+        await ProductFinal.create({
+          price: price[i] || 0,
+          productId: product.id,
+          variantId: extId[i],
+          discountedPrice: 0,
+          active: filteredStatus[i] == "on" ? 1 : 0,
+        });
+      }
     }
+  }
+
+  async function allergens() {
     if (Array.isArray(allergen)) {
       for (let i = 0; i <= allergen.length - 1; i++) {
+        console.log("product.id", product.id);
+        console.log("allergenId[i]", allergenId[i]);
+        console.log("filteredStatus[i]", filteredStatus[i]);
+        console.log("req.admin.id", req.admin.id);
         await ProductHasAllergen.create({
           productId: product.id,
           allergenId: allergenId[i],
@@ -158,6 +156,8 @@ exports.postAddProduct = async (req, res, next) => {
 
   productTransaltion()
     .then((result) => {
+      variants();
+      allergens();
       res.redirect("/admin/products"),
         {
           ext: ext,

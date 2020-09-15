@@ -1,14 +1,17 @@
 const Sequelize = require("sequelize");
 const sequelize = require("../util/database");
 
-const DailyMenuAllergens = sequelize.define("dailyMenuAllergens", {
+const DailyMenuHasAllergen = sequelize.define("dailyMenuHasAllergen", {
   id: {
     type: Sequelize.INTEGER,
     autoIncrement: true,
     allowNull: false,
     primaryKey: true,
   },
-  active: Sequelize.INTEGER,
+  active: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+  },
 });
 
-module.exports = DailyMenuAllergens;
+module.exports = DailyMenuHasAllergen;

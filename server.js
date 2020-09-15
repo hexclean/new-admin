@@ -27,13 +27,13 @@ const adminHomeSearch = require("./models/adminHomeSearch");
 const adminHomeSearchTranslation = require("./models/adminHomeSearchTranslation");
 const Admin = require("./models/Admin");
 const AdminInfo = require("./models/AdminInfo");
+const DailyMenuHasAllergen = require("./models/DailyMenuHasAllergen");
 // Daily Menu
 const DailyMenu = require("./models/DailyMenu");
 const DailyMenuTranslation = require("./models/DailyMenuTranslation");
 const DailyMenuFinal = require("./models/DailyMenuFinal");
 const Allergen = require("./models/Allergen");
 const AllergenTranslation = require("./models/AllergenTranslation");
-const DailyMenuAllergens = require("./models/DailyMenuAllergens");
 //
 const ProductHasAllergen = require("./models/ProductHasAllergen");
 const ExtraHasAllergen = require("./models/ExtraHasAllergen");
@@ -332,6 +332,11 @@ DailyMenu.hasMany(DailyMenuFinal, { foreignKey: "dailyMenuId" });
 Allergen.belongsTo(Admin, { constrains: true, onDelete: "CASCADE" });
 // Allergen.belongsTo(Product, { foreignKey: "allergenId" });
 ExtraHasAllergen.belongsTo(Admin, { constrains: true, onDelete: "CASCADE" });
+DailyMenuHasAllergen.belongsTo(Admin, {
+  constrains: true,
+  onDelete: "CASCADE",
+});
+/////
 ProductHasAllergen.belongsTo(Admin, { constrains: true, onDelete: "CASCADE" });
 
 AllergenTranslation.belongsTo(Allergen, {
@@ -358,6 +363,26 @@ Extra.hasMany(ExtraHasAllergen, {
   foreignKey: "extraId",
 });
 ////
+///
+///
+DailyMenuHasAllergen.belongsTo(Allergen, {
+  as: "allergenIdDailyMenu",
+  foreignKey: "allergenId",
+});
+Allergen.hasMany(DailyMenuHasAllergen, {
+  foreignKey: "allergenId",
+});
+
+DailyMenuHasAllergen.belongsTo(DailyMenu, {
+  as: "dailyMenuIdAllergen",
+  foreignKey: "dailyMenuId",
+});
+DailyMenu.hasMany(DailyMenuHasAllergen, {
+  foreignKey: "dailyMenuId",
+});
+//
+///
+//
 ProductHasAllergen.belongsTo(Allergen, {
   as: "allergenIdProduct",
   foreignKey: "allergenId",
@@ -375,19 +400,6 @@ Extra.hasMany(ProductHasAllergen, {
 });
 
 Language.hasMany(AllergenTranslation, { foreignKey: "languageId" });
-
-DailyMenuAllergens.belongsTo(DailyMenu, {
-  as: "theDmId",
-  foreignKey: "dailyMenuId",
-});
-DailyMenu.hasMany(DailyMenuAllergens, { foreignKey: "dailyMenuId" });
-
-DailyMenuAllergens.belongsTo(Allergen, {
-  as: "theAllergenMtd",
-  foreignKey: "allergenId",
-});
-
-Allergen.hasMany(DailyMenuAllergens, { foreignKey: "allergenId" });
 
 AdminLocationTranslation.belongsTo(AdminLocation, {
   as: "adminLTrans",

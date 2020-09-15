@@ -2,6 +2,19 @@
 
 <%- include('../includes/head.ejs') %>
 <script>
+   $(document).ready(function() {
+      $('.status-checkbox').click(function() {
+         var extraId = $(this).attr('data-extraId');
+         if($(this).is(':checked')) {
+            $('.status-'+extraId).val('on');
+         } else {
+            $('.status-'+extraId).val('off');
+         }
+      });
+   });
+</script>
+
+<script>
   
    $( function() {
      $( "#datepicker" ).datepicker({ minDate: 0 });
@@ -145,6 +158,54 @@
                   </div>
                </div>
             </div>
+            <div class="col-xl-6 col-md-12">
+               <div class="ms-panel ms-panel-fh">
+                 <div class="ms-panel-header">
+                   <h6>Allergén hozzárendelése extrához</h6>
+                 </div>
+                 <div class="ms-panel-body">
+                   <p class="ms-directions"><code>Nem elfelejteni bejelölni az extrához hozzátartozó allergéneket</code>
+                   </p>
+                     <div class="row">
+                       <div class="col-md-12">
+                         <ul class="ms-list ms-list-display">
+                           <%  for (let i = 0; i <allergenArray.length; i++) { %>
+                              <input
+                              type="hidden"
+                              value="<%= allergenArray[i].id %>"
+                              name="allergenId"
+                              /> 
+                           <li>
+                             <label class="ms-switch" data-extra="<%= allergenArray[i].id %>">
+                              <input type="hidden" value="off" class="status-<%= allergenArray[i].id %>" name="status[<%= allergenArray[i].id %>]" > 
+                               <input data-extraId="<%= allergenArray[i].id %>"  class="status-checkbox status-checkbox-<%= allergenArray[i].id %>" type="checkbox"> <span class="ms-switch-slider ms-switch-success round"></span>
+                             </label> <span> <%= allergenArray[i].allergenTranslations[0].name %> </span>
+                           </li>
+                           <% } %>
+                         </ul>
+                       </div>
+                     </div>
+                 </div>
+               </div>
+             </div>
+
+             <% if (editing) { %>
+               <% for (let i = 0; i < isActiveAllergen.length; i++) { %>
+                  <% if (isActiveAllergen[i].dailyMenuHasAllergens[0].active == 1) { %>
+                     
+                     <script>
+                         $(document).ready(function() {
+                         var activeCheckbox ="<%= isActiveAllergen[i].dailyMenuHasAllergens[0].allergenId %>";
+                         $('.status-checkbox-'+activeCheckbox).prop('checked', true);
+                         $('.status-'+activeCheckbox).val('on');
+                         });
+                     </script>
+                        
+                     <% } 
+                  %>
+               <% } %>
+               <% } %>
+           
             <div class="col-xl-6 col-md-12">
             <div class="row">
             <div class="col-md-12">

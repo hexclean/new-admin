@@ -1,7 +1,6 @@
 const Allergen = require("../../models/Allergen");
 const AllergensTranslation = require("../../models/AllergenTranslation");
 const DailyMenu = require("../../models/DailyMenu");
-const DailyMenuAllergens = require("../../models/DailyMenuAllergens");
 const Sequelize = require("sequelize");
 const Extra = require("../../models/Extra");
 const ExtraHasAllergen = require("../../models/ExtraHasAllergen");
@@ -56,22 +55,12 @@ exports.postAddAllergen = async (req, res, next) => {
       allergenId: allergen.id,
       adminId: req.admin.id,
     });
+  }
 
-    for (let i = 0; i <= dailyMenuId.length - 1; i++) {
-      await DailyMenuAllergens.create({
-        allergenId: allergen.id,
-        dailyMenuId: dailyMenuId[i].id,
-        active: 0,
-      });
-    }
-
+  async function extraMenuAllergen() {
     const totalExtras = await Extra.findAll({
       where: { adminId: req.admin.id },
     });
-    const totalProducts = await Product.findAll({
-      where: { adminId: req.admin.id },
-    });
-
     if (Array.isArray(totalExtras)) {
       for (let i = 0; i <= totalExtras.length - 1; i++) {
         await ExtraHasAllergen.create({
@@ -84,7 +73,11 @@ exports.postAddAllergen = async (req, res, next) => {
     } else {
       return;
     }
-
+  }
+  async function productMenuAllergen() {
+    const totalProducts = await Product.findAll({
+      where: { adminId: req.admin.id },
+    });
     if (Array.isArray(totalProducts)) {
       for (let i = 0; i <= totalProducts.length - 1; i++) {
         await ProductHasAllergen.create({
@@ -101,6 +94,8 @@ exports.postAddAllergen = async (req, res, next) => {
 
   extraTransaltion()
     .then((result) => {
+      extraMenuAllergen();
+      productMenuAllergen();
       res.redirect("/admin/allergen-index");
     })
     .catch((err) => {
@@ -128,14 +123,14 @@ exports.getExtras = (req, res, next) => {
     });
 };
 
-exports.getEditAllergen = (req, res, next) => {
+exports.getEditAllergen = async (req, res, next) => {
   const editMode = req.query.edit;
   if (!editMode) {
     return res.redirect("/");
   }
   const extId = req.params.allergenId;
   console.log("extId", extId);
-  Allergen.findAll({
+  await Allergen.findAll({
     where: {
       id: extId,
     },

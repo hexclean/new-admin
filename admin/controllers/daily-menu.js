@@ -1,17 +1,27 @@
 const Sequelize = require("sequelize");
 const fileHelper = require("../../util/file");
 const ITEMS_PER_PAGE = 14;
-
+const DailyMenuHasAllergen = require("../../models/DailyMenuHasAllergen");
+const Allergen = require("../../models/Allergen");
+const AllegenTranslation = require("../../models/AllergenTranslation");
 //
 const DailyMenu = require("../../models/DailyMenu");
 const DailyMenuTranslation = require("../../models/DailyMenuTranslation");
 const DailyMenuFinal = require("../../models/DailyMenuFinal");
-const Allergens = require("../../models/Allergen");
-const AllergensTranslation = require("../../models/AllergenTranslation");
-const DailyMenuAllergens = require("../../models//DailyMenuAllergens");
 
 exports.getAddDailyMenu = async (req, res, next) => {
   const dailyMId = req.params.dailyMenuId;
+
+  const allergen = await Allergen.findAll({
+    where: {
+      adminId: req.admin.id,
+    },
+    include: [
+      {
+        model: AllegenTranslation,
+      },
+    ],
+  });
 
   const dailyMenu = await DailyMenu.findAll({
     where: { adminId: req.admin.id },
@@ -21,13 +31,14 @@ exports.getAddDailyMenu = async (req, res, next) => {
     pageTitle: "Add Product",
     path: "/admin/add-product",
     editing: false,
+    allergenArray: allergen,
     dailyMenuId: dailyMId,
     dailyMenu: dailyMenu,
   });
 };
 
 exports.postAddDailyMenu = async (req, res, next) => {
-  const dailyMId = req.body.extraId;
+  const allergenId = req.body.allergenId;
   const price = req.body.price;
   const datepicker = req.body.datepicker;
   //
@@ -39,18 +50,23 @@ exports.postAddDailyMenu = async (req, res, next) => {
   const enDescription = req.body.enDescription;
   const image = req.file;
   const imageUrl = image.path;
+  var filteredStatus = req.body.status.filter(Boolean);
+
+  const allergen = await Allergen.findAll({
+    where: {
+      adminId: req.admin.id,
+    },
+    include: [
+      {
+        model: AllegenTranslation,
+      },
+    ],
+  });
 
   const dailyMenu = await DailyMenu.create({
     adminId: req.admin.id,
     imageUrl: imageUrl,
     active: 1,
-  });
-
-  const dailyMenuFinal = await DailyMenuFinal.create({
-    price: price,
-    discountedPrice: 1,
-    time: datepicker,
-    dailyMenuId: dailyMenu.id,
   });
 
   async function productTransaltion() {
@@ -77,10 +93,29 @@ exports.postAddDailyMenu = async (req, res, next) => {
       title: enTitle,
       languageId: 3,
     });
-  }
 
+    await DailyMenuFinal.create({
+      price: price,
+      discountedPrice: 1,
+      time: datepicker,
+      dailyMenuId: dailyMenu.id,
+    });
+  }
+  async function allergenToDailyMenu() {
+    if (Array.isArray(allergen)) {
+      for (let i = 0; i <= allergen.length - 1; i++) {
+        await DailyMenuHasAllergen.create({
+          dailyMenuId: dailyMenu.id,
+          allergenId: allergenId[i],
+          active: filteredStatus[i] == "on" ? 1 : 0,
+          adminId: req.admin.id,
+        });
+      }
+    }
+  }
   productTransaltion()
     .then((result) => {
+      allergenToDailyMenu();
       res.redirect("/admin/daily-menus-index");
     })
     .catch((err) => {
@@ -95,9 +130,37 @@ exports.getEditDailyMenu = async (req, res, next) => {
   if (!editMode) {
     return res.redirect("/");
   }
-
+  const Op = Sequelize.Op;
   const dailyMId = req.params.dailyMenuId;
   let dailyMenuId = [dailyMId];
+  console.log("dailyMenuId", dailyMenuId);
+  const allergen = await Allergen.findAll({
+    where: {
+      adminId: req.admin.id,
+    },
+    include: [
+      {
+        model: AllegenTranslation,
+      },
+      { model: DailyMenuHasAllergen },
+    ],
+  });
+
+  const allergenTest = await Allergen.findAll({
+    where: {
+      adminId: req.admin.id,
+    },
+    include: [
+      {
+        model: AllegenTranslation,
+      },
+      {
+        model: DailyMenuHasAllergen,
+        where: { dailyMenuId: { [Op.in]: dailyMenuId }, adminId: req.admin.id },
+      },
+    ],
+  });
+  console.log(allergenTest);
 
   DailyMenu.findAll({
     where: {
@@ -117,6 +180,8 @@ exports.getEditDailyMenu = async (req, res, next) => {
         path: "/admin/edit-product",
         editing: editMode,
         product: product,
+        allergenArray: allergen,
+        isActiveAllergen: allergenTest,
         dailyMenuId: dailyMId,
       });
     })
@@ -128,6 +193,8 @@ exports.getEditDailyMenu = async (req, res, next) => {
 };
 
 exports.postEditDailyMenu = async (req, res, next) => {
+  const allergenId = req.body.allergenId;
+  const filteredStatus = req.body.status.filter(Boolean);
   const dailyMId = req.body.dailyMenuId;
   const dMid = req.body.dailyMenuId;
   const datepicker = req.body.datepicker;
@@ -139,6 +206,16 @@ exports.postEditDailyMenu = async (req, res, next) => {
   const updatedHuDesc = req.body.huDescription;
   const updatedEnDesc = req.body.enDescription;
   //
+  const Op = Sequelize.Op;
+  const dailyMenuIdArray = [dMid];
+  const dailyMenuHasAllergen = await DailyMenuHasAllergen.findAll({
+    where: {
+      dailyMenuId: {
+        [Op.in]: dailyMenuIdArray,
+      },
+    },
+  });
+
   const price = req.body.price;
   const image = req.file;
 
@@ -197,7 +274,33 @@ exports.postEditDailyMenu = async (req, res, next) => {
           }
         );
       }
+      async function editDailyMenuAllergens() {
+        if (Array.isArray(dailyMenuHasAllergen)) {
+          const Op = Sequelize.Op;
+          for (let i = 0; i <= dailyMenuHasAllergen.length - 1; i++) {
+            let allergenIds = [allergenId[i]];
+            let dailyMenuId = [dMid];
+            await DailyMenuHasAllergen.update(
+              {
+                active: filteredStatus[i] == "on" ? 1 : 0,
+              },
+              {
+                where: {
+                  adminId: req.admin.id,
+                  allergenId: {
+                    [Op.in]: allergenIds,
+                  },
+                  dailyMenuId: {
+                    [Op.in]: dailyMenuId,
+                  },
+                },
+              }
+            );
+          }
+        }
+      }
       msg();
+      editDailyMenuAllergens();
       res.redirect("/admin/daily-menus-index");
     })
     .catch((err) => {

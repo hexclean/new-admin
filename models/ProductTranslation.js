@@ -11,12 +11,8 @@ const ProductTranslation = sequelize.define("productTranslation", {
   title: {
     type: Sequelize.STRING,
   },
-
   description: {
     type: Sequelize.STRING,
-  },
-  allergen: {
-    type: Sequelize.INTEGER,
   },
 });
 
