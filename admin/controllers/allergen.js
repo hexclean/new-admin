@@ -6,7 +6,7 @@ const Extra = require("../../models/Extra");
 const ExtraHasAllergen = require("../../models/ExtraHasAllergen");
 const Product = require("../../models/Product");
 const ProductHasAllergen = require("../../models/ProductHasAllergen");
-
+const DailyMenuHasAllergen = require("../../models/DailyMenuHasAllergen");
 const Op = Sequelize.Op;
 const ITEMS_PER_PAGE = 20;
 
@@ -91,11 +91,29 @@ exports.postAddAllergen = async (req, res, next) => {
       return;
     }
   }
+  async function DailyMenuAllergen() {
+    const totalDailyMenu = await DailyMenu.findAll({
+      where: { adminId: req.admin.id },
+    });
+    if (Array.isArray(totalDailyMenu)) {
+      for (let i = 0; i <= totalDailyMenu.length - 1; i++) {
+        await ProductHasAllergen.create({
+          active: 0,
+          adminId: req.admin.id,
+          allergenId: allergen.id,
+          dailyMenuId: totalDailyMenu[i].id,
+        });
+      }
+    } else {
+      return;
+    }
+  }
 
   extraTransaltion()
     .then((result) => {
       extraMenuAllergen();
       productMenuAllergen();
+      DailyMenuAllergen();
       res.redirect("/admin/allergen-index");
     })
     .catch((err) => {
