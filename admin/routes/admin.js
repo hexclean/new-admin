@@ -41,12 +41,8 @@ router.post("/edit-category", isAuth, categoryController.postEditCategory);
 // BOX
 router.get("/add-box", isAuth, boxController.getAddBox);
 router.post("/add-box", isAuth, boxController.postAddBox);
-// router.get(
-//   "/edit-category/:categoryId",
-//   isAuth,
-//   categoryController.getEditCategory
-// );
-// router.post("/edit-category", isAuth, categoryController.postEditCategory);
+router.get("/edit-box/:boxId", isAuth, boxController.getEditBox);
+router.post("/edit-box", isAuth, boxController.postEditBox);
 
 // EXTRA
 router.get("/add-extra", isAuth, extraController.getAddExtra);

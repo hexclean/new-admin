@@ -17,10 +17,6 @@ exports.postAddBox = async (req, res, next) => {
   const huName = req.body.huName;
   const enName = req.body.enName;
   const price = req.body.price;
-  console.log("roName", roName);
-  console.log("huName", huName);
-  console.log("enName", enName);
-  console.log("price", price);
   const box = await Box.create({
     adminId: req.admin.id,
     price: price,
@@ -59,40 +55,36 @@ exports.postAddBox = async (req, res, next) => {
     });
 };
 
-exports.getEditCategory = (req, res, next) => {
+exports.getEditBox = (req, res, next) => {
   const editMode = req.query.edit;
   if (!editMode) {
     return res.redirect("/");
   }
-  const catId = req.params.categoryId;
+  const boxId = req.params.boxId;
 
-  Category.findAll({
+  Box.findAll({
     where: {
-      id: catId,
+      id: boxId,
       adminId: req.admin.id,
     },
     include: [
       {
-        model: CategoryTranslation,
+        model: BoxTranslation,
       },
     ],
   })
-    .then((category) => {
-      if (category[0].adminId !== req.admin.id) {
+    .then((box) => {
+      if (box[0].adminId !== req.admin.id) {
         return res.redirect("/");
       }
-      // console.log("catId", catId);
 
-      res.render("category/edit-category", {
+      res.render("box/edit-box", {
         pageTitle: "Edit Product",
         path: "/admin/edit-product",
         editing: editMode,
-        cat: category,
-        catId: catId,
-        hasError: false,
-        errorMessage: null,
-        validationErrors: [],
-        extTranslations: category[0].productCategoryTranslations,
+        cat: box,
+        boxId: boxId,
+        boxTranslations: box[0].boxTranslations,
       });
     })
     .catch((err) => {
@@ -102,46 +94,42 @@ exports.getEditCategory = (req, res, next) => {
     });
 };
 
-exports.postEditCategory = async (req, res, next) => {
+exports.postEditBox = async (req, res, next) => {
   const updatedRoName = req.body.roName;
   const updatedHuName = req.body.huName;
   const updatedEnName = req.body.enName;
-  const updatedSku = req.body.sku;
-  const catId = req.body.categoryId;
+  const price = req.body.price;
+  const boxId = req.body.boxId;
+  const boxTranslationsId = req.body.boxTranslationsId;
 
-  const catTranId = req.body.catTranId;
-  console.log("catTranId", catTranId);
-  console.log("catId", catId);
-
-  Category.findAll({
+  Box.findAll({
     where: { adminId: req.admin.id },
     include: [
       {
-        model: CategoryTranslation,
+        model: BoxTranslation,
       },
     ],
   })
     .then((category) => {
-      async function msg() {
-        await Category.update({ sku: updatedSku }, { where: { id: catId } });
-        await CategoryTranslation.update(
+      async function updateBox() {
+        await Box.update({ price: price }, { where: { id: boxId } });
+        await BoxTranslation.update(
           { name: updatedRoName },
-          { where: { id: catTranId[0], languageId: 1 } }
+          { where: { id: boxTranslationsId[0], languageId: 1 } }
         );
 
-        await CategoryTranslation.update(
+        await BoxTranslation.update(
           { name: updatedHuName },
-          { where: { id: catTranId[1], languageId: 2 } }
+          { where: { id: boxTranslationsId[1], languageId: 2 } }
         );
 
-        await CategoryTranslation.update(
+        await BoxTranslation.update(
           { name: updatedEnName },
-          { where: { id: catTranId[2], languageId: 3 } }
+          { where: { id: boxTranslationsId[2], languageId: 3 } }
         );
       }
-      msg();
-
-      res.redirect("/admin/vr-index");
+      updateBox();
+      res.redirect("/");
     })
     .catch((err) => {
       const error = new Error(err);

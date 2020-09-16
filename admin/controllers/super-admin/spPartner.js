@@ -242,7 +242,6 @@ exports.postEditPartner = async (req, res, next) => {
         );
       }
       updateLocationName();
-      console.log(req.body);
       res.redirect("/super-admin/partners");
     })
     .catch((err) => {

@@ -147,7 +147,6 @@ exports.getEditAllergen = async (req, res, next) => {
     return res.redirect("/");
   }
   const extId = req.params.allergenId;
-  console.log("extId", extId);
   await Allergen.findAll({
     where: {
       id: extId,

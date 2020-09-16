@@ -418,7 +418,7 @@ Allergen.hasMany(ProductHasAllergen, {
   foreignKey: "allergenId",
 });
 
-ProductHasAllergen.belongsTo(Extra, {
+ProductHasAllergen.belongsTo(Allergen, {
   as: "productAllergen",
   foreignKey: "productId",
 });

@@ -154,7 +154,7 @@ exports.getEditProduct = async (req, res, next) => {
       getProductDescriptionRo();
       getProductDescriptionHu();
       getProductDescriptionEn();
-      console.log;
+
       res.render("super-admin/products/edit-product", {
         pageTitle: "Edit Product",
         path: "/admin/edit-product",

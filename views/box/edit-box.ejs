@@ -164,7 +164,7 @@ $(document).ready(function () {
                                   type="text"
                                   name="price"
                                   id="price"
-                                  value="<% if (editing) { %><%= cat[0].productCategoryTranslations[0].name %><% } %>">
+                                  value="<% if (editing) { %><%= cat[0].price %><% } %>">
                             </div>
                             <span class="error_form" id="price_error_message"></span>
                          </div>
@@ -173,11 +173,11 @@ $(document).ready(function () {
                            <label for="roName"><%= lingua.create_product_name1 %></label>
                            <div class="input-group">
                               <input
-                                 class="form-control <%= validationErrors.find(e => e.param === 'roName') ? 'invalid' : '' %>"
+                                 class="form-control"
                                  type="text"
                                  name="roName"
                                  id="roName"
-                                 value="<% if (editing) { %><%= cat[0].productCategoryTranslations[0].name %><% } %>">
+                                 value="<% if (editing) { %><%= cat[0].boxTranslations[0].name %><% } %>">
                            </div>
                            <span class="error_form" id="roName_error_message"></span>
                         </div>
@@ -185,11 +185,11 @@ $(document).ready(function () {
                            <label for="huName"><%= lingua.create_product_name2 %></label>
                            <div class="input-group">
                               <input
-                                 class="form-control <%= validationErrors.find(e => e.param === 'huName') ? 'invalid' : '' %>"
+                                 class="form-control"
                                  type="text"
                                  name="huName"
                                  id="huName"
-                                 value="<% if (editing) { %><%= cat[0].productCategoryTranslations[1].name %><% } %>">
+                                 value="<% if (editing) { %><%= cat[0].boxTranslations[1].name %><% } %>">
                            </div>
                            <span class="error_form" id="huName_error_message"></span>
                         </div>
@@ -197,11 +197,11 @@ $(document).ready(function () {
                            <label for="enName"><%= lingua.create_product_name3 %></label>
                            <div class="input-group">
                               <input
-                                 class="form-control <%= validationErrors.find(e => e.param === 'enName') ? 'invalid' : '' %>"
+                                 class="form-control"
                                  type="text"
                                  name="enName"
                                  id="enName"
-                                 value="<% if (editing) { %><%= cat[0].productCategoryTranslations[2].name %><% } %>">
+                                 value="<% if (editing) { %><%= cat[0].boxTranslations[2].name %><% } %>">
                            </div>
                            <span class="error_form" id="enName_error_message"></span>
                         </div>
@@ -217,9 +217,9 @@ $(document).ready(function () {
                            <h6>Product</h6>
                         </div>
                         <% if (editing) { %>
-                        <input type="hidden" value="<%= catId %>" name="categoryId">
-                        <%for (let i = 0; i < extTranslations.length; i++){%>
-                        <input type="hidden" value="<%= extTranslations[i].id %>" name="catTranId">
+                        <input type="hidden" value="<%= boxId %>" name="boxId">
+                        <%for (let i = 0; i < boxTranslations.length; i++){%>
+                        <input type="hidden" value="<%= boxTranslations[i].id %>" name="boxTranslationsId">
                         <%}%>
                         <% } %>
                         <button type="submit" id="extra-btn" class="btn btn-success has-icon" ><% if (editing) { %>Update Product<% } else { %>Add Product<% } %></button>

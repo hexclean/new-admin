@@ -56,7 +56,6 @@ exports.getEditOpeningHours = async (req, res, next) => {
     ],
   })
     .then((admin) => {
-      console.log("admin", admin[0].adminOpeningHours);
       res.render("profile/edit-opening-hours", {
         pageTitle: "Edit Product",
         path: "/admin/edit-product",
@@ -231,7 +230,6 @@ exports.getEditSearchSettings = async (req, res, next) => {
   let currentSearchName = [];
   adminId = req.admin.id;
   adminIdParams = req.params.adminId;
-  console.log("adminIdParams", adminIdParams);
   const editMode = req.query.edit;
   if (!editMode) {
     return res.redirect("/");
@@ -274,7 +272,6 @@ exports.getEditSearchSettings = async (req, res, next) => {
 exports.postEditxd = async (req, res, next) => {
   const searchedId = [1, 2, 3, 4, 5];
   var filteredStatus = req.body.status.filter(Boolean);
-  console.log("filteredStatus", filteredStatus);
 
   const productVarToExt = AdminHomeSearch.findAll({
     include: [

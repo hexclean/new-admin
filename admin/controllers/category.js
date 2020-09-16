@@ -77,7 +77,6 @@ exports.getEditCategory = (req, res, next) => {
       if (category[0].adminId !== req.admin.id) {
         return res.redirect("/");
       }
-      // console.log("catId", catId);
 
       res.render("category/edit-category", {
         pageTitle: "Edit Product",
@@ -106,8 +105,6 @@ exports.postEditCategory = async (req, res, next) => {
   const catId = req.body.categoryId;
 
   const catTranId = req.body.catTranId;
-  console.log("catTranId", catTranId);
-  console.log("catId", catId);
 
   Category.findAll({
     where: { adminId: req.admin.id },

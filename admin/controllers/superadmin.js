@@ -6,20 +6,20 @@ const Users = require("../../models/User");
 exports.getIndex = (req, res, next) => {
   res.render("super-admin/index", {
     pageTitle: "Admin Products",
-    path: "/admin/products"
+    path: "/admin/products",
   });
 };
 
 exports.getPartners = (req, res, next) => {
   Admins.find()
-    .then(partner => {
+    .then((partner) => {
       res.render("super-admin/partners", {
         ptr: partner,
         pageTitle: "Admin Products",
-        path: "/admin/products"
+        path: "/admin/products",
       });
     })
-    .catch(err => {
+    .catch((err) => {
       const error = new Error(err);
       error.httpStatusCode = 500;
       return next(error);
@@ -28,14 +28,14 @@ exports.getPartners = (req, res, next) => {
 
 exports.getUsers = (req, res, next) => {
   Users.find()
-    .then(users => {
+    .then((users) => {
       res.render("super-admin/users", {
         usr: users,
         pageTitle: "Admin Products",
-        path: "/admin/products"
+        path: "/admin/products",
       });
     })
-    .catch(err => {
+    .catch((err) => {
       const error = new Error(err);
       error.httpStatusCode = 500;
       return next(error);
@@ -49,7 +49,7 @@ exports.getEditPartner = (req, res, next) => {
   }
   const partnerId = req.params.partnerId;
   Admins.findById(partnerId)
-    .then(partner => {
+    .then((partner) => {
       if (!partner) {
         return res.redirect("/");
       }
@@ -60,10 +60,10 @@ exports.getEditPartner = (req, res, next) => {
         ptr: partner,
         hasError: false,
         errorMessage: null,
-        validationErrors: []
+        validationErrors: [],
       });
     })
-    .catch(err => {
+    .catch((err) => {
       const error = new Error(err);
       error.httpStatusCode = 500;
       return next(error);
@@ -102,52 +102,51 @@ exports.postEditAdmin = (req, res, next) => {
           description: {
             en: updatedEnDesc,
             hu: updatedHuDesc,
-            ro: updatedRoDesc
+            ro: updatedRoDesc,
           },
           category: {
             en: updatedEnCategory,
             hu: updatedHuCategory,
-            ro: updatedRoCategory
+            ro: updatedRoCategory,
           },
-          _id: partnerId
-        }
+          _id: partnerId,
+        },
       ],
       errorMessage: errors.array()[0].msg,
-      validationErrors: errors.array()
+      validationErrors: errors.array(),
     });
   }
 
   Product.findById(partnerId)
-    .then(product => {
+    .then((product) => {
       if (product.partnerId.toString() !== req.admin._id.toString()) {
         return res.redirect("/");
       }
       product.title = {
         en: updatedEnTitle,
         hu: updatedHuTitle,
-        ro: updatedRoTitle
+        ro: updatedRoTitle,
       };
       product.price = updatedPrice;
       product.category = {
         en: updatedEnCategory,
         hu: updatedHuCategory,
-        ro: updatedRoCategory
+        ro: updatedRoCategory,
       };
       product.description = {
         en: updatedEnDesc,
         hu: updatedHuDesc,
-        ro: updatedRoDesc
+        ro: updatedRoDesc,
       };
       if (image) {
         fileHelper.deleteFile(product.imageUrl);
         product.imageUrl = image.path;
       }
-      return product.save().then(result => {
-        console.log("UPDATED PRODUCT!");
+      return product.save().then((result) => {
         res.redirect("/admin/products");
       });
     })
-    .catch(err => {
+    .catch((err) => {
       const error = new Error(err);
       error.httpStatusCode = 500;
       return next(error);

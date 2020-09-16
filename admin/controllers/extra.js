@@ -235,9 +235,7 @@ exports.postEditExtra = async (req, res, next) => {
           for (let i = 0; i <= extrasHasAllergen.length - 1; i++) {
             let allergenIds = [allergenId[i]];
             let extraId = [extraIdEditing];
-            console.log("filteredStatus[i]", filteredStatus[i]);
-            console.log("allergenIds", allergenIds);
-            console.log("extraId", extraId);
+
             await ExtraHasAllergen.update(
               {
                 active: filteredStatus[i] == "on" ? 1 : 0,

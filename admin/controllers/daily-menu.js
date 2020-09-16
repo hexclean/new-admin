@@ -133,7 +133,6 @@ exports.getEditDailyMenu = async (req, res, next) => {
   const Op = Sequelize.Op;
   const dailyMId = req.params.dailyMenuId;
   let dailyMenuId = [dailyMId];
-  console.log("dailyMenuId", dailyMenuId);
   const allergen = await Allergen.findAll({
     where: {
       adminId: req.admin.id,
@@ -160,7 +159,6 @@ exports.getEditDailyMenu = async (req, res, next) => {
       },
     ],
   });
-  console.log(allergenTest);
 
   DailyMenu.findAll({
     where: {
@@ -365,10 +363,7 @@ exports.getIndex = async (req, res, next) => {
 
 exports.postDeleteDailyMenu = (req, res, next) => {
   const prodId = req.body.dailyMenuId;
-  console.log(
-    "productIdproductIdproductIdproductIdproductIdproductIdproductId",
-    prodId
-  );
+
   DailyMenu.findByPk(prodId)
     .then((product) => {
       if (!product) {
