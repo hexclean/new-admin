@@ -15,7 +15,88 @@
 </script>
 
 <script>
-  
+   $(function () {
+     $("#roName_error_message").hide();
+     $("#huName_error_message").hide();
+     $("#enName_password_error_message").hide();
+   
+     var error_roName = false;
+     var error_huName = false;
+     var error_enName = false;
+     var error_sku = false;
+   
+     $("#roName").focusout(function () {
+       check_roName();
+     });
+   
+     $("#huName").focusout(function(){
+        check_huName();
+     })
+   
+     $("#enName").focusout(function(){
+        check_enName();
+     })
+     
+     function check_roName() {
+       var roName_length = $("#roName").val().length;
+   
+       if (roName_length < 2 || roName_length > 40) {
+         $("#roName_error_message").html(`<%= lingua.extra_ro_name_required %>`);
+         $("#roName_error_message").show();
+         error_roName = true;
+       } else {
+         $("#roName_error_message").hide();
+       }
+     }
+   
+     function check_huName() {
+       var huName_length = $("#huName").val().length;
+   
+       if (huName_length < 2 || huName_length > 40) {
+         $("#huName_error_message").html(`<%= lingua.extra_hu_name_required %>`);
+         $("#huName_error_message").show();
+         error_huName = true;
+       } else {
+         $("#huName_error_message").hide();
+       }
+     }
+   
+     function check_enName() {
+       var enName_length = $("#enName").val().length;
+   
+       if (enName_length < 2 || enName_length > 40) {
+         $("#enName_error_message").html(`<%= lingua.extra_en_name_required %>`);
+         $("#enName_error_message").show();
+         error_enName = true;
+       } else {
+         $("#enName_error_message").hide();
+       }
+     }
+    
+     $("#registration_form").submit(function () {
+       error_roName = false;
+       error_huName = false;
+       error_enName = false;
+   
+       check_roName();
+       check_huName();
+       check_enName();
+   
+       if (
+         error_roName == false &&
+         error_huName == false &&
+         error_enName == false 
+       ) {
+         return true;
+       } else {
+         return false;
+       }
+     });
+   });
+   </script>
+
+
+<script>
    $( function() {
      $( "#datepicker" ).datepicker({ minDate: 0 });
    } );
@@ -46,6 +127,7 @@
                            action="/admin/<% if (editing) { %>edit-daily-menu<% } else { %>add-daily-menu<% } %>"
                            method="POST"
                            enctype="multipart/form-data"
+                           name="dailyMenuForm"
                            >
                            <label for="roTitle">Ro name</label>
                            <div class="input-group">
@@ -56,6 +138,7 @@
                                  id="roTitle"
                                  value="<% if (editing) { %><%= product[0].dailyMenuTranslations[0].title %><% } %>">
                            </div>
+                           <span class="error_form" id="roTitle"></span>
                            <label for="huTitle">Hu name</label>
                            <div class="input-group">
                               <input
@@ -158,6 +241,12 @@
                   </div>
                </div>
             </div>
+          
+      <script>
+         $('#image').change(function(){
+            $('#dailyMenuSendButton').prop('disabled', false);
+         });
+      </script>
             <div class="col-xl-6 col-md-12">
                <div class="ms-panel ms-panel-fh">
                  <div class="ms-panel-header">
@@ -226,7 +315,7 @@
                value="<%= dailyMenuId %>"
                name="dailyMenuId"
                />
-            <button class="btn btn-success has-icon" type="submit">
+            <button disabled id="dailyMenuSendButton"  name="dailyMenuSendButton" class="btn btn-success has-icon" type="submit">
             <% if (editing) { %>Update Product<% } else { %>Add
             Product<% } %>
             </button>
