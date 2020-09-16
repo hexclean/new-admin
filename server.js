@@ -29,6 +29,8 @@ const Admin = require("./models/Admin");
 const AdminInfo = require("./models/AdminInfo");
 const DailyMenuHasAllergen = require("./models/DailyMenuHasAllergen");
 // Daily Menu
+const Box = require("./models/Box");
+const BoxTranslation = require("./models/BoxTranslation");
 const DailyMenu = require("./models/DailyMenu");
 const DailyMenuTranslation = require("./models/DailyMenuTranslation");
 const DailyMenuFinal = require("./models/DailyMenuFinal");
@@ -143,7 +145,6 @@ app.use((error, req, res, next) => {
     isAuthenticated: req.session.isLoggedIn,
   });
 });
-// app.use(errorController.get404);
 
 app.use(flash());
 
@@ -197,7 +198,15 @@ ProductFinal.belongsTo(Product, {
   foreignKey: "productId",
 });
 Product.hasMany(ProductFinal, { foreignKey: "productId" });
+/////
 
+ProductFinal.belongsTo(Box, {
+  as: "theBoxId",
+  foreignKey: "boxId",
+});
+Box.hasMany(ProductFinal, { foreignKey: "boxId" });
+
+/////
 ProductFinal.belongsTo(ProductVariant, {
   as: "theVariantd",
   foreignKey: "variantId",
@@ -233,7 +242,25 @@ ProductCategoryTranslation.belongsTo(Language, {
   foreignKey: "languageId",
 });
 Language.hasMany(ProductCategoryTranslation, { foreignKey: "languageId" });
+/////////
+/////
+Box.belongsTo(Admin, { constrains: true, onDelete: "CASCADE" });
 
+BoxTranslation.belongsTo(Box, {
+  as: "boxTranslation",
+  foreignKey: "boxId",
+});
+Box.hasMany(BoxTranslation, {
+  foreignKey: "boxId",
+});
+
+BoxTranslation.belongsTo(Language, {
+  as: "productVariantTranslationLg",
+  foreignKey: "languageId",
+});
+Language.hasMany(BoxTranslation, { foreignKey: "languageId" });
+
+/////////
 ///
 ProductVariantTranslation.belongsTo(ProductCategory, {
   as: "productVrCategoryTranslation",
@@ -457,6 +484,7 @@ UserDeliveryAdress.belongsTo(User, {
 User.hasMany(UserDeliveryAdress, { foreignKey: "userId" });
 // Config PORT
 const PORT = process.env.PORT || 5000;
+app.use(errorController.get404);
 
 sequelize
   // .sync({ force: true })
