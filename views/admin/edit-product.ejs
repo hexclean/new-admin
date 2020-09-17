@@ -434,7 +434,7 @@
                               <li>
                               <label class="ms-switch" data-extra="<%= boxArray[i].id %>">
                                  <input type="hidden" value="off" class="statusBox-<%= boxArray[i].id %>" name="statusBox[<%= boxArray[i].id %>]" > 
-                                 <input data-boxId="<%= boxArray[i].id %>"  class="statusBox-checkbox statusBox-checkbox-<%= boxArray[i].id %>" type="checkbox"> <span class="ms-switch-slider ms-switch-success round"></span>
+                                 <input onclick="ch($(this));" data-boxId="<%= boxArray[i].id %>"  class="statusBox-checkbox statusBox-checkbox-<%= boxArray[i].id %>" type="checkbox"> <span class="ms-switch-slider ms-switch-success round"></span>
                               </label> <span> <%= boxArray[i].boxTranslations[0].name %> </span>
                               </li>
                               <% } %>
@@ -444,6 +444,28 @@
                   </div>
                   </div>
                </div>
+            
+
+               <script>
+                  document.querySelectorAll('.statusBox-checkbox').forEach(element => element.addEventListener('click', disableOther))
+               function disableOther(event) {
+               //"event" is current event(click)
+               //"event.target" is our clicked element
+               if (event.target.checked) {
+
+                  // if current input is checked -> disable ALL inputs
+                  document.querySelectorAll('.statusBox-checkbox').forEach(element => element.disabled = true)
+                  // enabling our current input
+                  event.target.disabled = false;
+
+               } else {
+
+                  // if current input is NOT checked -> enabling ALL inputs
+                  document.querySelectorAll('.statusBox-checkbox').forEach(element => element.disabled = false)
+
+               }
+               }
+               </script>
                 
                   <div class="col-xl-12 col-md-12">
                      <div class="ms-panel ms-panel-fh">

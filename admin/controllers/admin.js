@@ -146,10 +146,10 @@ exports.postAddProduct = async (req, res, next) => {
     });
   }
 
-  async function variants() {
+  async function createVariant() {
     if (Array.isArray(ext)) {
       let boxIdFinal = 0;
-      for (let i = 0; i < allergen.length; i++) {
+      for (let i = 0; i < box.length; i++) {
         if (filteredStatusBox[i] == "on") {
           boxIdFinal = filteredStatusBox[i].substring(2) + boxId[i];
         }
@@ -163,7 +163,6 @@ exports.postAddProduct = async (req, res, next) => {
           discountedPrice: 0,
           active: filteredStatus[i] == "on" ? 1 : 0,
           boxId: Number.isInteger(boxIdFinal) ? null : boxIdFinal,
-          // boxActive: filteredStatusAllergen[i] == "on" ? 1 : 0,
         });
       }
     }
@@ -182,22 +181,10 @@ exports.postAddProduct = async (req, res, next) => {
     }
   }
 
-  async function boxFn() {
-    if (Array.isArray(box)) {
-      for (let i = 0; i < box.length; i++) {
-        if (filteredStatusBox[i] == "on") {
-          const fsdnew = filteredStatusBox[i] + boxId[i];
-          const boxIdFinal = fsdnew.substring(2);
-        }
-      }
-    }
-  }
-
   productTransaltion()
     .then((result) => {
-      variants();
+      createVariant();
       allergens();
-      boxFn();
       res.redirect("/admin/products"),
         {
           ext: ext,
