@@ -79,14 +79,6 @@ exports.postAddProduct = async (req, res, next) => {
   //
   const image = req.file;
   const imageUrl = image.path;
-  // for (let i = 0; i <= allergen.length - 1; i++) {
-  //   if (filteredStatusBox[i] == "on") {
-  //     const fsdnew = filteredStatusBox[i] + boxId[i];
-  //     const boxIdFinal = fsdnew.substring(2);
-  //   }
-  // }
-  //
-  // Add Variant elements
   const extId = req.body.extraId;
   var filteredStatusAllergen = req.body.statusAllergen.filter(Boolean);
   var filteredStatusBox = req.body.statusBox.filter(Boolean);
@@ -147,24 +139,22 @@ exports.postAddProduct = async (req, res, next) => {
   }
 
   async function createVariant() {
-    if (Array.isArray(ext)) {
-      let boxIdFinal = 0;
-      for (let i = 0; i < box.length; i++) {
-        if (filteredStatusBox[i] == "on") {
-          boxIdFinal = filteredStatusBox[i].substring(2) + boxId[i];
-        }
+    let boxIdFinal = 0;
+    for (let i = 0; i < box.length; i++) {
+      if (filteredStatusBox[i] == "on") {
+        boxIdFinal = filteredStatusBox[i].substring(2) + boxId[i];
       }
+    }
 
-      for (let i = 0; i <= ext.length - 1; i++) {
-        await ProductFinal.create({
-          price: price[i] || 0,
-          productId: product.id,
-          variantId: extId[i],
-          discountedPrice: 0,
-          active: filteredStatus[i] == "on" ? 1 : 0,
-          boxId: Number.isInteger(boxIdFinal) ? null : boxIdFinal,
-        });
-      }
+    for (let i = 0; i <= ext.length - 1; i++) {
+      await ProductFinal.create({
+        price: price[i] || 0,
+        productId: product.id,
+        variantId: extId[i],
+        discountedPrice: 0,
+        active: filteredStatus[i] == "on" ? 1 : 0,
+        boxId: Number.isInteger(boxIdFinal) ? null : boxIdFinal,
+      });
     }
   }
 
@@ -305,6 +295,8 @@ exports.postEditProduct = async (req, res, next) => {
   const prodId = req.body.productId;
   const varId = req.body.variantIdUp;
   const allergenId = req.body.allergenId;
+  const filteredStatusBox = req.body.statusBox.filter(Boolean);
+  const boxId = req.body.boxId;
   const filteredStatusAllergen = req.body.statusAllergen.filter(Boolean);
   // Title
   const updatedRoTitle = req.body.roTitle;
@@ -322,6 +314,16 @@ exports.postEditProduct = async (req, res, next) => {
   const Op = Sequelize.Op;
   const productArray = [prodId];
   //
+  const box = await Box.findAll({
+    where: {
+      adminId: req.admin.id,
+    },
+    include: [
+      {
+        model: BoxTranslation,
+      },
+    ],
+  });
   const productHasAllergen = await ProductHasAllergen.findAll({
     where: {
       productId: {
@@ -386,35 +388,40 @@ exports.postEditProduct = async (req, res, next) => {
       }
 
       async function variantsFn() {
-        if (Array.isArray(variants)) {
-          const Op = Sequelize.Op;
-          for (let i = 0; i < variants.length; i++) {
-            let variIds = [varId[i]];
-            let prodIds = [prodId];
-
-            await ProductFinal.update(
-              {
-                price: updatedExtraPrice[i] || 0,
-                discountedPrice: updatedExtraPrice[i] || 0,
-                active: filteredStatus[i] == "on" ? 1 : 0,
-              },
-              {
-                where: {
-                  variantId: {
-                    [Op.in]: variIds,
-                  },
-                  productId: {
-                    [Op.in]: prodIds,
-                  },
-                },
-              }
-            ).catch((err) => {
-              console.log("error1111", err);
-              const error = new Error(err);
-              error.httpStatusCode = 500;
-              return next(error);
-            });
+        const Op = Sequelize.Op;
+        let boxIdFinal = 0;
+        for (let i = 0; i < box.length; i++) {
+          if (filteredStatusBox[i] == "on") {
+            boxIdFinal = filteredStatusBox[i].substring(2) + boxId[i];
           }
+        }
+
+        for (let i = 0; i < variants.length; i++) {
+          let variIds = [varId[i]];
+          let prodIds = [prodId];
+          await ProductFinal.update(
+            {
+              price: updatedExtraPrice[i] || 0,
+              discountedPrice: updatedExtraPrice[i] || 0,
+              active: filteredStatus[i] == "on" ? 1 : 0,
+              boxId: Number.isInteger(boxIdFinal) ? null : boxIdFinal,
+            },
+            {
+              where: {
+                variantId: {
+                  [Op.in]: variIds,
+                },
+                productId: {
+                  [Op.in]: prodIds,
+                },
+              },
+            }
+          ).catch((err) => {
+            console.log("error1111", err);
+            const error = new Error(err);
+            error.httpStatusCode = 500;
+            return next(error);
+          });
         }
       }
 
@@ -440,7 +447,6 @@ exports.postEditProduct = async (req, res, next) => {
                 },
               }
             ).catch((err) => {
-              console.log("error22222", err);
               const error = new Error(err);
               error.httpStatusCode = 500;
               return next(error);
