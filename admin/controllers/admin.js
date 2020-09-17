@@ -250,6 +250,7 @@ exports.getEditProduct = async (req, res, next) => {
       },
     },
   });
+  console.log("prodVariant", prodVariant[2].productFinals);
   Product.findAll({
     where: {
       id: prodId,
@@ -279,6 +280,7 @@ exports.getEditProduct = async (req, res, next) => {
         productVariant: prodVariant,
         errorMessage: null,
         validationErrors: [],
+        boxEnabled: productFinal,
         extTranslations: product[0].productTranslations,
         isActive: product[0].allergen,
         isActiveVariant: productFinal,

@@ -11,7 +11,6 @@
       });
    });
 </script>
-
 <script>
    $(document).ready(function() {
       $('.statusAllergen-checkbox').click(function() {
@@ -36,18 +35,17 @@
       });
    });
 </script>
-
 <script>
    $(document).ready(function () {
-  $(".status-checkbox").click(function () {
+   $(".status-checkbox").click(function () {
    var extraId = $(this).data("extraId");
     $("#price_error_message_"+extraId).hide();
    
     var error_price = false;
    
-  
-  });
-  function check_variantInputs() {
+   
+   });
+   function check_variantInputs() {
       var extraId = $(this).attr("data-extraId");
       $(".extra_box").each(function () {
         var extraId = $(this).data("extra");
@@ -66,7 +64,7 @@
         }
       });
     }
-  $(".extra_price_input").focusout(function() {
+   $(".extra_price_input").focusout(function() {
       var len = $(this).val().length; 
       var extraId = $(this).closest(".extra_box").data('extra');
       if (len < 1) {
@@ -75,8 +73,8 @@
          $("#price_error_message_"+extraId).hide().html("");
       }
    
-  });
-  $("#product-form").submit(function () {
+   });
+   $("#product-form").submit(function () {
       error_price = false;
      
       check_variantInputs();
@@ -86,9 +84,8 @@
         return false;
       }
     });
-});
+   });
 </script>
-
 <script>
    $(function () {
      $("#roName_error_message").hide();
@@ -98,16 +95,16 @@
      $("#roDescription_error_message").hide();
      $("#huDescription_error_message").hide();
      $("#enDescription_error_message").hide();
-     $("#file_error_message").hide();
+    
    
      var error_roName = false;
      var error_huName = false;
      var error_enName = false;
-  
+   
      var error_roDescription = false;
      var error_huDescription = false;
      var error_enDescription = false;
-     var error_file = false;
+     
     
    
      $("#roTitle").focusout(function () {
@@ -121,7 +118,7 @@
      $("#enTitle").focusout(function(){
         check_enName();
      })
-  
+   
      $("#roDescription").focusout(function () {
        check_roDescription();
      });
@@ -132,9 +129,7 @@
        check_enDescription();
      });
      
-     $("#image").focusout(function () {
-       check_file();
-     });
+    
      
      function check_roName() {
        var roName_length = $("#roTitle").val().length;
@@ -205,7 +200,7 @@
          $("#enDescription_error_message").hide();
        }
      }
-
+   
     
      $("#product-form").submit(function () {
        error_roName = false;
@@ -244,7 +239,6 @@
 </script>
 
 <body class="ms-body ms-aside-left-open ms-primary-theme ms-has-quickbar" >
-
    <%- include('../includes/navigation.ejs') %>
    <main class="body-content">
       <%- include('../includes/navigation-bar.ejs') %>
@@ -258,27 +252,20 @@
          method="POST"
          enctype="multipart/form-data"
          id="product-form">
-
          <% if (editing) { %>
-            <% for (let i = 0; i < isActiveVariant.length; i++) { %>
-               <% if (isActiveVariant[i].active ==1) { %>
-                  
-                  <script>
-                      $(document).ready(function() {
-                      var activeCheckbox ="<%= isActiveVariant[i].variantId %>";
-                      $('.status-checkbox-'+activeCheckbox).prop('checked', true);
-                      $('.status-'+activeCheckbox).val('on');
-                      });
-                  </script>
-                     
-                  <% } 
-               %>
-            <% } %>
-            <% } %>
-
-
-        
-            
+         <% for (let i = 0; i < isActiveVariant.length; i++) { %>
+         <% if (isActiveVariant[i].active ==1) { %>
+         <script>
+            $(document).ready(function() {
+            var activeCheckbox ="<%= isActiveVariant[i].variantId %>";
+            $('.status-checkbox-'+activeCheckbox).prop('checked', true);
+            $('.status-'+activeCheckbox).val('on');
+            });
+         </script>
+         <% } 
+            %>
+         <% } %>
+         <% } %>
          <div class="row">
             <div class="col-xl-6 col-md-12">
                <div class="ms-panel ms-panel-fh">
@@ -323,10 +310,6 @@
                            </div>
                            <span class="error_form" id="enName_error_message"></span>
                         </div>
-                      
-                      
-
-                        
                         <div class="col-md-12 mb-3">
                            <label for="roDescription"><%= lingua.create_product_description2 %></label>
                            <div class="input-group">
@@ -336,11 +319,8 @@
                                  id="roDescription"
                                  rows="5"><% if (editing) { %><%= product[0].productTranslations[0].description %><% } %></textarea>
                            </div>
-                           
                            <span class="error_form" id="roDescription_error_message"></span>
                         </div>
-                       
-
                         <div class="col-md-12 mb-3">
                            <label for="huDescription"><%= lingua.create_product_description2 %></label>
                            <div class="input-group">
@@ -352,7 +332,6 @@
                            </div>
                            <span class="error_form" id="huDescription_error_message"></span>
                         </div>
-
                         <div class="col-md-12 mb-3">
                            <label for="enDescription"><%= lingua.create_product_description2 %></label>
                            <div class="input-group">
@@ -361,11 +340,9 @@
                                  name="enDescription"
                                  id="enDescription"
                                  rows="5"><% if (editing) { %><%= product[0].productTranslations[2].description %><% } %></textarea>
-                              
                            </div>
                            <span class="error_form" id="enDescription_error_message"></span>
                         </div>
-
                         <div class="col-md-12 mb-3">
                            <label for="validationCustom12"><%= lingua.create_product_image %></label>
                            <div class="custom-file" id="image">
@@ -373,7 +350,6 @@
                            </div>
                            <span class="error_form" id="file_error_message"></span>
                         </div>
-                      
                      </div>
                   </div>
                </div>
@@ -398,143 +374,142 @@
                            value="<%= productIds %>"
                            name="productId"
                            />
-                         
                         <% } %>
-                        
                         <button disabled id="createProduct" name="createProduct" class="btn btn-success has-icon" type="submit">
                         <% if (editing) { %>Update Product<% } else { %>Add
                         Product<% } %>
                         </button>
                      </div>
                   </div>
-                
                   <script>
                      $('#image').change(function(){
                         $('#createProduct').prop('disabled', false);
                      });
                   </script>
-
-               <div class="col-xl-12 col-md-12">
-                  <div class="ms-panel ms-panel-fh">
-                  <div class="ms-panel-header">
-                     <h6>Allergén hozzárendelése extrához</h6>
-                  </div>
-                  <div class="ms-panel-body">
-                     <p class="ms-directions"><code>Nem elfelejteni bejelölni a termekhez hozzátartozó allergéneket</code>
-                     </p>
-                        <div class="row">
-                        <div class="col-md-12">
-                           <ul class="ms-list ms-list-display">
-                              <%  for (let i = 0; i <boxArray.length; i++) { %>
-                                 <input
-                                 type="hidden"
-                                 value="<%= boxArray[i].id %>"
-                                 name="boxId"
-                                 /> 
-                              <li>
-                              <label class="ms-switch" data-extra="<%= boxArray[i].id %>">
-                                 <input type="hidden" value="off" class="statusBox-<%= boxArray[i].id %>" name="statusBox[<%= boxArray[i].id %>]" > 
-                                 <input onclick="ch($(this));" data-boxId="<%= boxArray[i].id %>"  class="statusBox-checkbox statusBox-checkbox-<%= boxArray[i].id %>" type="checkbox"> <span class="ms-switch-slider ms-switch-success round"></span>
-                              </label> <span> <%= boxArray[i].boxTranslations[0].name %> </span>
-                              </li>
-                              <% } %>
-                           </ul>
-                        </div>
-                        </div>
-                  </div>
-                  </div>
-               </div>
-            
-
-               <script>
-                  document.querySelectorAll('.statusBox-checkbox').forEach(element => element.addEventListener('click', disableOther))
-               function disableOther(event) {
-               //"event" is current event(click)
-               //"event.target" is our clicked element
-               if (event.target.checked) {
-
-                  // if current input is checked -> disable ALL inputs
-                  document.querySelectorAll('.statusBox-checkbox').forEach(element => element.disabled = true)
-                  // enabling our current input
-                  event.target.disabled = false;
-
-               } else {
-
-                  // if current input is NOT checked -> enabling ALL inputs
-                  document.querySelectorAll('.statusBox-checkbox').forEach(element => element.disabled = false)
-
-               }
-               }
-               </script>
-                
                   <div class="col-xl-12 col-md-12">
                      <div class="ms-panel ms-panel-fh">
-                       <div class="ms-panel-header">
-                         <h6>Allergén hozzárendelése extrához</h6>
-                       </div>
-                       <div class="ms-panel-body">
-                         <p class="ms-directions"><code>Nem elfelejteni bejelölni a termekhez hozzátartozó allergéneket</code>
-                         </p>
+                        <div class="ms-panel-header">
+                           <h6>Doboz ar lehetoseg beallitasa</h6>
+                        </div>
+                        <div class="ms-panel-body">
+                           <p class="ms-directions"><code>A termekhez nem kotlezo dobozt beirni, csak ha a doboznak ara van</code>
+                           </p>
                            <div class="row">
-                             <div class="col-md-12">
-                               <ul class="ms-list ms-list-display">
-                                 <%  for (let i = 0; i <allergenArray.length; i++) { %>
+                              <div class="col-md-12">
+                                 <ul class="ms-list ms-list-display">
+                                    <%  for (let i = 0; i <boxArray.length; i++) { %>
                                     <input
-                                    type="hidden"
-                                    value="<%= allergenArray[i].id %>"
-                                    name="allergenId"
-                                    /> 
-                                 <li>
-                                   <label class="ms-switch" data-extra="<%= allergenArray[i].id %>">
-                                    <input type="hidden" value="off" class="statusAllergen-<%= allergenArray[i].id %>" name="statusAllergen[<%= allergenArray[i].id %>]" > 
-                                     <input data-allergenId="<%= allergenArray[i].id %>"  class="statusAllergen-checkbox statusAllergen-checkbox-<%= allergenArray[i].id %>" type="checkbox"> <span class="ms-switch-slider ms-switch-success round"></span>
-                                   </label> <span> <%= allergenArray[i].allergenTranslations[0].name %> </span>
-                                 </li>
-                                 <% } %>
-                               </ul>
-                             </div>
+                                       type="hidden"
+                                       value="<%= boxArray[i].id %>"
+                                       name="boxId"
+                                       /> 
+                                    <li>
+                                       <label class="ms-switch" data-extra="<%= boxArray[i].id %>">
+                                       <input type="hidden" value="off" class="statusBox-<%= boxArray[i].id %>" name="statusBox[<%= boxArray[i].id %>]" > 
+                                       <input onclick="ch($(this));" data-boxId="<%= boxArray[i].id %>"  class="statusBox-checkbox statusBox-checkbox-<%= boxArray[i].id %>" type="checkbox"> <span class="ms-switch-slider ms-switch-success round"></span>
+                                       </label> <span> <%= boxArray[i].boxTranslations[0].name %> </span> <b>:</b> <span> <%= boxArray[i].price %> </span>lei
+                                    </li>
+                                    <% } %>
+                                 </ul>
+                              </div>
                            </div>
-                       </div>
+                        </div>
                      </div>
-                   </div>
-                 
+                  </div>
+                  <script>
+                     document.querySelectorAll('.statusBox-checkbox').forEach(element => element.addEventListener('click', disableOther))
+                     function disableOther(event) {
+                     //"event" is current event(click)
+                     //"event.target" is our clicked element
+                     if (event.target.checked) {
+                     
+                     // if current input is checked -> disable ALL inputs
+                     document.querySelectorAll('.statusBox-checkbox').forEach(element => element.disabled = true)
+                     // enabling our current input
+                     event.target.disabled = false;
+                     
+                     } else {
+                     
+                     // if current input is NOT checked -> enabling ALL inputs
+                     document.querySelectorAll('.statusBox-checkbox').forEach(element => element.disabled = false)
+                     
+                     }
+                     }
+                  </script>
+                  <div class="col-xl-12 col-md-12">
+                     <div class="ms-panel ms-panel-fh">
+                        <div class="ms-panel-header">
+                           <h6>Doboz ar lehetoseg beallitasa</h6>
+                        </div>
+                        <div class="ms-panel-body">
+                           <p class="ms-directions"><code>Nem elfelejteni bejelölni a termekhez hozzátartozó allergéneket</code>
+                           </p>
+                           <div class="row">
+                              <div class="col-md-12">
+                                 <ul class="ms-list ms-list-display">
+                                    <%  for (let i = 0; i <allergenArray.length; i++) { %>
+                                    <input
+                                       type="hidden"
+                                       value="<%= allergenArray[i].id %>"
+                                       name="allergenId"
+                                       /> 
+                                    <li>
+                                       <label class="ms-switch" data-extra="<%= allergenArray[i].id %>">
+                                       <input type="hidden" value="off" class="statusAllergen-<%= allergenArray[i].id %>" name="statusAllergen[<%= allergenArray[i].id %>]" > 
+                                       <input data-allergenId="<%= allergenArray[i].id %>"  class="statusAllergen-checkbox statusAllergen-checkbox-<%= allergenArray[i].id %>" type="checkbox"> <span class="ms-switch-slider ms-switch-success round"></span>
+                                       </label> <span> <%= allergenArray[i].allergenTranslations[0].name %> </span>
+                                    </li>
+                                    <% } %>
+                                 </ul>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
                </div>
             </div>
          </div>
          </div>
-
-         
-            
          <% if (editing) { %>
-            <% for (let i = 0; i < isActiveAllergen.length; i++) { %>
-               <% if (isActiveAllergen[i].productHasAllergens[0].active == 1) { %>
-                  
-                  <script>
-                      $(document).ready(function() {
-                      var activeCheckbox ="<%= isActiveAllergen[i].productHasAllergens[0].allergenId %>";
-                      $('.statusAllergen-checkbox-'+activeCheckbox).prop('checked', true);
-                      $('.statusAllergen-'+activeCheckbox).val('on');
-                      });
-                  </script>
-                     
-                  <% } 
-               %>
-            <% } %>
-            <% } %>
-
-       <div class="ms-panel ms-btn-display">
-         <div class="ms-panel-header">
-            <h6>A  hozzárendelhető extrái:</h6>
+         <% for (let i = 0; i < boxEnabled.length; i++) { %>
+         <% if (boxEnabled[i].boxId !=undefined) { %>
+         <script>
+            $(document).ready(function() {
+            var activeCheckbox ="<%= boxEnabled[i].boxId %>";
+            $('.statusBox-checkbox-'+activeCheckbox).prop('checked', true);
+            $('.statusBox-'+activeCheckbox).val('on');
+            });
+         </script>
+         <% } 
+            %>
+         <% } %>
+         <% } %>
+         <% if (editing) { %>
+         <% for (let i = 0; i < isActiveAllergen.length; i++) { %>
+         <% if (isActiveAllergen[i].productHasAllergens[0].active == 1) { %>
+         <script>
+            $(document).ready(function() {
+            var activeCheckbox ="<%= isActiveAllergen[i].productHasAllergens[0].allergenId %>";
+            $('.statusAllergen-checkbox-'+activeCheckbox).prop('checked', true);
+            $('.statusAllergen-'+activeCheckbox).val('on');
+            });
+         </script>
+         <% } 
+            %>
+         <% } %>
+         <% } %>
+         <div class="ms-panel ms-btn-display">
+            <div class="ms-panel-header">
+               <h6>A  <% if (editing) { %>  <%= product[0].productTranslations[0].title %>  <% } %> hozzárendelhető extrái:</h6>
+            </div>
          </div>
-      </div>
-      <% if (editing) { %>  <% if (productVariant.length > 0) { %>
-         
+         <% if (editing) { %>  <% if (productVariant.length > 0) { %>
          <div class="ms-content-wrapper">
             <div class="row">
                <div class="col-md-12">
                   <div class="row">
                      <%  for (let i = 0; i < productVariant.length; i++) { %>
-                        <input
+                     <input
                         type="hidden"
                         value="<%= productVariant[i].id %>"
                         name="variantIdUp"
@@ -542,14 +517,13 @@
                      <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 extra_box" data-extra="<%= productVariant[i].id %>">
                         <div class="ms-card">
                            <div class="d-flex justify-content-center extra-margin-top">
-                                 <div class="row"> 
-                                   
-                                    <label class="ms-switch" >                 
-                                       <input type="hidden" value="off" class="status-<%= productVariant[i].id %>" name="status[<%= productVariant[i].id %>]" >          
-                                       <input    data-extraId="<%= productVariant[i].id %>"  class="status-checkbox status-checkbox-<%= productVariant[i].id %>" type="checkbox">
-                                       <span class="ms-switch-slider ms-switch-success round"></span>
-                                    </label> 
-                                 </div>
+                              <div class="row"> 
+                                 <label class="ms-switch" >                 
+                                 <input type="hidden" value="off" class="status-<%= productVariant[i].id %>" name="status[<%= productVariant[i].id %>]" >          
+                                 <input    data-extraId="<%= productVariant[i].id %>"  class="status-checkbox status-checkbox-<%= productVariant[i].id %>" type="checkbox">
+                                 <span class="ms-switch-slider ms-switch-success round"></span>
+                                 </label> 
+                              </div>
                            </div>
                            <div class="ms-card-body">
                               <div class="new d-flex justify-content-center extra-name">
@@ -569,7 +543,6 @@
                                  </div>
                                  <span class="extra_error_message error_form" id="price_error_message_<%= productVariant[i].extraId %>"></span>
                               </div>
-                      
                               <div class="col-md-12 mb-3">
                                  <label for="discountedPrice"
                                     >Discounted Price</label
@@ -584,8 +557,6 @@
                                        />
                                  </div>
                               </div>
-                             
-                             
                            </div>
                         </div>
                      </div>
@@ -596,77 +567,70 @@
          </div>
          <% } else { %>
          <% } %><% } else { %>
-            
-            <% if (ext.length > 0) { %>
-               IDEEE????
-               <div class="ms-content-wrapper">
+         <% if (ext.length > 0) { %>
+         
+         <div class="ms-content-wrapper">
+            <div class="row">
+               <div class="col-md-12">
                   <div class="row">
-                     <div class="col-md-12">
-                        <div class="row">
-                           <% for (let extra of ext) { %>
-                              <input
-                              type="hidden"
-                              value="<%= extra.id %>"
-                              name="extraId"
-                              />          
-                           <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 extra_box" data-extra="<%= extra.id %>">
-                              <div class="ms-card">
-                                 <div class="d-flex justify-content-center extra-margin-top">
-                                       <div class="row"> 
-                                         
-                                          <label class="ms-switch" >                 
-                                             <input type="hidden" value="off" class="status-<%= extra.id %>" name="status[<%= extra.id %>]" >          
-                                             <input    data-extraId="<%= extra.id %>"  class="status-checkbox status-checkbox-<%= extra.id %>" type="checkbox"> <span class="ms-switch-slider ms-switch-success round"></span>
-                                          </label> 
-                                       </div>
+                     <% for (let extra of ext) { %>
+                     <input
+                        type="hidden"
+                        value="<%= extra.id %>"
+                        name="extraId"
+                        />          
+                     <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 extra_box" data-extra="<%= extra.id %>">
+                        <div class="ms-card">
+                           <div class="d-flex justify-content-center extra-margin-top">
+                              <div class="row"> 
+                                 <label class="ms-switch" >                 
+                                 <input type="hidden" value="off" class="status-<%= extra.id %>" name="status[<%= extra.id %>]" >          
+                                 <input    data-extraId="<%= extra.id %>"  class="status-checkbox status-checkbox-<%= extra.id %>" type="checkbox"> <span class="ms-switch-slider ms-switch-success round"></span>
+                                 </label> 
+                              </div>
+                           </div>
+                           <div class="ms-card-body">
+                              <div class="new d-flex justify-content-center extra-name">
+                                 <h6 class="mb-0"><b><%= extra.sku %></b> </h6>
+                              </div>
+                              <div class="col-md-12 mb-3">
+                                 <label for="price">Price</label>
+                                 <div class="input-group">
+                                    <input
+                                       class="price_<%= extra.id %> extra_price_input"
+                                       type="text"
+                                       name="price"
+                                       id="price"
+                                       value="<% if (editing) { %><%= extra.price %><% } %>"
+                                       />
                                  </div>
-                                 <div class="ms-card-body">
-                                    <div class="new d-flex justify-content-center extra-name">
-                                       <h6 class="mb-0"><b><%= extra.sku %></b> </h6>
-                                    </div>
-                                    <div class="col-md-12 mb-3">
-                                       <label for="price">Price</label>
-                                       <div class="input-group">
-                                          <input
-                                             class="price_<%= extra.id %> extra_price_input"
-                                             type="text"
-                                             name="price"
-                                             id="price"
-                                             value="<% if (editing) { %><%= extra.price %><% } %>"
-                                             />
-                                       </div>
-                                       <span class="extra_error_message error_form" id="price_error_message_<%= extra.id %>"></span>
-                                    </div>
-                                    <div class="col-md-12 mb-3">
-                                       <label for="discountedPrice"
-                                          >Discounted Price</label
-                                          >
-                                       <div class="input-group">
-                                          <input disabled
-                                             class="form-control"
-                                             type="text"
-                                             name="discountedPrice"
-                                             id="discountedPrice"
-                                             value="<% if (editing) { %><%= extra.discountedPrice %><% } %>"
-                                             />
-                                       </div>
-                                    </div>
-                                   
-                                    
+                                 <span class="extra_error_message error_form" id="price_error_message_<%= extra.id %>"></span>
+                              </div>
+                              <div class="col-md-12 mb-3">
+                                 <label for="discountedPrice"
+                                    >Discounted Price</label
+                                    >
+                                 <div class="input-group">
+                                    <input disabled
+                                       class="form-control"
+                                       type="text"
+                                       name="discountedPrice"
+                                       id="discountedPrice"
+                                       value="<% if (editing) { %><%= extra.discountedPrice %><% } %>"
+                                       />
                                  </div>
                               </div>
                            </div>
-                           <% } %>
                         </div>
                      </div>
+                     <% } %>
                   </div>
                </div>
-               <% } else { %>
-               <% } %>
-            
-            
-            <% } %>
-            
+            </div>
+         </div>
+         <% } else { %>
+         <% } %>
+         <% } %>
       </form>
    </main>
    <%- include('../includes/end.ejs') %>
