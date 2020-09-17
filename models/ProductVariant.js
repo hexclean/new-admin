@@ -12,7 +12,6 @@ const ProductVariant = sequelize.define("productVariant", {
     type: Sequelize.STRING,
     allowNull: false,
   },
-  active: Sequelize.INTEGER,
 });
 
 module.exports = ProductVariant;

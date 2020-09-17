@@ -1,7 +1,16 @@
 const Category = require("../../models/ProductCategory");
 const CategoryTranslation = require("../../models/ProductCategoryTranslation");
+const Allergen = require("../../models/Allergen");
 
-exports.getAddCategory = (req, res, next) => {
+exports.getAddCategory = async (req, res, next) => {
+  const checkAllergenLength = await Allergen.findAll({
+    where: {
+      adminId: req.admin.id,
+    },
+  });
+  if (checkAllergenLength.length === 0) {
+    return res.redirect("/admin/vr-index");
+  }
   res.render("category/edit-category", {
     pageTitle: "Add Product",
     path: "/admin/add-product",

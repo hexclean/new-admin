@@ -7,6 +7,15 @@ var Sequelize = require("sequelize");
 
 // Betölti az extra létrehozás oldalt
 exports.getAddExtra = async (req, res, next) => {
+  const checkAllergenLength = await Allergen.findAll({
+    where: {
+      adminId: req.admin.id,
+    },
+  });
+  if (checkAllergenLength.length === 0) {
+    return res.redirect("/admin/vr-index");
+  }
+
   const allergen = await Allergen.findAll({
     where: {
       adminId: req.admin.id,

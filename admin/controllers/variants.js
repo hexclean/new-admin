@@ -1,4 +1,3 @@
-const ProductVariantTranslation = require("../../models/ProductVariantTranslation");
 const ProductVariantsExtras = require("../../models/ProductVariantsExtras");
 const ProductVariants = require("../../models/ProductVariant");
 const ProductVariantExtras = require("../../models/ProductVariantsExtras");
@@ -9,8 +8,8 @@ const Extras = require("../../models/Extra");
 const ExtraTranslations = require("../../models/ExtraTranslation");
 const ProductsFinal = require("../../models/ProductFinal");
 const Products = require("../../models/Product");
-var Sequelize = require("sequelize");
-
+const Sequelize = require("sequelize");
+const Allergen = require("../../models/Allergen");
 const ITEMS_PER_PAGE = 14;
 
 exports.searchExtraByKeyword = async (req, res, next) => {
@@ -56,6 +55,13 @@ exports.getIndex = async (req, res, next) => {
   let totalItems;
   let currentExtraName = [];
   let currentCategoryName = [];
+
+  const checkAllergenLength = await Allergen.findAll({
+    where: {
+      adminId: req.admin.id,
+    },
+  });
+
   const checkExtraLength = await Extras.findAll({
     where: { adminId: req.admin.id },
   });
@@ -152,6 +158,7 @@ exports.getIndex = async (req, res, next) => {
         path: "/admin/products",
         currentPage: page,
         checkExtraLength: checkExtraLength,
+        checkAllergenLength: checkAllergenLength,
         checkCategoryLength: checkCategoryLength,
         hasNextPage: ITEMS_PER_PAGE * page < totalItems.length,
         hasPreviousPage: page > 1,
@@ -279,33 +286,9 @@ exports.postAddVariant = async (req, res, next) => {
 
   const variant = await req.admin.createProductVariant({
     sku: sku,
-    active: 1,
   });
 
   async function productVariantTransaltion() {
-    await ProductVariantTranslation.create({
-      name: roName,
-      languageId: 1,
-      productVariantId: variant.id,
-      categoryId: categoryRo,
-      adminId: req.admin.id,
-    });
-    await ProductVariantTranslation.create({
-      name: huName,
-      languageId: 2,
-      categoryId: categoryHu,
-      productVariantId: variant.id,
-      adminId: req.admin.id,
-    });
-
-    await ProductVariantTranslation.create({
-      name: enName,
-      languageId: 3,
-      categoryId: categoryEn,
-      productVariantId: variant.id,
-      adminId: req.admin.id,
-    });
-
     for (let i = 0; i <= productId.length - 1; i++) {
       await ProductsFinal.create({
         price: 0,
@@ -353,10 +336,7 @@ exports.postEditVariant = async (req, res, next) => {
   const updatedExtraQuantityMin = req.body.quantityMin;
   const updatedExtraQuantityMax = req.body.quantityMax;
   var filteredStatus = req.body.status.filter(Boolean);
-  const updatedRoName = req.body.roName;
-  const updatedHuName = req.body.huName;
-  const updatedEnName = req.body.enName;
-  const extTranId = req.body.extTranId;
+
   const Op = Sequelize.Op;
   const dasd = req.body.varId;
   let variantId = [dasd];
@@ -368,35 +348,13 @@ exports.postEditVariant = async (req, res, next) => {
     },
   });
 
-  const ext = await req.admin.getExtras();
-  ProductVariants.findAll({
-    include: [
-      {
-        model: ProductVariantTranslation,
-      },
-    ],
-  })
+  ProductVariants.findAll()
     .then((variant) => {
       async function msg() {
         await ProductVariants.findByPk(varId).then((variant) => {
           variant.sku = updatedSku;
           return variant.save();
         });
-
-        await ProductVariantTranslation.update(
-          { name: updatedRoName },
-          { where: { id: extTranId[0], languageId: 1 } }
-        );
-
-        await ProductVariantTranslation.update(
-          { name: updatedHuName },
-          { where: { id: extTranId[1], languageId: 2 } }
-        );
-
-        await ProductVariantTranslation.update(
-          { name: updatedEnName },
-          { where: { id: extTranId[2], languageId: 3 } }
-        );
 
         if (Array.isArray(productVarToExt)) {
           const Op = Sequelize.Op;
@@ -455,13 +413,6 @@ exports.getEditVariant = async (req, res, next) => {
     ],
   });
   console.log("productVarToExt", productVarToExt);
-  // const productVarToExt = await ProductVariantsExtras.findAll({
-  //   where: {
-  //     productVariantId: {
-  //       [Op.in]: variantId,
-  //     },
-  //   },
-  // });
 
   const ext = await Extras.findAll({
     where: { adminId: req.admin.id },
@@ -479,57 +430,9 @@ exports.getEditVariant = async (req, res, next) => {
         model: CategoryTranslation,
         where: { adminId: req.admin.id },
       },
-      {
-        model: ProductVariantTranslation,
-        // where: { productVariantId: varId },
-      },
     ],
   });
-  // let test = cat[0].productCategoryTranslations[0].productCategoryId;
-  // console.log(
-  //   "cat[0].productCategoryTranslations[0]",
-  //   cat[0].productCategoryTranslations[0]
-  // );
-  // console.log(test[0].id);
-  // let categoryIdJoin = cat[0].productVariantTranslations[0].categoryId;
-  // console.log("categoryIdJoin", categoryIdJoin);
-  // console.log("categoryIdJoin", categoryIdJoin);
-  // console.log(cat[0].productVariantTranslations);
-  // for (let i = cat.length; i >= 0; i--) {
-  //   // console.log(
-  //   //   "cat[0].productVariantTranslations[0].productVariantId",
-  //   //   cat[0].productVariantTranslations[0].productVariantId
-  //   // );
 
-  //   if (
-  //     1 == 1
-  //     // cat[0].productCategoryTranslations[0].productCategoryId == 1
-  //     // cat[i].productVariantTranslations[0].productVariantId == 2
-  //     // cat[i].productCategoryTranslation[0].categoryId == 3
-  //   ) {
-  //     // console.log(cat[0].productCategoryTranslations);
-  //     console.log("i", i);
-  //     // console.log(
-  //     //   "cat[i]",
-  //     //   cat[i].productCategoryTranslations[i].productCategoryId
-  //     // );
-  //     // console.log("yes", cat[i].productCategoryTranslations[i].name);
-  //     // console.log("yes_ID:", cat[i].productCategoryTranslations[i].id);
-  //   } else {
-  //     // next();
-  //     console.log("no");
-  //   }
-  // }
-  // console.log(cat);
-  // console.log(
-  //   "cat[0].productVariantTranslations",
-  //   cat[0].productVariantTranslations
-  // );
-  // console.log(
-  //   "cat[0].productCategoryTranslations",
-  //   cat[0].productCategoryTranslations
-  // );
-  // console.log("cat", cat[0].productCategoryTranslations[0].productCategoryId);
   for (let i = 0; i < productVarToExt.length; i++) {
     var currentLanguage = req.cookies.language;
 
@@ -547,12 +450,7 @@ exports.getEditVariant = async (req, res, next) => {
       id: varId,
       adminId: req.admin.id,
     },
-    include: [
-      {
-        model: ProductVariantTranslation,
-      },
-      { model: ProductVariantExtras },
-    ],
+    include: [{ model: ProductVariantExtras }],
   })
     .then((variant) => {
       res.render("variant/edit-variant", {
@@ -570,7 +468,7 @@ exports.getEditVariant = async (req, res, next) => {
         productVarToExt: productVarToExt,
         errorMessage: null,
         validationErrors: [],
-        extTranslations: variant[0].productVariantTranslations,
+
         isActive: variant[0].productVariantsExtras,
         currentExtraName: currentExtraName,
       });

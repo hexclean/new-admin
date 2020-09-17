@@ -14,7 +14,6 @@ const ProductCategoryTranslation = require("./models/ProductCategoryTranslation"
 const sequelize = require("./util/database");
 const Product = require("./models/Product");
 const ProductTranslation = require("./models/ProductTranslation");
-const ProductVariantTranslation = require("./models/ProductVariantTranslation");
 const ProductVariant = require("./models/ProductVariant");
 const Extra = require("./models/Extra");
 const ExtraTranslation = require("./models/ExtraTranslation");
@@ -237,17 +236,12 @@ ProductCategory.hasMany(ProductCategoryTranslation, {
   foreignKey: "productCategoryId",
 });
 
-ProductCategoryTranslation.belongsTo(Language, {
-  as: "productVariantTranslationLg",
-  foreignKey: "languageId",
-});
-Language.hasMany(ProductCategoryTranslation, { foreignKey: "languageId" });
 /////////
 /////
 Box.belongsTo(Admin, { constrains: true, onDelete: "CASCADE" });
 
 BoxTranslation.belongsTo(Box, {
-  as: "boxTranslation",
+  as: "boxTranslationBox",
   foreignKey: "boxId",
 });
 Box.hasMany(BoxTranslation, {
@@ -255,50 +249,12 @@ Box.hasMany(BoxTranslation, {
 });
 
 BoxTranslation.belongsTo(Language, {
-  as: "productVariantTranslationLg",
+  as: "boxTranslation",
   foreignKey: "languageId",
 });
 Language.hasMany(BoxTranslation, { foreignKey: "languageId" });
 
-/////////
-///
-ProductVariantTranslation.belongsTo(ProductCategory, {
-  as: "productVrCategoryTranslation",
-  foreignKey: "categoryId",
-});
-ProductCategory.hasMany(ProductVariantTranslation, {
-  foreignKey: "categoryId",
-});
-
-ProductVariantTranslation.belongsTo(Language, {
-  as: "productCVariantTranslationLg",
-  foreignKey: "languageId",
-});
-Language.hasMany(ProductVariantTranslation, { foreignKey: "languageId" });
-
-// ProductVariantTranslation-> Admin
-ProductVariantTranslation.belongsTo(Admin, {
-  constrains: true,
-  onDelete: "CASCADE",
-});
-Admin.hasMany(ProductVariantTranslation);
-
 Language.hasMany(ProductTranslation, { foreignKey: "languageId" });
-
-// ProductVariant-> ProductVariantTranslation -> Language
-ProductVariantTranslation.belongsTo(ProductVariant, {
-  as: "TheTranslation",
-  foreignKey: "productVariantId",
-});
-ProductVariant.hasMany(ProductVariantTranslation, {
-  foreignKey: "productVariantId",
-});
-
-ProductVariantTranslation.belongsTo(Language, {
-  as: "TheLanguage",
-  foreignKey: "languageId",
-});
-Language.hasMany(ProductVariantTranslation, { foreignKey: "languageId" });
 
 Admin.hasMany(Product);
 
@@ -310,10 +266,8 @@ Admin.hasMany(Extra);
 
 // Language -> ProductTranslation, VariantTranslation, ExtraTranslation
 
-Language.hasMany(ProductVariantTranslation);
 Language.hasMany(ExtraTranslation);
 
-ProductVariant.hasMany(ProductVariantTranslation);
 Extra.hasMany(ExtraTranslation);
 // Product -> Variant
 // Extra.hasMany(ExtraCategory);

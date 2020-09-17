@@ -1,14 +1,7 @@
 const Variants = require("../../../models/ProductVariant");
-const VariantsTranslation = require("../../../models/ProductVariantTranslation");
 
 exports.getVariants = (req, res, next) => {
-  Variants.findAll({
-    include: [
-      {
-        model: VariantsTranslation,
-      },
-    ],
-  })
+  Variants.findAll({})
     .then((variants) => {
       res.render("super-admin/variants/variants", {
         variants: variants,
@@ -39,62 +32,33 @@ exports.getEditVariant = async (req, res, next) => {
     where: { id: varId },
     include: [
       {
-        model: VariantsTranslation,
         where: { languageId: 1 },
       },
     ],
   });
 
-  async function getVariantDescRo() {
-    for (let i = 0; i < variantNameRo.length; i++) {
-      variantNameRoView = variantNameRo[i].productVariantTranslations[0].name;
-    }
-  }
-
   const variantNameHu = await Variants.findAll({
     where: { id: varId },
     include: [
       {
-        model: VariantsTranslation,
         where: { languageId: 2 },
       },
     ],
   });
 
-  async function getVariantDescHu() {
-    for (let i = 0; i < variantNameHu.length; i++) {
-      variantNameHuView = variantNameHu[i].productVariantTranslations[0].name;
-    }
-  }
-
   const variantNameEn = await Variants.findAll({
     where: { id: varId },
     include: [
       {
-        model: VariantsTranslation,
         where: { languageId: 3 },
       },
     ],
   });
 
-  async function getVariantDescEn() {
-    for (let i = 0; i < variantNameEn.length; i++) {
-      variantNameEnView = variantNameEn[i].productVariantTranslations[0].name;
-    }
-  }
-
   Variants.findAll({
     where: { id: varId },
-    include: [
-      {
-        model: VariantsTranslation,
-      },
-    ],
   })
     .then((variant) => {
-      getVariantDescRo();
-      getVariantDescHu();
-      getVariantDescEn();
       res.render("super-admin/variants/edit-variant", {
         pageTitle: "Edit Product",
         path: "/admin/edit-product",
