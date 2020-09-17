@@ -200,11 +200,11 @@ ProductFinal.belongsTo(Product, {
 Product.hasMany(ProductFinal, { foreignKey: "productId" });
 /////
 
-ProductFinal.belongsTo(Box, {
-  as: "theBoxId",
-  foreignKey: "boxId",
-});
-Box.hasMany(ProductFinal, { foreignKey: "boxId" });
+// ProductFinal.belongsTo(Box, {
+//   as: "theBoxId",
+//   foreignKey: "boxId",
+// });
+// Box.hasMany(ProductFinal, { foreignKey: "boxId" });
 
 /////
 ProductFinal.belongsTo(ProductVariant, {
@@ -358,13 +358,11 @@ DailyMenu.hasMany(DailyMenuFinal, { foreignKey: "dailyMenuId" });
 
 Allergen.belongsTo(Admin, { constrains: true, onDelete: "CASCADE" });
 // Allergen.belongsTo(Product, { foreignKey: "allergenId" });
-ExtraHasAllergen.belongsTo(Admin, { constrains: true, onDelete: "CASCADE" });
 DailyMenuHasAllergen.belongsTo(Admin, {
   constrains: true,
   onDelete: "CASCADE",
 });
 /////
-ProductHasAllergen.belongsTo(Admin, { constrains: true, onDelete: "CASCADE" });
 
 AllergenTranslation.belongsTo(Allergen, {
   as: "allergenTran",
@@ -374,6 +372,8 @@ Allergen.hasMany(AllergenTranslation, {
   foreignKey: "allergenId",
 });
 ///
+ExtraHasAllergen.belongsTo(Admin, { constrains: true, onDelete: "CASCADE" });
+
 ExtraHasAllergen.belongsTo(Allergen, {
   as: "allergenIdExtra",
   foreignKey: "allergenId",
@@ -410,6 +410,9 @@ DailyMenu.hasMany(DailyMenuHasAllergen, {
 //
 ///
 //
+
+ProductHasAllergen.belongsTo(Admin, { constrains: true, onDelete: "CASCADE" });
+
 ProductHasAllergen.belongsTo(Allergen, {
   as: "allergenIdProduct",
   foreignKey: "allergenId",
@@ -418,11 +421,11 @@ Allergen.hasMany(ProductHasAllergen, {
   foreignKey: "allergenId",
 });
 
-ProductHasAllergen.belongsTo(Allergen, {
-  as: "productAllergen",
+ProductHasAllergen.belongsTo(Product, {
+  as: "productdAllergen",
   foreignKey: "productId",
 });
-Extra.hasMany(ProductHasAllergen, {
+Product.hasMany(ProductHasAllergen, {
   foreignKey: "productId",
 });
 

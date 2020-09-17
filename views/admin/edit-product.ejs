@@ -13,6 +13,19 @@
 </script>
 
 <script>
+   $(document).ready(function() {
+      $('.statusAllergen-checkbox').click(function() {
+         var extraId = $(this).attr('data-allergenId');
+         if($(this).is(':checked')) {
+            $('.statusAllergen-'+extraId).val('on');
+         } else {
+            $('.statusAllergen-'+extraId).val('off');
+         }
+      });
+   });
+</script>
+
+<script>
    $(document).ready(function () {
   $(".status-checkbox").click(function () {
    var extraId = $(this).data("extraId");
@@ -407,8 +420,8 @@ if(vidFileLength === 0){
                                     /> 
                                  <li>
                                    <label class="ms-switch" data-extra="<%= allergenArray[i].id %>">
-                                    <input type="hidden" value="off" class="status-<%= allergenArray[i].id %>" name="status[<%= allergenArray[i].id %>]" > 
-                                     <input data-extraId="<%= allergenArray[i].id %>"  class="status-checkbox status-checkbox-<%= allergenArray[i].id %>" type="checkbox"> <span class="ms-switch-slider ms-switch-success round"></span>
+                                    <input type="hidden" value="off" class="statusAllergen-<%= allergenArray[i].id %>" name="statusAllergen[<%= allergenArray[i].id %>]" > 
+                                     <input data-allergenId="<%= allergenArray[i].id %>"  class="statusAllergen-checkbox statusAllergen-checkbox-<%= allergenArray[i].id %>" type="checkbox"> <span class="ms-switch-slider ms-switch-success round"></span>
                                    </label> <span> <%= allergenArray[i].allergenTranslations[0].name %> </span>
                                  </li>
                                  <% } %>
@@ -433,8 +446,8 @@ if(vidFileLength === 0){
                   <script>
                       $(document).ready(function() {
                       var activeCheckbox ="<%= isActiveAllergen[i].productHasAllergens[0].allergenId %>";
-                      $('.status-checkbox-'+activeCheckbox).prop('checked', true);
-                      $('.status-'+activeCheckbox).val('on');
+                      $('.statusAllergen-checkbox-'+activeCheckbox).prop('checked', true);
+                      $('.statusAllergen-'+activeCheckbox).val('on');
                       });
                   </script>
                      

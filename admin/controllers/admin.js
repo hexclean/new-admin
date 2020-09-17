@@ -75,7 +75,7 @@ exports.postAddProduct = async (req, res, next) => {
   //
   // Add Variant elements
   const extId = req.body.extraId;
-  var filteredStatus = req.body.status.filter(Boolean);
+  var filteredStatusAllergen = req.body.statusAllergen.filter(Boolean);
   const commission = await Admin.findByPk(req.admin.id);
   let commissionCode = commission.commissionCode;
 
@@ -140,14 +140,10 @@ exports.postAddProduct = async (req, res, next) => {
   async function allergens() {
     if (Array.isArray(allergen)) {
       for (let i = 0; i <= allergen.length - 1; i++) {
-        console.log("product.id", product.id);
-        console.log("allergenId[i]", allergenId[i]);
-        console.log("filteredStatus[i]", filteredStatus[i]);
-        console.log("req.admin.id", req.admin.id);
         await ProductHasAllergen.create({
           productId: product.id,
           allergenId: allergenId[i],
-          active: filteredStatus[i] == "on" ? 1 : 0,
+          active: filteredStatusAllergen[i] == "on" ? 1 : 0,
           adminId: req.admin.id,
         });
       }
@@ -217,7 +213,6 @@ exports.getEditProduct = async (req, res, next) => {
       },
     ],
   });
-  console.log("prodVariant", prodVariant);
   let productFinal = await ProductFinal.findAll({
     where: {
       productId: {
@@ -269,7 +264,7 @@ exports.postEditProduct = async (req, res, next) => {
   const prodId = req.body.productId;
   const varId = req.body.variantIdUp;
   const allergenId = req.body.allergenId;
-  const filteredStatusAllergen = req.body.status.filter(Boolean);
+  const filteredStatusAllergen = req.body.statusAllergen.filter(Boolean);
   // Title
   const updatedRoTitle = req.body.roTitle;
   const updatedHuTitle = req.body.huTitle;
@@ -347,6 +342,9 @@ exports.postEditProduct = async (req, res, next) => {
           },
           { where: { productId: prodId, languageId: 3 } }
         );
+      }
+
+      async function variantsFn() {
         if (Array.isArray(variants)) {
           const Op = Sequelize.Op;
           for (let i = 0; i < variants.length; i++) {
@@ -369,15 +367,22 @@ exports.postEditProduct = async (req, res, next) => {
                   },
                 },
               }
-            );
+            ).catch((err) => {
+              console.log("error1111", err);
+              const error = new Error(err);
+              error.httpStatusCode = 500;
+              return next(error);
+            });
           }
         }
+      }
+
+      async function productHasAllergenFn() {
         if (Array.isArray(productHasAllergen)) {
           const Op = Sequelize.Op;
           for (let i = 0; i <= productHasAllergen.length - 1; i++) {
             let productIds = [allergenId[i]];
             let productId = [prodId];
-
             await ProductHasAllergen.update(
               {
                 active: filteredStatusAllergen[i] == "on" ? 1 : 0,
@@ -393,12 +398,19 @@ exports.postEditProduct = async (req, res, next) => {
                   },
                 },
               }
-            );
+            ).catch((err) => {
+              console.log("error22222", err);
+              const error = new Error(err);
+              error.httpStatusCode = 500;
+              return next(error);
+            });
           }
         }
       }
       msg()
         .then((result) => {
+          variantsFn();
+          productHasAllergenFn();
           res.redirect("/admin/products");
         })
         .catch((err) => {
