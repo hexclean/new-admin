@@ -256,18 +256,11 @@ exports.getAddVariant = async (req, res, next) => {
 
 exports.postAddVariant = async (req, res, next) => {
   const extId = req.body.extraId;
-  const roName = req.body.roName;
-  const huName = req.body.huName;
-  const enName = req.body.enName;
   const sku = req.body.sku;
-  const categoryRo = req.body.categoryRo;
-  const categoryHu = req.body.categoryHu;
-  const categoryEn = req.body.categoryEn;
-
-  //
   const updatedExtraPrice = req.body.price;
   const updatedExtraQuantityMin = req.body.quantityMin;
   const updatedExtraQuantityMax = req.body.quantityMax;
+
   var filteredStatus = req.body.status.filter(Boolean);
   const ext = await req.admin.getExtras();
 

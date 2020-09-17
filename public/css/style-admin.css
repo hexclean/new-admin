@@ -564,8 +564,12 @@ body {
   padding: 0;
 }
 img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 90%;
   max-width: 100%;
-  height: auto;
+  max-height: 150px;
 }
 ul {
   list-style: none;
@@ -2900,7 +2904,7 @@ input:checked + .ms-switch-slider.ms-switch-dark {
   border-color: #4f8dca;
 }
 .product-title-size {
-  font-size: 22px !important;
+  font-size: 17px !important;
 }
 .product-description-size {
   font-size: 15px;

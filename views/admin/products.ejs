@@ -29,6 +29,14 @@
       <i class="flaticon-alert-1"></i> <strong class="alert-message-popup">Oh snap! eloszor varians kell legyen addig nem lehet termeket feltolteni</strong>
     </div>
    <% } %>
+   <% if ( checkBoxLength.length === 0) { %>
+      <script>
+            $('.add-product').click(function () {return false;});
+         </script>
+      <div class="alert alert-danger" role="alert">
+         <i class="flaticon-alert-1"></i> <strong class="alert-message-popup">Oh snap! eloszor box kell legyen addig nem lehet termeket feltolteni</strong>
+      </div>
+   <% } %>
       <div class="ms-content-wrapper">
          <div class="row">
             <div class="col-md-12">
@@ -66,9 +74,9 @@
                             </div>
                             <div class="new meta">
                               <p class="product-description-size">Id: <%= prods[i].id %></p>
-                              <span class="badge badge-success">In Stock</span>
+                              <span class="badge badge-success">Aktiv</span>
                             </div>
-                            <p class="product-description-size"><%= currentProductDescription[i] %></p>
+                            <p class="product-description-size"><%= currentProductDescription[i].substring(0,60) + "..." %></p>
                             <div class="new mb-0">
                               <form action="/admin/delete-product" method="POST">
                                  <input type="hidden" value="<%= prods[i].id %>" name="productId">

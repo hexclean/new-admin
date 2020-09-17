@@ -1,9 +1,10 @@
 const Extra = require("../../models/Extra");
 const ExtraTranslation = require("../../models/ExtraTranslation");
 const Allergen = require("../../models/Allergen");
+const ProductVariantsExtras = require("../../models/ProductVariantsExtras");
 const AllegenTranslation = require("../../models/AllergenTranslation");
 const ExtraHasAllergen = require("../../models/ExtraHasAllergen");
-var Sequelize = require("sequelize");
+const Sequelize = require("sequelize");
 
 // Betölti az extra létrehozás oldalt
 exports.getAddExtra = async (req, res, next) => {
@@ -79,19 +80,44 @@ exports.postAddExtra = async (req, res, next) => {
     });
   }
 
-  if (Array.isArray(allergen)) {
-    for (let i = 0; i <= allergen.length - 1; i++) {
-      await ExtraHasAllergen.create({
-        extraId: extra.id,
-        allergenId: allergenId[i],
-        active: filteredStatus[i] == "on" ? 1 : 0,
-        adminId: req.admin.id,
-      });
+  async function addAllergenToExtra() {
+    if (Array.isArray(allergen)) {
+      for (let i = 0; i <= allergen.length - 1; i++) {
+        await ExtraHasAllergen.create({
+          extraId: extra.id,
+          allergenId: allergenId[i],
+          active: filteredStatus[i] == "on" ? 1 : 0,
+          adminId: req.admin.id,
+        });
+      }
     }
   }
 
+  async function add() {
+    const totalDailyMenu = await ProductVariantsExtras.findAll({
+      where: { adminId: req.admin.id },
+    });
+    if (Array.isArray(totalDailyMenu)) {
+      for (let i = 0; i <= totalDailyMenu.length - 1; i++) {
+        await ProductVariantsExtras.create({
+          active: 0,
+          adminId: req.admin.id,
+          extraId: extra.id,
+          extraId: totalDailyMenu[i].id,
+          quantityMax: 0,
+          quantityMin: 0,
+          discountedPrice: 0,
+          price: 0,
+        });
+      }
+    } else {
+      return;
+    }
+  }
   extraTransaltion()
     .then((result) => {
+      addAllergenToExtra();
+      add();
       res.redirect("/admin/vr-index"),
         {
           allergenArray: allergen,

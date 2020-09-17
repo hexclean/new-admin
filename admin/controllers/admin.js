@@ -44,8 +44,15 @@ exports.getAddProduct = async (req, res, next) => {
   const checkVariantLength = await ProductVariants.findAll({
     where: { adminId: req.admin.id },
   });
+  const checkBoxLength = await Box.findAll({
+    where: { adminId: req.admin.id },
+  });
 
   if (checkVariantLength.length === 0) {
+    return res.redirect("/admin/products");
+  }
+
+  if (checkBoxLength.length === 0) {
     return res.redirect("/admin/products");
   }
 
@@ -55,6 +62,7 @@ exports.getAddProduct = async (req, res, next) => {
     editing: false,
     ext: ext,
     boxArray: box,
+    checkBoxLength: checkBoxLength,
     checkVariantLength: checkVariantLength,
     hasError: false,
     allergenArray: allergen,
@@ -147,6 +155,7 @@ exports.postAddProduct = async (req, res, next) => {
     }
 
     for (let i = 0; i <= ext.length - 1; i++) {
+      console.log("price[i]", price[i]);
       await ProductFinal.create({
         price: price[i] || 0,
         productId: product.id,
@@ -250,7 +259,7 @@ exports.getEditProduct = async (req, res, next) => {
       },
     },
   });
-  console.log("prodVariant", prodVariant[2].productFinals);
+
   Product.findAll({
     where: {
       id: prodId,
@@ -482,6 +491,10 @@ exports.getProducts = async (req, res, next) => {
   const checkVariantLength = await ProductVariants.findAll({
     where: { adminId: req.admin.id },
   });
+  const checkBoxLength = await Box.findAll({
+    where: { adminId: req.admin.id },
+  });
+
   await Product.findAll({
     where: { adminId: req.admin.id, active: 1 },
     include: [
@@ -525,6 +538,7 @@ exports.getProducts = async (req, res, next) => {
         currentLanguage: currentLanguage,
         currentProductName: currentProductName,
         currentProductDescription: currentProductDescription,
+        checkBoxLength: checkBoxLength,
         pageTitle: "Admin Products",
         path: "/admin/products",
       });

@@ -11,10 +11,9 @@
       });
    });
 </script>
-
 <script>
    $(document).ready(function () {
-  $(".status-checkbox").click(function () {
+   $(".status-checkbox").click(function () {
    var extraId = $(this).data("extraid");
     $("#price_error_message_"+extraId).hide();
     $("#qtMin_error_message_"+extraId).hide();
@@ -23,9 +22,9 @@
     var error_qtMin = false;
     var error_qtMax = false;
     
-  
-  });
-  function check_variantInputs() {
+   
+   });
+   function check_variantInputs() {
       var extraId = $(this).attr("data-extraId");
       $(".extra_box").each(function () {
         var extraId = $(this).data("extra");
@@ -59,7 +58,7 @@
         }
       });
     }
-  $(".extra_price_input").focusout(function() {
+   $(".extra_price_input").focusout(function() {
       var len = $(this).val().length; 
       var extraId = $(this).closest(".extra_box").data('extra');
       if (len < 1) {
@@ -68,8 +67,8 @@
          $("#price_error_message_"+extraId).hide().html("");
       }
    
-  });
-  $(".extra_qtMin_input").focusout(function() {
+   });
+   $(".extra_qtMin_input").focusout(function() {
       var len = $(this).val().length; 
       var extraId = $(this).closest(".extra_box").data('extra');
       if (len < 1) {
@@ -78,8 +77,8 @@
          $("#qtMin_error_message_"+extraId).hide().html("");
       }
    
-  });
-  $(".extra_qtMax_input").focusout(function() {
+   });
+   $(".extra_qtMax_input").focusout(function() {
       var len = $(this).val().length; 
       var extraId = $(this).closest(".extra_box").data('extra');
       if (len < 1) {
@@ -88,8 +87,8 @@
          $("#qtMax_error_message_"+extraId).hide().html("");
       }
    
-  });
-  $("#variant-form").submit(function () {
+   });
+   $("#variant-form").submit(function () {
       error_price = false;
       error_qtMin = false;
       error_qtMax = false;
@@ -100,16 +99,15 @@
         return false;
       }
     });
-});
+   });
 </script>
-
 <script>
    $(function () {
     
      $("#sku_error_message").hide();
      $("#category_error_message").hide();
    
-  
+   
    
      var error_sku = false;
      var error_category = false;
@@ -124,8 +122,8 @@
        check_category();
      });
      
-  
-  
+   
+   
      function check_sku() {
        var sku_length = $("#sku").val().length;
    
@@ -169,13 +167,6 @@
      });
    });
 </script>
-
-
-
-
-
-
-
 </head>
 <body class="ms-body ms-aside-left-open ms-primary-theme ms-has-quickbar">
    <%- include('../includes/navigation.ejs') %>
@@ -188,22 +179,19 @@
          enctype="multipart/form-data"
          id="variant-form">
          <% if (editing) { %>
-            <% for (let i = 0; i < isActive.length; i++) { %>
-               <% if (isActive[i].active ==1) { %>
-                  
-                  <script>
-                      $(document).ready(function() {
-                      var activeCheckbox ="<%= isActive[i].extraId %>";
-                      $('.status-checkbox-'+activeCheckbox).prop('checked', true);
-                      $('.status-'+activeCheckbox).val('on');
-                      });
-                  </script>
-                     
-                  <% } 
-               %>
-            <% } %>
-            <% } %>
-            
+         <% for (let i = 0; i < isActive.length; i++) { %>
+         <% if (isActive[i].active ==1) { %>
+         <script>
+            $(document).ready(function() {
+            var activeCheckbox ="<%= isActive[i].extraId %>";
+            $('.status-checkbox-'+activeCheckbox).prop('checked', true);
+            $('.status-'+activeCheckbox).val('on');
+            });
+         </script>
+         <% } 
+            %>
+         <% } %>
+         <% } %>
          <div class="row">
             <div class="col-xl-6 col-md-12">
                <div class="ms-panel ms-panel-fh">
@@ -224,114 +212,94 @@
                            </div>
                            <span class="error_form" id="sku_error_message"></span>
                         </div>
-
                         <% if (editing) { %>
-                           <div class="col-md-6 mb-3">
-                              <label for="validationCustom22">RO</label>
-                              <div class="input-group">
-                                <select class="form-control" for="categoryRo" id="categoryRo" name="categoryRo">
-                                 <option value="">RO</option>
-                                 <% for(let i = 0; i < cat.length; i++) { %>       
-                                   <option id="categoryRo" name="categoryRo" value='<%= cat[i].id %>'><%= cat[i].productCategoryTranslations[0].name %></option>
-                                 <% } %>
-                                </select>
-                               
-                              </div>
-                              <span class="error_form" id="category_error_message"></span>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                              <label for="validationCustom22">HU</label>
-                              <div class="input-group">
-                                <select class="form-control" for="categoryHu" id="categoryHu" name="categoryHu">
-                                 <option value="">HU</option>
-                                 <% for(let i = 0; i < cat.length; i++) { %>       
-                                   <option id="categoryHu" name="categoryHu" value='<%= cat[i].id %>'><%= cat[i].productCategoryTranslations[1].name %></option>
-                                 <% } %>
-                                </select>
-                               
-                              </div>
-                              <span class="error_form" id="category_error_message"></span>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                              <label for="validationCustom22">EN</label>
-                              <div class="input-group">
-                                <select class="form-control" for="categoryEn" id="categoryEn" name="categoryEn">
-                                 <option value="">EN</option>
-                                 <% for(let i = 0; i < cat.length; i++) { %>       
-                                   <option id="categoryEn" name="categoryEn" value='<%= cat[i].id %>'><%= cat[i].productCategoryTranslations[2].name %></option>
-                                 <% } %>
-                                </select>
-                               
-                              </div>
-                              <span class="error_form" id="category_error_message"></span>
-                            </div>
-                         <% } else { %>
-                           
-                           <div class="col-md-6 mb-3">
+                        <div class="col-md-6 mb-3">
                            <label for="validationCustom22">RO</label>
                            <div class="input-group">
-                             <select class="form-control" for="categoryRo" id="categoryRo" name="categoryRo">
-                              <option value="">RO</option>
-                              <% for(let i = 0; i < cat.length; i++) { %>       
-                                <option id="categoryRo" name="categoryRo" value='<%= cat[i].id %>'><%= cat[i].productCategoryTranslations[0].name %></option>
-                              <% } %>
-                             </select>
-                            
+                              <select class="form-control" for="categoryRo" id="categoryRo" name="categoryRo">
+                                 <option value="">RO</option>
+                                 <% for(let i = 0; i < cat.length; i++) { %>       
+                                 <option id="categoryRo" name="categoryRo" value='<%= cat[i].id %>'><%= cat[i].productCategoryTranslations[0].name %></option>
+                                 <% } %>
+                              </select>
                            </div>
                            <span class="error_form" id="category_error_message"></span>
-                         </div>
-                         <div class="col-md-6 mb-3">
+                        </div>
+                        <div class="col-md-6 mb-3">
                            <label for="validationCustom22">HU</label>
                            <div class="input-group">
-                             <select class="form-control" for="categoryHu" id="categoryHu" name="categoryHu">
-                              <option value="">HU</option>
-                              <% for(let i = 0; i < cat.length; i++) { %>       
-                                <option id="categoryHu" name="categoryHu" value='<%= cat[i].id %>'><%= cat[i].productCategoryTranslations[1].name %></option>
-                              <% } %>
-                             </select>
-                            
+                              <select class="form-control" for="categoryHu" id="categoryHu" name="categoryHu">
+                                 <option value="">HU</option>
+                                 <% for(let i = 0; i < cat.length; i++) { %>       
+                                 <option id="categoryHu" name="categoryHu" value='<%= cat[i].id %>'><%= cat[i].productCategoryTranslations[1].name %></option>
+                                 <% } %>
+                              </select>
                            </div>
                            <span class="error_form" id="category_error_message"></span>
-                         </div>
-                         <div class="col-md-6 mb-3">
+                        </div>
+                        <div class="col-md-6 mb-3">
                            <label for="validationCustom22">EN</label>
                            <div class="input-group">
-                             <select class="form-control" for="categoryEn" id="categoryEn" name="categoryEn">
-                              <option value="">EN</option>
-                              <% for(let i = 0; i < cat.length; i++) { %>       
-                                <option id="categoryEn" name="categoryEn" value='<%= cat[i].id %>'><%= cat[i].productCategoryTranslations[2].name %></option>
-                              <% } %>
-                             </select>
-                            
+                              <select class="form-control" for="categoryEn" id="categoryEn" name="categoryEn">
+                                 <option value="">EN</option>
+                                 <% for(let i = 0; i < cat.length; i++) { %>       
+                                 <option id="categoryEn" name="categoryEn" value='<%= cat[i].id %>'><%= cat[i].productCategoryTranslations[2].name %></option>
+                                 <% } %>
+                              </select>
                            </div>
                            <span class="error_form" id="category_error_message"></span>
-                         </div>
-                         <% } %>
-                      
-                         
-
-                      
-
-                    
-                       
-                       
-                         <div>
-
-                        
-                        <% if (editing) { %>
+                        </div>
+                        <% } else { %>
+                        <div class="col-md-6 mb-3">
+                           <label for="validationCustom22">RO</label>
+                           <div class="input-group">
+                              <select class="form-control" for="categoryRo" id="categoryRo" name="categoryRo">
+                                 <option value="">RO</option>
+                                 <% for(let i = 0; i < cat.length; i++) { %>       
+                                 <option id="categoryRo" name="categoryRo" value='<%= cat[i].id %>'><%= cat[i].productCategoryTranslations[0].name %></option>
+                                 <% } %>
+                              </select>
+                           </div>
+                           <span class="error_form" id="category_error_message"></span>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                           <label for="validationCustom22">HU</label>
+                           <div class="input-group">
+                              <select class="form-control" for="categoryHu" id="categoryHu" name="categoryHu">
+                                 <option value="">HU</option>
+                                 <% for(let i = 0; i < cat.length; i++) { %>       
+                                 <option id="categoryHu" name="categoryHu" value='<%= cat[i].id %>'><%= cat[i].productCategoryTranslations[1].name %></option>
+                                 <% } %>
+                              </select>
+                           </div>
+                           <span class="error_form" id="category_error_message"></span>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                           <label for="validationCustom22">EN</label>
+                           <div class="input-group">
+                              <select class="form-control" for="categoryEn" id="categoryEn" name="categoryEn">
+                                 <option value="">EN</option>
+                                 <% for(let i = 0; i < cat.length; i++) { %>       
+                                 <option id="categoryEn" name="categoryEn" value='<%= cat[i].id %>'><%= cat[i].productCategoryTranslations[2].name %></option>
+                                 <% } %>
+                              </select>
+                           </div>
+                           <span class="error_form" id="category_error_message"></span>
+                        </div>
+                        <% } %>
+                        <div>
+                           <% if (editing) { %>
                            <input type="hidden" value="<%= variantIdByParams %>" name="variantId">
-                          
                            <% } %>
-                        <button class="btn btn-success has-icon" id="votebutton" type="submit">
-                        <% if (editing) { %>Update Product<% } else { %>Add
-                        Product<% } %>
-                        </button>
-                     </div>
+                           <button class="btn btn-success has-icon" id="votebutton" type="submit">
+                           <% if (editing) { %>Update Product<% } else { %>Add
+                           Product<% } %>
+                           </button>
+                        </div>
                      </div>
                   </div>
                </div>
             </div>
-            
          </div>
          </div>
          </div>
@@ -341,228 +309,218 @@
             </div>
          </div>
          <% if (editing) { %>  <% if (productVarToExt.length > 0) { %>
-            <div class="ms-content-wrapper">
-               <div class="row">
-                  <div class="col-md-12">
-                     <div class="row">
-                        <input
+         <div class="ms-content-wrapper">
+            <div class="row">
+               <div class="col-md-12">
+                  <div class="row">
+                     <input
                         type="hidden"
                         value="<%= varId %>"
                         name="varId"
                         />  
-                        <% for (let i = 0; i < productVarToExt.length; i++) { %>
-                           <input
-                           type="hidden"
-                           value="<%= productVarToExt[i].productVariantsExtras[0].extraId %>"
-                           name="extraId"
-                           />          
-                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 extra_box" data-extra="<%= productVarToExt[i].productVariantsExtras[0].extraId %>">
-                           <div class="ms-card">
-                              <div class="d-flex justify-content-center extra-margin-top">
-                                    <div class="row"> 
-                                      
-                                       <label class="ms-switch" >                 
-                                          <input type="hidden" value="off" class="status-<%= productVarToExt[i].productVariantsExtras[0].extraId %>" name="status[<%= productVarToExt[i].productVariantsExtras[0].extraId %>]" >          
-                                          <input    data-extraId="<%= productVarToExt[i].productVariantsExtras[0].extraId %>"  class="status-checkbox status-checkbox-<%= productVarToExt[i].productVariantsExtras[0].extraId %>" type="checkbox">
-                                          <span class="ms-switch-slider ms-switch-success round"></span>
-                                       </label> 
-                                    </div>
+                     <% for (let i = 0; i < productVarToExt.length; i++) { %>
+                     <input
+                        type="hidden"
+                        value="<%= productVarToExt[i].productVariantsExtras[0].extraId %>"
+                        name="extraId"
+                        />          
+                     <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 extra_box" data-extra="<%= productVarToExt[i].productVariantsExtras[0].extraId %>">
+                        <div class="ms-card">
+                           <div class="d-flex justify-content-center extra-margin-top">
+                              <div class="row"> 
+                                 <label class="ms-switch" >                 
+                                 <input type="hidden" value="off" class="status-<%= productVarToExt[i].productVariantsExtras[0].extraId %>" name="status[<%= productVarToExt[i].productVariantsExtras[0].extraId %>]" >          
+                                 <input    data-extraId="<%= productVarToExt[i].productVariantsExtras[0].extraId %>"  class="status-checkbox status-checkbox-<%= productVarToExt[i].productVariantsExtras[0].extraId %>" type="checkbox">
+                                 <span class="ms-switch-slider ms-switch-success round"></span>
+                                 </label> 
                               </div>
-                              <div class="ms-card-body">
-                                 <div class="new d-flex justify-content-center extra-name">
-                                    <h6 class="mb-0"><b><%= currentExtraName[i] %></b> </h6>
+                           </div>
+                           <div class="ms-card-body">
+                              <div class="new d-flex justify-content-center extra-name">
+                                 <h6 class="mb-0"><b><%= currentExtraName[i] %></b> </h6>
+                              </div>
+                              <div class="col-md-12 mb-3">
+                                 <label for="price">Price</label>
+                                 <div class="input-group">
+                                    <input
+                                       class="price_<%= productVarToExt[i].productVariantsExtras[0].extraId %> extra_price_input"
+                                       type="text"
+                                       name="price"
+                                       id="price"
+                                       value="<% if (editing) { %><%= productVarToExt[i].productVariantsExtras[0].price %><% } %>"
+                                       />
                                  </div>
-                                 <div class="col-md-12 mb-3">
-                                    <label for="price">Price</label>
-                                    <div class="input-group">
-                                       <input
-                                          class="price_<%= productVarToExt[i].productVariantsExtras[0].extraId %> extra_price_input"
-                                          type="text"
-                                          name="price"
-                                          id="price"
-                                          value="<% if (editing) { %><%= productVarToExt[i].productVariantsExtras[0].price %><% } %>"
-                                          />
-                                    </div>
-                                    <span class="extra_error_message error_form" id="price_error_message_<%= productVarToExt[i].productVariantsExtras[0].extraId %>"></span>
+                                 <span class="extra_error_message error_form" id="price_error_message_<%= productVarToExt[i].productVariantsExtras[0].extraId %>"></span>
+                              </div>
+                              <div class="col-md-12 mb-3">
+                                 <label for="discountedPrice"
+                                    >Discounted Price</label
+                                    >
+                                 <div class="input-group">
+                                    <input disabled
+                                       class="form-control"
+                                       type="text"
+                                       name="discountedPrice"
+                                       id="discountedPrice"
+                                       value="<% if (editing) { %><%= productVarToExt[i].productVariantsExtras[0].discountedPrice %><% } %>"
+                                       />
                                  </div>
-                                 <div class="col-md-12 mb-3">
-                                    <label for="discountedPrice"
-                                       >Discounted Price</label
-                                       >
-                                    <div class="input-group">
-                                       <input disabled
-                                          class="form-control"
-                                          type="text"
-                                          name="discountedPrice"
-                                          id="discountedPrice"
-                                          value="<% if (editing) { %><%= productVarToExt[i].productVariantsExtras[0].discountedPrice %><% } %>"
-                                          />
-                                    </div>
+                              </div>
+                              <div class="col-md-12 mb-3">
+                                 <label for="quantityMin"
+                                    >Quantity Minimum</label
+                                    >
+                                 <div class="input-group">
+                                    <input
+                                       class="qtMin_<%= productVarToExt[i].productVariantsExtras[0].extraId %> extra_qtMin_input"
+                                       type="text"
+                                       name="quantityMin"
+                                       id="quantityMin"
+                                       value="<% if (editing) { %><%= productVarToExt[i].productVariantsExtras[0].quantityMin %><% } %>"
+                                       />
                                  </div>
-                                 <div class="col-md-12 mb-3">
-                                    <label for="quantityMin"
-                                       >Quantity Minimum</label
-                                       >
-                                    <div class="input-group">
-                                       <input
-                                          class="qtMin_<%= productVarToExt[i].productVariantsExtras[0].extraId %> extra_qtMin_input"
-                                          type="text"
-                                          name="quantityMin"
-                                          id="quantityMin"
-                                          value="<% if (editing) { %><%= productVarToExt[i].productVariantsExtras[0].quantityMin %><% } %>"
-                                          />
-                                    </div>
-                                    <span class="extra_error_message error_form" id="qtMin_error_message_<%= productVarToExt[i].productVariantsExtras[0].extraId %>"></span>
+                                 <span class="extra_error_message error_form" id="qtMin_error_message_<%= productVarToExt[i].productVariantsExtras[0].extraId %>"></span>
+                              </div>
+                              <div class="col-md-12 mb-3">
+                                 <label for="quantityMax"
+                                    >Quantity Maximum</label
+                                    >
+                                 <div class="input-group">
+                                    <input
+                                       class="qtMax_<%= productVarToExt[i].productVariantsExtras[0].extraId %> extra_qtMax_input"
+                                       type="text"
+                                       name="quantityMax"
+                                       id="quantityMax"
+                                       value="<% if (editing) { %><%= productVarToExt[i].productVariantsExtras[0].quantityMax %><% } %>"
+                                       />
                                  </div>
-                                 <div class="col-md-12 mb-3">
-                                    <label for="quantityMax"
-                                       >Quantity Maximum</label
-                                       >
-                                    <div class="input-group">
-                                       <input
-                                          class="qtMax_<%= productVarToExt[i].productVariantsExtras[0].extraId %> extra_qtMax_input"
-                                          type="text"
-                                          name="quantityMax"
-                                          id="quantityMax"
-                                          value="<% if (editing) { %><%= productVarToExt[i].productVariantsExtras[0].quantityMax %><% } %>"
-                                          />
-                                    </div>
-                                    <span class="extra_error_message error_form" id="qtMax_error_message_<%= productVarToExt[i].productVariantsExtras[0].extraId %>"></span>
-                                 </div>
-                             
+                                 <span class="extra_error_message error_form" id="qtMax_error_message_<%= productVarToExt[i].productVariantsExtras[0].extraId %>"></span>
                               </div>
                            </div>
                         </div>
-                        <% } %>
                      </div>
+                     <% } %>
                   </div>
                </div>
             </div>
-            <% } else { %>
-            <% } %><% } else { %>
-               
-               <% if (ext.length > 0) { %>
-                  <div class="ms-content-wrapper">
-                     <div class="row">
-                        <div class="col-md-12">
-                           <div class="row">
-                              <% for (let i=0; i < ext.length; i++ ) { %>
-                                 <input
-                                 type="hidden"
-                                 value="<%= ext[i].id %>"
-                                 name="extraId"
-                                 />          
-                              <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 extra_box" data-extra="<%= ext[i].id %>">
-                                 <div class="ms-card">
-                                    <div class="d-flex justify-content-center extra-margin-top">
-                                          <div class="row"> 
-                                            
-                                             <label class="ms-switch" >                 
-                                                <input type="hidden" value="off" class="status-<%= ext[i].id %>" name="status[<%= ext[i].id %>]" >          
-                                                <input    data-extraId="<%= ext[i].id %>"  class="status-checkbox status-checkbox-<%= ext[i].id %>" type="checkbox"> <span class="ms-switch-slider ms-switch-success round"></span>
-                                             </label> 
-                                          </div>
-                                    </div>
-                                    <div class="ms-card-body">
-                                       <div class="new d-flex justify-content-center extra-name">
-                                          <h6 class="mb-0"><b><%= currentExtraName[i] %></b> </h6>
-                                       </div>
-                                       <div class="col-md-12 mb-3">
-                                          <label for="price">Price</label>
-                                          <div class="input-group">
-                                             <input
-                                                class="price_<%= ext[i].id %> extra_price_input"
-                                                type="text"
-                                                name="price"
-                                                id="price"
-                                                value="<% if (editing) { %><%= ext[i].price %><% } %>"
-                                                />
-                                          </div>
-                                          <span class="extra_error_message error_form" id="price_error_message_<%= ext[i].id %>"></span>
-                                       </div>
-                                       <div class="col-md-12 mb-3">
-                                          <label for="discountedPrice"
-                                             >Discounted Price</label
-                                             >
-                                          <div class="input-group">
-                                             <input disabled
-                                                class="form-control"
-                                                type="text"
-                                                name="discountedPrice"
-                                                id="discountedPrice"
-                                                value="<% if (editing) { %><%= ext[i].discountedPrice %><% } %>"
-                                                />
-                                          </div>
-                                       </div>
-                                       <div class="col-md-12 mb-3">
-                                          <label for="quantityMin"
-                                             >Quantity Minimum</label
-                                             >
-                                          <div class="input-group">
-                                             <input
-                                                class="qtMin_<%= ext[i].id %> extra_qtMin_input"
-                                                type="text"
-                                                name="quantityMin"
-                                                id="quantityMin"
-                                                value="<% if (editing) { %><%= ext[i].quantityMin %><% } %>"
-                                                />
-                                          </div>
-                                          <span class="extra_error_message error_form" id="qtMin_error_message_<%= ext[i].id %>"></span>
-                                       </div>
-                                       <div class="col-md-12 mb-3">
-                                          <label for="quantityMax"
-                                             >Quantity Maximum</label
-                                             >
-                                          <div class="input-group">
-                                             <input
-                                                class="qtMax_<%= ext[i].id %> extra_qtMax_input"
-                                                type="text"
-                                                name="quantityMax"
-                                                id="quantityMax"
-                                                value="<% if (editing) { %><%= ext[i].quantityMax %><% } %>"
-                                                />
-                                          </div>
-                                          <span class="extra_error_message error_form" id="qtMax_error_message_<%= ext[i].id %>"></span>
-                                       </div>
-                                   
-                                    </div>
+         </div>
+         <% } else { %>
+         <% } %><% } else { %>
+         <% if (ext.length > 0) { %>
+         <div class="ms-content-wrapper">
+            <div class="row">
+               <div class="col-md-12">
+                  <div class="row">
+                     <% for (let i=0; i < ext.length; i++ ) { %>
+                     <input
+                        type="hidden"
+                        value="<%= ext[i].id %>"
+                        name="extraId"
+                        />          
+                     <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 extra_box" data-extra="<%= ext[i].id %>">
+                        <div class="ms-card">
+                           <div class="d-flex justify-content-center extra-margin-top">
+                              <div class="row"> 
+                                 <label class="ms-switch" >                 
+                                 <input type="hidden" value="off" class="status-<%= ext[i].id %>" name="status[<%= ext[i].id %>]" >          
+                                 <input data-extraId="<%= ext[i].id %>" class="status-checkbox status-checkbox-<%= ext[i].id %>" type="checkbox"> <span class="ms-switch-slider ms-switch-success round"></span>
+                                 </label> 
+                              </div>
+                           </div>
+                           <div class="ms-card-body">
+                              <div class="new d-flex justify-content-center extra-name">
+                                 <h6 class="mb-0"><b><%= currentExtraName[i] %></b> </h6>
+                              </div>
+                              <div class="col-md-12 mb-3">
+                                 <label for="price">Price</label>
+                                 <div class="input-group">
+                                    <input
+                                       class="price_<%= ext[i].id %> extra_price_input"
+                                       type="text"
+                                       name="price"
+                                       id="price"
+                                       value="<% if (editing) { %><%= ext[i].price %><% } %>"
+                                       />
+                                 </div>
+                                 <span class="extra_error_message error_form" id="price_error_message_<%= ext[i].id %>"></span>
+                              </div>
+                              <div class="col-md-12 mb-3">
+                                 <label for="discountedPrice"
+                                    >Discounted Price</label
+                                    >
+                                 <div class="input-group">
+                                    <input disabled
+                                       class="form-control"
+                                       type="text"
+                                       name="discountedPrice"
+                                       id="discountedPrice"
+                                       value="<% if (editing) { %><%= ext[i].discountedPrice %><% } %>"
+                                       />
                                  </div>
                               </div>
-                              <% } %>
+                              <div class="col-md-12 mb-3">
+                                 <label for="quantityMin"
+                                    >Quantity Minimum</label
+                                    >
+                                 <div class="input-group">
+                                    <input
+                                       class="qtMin_<%= ext[i].id %> extra_qtMin_input"
+                                       type="text"
+                                       name="quantityMin"
+                                       id="quantityMin"
+                                       value="<% if (editing) { %><%= ext[i].quantityMin %><% } %>"
+                                       />
+                                 </div>
+                                 <span class="extra_error_message error_form" id="qtMin_error_message_<%= ext[i].id %>"></span>
+                              </div>
+                              <div class="col-md-12 mb-3">
+                                 <label for="quantityMax"
+                                    >Quantity Maximum</label
+                                    >
+                                 <div class="input-group">
+                                    <input
+                                       class="qtMax_<%= ext[i].id %> extra_qtMax_input"
+                                       type="text"
+                                       name="quantityMax"
+                                       id="quantityMax"
+                                       value="<% if (editing) { %><%= ext[i].quantityMax %><% } %>"
+                                       />
+                                 </div>
+                                 <span class="extra_error_message error_form" id="qtMax_error_message_<%= ext[i].id %>"></span>
+                              </div>
                            </div>
                         </div>
                      </div>
+                     <% } %>
                   </div>
-                  <% } else { %>
-                  <% } %>
-               
-               
-               <% } %>
-               
-               <script>
-                  $(function() { 
-                  $("#categoryRo").change(function() { 
-                     $("#categoryHu").val($(this).val());
-                     $("#categoryEn").val($(this).val());
-                  });
-                  });
-   
-                  $(function() { 
-                  $("#categoryHu").change(function() { 
-                     $("#categoryRo").val($(this).val());
-                     $("#categoryEn").val($(this).val());
-                  });
-                  });
-   
-                  $(function() { 
-                  $("#categoryEn").change(function() { 
-                     $("#categoryRo").val($(this).val());
-                     $("#categoryHu").val($(this).val());
-                  });
-                  });
-               </script>    
-                
-              
+               </div>
+            </div>
+         </div>
+         <% } else { %>
+         <% } %>
+         <% } %>
+         <script>
+            $(function() { 
+            $("#categoryRo").change(function() { 
+               $("#categoryHu").val($(this).val());
+               $("#categoryEn").val($(this).val());
+            });
+            });
+            
+            $(function() { 
+            $("#categoryHu").change(function() { 
+               $("#categoryRo").val($(this).val());
+               $("#categoryEn").val($(this).val());
+            });
+            });
+            
+            $(function() { 
+            $("#categoryEn").change(function() { 
+               $("#categoryRo").val($(this).val());
+               $("#categoryHu").val($(this).val());
+            });
+            });
+         </script>    
       </form>
    </main>
    <%- include('../includes/end.ejs') %>
