@@ -71,12 +71,11 @@ router.post(
   adminProfileController.postEditOpeningHours
 );
 
-// search settings
-router.get(
-  "/edit-search-settings/:adminId",
-  adminProfileController.getEditSearchSettings
+router.post(
+  "/edit-opening-hours",
+  isAuth,
+  adminProfileController.postEditOpeningHours
 );
-router.post("/edit-search-settings", isAuth, adminProfileController.postEditxd);
 
 router.post("/edit-profile", isAuth, adminProfileController.postEditProfile);
 router.get("/edit-profile/:adminId", adminProfileController.getEditProfile);

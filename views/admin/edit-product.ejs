@@ -24,6 +24,18 @@
       });
    });
 </script>
+<script>
+   $(document).ready(function() {
+      $('.statusBox-checkbox').click(function() {
+         var extraId = $(this).attr('data-boxId');
+         if($(this).is(':checked')) {
+            $('.statusBox-'+extraId).val('on');
+         } else {
+            $('.statusBox-'+extraId).val('off');
+         }
+      });
+   });
+</script>
 
 <script>
    $(document).ready(function () {
@@ -193,13 +205,7 @@
          $("#enDescription_error_message").hide();
        }
      }
-     function check_file() {
-      var vidFileLength = $("#videoUploadFile")[0].files.length;
-if(vidFileLength === 0){
-}
-   
-       
-     }
+
     
      $("#product-form").submit(function () {
        error_roName = false;
@@ -209,7 +215,7 @@ if(vidFileLength === 0){
        error_roDescription = false;
        error_huDescription = false;
        error_enDescription = false;
-       error_file = false;
+    
    
        check_roName();
        check_huName();
@@ -218,7 +224,7 @@ if(vidFileLength === 0){
        check_roDescription();
        check_huDescription();
        check_enDescription();
-       check_file();
+       
        if (
          error_roName == false &&
          error_huName == false &&
@@ -226,8 +232,8 @@ if(vidFileLength === 0){
        
          error_roDescription == false &&
          error_huDescription == false &&
-         error_enDescription == false &&
-         error_file == false
+         error_enDescription == false 
+   
        ) {
          return true;
        } else {
@@ -235,7 +241,8 @@ if(vidFileLength === 0){
        }
      });
    });
-   </script>
+</script>
+
 <body class="ms-body ms-aside-left-open ms-primary-theme ms-has-quickbar" >
 
    <%- include('../includes/navigation.ejs') %>
@@ -270,7 +277,7 @@ if(vidFileLength === 0){
             <% } %>
 
 
-       
+        
             
          <div class="row">
             <div class="col-xl-6 col-md-12">
@@ -362,10 +369,11 @@ if(vidFileLength === 0){
                         <div class="col-md-12 mb-3">
                            <label for="validationCustom12"><%= lingua.create_product_image %></label>
                            <div class="custom-file" id="image">
-                              <input  accept="image/png, image/jpeg,image/jpeg" type="file" name="image" id="videoUploadFile" />
+                              <input  accept="image/png, image/jpeg,image/jpeg" type="file" name="image" id="image" />
                            </div>
                            <span class="error_form" id="file_error_message"></span>
                         </div>
+                      
                      </div>
                   </div>
                </div>
@@ -392,14 +400,50 @@ if(vidFileLength === 0){
                            />
                          
                         <% } %>
-                        <button class="btn" type="submit">
+                        
+                        <button disabled id="createProduct" name="createProduct" class="btn btn-success has-icon" type="submit">
                         <% if (editing) { %>Update Product<% } else { %>Add
                         Product<% } %>
                         </button>
                      </div>
                   </div>
+                
+                  <script>
+                     $('#image').change(function(){
+                        $('#createProduct').prop('disabled', false);
+                     });
+                  </script>
 
-                  fdsfsd
+               <div class="col-xl-12 col-md-12">
+                  <div class="ms-panel ms-panel-fh">
+                  <div class="ms-panel-header">
+                     <h6>Allergén hozzárendelése extrához</h6>
+                  </div>
+                  <div class="ms-panel-body">
+                     <p class="ms-directions"><code>Nem elfelejteni bejelölni a termekhez hozzátartozó allergéneket</code>
+                     </p>
+                        <div class="row">
+                        <div class="col-md-12">
+                           <ul class="ms-list ms-list-display">
+                              <%  for (let i = 0; i <boxArray.length; i++) { %>
+                                 <input
+                                 type="hidden"
+                                 value="<%= boxArray[i].id %>"
+                                 name="boxId"
+                                 /> 
+                              <li>
+                              <label class="ms-switch" data-extra="<%= boxArray[i].id %>">
+                                 <input type="hidden" value="off" class="statusBox-<%= boxArray[i].id %>" name="statusBox[<%= boxArray[i].id %>]" > 
+                                 <input data-boxId="<%= boxArray[i].id %>"  class="statusBox-checkbox statusBox-checkbox-<%= boxArray[i].id %>" type="checkbox"> <span class="ms-switch-slider ms-switch-success round"></span>
+                              </label> <span> <%= boxArray[i].boxTranslations[0].name %> </span>
+                              </li>
+                              <% } %>
+                           </ul>
+                        </div>
+                        </div>
+                  </div>
+                  </div>
+               </div>
                 
                   <div class="col-xl-12 col-md-12">
                      <div class="ms-panel ms-panel-fh">

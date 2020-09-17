@@ -9,6 +9,8 @@ const Allergen = require("../../models/Allergen");
 const ProductHasAllergen = require("../../models/ProductHasAllergen");
 const ProductVariants = require("../../models/ProductVariant");
 const AllegenTranslation = require("../../models/AllergenTranslation");
+const Box = require("../../models/Box");
+const BoxTranslation = require("../../models/BoxTranslation");
 
 exports.getAddProduct = async (req, res, next) => {
   const allergen = await Allergen.findAll({
@@ -21,6 +23,17 @@ exports.getAddProduct = async (req, res, next) => {
       },
     ],
   });
+  const box = await Box.findAll({
+    where: {
+      adminId: req.admin.id,
+    },
+    include: [
+      {
+        model: BoxTranslation,
+      },
+    ],
+  });
+  console.log("Box", box);
 
   const ext = await ProductVariant.findAll({
     where: {
@@ -41,6 +54,7 @@ exports.getAddProduct = async (req, res, next) => {
     path: "/admin/add-product",
     editing: false,
     ext: ext,
+    boxArray: box,
     checkVariantLength: checkVariantLength,
     hasError: false,
     allergenArray: allergen,
@@ -55,6 +69,7 @@ exports.postAddProduct = async (req, res, next) => {
   const roTitle = req.body.roTitle;
   const huTitle = req.body.huTitle;
   const enTitle = req.body.enTitle;
+  const boxId = req.body.boxId;
   //
   const price = req.body.price;
   //
@@ -62,17 +77,31 @@ exports.postAddProduct = async (req, res, next) => {
   const huDescription = req.body.huDescription;
   const enDescription = req.body.enDescription;
   //
-  const status = req.body.statusAllergen;
   const image = req.file;
   const imageUrl = image.path;
-
+  // for (let i = 0; i <= allergen.length - 1; i++) {
+  //   if (filteredStatusBox[i] == "on") {
+  //     const fsdnew = filteredStatusBox[i] + boxId[i];
+  //     const boxIdFinal = fsdnew.substring(2);
+  //   }
+  // }
   //
   // Add Variant elements
   const extId = req.body.extraId;
   var filteredStatusAllergen = req.body.statusAllergen.filter(Boolean);
+  var filteredStatusBox = req.body.statusBox.filter(Boolean);
   const commission = await Admin.findByPk(req.admin.id);
   let commissionCode = commission.commissionCode;
-
+  const box = await Box.findAll({
+    where: {
+      adminId: req.admin.id,
+    },
+    include: [
+      {
+        model: BoxTranslation,
+      },
+    ],
+  });
   const allergen = await Allergen.findAll({
     where: {
       adminId: req.admin.id,
@@ -119,6 +148,13 @@ exports.postAddProduct = async (req, res, next) => {
 
   async function variants() {
     if (Array.isArray(ext)) {
+      let boxIdFinal = 0;
+      for (let i = 0; i < allergen.length; i++) {
+        if (filteredStatusBox[i] == "on") {
+          boxIdFinal = filteredStatusBox[i].substring(2) + boxId[i];
+        }
+      }
+
       for (let i = 0; i <= ext.length - 1; i++) {
         await ProductFinal.create({
           price: price[i] || 0,
@@ -126,6 +162,8 @@ exports.postAddProduct = async (req, res, next) => {
           variantId: extId[i],
           discountedPrice: 0,
           active: filteredStatus[i] == "on" ? 1 : 0,
+          boxId: Number.isInteger(boxIdFinal) ? null : boxIdFinal,
+          // boxActive: filteredStatusAllergen[i] == "on" ? 1 : 0,
         });
       }
     }
@@ -144,10 +182,22 @@ exports.postAddProduct = async (req, res, next) => {
     }
   }
 
+  async function boxFn() {
+    if (Array.isArray(box)) {
+      for (let i = 0; i < box.length; i++) {
+        if (filteredStatusBox[i] == "on") {
+          const fsdnew = filteredStatusBox[i] + boxId[i];
+          const boxIdFinal = fsdnew.substring(2);
+        }
+      }
+    }
+  }
+
   productTransaltion()
     .then((result) => {
       variants();
       allergens();
+      boxFn();
       res.redirect("/admin/products"),
         {
           ext: ext,
@@ -169,7 +219,16 @@ exports.getEditProduct = async (req, res, next) => {
   if (!editMode) {
     return res.redirect("/");
   }
-
+  const box = await Box.findAll({
+    where: {
+      adminId: req.admin.id,
+    },
+    include: [
+      {
+        model: BoxTranslation,
+      },
+    ],
+  });
   const allergen = await Allergen.findAll({
     where: {
       adminId: req.admin.id,
@@ -239,6 +298,7 @@ exports.getEditProduct = async (req, res, next) => {
         productIds: prodId,
         productId: prodId,
         ext: productFinal,
+        boxArray: box,
         productVariant: prodVariant,
         errorMessage: null,
         validationErrors: [],

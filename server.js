@@ -363,6 +363,11 @@ DailyMenu.hasMany(DailyMenuHasAllergen, {
 });
 //
 ///
+ProductFinal.belongsTo(Box, {
+  as: "theBoxId",
+  foreignKey: "boxId",
+});
+Box.hasMany(ProductFinal, { foreignKey: "boxId" });
 //
 
 ProductHasAllergen.belongsTo(Admin, { constrains: true, onDelete: "CASCADE" });

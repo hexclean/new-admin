@@ -1,9 +1,6 @@
 const Admin = require("../../models/Admin");
 const AdminInfo = require("../../models/AdminInfo");
 const OpeningHours = require("../../models/AdminOpeningHours");
-const AdminHomeSearch = require("../../models/adminHomeSearch");
-const AdminHomeSearchTranslation = require("../../models/adminHomeSearchTranslation");
-const Sequelize = require("sequelize");
 
 exports.getEditProfile = async (req, res, next) => {
   adminId = req.admin.id;
@@ -217,95 +214,6 @@ exports.getDashboard = (req, res, next) => {
         path: "/admin/edit-admin",
         admin: admin,
       });
-    })
-    .catch((err) => {
-      const error = new Error(err);
-      error.httpStatusCode = 500;
-      return next(error);
-    });
-};
-
-// Admin search filters settings
-exports.getEditSearchSettings = async (req, res, next) => {
-  let currentSearchName = [];
-  adminId = req.admin.id;
-  adminIdParams = req.params.adminId;
-  const editMode = req.query.edit;
-  if (!editMode) {
-    return res.redirect("/");
-  }
-
-  const search = await AdminHomeSearch.findAll({
-    where: { adminId: req.admin.id },
-    include: [
-      {
-        model: AdminHomeSearchTranslation,
-      },
-    ],
-  });
-
-  for (let i = 0; i < search.length; i++) {
-    var currentLanguage = req.cookies.language;
-
-    if (currentLanguage == "ro") {
-      currentSearchName[i] =
-        search[i].adminHomeSearchTranslations[0].searchName;
-    } else if (currentLanguage == "hu") {
-      currentSearchName[i] =
-        search[i].adminHomeSearchTranslations[1].searchName;
-    } else {
-      currentSearchName[i] =
-        search[i].adminHomeSearchTranslations[2].searchName;
-    }
-  }
-
-  res.render("profile/edit-search-settings", {
-    pageTitle: "Edit Product",
-    path: "/admin/edit-product",
-    editing: editMode,
-    search: search,
-    currentSearchName: currentSearchName,
-    isActive: search[0].adminHomeSearchTranslations,
-  });
-};
-
-exports.postEditxd = async (req, res, next) => {
-  const searchedId = [1, 2, 3, 4, 5];
-  var filteredStatus = req.body.status.filter(Boolean);
-
-  const productVarToExt = AdminHomeSearch.findAll({
-    include: [
-      {
-        model: AdminHomeSearchTranslation,
-      },
-    ],
-  })
-    .then((variant) => {
-      async function msg() {
-        if (true) {
-          const Op = Sequelize.Op;
-          for (let i = 0; i <= 5; i++) {
-            // console.log("i", i);
-            // console.log("filteredStatus[i]", filteredStatus[i]);
-            let srcId = [searchedId[i]];
-            console.log("filteredStatus[i]", filteredStatus[i]);
-            await AdminHomeSearchTranslation.update(
-              {
-                active: filteredStatus[i] == "on" ? 1 : 0,
-              },
-              {
-                where: {
-                  adminHomeSearchId: {
-                    [Op.in]: srcId,
-                  },
-                },
-              }
-            );
-          }
-        }
-      }
-      msg();
-      res.redirect("http://localhost:5000/");
     })
     .catch((err) => {
       const error = new Error(err);
