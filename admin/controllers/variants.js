@@ -260,7 +260,13 @@ exports.postAddVariant = async (req, res, next) => {
   const updatedExtraPrice = req.body.price;
   const updatedExtraQuantityMin = req.body.quantityMin;
   const updatedExtraQuantityMax = req.body.quantityMax;
+  const categoryRo = req.body.categoryRo;
+  const categoryHu = req.body.categoryHu;
+  const categoryEn = req.body.categoryEn;
 
+  console.log("categoryRo", categoryRo);
+  console.log("categoryHu", categoryHu);
+  console.log("categoryEn", categoryEn);
   var filteredStatus = req.body.status.filter(Boolean);
   const ext = await req.admin.getExtras();
 
@@ -279,6 +285,7 @@ exports.postAddVariant = async (req, res, next) => {
 
   const variant = await req.admin.createProductVariant({
     sku: sku,
+    categoryId: categoryRo,
   });
 
   async function productVariantTransaltion() {
@@ -405,7 +412,31 @@ exports.getEditVariant = async (req, res, next) => {
       { model: ProductVariantsExtras },
     ],
   });
-  console.log("productVarToExt", productVarToExt);
+
+  const testing3 = await ProductVariants.findAll({
+    where: { adminId: req.admin.id, id: varId },
+    include: [
+      {
+        as: "catToVar",
+        model: Category,
+        include: [
+          {
+            model: CategoryTranslation,
+            // as: 'country' ,
+            // required : true , // <----- Make sure will create inner join
+            // where : { 'id' : 1 } // <-------- Here
+          },
+        ],
+      },
+    ],
+    // include: [
+    //   {
+    //     ,
+    //   },
+    // ],
+  });
+  // console.log(testing3[0].catToVar.productCategoryTranslations[0].name);
+  console.log(testing3);
 
   const ext = await Extras.findAll({
     where: { adminId: req.admin.id },
@@ -458,6 +489,7 @@ exports.getEditVariant = async (req, res, next) => {
         hasError: false,
         ext: ext,
         cat: cat,
+        testing3: testing3,
         productVarToExt: productVarToExt,
         errorMessage: null,
         validationErrors: [],

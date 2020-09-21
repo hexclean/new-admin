@@ -326,6 +326,17 @@ Allergen.hasMany(AllergenTranslation, {
   foreignKey: "allergenId",
 });
 ///
+//
+////
+
+ProductVariant.belongsTo(ProductCategory, {
+  as: "catToVar",
+  foreignKey: "categoryId",
+});
+ProductCategory.hasMany(ProductVariant, {
+  foreignKey: "categoryId",
+});
+///
 ExtraHasAllergen.belongsTo(Admin, { constrains: true, onDelete: "CASCADE" });
 
 ExtraHasAllergen.belongsTo(Allergen, {

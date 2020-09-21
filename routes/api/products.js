@@ -8,6 +8,7 @@ const ProductFinal = require("../../models/ProductFinal");
 const Variants = require("../../models/ProductVariant");
 const ProductTranslation = require("../../models/ProductTranslation");
 const ProductCategories = require("../../models/ProductCategory");
+
 const sequelize = new Sequelize("foodnet", "root", "y7b5uwFOODNET", {
   host: "localhost",
   dialect: "mysql",

@@ -22,7 +22,10 @@
     var error_qtMin = false;
     var error_qtMax = false;
     
-   
+   //productVariant ba kell a kategoria
+   // productsfinalba a productnal bejelolt kategoriat
+   // finalba csak azokat menteni ami on.
+   // tobb adatbazis
    });
    function check_variantInputs() {
       var extraId = $(this).attr("data-extraId");
@@ -32,6 +35,9 @@
         var qtMin_len = $(".qtMin_" + extraId).val().length;
         var qtMax_len = $(".qtMax_" + extraId).val().length;
         if ($(this).find("input:checkbox").is(":checked") && (price_len < 1 || qtMin_len < 1 || qtMax_len < 1)) {
+         $("#quantityMin").on('mouseup keyup', function () {
+                                   $(this).val(Math.min(20, Math.max(1, $(this).val())));
+                                   });
            if (price_len < 1) {
             $("#price_error_message_"+extraId).show().html("Mezo kitoltese kotelezo");
               error_price = true;
@@ -217,9 +223,10 @@
                            <label for="validationCustom22">RO</label>
                            <div class="input-group">
                               <select class="form-control" for="categoryRo" id="categoryRo" name="categoryRo">
-                                 <option value="">RO</option>
-                                 <% for(let i = 0; i < cat.length; i++) { %>       
-                                 <option id="categoryRo" name="categoryRo" value='<%= cat[i].id %>'><%= cat[i].productCategoryTranslations[0].name %></option>
+                                
+                                 <% for(let i = 0; i < testing3.length; i++) { %>       
+                                 <option id="categoryRo" name="categoryRo" value='<% if (editing) { %><%= testing3[i].catToVar.productCategoryTranslations[0].name %><% } %>'><%= testing3[i].catToVar.productCategoryTranslations[0].name %></option>
+                                             
                                  <% } %>
                               </select>
                            </div>
@@ -229,9 +236,9 @@
                            <label for="validationCustom22">HU</label>
                            <div class="input-group">
                               <select class="form-control" for="categoryHu" id="categoryHu" name="categoryHu">
-                                 <option value="">HU</option>
-                                 <% for(let i = 0; i < cat.length; i++) { %>       
-                                 <option id="categoryHu" name="categoryHu" value='<%= cat[i].id %>'><%= cat[i].productCategoryTranslations[1].name %></option>
+                                 
+                                 <% for(let i = 0; i < testing3.length; i++) { %>       
+                                 <option id="categoryHu" name="categoryHu" value='<% if (editing) { %><%= testing3[i].catToVar.productCategoryTranslations[1].name %><% } %>'><%= testing3[i].catToVar.productCategoryTranslations[1].name %></option>
                                  <% } %>
                               </select>
                            </div>
@@ -241,9 +248,9 @@
                            <label for="validationCustom22">EN</label>
                            <div class="input-group">
                               <select class="form-control" for="categoryEn" id="categoryEn" name="categoryEn">
-                                 <option value="">EN</option>
-                                 <% for(let i = 0; i < cat.length; i++) { %>       
-                                 <option id="categoryEn" name="categoryEn" value='<%= cat[i].id %>'><%= cat[i].productCategoryTranslations[2].name %></option>
+                                 
+                                 <% for(let i = 0; i < testing3.length; i++) { %>       
+                                 <option id="categoryEn" name="categoryEn" value='<% if (editing) { %><%= testing3[i].catToVar.productCategoryTranslations[2].name %><% } %>'><%= testing3[i].catToVar.productCategoryTranslations[2].name %></option>
                                  <% } %>
                               </select>
                            </div>
@@ -366,16 +373,20 @@
                                        />
                                  </div>
                               </div>
+                              
+                              
+                              
                               <div class="col-md-12 mb-3">
                                  <label for="quantityMin"
-                                    >Quantity Minimum</label
+                                    >Quantity Minimfsdfdsum</label
                                     >
                                  <div class="input-group">
                                     <input
                                        class="qtMin_<%= productVarToExt[i].productVariantsExtras[0].extraId %> extra_qtMin_input"
-                                       type="text"
+                                       type="number" 
                                        name="quantityMin"
                                        id="quantityMin"
+                                       onKeyDown="if(this.value.length==18) return false;"
                                        value="<% if (editing) { %><%= productVarToExt[i].productVariantsExtras[0].quantityMin %><% } %>"
                                        />
                                  </div>
@@ -458,6 +469,7 @@
                                        />
                                  </div>
                               </div>
+                             
                               <div class="col-md-12 mb-3">
                                  <label for="quantityMin"
                                     >Quantity Minimum</label
@@ -465,9 +477,10 @@
                                  <div class="input-group">
                                     <input
                                        class="qtMin_<%= ext[i].id %> extra_qtMin_input"
-                                       type="text"
+                                       type="number"
                                        name="quantityMin"
                                        id="quantityMin"
+                                       onKeyDown="if(this.value.length==18) return false;"
                                        value="<% if (editing) { %><%= ext[i].quantityMin %><% } %>"
                                        />
                                  </div>
