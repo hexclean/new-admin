@@ -57,10 +57,12 @@ app.use((req, res, next) => {
   }
   next();
 });
+
 const db = new Sequelize("foodnet", "root", "y7b5uwFOODNET", {
   host: "localhost",
   dialect: "mysql",
 });
+
 const sessionStore = new SequelizeStore({
   db: db,
   checkExpirationInterval: 15 * 60 * 1000,
@@ -403,10 +405,10 @@ Language.hasMany(AllergenTranslation, { foreignKey: "languageId" });
 
 AdminLocationTranslation.belongsTo(AdminLocation, {
   as: "adminLTrans",
-  foreignKey: "adminLocationId",
+  foreignKey: "adminLocationsId",
 });
 AdminLocation.hasMany(AdminLocationTranslation, {
-  foreignKey: "adminLocationId",
+  foreignKey: "adminLocationsId",
 });
 
 Language.hasMany(AdminLocationTranslation, { foreignKey: "languageId" });

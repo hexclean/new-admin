@@ -18,8 +18,31 @@ router.get("/test", async (req, res) => {
       INNER JOIN foodnet.adminLocations as adLoc
       ON ad.id = adLoc.adminId
       INNER JOIN foodnet.adminLocationTranslations as adLocTrans
-      ON adLoc.id = adLocTrans.adminLocationId
+      ON adLoc.id = adLocTrans.adminLocationsId
       where adLocTrans.languageId =2;`,
+      { type: Sequelize.QueryTypes.SELECT }
+    )
+    .then((results) => {
+      return res.json(results);
+    });
+});
+
+router.get("/:locationName/:partnerId", async (req, res) => {
+  const locationName = "Vasarhely";
+  const languageCode = 2;
+  const restaurantName = req.params.partnerId.split("-").join(" ");
+  // const restaurantName = "Sorpatika";
+  return sequelize
+    .query(
+      `SELECT ad.fullName as restaurant_name, adInf.shortCompanyDesc AS restaurant_description, ad.deliveryPrice AS restaurant_deliveryPrice, adInf.kitchen AS restaurant_kitchen
+      FROM foodnet.admins as ad
+      INNER JOIN foodnet.adminInfos AS adInf
+      ON adInf.adminId = ad.id
+      INNER JOIN foodnet.adminLocations AS adLoc
+      ON ad.id = adLoc.adminId
+      INNER JOIN foodnet.adminLocationTranslations AS locTrans
+      ON locTrans.adminLocationsId = adLoc.id
+      WHERE locTrans.languageId= ${languageCode} AND ad.fullName LIKE '%${restaurantName}%' AND adInf.languageId=${languageCode} AND locTrans.name LIKE '%${locationName}%';`,
       { type: Sequelize.QueryTypes.SELECT }
     )
     .then((results) => {
@@ -47,72 +70,24 @@ router.get("/search", async (req, res) => {
 
 router.get("/list/:locationName", async (req, res) => {
   const params = req.params.locationName;
+  const languageCode = 2;
   return sequelize
     .query(
-      `SELECT ad.imageUrl as adminImageUrl, ad.id as adminId, ad.fullName AS adminFullName, adLoc.id as adminLocId, adLocTrans.id as adminLocationTranslationId, adLocTrans.name as adminLocationTranslationName, adLocTrans.languageId as adminLocationTranslationLanguageId
+      `SELECT ad.fullName as restaurant_name, adInf.shortCompanyDesc AS restaurant_description, ad.deliveryPrice AS restaurant_deliveryPrice, adInf.kitchen AS restaurant_kitchen
       FROM foodnet.admins as ad
-      INNER JOIN foodnet.adminLocations as adLoc
+      INNER JOIN foodnet.adminInfos AS adInf
+      ON adInf.adminId = ad.id
+      INNER JOIN foodnet.adminLocations AS adLoc
       ON ad.id = adLoc.adminId
-      INNER JOIN foodnet.adminLocationTranslations as adLocTrans
-      ON adLoc.id = adLocTrans.adminLocationId
-      where adLocTrans.languageId =2 and adLocTrans.name LIKE '%${params}%'
+      INNER JOIN foodnet.adminLocationTranslations AS locTrans
+      ON locTrans.adminLocationsId = adLoc.id
+      where locTrans.languageId =${languageCode} and adInf.languageId=${languageCode} and locTrans.name LIKE '%${params}%'
       `,
       { type: Sequelize.QueryTypes.SELECT }
     )
     .then((results) => {
       return res.json(results);
     });
-});
-
-//get /restaurants/:id
-router.get("/restautants/:id", async (req, res) => {
-  const sequelize = new Sequelize("foodnet", "root", "y7b5uwFOODNET", {
-    host: "localhost",
-    dialect: "mysql",
-  });
-  sequelize
-    .query("Select * from foodnet.admins", {
-      type: Sequelize.QueryTypes.SELECT,
-    })
-    .then((results) => {
-      res.json(results);
-      console.log(results);
-    });
-});
-
-router.post("/ok12", async (req, res) => {
-  let findArgs = [2, 16, 17];
-
-  for (let key in req.body.filters) {
-    if (req.body.filters[key].length > 0) {
-      findArgs[key] = req.body.filters[key];
-    }
-  }
-
-  try {
-    const products = await Admin.findAll({
-      include: [
-        {
-          model: adminHomeSearch,
-          include: [
-            {
-              model: adminHomeSearchTranslation,
-              where: {
-                id: { [Sequelize.Op.in]: findArgs },
-                active: 1,
-              },
-            },
-          ],
-        },
-      ],
-    });
-
-    res.json(products);
-    console.log("ez a vegso keresett parnerek ");
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send("Server error");
-  }
 });
 
 module.exports = router;

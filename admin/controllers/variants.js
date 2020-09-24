@@ -264,9 +264,9 @@ exports.postAddVariant = async (req, res, next) => {
   const categoryHu = req.body.categoryHu;
   const categoryEn = req.body.categoryEn;
 
-  console.log("categoryRo", categoryRo);
-  console.log("categoryHu", categoryHu);
-  console.log("categoryEn", categoryEn);
+  // console.log("categoryRo", categoryRo);
+  // console.log("categoryHu", categoryHu);
+  // console.log("categoryEn", categoryEn);
   var filteredStatus = req.body.status.filter(Boolean);
   const ext = await req.admin.getExtras();
 
@@ -414,7 +414,8 @@ exports.getEditVariant = async (req, res, next) => {
   });
 
   const testing3 = await ProductVariants.findAll({
-    where: { adminId: req.admin.id, id: varId },
+    where: { adminId: req.admin.id },
+    //    id: varId
     include: [
       {
         as: "catToVar",
@@ -429,15 +430,42 @@ exports.getEditVariant = async (req, res, next) => {
         ],
       },
     ],
-    // include: [
-    //   {
-    //     ,
-    //   },
-    // ],
   });
-  // console.log(testing3[0].catToVar.productCategoryTranslations[0].name);
-  console.log(testing3);
 
+  const testing44444 = await ProductVariants.findAll({
+    where: { adminId: req.admin.id, id: varId },
+    //    id: varId
+    include: [
+      {
+        as: "catToVar",
+        model: Category,
+        include: [
+          {
+            model: CategoryTranslation,
+            // as: 'country' ,
+            // required : true , // <----- Make sure will create inner join
+            // where : { 'id' : 1 } // <-------- Here
+          },
+        ],
+      },
+    ],
+  });
+  let arraytest = [];
+  for (let i = 0; i < testing44444.length; i++) {
+    // console.log(
+    //   "testign--------",
+    arraytest = testing44444[i].catToVar.productCategoryTranslations[0].name;
+    // );
+  }
+
+  // let alma = [];
+  // for (let i = 0; i < testing3.length; i++) {
+  //   alma = testing3[0];
+  //   console.log("alma", alma);
+  // }
+  // console.log(testing3[0].catToVar.productCategoryTranslations[0].name);
+  // console.log(testing3);
+  // console.log("alma", alma);
   const ext = await Extras.findAll({
     where: { adminId: req.admin.id },
     include: [
@@ -456,6 +484,12 @@ exports.getEditVariant = async (req, res, next) => {
       },
     ],
   });
+
+  let categoryList = [];
+  for (let i = 0; i < cat.length; i++) {
+    categoryList = cat[i].productCategoryTranslations[0];
+    console.log("categoryList", categoryList);
+  }
 
   for (let i = 0; i < productVarToExt.length; i++) {
     var currentLanguage = req.cookies.language;
@@ -488,7 +522,10 @@ exports.getEditVariant = async (req, res, next) => {
         categoryIdJoin: cat,
         hasError: false,
         ext: ext,
+        categoryList: categoryList,
+        arraytest: arraytest,
         cat: cat,
+        testSelect: "Alma",
         testing3: testing3,
         productVarToExt: productVarToExt,
         errorMessage: null,

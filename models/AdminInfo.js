@@ -16,6 +16,7 @@ const AdminInfo = sequelize.define("adminInfo", {
     type: Sequelize.STRING,
   },
   shortCompanyDesc: Sequelize.STRING,
+  kitchen: Sequelize.STRING,
 });
 
 module.exports = AdminInfo;

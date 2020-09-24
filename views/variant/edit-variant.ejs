@@ -219,50 +219,29 @@
                            <span class="error_form" id="sku_error_message"></span>
                         </div>
                         <% if (editing) { %>
-                        <div class="col-md-6 mb-3">
-                           <label for="validationCustom22">RO</label>
-                           <div class="input-group">
-                              <select class="form-control" for="categoryRo" id="categoryRo" name="categoryRo">
-                                
-                                 <% for(let i = 0; i < testing3.length; i++) { %>       
-                                 <option id="categoryRo" name="categoryRo" value='<% if (editing) { %><%= testing3[i].catToVar.productCategoryTranslations[0].name %><% } %>'><%= testing3[i].catToVar.productCategoryTranslations[0].name %></option>
-                                             
-                                 <% } %>
-                              </select>
-                           </div>
-                           <span class="error_form" id="category_error_message"></span>
-                        </div>
+                        
                         <div class="col-md-6 mb-3">
                            <label for="validationCustom22">HU</label>
                            <div class="input-group">
                               <select class="form-control" for="categoryHu" id="categoryHu" name="categoryHu">
                                  
-                                 <% for(let i = 0; i < testing3.length; i++) { %>       
-                                 <option id="categoryHu" name="categoryHu" value='<% if (editing) { %><%= testing3[i].catToVar.productCategoryTranslations[1].name %><% } %>'><%= testing3[i].catToVar.productCategoryTranslations[1].name %></option>
+                                 <% for(let i = 0; i < cat.length; i++) { %>                             
+                                 <option id="categoryHu" selected="Marha" name="categoryHu" value='<% if (editing) { %><%= cat[i].id %><% } %>'><%= cat[i].productCategoryTranslations[1].name %></option>
                                  <% } %>
+
                               </select>
                            </div>
                            <span class="error_form" id="category_error_message"></span>
                         </div>
-                        <div class="col-md-6 mb-3">
-                           <label for="validationCustom22">EN</label>
-                           <div class="input-group">
-                              <select class="form-control" for="categoryEn" id="categoryEn" name="categoryEn">
-                                 
-                                 <% for(let i = 0; i < testing3.length; i++) { %>       
-                                 <option id="categoryEn" name="categoryEn" value='<% if (editing) { %><%= testing3[i].catToVar.productCategoryTranslations[2].name %><% } %>'><%= testing3[i].catToVar.productCategoryTranslations[2].name %></option>
-                                 <% } %>
-                              </select>
-                           </div>
-                           <span class="error_form" id="category_error_message"></span>
-                        </div>
+                      
                         <% } else { %>
                         <div class="col-md-6 mb-3">
                            <label for="validationCustom22">RO</label>
                            <div class="input-group">
                               <select class="form-control" for="categoryRo" id="categoryRo" name="categoryRo">
                                  <option value="">RO</option>
-                                 <% for(let i = 0; i < cat.length; i++) { %>       
+                                 <% for(let i = 0; i < cat.length; i++) { %>
+
                                  <option id="categoryRo" name="categoryRo" value='<%= cat[i].id %>'><%= cat[i].productCategoryTranslations[0].name %></option>
                                  <% } %>
                               </select>
