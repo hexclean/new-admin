@@ -8,8 +8,9 @@ const OpeningHours = sequelize.define("openingHours", {
     allowNull: false,
     primaryKey: true,
   },
-  open: Sequelize.DATE,
-  close: Sequelize.DATE,
+  open: Sequelize.STRING,
+  close: Sequelize.STRING,
+  name: Sequelize.STRING,
 });
 
 module.exports = OpeningHours;

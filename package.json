@@ -67,6 +67,7 @@
     "redux-devtools-extension": "^2.13.8",
     "request": "^2.88.2",
     "sequelize": "^5.21.6",
+    "timepicker": "^1.13.15",
     "use-immer": "^0.4.0",
     "uuid": "^3.4.0"
   },

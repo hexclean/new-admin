@@ -1,6 +1,7 @@
 const Admin = require("../../models/Admin");
 const AdminInfo = require("../../models/AdminInfo");
-// const AdminOpeningHours = require("../../models/OpeningHoursTranslation");
+const OpeningHours = require("../../models/OpeningHours");
+const Sequelize = require("sequelize");
 
 exports.getEditProfile = async (req, res, next) => {
   adminId = req.admin.id;
@@ -39,6 +40,7 @@ exports.getEditProfile = async (req, res, next) => {
 exports.getEditOpeningHours = async (req, res, next) => {
   adminId = req.admin.id;
   adminIdParams = req.params.adminId;
+
   const editMode = req.query.edit;
   if (!editMode) {
     return res.redirect("/");
@@ -46,11 +48,11 @@ exports.getEditOpeningHours = async (req, res, next) => {
 
   await Admin.findAll({
     where: { id: req.admin.id },
-    include: [
-      {
-        model: OpeningHours,
-      },
-    ],
+    // include: [
+    //   {
+    //     model: OpeningHours,
+    //   },
+    // ],
   })
     .then((admin) => {
       res.render("profile/edit-opening-hours", {
@@ -83,65 +85,102 @@ exports.postEditOpeningHours = async (req, res, next) => {
   const sundayOpen = req.body.sundayOpen;
   const sundayClose = req.body.sundayClose;
 
-  await Admin.findAll({
-    where: { id: req.admin.id },
-    include: [
+  // console.log("req.adminid", req.admin.id);
+  // console.log(admin);
+  // if (extra.adminId != req.admin.id) {
+  //   return res.redirect("/");
+  // }
+  async function updateOpeningHours() {
+    await OpeningHours.update(
       {
-        model: OpeningHours,
-      },
-    ],
-  })
-    .then((admin) => {
-      // console.log("req.adminid", req.admin.id);
-      // console.log(admin);
-      // if (extra.adminId != req.admin.id) {
-      //   return res.redirect("/");
-      // }
-      async function msg() {
-        await OpeningHours.update(
-          { open: mondayOpen, close: mondayClose },
-          { where: { adminId: req.admin.id, day: "Monday" } }
-        );
-        await OpeningHours.update(
-          { open: tuesdayOpen, close: tuesdayClose },
-          { where: { adminId: req.admin.id, day: "Tuesday" } }
-        );
-        await OpeningHours.update(
-          { open: wednesdayOpen, close: wednesdayClose },
-          { where: { adminId: req.admin.id, day: "Wednesday" } }
-        );
-        await OpeningHours.update(
-          { open: thursdayOpen, close: thursdayClose },
-          { where: { adminId: req.admin.id, day: "Thursday" } }
-        );
-        await OpeningHours.update(
-          { open: fridayOpen, close: fridayClose },
-          { where: { adminId: req.admin.id, day: "Friday" } }
-        );
-        await OpeningHours.update(
-          { open: saturdayOpen, close: saturdayClose },
-          { where: { adminId: req.admin.id, day: "Saturday" } }
-        );
-        await OpeningHours.update(
-          { open: sundayOpen, close: sundayClose },
-          { where: { adminId: req.admin.id, day: "Sunday" } }
-        );
-      }
-      msg();
+        open: mondayOpen,
 
-      res.redirect("/admin/dashboard");
-    })
-    .catch((err) => {
-      const error = new Error(err);
-      error.httpStatusCode = 500;
-      return next(error);
-    });
+        close: mondayClose,
+      },
+      { where: { adminId: req.admin.id, name: ["Luni", "Hétfő", "Monday"] } }
+    );
+
+    await OpeningHours.update(
+      {
+        open: tuesdayOpen,
+
+        close: tuesdayClose,
+      },
+      { where: { adminId: req.admin.id, name: ["Marți", "Kedd", "Tuesday"] } }
+    );
+
+    await OpeningHours.update(
+      {
+        open: wednesdayOpen,
+
+        close: wednesdayClose,
+      },
+      {
+        where: {
+          adminId: req.admin.id,
+          name: ["Miercuri", "Szerda", "Wednesday"],
+        },
+      }
+    );
+
+    await OpeningHours.update(
+      {
+        open: thursdayOpen,
+
+        close: thursdayClose,
+      },
+      {
+        where: {
+          adminId: req.admin.id,
+          name: ["Joi", "Csütörtök", "Thursday"],
+        },
+      }
+    );
+
+    await OpeningHours.update(
+      {
+        open: fridayOpen,
+
+        close: fridayClose,
+      },
+      { where: { adminId: req.admin.id, name: ["Vineri", "Péntek", "Friday"] } }
+    );
+
+    await OpeningHours.update(
+      {
+        open: saturdayOpen,
+
+        close: saturdayClose,
+      },
+      {
+        where: {
+          adminId: req.admin.id,
+          name: ["Sâmbătă", "Szombat", "Saturday"],
+        },
+      }
+    );
+
+    await OpeningHours.update(
+      {
+        open: sundayOpen,
+
+        close: sundayClose,
+      },
+      {
+        where: {
+          adminId: req.admin.id,
+          name: ["Duminică", "Vasárnap", "Sunday"],
+        },
+      }
+    );
+  }
+  updateOpeningHours();
+  return res.redirect("/");
 };
 
 exports.postEditProfile = async (req, res, next) => {
   const fullName = req.body.fullName;
   const phoneNumber = req.body.phoneNumber;
-
   const roAdress = req.body.roAdress;
   const huAdress = req.body.huAdress;
   const enAdress = req.body.enAdress;

@@ -39,7 +39,6 @@ const AllergenTranslation = require("./models/AllergenTranslation");
 const ProductHasAllergen = require("./models/ProductHasAllergen");
 const ExtraHasAllergen = require("./models/ExtraHasAllergen");
 const OpeningHours = require("./models/OpeningHours");
-const OpeningHoursTranslation = require("./models/OpeningHoursTranslation");
 
 const User = require("./models/User");
 const UserDeliveryAdress = require("./models/UserDeliveryAdress");
@@ -287,16 +286,12 @@ Language.hasMany(ExtraTranslation, { foreignKey: "languageId" });
 OpeningHours.belongsTo(Admin, { constrains: true, onDelete: "CASCADE" });
 Admin.hasMany(OpeningHours);
 
-OpeningHoursTranslation.belongsTo(OpeningHours, {
-  as: "openingHoursTrans",
-  foreignKey: "openingHoursId",
-});
-OpeningHours.hasMany(OpeningHoursTranslation, { foreignKey: "openingHoursId" });
-OpeningHoursTranslation.belongsTo(Language, {
+OpeningHours.belongsTo(Language, {
   as: "openingHoursLanguage",
   foreignKey: "languageId",
 });
-Language.hasMany(OpeningHoursTranslation, { foreignKey: "languageId" });
+
+Language.hasMany(OpeningHours, { foreignKey: "languageId" });
 
 // Daily Menu
 DailyMenu.belongsTo(Admin, { constrains: true, onDelete: "CASCADE" });

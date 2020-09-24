@@ -35,15 +35,38 @@
                         <div class="ms-panel-header">
                            <h6>Hétfő</h6>
                         </div>
+
+                        <script>
+                          $(function() {
+                           $('#mondayOpen').timepicker({
+                           'minTime': '1:00pm',
+                           'maxTime': '11:30pm',
+                           'showDuration': true,
+                           "show2400": true
+                           });
+                        });
+                        </script>
+
+                        <script>
+                           $(function() {
+                           $('#mondayClose').timepicker({
+                           'minTime': '1:00pm',
+                           'maxTime': '11:30pm',
+                           'showDuration': true,
+                           "show2400": true
+                           });
+                        });
+                        </script>
+
                         <div class="ms-panel-body">
                            <div class="form-group">
                               <label for="roAdress">nyitas</label>
                               <input
                                  class="form-control"
                                  type="text"
+                                 id="mondayOpen"
                                  name="mondayOpen"
-                                 id="roAdress"
-                                 value="<% if (editing ) { %><%= admin[i].adminOpeningHours[0].open %><% } %>"
+                                 value="<% if (editing ) { %><%=  %><% } %>"
                                  />
                            </div>
                            <div class="form-group">
@@ -51,9 +74,9 @@
                               <input
                                  class="form-control"
                                  type="text"
+                                 id="mondayClose"
                                  name="mondayClose"
-                                 id="huAdress"
-                                 value="<% if (editing) { %><%= admin[0].adminOpeningHours[0].close %><% } %>"
+                                 value="<% if (editing) { %><%=  %><% } %>"
                                  />
                            </div>
                           
@@ -64,6 +87,29 @@
 
                    
                   </div>
+
+                  <script>
+                     $(function() {
+                      $('#tuesdayOpen').timepicker({
+                      'minTime': '1:00pm',
+                      'maxTime': '11:30pm',
+                      'showDuration': true,
+                      "show2400": true
+                      });
+                   });
+                   </script>
+
+                   <script>
+                      $(function() {
+                      $('#tuesdayClose').timepicker({
+                      'minTime': '1:00pm',
+                      'maxTime': '11:30pm',
+                      'showDuration': true,
+                      "show2400": true
+                      });
+                   });
+                   </script>
+
                   <div class="col-md-6">
                      <div class="ms-panel">
                         <div class="ms-panel-header">
@@ -71,13 +117,13 @@
                         </div>
                         <div class="ms-panel-body">
                            <div class="form-group">
-                              <label for="roAdress">nyitas</label>
+                              <label for="tuesdayOpen">nyitas</label>
                               <input
                                  class="form-control"
                                  type="text"
                                  name="tuesdayOpen"
-                                 id="roAdress"
-                                 value="<% if (editing ) { %><%= admin[i].adminOpeningHours[1].open %><% } %>"
+                                 id="tuesdayOpen"
+                                 value="<% if (editing ) { %><%=  %><% } %>"
                                  />
                            </div>
                            <div class="form-group">
@@ -86,8 +132,8 @@
                                  class="form-control"
                                  type="text"
                                  name="tuesdayClose"
-                                 id="huAdress"
-                                 value="<% if (editing) { %><%= admin[i].adminOpeningHours[1].close %><% } %>"
+                                 id="tuesdayClose"
+                                 value="<% if (editing) { %><%=  %><% } %>"
                                  />
                            </div>
                           
@@ -95,6 +141,27 @@
                      </div>
                   </div>
 
+                  <script>
+                     $(function() {
+                      $('#wednesdayOpen').timepicker({
+                      'minTime': '1:00pm',
+                      'maxTime': '11:30pm',
+                      'showDuration': true,
+                      "show2400": true
+                      });
+                   });
+                   </script>
+
+                   <script>
+                      $(function() {
+                      $('#wednesdayClose').timepicker({
+                      'minTime': '1:00pm',
+                      'maxTime': '11:30pm',
+                      'showDuration': true,
+                      "show2400": true
+                      });
+                   });
+                   </script>
                   <div class="col-md-6">
                     <div class="ms-panel">
                        <div class="ms-panel-header">
@@ -102,29 +169,50 @@
                        </div>
                        <div class="ms-panel-body">
                           <div class="form-group">
-                             <label for="roAdress">nyitas</label>
+                             <label for="wednesdayOpen">nyitas</label>
                              <input
                                 class="form-control"
                                 type="text"
                                 name="wednesdayOpen"
-                                id="roAdress"
-                                value="<% if (editing ) { %><%= admin[i].adminOpeningHours[2].open %><% } %>"
+                                id="wednesdayOpen"
+                                value="<% if (editing ) { %><%=  %><% } %>"
                                 />
                           </div>
                           <div class="form-group">
-                             <label for="huAdress">zaras</label>
+                             <label for="wednesdayClose">zaras</label>
                              <input
                                 class="form-control"
                                 type="text"
                                 name="wednesdayClose"
-                                id="huAdress"
-                                value="<% if (editing) { %><%= admin[i].adminOpeningHours[2].close %><% } %>"
+                                id="wednesdayClose"
+                                value="<% if (editing) { %><%=  %><% } %>"
                                 />
                           </div>
                           
                        </div>
                     </div>
                  </div>
+                 <script>
+                  $(function() {
+                   $('#thursdayOpen').timepicker({
+                   'minTime': '1:00pm',
+                   'maxTime': '11:30pm',
+                   'showDuration': true,
+                   "show2400": true
+                   });
+                });
+                </script>
+
+                <script>
+                   $(function() {
+                   $('#thursdayClose').timepicker({
+                   'minTime': '1:00pm',
+                   'maxTime': '11:30pm',
+                   'showDuration': true,
+                   "show2400": true
+                   });
+                });
+                </script>
                  <div class="col-md-6">
                     <div class="ms-panel">
                        <div class="ms-panel-header">
@@ -132,29 +220,50 @@
                        </div>
                        <div class="ms-panel-body">
                           <div class="form-group">
-                             <label for="roAdress">nyitas</label>
+                             <label for="thursdayOpen">nyitas</label>
                              <input
                                 class="form-control"
                                 type="text"
                                 name="thursdayOpen"
-                                id="roAdress"
-                                value="<% if (editing ) { %><%= admin[i].adminOpeningHours[3].open %><% } %>"
+                                id="thursdayOpen"
+                                value="<% if (editing ) { %><%=  %><% } %>"
                                 />
                           </div>
                           <div class="form-group">
-                             <label for="huAdress">zaras</label>
+                             <label for="thursdayClose">zaras</label>
                              <input
                                 class="form-control"
                                 type="text"
                                 name="thursdayClose"
-                                id="huAdress"
-                                value="<% if (editing) { %><%= admin[i].adminOpeningHours[3].close %><% } %>"
+                                id="thursdayClose"
+                                value="<% if (editing) { %><%=  %><% } %>"
                                 />
                           </div>
                           
                        </div>
                     </div>
                  </div>
+                 <script>
+                  $(function() {
+                   $('#fridayOpen').timepicker({
+                   'minTime': '1:00pm',
+                   'maxTime': '11:30pm',
+                   'showDuration': true,
+                   "show2400": true
+                   });
+                });
+                </script>
+
+                <script>
+                   $(function() {
+                   $('#fridayClose').timepicker({
+                   'minTime': '1:00pm',
+                   'maxTime': '11:30pm',
+                   'showDuration': true,
+                   "show2400": true
+                   });
+                });
+                </script>
                  <div class="col-md-6">
                     <div class="ms-panel">
                        <div class="ms-panel-header">
@@ -162,29 +271,50 @@
                        </div>
                        <div class="ms-panel-body">
                           <div class="form-group">
-                             <label for="roAdress">nyitas</label>
+                             <label for="fridayOpen">nyitas</label>
                              <input
                                 class="form-control"
                                 type="text"
                                 name="fridayOpen"
-                                id="roAdress"
-                                value="<% if (editing ) { %><%= admin[i].adminOpeningHours[4].open %><% } %>"
+                                id="fridayOpen"
+                                value="<% if (editing ) { %><%=  %><% } %>"
                                 />
                           </div>
                           <div class="form-group">
-                             <label for="huAdress">zaras</label>
+                             <label for="fridayClose">zaras</label>
                              <input
                                 class="form-control"
                                 type="text"
                                 name="fridayClose"
-                                id="huAdress"
-                                value="<% if (editing) { %><%= admin[i].adminOpeningHours[4].close %><% } %>"
+                                id="fridayClose"
+                                value="<% if (editing) { %><%=  %><% } %>"
                                 />
                           </div>
                           
                        </div>
                     </div>
                  </div>
+                 <script>
+                  $(function() {
+                   $('#saturdayOpen').timepicker({
+                   'minTime': '1:00pm',
+                   'maxTime': '11:30pm',
+                   'showDuration': true,
+                   "show2400": true
+                   });
+                });
+                </script>
+
+                <script>
+                   $(function() {
+                   $('#saturdayClose').timepicker({
+                   'minTime': '1:00pm',
+                   'maxTime': '11:30pm',
+                   'showDuration': true,
+                   "show2400": true
+                   });
+                });
+                </script>
                  <div class="col-md-6">
                     <div class="ms-panel">
                        <div class="ms-panel-header">
@@ -192,29 +322,52 @@
                        </div>
                        <div class="ms-panel-body">
                           <div class="form-group">
-                             <label for="roAdress">nyitas</label>
+                             <label for="saturdayOpen">nyitas</label>
                              <input
                                 class="form-control"
                                 type="text"
                                 name="saturdayOpen"
-                                id="roAdress"
-                                value="<% if (editing ) { %><%= admin[i].adminOpeningHours[5].open %><% } %>"
+                                id="saturdayOpen"
+                                value="<% if (editing ) { %><%=  %><% } %>"
                                 />
                           </div>
                           <div class="form-group">
-                             <label for="huAdress">zaras</label>
+                             <label for="saturdayClose">zaras</label>
                              <input
                                 class="form-control"
                                 type="text"
                                 name="saturdayClose"
-                                id="huAdress"
-                                value="<% if (editing) { %><%= admin[i].adminOpeningHours[5].close %><% } %>"
+                                id="saturdayClose"
+                                value="<% if (editing) { %><%=  %><% } %>"
                                 />
                           </div>
                           
                        </div>
                     </div>
                  </div>
+
+                 <script>
+                  $(function() {
+                   $('#sundayOpen').timepicker({
+                   'minTime': '1:00pm',
+                   'maxTime': '11:30pm',
+                   'showDuration': true,
+                   "show2400": true
+                   });
+                });
+                </script>
+
+                <script>
+                   $(function() {
+                   $('#sundayClose').timepicker({
+                   'minTime': '1:00pm',
+                   'maxTime': '11:30pm',
+                   'showDuration': true,
+                   "show2400": true
+                   });
+                });
+                </script>
+
                  <div class="col-md-6">
                     <div class="ms-panel">
                        <div class="ms-panel-header">
@@ -222,23 +375,23 @@
                        </div>
                        <div class="ms-panel-body">
                           <div class="form-group">
-                             <label for="roAdress">nyitas</label>
+                             <label for="sundayOpen">nyitas</label>
                              <input
                                 class="form-control"
                                 type="text"
                                 name="sundayOpen"
-                                id="roAdress"
-                                value="<% if (editing ) { %><%= admin[i].adminOpeningHours[6].open %><% } %>"
+                                id="sundayOpen"
+                                value="<% if (editing ) { %><%=  %><% } %>"
                                 />
                           </div>
                           <div class="form-group">
-                             <label for="huAdress">zaras</label>
+                             <label for="sundayClose">zaras</label>
                              <input
                                 class="form-control"
                                 type="text"
                                 name="sundayClose"
-                                id="huAdress"
-                                value="<% if (editing) { %><%= admin[i].adminOpeningHours[6].close %><% } %>"
+                                id="sundayClose"
+                                value="<% if (editing) { %><%=  %><% } %>"
                                 />
                           </div>
                           
