@@ -1,16 +1,15 @@
 const Sequelize = require("sequelize");
 const sequelize = require("../util/database");
 
-const AdminOpeningHours = sequelize.define("adminOpeningHours", {
+const OpeningHours = sequelize.define("openingHours", {
   id: {
     type: Sequelize.INTEGER,
     autoIncrement: true,
     allowNull: false,
     primaryKey: true,
   },
-  day: Sequelize.STRING,
-  open: Sequelize.STRING,
-  close: Sequelize.STRING,
+  open: Sequelize.DATE,
+  close: Sequelize.DATE,
 });
 
-module.exports = AdminOpeningHours;
+module.exports = OpeningHours;

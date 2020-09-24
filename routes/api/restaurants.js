@@ -27,11 +27,10 @@ router.get("/test", async (req, res) => {
     });
 });
 
-router.get("/:locationName/:partnerId", async (req, res) => {
-  const locationName = "Vasarhely";
+router.get("/:locationName/:prestaurantName", async (req, res) => {
+  const locationName = req.params.locationName.split("-").join(" ");
   const languageCode = 2;
-  const restaurantName = req.params.partnerId.split("-").join(" ");
-  // const restaurantName = "Sorpatika";
+  const restaurantName = req.params.prestaurantName.split("-").join(" ");
   return sequelize
     .query(
       `SELECT ad.fullName as restaurant_name, adInf.shortCompanyDesc AS restaurant_description, ad.deliveryPrice AS restaurant_deliveryPrice, adInf.kitchen AS restaurant_kitchen

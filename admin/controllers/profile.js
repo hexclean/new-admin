@@ -1,6 +1,6 @@
 const Admin = require("../../models/Admin");
 const AdminInfo = require("../../models/AdminInfo");
-const OpeningHours = require("../../models/AdminOpeningHours");
+// const AdminOpeningHours = require("../../models/OpeningHoursTranslation");
 
 exports.getEditProfile = async (req, res, next) => {
   adminId = req.admin.id;

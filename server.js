@@ -38,7 +38,9 @@ const AllergenTranslation = require("./models/AllergenTranslation");
 //
 const ProductHasAllergen = require("./models/ProductHasAllergen");
 const ExtraHasAllergen = require("./models/ExtraHasAllergen");
-const AdminOpeningHours = require("./models/AdminOpeningHours");
+const OpeningHours = require("./models/OpeningHours");
+const OpeningHoursTranslation = require("./models/OpeningHoursTranslation");
+
 const User = require("./models/User");
 const UserDeliveryAdress = require("./models/UserDeliveryAdress");
 //
@@ -265,32 +267,36 @@ Admin.hasMany(ProductVariant);
 
 Extra.belongsTo(Admin, { constrains: true, onDelete: "CASCADE" });
 Admin.hasMany(Extra);
-
-// Language -> ProductTranslation, VariantTranslation, ExtraTranslation
-
 Language.hasMany(ExtraTranslation);
-
 Extra.hasMany(ExtraTranslation);
-// Product -> Variant
-// Extra.hasMany(ExtraCategory);
-
 ProductVariant.hasMany(ProductVariantsExtras);
+
 Extra.hasMany(ProductVariantsExtras);
-
-//
-// Product.hasMany(ProductVariantToProduct);
-
 ExtraTranslation.belongsTo(Extra, {
   as: "extraTranslation",
   foreignKey: "extraId",
 });
 Extra.hasMany(ExtraTranslation, { foreignKey: "extraId" });
-
 ExtraTranslation.belongsTo(Language, {
   as: "extraLanguage",
   foreignKey: "languageId",
 });
 Language.hasMany(ExtraTranslation, { foreignKey: "languageId" });
+
+//OpeningHours
+OpeningHours.belongsTo(Admin, { constrains: true, onDelete: "CASCADE" });
+Admin.hasMany(OpeningHours);
+
+OpeningHoursTranslation.belongsTo(OpeningHours, {
+  as: "openingHoursTrans",
+  foreignKey: "openingHoursId",
+});
+OpeningHours.hasMany(OpeningHoursTranslation, { foreignKey: "openingHoursId" });
+OpeningHoursTranslation.belongsTo(Language, {
+  as: "openingHoursLanguage",
+  foreignKey: "languageId",
+});
+Language.hasMany(OpeningHoursTranslation, { foreignKey: "languageId" });
 
 // Daily Menu
 DailyMenu.belongsTo(Admin, { constrains: true, onDelete: "CASCADE" });
@@ -414,9 +420,6 @@ AdminLocation.hasMany(AdminLocationTranslation, {
 Language.hasMany(AdminLocationTranslation, { foreignKey: "languageId" });
 
 // Admin Hours
-AdminOpeningHours.belongsTo(Admin, { constrains: true, onDelete: "CASCADE" });
-
-Admin.hasMany(AdminOpeningHours, { foreignKey: "adminId" });
 
 AdminLocation.belongsTo(Admin, {
   as: "adminLocation",
