@@ -11,7 +11,6 @@ const ProductVariants = require("../../models/ProductVariant");
 const AllegenTranslation = require("../../models/AllergenTranslation");
 const Box = require("../../models/Box");
 const BoxTranslation = require("../../models/BoxTranslation");
-
 exports.getAddProduct = async (req, res, next) => {
   const allergen = await Allergen.findAll({
     where: {

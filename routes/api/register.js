@@ -28,7 +28,7 @@ router.post(
     const { email, password, name } = req.body;
 
     try {
-      let user = await User.findOne({ where: { email } });
+      let user = await User.findOne({ where: { email: email } });
 
       if (user) {
         return res
@@ -40,7 +40,6 @@ router.post(
         email: email,
         password: password,
         fullName: name,
-        phoneNumber: "",
       });
 
       const salt = await bcrypt.genSalt(10);
@@ -65,6 +64,7 @@ router.post(
         }
       );
     } catch (err) {
+      console.log(err);
       console.error(err.message);
       res.status(500).send("Server error");
     }

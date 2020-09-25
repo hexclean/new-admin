@@ -1,9 +1,19 @@
 const bcrypt = require("bcryptjs");
 const Admin = require("../../models/Admin");
 const AdminInfo = require("../../models/AdminInfo");
+const nodemailer = require("nodemailer");
+const sendgridTransport = require("nodemailer-sendgrid-transport");
 // const AdminOpeningHours = require("../../models/OpeningHoursTranslation");
-
 const { validationResult } = require("express-validator/check");
+
+const transporter = nodemailer.createTransport(
+  sendgridTransport({
+    auth: {
+      api_key:
+        "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",
+    },
+  })
+);
 
 exports.getLogin = (req, res, next) => {
   let message = req.flash("error");
@@ -107,55 +117,20 @@ exports.postSignup = async (req, res, next) => {
           languageId: 3,
           shortCompanyDesc: "",
         });
-        // await AdminOpeningHours.create({
-        //   day: "Monday",
-        //   open: "-",
-        //   close: "-",
-        //   adminId: admin.id,
-        // });
-        // await AdminOpeningHours.create({
-        //   day: "Tuesday",
-        //   open: "-",
-        //   close: "-",
-        //   adminId: admin.id,
-        // });
-        // await AdminOpeningHours.create({
-        //   day: "Wednesday",
-        //   open: "-",
-        //   close: "-",
-        //   adminId: admin.id,
-        // });
-        // await AdminOpeningHours.create({
-        //   day: "Thursday",
-        //   open: "-",
-        //   close: "-",
-        //   adminId: admin.id,
-        // });
-        // await AdminOpeningHours.create({
-        //   day: "Friday",
-        //   open: "-",
-        //   close: "-",
-        //   adminId: admin.id,
-        // });
-        // await AdminOpeningHours.create({
-        //   day: "Saturday",
-        //   open: "-",
-        //   close: "-",
-        //   adminId: admin.id,
-        // });
-        // await AdminOpeningHours.create({
-        //   day: "Sunday",
-        //   open: "-",
-        //   close: "-",
-        //   adminId: admin.id,
-        // });
       }
       createAdmin();
     })
     .then((result) => {
       res.redirect("/login");
+      return transporter.sendMail({
+        to: email,
+        from: "shop@node-complete.com",
+        subject: "hello bejelentekztel",
+        html: "<h1>You logged in</h1>",
+      });
     })
     .catch((err) => {
+      console.log(err);
       const error = new Error(err);
       error.httpStatusCode = 500;
       return next(error);

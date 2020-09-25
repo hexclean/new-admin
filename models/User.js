@@ -20,11 +20,9 @@ const User = sequelize.define("user", {
   fullName: {
     type: Sequelize.STRING,
     allowNull: false,
-    unique: true,
   },
   phoneNumber: {
     type: Sequelize.STRING,
-    allowNull: false,
     unique: true,
   },
 });

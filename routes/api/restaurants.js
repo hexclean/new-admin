@@ -13,7 +13,7 @@ router.get("/:locationName/:prestaurantName", async (req, res) => {
   const restaurantName = req.params.prestaurantName.split("-").join(" ");
   return sequelize
     .query(
-      `SELECT ad.id AS restaurant_id, ad.fullName as restaurant_name,
+      `SELECT ad.id AS restaurant_id, ad.fullName as restaurant_name, ad.coverImage AS restaurant_coverImage,
       ad.phoneNumber AS restaurant_phoneNumber,
       ad.avgTransport AS restaurant_avgTransportTime,
       ad.minimumOrderUser AS restaurant_minimumOrderUser, ad.minimumOrderSubscriber AS restaurant_minimumOrderPro,
