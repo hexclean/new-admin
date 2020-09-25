@@ -1,9 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const Admin = require("../../models/Admin");
-const AdminInfo = require("../../models/AdminInfo");
-const Locations = require("../../models/AdminLocation");
-const LocationsTranslation = require("../../models/AdminLocationTranslation");
 const Sequelize = require("sequelize");
 
 const sequelize = new Sequelize("foodnet", "root", "y7b5uwFOODNET", {
@@ -11,35 +7,38 @@ const sequelize = new Sequelize("foodnet", "root", "y7b5uwFOODNET", {
   dialect: "mysql",
 });
 
-// @route    GET api/restaurants
-// @desc     Get all restaurants
+// @route    GET api/location/:locationName
+// @desc     Get all restaurants from selected city
 // @access   Public
-router.get("/", async (req, res) => {
-  const cityParams = req.params.locationName;
-
+router.get("/:locationName", async (req, res) => {
   try {
-    const locations = await Admin.findAll({
-      include: [
-        {
-          model: AdminInfo,
-          model: Locations,
-          include: [
-            {
-              model: LocationsTranslation,
-            },
-          ],
-        },
-      ],
-    });
-    res.json(locations);
+    const locationName = req.params.locationName.split("-").join(" ");
+    const languageCode = 2;
+    const selectedLocation = await sequelize.query(
+      `SELECT ad.id AS restaurant_id, ad.imageUrl AS restaurant_profileImage, ad.commission AS restaurant_commission,
+      ad.fullName as restaurant_name, adInf.shortCompanyDesc AS restaurant_description,
+      ad.deliveryPrice AS restaurant_deliveryPrice, adInf.kitchen AS restaurant_kitchen
+      FROM foodnet.admins as ad
+      INNER JOIN foodnet.adminInfos AS adInf
+      ON adInf.adminId = ad.id
+      INNER JOIN foodnet.adminLocations AS adLoc
+      ON ad.id = adLoc.adminId
+      INNER JOIN foodnet.adminLocationTranslations AS locTrans
+      ON locTrans.adminLocationsId = adLoc.id
+      WHERE locTrans.languageId= ${languageCode} AND adInf.languageId=${languageCode} AND locTrans.name LIKE '%${locationName}%';`,
+      { type: Sequelize.QueryTypes.SELECT }
+    );
+    res.json(selectedLocation);
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Server Error");
   }
 });
 
+// @route    GET api/location/targu-mures
+// @desc     Get all restaurants from Marosvásárhely (HOME)
+// @access   Public
 router.get("/targu-mures", async (req, res) => {
-  const params = req.params.locationName;
   const vasarhely = "Vasarhely";
   const languageCode = 2;
   try {
@@ -66,11 +65,10 @@ router.get("/targu-mures", async (req, res) => {
 });
 
 // @route    GET api/location by name
-// @desc     Get restaurants from Marosvasarhely
+// @desc     Get all restaurants from Székelyudvarhely (HOME)
 // @access   Public
-router.get("/targu-mures", async (req, res) => {
-  const cityParams = req.params.locationName;
-  const vasarhely = "Vasarhely";
+router.get("/odorheiu-secuiesc", async (req, res) => {
+  const udvarhely = "Székelyudvarhely";
   const languageCode = 2;
   try {
     return sequelize
@@ -83,7 +81,37 @@ router.get("/targu-mures", async (req, res) => {
       ON ad.id = adLoc.adminId
       INNER JOIN foodnet.adminLocationTranslations AS locTrans
       ON locTrans.adminLocationsId = adLoc.id
-      WHERE locTrans.languageId= ${languageCode} AND adInf.languageId=${languageCode} AND locTrans.name LIKE '%${vasarhely}%';`,
+      WHERE locTrans.languageId= ${languageCode} AND adInf.languageId=${languageCode} AND locTrans.name LIKE '%${udvarhely}%';`,
+        { type: Sequelize.QueryTypes.SELECT }
+      )
+      .then((result) => {
+        res.json(result);
+      });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
+
+// @route    GET api/location by name
+// @desc     Get all restaurants from Csíkszereda (HOME)
+// @access   Public
+router.get("/miercurea-ciuc", async (req, res) => {
+  const cityParams = req.params.locationName;
+  const csik = "Csíkszereda";
+  const languageCode = 2;
+  try {
+    return sequelize
+      .query(
+        `SELECT ad.fullName as restaurant_name, adInf.shortCompanyDesc AS restaurant_description, ad.deliveryPrice AS restaurant_deliveryPrice, adInf.kitchen AS restaurant_kitchen
+      FROM foodnet.admins as ad
+      INNER JOIN foodnet.adminInfos AS adInf
+      ON adInf.adminId = ad.id
+      INNER JOIN foodnet.adminLocations AS adLoc
+      ON ad.id = adLoc.adminId
+      INNER JOIN foodnet.adminLocationTranslations AS locTrans
+      ON locTrans.adminLocationsId = adLoc.id
+      WHERE locTrans.languageId= ${languageCode} AND adInf.languageId=${languageCode} AND locTrans.name LIKE '%${csik}%';`,
         { type: Sequelize.QueryTypes.SELECT }
       )
       .then((result) => {

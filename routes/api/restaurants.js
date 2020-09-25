@@ -1,30 +1,10 @@
 const express = require("express");
 const router = express.Router();
 const Sequelize = require("sequelize");
-const Admin = require("../../models/Admin");
-const adminHomeSearch = require("../../models/adminHomeSearch");
-const adminHomeSearchTranslation = require("../../models/adminHomeSearchTranslation");
 
 const sequelize = new Sequelize("foodnet", "root", "y7b5uwFOODNET", {
   host: "localhost",
   dialect: "mysql",
-});
-
-router.get("/test", async (req, res) => {
-  return sequelize
-    .query(
-      `SELECT  ad.id as adminId, ad.fullName AS adminFullName, adLoc.id as adminLocId, adLocTrans.id as adminLocationTranslationId, adLocTrans.name as adminLocationTranslationName, adLocTrans.languageId as adminLocationTranslationLanguageId
-      FROM foodnet.admins as ad
-      INNER JOIN foodnet.adminLocations as adLoc
-      ON ad.id = adLoc.adminId
-      INNER JOIN foodnet.adminLocationTranslations as adLocTrans
-      ON adLoc.id = adLocTrans.adminLocationsId
-      where adLocTrans.languageId =2;`,
-      { type: Sequelize.QueryTypes.SELECT }
-    )
-    .then((results) => {
-      return res.json(results);
-    });
 });
 
 router.get("/:locationName/:prestaurantName", async (req, res) => {
@@ -33,7 +13,34 @@ router.get("/:locationName/:prestaurantName", async (req, res) => {
   const restaurantName = req.params.prestaurantName.split("-").join(" ");
   return sequelize
     .query(
-      `SELECT ad.fullName as restaurant_name, adInf.shortCompanyDesc AS restaurant_description, ad.deliveryPrice AS restaurant_deliveryPrice, adInf.kitchen AS restaurant_kitchen
+      `SELECT ad.id AS restaurant_id, ad.fullName as restaurant_name,
+      ad.phoneNumber AS restaurant_phoneNumber,
+      ad.avgTransport AS restaurant_avgTransportTime,
+      ad.minimumOrderUser AS restaurant_minimumOrderUser, ad.minimumOrderSubscriber AS restaurant_minimumOrderPro,
+      adInf.adress AS restaurant_adress,
+      adInf.shortCompanyDesc AS restaurant_description, ad.deliveryPrice AS restaurant_deliveryPrice, adInf.kitchen AS restaurant_kitchen
+      FROM foodnet.admins as ad
+      INNER JOIN foodnet.adminInfos AS adInf
+      ON adInf.adminId = ad.id
+      INNER JOIN foodnet.adminLocations AS adLoc
+      ON ad.id = adLoc.adminId
+      INNER JOIN foodnet.adminLocationTranslations AS locTrans
+      ON locTrans.adminLocationsId = adLoc.id
+      WHERE locTrans.languageId= ${languageCode} AND ad.fullName LIKE '%${restaurantName}%' AND adInf.languageId=${languageCode} AND locTrans.name LIKE '%${locationName}%';`,
+      { type: Sequelize.QueryTypes.SELECT }
+    )
+    .then((results) => {
+      return res.json(results);
+    });
+});
+
+router.get("/:locationName/:prestaurantName/products", async (req, res) => {
+  const locationName = req.params.locationName.split("-").join(" ");
+  const languageCode = 2;
+  const restaurantName = req.params.prestaurantName.split("-").join(" ");
+  return sequelize
+    .query(
+      `SELECT ad.id AS restaurant_id, ad.fullName as restaurant_name, adInf.shortCompanyDesc AS restaurant_description, ad.deliveryPrice AS restaurant_deliveryPrice, adInf.kitchen AS restaurant_kitchen
       FROM foodnet.admins as ad
       INNER JOIN foodnet.adminInfos AS adInf
       ON adInf.adminId = ad.id

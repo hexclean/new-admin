@@ -25,7 +25,7 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { email, password, fullName, phoneNumber } = req.body;
+    const { email, password, name } = req.body;
 
     try {
       let user = await User.findOne({ where: { email } });
@@ -39,8 +39,8 @@ router.post(
       user = new User({
         email: email,
         password: password,
-        fullName: fullName,
-        phoneNumber: phoneNumber,
+        fullName: name,
+        phoneNumber: "",
       });
 
       const salt = await bcrypt.genSalt(10);
@@ -69,58 +69,6 @@ router.post(
       res.status(500).send("Server error");
     }
   }
-);
-
-// router.post("/doesUsernameExist", async (req, res) => {
-//   obj = JSON.parse(req.body);
-//   const obj.email = req.body;
-//   try {
-//     let user = await User.findOne({
-//       where: { email: "alma@alma.com" },
-//     });
-//     console.log("req.body", req.body);
-//     if (user) {
-//       res.json(true);
-//     } else {
-//       res.json(false);
-//     }
-//   } catch (error) {
-//     console.log(error);
-//   }
-// });
-
-router.post(
-  "/doesUsernameExist",
-  [check("email", "Please include a valid email").isEmail()],
-  async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
-
-    const { email } = req.body;
-
-    try {
-      let user = await User.findOne({
-        where: { email },
-      });
-
-      if (user) {
-        return res.json(true);
-      } else {
-        return res.json(false);
-      }
-    } catch (err) {
-      console.error(err.message);
-      res.status(500).send("Server error");
-    }
-  }
-
-  //use case felahsznalo admin milyen lehetsoegei vannk
-  //tanulmany hogyan mukodnek  mik az elonyok hatranyok
-  //kategoria, kereses, motorhoz, villamossagi
-  //5 oldal 1-1 webshop letesztelni a funkcionalitasat
-  //full torles, vagy inaktiv torles
 );
 
 module.exports = router;

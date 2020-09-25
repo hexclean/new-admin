@@ -9,7 +9,7 @@ const Admin = sequelize.define("admin", {
     allowNull: false,
     primaryKey: true,
   },
-  commission: Sequelize.INTEGER,
+  commission: Sequelize.FLOAT,
   commissionCode: Sequelize.FLOAT,
   phoneNumber: Sequelize.STRING,
   email: Sequelize.STRING,
