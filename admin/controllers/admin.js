@@ -32,7 +32,6 @@ exports.getAddProduct = async (req, res, next) => {
       },
     ],
   });
-  console.log("Box", box);
 
   const ext = await ProductVariant.findAll({
     where: {

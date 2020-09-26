@@ -22,11 +22,13 @@ router.get("/:locationName", async (req, res) => {
       FROM foodnet.admins AS ad
       INNER JOIN foodnet.adminInfos AS adInf
       ON adInf.adminId = ad.id
-      INNER JOIN foodnet.adminLocations AS adLoc
-      ON ad.id = adLoc.adminId
-      INNER JOIN foodnet.adminLocationTranslations AS locTrans
-      ON locTrans.adminLocationsId = adLoc.id
-      WHERE locTrans.languageId= ${languageCode} AND adInf.languageId=${languageCode} AND locTrans.name LIKE '%${locationName}%';`,
+      INNER JOIN foodnet.locations AS loc
+      ON ad.id = loc.adminId
+      INNER JOIN foodnet.locationNames AS locName
+      ON loc.locationNameId = locName.id
+      INNER JOIN foodnet.locationNameTranslations as locNameTrans
+      ON locName.id = locNameTrans.locationNameId
+      WHERE locNameTrans.languageId= ${languageCode} AND adInf.languageId=${languageCode} AND locNameTrans.name LIKE '%${locationName}%';`,
       { type: Sequelize.QueryTypes.SELECT }
     );
 
