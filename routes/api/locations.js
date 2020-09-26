@@ -13,6 +13,7 @@ const sequelize = new Sequelize("foodnet", "root", "y7b5uwFOODNET", {
 router.get("/:locationName", async (req, res) => {
   try {
     const locationName = req.params.locationName.split("-").join(" ");
+    console.log("loc", locationName);
     const languageCode = 2;
     const selectedLocation = await sequelize.query(
       `SELECT ad.id AS restaurant_id, ad.imageUrl AS restaurant_profileImage, ad.commission AS restaurant_commission,
@@ -47,21 +48,25 @@ router.get("/:locationName", async (req, res) => {
 // @desc     Get all restaurants from Marosvásárhely (HOME)
 // @access   Public
 router.get("/targu-mures", async (req, res) => {
-  const vasarhely = "Vasarhely";
+  const vasarhely = "Targu Mures";
   const languageCode = 2;
 
   try {
     const locationTarguMures = await sequelize.query(
-      `SELECT ad.fullName as restaurant_name, adInf.shortCompanyDesc AS restaurant_description,
+      `SELECT ad.id AS restaurant_id, ad.imageUrl AS restaurant_profileImage, ad.commission AS restaurant_commission,
+      ad.fullName AS restaurant_name, ad.newRestaurant AS restaurant_new, ad.discount AS restaurant_discount,
+       adInf.shortCompanyDesc AS restaurant_description,
       ad.deliveryPrice AS restaurant_deliveryPrice, adInf.kitchen AS restaurant_kitchen
-      FROM foodnet.admins as ad
+      FROM foodnet.admins AS ad
       INNER JOIN foodnet.adminInfos AS adInf
       ON adInf.adminId = ad.id
-      INNER JOIN foodnet.adminLocations AS adLoc
-      ON ad.id = adLoc.adminId
-      INNER JOIN foodnet.adminLocationTranslations AS locTrans
-      ON locTrans.adminLocationsId = adLoc.id
-      WHERE locTrans.languageId= ${languageCode} AND adInf.languageId=${languageCode} AND locTrans.name LIKE '%${vasarhely}%';`,
+      INNER JOIN foodnet.locations AS loc
+      ON ad.id = loc.adminId
+      INNER JOIN foodnet.locationNames AS locName
+      ON loc.locationNameId = locName.id
+      INNER JOIN foodnet.locationNameTranslations as locNameTrans
+      ON locName.id = locNameTrans.locationNameId
+      WHERE locNameTrans.languageId= ${languageCode} AND adInf.languageId=${languageCode} AND locNameTrans.name LIKE '%${vasarhely}%';`,
       { type: Sequelize.QueryTypes.SELECT }
     );
     if (locationTarguMures.length == 0) {
