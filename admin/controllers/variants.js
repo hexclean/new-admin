@@ -267,7 +267,11 @@ exports.postAddVariant = async (req, res, next) => {
   // console.log("categoryRo", categoryRo);
   // console.log("categoryHu", categoryHu);
   // console.log("categoryEn", categoryEn);
-  var filteredStatus = req.body.status.filter(Boolean);
+  const filteredStatus = req.body.status.filter(Boolean);
+  const filteredOptions = req.body.statusOption.filter(Boolean);
+  console.log("filteredStatus", filteredStatus);
+  console.log("filteredOptions", filteredOptions);
+
   const ext = await req.admin.getExtras();
 
   let productId = await Products.findAll({
@@ -310,6 +314,7 @@ exports.postAddVariant = async (req, res, next) => {
         extraId: extId[i],
         active: filteredStatus[i] == "on" ? 1 : 0,
         adminId: req.admin.id,
+        requiredExtra: filteredOptions[i] == "on" ? 1 : 0,
       });
     }
   }

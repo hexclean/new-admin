@@ -11,6 +11,21 @@
       });
    });
 </script>
+
+<script>
+   $(document).ready(function() {
+      $('.status-checkbox-option').click(function() {
+         var optionId = $(this).attr('data-optionId');
+         if($(this).is(':checked')) {
+            $('.statusOption'+optionId).val('on');
+         } else {
+            $('.statusOption'+optionId).val('off');
+         }
+      });
+   });
+</script>
+
+
 <script>
    $(document).ready(function () {
    $(".status-checkbox").click(function () {
@@ -338,6 +353,7 @@
                                  </div>
                                  <span class="extra_error_message error_form" id="price_error_message_<%= productVarToExt[i].productVariantsExtras[0].extraId %>"></span>
                               </div>
+                              
                               <div class="col-md-12 mb-3">
                                  <label for="discountedPrice"
                                     >Discounted Price</label
@@ -415,7 +431,18 @@
                                  <input type="hidden" value="off" class="status-<%= ext[i].id %>" name="status[<%= ext[i].id %>]" >          
                                  <input data-extraId="<%= ext[i].id %>" class="status-checkbox status-checkbox-<%= ext[i].id %>" type="checkbox"> <span class="ms-switch-slider ms-switch-success round"></span>
                                  </label> 
+                                 <div>Extra feltétel lehetőség</div>
+                               
                               </div>
+                             
+                           </div>
+                           <hr>
+                           
+                           <div class="d-flex justify-content-center extra-margin-top">
+                           <label class="ms-checkbox-wrap ms-checkbox-success">
+                              <input type="hidden" value="off" class="statusOption<%= ext[i].id %>" name="statusOption[<%= ext[i].id %>]" >    
+                              <input data-optionId="<%= ext[i].id %>"  class="status-checkbox-option status-checkbox-option-<%= ext[i].id %>" type="checkbox"  > <i class="ms-checkbox-check"></i>
+                            </label> <span> Opció lehetőség </span>
                            </div>
                            <div class="ms-card-body">
                               <div class="new d-flex justify-content-center extra-name">
