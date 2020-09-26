@@ -1,30 +1,30 @@
 const Sequelize = require("sequelize");
 const sequelize = require("../util/database");
 
-const ProductVariantsExtras = sequelize.define("productVariantsExtras", {
+const RestaurantsReviews = sequelize.define("restaurantsReviews", {
   id: {
     type: Sequelize.INTEGER,
     autoIncrement: true,
     allowNull: false,
     primaryKey: true,
   },
-  price: {
-    type: Sequelize.FLOAT,
-    allowNull: false,
-  },
-  discountedPrice: {
-    type: Sequelize.FLOAT,
-    allowNull: false,
-  },
-  quantityMin: {
+  adminId: {
     type: Sequelize.INTEGER,
     allowNull: false,
   },
-  quantityMax: {
+  userId: {
     type: Sequelize.INTEGER,
     allowNull: false,
   },
-  active: {
+  message: {
+    type: Sequelize.STRING,
+    allowNull: false,
+  },
+  time: {
+    type: Sequelize.DATE,
+    allowNull: false,
+  },
+  rating: {
     type: Sequelize.INTEGER,
     allowNull: false,
   },
@@ -34,4 +34,4 @@ const ProductVariantsExtras = sequelize.define("productVariantsExtras", {
   },
 });
 
-module.exports = ProductVariantsExtras;
+module.exports = RestaurantsReviews;

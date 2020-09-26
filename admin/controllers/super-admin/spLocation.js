@@ -1,5 +1,5 @@
-const Location = require("../../../models/AdminLocation");
-const LocationTranslation = require("../../../models/AdminLocationTranslation");
+const Location = require("../../../models/Location");
+const LocationTranslation = require("../../../models/LocationName");
 
 exports.getLocations = (req, res, next) => {
   Location.findAll({

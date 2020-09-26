@@ -7,8 +7,8 @@ const bodyParser = require("body-parser");
 const flash = require("connect-flash");
 const multer = require("multer");
 const path = require("path");
-var SequelizeStore = require("connect-session-sequelize")(session.Store);
-var Sequelize = require("sequelize");
+const SequelizeStore = require("connect-session-sequelize")(session.Store);
+const Sequelize = require("sequelize");
 const ProductCategory = require("./models/ProductCategory");
 const ProductCategoryTranslation = require("./models/ProductCategoryTranslation");
 const sequelize = require("./util/database");
@@ -18,8 +18,9 @@ const ProductVariant = require("./models/ProductVariant");
 const Extra = require("./models/Extra");
 const ExtraTranslation = require("./models/ExtraTranslation");
 const ProductFinal = require("./models/ProductFinal");
-const AdminLocation = require("./models/AdminLocation");
-const AdminLocationTranslation = require("./models/AdminLocationTranslation");
+const Location = require("./models/Location");
+const LocationName = require("./models/LocationName");
+const LocationNameTranslation = require("./models/LocationNameTranslation");
 const ProductVariantsExtras = require("./models/ProductVariantsExtras");
 const Language = require("./models/Language");
 const adminHomeSearch = require("./models/adminHomeSearch");
@@ -27,7 +28,6 @@ const adminHomeSearchTranslation = require("./models/adminHomeSearchTranslation"
 const Admin = require("./models/Admin");
 const AdminInfo = require("./models/AdminInfo");
 const DailyMenuHasAllergen = require("./models/DailyMenuHasAllergen");
-// Daily Menu
 const Box = require("./models/Box");
 const BoxTranslation = require("./models/BoxTranslation");
 const DailyMenu = require("./models/DailyMenu");
@@ -404,24 +404,22 @@ Product.hasMany(ProductHasAllergen, {
 
 Language.hasMany(AllergenTranslation, { foreignKey: "languageId" });
 
-AdminLocationTranslation.belongsTo(AdminLocation, {
-  as: "adminLTrans",
-  foreignKey: "adminLocationsId",
-});
-AdminLocation.hasMany(AdminLocationTranslation, {
-  foreignKey: "adminLocationsId",
-});
+// AdminLocationTranslation.belongsTo(AdminLocation, {
+//   as: "adminLTrans",
+//   foreignKey: "adminLocationsId",
+// });
+// AdminLocation.hasMany(AdminLocationTranslation, {
+//   foreignKey: "adminLocationsId",
+// });
 
-Language.hasMany(AdminLocationTranslation, { foreignKey: "languageId" });
+// Language.hasMany(AdminLocationTranslation, { foreignKey: "languageId" });
 
-// Admin Hours
+// AdminLocation.belongsTo(Admin, {
+//   as: "adminLocation",
+//   foreignKey: "adminId",
+// });
 
-AdminLocation.belongsTo(Admin, {
-  as: "adminLocation",
-  foreignKey: "adminId",
-});
-
-Admin.hasMany(AdminLocation, { foreignKey: "adminId" });
+// Admin.hasMany(AdminLocation, { foreignKey: "adminId" });
 
 Admin.hasMany(adminHomeSearch, { foreignKey: "adminId" });
 adminHomeSearchTranslation.belongsTo(adminHomeSearch, {
@@ -453,6 +451,43 @@ UserDeliveryAdress.belongsTo(User, {
   as: "userDelAdress",
   foreignKey: "userId",
 });
+
+// location start
+Location.belongsTo(Admin, { constrains: true, onDelete: "CASCADE" });
+Admin.hasMany(Location);
+
+Location.belongsTo(LocationName, {
+  as: "locationFina;",
+  foreignKey: "locationNameId",
+});
+
+LocationName.hasMany(Location, {
+  foreignKey: "locationNameId",
+});
+
+LocationNameTranslation.belongsTo(LocationName, {
+  as: "locationTranslation",
+  foreignKey: "locationNameId",
+});
+LocationName.hasMany(LocationNameTranslation, {
+  foreignKey: "locationNameId",
+});
+
+Location.belongsTo(LocationName, {
+  as: "locationTranslation",
+  foreignKey: "adminId",
+});
+LocationName.hasMany(Location, {
+  foreignKey: "adminId",
+});
+
+LocationNameTranslation.belongsTo(Language, {
+  as: "extraLanguage",
+  foreignKey: "languageId",
+});
+Language.hasMany(LocationNameTranslation, { foreignKey: "languageId" });
+
+//location end
 
 User.hasMany(UserDeliveryAdress, { foreignKey: "userId" });
 // Config PORT

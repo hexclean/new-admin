@@ -16,9 +16,10 @@ router.get("/:locationName", async (req, res) => {
     const languageCode = 2;
     const selectedLocation = await sequelize.query(
       `SELECT ad.id AS restaurant_id, ad.imageUrl AS restaurant_profileImage, ad.commission AS restaurant_commission,
-      ad.fullName as restaurant_name, adInf.shortCompanyDesc AS restaurant_description,
+      ad.fullName AS restaurant_name, ad.newRestaurant AS restaurant_new, ad.discount AS restaurant_discount,
+       adInf.shortCompanyDesc AS restaurant_description,
       ad.deliveryPrice AS restaurant_deliveryPrice, adInf.kitchen AS restaurant_kitchen
-      FROM foodnet.admins as ad
+      FROM foodnet.admins AS ad
       INNER JOIN foodnet.adminInfos AS adInf
       ON adInf.adminId = ad.id
       INNER JOIN foodnet.adminLocations AS adLoc
@@ -28,6 +29,11 @@ router.get("/:locationName", async (req, res) => {
       WHERE locTrans.languageId= ${languageCode} AND adInf.languageId=${languageCode} AND locTrans.name LIKE '%${locationName}%';`,
       { type: Sequelize.QueryTypes.SELECT }
     );
+
+    if (selectedLocation.length == 0) {
+      return res.status(404).json({ msg: "City not found" });
+    }
+
     res.json(selectedLocation);
   } catch (err) {
     console.error(err.message);
@@ -41,10 +47,11 @@ router.get("/:locationName", async (req, res) => {
 router.get("/targu-mures", async (req, res) => {
   const vasarhely = "Vasarhely";
   const languageCode = 2;
+
   try {
-    return sequelize
-      .query(
-        `SELECT ad.fullName as restaurant_name, adInf.shortCompanyDesc AS restaurant_description, ad.deliveryPrice AS restaurant_deliveryPrice, adInf.kitchen AS restaurant_kitchen
+    const locationTarguMures = await sequelize.query(
+      `SELECT ad.fullName as restaurant_name, adInf.shortCompanyDesc AS restaurant_description,
+      ad.deliveryPrice AS restaurant_deliveryPrice, adInf.kitchen AS restaurant_kitchen
       FROM foodnet.admins as ad
       INNER JOIN foodnet.adminInfos AS adInf
       ON adInf.adminId = ad.id
@@ -53,11 +60,12 @@ router.get("/targu-mures", async (req, res) => {
       INNER JOIN foodnet.adminLocationTranslations AS locTrans
       ON locTrans.adminLocationsId = adLoc.id
       WHERE locTrans.languageId= ${languageCode} AND adInf.languageId=${languageCode} AND locTrans.name LIKE '%${vasarhely}%';`,
-        { type: Sequelize.QueryTypes.SELECT }
-      )
-      .then((result) => {
-        res.json(result);
-      });
+      { type: Sequelize.QueryTypes.SELECT }
+    );
+    if (locationTarguMures.length == 0) {
+      return res.status(404).json({ msg: "City not found" });
+    }
+    res.json(locationTarguMures);
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Server Error");

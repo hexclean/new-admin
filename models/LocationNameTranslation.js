@@ -1,13 +1,14 @@
 const Sequelize = require("sequelize");
 const sequelize = require("../util/database");
 
-const AdminLocation = sequelize.define("adminLocation", {
+const LocationNameTranslation = sequelize.define("locationNameTranslation", {
   id: {
     type: Sequelize.INTEGER,
     autoIncrement: true,
     allowNull: false,
     primaryKey: true,
   },
+  name: Sequelize.STRING,
 });
 
-module.exports = AdminLocation;
+module.exports = LocationNameTranslation;

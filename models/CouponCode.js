@@ -1,0 +1,1 @@
+//mekkora ertek folott ervenyes

@@ -22,6 +22,8 @@ const Admin = sequelize.define("admin", {
   minimumOrderSubscriber: Sequelize.FLOAT,
   avgTransport: Sequelize.STRING,
   deliveryPrice: Sequelize.FLOAT,
+  newRestaurant: Sequelize.INTEGER,
+  discount: Sequelize.INTEGER,
 });
 
 module.exports = Admin;

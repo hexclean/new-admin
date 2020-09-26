@@ -7,14 +7,26 @@ const sequelize = new Sequelize("foodnet", "root", "y7b5uwFOODNET", {
   dialect: "mysql",
 });
 
-router.get("/:locationName/:prestaurantName", async (req, res) => {
-  const locationName = req.params.locationName.split("-").join(" ");
+router.get("/:locationName/:restaurantName", async (req, res) => {
+  const locationName = req.params.locationName;
+
+  // if (locationName.indexOf(" ") !== -1) {
+  //   locationName.split("-").join(" ");
+  // } else {
+  //   console.log("dsdasd");
+  // }
+
+  console.log("locatonnmae", locationName);
+
   const languageCode = 2;
-  const restaurantName = req.params.prestaurantName.split("-").join(" ");
-  return sequelize
-    .query(
-      `SELECT ad.id AS restaurant_id, ad.fullName as restaurant_name, ad.coverImage AS restaurant_coverImage,
-      ad.phoneNumber AS restaurant_phoneNumber,
+  // const restaurantName = req.params.prestaurantName.split("-").join(" ");
+  const restaurantName = "Jacass ad";
+  try {
+    const profileData = await sequelize.query(
+      `SELECT ad.id AS restaurant_id, ad.fullName as restaurant_name, ad.coverUrl AS restaurant_coverImage,
+      ad.imageUrl AS restaurant_profileImage,
+      ad.avgTransport AS restaurant_avgDeliveryTime, ad.commission AS restaurant_commission,
+      ad.phoneNumber AS restaurant_phoneNumber, ad.deliveryPrice AS restaurant_deliveryPrice,
       ad.avgTransport AS restaurant_avgTransportTime,
       ad.minimumOrderUser AS restaurant_minimumOrderUser, ad.minimumOrderSubscriber AS restaurant_minimumOrderPro,
       adInf.adress AS restaurant_adress,
@@ -28,10 +40,17 @@ router.get("/:locationName/:prestaurantName", async (req, res) => {
       ON locTrans.adminLocationsId = adLoc.id
       WHERE locTrans.languageId= ${languageCode} AND ad.fullName LIKE '%${restaurantName}%' AND adInf.languageId=${languageCode} AND locTrans.name LIKE '%${locationName}%';`,
       { type: Sequelize.QueryTypes.SELECT }
-    )
-    .then((results) => {
-      return res.json(results);
-    });
+    );
+    if (profileData.length == 0) {
+      return res
+        .status(404)
+        .json({ msg: "This restaurant isn't located in this town" });
+    }
+    res.json(profileData);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
 });
 
 router.get("/:locationName/:prestaurantName/products", async (req, res) => {
