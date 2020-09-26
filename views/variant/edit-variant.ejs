@@ -189,6 +189,7 @@
    });
 </script>
 </head>
+
 <body class="ms-body ms-aside-left-open ms-primary-theme ms-has-quickbar">
    <%- include('../includes/navigation.ejs') %>
    <main class="body-content">
@@ -209,10 +210,30 @@
             $('.status-'+activeCheckbox).val('on');
             });
          </script>
+
+       
          <% } 
             %>
          <% } %>
          <% } %>
+
+         <% if (editing) { %>
+            <% for (let i = 0; i < isActive.length; i++) { %>
+            <% if (isActive[i].requiredExtra == 1) { %>
+            <script>
+               $(document).ready(function() {
+               var activeCheckbox ="<%= isActive[i].extraId %>";
+               $('.status-checkbox-option-'+activeCheckbox).prop('checked', true);
+               $('.statusOption'+activeCheckbox).val('on');
+               });
+            </script>
+   
+          
+            <% } 
+               %>
+            <% } %>
+            <% } %>
+
          <div class="row">
             <div class="col-xl-6 col-md-12">
                <div class="ms-panel ms-panel-fh">
@@ -335,6 +356,14 @@
                                  <span class="ms-switch-slider ms-switch-success round"></span>
                                  </label> 
                               </div>
+                           </div>
+                           <hr>
+                           
+                           <div class="d-flex justify-content-center extra-margin-top">
+                           <label class="ms-checkbox-wrap ms-checkbox-success">
+                              <input type="hidden" value="off" class="statusOption<%= ext[i].id %>" name="statusOption[<%= ext[i].id %>]" >    
+                              <input data-optionId="<%= ext[i].id %>" class="status-checkbox-option status-checkbox-option-<%= ext[i].id %>" type="checkbox"  > <i class="ms-checkbox-check"></i>
+                            </label> <span> Opció lehetőség </span>
                            </div>
                            <div class="ms-card-body">
                               <div class="new d-flex justify-content-center extra-name">

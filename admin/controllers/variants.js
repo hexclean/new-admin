@@ -460,17 +460,8 @@ exports.getEditVariant = async (req, res, next) => {
     // console.log(
     //   "testign--------",
     arraytest = testing44444[i].catToVar.productCategoryTranslations[0].name;
-    // );
   }
 
-  // let alma = [];
-  // for (let i = 0; i < testing3.length; i++) {
-  //   alma = testing3[0];
-  //   console.log("alma", alma);
-  // }
-  // console.log(testing3[0].catToVar.productCategoryTranslations[0].name);
-  // console.log(testing3);
-  // console.log("alma", alma);
   const ext = await Extras.findAll({
     where: { adminId: req.admin.id },
     include: [
@@ -516,6 +507,10 @@ exports.getEditVariant = async (req, res, next) => {
     include: [{ model: ProductVariantExtras }],
   })
     .then((variant) => {
+      console.log(
+        "variant[0].productVariantsExtras",
+        variant[0].productVariantsExtras
+      );
       res.render("variant/edit-variant", {
         pageTitle: "Edit Product",
         path: "/admin/edit-product",
@@ -535,7 +530,6 @@ exports.getEditVariant = async (req, res, next) => {
         productVarToExt: productVarToExt,
         errorMessage: null,
         validationErrors: [],
-
         isActive: variant[0].productVariantsExtras,
         currentExtraName: currentExtraName,
       });
