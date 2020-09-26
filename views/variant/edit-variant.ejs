@@ -11,7 +11,15 @@
       });
    });
 </script>
+<script>
+   $(document).ready(function() {
+      $("select#maxOption").val("<% if (editing) { %><%= maxOptionData %><% } %>");
+   });
+  
 
+   
+   
+</script>
 <script>
    $(document).ready(function() {
       $('.status-checkbox-option').click(function() {
@@ -309,7 +317,26 @@
                            <span class="error_form" id="category_error_message"></span>
                         </div>
                         <% } %>
+                      
                         <div>
+                          <div>
+                           <div class="form-group">
+                              <label for="maxOption">Example select</label>
+                              <select  class="form-control" name="maxOption" id="maxOption">
+                              <option value="" disabled selected>Select your option</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5" >5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                                <option value="9">9</option>
+                                <option value="10">10</option>
+                              </select>
+                            </div>
+                          </div>
                            <% if (editing) { %>
                            <input type="hidden" value="<%= variantIdByParams %>" name="variantId">
                            <% } %>

@@ -181,6 +181,7 @@ exports.getIndex = async (req, res, next) => {
 
 exports.getAddVariant = async (req, res, next) => {
   let currentExtraName = [];
+  const maxOption = req.bodymaxOption;
   const ext = await Extras.findAll({
     where: { adminId: req.admin.id },
     include: [
@@ -189,7 +190,7 @@ exports.getAddVariant = async (req, res, next) => {
       },
     ],
   });
-
+  console.log("maxOption----------maxOption-----maxOption", maxOption);
   const checkExtraLength = await Extras.findAll({
     where: { adminId: req.admin.id },
   });
@@ -227,20 +228,7 @@ exports.getAddVariant = async (req, res, next) => {
       currentExtraName[i] = ext[i].extraTranslations[2].name;
     }
   }
-  // for (let i = 0; i < cat.length; i++) {
-  //   if (cat[i].id === cat[i].productCategoryTranslations[0].productCategoryId) {
-  //     console.log("cat[i].id", cat[i].id);
-  //     console.log(
-  //       "cat[i].productCategoryTranslations[0].productCategoryId",
-  //       cat[i].productCategoryTranslations[0].productCategoryId
-  //     );
-  //     console.log("YES");
-  //   } else {
-  //     console.log("NO");
-  //   }
-  // }
-  // console.log(cat[0].id);
-  // console.log(cat[0].productCategoryTranslations[0].productCategoryId);
+
   res.render("variant/edit-variant", {
     pageTitle: "Add Product",
     path: "/admin/add-product",
@@ -263,10 +251,10 @@ exports.postAddVariant = async (req, res, next) => {
   const categoryRo = req.body.categoryRo;
   const categoryHu = req.body.categoryHu;
   const categoryEn = req.body.categoryEn;
-
+  const maxOption = req.body.maxOption;
   const filteredStatus = req.body.status.filter(Boolean);
   const filteredOptions = req.body.statusOption.filter(Boolean);
-
+  console.log("----maxOption----", maxOption);
   const ext = await req.admin.getExtras();
 
   let productId = await Products.findAll({
@@ -285,6 +273,7 @@ exports.postAddVariant = async (req, res, next) => {
   const variant = await req.admin.createProductVariant({
     sku: sku,
     categoryId: categoryRo,
+    maxOption: maxOption,
   });
 
   async function productVariantTransaltion() {
@@ -415,7 +404,6 @@ exports.getEditVariant = async (req, res, next) => {
 
   const testing3 = await ProductVariants.findAll({
     where: { adminId: req.admin.id },
-    //    id: varId
     include: [
       {
         as: "catToVar",
@@ -429,6 +417,9 @@ exports.getEditVariant = async (req, res, next) => {
     ],
   });
 
+  const maxOptionData = await ProductVariants.findByPk(varId);
+  // maxOptionData.maxOption;
+  console.log("categoryList", maxOptionData.maxOption);
   const testing44444 = await ProductVariants.findAll({
     where: { adminId: req.admin.id, id: varId },
     include: [
@@ -470,7 +461,6 @@ exports.getEditVariant = async (req, res, next) => {
   let categoryList = [];
   for (let i = 0; i < cat.length; i++) {
     categoryList = cat[i].productCategoryTranslations[0];
-    console.log("categoryList", categoryList);
   }
 
   for (let i = 0; i < productVarToExt.length; i++) {
@@ -497,7 +487,7 @@ exports.getEditVariant = async (req, res, next) => {
         pageTitle: "Edit Product",
         path: "/admin/edit-product",
         editing: editMode,
-        test: 2,
+        maxOptionData: maxOptionData.maxOption,
         varId: varId,
         variant: variant,
         variantIdByParams: varId,

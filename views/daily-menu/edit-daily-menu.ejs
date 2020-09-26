@@ -240,11 +240,7 @@
                </div>
             </div>
           
-      <script>
-         $('#image').change(function(){
-            $('#dailyMenuSendButton').prop('disabled', false);
-         });
-      </script>
+     
             <div class="col-xl-6 col-md-12">
                <div class="ms-panel ms-panel-fh">
                  <div class="ms-panel-header">
@@ -320,18 +316,18 @@
 
 
            
-               <% if (editing) { %>Update Product<% } else { %>
-                  <button>
-                     dasddas
-                  </button>
-               <script>
-                   $('#image').change(function(){
-                  $('#dailyMenuSendButton').prop('disabled', false);
-               });
-               </script>
-               dsfdsfdsfdsfds
+               <% if (editing) { %>
+                  
+                 
+
+                  <% } else { %>
+                     <script>
+                        $('#image').change(function(){
+                       $('#dailyMenuSendButton').prop('disabled', false);
+                    });
+                    </script>
                <% } %>
-              
+             
             
               
             </script>
