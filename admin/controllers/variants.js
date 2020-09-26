@@ -264,13 +264,8 @@ exports.postAddVariant = async (req, res, next) => {
   const categoryHu = req.body.categoryHu;
   const categoryEn = req.body.categoryEn;
 
-  // console.log("categoryRo", categoryRo);
-  // console.log("categoryHu", categoryHu);
-  // console.log("categoryEn", categoryEn);
   const filteredStatus = req.body.status.filter(Boolean);
   const filteredOptions = req.body.statusOption.filter(Boolean);
-  console.log("filteredStatus", filteredStatus);
-  console.log("filteredOptions", filteredOptions);
 
   const ext = await req.admin.getExtras();
 
@@ -340,7 +335,8 @@ exports.postEditVariant = async (req, res, next) => {
   const updatedExtraPrice = req.body.price;
   const updatedExtraQuantityMin = req.body.quantityMin;
   const updatedExtraQuantityMax = req.body.quantityMax;
-  var filteredStatus = req.body.status.filter(Boolean);
+  const filteredStatus = req.body.status.filter(Boolean);
+  const filteredOptions = req.body.statusOption.filter(Boolean);
 
   const Op = Sequelize.Op;
   const dasd = req.body.varId;
@@ -373,6 +369,7 @@ exports.postEditVariant = async (req, res, next) => {
                 quantityMax: updatedExtraQuantityMax[i] || 0,
                 discountedPrice: updatedExtraPrice[i] * 0.8 || 0,
                 active: filteredStatus[i] == "on" ? 1 : 0,
+                requiredExtra: filteredOptions[i] == "on" ? 1 : 0,
               },
               {
                 where: {
@@ -405,8 +402,6 @@ exports.getEditVariant = async (req, res, next) => {
   }
   let currentExtraName = [];
   const varId = req.params.variantId;
-  let variantId = [varId];
-  const Op = Sequelize.Op;
 
   const productVarToExt = await Extras.findAll({
     where: { adminId: req.admin.id },
@@ -428,9 +423,6 @@ exports.getEditVariant = async (req, res, next) => {
         include: [
           {
             model: CategoryTranslation,
-            // as: 'country' ,
-            // required : true , // <----- Make sure will create inner join
-            // where : { 'id' : 1 } // <-------- Here
           },
         ],
       },
@@ -439,7 +431,6 @@ exports.getEditVariant = async (req, res, next) => {
 
   const testing44444 = await ProductVariants.findAll({
     where: { adminId: req.admin.id, id: varId },
-    //    id: varId
     include: [
       {
         as: "catToVar",
@@ -447,9 +438,6 @@ exports.getEditVariant = async (req, res, next) => {
         include: [
           {
             model: CategoryTranslation,
-            // as: 'country' ,
-            // required : true , // <----- Make sure will create inner join
-            // where : { 'id' : 1 } // <-------- Here
           },
         ],
       },
@@ -457,8 +445,6 @@ exports.getEditVariant = async (req, res, next) => {
   });
   let arraytest = [];
   for (let i = 0; i < testing44444.length; i++) {
-    // console.log(
-    //   "testign--------",
     arraytest = testing44444[i].catToVar.productCategoryTranslations[0].name;
   }
 
@@ -507,10 +493,6 @@ exports.getEditVariant = async (req, res, next) => {
     include: [{ model: ProductVariantExtras }],
   })
     .then((variant) => {
-      console.log(
-        "variant[0].productVariantsExtras",
-        variant[0].productVariantsExtras
-      );
       res.render("variant/edit-variant", {
         pageTitle: "Edit Product",
         path: "/admin/edit-product",
