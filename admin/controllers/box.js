@@ -55,14 +55,21 @@ exports.postAddBox = async (req, res, next) => {
     });
 };
 
-exports.getEditBox = (req, res, next) => {
+exports.getEditBox = async (req, res, next) => {
   const editMode = req.query.edit;
+  const boxId = req.params.boxId;
+
   if (!editMode) {
     return res.redirect("/");
   }
-  const boxId = req.params.boxId;
 
-  Box.findAll({
+  await Box.findByPk(boxId).then((box) => {
+    if (!box) {
+      return res.redirect("/");
+    }
+  });
+
+  await Box.findAll({
     where: {
       id: boxId,
       adminId: req.admin.id,

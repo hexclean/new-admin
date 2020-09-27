@@ -197,12 +197,19 @@ exports.postAddProduct = async (req, res, next) => {
 exports.getEditProduct = async (req, res, next) => {
   const editMode = req.query.edit;
   const prodId = req.params.productId;
-  let productId = [prodId];
+  const productId = [prodId];
   const Op = Sequelize.Op;
 
   if (!editMode) {
     return res.redirect("/");
   }
+
+  await Product.findByPk(prodId).then((product) => {
+    if (!product) {
+      return res.redirect("/");
+    }
+  });
+
   const box = await Box.findAll({
     where: {
       adminId: req.admin.id,

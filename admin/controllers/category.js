@@ -64,14 +64,21 @@ exports.postAddCategory = async (req, res, next) => {
     });
 };
 
-exports.getEditCategory = (req, res, next) => {
+exports.getEditCategory = async (req, res, next) => {
   const editMode = req.query.edit;
+  const catId = req.params.categoryId;
+
   if (!editMode) {
     return res.redirect("/");
   }
-  const catId = req.params.categoryId;
 
-  Category.findAll({
+  await Category.findByPk(catId).then((category) => {
+    if (!category) {
+      return res.redirect("/");
+    }
+  });
+
+  await Category.findAll({
     where: {
       id: catId,
       adminId: req.admin.id,

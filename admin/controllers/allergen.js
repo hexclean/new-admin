@@ -143,13 +143,21 @@ exports.getExtras = (req, res, next) => {
 
 exports.getEditAllergen = async (req, res, next) => {
   const editMode = req.query.edit;
+  const allegenId = req.params.allergenId;
+
   if (!editMode) {
     return res.redirect("/");
   }
-  const extId = req.params.allergenId;
+
+  await Allergen.findByPk(allegenId).then((allergen) => {
+    if (!allergen) {
+      return res.redirect("/");
+    }
+  });
+
   await Allergen.findAll({
     where: {
-      id: extId,
+      id: allegenId,
     },
     include: [
       {

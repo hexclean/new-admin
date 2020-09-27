@@ -392,6 +392,11 @@ exports.getEditVariant = async (req, res, next) => {
   let currentExtraName = [];
   const varId = req.params.variantId;
 
+  await ProductVariants.findByPk(varId).then((variant) => {
+    if (!variant) {
+      return res.redirect("/");
+    }
+  });
   const productVarToExt = await Extras.findAll({
     where: { adminId: req.admin.id },
     include: [

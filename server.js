@@ -1,7 +1,6 @@
 const express = require("express"),
   lingua = require("lingua");
 const Admin = require("./models/Admin");
-
 const errorController = require("./admin/controllers/error");
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
@@ -110,15 +109,6 @@ app.use(
 );
 app.use(express.json({ extended: false }));
 
-// app.get("/500", errorController.get500);
-// app.use((error, req, res, next) => {
-//   res.status(500).render("500", {
-//     pageTitle: "Error!",
-//     path: "/500",
-//     isAuthenticated: req.session.isLoggedIn,
-//   });
-// });
-
 app.use(flash());
 
 app.use(
@@ -144,17 +134,17 @@ app.use("/admin", adminRoutes);
 app.use("/super-admin", superRoutes);
 app.use(indexRoutes);
 app.use(authRoutes);
-// app.get("/500", errorController.get500);
+app.get("/500", errorController.get500);
 
 ////
 databaseConfig();
-// app.use((error, req, res, next) => {
-//   res.status(500).render("500", {
-//     pageTitle: "Error!",
-//     path: "/500",
-//     isAuthenticated: req.session.isLoggedIn,
-//   });
-// });
+app.use((error, req, res, next) => {
+  res.status(500).render("500", {
+    pageTitle: "Error!",
+    path: "/500",
+    isAuthenticated: req.session.isLoggedIn,
+  });
+});
 
 // Config PORT
 const PORT = process.env.PORT || 5000;

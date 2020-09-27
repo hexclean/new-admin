@@ -132,29 +132,11 @@ exports.getEditDailyMenu = async (req, res, next) => {
     const dailyMId = req.params.dailyMenuId;
     const dailyMenuId = [dailyMId];
 
-    const producteee = await DailyMenu.findAll({
-      where: {
-        id: dailyMenuId,
-        adminId: req.admin.id,
-      },
-      include: [
-        {
-          model: DailyMenuTranslation,
-        },
-        { model: DailyMenuFinal },
-      ],
-    });
-
-    // const dailyMenuAdmin = await DailyMenu.findByPk(dailyMId);
-    for (let i = 0; i < producteee.length; i++) {
-      if (
-        // producteee[i].adminId == "undefined" &&
-        producteee[i].dailyMenuTranslations == undefined
-        // producteee[i].adminId !== req.admin.id
-      ) {
+    await DailyMenu.findByPk(dailyMId).then((dailyMenu) => {
+      if (!dailyMenu) {
         return res.redirect("/");
       }
-    }
+    });
 
     if (!editMode) {
       return res.redirect("/");
@@ -341,7 +323,7 @@ exports.getIndex = async (req, res, next) => {
   const page = +req.query.page || 1;
   let totalItems;
 
-  const allergen = await DailyMenu.findAll({
+  await DailyMenu.findAll({
     where: {
       adminId: req.admin.id,
       active: 1,

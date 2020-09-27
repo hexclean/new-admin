@@ -150,12 +150,18 @@ exports.getExtras = (req, res, next) => {
 
 exports.getEditExtra = async (req, res, next) => {
   const editMode = req.query.edit;
+  const Op = Sequelize.Op;
+  const extId = req.params.extraId;
+  const extraIdArray = [extId];
   if (!editMode) {
     return res.redirect("/");
   }
-  const Op = Sequelize.Op;
-  const extId = req.params.extraId;
-  const test = [extId];
+  await Extra.findByPk(extId).then((extra) => {
+    if (!extra) {
+      return res.redirect("/");
+    }
+  });
+
   const allergen = await Allergen.findAll({
     where: {
       adminId: req.admin.id,
@@ -178,7 +184,7 @@ exports.getEditExtra = async (req, res, next) => {
       },
       {
         model: ExtraHasAllergen,
-        where: { extraId: { [Op.in]: test }, adminId: req.admin.id },
+        where: { extraId: { [Op.in]: extraIdArray }, adminId: req.admin.id },
       },
     ],
   });
