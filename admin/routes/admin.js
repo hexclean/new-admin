@@ -5,11 +5,12 @@ const variantsController = require("../controllers/variants");
 const faqController = require("../controllers/faq");
 const categoryController = require("../controllers/category");
 const boxController = require("../controllers/box");
-
+const couponController = require("../controllers/coupon");
 const adminProfileController = require("../controllers/profile");
 const dailyMenuController = require("../controllers/daily-menu");
 const allergenController = require("../controllers/allergen");
 const deletedItemsController = require("../controllers/deleted-items");
+
 const isAuth = require("../../middleware/is-auth");
 const router = express.Router();
 
@@ -44,6 +45,12 @@ router.post("/add-box", isAuth, boxController.postAddBox);
 router.get("/edit-box/:boxId", isAuth, boxController.getEditBox);
 router.post("/edit-box", isAuth, boxController.postEditBox);
 
+// COUPON CODE
+router.get("/add-coupon", isAuth, couponController.getAddCoupon);
+router.post("/add-coupon", isAuth, couponController.postAddCoupon);
+router.get("/edit-coupon/:couponId", isAuth, couponController.getEditCoupon);
+router.post("/edit-coupon", isAuth, couponController.postEditCoupon);
+
 // EXTRA
 router.get("/add-extra", isAuth, extraController.getAddExtra);
 router.get("/extras", isAuth, extraController.getExtras);
@@ -60,7 +67,6 @@ router.post("/edit-product", isAuth, adminController.postEditProduct);
 router.post("/delete-product", isAuth, adminController.postDeleteProduct);
 
 // Profile
-
 router.get(
   "/edit-opening-hours/:adminId",
   adminProfileController.getEditOpeningHours

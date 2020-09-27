@@ -12,10 +12,6 @@ const Box = sequelize.define("box", {
     type: Sequelize.FLOAT,
     allowNull: false,
   },
-  adminId: {
-    type: Sequelize.INTEGER,
-    allowNull: false,
-  },
 });
 
 module.exports = Box;

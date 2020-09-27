@@ -29,6 +29,7 @@ const OpeningHours = require("../models/OpeningHours");
 const User = require("../models/User");
 const UserDeliveryAdress = require("../models/UserDeliveryAdress");
 const UserProfile = require("../models/UserProfile");
+const CouponCode = require("../models/CouponCode");
 
 function databaseConfig() {
   ProductVariantsExtras.belongsTo(Admin, {
@@ -83,6 +84,10 @@ function databaseConfig() {
   });
 
   Box.belongsTo(Admin, { constrains: true, onDelete: "CASCADE" });
+  Admin.hasMany(Box);
+
+  CouponCode.belongsTo(Admin, { constrains: true, onDelete: "CASCADE" });
+  Admin.hasMany(CouponCode);
 
   BoxTranslation.belongsTo(Box, {
     as: "boxTranslationBox",
