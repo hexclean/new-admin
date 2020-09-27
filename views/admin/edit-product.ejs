@@ -11,6 +11,22 @@
       });
    });
 </script>
+
+<script>
+   
+  $('#createProduct').submit(function(e){
+    e.preventDefault();
+    var ck_box = $('input[type="checkbox"]:checked').length;
+    
+    // return in firefox or chrome console 
+    // the number of checkbox checked
+    console.log(ck_box); 
+
+    if(ck_box > 0){
+      alert(ck_box);
+    } 
+});
+</script>
 <script>
    $(document).ready(function() {
       $('.statusAllergen-checkbox').click(function() {
@@ -247,6 +263,7 @@
       <% } %>
       <form
          name="myForm"
+         id="myForm"
          class="ms-content-wrapper"
          action="/admin/<% if (editing) { %>edit-product<% } else { %>add-product<% } %>"
          method="POST"
