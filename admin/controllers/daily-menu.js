@@ -126,68 +126,97 @@ exports.postAddDailyMenu = async (req, res, next) => {
 };
 
 exports.getEditDailyMenu = async (req, res, next) => {
-  const editMode = req.query.edit;
-  if (!editMode) {
-    return res.redirect("/");
-  }
-  const Op = Sequelize.Op;
-  const dailyMId = req.params.dailyMenuId;
-  let dailyMenuId = [dailyMId];
-  const allergen = await Allergen.findAll({
-    where: {
-      adminId: req.admin.id,
-    },
-    include: [
-      {
-        model: AllegenTranslation,
-      },
-      { model: DailyMenuHasAllergen },
-    ],
-  });
+  try {
+    const editMode = req.query.edit;
+    const Op = Sequelize.Op;
+    const dailyMId = req.params.dailyMenuId;
+    const dailyMenuId = [dailyMId];
 
-  const allergenTest = await Allergen.findAll({
-    where: {
-      adminId: req.admin.id,
-    },
-    include: [
-      {
-        model: AllegenTranslation,
+    const producteee = await DailyMenu.findAll({
+      where: {
+        id: dailyMenuId,
+        adminId: req.admin.id,
       },
-      {
-        model: DailyMenuHasAllergen,
-        where: { dailyMenuId: { [Op.in]: dailyMenuId }, adminId: req.admin.id },
-      },
-    ],
-  });
-
-  DailyMenu.findAll({
-    where: {
-      id: dailyMenuId,
-      adminId: req.admin.id,
-    },
-    include: [
-      {
-        model: DailyMenuTranslation,
-      },
-      { model: DailyMenuFinal },
-    ],
-  })
-    .then((product) => {
-      res.render("daily-menu/edit-daily-menu", {
-        pageTitle: "Edit Product",
-        path: "/admin/edit-product",
-        editing: editMode,
-        product: product,
-        allergenArray: allergen,
-        isActiveAllergen: allergenTest,
-        dailyMenuId: dailyMId,
-      });
-    })
-    .catch((err) => {
-      const error = new Error(err);
-      error.httpStatusCode = 500;
-      return next(error);
+      include: [
+        {
+          model: DailyMenuTranslation,
+        },
+        { model: DailyMenuFinal },
+      ],
     });
+
+    // const dailyMenuAdmin = await DailyMenu.findByPk(dailyMId);
+    for (let i = 0; i < producteee.length; i++) {
+      if (
+        // producteee[i].adminId == "undefined" &&
+        producteee[i].dailyMenuTranslations == undefined
+        // producteee[i].adminId !== req.admin.id
+      ) {
+        return res.redirect("/");
+      }
+    }
+
+    if (!editMode) {
+      return res.redirect("/");
+    }
+
+    const allergen = await Allergen.findAll({
+      where: {
+        adminId: req.admin.id,
+      },
+      include: [
+        {
+          model: AllegenTranslation,
+        },
+        { model: DailyMenuHasAllergen },
+      ],
+    });
+
+    const allergenTest = await Allergen.findAll({
+      where: {
+        adminId: req.admin.id,
+      },
+      include: [
+        {
+          model: AllegenTranslation,
+        },
+        {
+          model: DailyMenuHasAllergen,
+          where: {
+            dailyMenuId: { [Op.in]: dailyMenuId },
+            adminId: req.admin.id,
+          },
+        },
+      ],
+    });
+
+    const product = await DailyMenu.findAll({
+      where: {
+        id: dailyMenuId,
+        adminId: req.admin.id,
+      },
+      include: [
+        {
+          model: DailyMenuTranslation,
+        },
+        { model: DailyMenuFinal },
+      ],
+    });
+
+    res.render("daily-menu/edit-daily-menu", {
+      pageTitle: "Edit Product",
+      path: "/admin/edit-product",
+      editing: editMode,
+      product: product,
+      allergenArray: allergen,
+      isActiveAllergen: allergenTest,
+      dailyMenuId: dailyMId,
+    });
+  } catch (err) {
+    const error = new Error(err);
+    error.httpStatusCode = 500;
+    return next(error);
+  }
 };
 
 exports.postEditDailyMenu = async (req, res, next) => {

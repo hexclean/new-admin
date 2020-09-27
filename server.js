@@ -9,43 +9,10 @@ const multer = require("multer");
 const path = require("path");
 const SequelizeStore = require("connect-session-sequelize")(session.Store);
 const Sequelize = require("sequelize");
-const ProductCategory = require("./models/ProductCategory");
-const ProductCategoryTranslation = require("./models/ProductCategoryTranslation");
 const sequelize = require("./util/database");
-const Product = require("./models/Product");
-const ProductTranslation = require("./models/ProductTranslation");
-const ProductVariant = require("./models/ProductVariant");
-const Extra = require("./models/Extra");
-const ExtraTranslation = require("./models/ExtraTranslation");
-const ProductFinal = require("./models/ProductFinal");
-const Location = require("./models/Location");
-const LocationName = require("./models/LocationName");
-const LocationNameTranslation = require("./models/LocationNameTranslation");
-const ProductVariantsExtras = require("./models/ProductVariantsExtras");
-const Language = require("./models/Language");
-const adminHomeSearch = require("./models/adminHomeSearch");
-const adminHomeSearchTranslation = require("./models/adminHomeSearchTranslation");
-const Admin = require("./models/Admin");
-const AdminInfo = require("./models/AdminInfo");
-const DailyMenuHasAllergen = require("./models/DailyMenuHasAllergen");
-const Box = require("./models/Box");
-const BoxTranslation = require("./models/BoxTranslation");
-const DailyMenu = require("./models/DailyMenu");
-const DailyMenuTranslation = require("./models/DailyMenuTranslation");
-const DailyMenuFinal = require("./models/DailyMenuFinal");
-const Allergen = require("./models/Allergen");
-const AllergenTranslation = require("./models/AllergenTranslation");
-//
-const ProductHasAllergen = require("./models/ProductHasAllergen");
-const ExtraHasAllergen = require("./models/ExtraHasAllergen");
-const OpeningHours = require("./models/OpeningHours");
-
-const User = require("./models/User");
-const UserDeliveryAdress = require("./models/UserDeliveryAdress");
-//
-const UserProfile = require("./models/UserProfile");
-
+const { databaseConfig } = require("./middleware/database-config");
 const app = express();
+
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
   res.header(
@@ -118,6 +85,7 @@ const fileFilter = (req, file, cb) => {
     cb(null, false);
   }
 };
+
 // EJS
 app.set("view engine", "ejs");
 app.set("views", "views");
@@ -126,6 +94,7 @@ const adminRoutes = require("./admin/routes/admin");
 const indexRoutes = require("./admin/routes/index");
 const authRoutes = require("./admin/routes/auth");
 const superRoutes = require("./admin/routes/super-admin");
+
 app.use(express.static(path.join(__dirname, "public")));
 app.use("/images", express.static(path.join(__dirname, "images")));
 app.use(
@@ -153,6 +122,7 @@ app.use(flash());
 app.use(
   multer({ storage: fileStorage, fileFilter: fileFilter }).single("image")
 );
+
 // Define Routes
 // app.use("/users", require("./routes/users"));
 app.use("/api/login", require("./routes/api/login"));
@@ -175,263 +145,7 @@ app.use(authRoutes);
 app.get("/500", errorController.get500);
 
 ////
-
-ProductVariantsExtras.belongsTo(Admin, {
-  as: "theAdminInfo",
-  foreignKey: "adminId",
-});
-
-Admin.hasMany(ProductVariantsExtras, { foreignKey: "adminId" });
-
-AdminInfo.belongsTo(Admin, {
-  as: "theAdminInfo",
-  foreignKey: "adminId",
-});
-Admin.hasMany(AdminInfo, { foreignKey: "adminId" });
-AdminInfo.belongsTo(Language, {
-  as: "adminInfoTrans",
-  foreignKey: "languageId",
-});
-Language.hasMany(AdminInfo, { foreignKey: "languageId" });
-
-// Tables Config //
-ProductFinal.belongsTo(Product, {
-  as: "theProductId",
-  foreignKey: "productId",
-});
-Product.hasMany(ProductFinal, { foreignKey: "productId" });
-/////
-
-// ProductFinal.belongsTo(Box, {
-//   as: "theBoxId",
-//   foreignKey: "boxId",
-// });
-// Box.hasMany(ProductFinal, { foreignKey: "boxId" });
-
-/////
-ProductFinal.belongsTo(ProductVariant, {
-  as: "theVariantd",
-  foreignKey: "variantId",
-});
-ProductVariant.hasMany(ProductFinal, { foreignKey: "variantId" });
-
-// Product-> ProductTranslation -> Language
-Product.belongsTo(Admin, { constrains: true, onDelete: "CASCADE" });
-
-ProductTranslation.belongsTo(Product, {
-  as: "TheTranslation",
-  foreignKey: "productId",
-});
-Product.hasMany(ProductTranslation, { foreignKey: "productId" });
-
-ProductTranslation.belongsTo(Language, {
-  as: "TheLanguage",
-  foreignKey: "languageId",
-});
-
-///
-
-ProductCategoryTranslation.belongsTo(ProductCategory, {
-  as: "productCategoryTranslation",
-  foreignKey: "productCategoryId",
-});
-ProductCategory.hasMany(ProductCategoryTranslation, {
-  foreignKey: "productCategoryId",
-});
-
-/////////
-/////
-Box.belongsTo(Admin, { constrains: true, onDelete: "CASCADE" });
-
-BoxTranslation.belongsTo(Box, {
-  as: "boxTranslationBox",
-  foreignKey: "boxId",
-});
-Box.hasMany(BoxTranslation, {
-  foreignKey: "boxId",
-});
-
-BoxTranslation.belongsTo(Language, {
-  as: "boxTranslation",
-  foreignKey: "languageId",
-});
-Language.hasMany(BoxTranslation, { foreignKey: "languageId" });
-
-Language.hasMany(ProductTranslation, { foreignKey: "languageId" });
-
-Admin.hasMany(Product);
-
-ProductVariant.belongsTo(Admin, { constrains: true, onDelete: "CASCADE" });
-Admin.hasMany(ProductVariant);
-
-Extra.belongsTo(Admin, { constrains: true, onDelete: "CASCADE" });
-Admin.hasMany(Extra);
-Language.hasMany(ExtraTranslation);
-Extra.hasMany(ExtraTranslation);
-ProductVariant.hasMany(ProductVariantsExtras);
-
-Extra.hasMany(ProductVariantsExtras);
-ExtraTranslation.belongsTo(Extra, {
-  as: "extraTranslation",
-  foreignKey: "extraId",
-});
-Extra.hasMany(ExtraTranslation, { foreignKey: "extraId" });
-ExtraTranslation.belongsTo(Language, {
-  as: "extraLanguage",
-  foreignKey: "languageId",
-});
-Language.hasMany(ExtraTranslation, { foreignKey: "languageId" });
-
-//OpeningHours
-OpeningHours.belongsTo(Admin, { constrains: true, onDelete: "CASCADE" });
-Admin.hasMany(OpeningHours);
-
-OpeningHours.belongsTo(Language, {
-  as: "openingHoursLanguage",
-  foreignKey: "languageId",
-});
-
-Language.hasMany(OpeningHours, { foreignKey: "languageId" });
-
-// Daily Menu
-DailyMenu.belongsTo(Admin, { constrains: true, onDelete: "CASCADE" });
-
-DailyMenuTranslation.belongsTo(DailyMenu, {
-  as: "dailyMenuTrans",
-  foreignKey: "dailyMenuId",
-});
-DailyMenu.hasMany(DailyMenuTranslation, { foreignKey: "dailyMenuId" });
-
-DailyMenuTranslation.belongsTo(Language, {
-  as: "dailyMenuLang",
-  foreignKey: "languageId",
-});
-
-DailyMenuFinal.belongsTo(DailyMenu, {
-  as: "theDailyId",
-  foreignKey: "dailyMenuId",
-});
-DailyMenu.hasMany(DailyMenuFinal, { foreignKey: "dailyMenuId" });
-
-Allergen.belongsTo(Admin, { constrains: true, onDelete: "CASCADE" });
-// Allergen.belongsTo(Product, { foreignKey: "allergenId" });
-DailyMenuHasAllergen.belongsTo(Admin, {
-  constrains: true,
-  onDelete: "CASCADE",
-});
-/////
-
-AllergenTranslation.belongsTo(Allergen, {
-  as: "allergenTran",
-  foreignKey: "allergenId",
-});
-Allergen.hasMany(AllergenTranslation, {
-  foreignKey: "allergenId",
-});
-///
-//
-////
-
-ProductVariant.belongsTo(ProductCategory, {
-  as: "catToVar",
-  foreignKey: "categoryId",
-});
-ProductCategory.hasMany(ProductVariant, {
-  foreignKey: "categoryId",
-});
-///
-ExtraHasAllergen.belongsTo(Admin, { constrains: true, onDelete: "CASCADE" });
-
-ExtraHasAllergen.belongsTo(Allergen, {
-  as: "allergenIdExtra",
-  foreignKey: "allergenId",
-});
-Allergen.hasMany(ExtraHasAllergen, {
-  foreignKey: "allergenId",
-});
-
-ExtraHasAllergen.belongsTo(Extra, {
-  as: "extraIdAllergen",
-  foreignKey: "extraId",
-});
-Extra.hasMany(ExtraHasAllergen, {
-  foreignKey: "extraId",
-});
-////
-///
-///
-DailyMenuHasAllergen.belongsTo(Allergen, {
-  as: "allergenIdDailyMenu",
-  foreignKey: "allergenId",
-});
-Allergen.hasMany(DailyMenuHasAllergen, {
-  foreignKey: "allergenId",
-});
-
-DailyMenuHasAllergen.belongsTo(DailyMenu, {
-  as: "dailyMenuIdAllergen",
-  foreignKey: "dailyMenuId",
-});
-DailyMenu.hasMany(DailyMenuHasAllergen, {
-  foreignKey: "dailyMenuId",
-});
-//
-///
-ProductFinal.belongsTo(Box, {
-  as: "theBoxId",
-  foreignKey: "boxId",
-});
-Box.hasMany(ProductFinal, { foreignKey: "boxId" });
-//
-
-ProductHasAllergen.belongsTo(Admin, { constrains: true, onDelete: "CASCADE" });
-
-ProductHasAllergen.belongsTo(Allergen, {
-  as: "allergenIdProduct",
-  foreignKey: "allergenId",
-});
-Allergen.hasMany(ProductHasAllergen, {
-  foreignKey: "allergenId",
-});
-
-ProductHasAllergen.belongsTo(Product, {
-  as: "productdAllergen",
-  foreignKey: "productId",
-});
-Product.hasMany(ProductHasAllergen, {
-  foreignKey: "productId",
-});
-
-Language.hasMany(AllergenTranslation, { foreignKey: "languageId" });
-
-// AdminLocationTranslation.belongsTo(AdminLocation, {
-//   as: "adminLTrans",
-//   foreignKey: "adminLocationsId",
-// });
-// AdminLocation.hasMany(AdminLocationTranslation, {
-//   foreignKey: "adminLocationsId",
-// });
-
-// Language.hasMany(AdminLocationTranslation, { foreignKey: "languageId" });
-
-// AdminLocation.belongsTo(Admin, {
-//   as: "adminLocation",
-//   foreignKey: "adminId",
-// });
-
-// Admin.hasMany(AdminLocation, { foreignKey: "adminId" });
-
-Admin.hasMany(adminHomeSearch, { foreignKey: "adminId" });
-adminHomeSearchTranslation.belongsTo(adminHomeSearch, {
-  as: "adminLTrans",
-  foreignKey: "adminHomeSearchId",
-});
-adminHomeSearch.hasMany(adminHomeSearchTranslation, {
-  foreignKey: "adminHomeSearchId",
-});
-
-Language.hasMany(adminHomeSearchTranslation, { foreignKey: "languageId" });
-
+databaseConfig();
 // app.use((error, req, res, next) => {
 //   res.status(500).render("500", {
 //     pageTitle: "Error!",
@@ -440,56 +154,6 @@ Language.hasMany(adminHomeSearchTranslation, { foreignKey: "languageId" });
 //   });
 // });
 
-UserProfile.belongsTo(User, {
-  as: "userProfile",
-  foreignKey: "userId",
-});
-
-User.hasOne(UserProfile, { foreignKey: "userId" });
-
-UserDeliveryAdress.belongsTo(User, {
-  as: "userDelAdress",
-  foreignKey: "userId",
-});
-
-// location start
-Location.belongsTo(Admin, { constrains: true, onDelete: "CASCADE" });
-Admin.hasMany(Location);
-
-Location.belongsTo(LocationName, {
-  as: "locationFina;",
-  foreignKey: "locationNameId",
-});
-
-LocationName.hasMany(Location, {
-  foreignKey: "locationNameId",
-});
-
-LocationNameTranslation.belongsTo(LocationName, {
-  as: "locationTranslation",
-  foreignKey: "locationNameId",
-});
-LocationName.hasMany(LocationNameTranslation, {
-  foreignKey: "locationNameId",
-});
-
-Location.belongsTo(LocationName, {
-  as: "locationTranslation",
-  foreignKey: "adminId",
-});
-LocationName.hasMany(Location, {
-  foreignKey: "adminId",
-});
-
-LocationNameTranslation.belongsTo(Language, {
-  as: "extraLanguage",
-  foreignKey: "languageId",
-});
-Language.hasMany(LocationNameTranslation, { foreignKey: "languageId" });
-
-//location end
-
-User.hasMany(UserDeliveryAdress, { foreignKey: "userId" });
 // Config PORT
 const PORT = process.env.PORT || 5000;
 app.use(errorController.get404);
