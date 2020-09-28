@@ -75,6 +75,7 @@ const fileStorage = multer.diskStorage({
   },
 });
 
+//
 const fileFilter = (req, file, cb) => {
   if (
     file.mimetype === "image/png" ||
@@ -129,15 +130,15 @@ app.use("/api/location", require("./routes/api/locations"));
 app.use("/api/products", require("./routes/api/products"));
 app.use("/api/restaurant", require("./routes/api/restaurants"));
 app.use(bodyParser.urlencoded({ extended: false }));
-// app.use(expressValidator());
 app.use("/admin", adminRoutes);
 app.use("/super-admin", superRoutes);
 app.use(indexRoutes);
 app.use(authRoutes);
 app.get("/500", errorController.get500);
 
-////
+// Database configuration
 databaseConfig();
+
 // app.use((error, req, res, next) => {
 //   res.status(500).render("500", {
 //     pageTitle: "Error!",

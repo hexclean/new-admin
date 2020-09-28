@@ -5,46 +5,52 @@ const ProductVariantsExtras = require("../../models/ProductVariantsExtras");
 const AllegenTranslation = require("../../models/AllergenTranslation");
 const ExtraHasAllergen = require("../../models/ExtraHasAllergen");
 const Sequelize = require("sequelize");
+const Op = Sequelize.Op;
 
-// Betölti az extra létrehozás oldalt
+// Show create extra page
 exports.getAddExtra = async (req, res, next) => {
-  const checkAllergenLength = await Allergen.findAll({
-    where: {
-      adminId: req.admin.id,
-    },
-  });
-  if (checkAllergenLength.length === 0) {
-    return res.redirect("/admin/vr-index");
-  }
-
-  const allergen = await Allergen.findAll({
-    where: {
-      adminId: req.admin.id,
-    },
-    include: [
-      {
-        model: AllegenTranslation,
+  try {
+    // Get all restaurant ellergen
+    const allergen = await Allergen.findAll({
+      where: {
+        adminId: req.admin.id,
       },
-    ],
-  });
-  res.render("extra/edit-extra", {
-    pageTitle: "Add Product",
-    path: "/admin/add-product",
-    editing: false,
-    hasError: false,
-    errorMessage: null,
-    allergenArray: allergen,
-    validationErrors: [],
-  });
+      include: [
+        {
+          model: AllegenTranslation,
+        },
+      ],
+    });
+
+    // Check if allergen length don't will be 0
+    if (allergen.length === 0) {
+      return res.redirect("/admin/vr-index");
+    }
+
+    // Add dates to edit-extra EJS file
+    res.render("extra/edit-extra", {
+      pageTitle: "Add Product",
+      path: "/admin/add-product",
+      editing: false,
+      hasError: false,
+      errorMessage: null,
+      allergenArray: allergen,
+      validationErrors: [],
+    });
+  } catch (err) {
+    const error = new Error(err);
+    error.httpStatusCode = 500;
+    return next(error);
+  }
 };
 
-// Létrehoz egy extrát
 exports.postAddExtra = async (req, res, next) => {
   const allergenId = req.body.allergenId;
   const roName = req.body.roName;
   const huName = req.body.huName;
   const enName = req.body.enName;
-  var filteredStatus = req.body.status.filter(Boolean);
+  const filteredStatus = req.body.status.filter(Boolean);
+
   const allergen = await Allergen.findAll({
     where: {
       adminId: req.admin.id,
@@ -57,7 +63,8 @@ exports.postAddExtra = async (req, res, next) => {
   });
 
   const extra = await req.admin.createExtra();
-  async function extraTransaltion() {
+
+  async function createExtraTranslation() {
     await ExtraTranslation.create({
       name: roName,
       languageId: 1,
@@ -81,29 +88,28 @@ exports.postAddExtra = async (req, res, next) => {
   }
 
   async function addAllergenToExtra() {
-    if (Array.isArray(allergen)) {
-      for (let i = 0; i <= allergen.length - 1; i++) {
-        await ExtraHasAllergen.create({
-          extraId: extra.id,
-          allergenId: allergenId[i],
-          active: filteredStatus[i] == "on" ? 1 : 0,
-          adminId: req.admin.id,
-        });
-      }
+    for (let i = 0; i <= allergen.length - 1; i++) {
+      await ExtraHasAllergen.create({
+        extraId: extra.id,
+        allergenId: allergenId[i],
+        active: filteredStatus[i] == "on" ? 1 : 0,
+        adminId: req.admin.id,
+      });
     }
   }
 
   async function add() {
-    const totalDailyMenu = await ProductVariantsExtras.findAll({
+    const extra = await ProductVariantsExtras.findAll({
       where: { adminId: req.admin.id },
     });
-    if (Array.isArray(totalDailyMenu)) {
-      for (let i = 0; i <= totalDailyMenu.length - 1; i++) {
+
+    if (Array.isArray(extra)) {
+      for (let i = 0; i <= extra.length - 1; i++) {
         await ProductVariantsExtras.create({
           active: 0,
           adminId: req.admin.id,
           extraId: extra.id,
-          extraId: totalDailyMenu[i].id,
+          extraId: extra[i].id,
           quantityMax: 0,
           quantityMin: 0,
           discountedPrice: 0,
@@ -114,7 +120,7 @@ exports.postAddExtra = async (req, res, next) => {
       return;
     }
   }
-  extraTransaltion()
+  createExtraTranslation()
     .then((result) => {
       addAllergenToExtra();
       add();
@@ -131,102 +137,94 @@ exports.postAddExtra = async (req, res, next) => {
 };
 
 exports.getExtras = (req, res, next) => {
-  Extra.findAll({ where: { adminId: req.admin.id } })
-    .then((extra) => {
-      var currentLanguage = req.cookies.language;
+  try {
+    Extra.findAll({ where: { adminId: req.admin.id } }).then((extra) => {
+      const currentLanguage = req.cookies.language;
       res.render("extra/extras", {
         ext: extra,
         currentLanguage: currentLanguage,
         pageTitle: "Admin Products",
         path: "/admin/products",
       });
-    })
-    .catch((err) => {
-      const error = new Error(err);
-      error.httpStatusCode = 500;
-      return next(error);
     });
+  } catch (err) {
+    const error = new Error(err);
+    error.httpStatusCode = 500;
+    return next(error);
+  }
 };
 
+// Show edit extra page
 exports.getEditExtra = async (req, res, next) => {
   const editMode = req.query.edit;
-  const Op = Sequelize.Op;
-  const extId = req.params.extraId;
-  const extraIdArray = [extId];
-  if (!editMode) {
-    return res.redirect("/");
-  }
-  await Extra.findByPk(extId).then((extra) => {
-    if (!extra) {
+  const extraId = req.params.extraId;
+  const extraIdArray = [extraId];
+
+  try {
+    await Extra.findByPk(extraId).then((extra) => {
+      if (!extra) {
+        return res.redirect("/");
+      }
+    });
+
+    if (!editMode) {
       return res.redirect("/");
     }
-  });
 
-  const allergen = await Allergen.findAll({
-    where: {
-      adminId: req.admin.id,
-    },
-    include: [
-      {
-        model: AllegenTranslation,
+    const allergen = await Allergen.findAll({
+      where: {
+        adminId: req.admin.id,
       },
-      { model: ExtraHasAllergen },
-    ],
-  });
-
-  const allergenTest = await Allergen.findAll({
-    where: {
-      adminId: req.admin.id,
-    },
-    include: [
-      {
-        model: AllegenTranslation,
-      },
-      {
-        model: ExtraHasAllergen,
-        where: { extraId: { [Op.in]: extraIdArray }, adminId: req.admin.id },
-      },
-    ],
-  });
-
-  Extra.findAll({
-    where: {
-      id: extId,
-      adminId: req.admin.id,
-    },
-    include: [
-      {
-        model: ExtraTranslation,
-      },
-    ],
-  })
-    .then((extra) => {
-      if (extra[0].adminId !== req.admin.id) {
-        return res.redirect("/");
-      }
-
-      if (extra[0].adminId !== req.admin.id) {
-        return res.redirect("/");
-      }
-      res.render("extra/edit-extra", {
-        pageTitle: "Edit Product",
-        path: "/admin/edit-product",
-        editing: editMode,
-        extra: extra,
-        hasError: false,
-        errorMessage: null,
-        extraIdEditing: extId,
-        validationErrors: [],
-        allergenArray: allergen,
-        isActive: allergenTest,
-        extTranslations: extra[0].extraTranslations,
-      });
-    })
-    .catch((err) => {
-      const error = new Error(err);
-      error.httpStatusCode = 500;
-      return next(error);
+      include: [
+        {
+          model: AllegenTranslation,
+        },
+        { model: ExtraHasAllergen },
+      ],
     });
+
+    const allergenActive = await Allergen.findAll({
+      where: {
+        adminId: req.admin.id,
+      },
+      include: [
+        {
+          model: AllegenTranslation,
+        },
+        {
+          model: ExtraHasAllergen,
+          where: { extraId: { [Op.in]: extraIdArray }, adminId: req.admin.id },
+        },
+      ],
+    });
+
+    const extra = await Extra.findAll({
+      where: {
+        id: extraId,
+        adminId: req.admin.id,
+      },
+      include: [
+        {
+          model: ExtraTranslation,
+        },
+      ],
+    });
+
+    res.render("extra/edit-extra", {
+      pageTitle: "Edit Product",
+      path: "/admin/edit-product",
+      editing: editMode,
+      extra: extra,
+      extraIdEditing: extraId,
+      allergenArray: allergen,
+      isActive: allergenActive,
+      extraTranslation: extra[0].extraTranslations,
+    });
+  } catch (err) {
+    const error = new Error(err);
+    error.httpStatusCode = 500;
+    return next(error);
+  }
 };
 
 exports.postEditExtra = async (req, res, next) => {
@@ -237,7 +235,6 @@ exports.postEditExtra = async (req, res, next) => {
   const updatedEnName = req.body.enName;
   const extTranId = req.body.extTranId;
   const filteredStatus = req.body.status.filter(Boolean);
-  const Op = Sequelize.Op;
   const extraArray = [extraIdEditing];
   //
   const extrasHasAllergen = await ExtraHasAllergen.findAll({
@@ -272,7 +269,6 @@ exports.postEditExtra = async (req, res, next) => {
         );
 
         if (Array.isArray(extrasHasAllergen)) {
-          const Op = Sequelize.Op;
           for (let i = 0; i <= extrasHasAllergen.length - 1; i++) {
             let allergenIds = [allergenId[i]];
             let extraId = [extraIdEditing];
