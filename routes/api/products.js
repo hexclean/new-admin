@@ -9,10 +9,7 @@ const Variants = require("../../models/ProductVariant");
 const ProductTranslation = require("../../models/ProductTranslation");
 const ProductCategories = require("../../models/ProductCategory");
 
-const sequelize = new Sequelize("foodnet", "root", "y7b5uwFOODNET", {
-  host: "localhost",
-  dialect: "mysql",
-});
+const sequelize = require("../../util/database");
 
 router.get("/:locationName/:partnerId", async (req, res) => {
   const params = req.params.partnerId.split("-").join(" ");

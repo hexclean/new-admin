@@ -2,10 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Sequelize = require("sequelize");
 
-const sequelize = new Sequelize("foodnet", "root", "y7b5uwFOODNET", {
-  host: "localhost",
-  dialect: "mysql",
-});
+const sequelize = require("../../util/database");
 
 router.get("/:locationName/:partnerId", async (req, res) => {
   const partnerFullName = req.params.partnerId.split("-").join(" ");

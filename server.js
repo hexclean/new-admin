@@ -13,6 +13,7 @@ const Sequelize = require("sequelize");
 const sequelize = require("./util/database");
 const { databaseConfig } = require("./middleware/database-config");
 const app = express();
+const db = require("./util/database");
 
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
@@ -25,11 +26,6 @@ app.use((req, res, next) => {
     return res.status(200).json({});
   }
   next();
-});
-
-const db = new Sequelize("foodnet", "root", "y7b5uwFOODNET", {
-  host: "localhost",
-  dialect: "mysql",
 });
 
 const sessionStore = new SequelizeStore({
