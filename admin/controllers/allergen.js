@@ -6,7 +6,6 @@ const Extra = require("../../models/Extra");
 const ExtraHasAllergen = require("../../models/ExtraHasAllergen");
 const Product = require("../../models/Product");
 const ProductHasAllergen = require("../../models/ProductHasAllergen");
-const DailyMenuHasAllergen = require("../../models/DailyMenuHasAllergen");
 const Op = Sequelize.Op;
 const ITEMS_PER_PAGE = 20;
 

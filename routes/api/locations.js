@@ -1,39 +1,66 @@
 const express = require("express");
 const router = express.Router();
 const Sequelize = require("sequelize");
+const Allergen = require("../../models/Allergen");
+const AllergensTranslation = require("../../models/AllergenTranslation");
 
 const sequelize = require("../../util/database");
 
 // @route    GET api/location/:locationName
 // @desc     Get all restaurants from selected city
 // @access   Public
-router.get("/:locationName", async (req, res) => {
+// router.get("/:locationName", async (req, res) => {
+//   try {
+//     const locationName = req.params.locationName.split("-").join(" ");
+//     console.log("loc", locationName);
+//     const languageCode = 2;
+//     const selectedLocation = await sequelize.query(
+//       `SELECT ad.id AS restaurant_id, ad.imageUrl AS restaurant_profileImage, ad.commission AS restaurant_commission,
+//       ad.fullName AS restaurant_name, ad.newRestaurant AS restaurant_new, ad.discount AS restaurant_discount,
+//        adInf.shortCompanyDesc AS restaurant_description,
+//       ad.deliveryPrice AS restaurant_deliveryPrice, adInf.kitchen AS restaurant_kitchen
+//       FROM foodnet.restaurants AS ad
+//       INNER JOIN foodnet.adminInfos AS adInf
+//       ON adInf.restaurantId = ad.id
+//       INNER JOIN foodnet.locations AS loc
+//       ON ad.id = loc.restaurantId
+//       INNER JOIN foodnet.locationNames AS locName
+//       ON loc.locationNameId = locName.id
+//       INNER JOIN foodnet.locationNameTranslations as locNameTrans
+//       ON locName.id = locNameTrans.locationNameId
+//       WHERE locNameTrans.languageId= ${languageCode} AND adInf.languageId=${languageCode} AND locNameTrans.name LIKE '%${locationName}%';`,
+//       { type: Sequelize.QueryTypes.SELECT }
+//     );
+
+//     if (selectedLocation.length == 0) {
+//       return res.status(404).json({ msg: "City not found" });
+//     }
+
+//     res.json(selectedLocation);
+//   } catch (err) {
+//     console.error(err.message);
+//     res.status(500).send("Server Error");
+//   }
+// });
+
+router.get("/alma", async (req, res) => {
   try {
-    const locationName = req.params.locationName.split("-").join(" ");
-    console.log("loc", locationName);
-    const languageCode = 2;
-    const selectedLocation = await sequelize.query(
-      `SELECT ad.id AS restaurant_id, ad.imageUrl AS restaurant_profileImage, ad.commission AS restaurant_commission,
-      ad.fullName AS restaurant_name, ad.newRestaurant AS restaurant_new, ad.discount AS restaurant_discount,
-       adInf.shortCompanyDesc AS restaurant_description,
-      ad.deliveryPrice AS restaurant_deliveryPrice, adInf.kitchen AS restaurant_kitchen
-      FROM foodnet.restaurants AS ad
-      INNER JOIN foodnet.adminInfos AS adInf
-      ON adInf.restaurantId = ad.id
-      INNER JOIN foodnet.locations AS loc
-      ON ad.id = loc.restaurantId
-      INNER JOIN foodnet.locationNames AS locName
-      ON loc.locationNameId = locName.id
-      INNER JOIN foodnet.locationNameTranslations as locNameTrans
-      ON locName.id = locNameTrans.locationNameId
-      WHERE locNameTrans.languageId= ${languageCode} AND adInf.languageId=${languageCode} AND locNameTrans.name LIKE '%${locationName}%';`,
-      { type: Sequelize.QueryTypes.SELECT }
-    );
+    // const locationName = req.params.locationName.split("-").join(" ");
+    // console.log("loc", locationName);
+    // const languageCode = 2;
 
-    if (selectedLocation.length == 0) {
-      return res.status(404).json({ msg: "City not found" });
-    }
+    const selectedLocation = await Allergen.findAll({
+      include: [
+        {
+          model: AllergensTranslation,
+        },
+      ],
+    });
 
+    //     // if (selectedLocation.length == 0) {
+    //     //   return res.status(404).json({ msg: "City not found" });
+    //     // }
+    console.log(selectedLocation);
     res.json(selectedLocation);
   } catch (err) {
     console.error(err.message);
