@@ -131,6 +131,12 @@ exports.postEditCategory = async (req, res, next) => {
     ],
   })
     .then((category) => {
+      console.log(updatedRoName);
+      console.log(updatedHuName);
+      console.log(updatedEnName);
+      console.log("catTranId[0]", catTranId[0]);
+      console.log("catTranId[0]", catTranId[1]);
+      console.log("catTranId[0]", catTranId[2]);
       async function msg() {
         await Category.update({ sku: updatedSku }, { where: { id: catId } });
         await CategoryTranslation.update(

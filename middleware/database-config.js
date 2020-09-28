@@ -82,6 +82,11 @@ function databaseConfig() {
   ProductCategory.hasMany(ProductCategoryTranslation, {
     foreignKey: "productCategoryId",
   });
+  ProductCategoryTranslation.belongsTo(Language, {
+    as: "categoryLanguage",
+    foreignKey: "languageId",
+  });
+  Language.hasMany(ProductCategoryTranslation, { foreignKey: "languageId" });
 
   Box.belongsTo(Admin, { constrains: true, onDelete: "CASCADE" });
   Admin.hasMany(Box);

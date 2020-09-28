@@ -278,9 +278,7 @@
    <%- include('../includes/navigation.ejs') %>
    <main class="body-content">
       <%- include('../includes/navigation-bar.ejs') %>
-      <% if (errorMessage) { %>
-      <div class="user-message user-message--error"><%= errorMessage %></div>
-      <% } %>
+     
       <form
          name="myForm"
          id="myForm"
@@ -530,6 +528,7 @@
             $('.statusAllergen-checkbox-'+activeCheckbox).prop('checked', true);
             $('.statusAllergen-'+activeCheckbox).val('on');
             });
+           
          </script>
          <% } 
             %>
@@ -539,10 +538,10 @@
             <label for="validationCustom22">RO</label>
             <div class="input-group">
                <select class="form-control" for="categoryRo" id="categoryRo" name="categoryRo">
-                
+                  <option disabled="true" value="list">Variáns kategótia</option>
                   <% for(let i = 0; i < cat.length; i++) { %>
 
-                  <option id="categoryRo" name="categoryRo" value='<%= cat[i].id %>'><%= cat[i].productCategoryTranslations[0].name %></option>
+                  <option id="categoryRo" name="categoryRo" value='<%= cat[i].id %>'><%= cat[i].productCategoryTranslations[`${currentLanguage}`].name %></option>
                   <% } %>
                </select>
             </div>

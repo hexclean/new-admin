@@ -14,72 +14,93 @@ const CategoryTranslation = require("../../models/ProductCategoryTranslation");
 const Box = require("../../models/Box");
 const BoxTranslation = require("../../models/BoxTranslation");
 exports.getAddProduct = async (req, res, next) => {
-  const allergen = await Allergen.findAll({
-    where: {
-      restaurantId: req.admin.id,
-    },
-    include: [
-      {
-        model: AllegenTranslation,
+  let currentCategoryName = [];
+  try {
+    const allergen = await Allergen.findAll({
+      where: {
+        restaurantId: req.admin.id,
       },
-    ],
-  });
-  const box = await Box.findAll({
-    where: {
-      restaurantId: req.admin.id,
-    },
-    include: [
-      {
-        model: BoxTranslation,
+      include: [
+        {
+          model: AllegenTranslation,
+        },
+      ],
+    });
+    const box = await Box.findAll({
+      where: {
+        restaurantId: req.admin.id,
       },
-    ],
-  });
-  const cat = await Category.findAll({
-    where: {
-      restaurantId: req.admin.id,
-    },
-    include: [
-      {
-        model: CategoryTranslation,
+      include: [
+        {
+          model: BoxTranslation,
+        },
+      ],
+    });
+    const cat = await Category.findAll({
+      where: {
+        restaurantId: req.admin.id,
       },
-    ],
-  });
+      include: [
+        {
+          model: CategoryTranslation,
+        },
+      ],
+    });
 
-  const ext = await ProductVariant.findAll({
-    where: {
-      restaurantId: req.admin.id,
-    },
-  });
+    const ext = await ProductVariant.findAll({
+      where: {
+        restaurantId: req.admin.id,
+      },
+    });
 
-  const checkVariantLength = await ProductVariants.findAll({
-    where: { restaurantId: req.admin.id },
-  });
-  const checkBoxLength = await Box.findAll({
-    where: { restaurantId: req.admin.id },
-  });
+    const checkVariantLength = await ProductVariants.findAll({
+      where: { restaurantId: req.admin.id },
+    });
+    const checkBoxLength = await Box.findAll({
+      where: { restaurantId: req.admin.id },
+    });
 
-  if (checkVariantLength.length === 0) {
-    return res.redirect("/admin/products");
+    if (checkVariantLength.length === 0) {
+      return res.redirect("/admin/products");
+    }
+
+    if (checkBoxLength.length === 0) {
+      return res.redirect("/admin/products");
+    }
+
+    console.log(
+      "cat------------------",
+      cat[0].productCategoryTranslations[0].name
+    );
+    for (let i = 0; i < cat.length; i++) {
+      var currentLanguage = req.cookies.language;
+
+      if (currentLanguage == "ro") {
+        currentCategoryName = 0;
+      } else if (currentLanguage == "hu") {
+        currentCategoryName = 1;
+      } else {
+        currentCategoryName = 2;
+      }
+    }
+
+    res.render("admin/edit-product", {
+      pageTitle: "Add Product",
+      path: "/admin/add-product",
+      editing: false,
+      ext: ext,
+      cat: cat,
+      boxArray: box,
+      checkBoxLength: checkBoxLength,
+      checkVariantLength: checkVariantLength,
+      allergenArray: allergen,
+      currentLanguage: currentCategoryName,
+    });
+  } catch (err) {
+    const error = new Error(err);
+    error.httpStatusCode = 500;
+    return next(error);
   }
-
-  if (checkBoxLength.length === 0) {
-    return res.redirect("/admin/products");
-  }
-
-  res.render("admin/edit-product", {
-    pageTitle: "Add Product",
-    path: "/admin/add-product",
-    editing: false,
-    ext: ext,
-    cat: cat,
-    boxArray: box,
-    checkBoxLength: checkBoxLength,
-    checkVariantLength: checkVariantLength,
-    hasError: false,
-    allergenArray: allergen,
-    errorMessage: null,
-    validationErrors: [],
-  });
 };
 
 exports.postAddProduct = async (req, res, next) => {
