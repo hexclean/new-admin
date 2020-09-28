@@ -28,6 +28,11 @@ router.get(
 );
 router.post("/edit-variant", isAuth, variantsController.postEditVariant);
 router.post("/delete-variant", variantsController.postDeleteVariant);
+router.get(
+  "/get-category-variants/:categoryId",
+  isAuth,
+  adminController.getCategoryVariants
+);
 
 // CATEGORY
 router.get("/add-category", isAuth, categoryController.getAddCategory);

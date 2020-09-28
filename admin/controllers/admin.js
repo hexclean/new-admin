@@ -9,6 +9,8 @@ const Allergen = require("../../models/Allergen");
 const ProductHasAllergen = require("../../models/ProductHasAllergen");
 const ProductVariants = require("../../models/ProductVariant");
 const AllegenTranslation = require("../../models/AllergenTranslation");
+const Category = require("../../models/ProductCategory");
+const CategoryTranslation = require("../../models/ProductCategoryTranslation");
 const Box = require("../../models/Box");
 const BoxTranslation = require("../../models/BoxTranslation");
 exports.getAddProduct = async (req, res, next) => {
@@ -29,6 +31,16 @@ exports.getAddProduct = async (req, res, next) => {
     include: [
       {
         model: BoxTranslation,
+      },
+    ],
+  });
+  const cat = await Category.findAll({
+    where: {
+      restaurantId: req.admin.id,
+    },
+    include: [
+      {
+        model: CategoryTranslation,
       },
     ],
   });
@@ -59,6 +71,7 @@ exports.getAddProduct = async (req, res, next) => {
     path: "/admin/add-product",
     editing: false,
     ext: ext,
+    cat: cat,
     boxArray: box,
     checkBoxLength: checkBoxLength,
     checkVariantLength: checkVariantLength,
@@ -568,6 +581,30 @@ exports.postDeleteProduct = (req, res, next) => {
       product.active = 0;
       return product.save().then((result) => {
         res.redirect("/admin/products");
+      });
+    })
+    .catch((err) => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
+};
+
+exports.getCategoryVariants = async (req, res, next) => {
+  const categoryId = req.params.categoryId;
+
+  await ProductVariant.findAll({
+    where: {
+      restaurantId: req.admin.id,
+      categoryId: categoryId,
+    },
+  })
+
+    .then((variant) => {
+      console.log(variant);
+      res.render("admin/searchedVariants", {
+        variants: variant,
+        editing: false,
       });
     })
     .catch((err) => {

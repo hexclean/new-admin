@@ -254,6 +254,26 @@
    });
 </script>
 
+         <script>
+
+
+            $(document).ready(function() {
+
+               $('#categoryRo').click(function() {
+                  const categoryId = $('#categoryRo').val();
+                  $.get( "get-category-variants/"+ categoryId )
+
+               .done(function( data ) {
+
+                  $("#selectedVariantsCategory").html(data);
+                  
+               });
+            });
+            })
+
+
+         </script>
+
 <body class="ms-body ms-aside-left-open ms-primary-theme ms-has-quickbar" >
    <%- include('../includes/navigation.ejs') %>
    <main class="body-content">
@@ -515,6 +535,21 @@
             %>
          <% } %>
          <% } %>
+         <div class="col-md-6 mb-3">
+            <label for="validationCustom22">RO</label>
+            <div class="input-group">
+               <select class="form-control" for="categoryRo" id="categoryRo" name="categoryRo">
+                
+                  <% for(let i = 0; i < cat.length; i++) { %>
+
+                  <option id="categoryRo" name="categoryRo" value='<%= cat[i].id %>'><%= cat[i].productCategoryTranslations[0].name %></option>
+                  <% } %>
+               </select>
+            </div>
+            <span class="error_form" id="category_error_message"></span>
+         </div>
+        
+        
          <div class="ms-panel ms-btn-display">
             <div class="ms-panel-header">
                <h6>A  <% if (editing) { %>  <%= product[0].productTranslations[0].title %>  <% } %> hozzárendelhető extrái:</h6>
@@ -589,7 +624,7 @@
          <div class="ms-content-wrapper">
             <div class="row">
                <div class="col-md-12">
-                  <div class="row">
+                  <div id="selectedVariantsCategory" class="row">
                      <% for (let extra of ext) { %>
                      <input
                         type="hidden"

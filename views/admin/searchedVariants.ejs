@@ -1,0 +1,62 @@
+<% for (let extra of variants) { %>
+<input type="hidden" value="<%= extra.id %>" name="extraId" />
+<div
+  class="col-xl-3 col-lg-4 col-md-6 col-sm-6 extra_box"
+  data-extra="<%= extra.id %>"
+>
+  <div class="ms-card">
+    <div class="d-flex justify-content-center extra-margin-top">
+      <div class="row">
+        <label class="ms-switch">
+          <input
+            type="hidden"
+            value="off"
+            class="status-<%= extra.id %>"
+            name="status[<%= extra.id %>]"
+          />
+          <input
+            data-extraId="<%= extra.id %>"
+            class="status-checkbox status-checkbox-<%= extra.id %>"
+            type="checkbox"
+          />
+          <span class="ms-switch-slider ms-switch-success round"></span>
+        </label>
+      </div>
+    </div>
+    <div class="ms-card-body">
+      <div class="new d-flex justify-content-center extra-name">
+        <h6 class="mb-0"><b><%= extra.sku %></b></h6>
+      </div>
+      <div class="col-md-12 mb-3">
+        <label for="price">Price</label>
+        <div class="input-group">
+          <input
+            class="price_<%= extra.id %> extra_price_input"
+            type="text"
+            name="price"
+            id="price"
+            value="<% if (editing) { %><%= extra.price %><% } %>"
+          />
+        </div>
+        <span
+          class="extra_error_message error_form"
+          id="price_error_message_<%= extra.id %>"
+        ></span>
+      </div>
+      <div class="col-md-12 mb-3">
+        <label for="discountedPrice">Discounted Price</label>
+        <div class="input-group">
+          <input
+            disabled
+            class="form-control"
+            type="text"
+            name="discountedPrice"
+            id="discountedPrice"
+            value="<% if (editing) { %><%= extra.discountedPrice %><% } %>"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<% } %>
