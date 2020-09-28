@@ -9,10 +9,7 @@ const Variants = require("../../models/ProductVariant");
 const ProductTranslation = require("../../models/ProductTranslation");
 const ProductCategories = require("../../models/ProductCategory");
 
-const sequelize = new Sequelize("foodnet", "root", "y7b5uwFOODNET", {
-  host: "localhost",
-  dialect: "mysql",
-});
+const sequelize = require("../../util/database");
 
 router.get("/:locationName/:partnerId", async (req, res) => {
   const params = req.params.partnerId.split("-").join(" ");
@@ -24,7 +21,7 @@ router.get("/:locationName/:partnerId", async (req, res) => {
       `SELECT prodFin.variantId as VRID, catTrans.name as categoryName, adm.fullName as partnerName, prod.id as productId, prod.imageUrl as productImageUrl, prodTrans.title as productTitle, prodTrans.description productDescription, prodFin.price as productPrice, prodFin.discountedPrice as productDiscountedPrice,
       varExtras.extraId as extraId, extTrans.name, varExtras.price  as price, varExtras.discountedPrice as discountedPrice, varExtras.quantityMin as minOrder, varExtras.quantityMax as maxOrder
       FROM foodnet.productFinals as prodFin 
-      INNER JOIN foodnet.products as prod ON prodFin.productId = prod.id INNER JOIN foodnet.admins as adm On prod.adminId = adm.id 
+      INNER JOIN foodnet.products as prod ON prodFin.productId = prod.id INNER JOIN foodnet.restaurants as adm On prod.restaurantId = adm.id 
       INNER JOIN foodnet.productTranslations as prodTrans ON prodTrans.productId = prod.id 
       INNER JOIN foodnet.productVariants as var ON prodFin.variantId = var.id 
       INNER JOIN foodnet.productVariantTranslations as varTrans ON varTrans.productVariantId = var.id 
@@ -80,8 +77,8 @@ router.get("/", async (req, res) => {
 router.get("/:admin_id", async (req, res) => {
   try {
     const id = req.params.admin_id;
-    // Product.find({ adminId: req.admin._id })
-    const product = await Product.find({ adminId: id });
+    // Product.find({ restaurantId: req.admin._id })
+    const product = await Product.find({ restaurantId: id });
     if (!product) {
       return res.status(404).json({
         msg: "Product not foudasdndr33333",
@@ -104,9 +101,9 @@ router.get("/:admin_id", async (req, res) => {
 // // @access   Public
 // router.get("/products/:admin._id", async (req, res) => {
 //   try {
-//     const adminId = req.params.admin._id;
+//     const restaurantId = req.params.admin._id;
 
-//     const profile = await Product.find({ adminId: req.admin._id });
+//     const profile = await Product.find({ restaurantId: req.admin._id });
 //     console.log(id);
 //     console.log(profile);
 //     if (!profile) return res.status(400).json({ msg: "Probhjbhjbhjhjbfile not found" });

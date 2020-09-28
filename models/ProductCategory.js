@@ -9,7 +9,7 @@ const ProductCategory = sequelize.define("productCategory", {
     primaryKey: true,
   },
 
-  adminId: {
+  restaurantId: {
     type: Sequelize.INTEGER,
     allowNull: false,
   },

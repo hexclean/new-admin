@@ -9,7 +9,7 @@ const AdminInfo = sequelize.define("adminInfo", {
     primaryKey: true,
   },
 
-  adminId: {
+  restaurantId: {
     type: Sequelize.INTEGER,
   },
   adress: {

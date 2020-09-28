@@ -13,7 +13,7 @@ const ProductVariantsExtras = require("../models/ProductVariantsExtras");
 const Language = require("../models/Language");
 const adminHomeSearch = require("../models/adminHomeSearch");
 const adminHomeSearchTranslation = require("../models/adminHomeSearchTranslation");
-const Admin = require("../models/Admin");
+const Admin = require("../models/Restaurant");
 const AdminInfo = require("../models/AdminInfo");
 const DailyMenuHasAllergen = require("../models/DailyMenuHasAllergen");
 const Box = require("../models/Box");
@@ -34,16 +34,16 @@ const CouponCode = require("../models/CouponCode");
 function databaseConfig() {
   ProductVariantsExtras.belongsTo(Admin, {
     as: "theAdminInfo",
-    foreignKey: "adminId",
+    foreignKey: "restaurantId",
   });
 
-  Admin.hasMany(ProductVariantsExtras, { foreignKey: "adminId" });
+  Admin.hasMany(ProductVariantsExtras, { foreignKey: "restaurantId" });
 
   AdminInfo.belongsTo(Admin, {
     as: "theAdminInfo",
-    foreignKey: "adminId",
+    foreignKey: "restaurantId",
   });
-  Admin.hasMany(AdminInfo, { foreignKey: "adminId" });
+  Admin.hasMany(AdminInfo, { foreignKey: "restaurantId" });
   AdminInfo.belongsTo(Language, {
     as: "adminInfoTrans",
     foreignKey: "languageId",
@@ -242,7 +242,7 @@ function databaseConfig() {
 
   Language.hasMany(AllergenTranslation, { foreignKey: "languageId" });
 
-  Admin.hasMany(adminHomeSearch, { foreignKey: "adminId" });
+  Admin.hasMany(adminHomeSearch, { foreignKey: "restaurantId" });
   adminHomeSearchTranslation.belongsTo(adminHomeSearch, {
     as: "adminLTrans",
     foreignKey: "adminHomeSearchId",
@@ -287,10 +287,10 @@ function databaseConfig() {
 
   Location.belongsTo(LocationName, {
     as: "locationTranslation",
-    foreignKey: "adminId",
+    foreignKey: "restaurantId",
   });
   LocationName.hasMany(Location, {
-    foreignKey: "adminId",
+    foreignKey: "restaurantId",
   });
 
   LocationNameTranslation.belongsTo(Language, {

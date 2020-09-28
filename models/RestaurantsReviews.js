@@ -8,7 +8,7 @@ const RestaurantsReviews = sequelize.define("restaurantsReviews", {
     allowNull: false,
     primaryKey: true,
   },
-  adminId: {
+  restaurantId: {
     type: Sequelize.INTEGER,
     allowNull: false,
   },

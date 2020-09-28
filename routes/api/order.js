@@ -40,7 +40,7 @@ router.post("/", auth, async (req, res) => {
         user: req.user.id,
       });
       User.findById({ _id: req.user.id }).then((user) => {
-        user.adminId = restaurant_id;
+        user.restaurantId = restaurant_id;
         user.dbOrder += 1;
         user.totalOrder += totalPrice;
         return user.save();

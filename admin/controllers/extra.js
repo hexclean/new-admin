@@ -13,7 +13,7 @@ exports.getAddExtra = async (req, res, next) => {
     // Get all restaurant ellergen
     const allergen = await Allergen.findAll({
       where: {
-        adminId: req.admin.id,
+        restaurantId: req.admin.id,
       },
       include: [
         {
@@ -53,7 +53,7 @@ exports.postAddExtra = async (req, res, next) => {
 
   const allergen = await Allergen.findAll({
     where: {
-      adminId: req.admin.id,
+      restaurantId: req.admin.id,
     },
     include: [
       {
@@ -69,12 +69,12 @@ exports.postAddExtra = async (req, res, next) => {
       name: roName,
       languageId: 1,
       extraId: extra.id,
-      adminId: req.admin.id,
+      restaurantId: req.admin.id,
     });
     await ExtraTranslation.create({
       name: huName,
       languageId: 2,
-      adminId: req.admin.id,
+      restaurantId: req.admin.id,
 
       extraId: extra.id,
     });
@@ -83,7 +83,7 @@ exports.postAddExtra = async (req, res, next) => {
       name: enName,
       languageId: 3,
       extraId: extra.id,
-      adminId: req.admin.id,
+      restaurantId: req.admin.id,
     });
   }
 
@@ -93,21 +93,21 @@ exports.postAddExtra = async (req, res, next) => {
         extraId: extra.id,
         allergenId: allergenId[i],
         active: filteredStatus[i] == "on" ? 1 : 0,
-        adminId: req.admin.id,
+        restaurantId: req.admin.id,
       });
     }
   }
 
   async function add() {
     const extra = await ProductVariantsExtras.findAll({
-      where: { adminId: req.admin.id },
+      where: { restaurantId: req.admin.id },
     });
 
     if (Array.isArray(extra)) {
       for (let i = 0; i <= extra.length - 1; i++) {
         await ProductVariantsExtras.create({
           active: 0,
-          adminId: req.admin.id,
+          restaurantId: req.admin.id,
           extraId: extra.id,
           extraId: extra[i].id,
           quantityMax: 0,
@@ -138,7 +138,7 @@ exports.postAddExtra = async (req, res, next) => {
 
 exports.getExtras = (req, res, next) => {
   try {
-    Extra.findAll({ where: { adminId: req.admin.id } }).then((extra) => {
+    Extra.findAll({ where: { restaurantId: req.admin.id } }).then((extra) => {
       const currentLanguage = req.cookies.language;
       res.render("extra/extras", {
         ext: extra,
@@ -173,7 +173,7 @@ exports.getEditExtra = async (req, res, next) => {
 
     const allergen = await Allergen.findAll({
       where: {
-        adminId: req.admin.id,
+        restaurantId: req.admin.id,
       },
       include: [
         {
@@ -185,7 +185,7 @@ exports.getEditExtra = async (req, res, next) => {
 
     const allergenActive = await Allergen.findAll({
       where: {
-        adminId: req.admin.id,
+        restaurantId: req.admin.id,
       },
       include: [
         {
@@ -193,7 +193,10 @@ exports.getEditExtra = async (req, res, next) => {
         },
         {
           model: ExtraHasAllergen,
-          where: { extraId: { [Op.in]: extraIdArray }, adminId: req.admin.id },
+          where: {
+            extraId: { [Op.in]: extraIdArray },
+            restaurantId: req.admin.id,
+          },
         },
       ],
     });
@@ -201,7 +204,7 @@ exports.getEditExtra = async (req, res, next) => {
     const extra = await Extra.findAll({
       where: {
         id: extraId,
-        adminId: req.admin.id,
+        restaurantId: req.admin.id,
       },
       include: [
         {
@@ -279,7 +282,7 @@ exports.postEditExtra = async (req, res, next) => {
               },
               {
                 where: {
-                  adminId: req.admin.id,
+                  restaurantId: req.admin.id,
                   allergenId: {
                     [Op.in]: allergenIds,
                   },

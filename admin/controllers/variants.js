@@ -24,7 +24,7 @@ exports.searchExtraByKeyword = async (req, res, next) => {
     const lang2 = 1;
     await Extras.findAll({
       where: {
-        adminId: req.admin.id,
+        restaurantId: req.admin.id,
       },
       raw: true,
       // nest: true,
@@ -58,21 +58,21 @@ exports.getIndex = async (req, res, next) => {
 
   const checkAllergenLength = await Allergen.findAll({
     where: {
-      adminId: req.admin.id,
+      restaurantId: req.admin.id,
     },
   });
 
   const checkExtraLength = await Extras.findAll({
-    where: { adminId: req.admin.id },
+    where: { restaurantId: req.admin.id },
   });
 
   const checkCategoryLength = await Category.findAll({
-    where: { adminId: req.admin.id },
+    where: { restaurantId: req.admin.id },
   });
 
   const category = await Category.findAll({
     where: {
-      adminId: req.admin.id,
+      restaurantId: req.admin.id,
     },
     include: [
       {
@@ -83,7 +83,7 @@ exports.getIndex = async (req, res, next) => {
     totalItems = numExtras;
     return Category.findAll({
       where: {
-        adminId: req.admin.id,
+        restaurantId: req.admin.id,
       },
       include: [
         {
@@ -96,7 +96,7 @@ exports.getIndex = async (req, res, next) => {
   });
   const extras = await ProductExtra.findAll({
     where: {
-      adminId: req.admin.id,
+      restaurantId: req.admin.id,
     },
     include: [
       {
@@ -107,7 +107,7 @@ exports.getIndex = async (req, res, next) => {
     totalItems = numExtras;
     return ProductExtra.findAll({
       where: {
-        adminId: req.admin.id,
+        restaurantId: req.admin.id,
       },
       include: [
         {
@@ -183,7 +183,7 @@ exports.getAddVariant = async (req, res, next) => {
   let currentExtraName = [];
   const maxOption = req.bodymaxOption;
   const ext = await Extras.findAll({
-    where: { adminId: req.admin.id },
+    where: { restaurantId: req.admin.id },
     include: [
       {
         model: ExtraTranslations,
@@ -192,11 +192,11 @@ exports.getAddVariant = async (req, res, next) => {
   });
   console.log("maxOption----------maxOption-----maxOption", maxOption);
   const checkExtraLength = await Extras.findAll({
-    where: { adminId: req.admin.id },
+    where: { restaurantId: req.admin.id },
   });
 
   const checkCategoryLength = await Category.findAll({
-    where: { adminId: req.admin.id },
+    where: { restaurantId: req.admin.id },
   });
 
   if (checkExtraLength.length === 0) {
@@ -209,7 +209,7 @@ exports.getAddVariant = async (req, res, next) => {
 
   const cat = await Category.findAll({
     where: {
-      adminId: req.admin.id,
+      restaurantId: req.admin.id,
     },
     include: [
       {
@@ -258,11 +258,11 @@ exports.postAddVariant = async (req, res, next) => {
   const ext = await req.admin.getExtras();
 
   let productId = await Products.findAll({
-    where: { adminId: req.admin.id },
+    where: { restaurantId: req.admin.id },
   });
 
   const cat = await Category.findAll({
-    where: { adminId: req.admin.id },
+    where: { restaurantId: req.admin.id },
     include: [
       {
         model: CategoryTranslation,
@@ -297,7 +297,7 @@ exports.postAddVariant = async (req, res, next) => {
         productVariantId: variant.id,
         extraId: extId[i],
         active: filteredStatus[i] == "on" ? 1 : 0,
-        adminId: req.admin.id,
+        restaurantId: req.admin.id,
         requiredExtra: filteredOptions[i] == "on" ? 1 : 0,
       });
     }
@@ -398,7 +398,7 @@ exports.getEditVariant = async (req, res, next) => {
     }
   });
   const productVarToExt = await Extras.findAll({
-    where: { adminId: req.admin.id },
+    where: { restaurantId: req.admin.id },
     include: [
       {
         model: ExtraTranslations,
@@ -408,7 +408,7 @@ exports.getEditVariant = async (req, res, next) => {
   });
 
   const testing3 = await ProductVariants.findAll({
-    where: { adminId: req.admin.id },
+    where: { restaurantId: req.admin.id },
     include: [
       {
         as: "catToVar",
@@ -426,7 +426,7 @@ exports.getEditVariant = async (req, res, next) => {
   // maxOptionData.maxOption;
   console.log("categoryList", maxOptionData.maxOption);
   const testing44444 = await ProductVariants.findAll({
-    where: { adminId: req.admin.id, id: varId },
+    where: { restaurantId: req.admin.id, id: varId },
     include: [
       {
         as: "catToVar",
@@ -445,7 +445,7 @@ exports.getEditVariant = async (req, res, next) => {
   }
 
   const ext = await Extras.findAll({
-    where: { adminId: req.admin.id },
+    where: { restaurantId: req.admin.id },
     include: [
       {
         model: ExtraTranslations,
@@ -454,11 +454,11 @@ exports.getEditVariant = async (req, res, next) => {
   });
 
   const cat = await Category.findAll({
-    where: { adminId: req.admin.id },
+    where: { restaurantId: req.admin.id },
     include: [
       {
         model: CategoryTranslation,
-        where: { adminId: req.admin.id },
+        where: { restaurantId: req.admin.id },
       },
     ],
   });
@@ -483,7 +483,7 @@ exports.getEditVariant = async (req, res, next) => {
   ProductVariants.findAll({
     where: {
       id: varId,
-      adminId: req.admin.id,
+      restaurantId: req.admin.id,
     },
     include: [{ model: ProductVariantExtras }],
   })

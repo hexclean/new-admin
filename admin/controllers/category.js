@@ -5,7 +5,7 @@ const Allergen = require("../../models/Allergen");
 exports.getAddCategory = async (req, res, next) => {
   const checkAllergenLength = await Allergen.findAll({
     where: {
-      adminId: req.admin.id,
+      restaurantId: req.admin.id,
     },
   });
   if (checkAllergenLength.length === 0) {
@@ -27,7 +27,7 @@ exports.postAddCategory = async (req, res, next) => {
   const enName = req.body.enName;
 
   const category = await Category.create({
-    adminId: req.admin.id,
+    restaurantId: req.admin.id,
   });
 
   async function extraTransaltion() {
@@ -35,12 +35,12 @@ exports.postAddCategory = async (req, res, next) => {
       name: roName,
       languageId: 1,
       productCategoryId: category.id,
-      adminId: req.admin.id,
+      restaurantId: req.admin.id,
     });
     await CategoryTranslation.create({
       name: huName,
       languageId: 2,
-      adminId: req.admin.id,
+      restaurantId: req.admin.id,
 
       productCategoryId: category.id,
     });
@@ -49,7 +49,7 @@ exports.postAddCategory = async (req, res, next) => {
       name: enName,
       languageId: 3,
       productCategoryId: category.id,
-      adminId: req.admin.id,
+      restaurantId: req.admin.id,
     });
   }
 
@@ -81,7 +81,7 @@ exports.getEditCategory = async (req, res, next) => {
   await Category.findAll({
     where: {
       id: catId,
-      adminId: req.admin.id,
+      restaurantId: req.admin.id,
     },
     include: [
       {
@@ -90,7 +90,7 @@ exports.getEditCategory = async (req, res, next) => {
     ],
   })
     .then((category) => {
-      if (category[0].adminId !== req.admin.id) {
+      if (category[0].restaurantId !== req.admin.id) {
         return res.redirect("/");
       }
 
@@ -123,7 +123,7 @@ exports.postEditCategory = async (req, res, next) => {
   const catTranId = req.body.catTranId;
 
   Category.findAll({
-    where: { adminId: req.admin.id },
+    where: { restaurantId: req.admin.id },
     include: [
       {
         model: CategoryTranslation,

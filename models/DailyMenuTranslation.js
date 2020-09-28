@@ -14,7 +14,7 @@ const DailyMenuTranslation = sequelize.define("dailyMenuTranslation", {
   description: {
     type: Sequelize.STRING,
   },
-  adminId: {
+  restaurantId: {
     type: Sequelize.INTEGER,
   },
 });

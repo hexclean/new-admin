@@ -3,7 +3,7 @@ const Product = require("../../models/Product");
 const ProductVariant = require("../../models/ProductVariant");
 const ProductTranslation = require("../../models/ProductTranslation");
 const ProductFinal = require("../../models/ProductFinal");
-const Admin = require("../../models/Admin");
+const Admin = require("../../models/Restaurant");
 const Sequelize = require("sequelize");
 const Allergen = require("../../models/Allergen");
 const ProductHasAllergen = require("../../models/ProductHasAllergen");
@@ -14,7 +14,7 @@ const BoxTranslation = require("../../models/BoxTranslation");
 exports.getAddProduct = async (req, res, next) => {
   const allergen = await Allergen.findAll({
     where: {
-      adminId: req.admin.id,
+      restaurantId: req.admin.id,
     },
     include: [
       {
@@ -24,7 +24,7 @@ exports.getAddProduct = async (req, res, next) => {
   });
   const box = await Box.findAll({
     where: {
-      adminId: req.admin.id,
+      restaurantId: req.admin.id,
     },
     include: [
       {
@@ -35,15 +35,15 @@ exports.getAddProduct = async (req, res, next) => {
 
   const ext = await ProductVariant.findAll({
     where: {
-      adminId: req.admin.id,
+      restaurantId: req.admin.id,
     },
   });
 
   const checkVariantLength = await ProductVariants.findAll({
-    where: { adminId: req.admin.id },
+    where: { restaurantId: req.admin.id },
   });
   const checkBoxLength = await Box.findAll({
-    where: { adminId: req.admin.id },
+    where: { restaurantId: req.admin.id },
   });
 
   if (checkVariantLength.length === 0) {
@@ -92,7 +92,7 @@ exports.postAddProduct = async (req, res, next) => {
   let commissionCode = commission.commissionCode;
   const box = await Box.findAll({
     where: {
-      adminId: req.admin.id,
+      restaurantId: req.admin.id,
     },
     include: [
       {
@@ -102,7 +102,7 @@ exports.postAddProduct = async (req, res, next) => {
   });
   const allergen = await Allergen.findAll({
     where: {
-      adminId: req.admin.id,
+      restaurantId: req.admin.id,
     },
     include: [
       {
@@ -113,7 +113,7 @@ exports.postAddProduct = async (req, res, next) => {
 
   const ext = await ProductVariant.findAll({
     where: {
-      adminId: req.admin.id,
+      restaurantId: req.admin.id,
     },
   });
 
@@ -172,7 +172,7 @@ exports.postAddProduct = async (req, res, next) => {
           productId: product.id,
           allergenId: allergenId[i],
           active: filteredStatusAllergen[i] == "on" ? 1 : 0,
-          adminId: req.admin.id,
+          restaurantId: req.admin.id,
         });
       }
     }
@@ -212,7 +212,7 @@ exports.getEditProduct = async (req, res, next) => {
 
   const box = await Box.findAll({
     where: {
-      adminId: req.admin.id,
+      restaurantId: req.admin.id,
     },
     include: [
       {
@@ -222,7 +222,7 @@ exports.getEditProduct = async (req, res, next) => {
   });
   const allergen = await Allergen.findAll({
     where: {
-      adminId: req.admin.id,
+      restaurantId: req.admin.id,
     },
     include: [
       {
@@ -234,7 +234,7 @@ exports.getEditProduct = async (req, res, next) => {
 
   const allergenTest = await Allergen.findAll({
     where: {
-      adminId: req.admin.id,
+      restaurantId: req.admin.id,
     },
     include: [
       {
@@ -242,14 +242,17 @@ exports.getEditProduct = async (req, res, next) => {
       },
       {
         model: ProductHasAllergen,
-        where: { productId: { [Op.in]: productId }, adminId: req.admin.id },
+        where: {
+          productId: { [Op.in]: productId },
+          restaurantId: req.admin.id,
+        },
       },
     ],
   });
 
   const prodVariant = await ProductVariants.findAll({
     where: {
-      adminId: req.admin.id,
+      restaurantId: req.admin.id,
     },
     include: [
       {
@@ -268,7 +271,7 @@ exports.getEditProduct = async (req, res, next) => {
   Product.findAll({
     where: {
       id: prodId,
-      adminId: req.admin.id,
+      restaurantId: req.admin.id,
     },
     include: [
       {
@@ -332,7 +335,7 @@ exports.postEditProduct = async (req, res, next) => {
   //
   const box = await Box.findAll({
     where: {
-      adminId: req.admin.id,
+      restaurantId: req.admin.id,
     },
     include: [
       {
@@ -350,7 +353,7 @@ exports.postEditProduct = async (req, res, next) => {
 
   const variants = await ProductVariants.findAll({
     where: {
-      adminId: req.admin.id,
+      restaurantId: req.admin.id,
     },
     include: [
       {
@@ -369,7 +372,7 @@ exports.postEditProduct = async (req, res, next) => {
     .then((result) => {
       async function msg() {
         await Product.findByPk(prodId).then((product) => {
-          if (product.adminId.toString() !== req.admin.id.toString()) {
+          if (product.restaurantId.toString() !== req.admin.id.toString()) {
             return res.redirect("/");
           }
           if (image) {
@@ -453,7 +456,7 @@ exports.postEditProduct = async (req, res, next) => {
               },
               {
                 where: {
-                  adminId: req.admin.id,
+                  restaurantId: req.admin.id,
                   allergenId: {
                     [Op.in]: productIds,
                   },
@@ -494,14 +497,14 @@ exports.getProducts = async (req, res, next) => {
   let currentProductDescription = [];
 
   const checkVariantLength = await ProductVariants.findAll({
-    where: { adminId: req.admin.id },
+    where: { restaurantId: req.admin.id },
   });
   const checkBoxLength = await Box.findAll({
-    where: { adminId: req.admin.id },
+    where: { restaurantId: req.admin.id },
   });
 
   await Product.findAll({
-    where: { adminId: req.admin.id, active: 1 },
+    where: { restaurantId: req.admin.id, active: 1 },
     include: [
       {
         model: ProductTranslation,

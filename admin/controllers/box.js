@@ -18,7 +18,7 @@ exports.postAddBox = async (req, res, next) => {
   const enName = req.body.enName;
   const price = req.body.price;
   const box = await Box.create({
-    adminId: req.admin.id,
+    restaurantId: req.admin.id,
     price: price,
   });
 
@@ -27,12 +27,12 @@ exports.postAddBox = async (req, res, next) => {
       name: roName,
       languageId: 1,
       boxId: box.id,
-      adminId: req.admin.id,
+      restaurantId: req.admin.id,
     });
     await BoxTranslation.create({
       name: huName,
       languageId: 2,
-      adminId: req.admin.id,
+      restaurantId: req.admin.id,
       boxId: box.id,
     });
 
@@ -40,7 +40,7 @@ exports.postAddBox = async (req, res, next) => {
       name: enName,
       languageId: 3,
       boxId: box.id,
-      adminId: req.admin.id,
+      restaurantId: req.admin.id,
     });
   }
 
@@ -72,7 +72,7 @@ exports.getEditBox = async (req, res, next) => {
   await Box.findAll({
     where: {
       id: boxId,
-      adminId: req.admin.id,
+      restaurantId: req.admin.id,
     },
     include: [
       {
@@ -81,7 +81,7 @@ exports.getEditBox = async (req, res, next) => {
     ],
   })
     .then((box) => {
-      if (box[0].adminId !== req.admin.id) {
+      if (box[0].restaurantId !== req.admin.id) {
         return res.redirect("/");
       }
 
@@ -110,7 +110,7 @@ exports.postEditBox = async (req, res, next) => {
   const boxTranslationsId = req.body.boxTranslationsId;
 
   Box.findAll({
-    where: { adminId: req.admin.id },
+    where: { restaurantId: req.admin.id },
     include: [
       {
         model: BoxTranslation,

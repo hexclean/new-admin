@@ -1,4 +1,4 @@
-const Partners = require("../../../models/Admin");
+const Partners = require("../../../models/Restaurant");
 const PartnersTranslation = require("../../../models/AdminInfo");
 
 exports.getPartners = (req, res, next) => {
@@ -222,7 +222,7 @@ exports.postEditPartner = async (req, res, next) => {
             shortCompanyDesc: partnerShortDescRoView,
             adress: addressRo,
           },
-          { where: { adminId: partId, languageId: 1 } }
+          { where: { restaurantId: partId, languageId: 1 } }
         );
 
         await PartnersTranslation.update(
@@ -230,7 +230,7 @@ exports.postEditPartner = async (req, res, next) => {
             shortCompanyDesc: partnerShortDescHuView,
             adress: addressHu,
           },
-          { where: { adminId: partId, languageId: 2 } }
+          { where: { restaurantId: partId, languageId: 2 } }
         );
 
         await PartnersTranslation.update(
@@ -238,7 +238,7 @@ exports.postEditPartner = async (req, res, next) => {
             shortCompanyDesc: partnerShortDescEnView,
             adress: addressEn,
           },
-          { where: { adminId: partId, languageId: 3 } }
+          { where: { restaurantId: partId, languageId: 3 } }
         );
       }
       updateLocationName();

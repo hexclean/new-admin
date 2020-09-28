@@ -11,7 +11,7 @@ const ExtraTranslation = sequelize.define("extraTranslation", {
   name: {
     type: Sequelize.STRING,
   },
-  adminId: {
+  restaurantId: {
     type: Sequelize.INTEGER,
   },
 });

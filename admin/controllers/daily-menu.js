@@ -14,7 +14,7 @@ exports.getAddDailyMenu = async (req, res, next) => {
 
   const allergen = await Allergen.findAll({
     where: {
-      adminId: req.admin.id,
+      restaurantId: req.admin.id,
     },
     include: [
       {
@@ -24,7 +24,7 @@ exports.getAddDailyMenu = async (req, res, next) => {
   });
 
   const dailyMenu = await DailyMenu.findAll({
-    where: { adminId: req.admin.id },
+    where: { restaurantId: req.admin.id },
   });
 
   res.render("daily-menu/edit-daily-menu", {
@@ -54,7 +54,7 @@ exports.postAddDailyMenu = async (req, res, next) => {
 
   const allergen = await Allergen.findAll({
     where: {
-      adminId: req.admin.id,
+      restaurantId: req.admin.id,
     },
     include: [
       {
@@ -64,7 +64,7 @@ exports.postAddDailyMenu = async (req, res, next) => {
   });
 
   const dailyMenu = await DailyMenu.create({
-    adminId: req.admin.id,
+    restaurantId: req.admin.id,
     imageUrl: imageUrl,
     active: 1,
   });
@@ -72,7 +72,7 @@ exports.postAddDailyMenu = async (req, res, next) => {
   async function productTransaltion() {
     await DailyMenuTranslation.create({
       description: roDescription,
-      adminId: req.admin.id,
+      restaurantId: req.admin.id,
       dailyMenuId: dailyMenu.id,
       title: roTitle,
       languageId: 1,
@@ -80,7 +80,7 @@ exports.postAddDailyMenu = async (req, res, next) => {
 
     await DailyMenuTranslation.create({
       description: huDescription,
-      adminId: req.admin.id,
+      restaurantId: req.admin.id,
       dailyMenuId: dailyMenu.id,
       title: huTitle,
       languageId: 2,
@@ -88,7 +88,7 @@ exports.postAddDailyMenu = async (req, res, next) => {
 
     await DailyMenuTranslation.create({
       description: enDescription,
-      adminId: req.admin.id,
+      restaurantId: req.admin.id,
       dailyMenuId: dailyMenu.id,
       title: enTitle,
       languageId: 3,
@@ -108,7 +108,7 @@ exports.postAddDailyMenu = async (req, res, next) => {
           dailyMenuId: dailyMenu.id,
           allergenId: allergenId[i],
           active: filteredStatus[i] == "on" ? 1 : 0,
-          adminId: req.admin.id,
+          restaurantId: req.admin.id,
         });
       }
     }
@@ -144,7 +144,7 @@ exports.getEditDailyMenu = async (req, res, next) => {
 
     const allergen = await Allergen.findAll({
       where: {
-        adminId: req.admin.id,
+        restaurantId: req.admin.id,
       },
       include: [
         {
@@ -156,7 +156,7 @@ exports.getEditDailyMenu = async (req, res, next) => {
 
     const allergenTest = await Allergen.findAll({
       where: {
-        adminId: req.admin.id,
+        restaurantId: req.admin.id,
       },
       include: [
         {
@@ -166,7 +166,7 @@ exports.getEditDailyMenu = async (req, res, next) => {
           model: DailyMenuHasAllergen,
           where: {
             dailyMenuId: { [Op.in]: dailyMenuId },
-            adminId: req.admin.id,
+            restaurantId: req.admin.id,
           },
         },
       ],
@@ -175,7 +175,7 @@ exports.getEditDailyMenu = async (req, res, next) => {
     const product = await DailyMenu.findAll({
       where: {
         id: dailyMenuId,
-        adminId: req.admin.id,
+        restaurantId: req.admin.id,
       },
       include: [
         {
@@ -238,7 +238,7 @@ exports.postEditDailyMenu = async (req, res, next) => {
     .then((result) => {
       async function msg() {
         await DailyMenu.findByPk(dMid).then((product) => {
-          if (product.adminId.toString() !== req.admin.id.toString()) {
+          if (product.restaurantId.toString() !== req.admin.id.toString()) {
             return res.redirect("/");
           }
           if (image) {
@@ -295,7 +295,7 @@ exports.postEditDailyMenu = async (req, res, next) => {
               },
               {
                 where: {
-                  adminId: req.admin.id,
+                  restaurantId: req.admin.id,
                   allergenId: {
                     [Op.in]: allergenIds,
                   },
@@ -325,7 +325,7 @@ exports.getIndex = async (req, res, next) => {
 
   await DailyMenu.findAll({
     where: {
-      adminId: req.admin.id,
+      restaurantId: req.admin.id,
       active: 1,
     },
     include: [
@@ -339,7 +339,7 @@ exports.getIndex = async (req, res, next) => {
       totalItems = numAllergen;
       return DailyMenu.findAll({
         where: {
-          adminId: req.admin.id,
+          restaurantId: req.admin.id,
           active: 1,
         },
         include: [

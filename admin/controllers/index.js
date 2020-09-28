@@ -1,8 +1,8 @@
-const Admin = require("../../models/Admin");
+const Admin = require("../../models/Restaurant");
 
 exports.indexController = (req, res, next) => {
-  const adminId = req.admin.id;
-  Admin.findByPk(adminId)
+  const restaurantId = req.admin.id;
+  Admin.findByPk(restaurantId)
     .then((admin) => {
       if (!admin) {
         return res.redirect("/admin/products");

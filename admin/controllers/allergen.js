@@ -11,6 +11,7 @@ const Op = Sequelize.Op;
 const ITEMS_PER_PAGE = 20;
 
 exports.getAddAllergen = async (req, res, next) => {
+  console.log("dadasdasdasdasdas", req.admin.id);
   res.render("allergen/edit-allergen", {
     pageTitle: "Add Product",
     path: "/admin/add-product",
@@ -27,11 +28,11 @@ exports.postAddAllergen = async (req, res, next) => {
   const enName = req.body.enName;
 
   let dailyMenuId = await DailyMenu.findAll({
-    where: { adminId: req.admin.id },
+    where: { restaurantId: req.admin.id },
   });
 
   const allergen = await Allergen.create({
-    adminId: req.admin.id,
+    restaurantId: req.admin.id,
   });
 
   async function extraTransaltion() {
@@ -39,12 +40,12 @@ exports.postAddAllergen = async (req, res, next) => {
       name: roName,
       languageId: 1,
       allergenId: allergen.id,
-      adminId: req.admin.id,
+      restaurantId: req.admin.id,
     });
     await AllergensTranslation.create({
       name: huName,
       languageId: 2,
-      adminId: req.admin.id,
+      restaurantId: req.admin.id,
 
       allergenId: allergen.id,
     });
@@ -53,19 +54,19 @@ exports.postAddAllergen = async (req, res, next) => {
       name: enName,
       languageId: 3,
       allergenId: allergen.id,
-      adminId: req.admin.id,
+      restaurantId: req.admin.id,
     });
   }
 
   async function extraMenuAllergen() {
     const totalExtras = await Extra.findAll({
-      where: { adminId: req.admin.id },
+      where: { restaurantId: req.admin.id },
     });
     if (Array.isArray(totalExtras)) {
       for (let i = 0; i <= totalExtras.length - 1; i++) {
         await ExtraHasAllergen.create({
           active: 0,
-          adminId: req.admin.id,
+          restaurantId: req.admin.id,
           allergenId: allergen.id,
           extraId: totalExtras[i].id,
         });
@@ -76,13 +77,13 @@ exports.postAddAllergen = async (req, res, next) => {
   }
   async function productMenuAllergen() {
     const totalProducts = await Product.findAll({
-      where: { adminId: req.admin.id },
+      where: { restaurantId: req.admin.id },
     });
     if (Array.isArray(totalProducts)) {
       for (let i = 0; i <= totalProducts.length - 1; i++) {
         await ProductHasAllergen.create({
           active: 0,
-          adminId: req.admin.id,
+          restaurantId: req.admin.id,
           allergenId: allergen.id,
           productId: totalProducts[i].id,
         });
@@ -93,13 +94,13 @@ exports.postAddAllergen = async (req, res, next) => {
   }
   async function DailyMenuAllergen() {
     const totalDailyMenu = await DailyMenu.findAll({
-      where: { adminId: req.admin.id },
+      where: { restaurantId: req.admin.id },
     });
     if (Array.isArray(totalDailyMenu)) {
       for (let i = 0; i <= totalDailyMenu.length - 1; i++) {
         await ProductHasAllergen.create({
           active: 0,
-          adminId: req.admin.id,
+          restaurantId: req.admin.id,
           allergenId: allergen.id,
           dailyMenuId: totalDailyMenu[i].id,
         });
@@ -124,7 +125,7 @@ exports.postAddAllergen = async (req, res, next) => {
 };
 
 exports.getExtras = (req, res, next) => {
-  Extra.findAll({ where: { adminId: req.admin.id } })
+  Extra.findAll({ where: { restaurantId: req.admin.id } })
     .then((extra) => {
       var currentLanguage = req.cookies.language;
       res.render("extra/extras", {
@@ -166,7 +167,7 @@ exports.getEditAllergen = async (req, res, next) => {
     ],
   })
     .then((extra) => {
-      if (extra[0].adminId !== req.admin.id) {
+      if (extra[0].restaurantId !== req.admin.id) {
         return res.redirect("/");
       }
 
@@ -236,7 +237,7 @@ exports.getIndex = async (req, res, next) => {
   let currentAllergenName = [];
 
   const allergens = await Allergen.findAll({
-    where: { adminId: req.admin.id },
+    where: { restaurantId: req.admin.id },
     include: [
       {
         model: AllergensTranslation,
@@ -258,7 +259,7 @@ exports.getIndex = async (req, res, next) => {
 
   await Allergen.findAll({
     where: {
-      adminId: req.admin.id,
+      restaurantId: req.admin.id,
     },
     include: [
       {
@@ -270,7 +271,7 @@ exports.getIndex = async (req, res, next) => {
       totalItems = numAllergen;
       return Allergen.findAll({
         where: {
-          adminId: req.admin.id,
+          restaurantId: req.admin.id,
         },
         include: [
           {
@@ -312,7 +313,7 @@ exports.getSearch = async (req, res, next) => {
   const hasNextPage = 1;
   const hasPreviousPage = 1;
   await Allergen.findAll({
-    where: { adminId: req.admin.id },
+    where: { restaurantId: req.admin.id },
     include: [
       {
         model: AllergensTranslation,

@@ -1,5 +1,5 @@
 const bcrypt = require("bcryptjs");
-const Admin = require("../../models/Admin");
+const Admin = require("../../models/Restaurant");
 const AdminInfo = require("../../models/AdminInfo");
 const nodemailer = require("nodemailer");
 const sendgridTransport = require("nodemailer-sendgrid-transport");
@@ -98,21 +98,21 @@ exports.postSignup = async (req, res, next) => {
           fullName: "-",
         });
         await AdminInfo.create({
-          adminId: admin.id,
+          restaurantId: admin.id,
           adress: "",
           languageId: 1,
           shortCompanyDesc: "",
         });
 
         await AdminInfo.create({
-          adminId: admin.id,
+          restaurantId: admin.id,
           adress: "",
           languageId: 2,
           shortCompanyDesc: "",
         });
 
         await AdminInfo.create({
-          adminId: admin.id,
+          restaurantId: admin.id,
           adress: "",
           languageId: 3,
           shortCompanyDesc: "",

@@ -13,7 +13,7 @@ const ProductCategoryTranslation = sequelize.define(
     name: {
       type: Sequelize.STRING,
     },
-    adminId: {
+    restaurantId: {
       type: Sequelize.INTEGER,
       allowNull: false,
     },

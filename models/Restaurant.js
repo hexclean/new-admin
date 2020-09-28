@@ -2,7 +2,7 @@ const Sequelize = require("sequelize");
 
 const sequelize = require("../util/database");
 
-const Admin = sequelize.define("admin", {
+const Restaurant = sequelize.define("restaurant", {
   id: {
     type: Sequelize.INTEGER,
     autoIncrement: true,
@@ -26,4 +26,4 @@ const Admin = sequelize.define("admin", {
   discount: Sequelize.INTEGER,
 });
 
-module.exports = Admin;
+module.exports = Restaurant;

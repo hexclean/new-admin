@@ -2,10 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Sequelize = require("sequelize");
 
-const sequelize = new Sequelize("foodnet", "root", "y7b5uwFOODNET", {
-  host: "localhost",
-  dialect: "mysql",
-});
+const sequelize = require("../../util/database");
 
 // @route    GET api/location/:locationName
 // @desc     Get all restaurants from selected city
@@ -20,11 +17,11 @@ router.get("/:locationName", async (req, res) => {
       ad.fullName AS restaurant_name, ad.newRestaurant AS restaurant_new, ad.discount AS restaurant_discount,
        adInf.shortCompanyDesc AS restaurant_description,
       ad.deliveryPrice AS restaurant_deliveryPrice, adInf.kitchen AS restaurant_kitchen
-      FROM foodnet.admins AS ad
+      FROM foodnet.restaurants AS ad
       INNER JOIN foodnet.adminInfos AS adInf
-      ON adInf.adminId = ad.id
+      ON adInf.restaurantId = ad.id
       INNER JOIN foodnet.locations AS loc
-      ON ad.id = loc.adminId
+      ON ad.id = loc.restaurantId
       INNER JOIN foodnet.locationNames AS locName
       ON loc.locationNameId = locName.id
       INNER JOIN foodnet.locationNameTranslations as locNameTrans
@@ -57,11 +54,11 @@ router.get("/targu-mures", async (req, res) => {
       ad.fullName AS restaurant_name, ad.newRestaurant AS restaurant_new, ad.discount AS restaurant_discount,
        adInf.shortCompanyDesc AS restaurant_description,
       ad.deliveryPrice AS restaurant_deliveryPrice, adInf.kitchen AS restaurant_kitchen
-      FROM foodnet.admins AS ad
+      FROM foodnet.restaurants AS ad
       INNER JOIN foodnet.adminInfos AS adInf
-      ON adInf.adminId = ad.id
+      ON adInf.restaurantId = ad.id
       INNER JOIN foodnet.locations AS loc
-      ON ad.id = loc.adminId
+      ON ad.id = loc.restaurantId
       INNER JOIN foodnet.locationNames AS locName
       ON loc.locationNameId = locName.id
       INNER JOIN foodnet.locationNameTranslations as locNameTrans
@@ -89,11 +86,11 @@ router.get("/odorheiu-secuiesc", async (req, res) => {
     return sequelize
       .query(
         `SELECT ad.fullName as restaurant_name, adInf.shortCompanyDesc AS restaurant_description, ad.deliveryPrice AS restaurant_deliveryPrice, adInf.kitchen AS restaurant_kitchen
-      FROM foodnet.admins as ad
+      FROM foodnet.restaurants as ad
       INNER JOIN foodnet.adminInfos AS adInf
-      ON adInf.adminId = ad.id
+      ON adInf.restaurantId = ad.id
       INNER JOIN foodnet.adminLocations AS adLoc
-      ON ad.id = adLoc.adminId
+      ON ad.id = adLoc.restaurantId
       INNER JOIN foodnet.adminLocationTranslations AS locTrans
       ON locTrans.adminLocationsId = adLoc.id
       WHERE locTrans.languageId= ${languageCode} AND adInf.languageId=${languageCode} AND locTrans.name LIKE '%${udvarhely}%';`,
@@ -119,11 +116,11 @@ router.get("/miercurea-ciuc", async (req, res) => {
     return sequelize
       .query(
         `SELECT ad.fullName as restaurant_name, adInf.shortCompanyDesc AS restaurant_description, ad.deliveryPrice AS restaurant_deliveryPrice, adInf.kitchen AS restaurant_kitchen
-      FROM foodnet.admins as ad
+      FROM foodnet.restaurants as ad
       INNER JOIN foodnet.adminInfos AS adInf
-      ON adInf.adminId = ad.id
+      ON adInf.restaurantId = ad.id
       INNER JOIN foodnet.adminLocations AS adLoc
-      ON ad.id = adLoc.adminId
+      ON ad.id = adLoc.restaurantId
       INNER JOIN foodnet.adminLocationTranslations AS locTrans
       ON locTrans.adminLocationsId = adLoc.id
       WHERE locTrans.languageId= ${languageCode} AND adInf.languageId=${languageCode} AND locTrans.name LIKE '%${csik}%';`,

@@ -11,7 +11,7 @@ const AllergenTranslation = sequelize.define("allergenTranslation", {
   name: {
     type: Sequelize.STRING,
   },
-  adminId: {
+  restaurantId: {
     type: Sequelize.INTEGER,
   },
 });

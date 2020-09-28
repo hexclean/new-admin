@@ -1,6 +1,6 @@
 const express = require("express"),
   lingua = require("lingua");
-const Admin = require("./models/Admin");
+const Admin = require("./models/Restaurant");
 const errorController = require("./admin/controllers/error");
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
@@ -13,6 +13,7 @@ const Sequelize = require("sequelize");
 const sequelize = require("./util/database");
 const { databaseConfig } = require("./middleware/database-config");
 const app = express();
+const db = require("./util/database");
 
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
@@ -25,11 +26,6 @@ app.use((req, res, next) => {
     return res.status(200).json({});
   }
   next();
-});
-
-const db = new Sequelize("foodnet", "root", "y7b5uwFOODNET", {
-  host: "localhost",
-  dialect: "mysql",
 });
 
 const sessionStore = new SequelizeStore({
@@ -152,8 +148,8 @@ const PORT = process.env.PORT || 5000;
 app.use(errorController.get404);
 
 sequelize
-  // .sync({ force: true })
-  .sync()
+  .sync({ force: true })
+  // .sync()
   .then((result) => {
     app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
   })

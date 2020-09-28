@@ -11,7 +11,7 @@ const VariantCategory = sequelize.define("variantCategory", {
   name: {
     type: Sequelize.STRING,
   },
-  adminId: {
+  restaurantId: {
     type: Sequelize.INTEGER,
   },
 });

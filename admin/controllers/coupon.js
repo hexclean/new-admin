@@ -19,7 +19,7 @@ exports.postAddCoupon = async (req, res, next) => {
     const price = req.body.price;
 
     const coupon = await CouponCode.create({
-      adminId: req.admin.id,
+      restaurantId: req.admin.id,
       price: price,
     });
 
@@ -48,7 +48,7 @@ exports.getEditCoupon = async (req, res, next) => {
   await Box.findAll({
     where: {
       id: boxId,
-      adminId: req.admin.id,
+      restaurantId: req.admin.id,
     },
     include: [
       {
@@ -57,7 +57,7 @@ exports.getEditCoupon = async (req, res, next) => {
     ],
   })
     .then((box) => {
-      if (box[0].adminId !== req.admin.id) {
+      if (box[0].restaurantId !== req.admin.id) {
         return res.redirect("/");
       }
 
@@ -86,7 +86,7 @@ exports.postEditCoupon = async (req, res, next) => {
   const boxTranslationsId = req.body.boxTranslationsId;
 
   Box.findAll({
-    where: { adminId: req.admin.id },
+    where: { restaurantId: req.admin.id },
     include: [
       {
         model: BoxTranslation,

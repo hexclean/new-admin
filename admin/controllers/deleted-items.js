@@ -17,7 +17,7 @@ exports.getProducts = async (req, res, next) => {
   let currentProductName = [];
 
   const products = await Products.findAll({
-    where: { adminId: req.admin.id, active: 0 },
+    where: { restaurantId: req.admin.id, active: 0 },
     include: [
       {
         model: ProductsTranslation,
@@ -39,7 +39,7 @@ exports.getProducts = async (req, res, next) => {
 
   await Products.findAll({
     where: {
-      adminId: req.admin.id,
+      restaurantId: req.admin.id,
       active: 0,
     },
     include: [
@@ -52,7 +52,7 @@ exports.getProducts = async (req, res, next) => {
       totalItems = numProducts;
       return Products.findAll({
         where: {
-          adminId: req.admin.id,
+          restaurantId: req.admin.id,
           active: 0,
         },
         include: [

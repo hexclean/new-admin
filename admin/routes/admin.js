@@ -68,7 +68,7 @@ router.post("/delete-product", isAuth, adminController.postDeleteProduct);
 
 // Profile
 router.get(
-  "/edit-opening-hours/:adminId",
+  "/edit-opening-hours/:restaurantId",
   adminProfileController.getEditOpeningHours
 );
 router.post(
@@ -84,7 +84,10 @@ router.post(
 );
 
 router.post("/edit-profile", isAuth, adminProfileController.postEditProfile);
-router.get("/edit-profile/:adminId", adminProfileController.getEditProfile);
+router.get(
+  "/edit-profile/:restaurantId",
+  adminProfileController.getEditProfile
+);
 router.get("/dashboard", isAuth, adminProfileController.getDashboard);
 
 // Daily Menu

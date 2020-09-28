@@ -1,11 +1,11 @@
-const Admin = require("../../models/Admin");
+const Admin = require("../../models/Restaurant");
 const AdminInfo = require("../../models/AdminInfo");
 const OpeningHours = require("../../models/OpeningHours");
 const Sequelize = require("sequelize");
 
 exports.getEditProfile = async (req, res, next) => {
-  adminId = req.admin.id;
-  adminIdParams = req.params.adminId;
+  restaurantId = req.admin.id;
+  adminIdParams = req.params.restaurantId;
   const editMode = req.query.edit;
   if (!editMode) {
     return res.redirect("/");
@@ -38,8 +38,8 @@ exports.getEditProfile = async (req, res, next) => {
 };
 
 exports.getEditOpeningHours = async (req, res, next) => {
-  adminId = req.admin.id;
-  adminIdParams = req.params.adminId;
+  restaurantId = req.admin.id;
+  adminIdParams = req.params.restaurantId;
 
   const editMode = req.query.edit;
   if (!editMode) {
@@ -87,7 +87,7 @@ exports.postEditOpeningHours = async (req, res, next) => {
 
   // console.log("req.adminid", req.admin.id);
   // console.log(admin);
-  // if (extra.adminId != req.admin.id) {
+  // if (extra.restaurantId != req.admin.id) {
   //   return res.redirect("/");
   // }
   async function updateOpeningHours() {
@@ -97,7 +97,12 @@ exports.postEditOpeningHours = async (req, res, next) => {
 
         close: mondayClose,
       },
-      { where: { adminId: req.admin.id, name: ["Luni", "Hétfő", "Monday"] } }
+      {
+        where: {
+          restaurantId: req.admin.id,
+          name: ["Luni", "Hétfő", "Monday"],
+        },
+      }
     );
 
     await OpeningHours.update(
@@ -106,7 +111,12 @@ exports.postEditOpeningHours = async (req, res, next) => {
 
         close: tuesdayClose,
       },
-      { where: { adminId: req.admin.id, name: ["Marți", "Kedd", "Tuesday"] } }
+      {
+        where: {
+          restaurantId: req.admin.id,
+          name: ["Marți", "Kedd", "Tuesday"],
+        },
+      }
     );
 
     await OpeningHours.update(
@@ -117,7 +127,7 @@ exports.postEditOpeningHours = async (req, res, next) => {
       },
       {
         where: {
-          adminId: req.admin.id,
+          restaurantId: req.admin.id,
           name: ["Miercuri", "Szerda", "Wednesday"],
         },
       }
@@ -131,7 +141,7 @@ exports.postEditOpeningHours = async (req, res, next) => {
       },
       {
         where: {
-          adminId: req.admin.id,
+          restaurantId: req.admin.id,
           name: ["Joi", "Csütörtök", "Thursday"],
         },
       }
@@ -143,7 +153,12 @@ exports.postEditOpeningHours = async (req, res, next) => {
 
         close: fridayClose,
       },
-      { where: { adminId: req.admin.id, name: ["Vineri", "Péntek", "Friday"] } }
+      {
+        where: {
+          restaurantId: req.admin.id,
+          name: ["Vineri", "Péntek", "Friday"],
+        },
+      }
     );
 
     await OpeningHours.update(
@@ -154,7 +169,7 @@ exports.postEditOpeningHours = async (req, res, next) => {
       },
       {
         where: {
-          adminId: req.admin.id,
+          restaurantId: req.admin.id,
           name: ["Sâmbătă", "Szombat", "Saturday"],
         },
       }
@@ -168,7 +183,7 @@ exports.postEditOpeningHours = async (req, res, next) => {
       },
       {
         where: {
-          adminId: req.admin.id,
+          restaurantId: req.admin.id,
           name: ["Duminică", "Vasárnap", "Sunday"],
         },
       }
@@ -192,14 +207,14 @@ exports.postEditProfile = async (req, res, next) => {
     include: [
       {
         model: AdminInfo,
-        where: { adminId: req.admin.id },
+        where: { restaurantId: req.admin.id },
       },
     ],
   })
     .then((admin) => {
       // console.log("req.adminid", req.admin.id);
       // console.log(admin);
-      // if (extra.adminId != req.admin.id) {
+      // if (extra.restaurantId != req.admin.id) {
       //   return res.redirect("/");
       // }
       async function msg() {
@@ -214,17 +229,17 @@ exports.postEditProfile = async (req, res, next) => {
 
         await AdminInfo.update(
           { shortCompanyDesc: roShortCompanyDesc, adress: roAdress },
-          { where: { adminId: req.admin.id, languageId: 1 } }
+          { where: { restaurantId: req.admin.id, languageId: 1 } }
         );
 
         await AdminInfo.update(
           { shortCompanyDesc: huShortCompanyDesc, adress: huAdress },
-          { where: { adminId: req.admin.id, languageId: 2 } }
+          { where: { restaurantId: req.admin.id, languageId: 2 } }
         );
 
         await AdminInfo.update(
           { shortCompanyDesc: enShortCompanyDesc, adress: enAdress },
-          { where: { adminId: req.admin.id, languageId: 3 } }
+          { where: { restaurantId: req.admin.id, languageId: 3 } }
         );
       }
       msg();
@@ -240,9 +255,9 @@ exports.postEditProfile = async (req, res, next) => {
 
 exports.getDashboard = (req, res, next) => {
   const editMode = req.query.edit;
-  const adminId = req.admin.id;
+  const restaurantId = req.admin.id;
 
-  Admin.findByPk(adminId)
+  Admin.findByPk(restaurantId)
     .then((admin) => {
       if (!admin) {
         return res.redirect("/admin/products");

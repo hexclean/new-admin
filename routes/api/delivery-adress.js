@@ -4,7 +4,7 @@ const UserDeliveryAdress = require("../../models/UserDeliveryAdress");
 const auth = require("../../middleware/auth");
 const { check, validationResult } = require("express-validator");
 const User = require("../../models/User");
-
+const sequelize = require("../../util/database");
 // @route    POST api/delivery address
 // @desc     Create delivery address
 // @access   Private

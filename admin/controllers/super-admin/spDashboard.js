@@ -1,4 +1,4 @@
-const Admins = require("../../../models/Admin");
+const Admins = require("../../../models/Restaurant");
 // const User = require("../../../models/");
 
 exports.getIndex = async (req, res, next) => {
