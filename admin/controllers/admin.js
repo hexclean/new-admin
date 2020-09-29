@@ -13,6 +13,7 @@ const Category = require("../../models/ProductCategory");
 const CategoryTranslation = require("../../models/ProductCategoryTranslation");
 const Box = require("../../models/Box");
 const BoxTranslation = require("../../models/BoxTranslation");
+
 exports.getAddProduct = async (req, res, next) => {
   let currentCategoryName = [];
   try {
@@ -68,10 +69,6 @@ exports.getAddProduct = async (req, res, next) => {
       return res.redirect("/admin/products");
     }
 
-    console.log(
-      "cat------------------",
-      cat[0].productCategoryTranslations[0].name
-    );
     for (let i = 0; i < cat.length; i++) {
       var currentLanguage = req.cookies.language;
 
@@ -110,20 +107,17 @@ exports.postAddProduct = async (req, res, next) => {
   const huTitle = req.body.huTitle;
   const enTitle = req.body.enTitle;
   const boxId = req.body.boxId;
-  //
   const price = req.body.price;
-  //
   const roDescription = req.body.roDescription;
   const huDescription = req.body.huDescription;
   const enDescription = req.body.enDescription;
-  //
   const image = req.file;
   const imageUrl = image.path;
   const extId = req.body.extraId;
-  var filteredStatusAllergen = req.body.statusAllergen.filter(Boolean);
-  var filteredStatusBox = req.body.statusBox.filter(Boolean);
+  const filteredStatusAllergen = req.body.statusAllergen.filter(Boolean);
+  const filteredStatusBox = req.body.statusBox.filter(Boolean);
   const commission = await Admin.findByPk(req.admin.id);
-  let commissionCode = commission.commissionCode;
+
   const box = await Box.findAll({
     where: {
       restaurantId: req.admin.id,
@@ -187,7 +181,6 @@ exports.postAddProduct = async (req, res, next) => {
     }
 
     for (let i = 0; i <= ext.length - 1; i++) {
-      console.log("price[i]", price[i]);
       await ProductFinal.create({
         price: price[i] || 0,
         productId: product.id,

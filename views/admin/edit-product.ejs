@@ -17,9 +17,6 @@
   $('#createProduct').submit(function(e){
     e.preventDefault();
     var ck_box = $('input[type="checkbox"]:checked').length;
-    
-    // return in firefox or chrome console 
-    // the number of checkbox checked
     console.log(ck_box); 
 
     if(ck_box > 0){
@@ -410,17 +407,13 @@
                            name="productId"
                            />
                         <% } %>
-                        <button disabled id="createProduct" name="createProduct" class="btn btn-success has-icon" type="submit">
+                        <button  id="createProduct" name="createProduct" class="btn btn-success has-icon" type="submit">
                         <% if (editing) { %>Update Product<% } else { %>Add
                         Product<% } %>
                         </button>
                      </div>
                   </div>
-                  <script>
-                     $('#image').change(function(){
-                        $('#createProduct').prop('disabled', false);
-                     });
-                  </script>
+               
                   <div class="col-xl-12 col-md-12">
                      <div class="ms-panel ms-panel-fh">
                         <div class="ms-panel-header">

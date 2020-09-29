@@ -196,6 +196,32 @@
      });
    });
 </script>
+
+
+<script>
+
+
+   $(document).ready(function() {
+
+      $('#search').keyup(function() {
+         const extraId = $('#search').val();
+         $.get( "get-filtered-extra/"+ extraId )
+
+      .done(function( data ) {
+
+         $("#searchedExtra").html(data);
+         
+      });
+   });
+   })
+
+
+</script>
+
+
+
+
+
 </head>
 
 <body class="ms-body ms-aside-left-open ms-primary-theme ms-has-quickbar">
@@ -264,58 +290,38 @@
                         </div>
                         <% if (editing) { %>
                         
-                        <div class="col-md-6 mb-3">
-                           <label for="validationCustom22">HU</label>
-                           <div class="input-group">
-                              <select class="form-control" for="categoryHu" id="categoryHu" name="categoryHu">
-                                 
-                                 <% for(let i = 0; i < cat.length; i++) { %>                             
-                                 <option id="categoryHu" selected="Marha" name="categoryHu" value='<% if (editing) { %><%= cat[i].id %><% } %>'><%= cat[i].productCategoryTranslations[1].name %></option>
-                                 <% } %>
-
-                              </select>
+                           <div class="col-md-6 mb-3">
+                              <label for="validationCustom22">RO</label>
+                              <div class="input-group">
+                                 <select class="form-control" for="categoryRo" id="categoryRo" name="categoryRo">
+                                    <option disabled="true" value="list">Variáns kategótia</option>
+                                    <% for(let i = 0; i < cat.length; i++) { %>
+                  
+                                    <option id="categoryRo" name="categoryRo" value='<%= cat[i].id %>'><%= cat[i].productCategoryTranslations[`${currentLanguage}`].name %></option>
+                                    <% } %>
+                                 </select>
+                              </div>
+                              <span class="error_form" id="category_error_message"></span>
                            </div>
-                           <span class="error_form" id="category_error_message"></span>
-                        </div>
                       
                         <% } else { %>
-                        <div class="col-md-6 mb-3">
-                           <label for="validationCustom22">RO</label>
-                           <div class="input-group">
-                              <select class="form-control" for="categoryRo" id="categoryRo" name="categoryRo">
-                                 <option value="">RO</option>
-                                 <% for(let i = 0; i < cat.length; i++) { %>
-
-                                 <option id="categoryRo" name="categoryRo" value='<%= cat[i].id %>'><%= cat[i].productCategoryTranslations[0].name %></option>
-                                 <% } %>
-                              </select>
+                          
+                           <div class="col-md-6 mb-3">
+                              <label for="validationCustom22">RO</label>
+                              <div class="input-group">
+                                 <select class="form-control" for="categoryRo" id="categoryRo" name="categoryRo">
+                                    <option disabled="true" value="list">Variáns kategótia</option>
+                                    <% for(let i = 0; i < cat.length; i++) { %>
+                  
+                                    <option id="categoryRo" name="categoryRo" value='<%= cat[i].id %>'><%= cat[i].productCategoryTranslations[`${currentLanguage}`].name %></option>
+                                    <% } %>
+                                 </select>
+                              </div>
+                              <span class="error_form" id="category_error_message"></span>
                            </div>
-                           <span class="error_form" id="category_error_message"></span>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                           <label for="validationCustom22">HU</label>
-                           <div class="input-group">
-                              <select class="form-control" for="categoryHu" id="categoryHu" name="categoryHu">
-                                 <option value="">HU</option>
-                                 <% for(let i = 0; i < cat.length; i++) { %>       
-                                 <option id="categoryHu" name="categoryHu" value='<%= cat[i].id %>'><%= cat[i].productCategoryTranslations[1].name %></option>
-                                 <% } %>
-                              </select>
-                           </div>
-                           <span class="error_form" id="category_error_message"></span>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                           <label for="validationCustom22">EN</label>
-                           <div class="input-group">
-                              <select class="form-control" for="categoryEn" id="categoryEn" name="categoryEn">
-                                 <option value="">EN</option>
-                                 <% for(let i = 0; i < cat.length; i++) { %>       
-                                 <option id="categoryEn" name="categoryEn" value='<%= cat[i].id %>'><%= cat[i].productCategoryTranslations[2].name %></option>
-                                 <% } %>
-                              </select>
-                           </div>
-                           <span class="error_form" id="category_error_message"></span>
-                        </div>
+                      
+                      
+                     
                         <% } %>
                       
                         <div>
@@ -352,6 +358,8 @@
          </div>
          </div>
          </div>
+         <input type="text" name="search" id="search" placeholder="Search extra" class="form-control"
+         />
          <div class="ms-panel ms-btn-display">
             <div class="ms-panel-header">
                <h6>A  hozzárendelhető extrái:</h6>
@@ -472,7 +480,7 @@
          <div class="ms-content-wrapper">
             <div class="row">
                <div class="col-md-12">
-                  <div class="row">
+                  <div  id="searchedExtra" class="row">
                      <% for (let i=0; i < ext.length; i++ ) { %>
                      <input
                         type="hidden"

@@ -29,9 +29,9 @@ router.get(
 router.post("/edit-variant", isAuth, variantsController.postEditVariant);
 router.post("/delete-variant", variantsController.postDeleteVariant);
 router.get(
-  "/get-category-variants/:categoryId",
+  "/get-filtered-extra/:extraName",
   isAuth,
-  adminController.getCategoryVariants
+  variantsController.getFilteredExtra
 );
 
 // CATEGORY
@@ -70,6 +70,11 @@ router.post("/add-product", adminController.postAddProduct);
 router.get("/edit-product/:productId", isAuth, adminController.getEditProduct);
 router.post("/edit-product", isAuth, adminController.postEditProduct);
 router.post("/delete-product", isAuth, adminController.postDeleteProduct);
+router.get(
+  "/get-category-variants/:categoryId",
+  isAuth,
+  adminController.getCategoryVariants
+);
 
 // Profile
 router.get(

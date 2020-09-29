@@ -10,7 +10,6 @@ const Restaurant = sequelize.define("restaurant", {
     primaryKey: true,
   },
   commission: Sequelize.FLOAT,
-  commissionCode: Sequelize.FLOAT,
   phoneNumber: Sequelize.STRING,
   email: Sequelize.STRING,
   password: Sequelize.STRING,

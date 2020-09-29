@@ -11,6 +11,7 @@ const Products = require("../../models/Product");
 const Sequelize = require("sequelize");
 const Allergen = require("../../models/Allergen");
 const ITEMS_PER_PAGE = 14;
+const Op = Sequelize.Op;
 
 exports.searchExtraByKeyword = async (req, res, next) => {
   res.render("search/index", {
@@ -181,7 +182,8 @@ exports.getIndex = async (req, res, next) => {
 
 exports.getAddVariant = async (req, res, next) => {
   let currentExtraName = [];
-  const maxOption = req.bodymaxOption;
+  let currentCategoryName = [];
+
   const ext = await Extras.findAll({
     where: { restaurantId: req.admin.id },
     include: [
@@ -190,7 +192,7 @@ exports.getAddVariant = async (req, res, next) => {
       },
     ],
   });
-  console.log("maxOption----------maxOption-----maxOption", maxOption);
+
   const checkExtraLength = await Extras.findAll({
     where: { restaurantId: req.admin.id },
   });
@@ -228,6 +230,17 @@ exports.getAddVariant = async (req, res, next) => {
       currentExtraName[i] = ext[i].extraTranslations[2].name;
     }
   }
+  for (let i = 0; i < cat.length; i++) {
+    var currentLanguage = req.cookies.language;
+
+    if (currentLanguage == "ro") {
+      currentCategoryName = 0;
+    } else if (currentLanguage == "hu") {
+      currentCategoryName = 1;
+    } else {
+      currentCategoryName = 2;
+    }
+  }
 
   res.render("variant/edit-variant", {
     pageTitle: "Add Product",
@@ -236,6 +249,7 @@ exports.getAddVariant = async (req, res, next) => {
     hasError: false,
     ext: ext,
     currentExtraName: currentExtraName,
+    currentLanguage: currentCategoryName,
     cat: cat,
     errorMessage: null,
     validationErrors: [],
@@ -249,12 +263,10 @@ exports.postAddVariant = async (req, res, next) => {
   const updatedExtraQuantityMin = req.body.quantityMin;
   const updatedExtraQuantityMax = req.body.quantityMax;
   const categoryRo = req.body.categoryRo;
-  const categoryHu = req.body.categoryHu;
-  const categoryEn = req.body.categoryEn;
+
   const maxOption = req.body.maxOption;
   const filteredStatus = req.body.status.filter(Boolean);
   const filteredOptions = req.body.statusOption.filter(Boolean);
-  console.log("----maxOption----", maxOption);
   const ext = await req.admin.getExtras();
 
   let productId = await Products.findAll({
@@ -529,4 +541,48 @@ exports.postDeleteVariant = (req, res, next) => {
       res.redirect("/admin/vr-index");
     })
     .catch((err) => console.log(err));
+};
+
+exports.getFilteredExtra = async (req, res, next) => {
+  var extraName = req.params.extraName;
+  var currentExtraName;
+  var currentLanguage = req.cookies.language;
+
+  if (currentLanguage == "ro") {
+    currentExtraName = 1;
+  } else if (currentLanguage == "hu") {
+    currentExtraName = 2;
+  } else {
+    currentExtraName = 3;
+  }
+
+  console.log("da-----------", extraName.length);
+
+  await Extras.findAll({
+    where: {
+      restaurantId: req.admin.id,
+    },
+    include: [
+      {
+        model: ExtraTranslations,
+        where: {
+          name: { [Op.like]: "%" + extraName + "%" },
+          languageId: currentExtraName,
+        },
+      },
+    ],
+  })
+
+    .then((ext) => {
+      res.render("variant/searchedExtra", {
+        ext: ext,
+        editing: false,
+        currentExtraName: extraName,
+      });
+    })
+    .catch((err) => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
 };
