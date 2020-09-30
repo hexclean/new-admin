@@ -18,12 +18,6 @@ exports.getIndex = async (req, res, next) => {
     pageTitle: "Admin Products",
     path: "/admin/products",
   });
-
-  // .catch((err) => {
-  //   const error = new Error(err);
-  //   error.httpStatusCode = 500;
-  //   return next(error);
-  // });
 };
 
 exports.getAddVariant = async (req, res, next) => {
@@ -114,9 +108,7 @@ exports.postAddVariant = async (req, res, next) => {
   const maxOption = req.body.maxOption;
   const filteredStatus = req.body.status.filter(Boolean);
   const filteredOptions = req.body.statusOption.filter(Boolean);
-  console.log("-----extId", extId);
-  console.log("statusOption=====", filteredStatus);
-  console.log("filteredStatus=====", filteredStatus);
+
   const ext = await Extras.findAll({
     where: { restaurantId: req.admin.id },
     include: [
@@ -134,7 +126,6 @@ exports.postAddVariant = async (req, res, next) => {
       },
     ],
   });
-  console.log(ext);
 
   let productId = await Products.findAll({
     where: { restaurantId: req.admin.id },
@@ -287,43 +278,6 @@ exports.getEditVariant = async (req, res, next) => {
     ],
   });
 
-  const testing3 = await ProductVariants.findAll({
-    where: { restaurantId: req.admin.id },
-    include: [
-      {
-        as: "catToVar",
-        model: Category,
-        include: [
-          {
-            model: CategoryTranslation,
-          },
-        ],
-      },
-    ],
-  });
-
-  const maxOptionData = await ProductVariants.findByPk(varId);
-  // maxOptionData.maxOption;
-  console.log("categoryList", maxOptionData.maxOption);
-  const testing44444 = await ProductVariants.findAll({
-    where: { restaurantId: req.admin.id, id: varId },
-    include: [
-      {
-        as: "catToVar",
-        model: Category,
-        include: [
-          {
-            model: CategoryTranslation,
-          },
-        ],
-      },
-    ],
-  });
-  let arraytest = [];
-  for (let i = 0; i < testing44444.length; i++) {
-    arraytest = testing44444[i].catToVar.productCategoryTranslations[0].name;
-  }
-
   const ext = await Extras.findAll({
     where: { restaurantId: req.admin.id },
     include: [
@@ -385,17 +339,10 @@ exports.getEditVariant = async (req, res, next) => {
     ],
   })
     .then((variant) => {
-      for (let i = 0; i < variant.length; i++) {
-        console.log(
-          "variant[i].prices",
-          variant[i].productVariantsExtras[0].requiredExtra
-        );
-      }
       res.render("variant/edit-variant", {
         pageTitle: "Edit Product",
         path: "/admin/edit-product",
         editing: editMode,
-        maxOptionData: maxOptionData.maxOption,
         varId: varId,
         variant: variant,
         variantIdByParams: varId,
@@ -403,11 +350,9 @@ exports.getEditVariant = async (req, res, next) => {
         hasError: false,
         ext: ext,
         categoryList: categoryList,
-        arraytest: arraytest,
         cat: cat,
         currentLanguage: 1,
         testSelect: "Alma",
-        testing3: testing3,
         productVarToExt: productVarToExt,
         errorMessage: null,
         validationErrors: [],

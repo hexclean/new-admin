@@ -2,6 +2,7 @@ const Extra = require("../../models/Extra");
 const ExtraTranslation = require("../../models/ExtraTranslation");
 const Allergen = require("../../models/Allergen");
 const ProductVariantsExtras = require("../../models/ProductVariantsExtras");
+const ProductVariants = require("../../models/ProductVariant");
 const AllegenTranslation = require("../../models/AllergenTranslation");
 const ExtraHasAllergen = require("../../models/ExtraHasAllergen");
 const Sequelize = require("sequelize");
@@ -75,7 +76,6 @@ exports.postAddExtra = async (req, res, next) => {
       name: huName,
       languageId: 2,
       restaurantId: req.admin.id,
-
       extraId: extra.id,
     });
 
@@ -99,26 +99,34 @@ exports.postAddExtra = async (req, res, next) => {
   }
 
   async function add() {
-    const extra = await ProductVariantsExtras.findAll({
+    const newExtra = await ProductVariants.findAll({
       where: { restaurantId: req.admin.id },
     });
 
-    if (Array.isArray(extra)) {
-      for (let i = 0; i <= extra.length - 1; i++) {
-        await ProductVariantsExtras.create({
-          active: 0,
-          restaurantId: req.admin.id,
-          extraId: extra.id,
-          extraId: extra[i].id,
-          quantityMax: 0,
-          quantityMin: 0,
-          discountedPrice: 0,
-          price: 0,
-        });
-      }
-    } else {
-      return;
+    // if (Array.isArray(newExtra)) {
+    for (let i = 0; i < newExtra.length; i++) {
+      let x = [];
+      let extraId = [];
+
+      x = newExtra[i].id;
+      extraId = extra.id;
+      console.log("extraid", extra.id);
+
+      await ProductVariantsExtras.create({
+        active: 0,
+        restaurantId: req.admin.id,
+        extraId: extraId,
+        quantityMax: 0,
+        quantityMin: 0,
+        discountedPrice: 0,
+        price: 0,
+        productVariantId: x,
+        requiredExtra: 0,
+      });
     }
+    // } else {
+    //   return;
+    // }
   }
   createExtraTranslation()
     .then((result) => {
