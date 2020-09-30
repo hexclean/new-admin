@@ -1,6 +1,6 @@
 const Sequelize = require("sequelize");
 const fileHelper = require("../../util/file");
-const ITEMS_PER_PAGE = 14;
+const Box = require("../../models/Box");
 const DailyMenuHasAllergen = require("../../models/DailyMenuHasAllergen");
 const Allergen = require("../../models/Allergen");
 const AllegenTranslation = require("../../models/AllergenTranslation");
@@ -8,10 +8,20 @@ const AllegenTranslation = require("../../models/AllergenTranslation");
 const DailyMenu = require("../../models/DailyMenu");
 const DailyMenuTranslation = require("../../models/DailyMenuTranslation");
 const DailyMenuFinal = require("../../models/DailyMenuFinal");
+const ITEMS_PER_PAGE = 14;
 
 exports.getAddDailyMenu = async (req, res, next) => {
   const dailyMId = req.params.dailyMenuId;
 
+  // const checkBoxLength = await Box.findAll({
+  //   where: {
+  //     restaurantId: req.admin.id,
+  //   },
+  // });
+
+  // if (checkBoxLength.length == 0) {
+  //   res.redirect("/admin/add-daily-menu");
+  // }
   const allergen = await Allergen.findAll({
     where: {
       restaurantId: req.admin.id,
@@ -34,6 +44,7 @@ exports.getAddDailyMenu = async (req, res, next) => {
     allergenArray: allergen,
     dailyMenuId: dailyMId,
     dailyMenu: dailyMenu,
+    // checkBoxLength: checkBoxLength,
   });
 };
 
@@ -359,6 +370,7 @@ exports.getIndex = async (req, res, next) => {
         hasNextPage: ITEMS_PER_PAGE * page < totalItems.length,
         hasPreviousPage: page > 1,
         nextPage: page + 1,
+        // checkBoxLength: checkBoxLength,
         previousPage: page - 1,
         lastPage: Math.ceil(totalItems.length / ITEMS_PER_PAGE),
         dm: allergen,

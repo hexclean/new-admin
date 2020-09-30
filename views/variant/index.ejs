@@ -47,138 +47,18 @@
                <li role="presentation"><a class="add-category" href="/admin/box-index">Doboz </a></li>
 
             </ul>
-            <div class="tab-content">
-               <div class="tab-pane" id="tab1">
-               </div>
-               <div class="tab-pane" id="tab2">
-               </div>
-               <div class="tab-pane" id="tab3">
-               </div>
-            </div>
+           
          </div>
       </div>
     
        
-            <% if ( checkExtraLength.length === 0) { %>
-               <script>
-                  $('.add-variant').click(function () {return false;});
-               </script>
-          <div class="alert alert-danger" role="alert">
-            <i class="flaticon-alert-1 alert-message-popup"></i> <strong class="alert-message-popup">Oh snap! eloszor extrat letre kell hoznod majd azutan tudsz varianst letrehozni</strong>
-          </div>
-         <% } %>
-
-         <% if ( checkCategoryLength.length === 0) { %>
-            <script>
-               $('.add-variant').click(function () {return false;});
-            </script>
-       <div class="alert alert-danger" role="alert">
-         <i class="flaticon-alert-1"></i> <strong class="alert-message-popup">Oh snap! eloszor KATEGORIAT letre kell hoznod majd azutan tudsz varianst letrehozni</strong >
-       </div>
-      <% } %>
-
-      <% if ( checkAllergenLength.length === 0) { %>
-         <script>
-            $('.add-extra').click(function () {return false;});
-         </script>
-    <div class="alert alert-danger" role="alert">
-      <i class="flaticon-alert-1"></i> <strong class="alert-message-popup">Oh snap! eloszor Allergen kell az extrahoz</strong >
-    </div>
-   <% } %>
+          
        
       <div class="ms-content-wrapper">
          <div class="row">
             <div class="col-md-12">
               
-               <div class="col-12">
-                  <div class="ms-panel">
-                     <div class="ms-panel-header">
-                        <h6> Variant List</h6>
-                     </div>
-                     <div class="ms-panel-body">
-                        <div class="table-responsive">
-                           <table class="table table-hover thead-primary">
-                              <thead>
-                                 <tr>
-                                    <th scope="col">ID</th>
-                                    <th scope="col">SKU</th>
-                                    
-                                    <th scope="col">STATUS</th>
-                                    <th scope="col" class="buttons-text-variants">DELETE</th>
-                                    <th scope="col" >EDIT</th>
-                                 </tr>
-                              </thead>
-                              <% if (vr.length > 0) { %>
-                              <% for (let variant of vr) { %>
-                              <tbody>
-                                 <tr>
-                                    <th scope="row"><%= variant.id %></th>
-                                    <td><%= variant.sku %></td>
-                                    
-                                    <td><span class="badge badge-success">AKTIV</span></td>
-                                    <td>
-                                       <form action="/admin/delete-variant" method="POST" >
-
-                                          <input type="hidden" value="<%= variant.id %>" name="variantId">
-                                          <button class="btn grid-btn mt-0 btn-sm btn-primary"  type="submit" class="btn btn-primary shadow-none">Törlés</button>
-                                       </form>
-                                    </td>
-                                    <td>                              <a href="/admin/edit-variant/<%= variant.id %>?edit=true"class="btn grid-btn mt-0 btn-sm btn-secondary" ><%= lingua.product_action_edit %></a>
-                                    </td>
-                                 </tr>
-                              </tbody>
-                              <% } %>
-                              <% } else { %>
-                              <h1>No Products Found!</h1>
-                              <% } %>
-                           </table>
-                        </div>
-                        <%- include('../includes/pagination.ejs', {currentPage: currentPage, nextPage: nextPage, previousPage: previousPage, lastPage: lastPage, hasNextPage: hasNextPage, hasPreviousPage: hasPreviousPage}) %>
-                     </div>
-                  </div>
-               </div>
-               <div class="col-12">
-                  <div class="ms-panel">
-                     <div class="ms-panel-header">
-                        <h6> Extra List</h6>
-                     </div>
-                     <div class="ms-panel-body">
-                        <div class="table-responsive">
-                           <table id="searchedExtra" class="table table-hover thead-primary">
-                              <thead>
-                                 <tr>
-                                    <th scope="col">ID</th>
-                                   
-                                    <th scope="col"> name </th>
-                                    <th scope="col">STATUS</th>
-                                    <th scope="col" >EDIT</th>
-                                 </tr>
-                              </thead>
-                              <input type="text" name="searchExtra" id="searchExtra" placeholder="Search category" class="form-control" />
-
-                              <% if (extras.length > 0) { %>
-                              <% for (let i=0; i < extras.length; i++ ) { %>
-                              <tbody>
-                                 <tr>
-                                    <th scope="row"><%= extras[i].id %></th>
-                                    
-                                   <td><%= currentExtraName[i] %></td>
-                                    <td><span class="badge badge-success">AKTIV</span></td>
-                                    <td>
-                                       <a href="/admin/edit-extra/<%= extras[i].id %>?edit=true"class="btn grid-btn mt-0 btn-sm btn-secondary" ><%= lingua.product_action_edit %></a>
-                                    </td>
-                                 </tr>
-                              </tbody>
-                              <% } %>
-                              <% } else { %>
-                              <h1>No Products Found!</h1>
-                              <% } %>
-                           </table>
-                        </div>
-                        <%- include('../includes/pagination.ejs', {currentPage: currentPage, nextPage: nextPage, previousPage: previousPage, lastPage: lastPage, hasNextPage: hasNextPage, hasPreviousPage: hasPreviousPage}) %>
-                     </div>
-                  </div>
-               </div>
+            
              
             </div>
          </div>

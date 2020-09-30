@@ -149,6 +149,12 @@ exports.getCategoryIndex = async (req, res, next) => {
   let totalItems;
   let currentCategoryName = [];
 
+  const checkAllergenLength = await Allergen.findAll({
+    where: {
+      restaurantId: req.admin.id,
+    },
+  });
+
   await Category.findAll({
     where: {
       restaurantId: req.admin.id,
@@ -195,7 +201,7 @@ exports.getCategoryIndex = async (req, res, next) => {
         pageTitle: "Admin Products",
         path: "/admin/products",
         currentPage: page,
-
+        checkAllergenLength: checkAllergenLength,
         hasNextPage: ITEMS_PER_PAGE * page < totalItems.length,
         hasPreviousPage: page > 1,
         nextPage: page + 1,
@@ -275,6 +281,7 @@ exports.getAllergenIndex = async (req, res, next) => {
       return next(error);
     });
 };
+
 exports.getBoxIndex = async (req, res, next) => {
   const page = +req.query.page || 1;
   let totalItems;
@@ -338,6 +345,7 @@ exports.getBoxIndex = async (req, res, next) => {
       return next(error);
     });
 };
+
 exports.getFilteredExtra = async (req, res, next) => {
   var extraName = req.params.extraName;
   var currentExtraName;
