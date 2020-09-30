@@ -196,6 +196,7 @@ exports.postEditVariant = async (req, res, next) => {
   const updatedExtraQuantityMax = req.body.quantityMax;
   const filteredStatus = req.body.status.filter(Boolean);
   const filteredOptions = req.body.statusOption.filter(Boolean);
+  const maxOption = req.body.maxOption;
 
   const Op = Sequelize.Op;
   const dasd = req.body.varId;
@@ -213,6 +214,7 @@ exports.postEditVariant = async (req, res, next) => {
       async function msg() {
         await ProductVariants.findByPk(varId).then((variant) => {
           variant.sku = updatedSku;
+          variant.maxOption = maxOption;
           return variant.save();
         });
 
@@ -245,7 +247,7 @@ exports.postEditVariant = async (req, res, next) => {
         }
       }
       msg();
-      res.redirect("/admin/vr-index");
+      res.redirect("/admin/variant-index");
     })
     .catch((err) => {
       const error = new Error(err);

@@ -103,7 +103,6 @@ exports.postAddExtra = async (req, res, next) => {
       where: { restaurantId: req.admin.id },
     });
 
-    // if (Array.isArray(newExtra)) {
     for (let i = 0; i < newExtra.length; i++) {
       let x = [];
       let extraId = [];
@@ -124,15 +123,12 @@ exports.postAddExtra = async (req, res, next) => {
         requiredExtra: 0,
       });
     }
-    // } else {
-    //   return;
-    // }
   }
   createExtraTranslation()
     .then((result) => {
       addAllergenToExtra();
       add();
-      res.redirect("/admin/vr-index"),
+      res.redirect("/admin/extra-index"),
         {
           allergenArray: allergen,
         };
@@ -305,7 +301,7 @@ exports.postEditExtra = async (req, res, next) => {
       }
       msg();
 
-      res.redirect("/admin/vr-index"),
+      res.redirect("/admin/extra-index"),
         {
           allergenArray: 1,
         };
