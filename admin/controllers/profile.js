@@ -1,7 +1,9 @@
 const Admin = require("../../models/Restaurant");
 const AdminInfo = require("../../models/AdminInfo");
-const OpeningHours = require("../../models/OpeningHours");
 const Sequelize = require("sequelize");
+const Hours = require("../../models/Hours.js");
+const OpeningHours = require("../../models/OpeningHours");
+const OpeningHoursTranslation = require("../../models/OpeningHoursTranslation");
 
 exports.getEditProfile = async (req, res, next) => {
   restaurantId = req.admin.id;
@@ -48,13 +50,26 @@ exports.getEditOpeningHours = async (req, res, next) => {
 
   await Admin.findAll({
     where: { id: req.admin.id },
-    // include: [
-    //   {
-    //     model: OpeningHours,
-    //   },
-    // ],
+    include: [
+      {
+        model: Hours,
+        include: [
+          {
+            model: OpeningHours,
+            include: [
+              {
+                model: OpeningHoursTranslation,
+              },
+            ],
+          },
+        ],
+      },
+    ],
   })
     .then((admin) => {
+      // console.log("admin----", admin[0].hours);
+      // console.log("admin----", admin[0].hours[0].openingHour);
+      // console.log(admin[0].hours[1].openingHour.openingHoursTranslations);
       res.render("profile/edit-opening-hours", {
         pageTitle: "Edit Product",
         path: "/admin/edit-product",
@@ -72,18 +87,18 @@ exports.getEditOpeningHours = async (req, res, next) => {
 exports.postEditOpeningHours = async (req, res, next) => {
   const mondayOpen = req.body.mondayOpen;
   const mondayClose = req.body.mondayClose;
-  const tuesdayOpen = req.body.tuesdayOpen;
-  const tuesdayClose = req.body.tuesdayClose;
-  const wednesdayOpen = req.body.wednesdayOpen;
-  const wednesdayClose = req.body.wednesdayClose;
-  const thursdayOpen = req.body.thursdayOpen;
-  const thursdayClose = req.body.thursdayClose;
-  const fridayOpen = req.body.fridayOpen;
-  const fridayClose = req.body.fridayClose;
-  const saturdayOpen = req.body.saturdayOpen;
-  const saturdayClose = req.body.saturdayClose;
-  const sundayOpen = req.body.sundayOpen;
-  const sundayClose = req.body.sundayClose;
+  // const tuesdayOpen = req.body.tuesdayOpen;
+  // const tuesdayClose = req.body.tuesdayClose;
+  // const wednesdayOpen = req.body.wednesdayOpen;
+  // const wednesdayClose = req.body.wednesdayClose;
+  // const thursdayOpen = req.body.thursdayOpen;
+  // const thursdayClose = req.body.thursdayClose;
+  // const fridayOpen = req.body.fridayOpen;
+  // const fridayClose = req.body.fridayClose;
+  // const saturdayOpen = req.body.saturdayOpen;
+  // const saturdayClose = req.body.saturdayClose;
+  // const sundayOpen = req.body.sundayOpen;
+  // const sundayClose = req.body.sundayClose;
 
   // console.log("req.adminid", req.admin.id);
   // console.log(admin);
@@ -100,94 +115,94 @@ exports.postEditOpeningHours = async (req, res, next) => {
       {
         where: {
           restaurantId: req.admin.id,
-          name: ["Luni", "Hétfő", "Monday"],
+          sku: "hetfo",
         },
       }
     );
 
-    await OpeningHours.update(
-      {
-        open: tuesdayOpen,
+    // await OpeningHours.update(
+    //   {
+    //     open: tuesdayOpen,
 
-        close: tuesdayClose,
-      },
-      {
-        where: {
-          restaurantId: req.admin.id,
-          name: ["Marți", "Kedd", "Tuesday"],
-        },
-      }
-    );
+    //     close: tuesdayClose,
+    //   },
+    //   {
+    //     where: {
+    //       restaurantId: req.admin.id,
+    //       name: ["Marți", "Kedd", "Tuesday"],
+    //     },
+    //   }
+    // );
 
-    await OpeningHours.update(
-      {
-        open: wednesdayOpen,
+    // await OpeningHours.update(
+    //   {
+    //     open: wednesdayOpen,
 
-        close: wednesdayClose,
-      },
-      {
-        where: {
-          restaurantId: req.admin.id,
-          name: ["Miercuri", "Szerda", "Wednesday"],
-        },
-      }
-    );
+    //     close: wednesdayClose,
+    //   },
+    //   {
+    //     where: {
+    //       restaurantId: req.admin.id,
+    //       name: ["Miercuri", "Szerda", "Wednesday"],
+    //     },
+    //   }
+    // );
 
-    await OpeningHours.update(
-      {
-        open: thursdayOpen,
+    // await OpeningHours.update(
+    //   {
+    //     open: thursdayOpen,
 
-        close: thursdayClose,
-      },
-      {
-        where: {
-          restaurantId: req.admin.id,
-          name: ["Joi", "Csütörtök", "Thursday"],
-        },
-      }
-    );
+    //     close: thursdayClose,
+    //   },
+    //   {
+    //     where: {
+    //       restaurantId: req.admin.id,
+    //       name: ["Joi", "Csütörtök", "Thursday"],
+    //     },
+    //   }
+    // );
 
-    await OpeningHours.update(
-      {
-        open: fridayOpen,
+    // await OpeningHours.update(
+    //   {
+    //     open: fridayOpen,
 
-        close: fridayClose,
-      },
-      {
-        where: {
-          restaurantId: req.admin.id,
-          name: ["Vineri", "Péntek", "Friday"],
-        },
-      }
-    );
+    //     close: fridayClose,
+    //   },
+    //   {
+    //     where: {
+    //       restaurantId: req.admin.id,
+    //       name: ["Vineri", "Péntek", "Friday"],
+    //     },
+    //   }
+    // );
 
-    await OpeningHours.update(
-      {
-        open: saturdayOpen,
+    // await OpeningHours.update(
+    //   {
+    //     open: saturdayOpen,
 
-        close: saturdayClose,
-      },
-      {
-        where: {
-          restaurantId: req.admin.id,
-          name: ["Sâmbătă", "Szombat", "Saturday"],
-        },
-      }
-    );
+    //     close: saturdayClose,
+    //   },
+    //   {
+    //     where: {
+    //       restaurantId: req.admin.id,
+    //       name: ["Sâmbătă", "Szombat", "Saturday"],
+    //     },
+    //   }
+    // );
 
-    await OpeningHours.update(
-      {
-        open: sundayOpen,
+    // await OpeningHours.update(
+    //   {
+    //     open: sundayOpen,
 
-        close: sundayClose,
-      },
-      {
-        where: {
-          restaurantId: req.admin.id,
-          name: ["Duminică", "Vasárnap", "Sunday"],
-        },
-      }
-    );
+    //     close: sundayClose,
+    //   },
+    //   {
+    //     where: {
+    //       restaurantId: req.admin.id,
+    //       name: ["Duminică", "Vasárnap", "Sunday"],
+    //     },
+    //   }
+    // );
   }
   updateOpeningHours();
   return res.redirect("/");

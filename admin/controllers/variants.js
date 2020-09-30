@@ -10,46 +10,8 @@ const ProductsFinal = require("../../models/ProductFinal");
 const Products = require("../../models/Product");
 const Sequelize = require("sequelize");
 const Allergen = require("../../models/Allergen");
-const ITEMS_PER_PAGE = 14;
+const ITEMS_PER_PAGE = 4;
 const Op = Sequelize.Op;
-
-exports.searchExtraByKeyword = async (req, res, next) => {
-  res.render("search/index", {
-    pageTitle: "Admin Products",
-    path: "/admin/products",
-  });
-  const Op = Sequelize.Op;
-  const lang = req.query.language;
-  const keyword = req.query.keyword;
-  if (lang == "hu") {
-    const lang2 = 1;
-    await Extras.findAll({
-      where: {
-        restaurantId: req.admin.id,
-      },
-      raw: true,
-      // nest: true,
-
-      include: {
-        model: ExtraTranslations,
-        where: {
-          name: { [Op.like]: "%" + keyword + "%" },
-          languageId: lang2,
-        },
-        raw: true,
-      },
-    })
-      .then((searchedExtra) => {
-        console.log(searchedExtra);
-      })
-
-      .catch((err) => {
-        const error = new Error(err);
-        error.httpStatusCode = 500;
-        return next(error);
-      });
-  }
-};
 
 exports.getIndex = async (req, res, next) => {
   const page = +req.query.page || 1;
@@ -95,6 +57,7 @@ exports.getIndex = async (req, res, next) => {
       limit: ITEMS_PER_PAGE,
     });
   });
+
   const extras = await ProductExtra.findAll({
     where: {
       restaurantId: req.admin.id,
@@ -316,7 +279,7 @@ exports.postAddVariant = async (req, res, next) => {
   }
   productVariantTransaltion()
     .then((result) => {
-      res.redirect("/admin/vr-index"),
+      res.redirect("/admin/variant-index"),
         {
           ext: ext,
           cat: cat,
@@ -556,8 +519,6 @@ exports.getFilteredExtra = async (req, res, next) => {
     currentExtraName = 3;
   }
 
-  console.log("da-----------", extraName.length);
-
   await Extras.findAll({
     where: {
       restaurantId: req.admin.id,
@@ -578,6 +539,98 @@ exports.getFilteredExtra = async (req, res, next) => {
         ext: ext,
         editing: false,
         currentExtraName: extraName,
+      });
+    })
+    .catch((err) => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
+};
+
+exports.getFilteredExtraIndex = async (req, res, next) => {
+  var categoryName = req.params.extraId;
+  var currentCategoryName;
+  var currentLanguage = req.cookies.language;
+
+  if (categoryName.length == 1) {
+    categoryName = [];
+  }
+
+  if (currentLanguage == "ro") {
+    currentCategoryName = 1;
+  } else if (currentLanguage == "hu") {
+    currentCategoryName = 2;
+  } else {
+    currentCategoryName = 3;
+  }
+
+  await Extras.findAll({
+    where: {
+      restaurantId: req.admin.id,
+    },
+    include: [
+      {
+        model: ExtraTranslations,
+        where: {
+          name: { [Op.like]: "%" + categoryName + "%" },
+          languageId: currentCategoryName,
+        },
+      },
+    ],
+  })
+
+    .then((extra) => {
+      res.render("variant/searchedExtraIndex", {
+        extra: extra,
+        editing: false,
+        extras: extra,
+      });
+    })
+    .catch((err) => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
+};
+
+exports.getFilteredCategory = async (req, res, next) => {
+  var categoryName = req.params.categoryId;
+  var currentCategoryName;
+  var currentLanguage = req.cookies.language;
+
+  if (categoryName.length == 1) {
+    categoryName = [];
+  }
+
+  if (currentLanguage == "ro") {
+    currentCategoryName = 1;
+  } else if (currentLanguage == "hu") {
+    currentCategoryName = 2;
+  } else {
+    currentCategoryName = 3;
+  }
+
+  await Category.findAll({
+    where: {
+      restaurantId: req.admin.id,
+    },
+    include: [
+      {
+        model: CategoryTranslation,
+        where: {
+          name: { [Op.like]: "%" + categoryName + "%" },
+          languageId: currentCategoryName,
+        },
+      },
+    ],
+  })
+
+    .then((category) => {
+      res.render("variant/searchedCategory", {
+        category: category,
+        editing: false,
+        extras: category,
       });
     })
     .catch((err) => {

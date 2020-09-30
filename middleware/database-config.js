@@ -25,12 +25,15 @@ const Allergen = require("../models/Allergen");
 const AllergenTranslation = require("../models/AllergenTranslation");
 const ProductHasAllergen = require("../models/ProductHasAllergen");
 const ExtraHasAllergen = require("../models/ExtraHasAllergen");
-const OpeningHours = require("../models/OpeningHours");
+
 const User = require("../models/User");
 const UserDeliveryAdress = require("../models/UserDeliveryAdress");
 const UserProfile = require("../models/UserProfile");
 const CouponCode = require("../models/CouponCode");
-
+//Opening Hours
+const Hours = require("../models/Hours");
+const OpeningHours = require("../models/OpeningHours");
+const OpeningHoursTranslation = require("../models/OpeningHoursTranslation");
 function databaseConfig() {
   ProductVariantsExtras.belongsTo(Admin, {
     as: "theAdminInfo",
@@ -132,16 +135,6 @@ function databaseConfig() {
     foreignKey: "languageId",
   });
   Language.hasMany(ExtraTranslation, { foreignKey: "languageId" });
-
-  OpeningHours.belongsTo(Admin, { constrains: true, onDelete: "CASCADE" });
-  Admin.hasMany(OpeningHours);
-
-  OpeningHours.belongsTo(Language, {
-    as: "openingHoursLanguage",
-    foreignKey: "languageId",
-  });
-
-  Language.hasMany(OpeningHours, { foreignKey: "languageId" });
 
   DailyMenu.belongsTo(Admin, { constrains: true, onDelete: "CASCADE" });
 
@@ -305,6 +298,33 @@ function databaseConfig() {
   Language.hasMany(LocationNameTranslation, { foreignKey: "languageId" });
 
   User.hasMany(UserDeliveryAdress, { foreignKey: "userId" });
+
+  // OPENING HOURS
+  Hours.belongsTo(Admin, { constrains: true, onDelete: "CASCADE" });
+  Admin.hasMany(Hours);
+
+  OpeningHours.belongsTo(Admin, { constrains: true, onDelete: "CASCADE" });
+  Admin.hasMany(OpeningHours);
+
+  Hours.belongsTo(OpeningHours, {
+    foreignKey: "openingHoursId",
+  });
+
+  OpeningHours.hasMany(Hours, {
+    foreignKey: "openingHoursId",
+  });
+
+  OpeningHoursTranslation.belongsTo(OpeningHours, {
+    foreignKey: "openingHoursId",
+  });
+  OpeningHours.hasMany(OpeningHoursTranslation, {
+    foreignKey: "openingHoursId",
+  });
+
+  OpeningHoursTranslation.belongsTo(Language, {
+    foreignKey: "languageId",
+  });
+  Language.hasMany(OpeningHoursTranslation, { foreignKey: "languageId" });
 }
 
 module.exports = { databaseConfig };

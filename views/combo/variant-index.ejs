@@ -32,18 +32,20 @@
 </script>
 
 </head>
+
 <body class="ms-body ms-aside-left-open ms-primary-theme ms-has-quickbar">
    <%- include('../includes/navigation.ejs') %> 
    <main class="body-content">
+       
       <%- include('../includes/navigation-bar.ejs') %>
+      
+    
       <div class="ms-content-wrapper">
          <div class="ms-profile-overview no-img-var">
             <ul class="ms-profile-navigation nav nav-tabs tabs-bordered" role="tablist">
-               <li role="presentation"><a href="#" aria-controls="tab1" class="active show" role="tab" data-toggle="tab"> Index </a></li>
-               <li role="presentation"><a class="add-variant" href="/admin/variant-index">Variant </a></li>
-               <li role="presentation"><a class="add-extra" href="/admin/extra-index">Extra </a></li>
-               <li role="presentation"><a class="add-category" href="/admin/category-index">Category </a></li>
-               <li role="presentation"><a class="add-category" href="/admin/allergen-index">Allergen </a></li>
+               <li role="presentation"><a href="#" aria-controls="tab1" class="active show" role="tab" data-toggle="tab"> Összes variáns </a></li>
+               <li role="presentation"><a class="add-variant" href="/admin/add-variant">Add Variant </a></li>
+              
             </ul>
             <div class="tab-content">
                <div class="tab-pane" id="tab1">
@@ -56,6 +58,16 @@
          </div>
       </div>
     
+      <div class="col-md-6">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb breadcrumb-arrow first-rounded has-shadow">
+            <li class="breadcrumb-item"><a href="/admin/vr-index">
+                 Vissza</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Variansok</li>
+          
+          </ol>
+        </nav>
+      </div>
        
             <% if ( checkExtraLength.length === 0) { %>
                <script>
@@ -135,49 +147,6 @@
                      </div>
                   </div>
                </div>
-               <div class="col-12">
-                  <div class="ms-panel">
-                     <div class="ms-panel-header">
-                        <h6> Extra List</h6>
-                     </div>
-                     <div class="ms-panel-body">
-                        <div class="table-responsive">
-                           <table id="searchedExtra" class="table table-hover thead-primary">
-                              <thead>
-                                 <tr>
-                                    <th scope="col">ID</th>
-                                   
-                                    <th scope="col"> name </th>
-                                    <th scope="col">STATUS</th>
-                                    <th scope="col" >EDIT</th>
-                                 </tr>
-                              </thead>
-                              <input type="text" name="searchExtra" id="searchExtra" placeholder="Search category" class="form-control" />
-
-                              <% if (extras.length > 0) { %>
-                              <% for (let i=0; i < extras.length; i++ ) { %>
-                              <tbody>
-                                 <tr>
-                                    <th scope="row"><%= extras[i].id %></th>
-                                    
-                                   <td><%= currentExtraName[i] %></td>
-                                    <td><span class="badge badge-success">AKTIV</span></td>
-                                    <td>
-                                       <a href="/admin/edit-extra/<%= extras[i].id %>?edit=true"class="btn grid-btn mt-0 btn-sm btn-secondary" ><%= lingua.product_action_edit %></a>
-                                    </td>
-                                 </tr>
-                              </tbody>
-                              <% } %>
-                              <% } else { %>
-                              <h1>No Products Found!</h1>
-                              <% } %>
-                           </table>
-                        </div>
-                        <%- include('../includes/pagination.ejs', {currentPage: currentPage, nextPage: nextPage, previousPage: previousPage, lastPage: lastPage, hasNextPage: hasNextPage, hasPreviousPage: hasPreviousPage}) %>
-                     </div>
-                  </div>
-               </div>
-             
             </div>
          </div>
       </div>
