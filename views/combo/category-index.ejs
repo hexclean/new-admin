@@ -16,16 +16,7 @@
       });
    });
 
-   $('#searchExtra').keyup(function() {
-         const extraId = $('#searchExtra').val();
-         $.get( "get-filtered-extra-index/"+ extraId )
-
-      .done(function( data ) {
-
-         $("#searchedExtra").html(data);
-         
-      });
-   });
+ 
    })
 
 
@@ -99,7 +90,10 @@
                                   <th scope="col" >EDIT</th>
                                </tr>
                             </thead>
-                            <input type="text" name="search" id="search" placeholder="Search category" class="form-control" />
+                            <div class="col-6">
+                              <input type="text" name="search" id="search" placeholder="Search category" class="category-search form-control" />
+                              <hr>
+                            </div>
                             <% if (category.length > 0) { %>
                             <% for (let i = 0; i < category.length; i++) { %>
                             <tbody>

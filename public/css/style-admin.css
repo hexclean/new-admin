@@ -463,6 +463,14 @@ Version: 1.0.0
   background-color: #5bc0de;
 }
 
+.extra-search {
+  border-color: red !important;
+}
+
+.category-search{
+  border-color: red !important;
+}
+
 .ms-panel-body .description {
   padding-bottom: 30px;
 }

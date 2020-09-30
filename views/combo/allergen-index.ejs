@@ -6,28 +6,16 @@
    $(document).ready(function() {
 
       $('#search').keyup(function() {
-         const extraId = $('#search').val();
-         $.get( "get-filtered-category/"+ extraId )
+         const allergenId = $('#search').val();
+         $.get( "get-filtered-allergen/"+ allergenId )
 
       .done(function( data ) {
 
-         $("#searchedCategory").html(data);
+         $("#searchedAllergen").html(data);
          
       });
    });
-
-   $('#searchExtra').keyup(function() {
-         const extraId = $('#searchExtra').val();
-         $.get( "get-filtered-extra-index/"+ extraId )
-
-      .done(function( data ) {
-
-         $("#searchedExtra").html(data);
-         
-      });
-   });
-   })
-
+})
 
 </script>
 
@@ -82,7 +70,7 @@
                    </div>
                    <div class="ms-panel-body">
                       <div  class="table-responsive">
-                         <table id="searchedCategory" class="table table-hover thead-primary">
+                         <table id="searchedAllergen" class="table table-hover thead-primary">
                             <thead>
                                <tr>
                                   <th scope="col">ID</th>

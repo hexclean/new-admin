@@ -11,9 +11,26 @@ const dailyMenuController = require("../controllers/daily-menu");
 const allergenController = require("../controllers/allergen");
 const deletedItemsController = require("../controllers/deleted-items");
 const comboController = require("../controllers/combo");
+const liveSearchController = require("../controllers/live-search");
 const isAuth = require("../../middleware/is-auth");
 const router = express.Router();
 
+// LIVE SEARCH
+router.get(
+  "/get-filtered-category/:categoryId",
+  isAuth,
+  liveSearchController.getFilteredCategory
+);
+router.get(
+  "/get-filtered-extra/:extraId",
+  isAuth,
+  liveSearchController.getFilteredExtra
+);
+router.get(
+  "/get-filtered-allergen/:allergenId",
+  isAuth,
+  liveSearchController.getFilteredAllergen
+);
 // COMBO
 router.get("/variant-index", isAuth, comboController.getVariantIndex);
 router.get("/extra-index", isAuth, comboController.getExtraIndex);
@@ -24,16 +41,7 @@ router.get("/box-index", isAuth, comboController.getBoxIndex);
 // FAQ
 router.get("/faq-index", isAuth, faqController.getIndex);
 router.get("/vr-index", isAuth, variantsController.getIndex);
-router.get(
-  "/get-filtered-category/:categoryId",
-  isAuth,
-  variantsController.getFilteredCategory
-);
-router.get(
-  "/get-filtered-extra-index/:extraId",
-  isAuth,
-  variantsController.getFilteredExtraIndex
-);
+
 // VARIANT
 router.get("/add-variant", isAuth, variantsController.getAddVariant);
 router.post("/add-variant", isAuth, variantsController.postAddVariant);
@@ -44,11 +52,6 @@ router.get(
 );
 router.post("/edit-variant", isAuth, variantsController.postEditVariant);
 router.post("/delete-variant", isAuth, variantsController.postDeleteVariant);
-router.get(
-  "/get-filtered-extra/:extraName",
-  isAuth,
-  variantsController.getFilteredExtra
-);
 
 // CATEGORY
 router.get("/add-category", isAuth, categoryController.getAddCategory);
