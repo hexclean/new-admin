@@ -19,6 +19,7 @@ router.get("/variant-index", isAuth, comboController.getVariantIndex);
 router.get("/extra-index", isAuth, comboController.getExtraIndex);
 router.get("/category-index", isAuth, comboController.getCategoryIndex);
 router.get("/allergen-index", isAuth, comboController.getAllergenIndex);
+router.get("/box-index", isAuth, comboController.getBoxIndex);
 
 // FAQ
 router.get("/faq-index", isAuth, faqController.getIndex);

@@ -6,6 +6,8 @@ const ExtraTranslations = require("../../models/ExtraTranslation");
 const Sequelize = require("sequelize");
 const Allergen = require("../../models/Allergen");
 const AllergenTranslation = require("../../models/AllergenTranslation");
+const Box = require("../../models/Box");
+const BoxTranslation = require("../../models/BoxTranslation");
 const ITEMS_PER_PAGE = 10;
 const Op = Sequelize.Op;
 
@@ -273,7 +275,69 @@ exports.getAllergenIndex = async (req, res, next) => {
       return next(error);
     });
 };
+exports.getBoxIndex = async (req, res, next) => {
+  const page = +req.query.page || 1;
+  let totalItems;
+  let currentBoxName = [];
 
+  await Box.findAll({
+    where: {
+      restaurantId: req.admin.id,
+    },
+    include: [
+      {
+        model: BoxTranslation,
+      },
+    ],
+  })
+    .then((numBox) => {
+      totalItems = numBox;
+      return Box.findAll({
+        where: {
+          restaurantId: req.admin.id,
+        },
+        include: [
+          {
+            model: BoxTranslation,
+          },
+        ],
+
+        offset: (page - 1) * ITEMS_PER_PAGE,
+        limit: ITEMS_PER_PAGE,
+      });
+    })
+    .then((box) => {
+      for (let i = 0; i < box.length; i++) {
+        var currentLanguage = req.cookies.language;
+
+        if (currentLanguage == "ro") {
+          currentBoxName[i] = box[i].boxTranslations[0].name;
+        } else if (currentLanguage == "hu") {
+          currentBoxName[i] = box[i].boxTranslations[1].name;
+        } else {
+          currentBoxName[i] = box[i].allergenTranslations[2].name;
+        }
+      }
+
+      res.render("combo/box-index", {
+        pageTitle: "Admin Products",
+        path: "/admin/products",
+        currentPage: page,
+        hasNextPage: ITEMS_PER_PAGE * page < totalItems.length,
+        hasPreviousPage: page > 1,
+        nextPage: page + 1,
+        currentBoxName: currentBoxName,
+        previousPage: page - 1,
+        lastPage: Math.ceil(totalItems.length / ITEMS_PER_PAGE),
+        box: box,
+      });
+    })
+    .catch((err) => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
+};
 exports.getFilteredExtra = async (req, res, next) => {
   var extraName = req.params.extraName;
   var currentExtraName;
