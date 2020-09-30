@@ -13,7 +13,7 @@
 </script>
 <script>
    $(document).ready(function() {
-      $("select#maxOption").val("<% if (editing) { %><%= maxOptionData %><% } %>");
+      $("select#maxOption").val("<% if (editing) { %><%=  variant[0].productVariantsExtras[0].productVariant.maxOption %><% } %>");
    });
   
 
@@ -44,11 +44,7 @@
     var error_price = false;
     var error_qtMin = false;
     var error_qtMax = false;
-    
-   //productVariant ba kell a kategoria
-   // productsfinalba a productnal bejelolt kategoriat
-   // finalba csak azokat menteni ami on.
-   // tobb adatbazis
+ 
    });
    function check_variantInputs() {
       var extraId = $(this).attr("data-extraId");
@@ -205,7 +201,7 @@
 
       $('#search').keyup(function() {
          const extraId = $('#search').val();
-         $.get( "get-filtered-extra/"+ extraId )
+         $.get( "search-variant-extras/"+ extraId )
 
       .done(function( data ) {
 
@@ -217,9 +213,6 @@
 
 
 </script>
-
-
-
 
 
 </head>
@@ -235,11 +228,11 @@
          enctype="multipart/form-data"
          id="variant-form">
          <% if (editing) { %>
-         <% for (let i = 0; i < isActive.length; i++) { %>
-         <% if (isActive[i].active ==1) { %>
+         <% for (let i = 0; i < variant.length; i++) { %>
+         <% if (variant[i].productVariantsExtras[0].active ==1) { %>
          <script>
             $(document).ready(function() {
-            var activeCheckbox ="<%= isActive[i].extraId %>";
+            var activeCheckbox ="<%= variant[i].productVariantsExtras[0].extraId %>";
             $('.status-checkbox-'+activeCheckbox).prop('checked', true);
             $('.status-'+activeCheckbox).val('on');
             });
@@ -252,11 +245,11 @@
          <% } %>
 
          <% if (editing) { %>
-            <% for (let i = 0; i < isActive.length; i++) { %>
-            <% if (isActive[i].requiredExtra == 1) { %>
+            <% for (let i = 0; i < variant.length; i++) { %>
+            <% if (  variant[i].productVariantsExtras[0].requiredExtra == 1) { %>
             <script>
                $(document).ready(function() {
-               var activeCheckbox ="<%= isActive[i].extraId %>";
+               var activeCheckbox ="<%= variant[i].productVariantsExtras[0].extraId %>";
                $('.status-checkbox-option-'+activeCheckbox).prop('checked', true);
                $('.statusOption'+activeCheckbox).val('on');
                });
@@ -284,7 +277,7 @@
                                  type="text"
                                  name="sku"
                                  id="sku"
-                                 value="<% if (editing) { %><%= variant[0].sku %><% } %>">
+                                 value="<% if (editing) { %><%= variant[0].productVariantsExtras[0].productVariant.sku %><% } %>">
                            </div>
                            <span class="error_form" id="sku_error_message"></span>
                         </div>
@@ -375,19 +368,19 @@
                         value="<%= varId %>"
                         name="varId"
                         />  
-                     <% for (let i = 0; i < productVarToExt.length; i++) { %>
+                     <% for (let i = 0; i < variant.length; i++) { %>
                      <input
                         type="hidden"
-                        value="<%= productVarToExt[i].productVariantsExtras[0].extraId %>"
+                        value="<%= variant[i].productVariantsExtras[0].extraId %>"
                         name="extraId"
                         />          
-                     <div class="col-xl-3 cfol-lg-4 col-md-6 col-sm-6 extra_box" data-extra="<%= productVarToExt[i].productVariantsExtras[0].extraId %>">
+                     <div class="col-xl-3 cfol-lg-4 col-md-6 col-sm-6 extra_box" data-extra="<%= variant[i].productVariantsExtras[0].extraId %>">
                         <div class="ms-card">
                            <div class="d-flex justify-content-center extra-margin-top">
                               <div class="row"> 
                                  <label class="ms-switch" >                 
-                                 <input type="hidden" value="off" class="status-<%= productVarToExt[i].productVariantsExtras[0].extraId %>" name="status[<%= productVarToExt[i].productVariantsExtras[0].extraId %>]" >          
-                                 <input    data-extraId="<%= productVarToExt[i].productVariantsExtras[0].extraId %>"  class="status-checkbox status-checkbox-<%= productVarToExt[i].productVariantsExtras[0].extraId %>" type="checkbox">
+                                 <input type="hidden" value="off" class="status-<%= variant[i].productVariantsExtras[0].extraId %>" name="status[<%= variant[i].productVariantsExtras[0].extraId %>]" >          
+                                 <input    data-extraId="<%= variant[i].productVariantsExtras[0].extraId %>"  class="status-checkbox status-checkbox-<%= variant[i].productVariantsExtras[0].extraId %>" type="checkbox">
                                  <span class="ms-switch-slider ms-switch-success round"></span>
                                  </label> 
                               </div>
@@ -396,26 +389,26 @@
                            
                            <div class="d-flex justify-content-center extra-margin-top">
                            <label class="ms-checkbox-wrap ms-checkbox-success">
-                              <input type="hidden" value="off" class="statusOption<%= ext[i].id %>" name="statusOption[<%= ext[i].id %>]" >    
-                              <input data-optionId="<%= ext[i].id %>" class="status-checkbox-option status-checkbox-option-<%= ext[i].id %>" type="checkbox"  > <i class="ms-checkbox-check"></i>
+                              <input type="hidden" value="off" class="statusOption<%= variant[i].id %>" name="statusOption[<%= variant[i].id %>]" >    
+                              <input data-optionId="<%= variant[i].id %>" class="status-checkbox-option status-checkbox-option-<%= variant[i].id %>" type="checkbox"  > <i class="ms-checkbox-check"></i>
                             </label> <span> Opció lehetőség </span>
                            </div>
                            <div class="ms-card-body">
                               <div class="new d-flex justify-content-center extra-name">
-                                 <h6 class="mb-0"><b><%= currentExtraName[i] %></b> </h6>
+                                 <h6 class="mb-0"><b><%=  variant[i].extraTranslations[`${currentLanguage}`].name %></b> </h6>
                               </div>
                               <div class="col-md-12 mb-3">
                                  <label for="price">Price</label>
                                  <div class="input-group">
                                     <input
-                                       class="price_<%= productVarToExt[i].productVariantsExtras[0].extraId %> extra_price_input"
+                                       class="price_<%= variant[i].productVariantsExtras[0].extraId %> extra_price_input"
                                        type="text"
                                        name="price"
                                        id="price"
-                                       value="<% if (editing) { %><%= productVarToExt[i].productVariantsExtras[0].price %><% } %>"
+                                       value="<% if (editing) { %><%= variant[i].productVariantsExtras[0].price %><% } %>"
                                        />
                                  </div>
-                                 <span class="extra_error_message error_form" id="price_error_message_<%= productVarToExt[i].productVariantsExtras[0].extraId %>"></span>
+                                 <span class="extra_error_message error_form" id="price_error_message_<%= variant[i].productVariantsExtras[0].extraId %>"></span>
                               </div>
                               
                               <div class="col-md-12 mb-3">
@@ -428,7 +421,7 @@
                                        type="text"
                                        name="discountedPrice"
                                        id="discountedPrice"
-                                       value="<% if (editing) { %><%= productVarToExt[i].productVariantsExtras[0].discountedPrice %><% } %>"
+                                       value="<% if (editing) { %><%= variant[i].productVariantsExtras[0].discountedPrice %><% } %>"
                                        />
                                  </div>
                               </div>
@@ -437,19 +430,19 @@
                               
                               <div class="col-md-12 mb-3">
                                  <label for="quantityMin"
-                                    >Quantity Minimfsdfdsum</label
+                                    >Quantity Minimum</label
                                     >
                                  <div class="input-group">
                                     <input
-                                       class="qtMin_<%= productVarToExt[i].productVariantsExtras[0].extraId %> extra_qtMin_input"
+                                       class="qtMin_<%= variant[i].productVariantsExtras[0].extraId %> extra_qtMin_input"
                                        type="number" 
                                        name="quantityMin"
                                        id="quantityMin"
                                        onKeyDown="if(this.value.length==18) return false;"
-                                       value="<% if (editing) { %><%= productVarToExt[i].productVariantsExtras[0].quantityMin %><% } %>"
+                                       value="<% if (editing) { %><%= variant[i].productVariantsExtras[0].quantityMin %><% } %>"
                                        />
                                  </div>
-                                 <span class="extra_error_message error_form" id="qtMin_error_message_<%= productVarToExt[i].productVariantsExtras[0].extraId %>"></span>
+                                 <span class="extra_error_message error_form" id="qtMin_error_message_<%= variant[i].productVariantsExtras[0].extraId %>"></span>
                               </div>
                               <div class="col-md-12 mb-3">
                                  <label for="quantityMax"
@@ -457,14 +450,14 @@
                                     >
                                  <div class="input-group">
                                     <input
-                                       class="qtMax_<%= productVarToExt[i].productVariantsExtras[0].extraId %> extra_qtMax_input"
+                                       class="qtMax_<%= variant[i].productVariantsExtras[0].extraId %> extra_qtMax_input"
                                        type="text"
                                        name="quantityMax"
                                        id="quantityMax"
-                                       value="<% if (editing) { %><%= productVarToExt[i].productVariantsExtras[0].quantityMax %><% } %>"
+                                       value="<% if (editing) { %><%= variant[i].productVariantsExtras[0].quantityMax %><% } %>"
                                        />
                                  </div>
-                                 <span class="extra_error_message error_form" id="qtMax_error_message_<%= productVarToExt[i].productVariantsExtras[0].extraId %>"></span>
+                                 <span class="extra_error_message error_form" id="qtMax_error_message_<%= variant[i].productVariantsExtras[0].extraId %>"></span>
                               </div>
                            </div>
                         </div>
@@ -487,6 +480,7 @@
                         value="<%= ext[i].id %>"
                         name="extraId"
                         />          
+                       
                      <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 extra_box" data-extra="<%= ext[i].id %>">
                         <div class="ms-card">
                            <div class="d-flex justify-content-center extra-margin-top">

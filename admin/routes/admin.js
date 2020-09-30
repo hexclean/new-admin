@@ -50,6 +50,11 @@ router.get(
   isAuth,
   variantsController.getEditVariant
 );
+router.get(
+  "/search-variant-extras/:extraId",
+  isAuth,
+  variantsController.getFilterExtras
+);
 router.post("/edit-variant", isAuth, variantsController.postEditVariant);
 router.post("/delete-variant", isAuth, variantsController.postDeleteVariant);
 

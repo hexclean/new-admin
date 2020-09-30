@@ -55,7 +55,7 @@ exports.postAddCategory = async (req, res, next) => {
 
   extraTransaltion()
     .then((result) => {
-      res.redirect("/admin/vr-index");
+      res.redirect("/admin/category-index");
     })
     .catch((err) => {
       const error = new Error(err);

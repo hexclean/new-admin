@@ -14,133 +14,16 @@ const ITEMS_PER_PAGE = 4;
 const Op = Sequelize.Op;
 
 exports.getIndex = async (req, res, next) => {
-  const page = +req.query.page || 1;
-  let totalItems;
-  let currentExtraName = [];
-  let currentCategoryName = [];
-
-  const checkAllergenLength = await Allergen.findAll({
-    where: {
-      restaurantId: req.admin.id,
-    },
+  res.render("variant/index", {
+    pageTitle: "Admin Products",
+    path: "/admin/products",
   });
 
-  const checkExtraLength = await Extras.findAll({
-    where: { restaurantId: req.admin.id },
-  });
-
-  const checkCategoryLength = await Category.findAll({
-    where: { restaurantId: req.admin.id },
-  });
-
-  const category = await Category.findAll({
-    where: {
-      restaurantId: req.admin.id,
-    },
-    include: [
-      {
-        model: CategoryTranslation,
-      },
-    ],
-  }).then((numExtras) => {
-    totalItems = numExtras;
-    return Category.findAll({
-      where: {
-        restaurantId: req.admin.id,
-      },
-      include: [
-        {
-          model: CategoryTranslation,
-        },
-      ],
-      offset: (page - 1) * ITEMS_PER_PAGE,
-      limit: ITEMS_PER_PAGE,
-    });
-  });
-
-  const extras = await ProductExtra.findAll({
-    where: {
-      restaurantId: req.admin.id,
-    },
-    include: [
-      {
-        model: ExtraTranslations,
-      },
-    ],
-  }).then((numExtras) => {
-    totalItems = numExtras;
-    return ProductExtra.findAll({
-      where: {
-        restaurantId: req.admin.id,
-      },
-      include: [
-        {
-          model: ExtraTranslations,
-        },
-      ],
-      offset: (page - 1) * ITEMS_PER_PAGE,
-      limit: ITEMS_PER_PAGE,
-    });
-  });
-
-  for (let i = 0; i < extras.length; i++) {
-    var currentLanguage = req.cookies.language;
-
-    if (currentLanguage == "ro") {
-      currentExtraName[i] = extras[i].extraTranslations[0].name;
-    } else if (currentLanguage == "hu") {
-      currentExtraName[i] = extras[i].extraTranslations[1].name;
-    } else {
-      currentExtraName[i] = extras[i].extraTranslations[2].name;
-    }
-  }
-
-  for (let i = 0; i < category.length; i++) {
-    var currentLanguage = req.cookies.language;
-
-    if (currentLanguage == "ro") {
-      currentCategoryName[i] = category[i].productCategoryTranslations[0].name;
-    } else if (currentLanguage == "hu") {
-      currentCategoryName[i] = category[i].productCategoryTranslations[1].name;
-    } else {
-      currentCategoryName[i] = category[i].productCategoryTranslations[2].name;
-    }
-  }
-
-  await req.admin
-    .getProductVariants()
-    .then((numVariants) => {
-      totalItems = numVariants;
-      return req.admin.getProductVariants({
-        offset: (page - 1) * ITEMS_PER_PAGE,
-        limit: ITEMS_PER_PAGE,
-      });
-    })
-    .then((vr) => {
-      res.render("variant/index", {
-        pageTitle: "Admin Products",
-        path: "/admin/products",
-        currentPage: page,
-        checkExtraLength: checkExtraLength,
-        checkAllergenLength: checkAllergenLength,
-        checkCategoryLength: checkCategoryLength,
-        hasNextPage: ITEMS_PER_PAGE * page < totalItems.length,
-        hasPreviousPage: page > 1,
-        nextPage: page + 1,
-        previousPage: page - 1,
-        lastPage: Math.ceil(totalItems.length / ITEMS_PER_PAGE),
-        vr: vr,
-        cat: category,
-        extras: extras,
-        currentExtraName: currentExtraName,
-        currentCategoryName: currentCategoryName,
-      });
-    })
-    .catch((err) => {
-      const error = new Error(err);
-      error.httpStatusCode = 500;
-      return next(error);
-    });
+  // .catch((err) => {
+  //   const error = new Error(err);
+  //   error.httpStatusCode = 500;
+  //   return next(error);
+  // });
 };
 
 exports.getAddVariant = async (req, res, next) => {
@@ -155,6 +38,7 @@ exports.getAddVariant = async (req, res, next) => {
       },
     ],
   });
+  console.log("ext", ext);
 
   const checkExtraLength = await Extras.findAll({
     where: { restaurantId: req.admin.id },
@@ -230,7 +114,27 @@ exports.postAddVariant = async (req, res, next) => {
   const maxOption = req.body.maxOption;
   const filteredStatus = req.body.status.filter(Boolean);
   const filteredOptions = req.body.statusOption.filter(Boolean);
-  const ext = await req.admin.getExtras();
+  console.log("-----extId", extId);
+  console.log("statusOption=====", filteredStatus);
+  console.log("filteredStatus=====", filteredStatus);
+  const ext = await Extras.findAll({
+    where: { restaurantId: req.admin.id },
+    include: [
+      {
+        model: ExtraTranslations,
+      },
+
+      {
+        model: ProductVariantsExtras,
+        include: [
+          {
+            model: ProductVariants,
+          },
+        ],
+      },
+    ],
+  });
+  console.log(ext);
 
   let productId = await Products.findAll({
     where: { restaurantId: req.admin.id },
@@ -378,6 +282,7 @@ exports.getEditVariant = async (req, res, next) => {
       {
         model: ExtraTranslations,
       },
+
       { model: ProductVariantsExtras },
     ],
   });
@@ -447,22 +352,45 @@ exports.getEditVariant = async (req, res, next) => {
     var currentLanguage = req.cookies.language;
 
     if (currentLanguage == "ro") {
-      currentExtraName[i] = productVarToExt[i].extraTranslations[0].name;
+      currentCategoryName = 1;
     } else if (currentLanguage == "hu") {
-      currentExtraName[i] = productVarToExt[i].extraTranslations[1].name;
+      currentCategoryName = 2;
     } else {
-      currentExtraName[i] = productVarToExt[i].extraTranslations[2].name;
+      currentCategoryName = 3;
     }
   }
 
-  ProductVariants.findAll({
-    where: {
-      id: varId,
-      restaurantId: req.admin.id,
-    },
-    include: [{ model: ProductVariantExtras }],
+  await Extras.findAll({
+    where: { restaurantId: req.admin.id },
+    include: [
+      {
+        model: ExtraTranslations,
+      },
+
+      {
+        model: ProductVariantsExtras,
+        include: [
+          {
+            model: ProductVariants,
+            where: {
+              productVariantId: varId,
+            },
+            where: {
+              id: varId,
+              restaurantId: req.admin.id,
+            },
+          },
+        ],
+      },
+    ],
   })
     .then((variant) => {
+      for (let i = 0; i < variant.length; i++) {
+        console.log(
+          "variant[i].prices",
+          variant[i].productVariantsExtras[0].requiredExtra
+        );
+      }
       res.render("variant/edit-variant", {
         pageTitle: "Edit Product",
         path: "/admin/edit-product",
@@ -477,6 +405,7 @@ exports.getEditVariant = async (req, res, next) => {
         categoryList: categoryList,
         arraytest: arraytest,
         cat: cat,
+        currentLanguage: 1,
         testSelect: "Alma",
         testing3: testing3,
         productVarToExt: productVarToExt,
@@ -504,4 +433,50 @@ exports.postDeleteVariant = (req, res, next) => {
       res.redirect("/admin/vr-index");
     })
     .catch((err) => console.log(err));
+};
+
+exports.getFilterExtras = async (req, res, next) => {
+  var extraName = req.params.extraId;
+  var currentExtraName;
+  var currentLanguage = req.cookies.language;
+
+  if (extraName.length == 1) {
+    extraName = [];
+  }
+
+  if (currentLanguage == "ro") {
+    currentExtraName = 1;
+  } else if (currentLanguage == "hu") {
+    currentExtraName = 2;
+  } else {
+    currentExtraName = 3;
+  }
+
+  await Extras.findAll({
+    where: {
+      restaurantId: req.admin.id,
+    },
+    include: [
+      {
+        model: ExtraTranslations,
+        where: {
+          name: { [Op.like]: "%" + extraName + "%" },
+          languageId: currentExtraName,
+        },
+      },
+    ],
+  })
+
+    .then((extra) => {
+      res.render("variant/searchedExtra", {
+        ext: extra,
+        editing: false,
+        extras: extra,
+      });
+    })
+    .catch((err) => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
 };

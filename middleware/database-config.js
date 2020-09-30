@@ -122,6 +122,10 @@ function databaseConfig() {
   Admin.hasMany(Extra);
   Language.hasMany(ExtraTranslation);
   Extra.hasMany(ExtraTranslation);
+
+  ProductVariantsExtras.belongsTo(ProductVariant, {
+    foreignKey: "productVariantId",
+  });
   ProductVariant.hasMany(ProductVariantsExtras);
 
   Extra.hasMany(ProductVariantsExtras);
