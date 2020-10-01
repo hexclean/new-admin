@@ -10,7 +10,6 @@ const sequelize = require("../../util/database");
 router.get("/:locationName", async (req, res) => {
   try {
     const locationName = req.params.locationName.split("-").join(" ");
-    console.log("loc", locationName);
     const languageCode = 2;
     const selectedLocation = await sequelize.query(
       `SELECT ad.id AS restaurant_id, ad.imageUrl AS restaurant_profileImage, ad.commission AS restaurant_commission,

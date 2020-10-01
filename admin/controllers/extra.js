@@ -109,7 +109,6 @@ exports.postAddExtra = async (req, res, next) => {
 
       x = newExtra[i].id;
       extraId = extra.id;
-      console.log("extraid", extra.id);
 
       await ProductVariantsExtras.create({
         active: 0,

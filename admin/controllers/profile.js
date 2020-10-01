@@ -67,9 +67,6 @@ exports.getEditOpeningHours = async (req, res, next) => {
     ],
   })
     .then((admin) => {
-      // console.log("admin----", admin[0].hours);
-      // console.log("admin----", admin[0].hours[0].openingHour);
-      // console.log(admin[0].hours[1].openingHour.openingHoursTranslations);
       res.render("profile/edit-opening-hours", {
         pageTitle: "Edit Product",
         path: "/admin/edit-product",
@@ -100,8 +97,6 @@ exports.postEditOpeningHours = async (req, res, next) => {
   // const sundayOpen = req.body.sundayOpen;
   // const sundayClose = req.body.sundayClose;
 
-  // console.log("req.adminid", req.admin.id);
-  // console.log(admin);
   // if (extra.restaurantId != req.admin.id) {
   //   return res.redirect("/");
   // }
@@ -227,8 +222,6 @@ exports.postEditProfile = async (req, res, next) => {
     ],
   })
     .then((admin) => {
-      // console.log("req.adminid", req.admin.id);
-      // console.log(admin);
       // if (extra.restaurantId != req.admin.id) {
       //   return res.redirect("/");
       // }

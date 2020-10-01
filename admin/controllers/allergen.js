@@ -10,7 +10,6 @@ const Op = Sequelize.Op;
 const ITEMS_PER_PAGE = 20;
 
 exports.getAddAllergen = async (req, res, next) => {
-  console.log("dadasdasdasdasdas", req.admin.id);
   res.render("allergen/edit-allergen", {
     pageTitle: "Add Product",
     path: "/admin/add-product",

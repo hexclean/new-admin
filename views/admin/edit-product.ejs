@@ -251,7 +251,7 @@
    });
 </script>
 
-         <script>
+<script>
 
 
             $(document).ready(function() {
@@ -269,7 +269,26 @@
             })
 
 
-         </script>
+</script>
+
+
+
+<script>
+   $(document).ready(function () {
+     $(".status-checkbox-option").click(function () {
+       var optionId = $(this).attr("data-optionId");
+       if ($(this).is(":checked")) {
+         $(".statusOption" + optionId).val("on");
+       } else {
+         $(".statusOption" + optionId).val("off");
+       }
+     });
+   });
+ </script>
+
+
+
+
 
 <body class="ms-body ms-aside-left-open ms-primary-theme ms-has-quickbar" >
    <%- include('../includes/navigation.ejs') %>

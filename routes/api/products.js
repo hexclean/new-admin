@@ -34,9 +34,7 @@ router.get("/:locationName/:partnerId", async (req, res) => {
       { type: Sequelize.QueryTypes.SELECT }
     )
     .then((results) => {
-      console.log(results);
       const done = results.reduce((accumulator, currentValue) => {
-        console.log(currentValue);
         const { variantTranslationName, categoryName } = currentValue;
         // const key = categoryName + " - " + variantTranslationName;
         const key = categoryName;

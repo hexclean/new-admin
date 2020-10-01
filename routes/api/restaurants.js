@@ -79,7 +79,6 @@ router.get("/search", async (req, res) => {
       { type: Sequelize.QueryTypes.SELECT }
     )
     .then((results) => {
-      console.log("ez hivodik meg a kereso listanak");
       return res.json(results);
     });
 });

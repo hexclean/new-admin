@@ -103,7 +103,6 @@ exports.getAddProduct = async (req, res, next) => {
 exports.postAddProduct = async (req, res, next) => {
   const allergenId = req.body.allergenId;
   var filteredStatus = req.body.status.filter(Boolean);
-  console.log("filteredStatus", filteredStatus);
   const roTitle = req.body.roTitle;
   const huTitle = req.body.huTitle;
   const enTitle = req.body.enTitle;

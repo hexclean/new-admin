@@ -1,223 +1,7 @@
 <%- include('../includes/head.ejs') %>
-<script>
-   $(document).ready(function() {
-      $('.status-checkbox').click(function() {
-         var extraId = $(this).attr('data-extraId');
-         if($(this).is(':checked')) {
-            $('.status-'+extraId).val('on');
-         } else {
-            $('.status-'+extraId).val('off');
-         }
-      });
-   });
-</script>
-<script>
-   $(document).ready(function() {
-      $("select#maxOption").val("<% if (editing) { %><%=  variant[0].productVariantsExtras[0].productVariant.maxOption %><% } %>");
-      $("select#categoryRo").val("<% if (editing) { %><%=  variant[0].productVariantsExtras[0].productVariant.categoryId %><% } %>");
-   });
-  
-
-   
-   
-</script>
-<script>
-   $(document).ready(function() {
-      $('.status-checkbox-option').click(function() {
-         var optionId = $(this).attr('data-optionId');
-         if($(this).is(':checked')) {
-            $('.statusOption'+optionId).val('on');
-         } else {
-            $('.statusOption'+optionId).val('off');
-         }
-      });
-   });
-</script>
-
-
-<script>
-   $(document).ready(function () {
-   $(".status-checkbox").click(function () {
-   var extraId = $(this).data("extraid");
-    $("#price_error_message_"+extraId).hide();
-    $("#qtMin_error_message_"+extraId).hide();
-    $("#qtMax_error_message_"+extraId).hide();
-    var error_price = false;
-    var error_qtMin = false;
-    var error_qtMax = false;
- 
-   });
-   function check_variantInputs() {
-      var extraId = $(this).attr("data-extraId");
-      $(".extra_box").each(function () {
-        var extraId = $(this).data("extra");
-        var price_len = $(".price_" + extraId).val().length;
-        var qtMin_len = $(".qtMin_" + extraId).val().length;
-        var qtMax_len = $(".qtMax_" + extraId).val().length;
-        if ($(this).find("input:checkbox").is(":checked") && (price_len < 1 || qtMin_len < 1 || qtMax_len < 1)) {
-         $("#quantityMin").on('mouseup keyup', function () {
-                                   $(this).val(Math.min(20, Math.max(1, $(this).val())));
-                                   });
-           if (price_len < 1) {
-            $("#price_error_message_"+extraId).show().html("Mezo kitoltese kotelezo");
-              error_price = true;
-           } else {
-            $("#price_error_message_"+extraId).hide().html("");
-           }
-           if (qtMin_len < 1) {
-            $("#qtMin_error_message_"+extraId).show().html("Mezo kitoltese kotelezo");
-            error_qtMin = true;
-           }else {
-            $("#qtMin_error_message_"+extraId).hide().html("");
-           }
-           if (qtMax_len < 1) {
-            $("#qtMax_error_message_"+extraId).show();
-            $("#qtMax_error_message_"+extraId).html("Mezo kitoltese kotelezo");
-            error_qtMax = true;
-           }else {
-            $("#qtMax_error_message_"+extraId).hide().html("");
-           }
-          
-          
-        } else {
-          $(this).find(".extra_error_message").hide();
-        }
-      });
-    }
-   $(".extra_price_input").focusout(function() {
-      var len = $(this).val().length; 
-      var extraId = $(this).closest(".extra_box").data('extra');
-      if (len < 1) {
-         $("#price_error_message_"+extraId).show().html("Mezo kitoltese kotelezo");
-      } else {
-         $("#price_error_message_"+extraId).hide().html("");
-      }
-   
-   });
-   $(".extra_qtMin_input").focusout(function() {
-      var len = $(this).val().length; 
-      var extraId = $(this).closest(".extra_box").data('extra');
-      if (len < 1) {
-         $("#qtMin_error_message_"+extraId).show().html("Mezo kitoltese kotelezo");
-      } else {
-         $("#qtMin_error_message_"+extraId).hide().html("");
-      }
-   
-   });
-   $(".extra_qtMax_input").focusout(function() {
-      var len = $(this).val().length; 
-      var extraId = $(this).closest(".extra_box").data('extra');
-      if (len < 1) {
-         $("#qtMax_error_message_"+extraId).show().html("Mezo kitoltese kotelezo");
-      } else {
-         $("#qtMax_error_message_"+extraId).hide().html("");
-      }
-   
-   });
-   $("#variant-form").submit(function () {
-      error_price = false;
-      error_qtMin = false;
-      error_qtMax = false;
-      check_variantInputs();
-      if (error_price == false && error_qtMin == false && error_qtMax == false) {
-        return true;
-      } else {
-        return false;
-      }
-    });
-   });
-</script>
-<script>
-   $(function () {
-    
-     $("#sku_error_message").hide();
-     $("#category_error_message").hide();
-   
-   
-   
-     var error_sku = false;
-     var error_category = false;
-   
-     
-   
-    
-     $("#sku").focusout(function(){
-        check_sku();
-     })
-     $("#category").focusout(function () {
-       check_category();
-     });
-     
-   
-   
-     function check_sku() {
-       var sku_length = $("#sku").val().length;
-   
-       if (sku_length < 2 || sku_length > 60) {
-         $("#sku_error_message").html(`<%= lingua.extra_en_name_required %>`);
-         $("#sku_error_message").show();
-         error_enName = true;
-       } else {
-         $("#sku_error_message").hide();
-       }
-     }
-     function check_category() {
-       var category_length = $("#category");
-   
-       if (category_length.val() === "") {
-         $("#category_error_message").html("kategoria");
-         $("#category_error_message").show();
-         error_category = true;
-       } else {
-         $("#category_error_message").hide();
-       }
-     }
-    
-     $("#variant-form").submit(function () {
-    
-       error_sku = false;
-       error_category = false;
-   
-       
-       check_sku();
-       check_category();
-       if (
-         
-         error_sku == false &&
-         error_category == false
-       ) {
-         return true;
-       } else {
-         return false;
-       }
-     });
-   });
-</script>
-
-
-<script>
-
-
-   $(document).ready(function() {
-
-      $('#search').keyup(function() {
-         const extraId = $('#search').val();
-         $.get( "search-variant-extras/"+ extraId )
-
-      .done(function( data ) {
-
-         $("#searchedExtra").html(data);
-         
-      });
-   });
-   })
-
-
-</script>
-
+<%- include('../includes/variant-scripts.ejs') %>
 
 </head>
-
 <body class="ms-body ms-aside-left-open ms-primary-theme ms-has-quickbar">
    <%- include('../includes/navigation.ejs') %>
    <main class="body-content">
@@ -227,7 +11,7 @@
          action="/admin/<% if (editing) { %>edit-variant<% } else { %>add-variant<% } %>"
          method="POST"
          enctype="multipart/form-data"
-         id="variant-form">
+         id="variant_form">
          <% if (editing) { %>
          <% for (let i = 0; i < variant.length; i++) { %>
          <% if (variant[i].productVariantsExtras[0].active ==1) { %>
@@ -238,30 +22,24 @@
             $('.status-'+activeCheckbox).val('on');
             });
          </script>
-
-       
          <% } 
             %>
          <% } %>
          <% } %>
-
          <% if (editing) { %>
-            <% for (let i = 0; i < variant.length; i++) { %>
-            <% if (  variant[i].productVariantsExtras[0].requiredExtra == 1) { %>
-            <script>
-               $(document).ready(function() {
-               var activeCheckbox ="<%= variant[i].productVariantsExtras[0].extraId %>";
-               $('.status-checkbox-option-'+activeCheckbox).prop('checked', true);
-               $('.statusOption'+activeCheckbox).val('on');
-               });
-            </script>
-   
-          
-            <% } 
-               %>
-            <% } %>
-            <% } %>
-
+         <% for (let i = 0; i < variant.length; i++) { %>
+         <% if (  variant[i].productVariantsExtras[0].requiredExtra == 1) { %>
+         <script>
+            $(document).ready(function() {
+            var activeCheckbox ="<%= variant[i].productVariantsExtras[0].extraId %>";
+            $('.status-checkbox-option-'+activeCheckbox).prop('checked', true);
+            $('.statusOption'+activeCheckbox).val('on');
+            });
+         </script>
+         <% } 
+            %>
+         <% } %>
+         <% } %>
          <div class="row">
             <div class="col-xl-6 col-md-12">
                <div class="ms-panel ms-panel-fh">
@@ -283,60 +61,53 @@
                            <span class="error_form" id="sku_error_message"></span>
                         </div>
                         <% if (editing) { %>
-                        
-                           <div class="col-md-6 mb-3">
-                              <label for="validationCustom22">RO</label>
-                              <div class="input-group">
-                                 <select class="form-control" for="categoryRo" id="categoryRo" name="categoryRo">
-                                    <option disabled="true" value="list">Variáns kategótia</option>
-                                    <% for(let i = 0; i < cat.length; i++) { %>
-                  
-                                    <option id="categoryRo" name="categoryRo" value='<%= cat[i].id %>'><%= cat[i].productCategoryTranslations[`${currentLanguage}`].name %></option>
-                                    <% } %>
-                                 </select>
-                              </div>
-                              <span class="error_form" id="category_error_message"></span>
+                        <div class="col-md-6 mb-3">
+                           <label for="validationCustom22">RO</label>
+                           <div class="input-group">
+                              <select class="form-control" for="categoryRo" id="categoryRo" name="categoryRo">
+                                 <option disabled="true" value="list">Variáns kategótia</option>
+                                 <% for(let i = 0; i < cat.length; i++) { %>
+                                 <option id="categoryRo" name="categoryRo" value='<%= cat[i].id %>'><%= cat[i].productCategoryTranslations[`${currentLanguage}`].name %></option>
+                                 <% } %>
+                              </select>
                            </div>
-                      
+                           <span class="error_form" id="category_error_message"></span>
+                        </div>
                         <% } else { %>
-                          
-                           <div class="col-md-6 mb-3">
-                              <label for="validationCustom22">RO</label>
-                              <div class="input-group">
-                                 <select class="form-control" for="categoryRo" id="categoryRo" name="categoryRo">
-                                    <option disabled="true" value="list">Variáns kategótia</option>
-                                    <% for(let i = 0; i < cat.length; i++) { %>
-                  
-                                    <option id="categoryRo" name="categoryRo" value='<%= cat[i].id %>'><%= cat[i].productCategoryTranslations[`${currentLanguage}`].name %></option>
-                                    <% } %>
-                                 </select>
-                              </div>
-                              <span class="error_form" id="category_error_message"></span>
+                        <div class="col-md-6 mb-3">
+                           <label for="validationCustom22">RO</label>
+                           <div class="input-group">
+                              <select class="form-control" for="categoryRo" id="categoryRo" name="categoryRo">
+                                 <option disabled="true" value="list">Variáns kategótia</option>
+                                 <% for(let i = 0; i < cat.length; i++) { %>
+                                 <option id="categoryRo" name="categoryRo" value='<%= cat[i].id %>'><%= cat[i].productCategoryTranslations[`${currentLanguage}`].name %></option>
+                                 <% } %>
+                              </select>
                            </div>
-                      
-                      
-                     
+                           <span class="error_form" id="category_error_message"></span>
+                        </div>
                         <% } %>
                       
+                         
                         <div>
-                          <div>
-                           <div class="form-group">
-                              <label for="maxOption">Example select</label>
-                              <select  class="form-control" name="maxOption" id="maxOption">
-                              <option value="0" selected>0</option>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="5" >5</option>
-                                <option value="6">6</option>
-                                <option value="7">7</option>
-                                <option value="8">8</option>
-                                <option value="9">9</option>
-                                <option value="10">10</option>
-                              </select>
-                            </div>
-                          </div>
+                           <div>
+                              <div class="form-group">
+                                 <label for="maxOption">Example select</label>
+                                 <select class="form-control" name="maxOption" id="maxOption">
+                                    <option value="0" selected="selected">0</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+                                    <option value="7">7</option>
+                                    <option value="8">8</option>
+                                    <option value="9">9</option>
+                                    <option value="10">10</option>
+                                  </select>
+                              </div>
+                           </div>
                            <% if (editing) { %>
                            <input type="hidden" value="<%= variantIdByParams %>" name="variantId">
                            <% } %>
@@ -353,14 +124,13 @@
          </div>
          </div>
          <input type="text" name="search" id="search" placeholder="Search extra" class="form-control"
-         />
+            />
          <div class="ms-panel ms-btn-display">
             <div class="ms-panel-header">
                <h6>A  hozzárendelhető extrái:</h6>
             </div>
          </div>
          <% if (editing) { %>  <% if (productVarToExt.length > 0) { %>
-            
          <div class="ms-content-wrapper">
             <div class="row">
                <div class="col-md-12">
@@ -388,12 +158,11 @@
                               </div>
                            </div>
                            <hr>
-                           
                            <div class="d-flex justify-content-center extra-margin-top">
-                           <label class="ms-checkbox-wrap ms-checkbox-success">
+                              <label class="ms-checkbox-wrap ms-checkbox-success">
                               <input type="hidden" value="off" class="statusOption<%= variant[i].id %>" name="statusOption[<%= variant[i].id %>]" >    
                               <input data-optionId="<%= variant[i].id %>" class="status-checkbox-option status-checkbox-option-<%= variant[i].id %>" type="checkbox"  > <i class="ms-checkbox-check"></i>
-                            </label> <span> Opció lehetőség </span>
+                              </label> <span> Opció lehetőség </span>
                            </div>
                            <div class="ms-card-body">
                               <div class="new d-flex justify-content-center extra-name">
@@ -412,7 +181,6 @@
                                  </div>
                                  <span class="extra_error_message error_form" id="price_error_message_<%= variant[i].productVariantsExtras[0].extraId %>"></span>
                               </div>
-                              
                               <div class="col-md-12 mb-3">
                                  <label for="discountedPrice"
                                     >Discounted Price</label
@@ -427,9 +195,6 @@
                                        />
                                  </div>
                               </div>
-                              
-                              
-                              
                               <div class="col-md-12 mb-3">
                                  <label for="quantityMin"
                                     >Quantity Minimum</label
@@ -482,27 +247,23 @@
                         value="<%= ext[i].id %>"
                         name="extraId"
                         />          
-                       
                      <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 extra_box" data-extra="<%= ext[i].id %>">
                         <div class="ms-card">
                            <div class="d-flex justify-content-center extra-margin-top">
-                              <div class="row"> 
+                              <div class="row">
                                  <label class="ms-switch" >                 
                                  <input type="hidden" value="off" class="status-<%= ext[i].id %>" name="status[<%= ext[i].id %>]" >          
                                  <input data-extraId="<%= ext[i].id %>" class="status-checkbox status-checkbox-<%= ext[i].id %>" type="checkbox"> <span class="ms-switch-slider ms-switch-success round"></span>
                                  </label> 
                                  <div>Extra feltétel lehetőség</div>
-                               
                               </div>
-                             
                            </div>
                            <hr>
-                           
                            <div class="d-flex justify-content-center extra-margin-top">
-                           <label class="ms-checkbox-wrap ms-checkbox-success">
+                              <label class="ms-checkbox-wrap ms-checkbox-success">
                               <input type="hidden" value="off" class="statusOption<%= ext[i].id %>" name="statusOption[<%= ext[i].id %>]" >    
                               <input data-optionId="<%= ext[i].id %>"  class="status-checkbox-option status-checkbox-option-<%= ext[i].id %>" type="checkbox"  > <i class="ms-checkbox-check"></i>
-                            </label> <span> Opció lehetőség </span>
+                              </label> <span> Opció lehetőség </span>
                            </div>
                            <div class="ms-card-body">
                               <div class="new d-flex justify-content-center extra-name">
@@ -535,7 +296,6 @@
                                        />
                                  </div>
                               </div>
-                             
                               <div class="col-md-12 mb-3">
                                  <label for="quantityMin"
                                     >Quantity Minimum</label

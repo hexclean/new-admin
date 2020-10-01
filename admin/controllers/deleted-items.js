@@ -65,7 +65,6 @@ exports.getProducts = async (req, res, next) => {
       });
     })
     .then((products) => {
-      console.log("prod", products);
       res.render("deleted-items/deleted-products", {
         pageTitle: "Admin Products",
         path: "/admin/products",

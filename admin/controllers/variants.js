@@ -103,10 +103,10 @@ exports.postAddVariant = async (req, res, next) => {
   const updatedExtraQuantityMin = req.body.quantityMin;
   const updatedExtraQuantityMax = req.body.quantityMax;
   const categoryRo = req.body.categoryRo;
-
   const maxOption = req.body.maxOption;
   const filteredStatus = req.body.status.filter(Boolean);
   const filteredOptions = req.body.statusOption.filter(Boolean);
+  console.log("maxOption", maxOption);
 
   const ext = await Extras.findAll({
     where: { restaurantId: req.admin.id },

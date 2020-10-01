@@ -1,0 +1,205 @@
+<script>
+  $(document).ready(function () {
+    $(".status-checkbox").click(function () {
+      var extraId = $(this).attr("data-extraId");
+      if ($(this).is(":checked")) {
+        $(".status-" + extraId).val("on");
+      } else {
+        $(".status-" + extraId).val("off");
+      }
+    });
+  });
+</script>
+<script>
+  $(document).ready(function () {
+    $("select#maxOption").val(
+      "<% if (editing) { %><%=  variant[0].productVariantsExtras[0].productVariant.maxOption %><% } %>"
+    );
+    $("select#categoryRo").val(
+      "<% if (editing) { %><%=  variant[0].productVariantsExtras[0].productVariant.categoryId %><% } %>"
+    );
+  });
+</script>
+<script>
+  $(document).ready(function () {
+    $(".status-checkbox-option").click(function () {
+      var optionId = $(this).attr("data-optionId");
+      if ($(this).is(":checked")) {
+        $(".statusOption" + optionId).val("on");
+      } else {
+        $(".statusOption" + optionId).val("off");
+      }
+    });
+  });
+</script>
+<script>
+  $(document).ready(function () {
+    $(".status-checkbox").click(function () {
+      var extraId = $(this).data("extraid");
+      $("#price_error_message_" + extraId).hide();
+      $("#qtMin_error_message_" + extraId).hide();
+      $("#qtMax_error_message_" + extraId).hide();
+      var error_price = false;
+      var error_qtMin = false;
+      var error_qtMax = false;
+    });
+
+    function check_variantInputs() {
+      var extraId = $(this).attr("data-extraId");
+      $(".extra_box").each(function () {
+        var extraId = $(this).data("extra");
+        var price_len = $(".price_" + extraId).val().length;
+        var qtMin_len = $(".qtMin_" + extraId).val().length;
+        var qtMax_len = $(".qtMax_" + extraId).val().length;
+        if (
+          $(this).find("input:checkbox").is(":checked") &&
+          (price_len < 0 || qtMin_len < 0 || qtMax_len < 0 || )
+        ) {
+          $("#quantityMin").on("mouseup keyup", function () {
+            $(this).val(Math.min(20, Math.max(1, $(this).val())));
+          });
+          if (price_len < 1) {
+            $("#price_error_message_" + extraId)
+              .show()
+              .html("Mezo kitoltese kotelezo");
+            error_price = true;
+          } else {
+            $("#price_error_message_" + extraId)
+              .hide()
+              .html("");
+          }
+          if (qtMin_len < 1) {
+            $("#qtMin_error_message_" + extraId)
+              .show()
+              .html("Mezo kitoltese kotelezo");
+            error_qtMin = true;
+          } else {
+            $("#qtMin_error_message_" + extraId)
+              .hide()
+              .html("");
+          }
+          if (qtMax_len < 1) {
+            $("#qtMax_error_message_" + extraId).show();
+            $("#qtMax_error_message_" + extraId).html(
+              "Mezo kitoltese kotelezo"
+            );
+            error_qtMax = true;
+          } else {
+            $("#qtMax_error_message_" + extraId)
+              .hide()
+              .html("");
+          }
+        } else {
+          $(this).find(".extra_error_message").hide();
+        }
+      });
+    }
+    $(".extra_price_input").focusout(function () {
+      var len = $(this).val().length;
+      var extraId = $(this).closest(".extra_box").data("extra");
+      if (len < 1) {
+        $("#price_error_message_" + extraId)
+          .show()
+          .html("Mezo kitoltese kotelezo");
+      } else {
+        $("#price_error_message_" + extraId)
+          .hide()
+          .html("");
+      }
+    });
+    $(".extra_qtMin_input").focusout(function () {
+      var len = $(this).val().length;
+      var extraId = $(this).closest(".extra_box").data("extra");
+      if (len < 1) {
+        $("#qtMin_error_message_" + extraId)
+          .show()
+          .html("Mezo kitoltese kotelezo");
+      } else {
+        $("#qtMin_error_message_" + extraId)
+          .hide()
+          .html("");
+      }
+    });
+    $(".extra_qtMax_input").focusout(function () {
+      var len = $(this).val().length;
+      var extraId = $(this).closest(".extra_box").data("extra");
+      if (len < 1) {
+        $("#qtMax_error_message_" + extraId)
+          .show()
+          .html("Mezo kitoltese kotelezo");
+      } else {
+        $("#qtMax_error_message_" + extraId)
+          .hide()
+          .html("");
+      }
+    });
+    $("#variant_form").submit(function () {
+      error_price = false;
+      error_qtMin = false;
+      error_qtMax = false;
+      check_variantInputs();
+      if (
+        error_price == false &&
+        error_qtMin == false &&
+        error_qtMax == false
+      ) {
+        return true;
+      } else {
+        return false;
+      }
+    });
+  });
+</script>
+<script>
+  $(function () {
+    $("#sku_error_message").hide();
+
+    var error_sku = false;
+
+    $("#sku").focusout(function () {
+      check_sku();
+    });
+
+    function check_sku() {
+      var sku_length = $("#sku").val().length;
+
+      if (sku_length < 2 || sku_length > 40) {
+        $("#sku_error_message").html(`<%= lingua.extra_hu_name_required %>`);
+        $("#sku_error_message").show();
+        error_sku = true;
+      } else {
+        $("#sku_error_message").hide();
+      }
+    }
+
+    $("#variant_form").submit(function () {
+      error_sku = false;
+
+      check_sku();
+
+      if (error_sku == false) {
+        return true;
+      } else {
+        return false;
+      }
+    });
+  });
+</script>
+<script>
+  $(document).ready(function () {
+    $("#variant_form").submit(function () {
+      $(".extra-btn").attr("disabled", true);
+      return true;
+    });
+  });
+</script>
+<script>
+  $(document).ready(function () {
+    $("#search").keyup(function () {
+      const extraId = $("#search").val();
+      $.get("search-variant-extras/" + extraId).done(function (data) {
+        $("#searchedExtra").html(data);
+      });
+    });
+  });
+</script>

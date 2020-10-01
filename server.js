@@ -13,8 +13,7 @@ const sequelize = require("./util/database");
 const { databaseConfig } = require("./middleware/database-config");
 const app = express();
 const db = require("./util/database");
-const swaggerJsDoc = require("swagger-jsdoc");
-const swaggerUi = require("swagger-ui-express");
+
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
   res.header(
@@ -142,28 +141,14 @@ databaseConfig();
 //     isAuthenticated: req.session.isLoggedIn,
 //   });
 // });
-const swaggerOptions = {
-  swaggerDefinition: {
-    info: {
-      title: "das",
-      description: "ds",
-      conntact: {
-        name: "dasda",
-      },
-      server: ["http://localhost:5000"],
-    },
-  },
-  apis: ["server.js"],
-};
-const swaggerDocs = swaggerJsDoc(swaggerOptions);
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+
 // Config PORT
 const PORT = process.env.PORT || 5000;
 app.use(errorController.get404);
 
 sequelize
-  .sync({ force: true })
-  // .sync()
+  // .sync({ force: true })
+  .sync()
   .then((result) => {
     app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
   })
