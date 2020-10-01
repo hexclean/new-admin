@@ -83,7 +83,10 @@
                                   <th scope="col" >EDIT</th>
                                </tr>
                             </thead>
-                            <input type="text" name="search" id="search" placeholder="Search allergen" class="form-control" />
+                            <div class="col-6">
+                            <input type="text" name="search" id="search" placeholder="Search allergen" class="extra-search form-control" />
+                           </div>
+                           <hr>
                             <% if (box.length > 0) { %>
                             <% for (let i = 0; i < box.length; i++) { %>
                             <tbody>
