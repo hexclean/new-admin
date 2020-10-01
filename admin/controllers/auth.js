@@ -3,9 +3,10 @@ const Admin = require("../../models/Restaurant");
 const AdminInfo = require("../../models/AdminInfo");
 const nodemailer = require("nodemailer");
 const sendgridTransport = require("nodemailer-sendgrid-transport");
-// const AdminOpeningHours = require("../../models/OpeningHoursTranslation");
+const OpeningHours = require("../../models/OpeningHours");
+const OpeningHoursTranslation = require("../../models/OpeningHoursTranslation");
+const Hour = require("../../models/Hours");
 const { validationResult } = require("express-validator/check");
-
 const transporter = nodemailer.createTransport(
   sendgridTransport({
     auth: {
@@ -61,6 +62,7 @@ exports.postLogin = (req, res, next) => {
               res.redirect("/");
             });
           }
+          createOpeningHour();
           res.redirect("/login");
         })
         .catch((err) => {
@@ -117,7 +119,273 @@ exports.postSignup = async (req, res, next) => {
           languageId: 3,
           shortCompanyDesc: "",
         });
+
+        const hetfo = await OpeningHours.create({
+          restaurantId: admin.id,
+          open: "-",
+          close: "-",
+          sku: "hetfo",
+          updatedAt: "2020-05-15 07:53:49",
+          createdAt: "2020-05-15 07:53:49",
+        });
+        const kedd = await OpeningHours.create({
+          restaurantId: admin.id,
+          open: "-",
+          close: "-",
+          sku: "kedd",
+          updatedAt: "2020-05-15 07:53:49",
+          createdAt: "2020-05-15 07:53:49",
+        });
+        const szerda = await OpeningHours.create({
+          restaurantId: admin.id,
+          open: "-",
+          close: "-",
+          sku: "szerda",
+          updatedAt: "2020-05-15 07:53:49",
+          createdAt: "2020-05-15 07:53:49",
+        });
+        const csutortok = await OpeningHours.create({
+          restaurantId: admin.id,
+          open: "-",
+          close: "-",
+          sku: "csutortok",
+          updatedAt: "2020-05-15 07:53:49",
+          createdAt: "2020-05-15 07:53:49",
+        });
+        const pentek = await OpeningHours.create({
+          restaurantId: admin.id,
+          open: "-",
+          close: "-",
+          sku: "pentek",
+          updatedAt: "2020-05-15 07:53:49",
+          createdAt: "2020-05-15 07:53:49",
+        });
+        const szombat = await OpeningHours.create({
+          restaurantId: admin.id,
+          open: "-",
+          close: "-",
+          sku: "szombat",
+          updatedAt: "2020-05-15 07:53:49",
+          createdAt: "2020-05-15 07:53:49",
+        });
+        const vasarnap = await OpeningHours.create({
+          restaurantId: admin.id,
+          open: "-",
+          close: "-",
+          sku: "vasarnap",
+          updatedAt: "2020-05-15 07:53:49",
+          createdAt: "2020-05-15 07:53:49",
+        });
+        await Hour.create({
+          restaurantId: admin.id,
+          openingHoursId: hetfo.id,
+          updatedAt: "2020-05-15 07:53:49",
+          createdAt: "2020-05-15 07:53:49",
+        });
+        await Hour.create({
+          restaurantId: admin.id,
+          openingHoursId: kedd.id,
+          updatedAt: "2020-05-15 07:53:49",
+          createdAt: "2020-05-15 07:53:49",
+        });
+        await Hour.create({
+          restaurantId: admin.id,
+          openingHoursId: szerda.id,
+          updatedAt: "2020-05-15 07:53:49",
+          createdAt: "2020-05-15 07:53:49",
+        });
+        await Hour.create({
+          restaurantId: admin.id,
+          openingHoursId: csutortok.id,
+          updatedAt: "2020-05-15 07:53:49",
+          createdAt: "2020-05-15 07:53:49",
+        });
+        await Hour.create({
+          restaurantId: admin.id,
+          openingHoursId: pentek.id,
+          updatedAt: "2020-05-15 07:53:49",
+          createdAt: "2020-05-15 07:53:49",
+        });
+        await Hour.create({
+          restaurantId: admin.id,
+          openingHoursId: szombat.id,
+          updatedAt: "2020-05-15 07:53:49",
+          createdAt: "2020-05-15 07:53:49",
+        });
+        await Hour.create({
+          restaurantId: admin.id,
+          openingHoursId: vasarnap.id,
+          updatedAt: "2020-05-15 07:53:49",
+          createdAt: "2020-05-15 07:53:49",
+        });
+
+        await OpeningHoursTranslation.create({
+          languageId: 1,
+          name: "Luni",
+          openingHoursId: hetfo.id,
+          updatedAt: "2020-05-15 07:53:49",
+          createdAt: "2020-05-15 07:53:49",
+        });
+        await OpeningHoursTranslation.create({
+          languageId: 2,
+          name: "Hétfő",
+          openingHoursId: hetfo.id,
+          updatedAt: "2020-05-15 07:53:49",
+          createdAt: "2020-05-15 07:53:49",
+        });
+        await OpeningHoursTranslation.create({
+          languageId: 3,
+          name: "Monday",
+          openingHoursId: hetfo.id,
+          updatedAt: "2020-05-15 07:53:49",
+          createdAt: "2020-05-15 07:53:49",
+        });
+        await OpeningHoursTranslation.create({
+          restaurantId: admin.id,
+          languageId: 1,
+          name: "Marți",
+          openingHoursId: kedd.id,
+          updatedAt: "2020-05-15 07:53:49",
+          createdAt: "2020-05-15 07:53:49",
+        });
+        await OpeningHoursTranslation.create({
+          restaurantId: admin.id,
+          languageId: 2,
+          name: "Kedd",
+          openingHoursId: kedd.id,
+          updatedAt: "2020-05-15 07:53:49",
+          createdAt: "2020-05-15 07:53:49",
+        });
+        await OpeningHoursTranslation.create({
+          restaurantId: admin.id,
+          languageId: 3,
+          name: "Tuesday",
+          openingHoursId: kedd.id,
+          updatedAt: "2020-05-15 07:53:49",
+          createdAt: "2020-05-15 07:53:49",
+        });
+        await OpeningHoursTranslation.create({
+          restaurantId: admin.id,
+          languageId: 1,
+          name: "Miercuri",
+          openingHoursId: szerda.id,
+          updatedAt: "2020-05-15 07:53:49",
+          createdAt: "2020-05-15 07:53:49",
+        });
+        await OpeningHoursTranslation.create({
+          restaurantId: admin.id,
+          languageId: 2,
+          name: "Szerda",
+          openingHoursId: szerda.id,
+          updatedAt: "2020-05-15 07:53:49",
+          createdAt: "2020-05-15 07:53:49",
+        });
+        await OpeningHoursTranslation.create({
+          restaurantId: admin.id,
+          languageId: 3,
+          name: "Wednesday",
+          openingHoursId: szerda.id,
+          updatedAt: "2020-05-15 07:53:49",
+          createdAt: "2020-05-15 07:53:49",
+        });
+        await OpeningHoursTranslation.create({
+          restaurantId: admin.id,
+          languageId: 1,
+          name: "Joi",
+          openingHoursId: csutortok.id,
+          updatedAt: "2020-05-15 07:53:49",
+          createdAt: "2020-05-15 07:53:49",
+        });
+        await OpeningHoursTranslation.create({
+          languageId: 2,
+          restaurantId: admin.id,
+          name: "Csütörtök",
+          openingHoursId: csutortok.id,
+          updatedAt: "2020-05-15 07:53:49",
+          createdAt: "2020-05-15 07:53:49",
+        });
+        await OpeningHoursTranslation.create({
+          restaurantId: admin.id,
+          languageId: 3,
+          name: "Thursday",
+          openingHoursId: csutortok.id,
+          updatedAt: "2020-05-15 07:53:49",
+          createdAt: "2020-05-15 07:53:49",
+        });
+        await OpeningHoursTranslation.create({
+          restaurantId: admin.id,
+          languageId: 1,
+          name: "Vineri",
+          openingHoursId: pentek.id,
+          updatedAt: "2020-05-15 07:53:49",
+          createdAt: "2020-05-15 07:53:49",
+        });
+        await OpeningHoursTranslation.create({
+          restaurantId: admin.id,
+          languageId: 2,
+          name: "Péntek",
+          openingHoursId: pentek.id,
+          updatedAt: "2020-05-15 07:53:49",
+          createdAt: "2020-05-15 07:53:49",
+        });
+        await OpeningHoursTranslation.create({
+          restaurantId: admin.id,
+          name: "Friday",
+          languageId: 3,
+          openingHoursId: pentek.id,
+          updatedAt: "2020-05-15 07:53:49",
+          createdAt: "2020-05-15 07:53:49",
+        });
+        await OpeningHoursTranslation.create({
+          restaurantId: admin.id,
+          languageId: 1,
+          name: "Sâmbătă",
+          openingHoursId: szombat.id,
+          updatedAt: "2020-05-15 07:53:49",
+          createdAt: "2020-05-15 07:53:49",
+        });
+        await OpeningHoursTranslation.create({
+          restaurantId: admin.id,
+          languageId: 2,
+          openingHoursId: szombat.id,
+          name: "Szombat",
+          updatedAt: "2020-05-15 07:53:49",
+          createdAt: "2020-05-15 07:53:49",
+        });
+        await OpeningHoursTranslation.create({
+          restaurantId: admin.id,
+          languageId: 3,
+          name: "Saturay",
+          openingHoursId: szombat.id,
+          updatedAt: "2020-05-15 07:53:49",
+          createdAt: "2020-05-15 07:53:49",
+        });
+        await OpeningHoursTranslation.create({
+          restaurantId: admin.id,
+          languageId: 1,
+          name: "Duminică",
+          openingHoursId: vasarnap.id,
+          updatedAt: "2020-05-15 07:53:49",
+          createdAt: "2020-05-15 07:53:49",
+        });
+        await OpeningHoursTranslation.create({
+          restaurantId: admin.id,
+          languageId: 2,
+          name: "Vasárnap",
+          openingHoursId: vasarnap.id,
+          updatedAt: "2020-05-15 07:53:49",
+          createdAt: "2020-05-15 07:53:49",
+        });
+        await OpeningHoursTranslation.create({
+          restaurantId: admin.id,
+          name: "Sunday",
+          languageId: 3,
+          openingHoursId: vasarnap.id,
+          updatedAt: "2020-05-15 07:53:49",
+          createdAt: "2020-05-15 07:53:49",
+        });
       }
+
       createAdmin();
     })
     .then((result) => {

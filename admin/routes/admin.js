@@ -26,6 +26,7 @@ router.get(
   isAuth,
   liveSearchController.getFilteredExtra
 );
+
 router.get(
   "/get-filtered-allergen/:allergenId",
   isAuth,

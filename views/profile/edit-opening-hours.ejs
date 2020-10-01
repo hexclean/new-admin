@@ -28,6 +28,7 @@
                method="POST"
                enctype="multipart/form-data"
                >
+               <%= admin[0].id %>
                <% for(let i = 0; i < admin.length; i++) { %>
                <div class="row">
                   <div class="col-md-6">
@@ -66,7 +67,7 @@
                                  type="text"
                                  id="mondayOpen"
                                  name="mondayOpen"
-                                 value="<% if (editing ) { %><%=  %><% } %>"
+                                 value="<% if (editing ) { %><%= admin[0].hours[0].openingHour.open %><% } %>"
                                  />
                            </div>
                            <div class="form-group">
@@ -76,7 +77,7 @@
                                  type="text"
                                  id="mondayClose"
                                  name="mondayClose"
-                                 value="<% if (editing) { %><%=  %><% } %>"
+                                 value="<% if (editing) { %><%= admin[0].hours[0].openingHour.close %><% } %>"
                                  />
                            </div>
                           
@@ -123,7 +124,7 @@
                                  type="text"
                                  name="tuesdayOpen"
                                  id="tuesdayOpen"
-                                 value="<% if (editing ) { %><%=  %><% } %>"
+                                 value="<% if (editing ) { %><%= admin[0].hours[1].openingHour.open %><% } %>"
                                  />
                            </div>
                            <div class="form-group">
@@ -133,7 +134,7 @@
                                  type="text"
                                  name="tuesdayClose"
                                  id="tuesdayClose"
-                                 value="<% if (editing) { %><%=  %><% } %>"
+                                 value="<% if (editing) { %><%= admin[0].hours[1].openingHour.close %><% } %>"
                                  />
                            </div>
                           
@@ -175,7 +176,7 @@
                                 type="text"
                                 name="wednesdayOpen"
                                 id="wednesdayOpen"
-                                value="<% if (editing ) { %><%=  %><% } %>"
+                                value="<% if (editing ) { %><%= admin[0].hours[2].openingHour.open %><% } %>"
                                 />
                           </div>
                           <div class="form-group">
@@ -185,7 +186,7 @@
                                 type="text"
                                 name="wednesdayClose"
                                 id="wednesdayClose"
-                                value="<% if (editing) { %><%=  %><% } %>"
+                                value="<% if (editing) { %><%= admin[0].hours[2].openingHour.close %><% } %>"
                                 />
                           </div>
                           
@@ -226,7 +227,7 @@
                                 type="text"
                                 name="thursdayOpen"
                                 id="thursdayOpen"
-                                value="<% if (editing ) { %><%=  %><% } %>"
+                                value="<% if (editing ) { %><%= admin[0].hours[3].openingHour.open %><% } %>"
                                 />
                           </div>
                           <div class="form-group">
@@ -236,7 +237,7 @@
                                 type="text"
                                 name="thursdayClose"
                                 id="thursdayClose"
-                                value="<% if (editing) { %><%=  %><% } %>"
+                                value="<% if (editing) { %><%= admin[0].hours[3].openingHour.close %><% } %>"
                                 />
                           </div>
                           
@@ -277,7 +278,7 @@
                                 type="text"
                                 name="fridayOpen"
                                 id="fridayOpen"
-                                value="<% if (editing ) { %><%=  %><% } %>"
+                                value="<% if (editing ) { %><%= admin[0].hours[4].openingHour.open %><% } %>"
                                 />
                           </div>
                           <div class="form-group">
@@ -287,7 +288,7 @@
                                 type="text"
                                 name="fridayClose"
                                 id="fridayClose"
-                                value="<% if (editing) { %><%=  %><% } %>"
+                                value="<% if (editing) { %><%= admin[0].hours[4].openingHour.close %><% } %>"
                                 />
                           </div>
                           
@@ -328,7 +329,7 @@
                                 type="text"
                                 name="saturdayOpen"
                                 id="saturdayOpen"
-                                value="<% if (editing ) { %><%=  %><% } %>"
+                                value="<% if (editing ) { %><%= admin[0].hours[5].openingHour.open %><% } %>"
                                 />
                           </div>
                           <div class="form-group">
@@ -338,7 +339,7 @@
                                 type="text"
                                 name="saturdayClose"
                                 id="saturdayClose"
-                                value="<% if (editing) { %><%=  %><% } %>"
+                                value="<% if (editing) { %><%= admin[0].hours[5].openingHour.close %><% } %>"
                                 />
                           </div>
                           
@@ -381,7 +382,7 @@
                                 type="text"
                                 name="sundayOpen"
                                 id="sundayOpen"
-                                value="<% if (editing ) { %><%=  %><% } %>"
+                                value="<% if (editing ) { %><%= admin[0].hours[6].openingHour.open %><% } %>"
                                 />
                           </div>
                           <div class="form-group">
@@ -391,7 +392,7 @@
                                 type="text"
                                 name="sundayClose"
                                 id="sundayClose"
-                                value="<% if (editing) { %><%=  %><% } %>"
+                                value="<% if (editing) { %><%= admin[0].hours[6].openingHour.close %><% } %>"
                                 />
                           </div>
                           

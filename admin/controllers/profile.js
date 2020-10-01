@@ -67,6 +67,9 @@ exports.getEditOpeningHours = async (req, res, next) => {
     ],
   })
     .then((admin) => {
+      // console.log(admin[0].hours);
+      console.log(admin[0].hours[0].openingHour.open);
+      // console.log(admin[0].hours[1].openingHour.openingHoursTranslations);
       res.render("profile/edit-opening-hours", {
         pageTitle: "Edit Product",
         path: "/admin/edit-product",
@@ -84,18 +87,18 @@ exports.getEditOpeningHours = async (req, res, next) => {
 exports.postEditOpeningHours = async (req, res, next) => {
   const mondayOpen = req.body.mondayOpen;
   const mondayClose = req.body.mondayClose;
-  // const tuesdayOpen = req.body.tuesdayOpen;
-  // const tuesdayClose = req.body.tuesdayClose;
-  // const wednesdayOpen = req.body.wednesdayOpen;
-  // const wednesdayClose = req.body.wednesdayClose;
-  // const thursdayOpen = req.body.thursdayOpen;
-  // const thursdayClose = req.body.thursdayClose;
-  // const fridayOpen = req.body.fridayOpen;
-  // const fridayClose = req.body.fridayClose;
-  // const saturdayOpen = req.body.saturdayOpen;
-  // const saturdayClose = req.body.saturdayClose;
-  // const sundayOpen = req.body.sundayOpen;
-  // const sundayClose = req.body.sundayClose;
+  const tuesdayOpen = req.body.tuesdayOpen;
+  const tuesdayClose = req.body.tuesdayClose;
+  const wednesdayOpen = req.body.wednesdayOpen;
+  const wednesdayClose = req.body.wednesdayClose;
+  const thursdayOpen = req.body.thursdayOpen;
+  const thursdayClose = req.body.thursdayClose;
+  const fridayOpen = req.body.fridayOpen;
+  const fridayClose = req.body.fridayClose;
+  const saturdayOpen = req.body.saturdayOpen;
+  const saturdayClose = req.body.saturdayClose;
+  const sundayOpen = req.body.sundayOpen;
+  const sundayClose = req.body.sundayClose;
 
   // if (extra.restaurantId != req.admin.id) {
   //   return res.redirect("/");
