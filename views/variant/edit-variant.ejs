@@ -14,6 +14,7 @@
 <script>
    $(document).ready(function() {
       $("select#maxOption").val("<% if (editing) { %><%=  variant[0].productVariantsExtras[0].productVariant.maxOption %><% } %>");
+      $("select#categoryRo").val("<% if (editing) { %><%=  variant[0].productVariantsExtras[0].productVariant.categoryId %><% } %>");
    });
   
 
@@ -576,29 +577,7 @@
          </div>
          <% } else { %>
          <% } %>
-         <% } %>
-         <script>
-            $(function() { 
-            $("#categoryRo").change(function() { 
-               $("#categoryHu").val($(this).val());
-               $("#categoryEn").val($(this).val());
-            });
-            });
-            
-            $(function() { 
-            $("#categoryHu").change(function() { 
-               $("#categoryRo").val($(this).val());
-               $("#categoryEn").val($(this).val());
-            });
-            });
-            
-            $(function() { 
-            $("#categoryEn").change(function() { 
-               $("#categoryRo").val($(this).val());
-               $("#categoryHu").val($(this).val());
-            });
-            });
-         </script>    
+         <% } %> 
       </form>
    </main>
    <%- include('../includes/end.ejs') %>

@@ -32,7 +32,6 @@ exports.getAddVariant = async (req, res, next) => {
       },
     ],
   });
-  console.log("ext", ext);
 
   const checkExtraLength = await Extras.findAll({
     where: { restaurantId: req.admin.id },
@@ -197,7 +196,7 @@ exports.postEditVariant = async (req, res, next) => {
   const filteredStatus = req.body.status.filter(Boolean);
   const filteredOptions = req.body.statusOption.filter(Boolean);
   const maxOption = req.body.maxOption;
-
+  const categoryRo = req.body.categoryRo;
   const Op = Sequelize.Op;
   const dasd = req.body.varId;
   let variantId = [dasd];
@@ -215,6 +214,7 @@ exports.postEditVariant = async (req, res, next) => {
         await ProductVariants.findByPk(varId).then((variant) => {
           variant.sku = updatedSku;
           variant.maxOption = maxOption;
+          variant.categoryId = categoryRo;
           return variant.save();
         });
 
