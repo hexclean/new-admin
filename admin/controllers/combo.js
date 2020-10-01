@@ -479,3 +479,49 @@ exports.getFilteredCategory = async (req, res, next) => {
       return next(error);
     });
 };
+
+exports.getFilteredAllergen = async (req, res, next) => {
+  var allergenName = req.params.allergenId;
+  var currentAllergenName;
+  var currentLanguage = req.cookies.language;
+
+  if (allergenName.length == 1) {
+    allergenName = [];
+  }
+
+  if (currentLanguage == "ro") {
+    currentAllergenName = 1;
+  } else if (currentLanguage == "hu") {
+    currentAllergenName = 2;
+  } else {
+    currentAllergenName = 3;
+  }
+
+  await Allergen.findAll({
+    where: {
+      restaurantId: req.admin.id,
+    },
+    include: [
+      {
+        model: AllergenTranslation,
+        where: {
+          name: { [Op.like]: "%" + allergenName + "%" },
+          languageId: currentAllergenName,
+        },
+      },
+    ],
+  })
+
+    .then((allergen) => {
+      res.render("live-search/search-allergen", {
+        allergen: allergen,
+        editing: false,
+        extras: allergen,
+      });
+    })
+    .catch((err) => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
+};

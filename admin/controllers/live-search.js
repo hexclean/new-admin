@@ -47,7 +47,6 @@ exports.getFilteredExtra = async (req, res, next) => {
       res.render("live-search/search-extra", {
         extra: extra,
         editing: false,
-        extras: extra,
       });
     })
     .catch((err) => {
@@ -93,7 +92,6 @@ exports.getFilteredCategory = async (req, res, next) => {
       res.render("live-search/search-category", {
         category: category,
         editing: false,
-        extras: category,
       });
     })
     .catch((err) => {
@@ -139,7 +137,86 @@ exports.getFilteredAllergen = async (req, res, next) => {
       res.render("live-search/search-allergen", {
         allergen: allergen,
         editing: false,
-        extras: allergen,
+      });
+    })
+    .catch((err) => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
+};
+
+exports.getFilteredBox = async (req, res, next) => {
+  var boxName = req.params.boxId;
+  var currentBoxName;
+  var currentLanguage = req.cookies.language;
+
+  if (boxName.length == 1) {
+    boxName = [];
+  }
+
+  if (currentLanguage == "ro") {
+    currentBoxName = 1;
+  } else if (currentLanguage == "hu") {
+    currentBoxName = 2;
+  } else {
+    currentBoxName = 3;
+  }
+
+  await Box.findAll({
+    where: {
+      restaurantId: req.admin.id,
+    },
+    include: [
+      {
+        model: BoxTranslation,
+        where: {
+          name: { [Op.like]: "%" + boxName + "%" },
+          languageId: currentBoxName,
+        },
+      },
+    ],
+  })
+
+    .then((box) => {
+      // console.log(box);
+      console.log("currentBoxName-----", currentBoxName);
+      res.render("live-search/search-box", {
+        box: box,
+        currentLanguage: currentBoxName,
+        editing: false,
+      });
+    })
+    .catch((err) => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
+};
+
+exports.getFilteredVariant = async (req, res, next) => {
+  var variantName = req.params.variantId;
+
+  if (variantName.length == 1) {
+    variantName = [];
+  }
+
+  await ProductVariants.findAll({
+    where: {
+      sku: { [Op.like]: "%" + variantName + "%" },
+      restaurantId: req.admin.id,
+    },
+    // where: {
+    //   // sku: { [Op.like]: "%" + variantName + "%" },0
+    // },
+  })
+
+    .then((variant) => {
+      console.log("variantName", variantName);
+      console.log(variant);
+      res.render("live-search/search-variant", {
+        variant: variant,
+        editing: false,
       });
     })
     .catch((err) => {

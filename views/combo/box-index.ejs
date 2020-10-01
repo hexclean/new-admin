@@ -6,26 +6,17 @@
    $(document).ready(function() {
 
       $('#search').keyup(function() {
-         const extraId = $('#search').val();
-         $.get( "get-filtered-category/"+ extraId )
+         const boxId = $('#search').val();
+         $.get( "get-filtered-box/"+ boxId )
 
       .done(function( data ) {
 
-         $("#searchedCategory").html(data);
+         $("#searchedBox").html(data);
          
       });
    });
 
-   $('#searchExtra').keyup(function() {
-         const extraId = $('#searchExtra').val();
-         $.get( "get-filtered-extra-index/"+ extraId )
 
-      .done(function( data ) {
-
-         $("#searchedExtra").html(data);
-         
-      });
-   });
    })
 
 
@@ -82,7 +73,7 @@
                    </div>
                    <div class="ms-panel-body">
                       <div  class="table-responsive">
-                         <table id="searchedCategory" class="table table-hover thead-primary">
+                         <table id="searchedBox" class="table table-hover thead-primary">
                             <thead>
                                <tr>
                                   <th scope="col">ID</th>

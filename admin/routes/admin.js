@@ -31,6 +31,16 @@ router.get(
   isAuth,
   liveSearchController.getFilteredAllergen
 );
+router.get(
+  "/get-filtered-box/:boxId",
+  isAuth,
+  liveSearchController.getFilteredBox
+);
+router.get(
+  "/get-filtered-variant/:variantId",
+  isAuth,
+  liveSearchController.getFilteredVariant
+);
 // COMBO
 router.get("/variant-index", isAuth, comboController.getVariantIndex);
 router.get("/extra-index", isAuth, comboController.getExtraIndex);

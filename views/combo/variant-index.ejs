@@ -5,27 +5,19 @@
 
    $(document).ready(function() {
 
-      $('#search').keyup(function() {
-         const extraId = $('#search').val();
-         $.get( "get-filtered-category/"+ extraId )
+      $('#searchVariant').keyup(function() {
+         const variantId = $('#searchVariant').val();
+         $.get( "get-filtered-variant/"+ variantId )
 
       .done(function( data ) {
 
-         $("#searchedCategory").html(data);
+         $("#searchedVariant").html(data);
          
       });
    });
 
-   $('#searchExtra').keyup(function() {
-         const extraId = $('#searchExtra').val();
-         $.get( "get-filtered-extra-index/"+ extraId )
-
-      .done(function( data ) {
-
-         $("#searchedExtra").html(data);
-         
-      });
-   });
+  
+ 
    })
 
 
@@ -107,7 +99,7 @@
                      </div>
                      <div class="ms-panel-body">
                         <div class="table-responsive">
-                           <table class="table table-hover thead-primary">
+                           <table id="searchedVariant" class="table table-hover thead-primary">
                               <thead>
                                  <tr>
                                     <th scope="col">ID</th>
@@ -118,6 +110,10 @@
                                     <th scope="col" >EDIT</th>
                                  </tr>
                               </thead>
+                              <div class="col-6">
+                                 <input type="text" name="searchVariant" id="searchVariant" placeholder="Extra keresés" class="form-control extra-search" />
+                              </div>
+                              <hr>
                               <% if (vr.length > 0) { %>
                               <% for (let variant of vr) { %>
                               <tbody>
