@@ -454,7 +454,7 @@
                                        <label class="ms-switch" data-extra="<%= boxArray[i].id %>">
                                        <input type="hidden" value="off" class="statusBox-<%= boxArray[i].id %>" name="statusBox[<%= boxArray[i].id %>]" > 
                                        <input onclick="ch($(this));" data-boxId="<%= boxArray[i].id %>"  class="statusBox-checkbox statusBox-checkbox-<%= boxArray[i].id %>" type="checkbox"> <span class="ms-switch-slider ms-switch-success round"></span>
-                                       </label> <span> <%= boxArray[i].boxTranslations[0].name %> </span> <b>:</b> <span> <%= boxArray[i].price %> </span>lei
+                                       </label> <span> <%= boxArray[i].boxTranslations[`${currentLanguage}`].name %> </span> <b>:</b> <span> <%= boxArray[i].price %> </span>lei
                                     </li>
                                     <% } %>
                                  </ul>
@@ -504,7 +504,7 @@
                                        <label class="ms-switch" data-extra="<%= allergenArray[i].id %>">
                                        <input type="hidden" value="off" class="statusAllergen-<%= allergenArray[i].id %>" name="statusAllergen[<%= allergenArray[i].id %>]" > 
                                        <input data-allergenId="<%= allergenArray[i].id %>"  class="statusAllergen-checkbox statusAllergen-checkbox-<%= allergenArray[i].id %>" type="checkbox"> <span class="ms-switch-slider ms-switch-success round"></span>
-                                       </label> <span> <%= allergenArray[i].allergenTranslations[0].name %> </span>
+                                       </label> <span> <%= allergenArray[i].allergenTranslations[`${currentLanguage}`].name %> </span>
                                     </li>
                                     <% } %>
                                  </ul>
