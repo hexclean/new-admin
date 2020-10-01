@@ -118,92 +118,92 @@ exports.postEditOpeningHours = async (req, res, next) => {
       }
     );
 
-    // await OpeningHours.update(
-    //   {
-    //     open: tuesdayOpen,
+    await OpeningHours.update(
+      {
+        open: tuesdayOpen,
 
-    //     close: tuesdayClose,
-    //   },
-    //   {
-    //     where: {
-    //       restaurantId: req.admin.id,
-    //       name: ["Marți", "Kedd", "Tuesday"],
-    //     },
-    //   }
-    // );
+        close: tuesdayClose,
+      },
+      {
+        where: {
+          restaurantId: req.admin.id,
+          sku: "kedd",
+        },
+      }
+    );
 
-    // await OpeningHours.update(
-    //   {
-    //     open: wednesdayOpen,
+    await OpeningHours.update(
+      {
+        open: wednesdayOpen,
 
-    //     close: wednesdayClose,
-    //   },
-    //   {
-    //     where: {
-    //       restaurantId: req.admin.id,
-    //       name: ["Miercuri", "Szerda", "Wednesday"],
-    //     },
-    //   }
-    // );
+        close: wednesdayClose,
+      },
+      {
+        where: {
+          restaurantId: req.admin.id,
+          sku: "szerda",
+        },
+      }
+    );
 
-    // await OpeningHours.update(
-    //   {
-    //     open: thursdayOpen,
+    await OpeningHours.update(
+      {
+        open: thursdayOpen,
 
-    //     close: thursdayClose,
-    //   },
-    //   {
-    //     where: {
-    //       restaurantId: req.admin.id,
-    //       name: ["Joi", "Csütörtök", "Thursday"],
-    //     },
-    //   }
-    // );
+        close: thursdayClose,
+      },
+      {
+        where: {
+          restaurantId: req.admin.id,
+          sku: "csutortok",
+        },
+      }
+    );
 
-    // await OpeningHours.update(
-    //   {
-    //     open: fridayOpen,
+    await OpeningHours.update(
+      {
+        open: fridayOpen,
 
-    //     close: fridayClose,
-    //   },
-    //   {
-    //     where: {
-    //       restaurantId: req.admin.id,
-    //       name: ["Vineri", "Péntek", "Friday"],
-    //     },
-    //   }
-    // );
+        close: fridayClose,
+      },
+      {
+        where: {
+          restaurantId: req.admin.id,
+          sku: "pentek",
+        },
+      }
+    );
 
-    // await OpeningHours.update(
-    //   {
-    //     open: saturdayOpen,
+    await OpeningHours.update(
+      {
+        open: saturdayOpen,
 
-    //     close: saturdayClose,
-    //   },
-    //   {
-    //     where: {
-    //       restaurantId: req.admin.id,
-    //       name: ["Sâmbătă", "Szombat", "Saturday"],
-    //     },
-    //   }
-    // );
+        close: saturdayClose,
+      },
+      {
+        where: {
+          restaurantId: req.admin.id,
+          sku: "szombat",
+        },
+      }
+    );
 
-    // await OpeningHours.update(
-    //   {
-    //     open: sundayOpen,
+    await OpeningHours.update(
+      {
+        open: sundayOpen,
 
-    //     close: sundayClose,
-    //   },
-    //   {
-    //     where: {
-    //       restaurantId: req.admin.id,
-    //       name: ["Duminică", "Vasárnap", "Sunday"],
-    //     },
-    //   }
-    // );
+        close: sundayClose,
+      },
+      {
+        where: {
+          restaurantId: req.admin.id,
+          sku: "vasarnap",
+        },
+      }
+    );
   }
   updateOpeningHours();
-  return res.redirect("/");
+  return res.redirect("/admin/dashboard");
 };
 
 exports.postEditProfile = async (req, res, next) => {
