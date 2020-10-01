@@ -225,11 +225,24 @@ exports.getEditProduct = async (req, res, next) => {
   const editMode = req.query.edit;
   const prodId = req.params.productId;
   const productId = [prodId];
+  let currentExtraName = [];
+  let currentCategoryName = [];
   const Op = Sequelize.Op;
 
   if (!editMode) {
     return res.redirect("/");
   }
+
+  const cat = await Category.findAll({
+    where: {
+      restaurantId: req.admin.id,
+    },
+    include: [
+      {
+        model: CategoryTranslation,
+      },
+    ],
+  });
 
   await Product.findByPk(prodId).then((product) => {
     if (!product) {
@@ -295,6 +308,18 @@ exports.getEditProduct = async (req, res, next) => {
     },
   });
 
+  for (let i = 0; i < cat.length; i++) {
+    var currentLanguage = req.cookies.language;
+
+    if (currentLanguage == "ro") {
+      currentCategoryName = 0;
+    } else if (currentLanguage == "hu") {
+      currentCategoryName = 1;
+    } else {
+      currentCategoryName = 2;
+    }
+  }
+
   Product.findAll({
     where: {
       id: prodId,
@@ -304,10 +329,23 @@ exports.getEditProduct = async (req, res, next) => {
       {
         model: ProductTranslation,
       },
-      { model: ProductFinal },
+      {
+        model: ProductFinal,
+        include: [
+          {
+            as: "theVariantd",
+            model: ProductVariant,
+          },
+        ],
+      },
     ],
   })
     .then((product) => {
+      let productVariantTest = [];
+      for (let i = 0; i < product.length; i++) {
+        productVariantTest = product[i].productFinals;
+      }
+      console.log("productVariantTest", productVariantTest);
       res.render("admin/edit-product", {
         isActiveAllergen: allergenTest,
         pageTitle: "Edit Product",
@@ -317,9 +355,13 @@ exports.getEditProduct = async (req, res, next) => {
         product: product,
         variantIdByParams: prodId,
         hasError: false,
+        currentExtraName: currentExtraName,
+        currentLanguage: currentCategoryName,
+        cat: cat,
         productIds: prodId,
         productId: prodId,
         ext: productFinal,
+        netest: productVariantTest,
         boxArray: box,
         productVariant: prodVariant,
         errorMessage: null,
