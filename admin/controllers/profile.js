@@ -1,6 +1,6 @@
 const Admin = require("../../models/Restaurant");
 const AdminInfo = require("../../models/AdminInfo");
-const Sequelize = require("sequelize");
+const fileHelper = require("../../util/file");
 const Hours = require("../../models/Hours.js");
 const OpeningHours = require("../../models/OpeningHours");
 const OpeningHoursTranslation = require("../../models/OpeningHoursTranslation");
@@ -40,10 +40,15 @@ exports.getEditProfile = async (req, res, next) => {
 };
 
 exports.getEditOpeningHours = async (req, res, next) => {
-  restaurantId = req.admin.id;
-  adminIdParams = req.params.restaurantId;
+  const adminIdParams = req.params.restaurantId;
+  const restaurantId = req.admin.id;
 
   const editMode = req.query.edit;
+
+  if (adminIdParams != restaurantId) {
+    return res.redirect("/");
+  }
+
   if (!editMode) {
     return res.redirect("/");
   }
@@ -67,9 +72,6 @@ exports.getEditOpeningHours = async (req, res, next) => {
     ],
   })
     .then((admin) => {
-      // console.log(admin[0].hours);
-      console.log(admin[0].hours[0].openingHour.open);
-      // console.log(admin[0].hours[1].openingHour.openingHoursTranslations);
       res.render("profile/edit-opening-hours", {
         pageTitle: "Edit Product",
         path: "/admin/edit-product",
@@ -285,4 +287,49 @@ exports.getDashboard = (req, res, next) => {
       error.httpStatusCode = 500;
       return next(error);
     });
+};
+
+exports.getEditImages = (req, res, next) => {
+  const editMode = req.query.edit;
+  const restaurantId = req.admin.id;
+
+  Admin.findByPk(restaurantId)
+    .then((admin) => {
+      if (!admin) {
+        return res.redirect("/admin/products");
+      }
+      res.render("profile/edit-photo", {
+        pageTitle: "Edit admin",
+        editing: editMode,
+        path: "/admin/edit-admin",
+        admin: admin,
+      });
+    })
+    .catch((err) => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
+};
+
+exports.postEditImages = async (req, res, next) => {
+  const image = req.file;
+  const imageUrl = image.path;
+
+  try {
+    await Admin.findByPk(req.admin.id).then((restaurant) => {
+      Admin.update(
+        {
+          imageUrl: imageUrl,
+        },
+        { where: { id: req.admin.id } }
+      );
+
+      res.redirect("/admin/dashboard");
+    });
+  } catch (err) {
+    const error = new Error(err);
+    error.httpStatusCode = 500;
+    return next(error);
+  }
 };

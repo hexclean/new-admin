@@ -122,13 +122,12 @@ router.post(
   adminProfileController.postEditOpeningHours
 );
 
-router.post(
-  "/edit-opening-hours",
-  isAuth,
-  adminProfileController.postEditOpeningHours
-);
+router.get("/edit-images/:restaurantId", adminProfileController.getEditImages);
+
+router.post("/edit-images", isAuth, adminProfileController.postEditImages);
 
 router.post("/edit-profile", isAuth, adminProfileController.postEditProfile);
+
 router.get(
   "/edit-profile/:restaurantId",
   adminProfileController.getEditProfile

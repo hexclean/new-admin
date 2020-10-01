@@ -3,7 +3,6 @@ const Product = require("../../models/Product");
 const ProductVariant = require("../../models/ProductVariant");
 const ProductTranslation = require("../../models/ProductTranslation");
 const ProductFinal = require("../../models/ProductFinal");
-const Admin = require("../../models/Restaurant");
 const Sequelize = require("sequelize");
 const Allergen = require("../../models/Allergen");
 const ProductHasAllergen = require("../../models/ProductHasAllergen");

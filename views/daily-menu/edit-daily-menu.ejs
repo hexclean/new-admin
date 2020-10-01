@@ -309,25 +309,14 @@
                value="<%= dailyMenuId %>"
                name="dailyMenuId"
                />
-            <button disabled id="dailyMenuSendButton"  name="dailyMenuSendButton" class="btn btn-success has-icon" type="submit">
+            <button  id="dailyMenuSendButton"  name="dailyMenuSendButton" class="btn btn-success has-icon" type="submit">
             <% if (editing) { %>Update Product<% } else { %>Add
             Product<% } %>
             </button>
 
 
            
-               <% if (editing) { %>
-                  
-                 
-
-                  <% } else { %>
-                     <script>
-                        $('#image').change(function(){
-                       $('#dailyMenuSendButton').prop('disabled', false);
-                    });
-                    </script>
-               <% } %>
-             
+            
             
               
             </script>
@@ -340,26 +329,5 @@
       </div>
       </div>
    </main>
-   <script>
-      $(function() { 
-      $("#categoryRo").change(function() { 
-         $("#categoryHu").val($(this).val());
-         $("#categoryEn").val($(this).val());
-      });
-      });
-      
-      $(function() { 
-      $("#categoryHu").change(function() { 
-         $("#categoryRo").val($(this).val());
-         $("#categoryEn").val($(this).val());
-      });
-      });
-      
-      $(function() { 
-      $("#categoryEn").change(function() { 
-         $("#categoryRo").val($(this).val());
-         $("#categoryHu").val($(this).val());
-      });
-      });
-   </script>    
+
 </body>
