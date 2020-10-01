@@ -322,7 +322,7 @@ exports.getBoxIndex = async (req, res, next) => {
         } else if (currentLanguage == "hu") {
           currentBoxName[i] = box[i].boxTranslations[1].name;
         } else {
-          currentBoxName[i] = box[i].allergenTranslations[2].name;
+          currentBoxName[i] = box[i].boxTranslations[2].name;
         }
       }
 

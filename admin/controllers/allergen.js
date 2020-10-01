@@ -26,10 +26,6 @@ exports.postAddAllergen = async (req, res, next) => {
   const huName = req.body.huName;
   const enName = req.body.enName;
 
-  let dailyMenuId = await DailyMenu.findAll({
-    where: { restaurantId: req.admin.id },
-  });
-
   const allergen = await Allergen.create({
     restaurantId: req.admin.id,
   });

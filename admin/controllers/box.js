@@ -46,7 +46,7 @@ exports.postAddBox = async (req, res, next) => {
 
   createBox()
     .then((result) => {
-      res.redirect("/");
+      res.redirect("/admin/box-index");
     })
     .catch((err) => {
       const error = new Error(err);
@@ -136,7 +136,7 @@ exports.postEditBox = async (req, res, next) => {
         );
       }
       updateBox();
-      res.redirect("/");
+      res.redirect("/admin/box-index");
     })
     .catch((err) => {
       const error = new Error(err);

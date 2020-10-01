@@ -103,6 +103,7 @@ exports.getAddProduct = async (req, res, next) => {
 exports.postAddProduct = async (req, res, next) => {
   const allergenId = req.body.allergenId;
   var filteredStatus = req.body.status.filter(Boolean);
+  console.log("filteredStatus", filteredStatus);
   const roTitle = req.body.roTitle;
   const huTitle = req.body.huTitle;
   const enTitle = req.body.enTitle;
@@ -116,7 +117,6 @@ exports.postAddProduct = async (req, res, next) => {
   const extId = req.body.extraId;
   const filteredStatusAllergen = req.body.statusAllergen.filter(Boolean);
   const filteredStatusBox = req.body.statusBox.filter(Boolean);
-  const commission = await Admin.findByPk(req.admin.id);
 
   const box = await Box.findAll({
     where: {
@@ -345,7 +345,6 @@ exports.getEditProduct = async (req, res, next) => {
       for (let i = 0; i < product.length; i++) {
         productVariantTest = product[i].productFinals;
       }
-      console.log("productVariantTest", productVariantTest);
       res.render("admin/edit-product", {
         isActiveAllergen: allergenTest,
         pageTitle: "Edit Product",
@@ -505,7 +504,6 @@ exports.postEditProduct = async (req, res, next) => {
               },
             }
           ).catch((err) => {
-            console.log("error1111", err);
             const error = new Error(err);
             error.httpStatusCode = 500;
             return next(error);
@@ -657,7 +655,6 @@ exports.getCategoryVariants = async (req, res, next) => {
   })
 
     .then((variant) => {
-      console.log(variant);
       res.render("admin/searchedVariants", {
         variants: variant,
         editing: false,
