@@ -17,14 +17,14 @@ router.get("/:locationName", async (req, res) => {
       ad.fullName AS restaurant_name, ad.newRestaurant AS restaurant_new, ad.discount AS restaurant_discount,
        adInf.shortCompanyDesc AS restaurant_description,
       ad.deliveryPrice AS restaurant_deliveryPrice, adInf.kitchen AS restaurant_kitchen
-      FROM foodnet.restaurants AS ad
-      INNER JOIN foodnet.adminInfos AS adInf
+      FROM restaurants AS ad
+      INNER JOIN adminInfos AS adInf
       ON adInf.restaurantId = ad.id
-      INNER JOIN foodnet.locations AS loc
+      INNER JOIN locations AS loc
       ON ad.id = loc.restaurantId
-      INNER JOIN foodnet.locationNames AS locName
+      INNER JOIN locationNames AS locName
       ON loc.locationNameId = locName.id
-      INNER JOIN foodnet.locationNameTranslations as locNameTrans
+      INNER JOIN locationNameTranslations as locNameTrans
       ON locName.id = locNameTrans.locationNameId
       WHERE locNameTrans.languageId= ${languageCode} AND adInf.languageId=${languageCode} AND locNameTrans.name LIKE '%${locationName}%';`,
       { type: Sequelize.QueryTypes.SELECT }
@@ -54,14 +54,14 @@ router.get("/targu-mures", async (req, res) => {
       ad.fullName AS restaurant_name, ad.newRestaurant AS restaurant_new, ad.discount AS restaurant_discount,
        adInf.shortCompanyDesc AS restaurant_description,
       ad.deliveryPrice AS restaurant_deliveryPrice, adInf.kitchen AS restaurant_kitchen
-      FROM foodnet.restaurants AS ad
-      INNER JOIN foodnet.adminInfos AS adInf
+      FROM restaurants AS ad
+      INNER JOIN adminInfos AS adInf
       ON adInf.restaurantId = ad.id
-      INNER JOIN foodnet.locations AS loc
+      INNER JOIN locations AS loc
       ON ad.id = loc.restaurantId
-      INNER JOIN foodnet.locationNames AS locName
+      INNER JOIN locationNames AS locName
       ON loc.locationNameId = locName.id
-      INNER JOIN foodnet.locationNameTranslations as locNameTrans
+      INNER JOIN locationNameTranslations as locNameTrans
       ON locName.id = locNameTrans.locationNameId
       WHERE locNameTrans.languageId= ${languageCode} AND adInf.languageId=${languageCode} AND locNameTrans.name LIKE '%${vasarhely}%';`,
       { type: Sequelize.QueryTypes.SELECT }
@@ -86,12 +86,12 @@ router.get("/odorheiu-secuiesc", async (req, res) => {
     return sequelize
       .query(
         `SELECT ad.fullName as restaurant_name, adInf.shortCompanyDesc AS restaurant_description, ad.deliveryPrice AS restaurant_deliveryPrice, adInf.kitchen AS restaurant_kitchen
-      FROM foodnet.restaurants as ad
-      INNER JOIN foodnet.adminInfos AS adInf
+      FROM restaurants as ad
+      INNER JOIN adminInfos AS adInf
       ON adInf.restaurantId = ad.id
-      INNER JOIN foodnet.adminLocations AS adLoc
+      INNER JOIN adminLocations AS adLoc
       ON ad.id = adLoc.restaurantId
-      INNER JOIN foodnet.adminLocationTranslations AS locTrans
+      INNER JOIN adminLocationTranslations AS locTrans
       ON locTrans.adminLocationsId = adLoc.id
       WHERE locTrans.languageId= ${languageCode} AND adInf.languageId=${languageCode} AND locTrans.name LIKE '%${udvarhely}%';`,
         { type: Sequelize.QueryTypes.SELECT }
@@ -116,12 +116,12 @@ router.get("/miercurea-ciuc", async (req, res) => {
     return sequelize
       .query(
         `SELECT ad.fullName as restaurant_name, adInf.shortCompanyDesc AS restaurant_description, ad.deliveryPrice AS restaurant_deliveryPrice, adInf.kitchen AS restaurant_kitchen
-      FROM foodnet.restaurants as ad
-      INNER JOIN foodnet.adminInfos AS adInf
+      FROM restaurants as ad
+      INNER JOIN adminInfos AS adInf
       ON adInf.restaurantId = ad.id
-      INNER JOIN foodnet.adminLocations AS adLoc
+      INNER JOIN adminLocations AS adLoc
       ON ad.id = adLoc.restaurantId
-      INNER JOIN foodnet.adminLocationTranslations AS locTrans
+      INNER JOIN adminLocationTranslations AS locTrans
       ON locTrans.adminLocationsId = adLoc.id
       WHERE locTrans.languageId= ${languageCode} AND adInf.languageId=${languageCode} AND locTrans.name LIKE '%${csik}%';`,
         { type: Sequelize.QueryTypes.SELECT }
