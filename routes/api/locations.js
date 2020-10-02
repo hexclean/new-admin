@@ -8,15 +8,33 @@ const sequelize = require("../../util/database");
 // @desc     Get all restaurants from selected city
 // @access   Public
 router.get("/:locationName", async (req, res) => {
+  var d = new Date();
+  var weekday = new Array(7);
+  weekday[0] = "Sunday";
+  weekday[1] = "Monday";
+  weekday[2] = "Tuesday";
+  weekday[3] = "Wednesday";
+  weekday[4] = "Thursday";
+  weekday[5] = "Friday";
+  weekday[6] = "Saturday";
+
+  var n = weekday[d.getDay()];
+
   try {
     const locationName = req.params.locationName.split("-").join(" ");
     const languageCode = 2;
     const selectedLocation = await sequelize.query(
-      `SELECT ad.id AS restaurant_id, ad.imageUrl AS restaurant_profileImage, ad.commission AS restaurant_commission,
+      `SELECT hoH.open as restaurant_open, hoH.close AS restaurant_close,  ad.id AS restaurant_id, ad.imageUrl AS restaurant_profileImage, ad.commission AS restaurant_commission,
       ad.fullName AS restaurant_name, ad.newRestaurant AS restaurant_new, ad.discount AS restaurant_discount,
        adInf.shortCompanyDesc AS restaurant_description,
       ad.deliveryPrice AS restaurant_deliveryPrice, adInf.kitchen AS restaurant_kitchen
       FROM restaurants AS ad
+      INNER JOIN hours AS ho
+      ON ad.id = ho.restaurantId
+      INNER JOIN openingHours as hoH
+      ON ho.openingHoursId = hoH.id
+      INNER JOIN openingHoursTranslations hoT
+      ON hoT.openingHoursId = hoH.id
       INNER JOIN adminInfos AS adInf
       ON adInf.restaurantId = ad.id
       INNER JOIN locations AS loc
@@ -25,7 +43,7 @@ router.get("/:locationName", async (req, res) => {
       ON loc.locationNameId = locName.id
       INNER JOIN locationNameTranslations as locNameTrans
       ON locName.id = locNameTrans.locationNameId
-      WHERE locNameTrans.languageId= ${languageCode} AND adInf.languageId=${languageCode} AND locNameTrans.name LIKE '%${locationName}%';`,
+      WHERE hoT.languageId = ${languageCode} AND hoT.name LIKE '%${n}%' AND locNameTrans.languageId = ${languageCode}  AND adInf.languageId = ${languageCode} AND locNameTrans.name LIKE '%${locationName}%';`,
       { type: Sequelize.QueryTypes.SELECT }
     );
 
