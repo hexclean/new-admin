@@ -1,5 +1,5 @@
 <%- include('../includes/head.ejs') %>
-<%- include('../includes/variant-scripts.ejs') %>
+<%- include('../jQuery-validation/variant.ejs') %>
 
 </head>
 <body class="ms-body ms-aside-left-open ms-primary-theme ms-has-quickbar">
@@ -111,7 +111,7 @@
                            <% if (editing) { %>
                            <input type="hidden" value="<%= variantIdByParams %>" name="variantId">
                            <% } %>
-                           <button class="btn btn-success has-icon" id="votebutton" type="submit">
+                           <button class="btn btn-success has-icon" id="createVariant" type="submit">
                            <% if (editing) { %>Update Product<% } else { %>Add
                            Product<% } %>
                            </button>

@@ -1,140 +1,7 @@
 <%- include('../includes/head.ejs') %>
-<script>
-$(function () {
-  $("#roName_error_message").hide();
-  $("#huName_error_message").hide();
-  $("#enName_error_message").hide();
-  $("#price_error_message").hide();
+<%- include('../jQuery-validation/box.ejs') %>
 
 
-  var error_roName = false;
-  var error_huName = false;
-  var error_enName = false;
-  var error_price = false;
-
-  $("#roName").focusout(function () {
-    check_roName();
-  });
-
-  $("#huName").focusout(function(){
-     check_huName();
-  });
-
-  $("#enName").focusout(function(){
-     check_enName();
-  });
-  $("#price").focusout(function(){
-     check_price();
-  });
-
-  $("#price").focusout(function(){
-     check_price_input();
-  });
-
-
- 
-  
-  function check_roName() {
-    var roName_length = $("#roName").val().length;
-
-    if (roName_length < 2 || roName_length > 15) {
-      $("#roName_error_message").html("roname");
-      $("#roName_error_message").show();
-      error_roName = true;
-    } else {
-      $("#roName_error_message").hide();
-    }
-  }
-
-  function check_huName() {
-    var huName_length = $("#huName").val().length;
-
-    if (huName_length < 2 || huName_length > 15) {
-      $("#huName_error_message").html("huname");
-      $("#huName_error_message").show();
-      error_huName = true;
-    } else {
-      $("#huName_error_message").hide();
-    }
-  }
-
-  function check_enName() {
-    var enName_length = $("#enName").val().length;
-
-    if (enName_length < 2 || enName_length > 15) {
-      $("#enName_error_message").html("enname");
-      $("#enName_error_message").show();
-      error_enName = true;
-    } else {
-      $("#enName_error_message").hide();
-    }
-  }
-
-  function check_price() {
-    var price_length = $("#price").val().length;
-
-    if (price_length < 2 || price_length > 15  ) {
-      $("#price_error_message").html("price");
-      $("#price_error_message").show();
-      error_price = true;
-    } else {
-      $("#price_error_message").hide();
-    }
-  }
-
-  function check_price_input() {
-    var price_length = $("#price").val();
-
-    if (/^[0-9.]*$/.test(price_length) == false ) {
-      $("#price_error_message").html("nem lehet , hanem . kell");
-      $("#price_error_message").show();
-      error_price = true;
-    } else {
-      $("#price_error_message").hide();
-    }
-    
-  }
-
-
- 
-  $("#registration_form").submit(function () {
-    error_roName = false;
-    error_huName = false;
-    error_enName = false;
-    error_price = false;
-
-    check_roName();
-    check_huName();
-    check_enName();
-    check_price();
-    check_price_input();
-
-    if (
-      error_roName == false &&
-      error_huName == false &&
-      error_enName == false &&
-      error_price == false
-    ) {
-      return true;
-    } else {
-      return false;
-    }
-  });
-});
-</script>
-<style>
-   .intro {
-      border-color: red;
-   }
-</style>
-<script>
-$(document).ready(function () {
-    $("#registration_form").submit(function () {
-        $(".extra-btn").attr("disabled", true);
-        return true;
-    });
-});
-</script>
 </head>
 <body class="ms-body ms-aside-left-open ms-primary-theme ms-has-quickbar">
    <%- include('../includes/navigation.ejs') %>
@@ -142,7 +9,7 @@ $(document).ready(function () {
       <%- include('../includes/navigation-bar.ejs') %>
      
       <form 
-         id="registration_form"
+         id="createBox_form"
          class="ms-content-wrapper" 
          action="/admin/<% if (editing) { %>edit-box<% } else { %>add-box<% } %>"
          method="POST"
@@ -222,7 +89,7 @@ $(document).ready(function () {
                         <input type="hidden" value="<%= boxTranslations[i].id %>" name="boxTranslationsId">
                         <%}%>
                         <% } %>
-                        <button type="submit" id="extra-btn" class="btn btn-success has-icon" ><% if (editing) { %>Update Product<% } else { %>Add Product<% } %></button>
+                        <button type="submit" id="createBox" class="btn btn-success has-icon" ><% if (editing) { %>Update Product<% } else { %>Add Product<% } %></button>
                      </div>
                   </div>
                </div>

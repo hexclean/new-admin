@@ -1,0 +1,109 @@
+<script>
+  $(document).ready(function () {
+    $(".status-checkbox").click(function () {
+      var extraId = $(this).attr("data-extraId");
+      if ($(this).is(":checked")) {
+        $(".status-" + extraId).val("on");
+      } else {
+        $(".status-" + extraId).val("off");
+      }
+    });
+  });
+</script>
+
+<script>
+  $(function () {
+    $("#roName_error_message").hide();
+    $("#huName_error_message").hide();
+    $("#enName_password_error_message").hide();
+
+    var error_roName = false;
+    var error_huName = false;
+    var error_enName = false;
+    var error_sku = false;
+
+    $("#roName").focusout(function () {
+      check_roName();
+    });
+
+    $("#huName").focusout(function () {
+      check_huName();
+    });
+
+    $("#enName").focusout(function () {
+      check_enName();
+    });
+
+    function check_roName() {
+      var roName_length = $("#roName").val().length;
+
+      if (roName_length < 2 || roName_length > 40) {
+        $("#roName_error_message").html(`<%= lingua.extra_ro_name_required %>`);
+        $("#roName_error_message").show();
+        error_roName = true;
+      } else {
+        $("#roName_error_message").hide();
+      }
+    }
+
+    function check_huName() {
+      var huName_length = $("#huName").val().length;
+
+      if (huName_length < 2 || huName_length > 40) {
+        $("#huName_error_message").html(`<%= lingua.extra_hu_name_required %>`);
+        $("#huName_error_message").show();
+        error_huName = true;
+      } else {
+        $("#huName_error_message").hide();
+      }
+    }
+
+    function check_enName() {
+      var enName_length = $("#enName").val().length;
+
+      if (enName_length < 2 || enName_length > 40) {
+        $("#enName_error_message").html(`<%= lingua.extra_en_name_required %>`);
+        $("#enName_error_message").show();
+        error_enName = true;
+      } else {
+        $("#enName_error_message").hide();
+      }
+    }
+
+    $("#createExtra_form").submit(function () {
+      error_roName = false;
+      error_huName = false;
+      error_enName = false;
+
+      check_roName();
+      check_huName();
+      check_enName();
+
+      if (
+        error_roName == false &&
+        error_huName == false &&
+        error_enName == false
+      ) {
+        return true;
+      } else {
+        return false;
+      }
+    });
+  });
+</script>
+<style>
+  .intro {
+    border-color: red;
+  }
+</style>
+
+<script>
+  $(document).ready(function () {
+    $(function () {
+      $("#createExtra").one("click", function () {
+        $("#createExtra").prop("disabled", true);
+        $("#createExtra_form").submit();
+      });
+    });
+  });
+</script>

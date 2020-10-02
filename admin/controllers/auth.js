@@ -390,12 +390,12 @@ exports.postSignup = async (req, res, next) => {
     })
     .then((result) => {
       res.redirect("/login");
-      return transporter.sendMail({
-        to: email,
-        from: "shop@node-complete.com",
-        subject: "hello bejelentekztel",
-        html: "<h1>You logged in</h1>",
-      });
+      //   return transporter.sendMail({
+      //     to: email,
+      //     from: "shop@node-complete.com",
+      //     subject: "hello bejelentekztel",
+      //     html: "<h1>You logged in</h1>",
+      //   });
     })
     .catch((err) => {
       console.log(err);

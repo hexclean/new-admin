@@ -187,9 +187,11 @@
 </script>
 <script>
   $(document).ready(function () {
-    $("#variant_form").submit(function () {
-      $(".extra-btn").attr("disabled", true);
-      return true;
+    $(function () {
+      $("#createVariant").one("click", function () {
+        $("#createVariant").prop("disabled", true);
+        $("#variant_form").submit();
+      });
     });
   });
 </script>
