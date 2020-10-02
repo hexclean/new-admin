@@ -10,6 +10,7 @@
     });
   });
 </script>
+
 <script>
   $(document).ready(function () {
     $("select#maxOption").val(
@@ -94,6 +95,7 @@
         }
       });
     }
+
     $(".extra_price_input").focusout(function () {
       var len = $(this).val().length;
       var extraId = $(this).closest(".extra_box").data("extra");
@@ -107,6 +109,7 @@
           .html("");
       }
     });
+
     $(".extra_qtMin_input").focusout(function () {
       var len = $(this).val().length;
       var extraId = $(this).closest(".extra_box").data("extra");
@@ -205,3 +208,24 @@
     });
   });
 </script>
+
+<% if (editing) { %> <% for (let i = 0; i < variant.length; i++) { %> <% if
+(variant[i].productVariantsExtras[0].active ==1) { %>
+<script>
+  $(document).ready(function () {
+    var activeCheckbox = "<%= variant[i].productVariantsExtras[0].extraId %>";
+    $(".status-checkbox-" + activeCheckbox).prop("checked", true);
+    $(".status-" + activeCheckbox).val("on");
+  });
+</script>
+<% } %> <% } %> <% } %> <% if (editing) { %> <% for (let i = 0; i <
+variant.length; i++) { %> <% if (
+variant[i].productVariantsExtras[0].requiredExtra == 1) { %>
+<script>
+  $(document).ready(function () {
+    var activeCheckbox = "<%= variant[i].productVariantsExtras[0].extraId %>";
+    $(".status-checkbox-option-" + activeCheckbox).prop("checked", true);
+    $(".statusOption" + activeCheckbox).val("on");
+  });
+</script>
+<% } %> <% } %> <% } %>

@@ -22,6 +22,7 @@
     }
   });
 </script>
+
 <script>
   $(document).ready(function () {
     $(".statusAllergen-checkbox").click(function () {
@@ -34,6 +35,7 @@
     });
   });
 </script>
+
 <script>
   $(document).ready(function () {
     $(".statusBox-checkbox").click(function () {
@@ -46,6 +48,7 @@
     });
   });
 </script>
+
 <script>
   $(document).ready(function () {
     $(".status-checkbox").click(function () {
@@ -247,8 +250,7 @@
   $(document).ready(function () {
     $("#categoryRo").click(function () {
       const categoryId = $("#categoryRo").val();
-      $.get("get-category-variants/" + categoryId)
-      .done(function (data) {
+      $.get("get-category-variants/" + categoryId).done(function (data) {
         $("#selectedVariantsCategory").html(data);
       });
     });
@@ -266,6 +268,7 @@
     });
   });
 </script>
+
 <script>
   $(document).ready(function () {
     $(function () {
@@ -276,3 +279,57 @@
     });
   });
 </script>
+
+<script>
+  document
+    .querySelectorAll(".statusBox-checkbox")
+    .forEach((element) => element.addEventListener("click", disableOther));
+  function disableOther(event) {
+    //"event" is current event(click)
+    //"event.target" is our clicked element
+    if (event.target.checked) {
+      // if current input is checked -> disable ALL inputs
+      document
+        .querySelectorAll(".statusBox-checkbox")
+        .forEach((element) => (element.disabled = true));
+      // enabling our current input
+      event.target.disabled = false;
+    } else {
+      // if current input is NOT checked -> enabling ALL inputs
+      document
+        .querySelectorAll(".statusBox-checkbox")
+        .forEach((element) => (element.disabled = false));
+    }
+  }
+</script>
+
+<% if (editing) { %> <% for (let i = 0; i < isActiveVariant.length; i++) { %> <%
+if (isActiveVariant[i].active ==1) { %>
+<script>
+  $(document).ready(function () {
+    var activeCheckbox = "<%= isActiveVariant[i].variantId %>";
+    $(".status-checkbox-" + activeCheckbox).prop("checked", true);
+    $(".status-" + activeCheckbox).val("on");
+  });
+</script>
+<% } %> <% } %> <% } %> <% if (editing) { %> <% for (let i = 0; i <
+boxEnabled.length; i++) { %> <% if (boxEnabled[i].boxId !=undefined) { %>
+<script>
+  $(document).ready(function () {
+    var activeCheckbox = "<%= boxEnabled[i].boxId %>";
+    $(".statusBox-checkbox-" + activeCheckbox).prop("checked", true);
+    $(".statusBox-" + activeCheckbox).val("on");
+  });
+</script>
+<% } %> <% } %> <% } %> <% if (editing) { %> <% for (let i = 0; i <
+isActiveAllergen.length; i++) { %> <% if
+(isActiveAllergen[i].productHasAllergens[0].active == 1) { %>
+<script>
+  $(document).ready(function () {
+    var activeCheckbox =
+      "<%= isActiveAllergen[i].productHasAllergens[0].allergenId %>";
+    $(".statusAllergen-checkbox-" + activeCheckbox).prop("checked", true);
+    $(".statusAllergen-" + activeCheckbox).val("on");
+  });
+</script>
+<% } %> <% } %> <% } %>

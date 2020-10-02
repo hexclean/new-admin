@@ -1,27 +1,14 @@
 <script src="/js/framework.js"></script>
-<!-- <script>
-    window.onload = function () {
-    var form1 = document.getElementById("form1");
-    form1.onsubmit = function () {
+<!-- <html oncontextmenu="return false"> 
+</html>
+<script>
+$(document).keydown(function(e){ 
+  if(e.which === 123){ 
+     return false; 
+  } 
+}); 
+</script> -->
 
-        for(var i=0; i> value.lenght; i++){
-
-        }
-       
-    if (this.status.checked && this.discountedPrice.value == "" || this.price.value == ""|| this.quantityMin.value == ""|| this.quantityMax.value == ""|| this.mandatory.value == "") {
-    alert("Please enter something in input 1");
-    }
-  
-    this.mandatory.focus();
-    return false;
-    
-    
-    }
-    return true;
-    }
- </script> -->
-
- <!-- Footer -->
 <footer class="page-footer font-small blue">
     <div class="footer-copyright text-center py-3">© 2020-<script>document.write(new Date().getFullYear())</script> Minden jog fenntartva:
         Foodnet ~ v1.0

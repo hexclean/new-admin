@@ -13,20 +13,7 @@
          method="POST"
          enctype="multipart/form-data"
          id="product-form">
-         <% if (editing) { %>
-         <% for (let i = 0; i < isActiveVariant.length; i++) { %>
-         <% if (isActiveVariant[i].active ==1) { %>
-         <script>
-            $(document).ready(function() {
-            var activeCheckbox ="<%= isActiveVariant[i].variantId %>";
-            $('.status-checkbox-'+activeCheckbox).prop('checked', true);
-            $('.status-'+activeCheckbox).val('on');
-            });
-         </script>
-         <% } 
-            %>
-         <% } %>
-         <% } %>
+        
          <div class="row">
             <div class="col-xl-6 col-md-12">
                <div class="ms-panel ms-panel-fh">
@@ -163,7 +150,7 @@
                                     <li>
                                        <label class="ms-switch" data-extra="<%= boxArray[i].id %>">
                                        <input type="hidden" value="off" class="statusBox-<%= boxArray[i].id %>" name="statusBox[<%= boxArray[i].id %>]" > 
-                                       <input onclick="ch($(this));" data-boxId="<%= boxArray[i].id %>"  class="statusBox-checkbox statusBox-checkbox-<%= boxArray[i].id %>" type="checkbox"> <span class="ms-switch-slider ms-switch-success round"></span>
+                                       <input data-boxId="<%= boxArray[i].id %>"  class="statusBox-checkbox statusBox-checkbox-<%= boxArray[i].id %>" type="checkbox"> <span class="ms-switch-slider ms-switch-success round"></span>
                                        </label> <span> <%= boxArray[i].boxTranslations[`${currentLanguage}`].name %> </span> <b>:</b> <span> <%= boxArray[i].price %> </span>lei
                                     </li>
                                     <% } %>
@@ -173,26 +160,7 @@
                         </div>
                      </div>
                   </div>
-                  <script>
-                     document.querySelectorAll('.statusBox-checkbox').forEach(element => element.addEventListener('click', disableOther))
-                     function disableOther(event) {
-                     //"event" is current event(click)
-                     //"event.target" is our clicked element
-                     if (event.target.checked) {
-                     
-                     // if current input is checked -> disable ALL inputs
-                     document.querySelectorAll('.statusBox-checkbox').forEach(element => element.disabled = true)
-                     // enabling our current input
-                     event.target.disabled = false;
-                     
-                     } else {
-                     
-                     // if current input is NOT checked -> enabling ALL inputs
-                     document.querySelectorAll('.statusBox-checkbox').forEach(element => element.disabled = false)
-                     
-                     }
-                     }
-                  </script>
+
                   <div class="col-xl-12 col-md-12">
                      <div class="ms-panel ms-panel-fh">
                         <div class="ms-panel-header">
@@ -227,38 +195,11 @@
             </div>
          </div>
          </div>
-         <% if (editing) { %>
-         <% for (let i = 0; i < boxEnabled.length; i++) { %>
-         <% if (boxEnabled[i].boxId !=undefined) { %>
-         <script>
-            $(document).ready(function() {
-            var activeCheckbox ="<%= boxEnabled[i].boxId %>";
-            $('.statusBox-checkbox-'+activeCheckbox).prop('checked', true);
-            $('.statusBox-'+activeCheckbox).val('on');
-            });
-         </script>
-         <% } 
-            %>
-         <% } %>
-         <% } %>
-         <% if (editing) { %>
-         <% for (let i = 0; i < isActiveAllergen.length; i++) { %>
-         <% if (isActiveAllergen[i].productHasAllergens[0].active == 1) { %>
-         <script>
-            $(document).ready(function() {
-            var activeCheckbox ="<%= isActiveAllergen[i].productHasAllergens[0].allergenId %>";
-            $('.statusAllergen-checkbox-'+activeCheckbox).prop('checked', true);
-            $('.statusAllergen-'+activeCheckbox).val('on');
-            });
-           
-         </script>
-         <% } 
-            %>
-         <% } %>
-         <% } %>
+        
          <div class="col-md-6 mb-3">
             <label for="validationCustom22">RO</label>
             <div class="input-group">
+               
                <select class="form-control" for="categoryRo" id="categoryRo" name="categoryRo">
                   <option disabled="true" value="list">Variáns kategótia</option>
                   <% for(let i = 0; i < cat.length; i++) { %>
@@ -293,7 +234,7 @@
                               <div class="row"> 
                                  <label class="ms-switch" >                 
                                  <input type="hidden" value="off" class="status-<%= productVariant[i].id %>" name="status[<%= productVariant[i].id %>]" >          
-                                 <input    data-extraId="<%= productVariant[i].id %>"  class="status-checkbox status-checkbox-<%= productVariant[i].id %>" type="checkbox">
+                                 <input data-extraId="<%= productVariant[i].id %>"  class="status-checkbox status-checkbox-<%= productVariant[i].id %>" type="checkbox">
                                  <span class="ms-switch-slider ms-switch-success round"></span>
                                  </label> 
                               </div>
@@ -347,19 +288,38 @@
             <div class="row">
                <div class="col-md-12">
                   <div id="selectedVariantsCategory" class="row">
+                    
                      <% for (let extra of ext) { %>
                      <input
                         type="hidden"
                         value="<%= extra.id %>"
                         name="extraId"
+                        id="extraIdJq"
                         />          
+
+                     
+
+                        <script>
+                           $(document).ready(function () {
+                             
+                              
+                             var extraId = $("#variantNumber_<%= extra.id %>");
+                             for (let i = 0; i < extraId.length; i++) {
+                                
+                               console.log("extraId:", extraId[i]);
+                             }
+                             if($("#createProduct").click){
+                                    alert("dfasdsadas")
+                                 }
+                           });
+                         </script>
                      <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 extra_box" data-extra="<%= extra.id %>">
                         <div class="ms-card">
                            <div class="d-flex justify-content-center extra-margin-top">
                               <div class="row"> 
                                  <label class="ms-switch" >                 
-                                 <input type="hidden" value="off" class="status-<%= extra.id %>" name="status[<%= extra.id %>]" >          
-                                 <input    data-extraId="<%= extra.id %>"  class="status-checkbox status-checkbox-<%= extra.id %>" type="checkbox"> <span class="ms-switch-slider ms-switch-success round"></span>
+                                 <input id="variantNumber_<%= extra.id %>" type="hidden" value="off" class="status-<%= extra.id %>" name="status[<%= extra.id %>]" >          
+                                 <input data-extraId="<%= extra.id %>"  class="status-checkbox status-checkbox-<%= extra.id %>" type="checkbox"> <span class="ms-switch-slider ms-switch-success round"></span>
                                  </label> 
                               </div>
                            </div>
