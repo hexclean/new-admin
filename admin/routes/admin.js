@@ -93,7 +93,6 @@ router.post("/edit-coupon", isAuth, couponController.postEditCoupon);
 
 // EXTRA
 router.get("/add-extra", isAuth, extraController.getAddExtra);
-router.get("/extras", isAuth, extraController.getExtras);
 router.get("/edit-extra/:extraId", isAuth, extraController.getEditExtra);
 router.post("/edit-extra", isAuth, extraController.postEditExtra);
 router.post("/add-extra", isAuth, extraController.postAddExtra);

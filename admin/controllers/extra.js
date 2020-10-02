@@ -33,10 +33,7 @@ exports.getAddExtra = async (req, res, next) => {
       pageTitle: "Add Product",
       path: "/admin/add-product",
       editing: false,
-      hasError: false,
-      errorMessage: null,
       allergenArray: allergen,
-      validationErrors: [],
     });
   } catch (err) {
     const error = new Error(err);
@@ -52,6 +49,16 @@ exports.postAddExtra = async (req, res, next) => {
   const enName = req.body.enName;
   const filteredStatus = req.body.status.filter(Boolean);
 
+  if (
+    roName == "" ||
+    huName == "" ||
+    enName == "" ||
+    allergenId == "" ||
+    filteredStatus == ""
+  ) {
+    return res.redirect("/admin/extra-index");
+  }
+
   const allergen = await Allergen.findAll({
     where: {
       restaurantId: req.admin.id,
@@ -63,93 +70,76 @@ exports.postAddExtra = async (req, res, next) => {
     ],
   });
 
-  const extra = await req.admin.createExtra();
-
-  async function createExtraTranslation() {
-    await ExtraTranslation.create({
-      name: roName,
-      languageId: 1,
-      extraId: extra.id,
-      restaurantId: req.admin.id,
-    });
-    await ExtraTranslation.create({
-      name: huName,
-      languageId: 2,
-      restaurantId: req.admin.id,
-      extraId: extra.id,
-    });
-
-    await ExtraTranslation.create({
-      name: enName,
-      languageId: 3,
-      extraId: extra.id,
-      restaurantId: req.admin.id,
-    });
-  }
-
-  async function addAllergenToExtra() {
-    for (let i = 0; i <= allergen.length - 1; i++) {
-      await ExtraHasAllergen.create({
-        extraId: extra.id,
-        allergenId: allergenId[i],
-        active: filteredStatus[i] == "on" ? 1 : 0,
-        restaurantId: req.admin.id,
-      });
-    }
-  }
-
-  async function add() {
-    const newExtra = await ProductVariants.findAll({
-      where: { restaurantId: req.admin.id },
-    });
-
-    for (let i = 0; i < newExtra.length; i++) {
-      let x = [];
-      let extraId = [];
-
-      x = newExtra[i].id;
-      extraId = extra.id;
-
-      await ProductVariantsExtras.create({
-        active: 0,
-        restaurantId: req.admin.id,
-        extraId: extraId,
-        quantityMax: 0,
-        quantityMin: 0,
-        discountedPrice: 0,
-        price: 0,
-        productVariantId: x,
-        requiredExtra: 0,
-      });
-    }
-  }
-  createExtraTranslation()
-    .then((result) => {
-      addAllergenToExtra();
-      add();
-      res.redirect("/admin/extra-index"),
-        {
-          allergenArray: allergen,
-        };
-    })
-    .catch((err) => {
-      const error = new Error(err);
-      error.httpStatusCode = 500;
-      return next(error);
-    });
-};
-
-exports.getExtras = (req, res, next) => {
   try {
-    Extra.findAll({ where: { restaurantId: req.admin.id } }).then((extra) => {
-      const currentLanguage = req.cookies.language;
-      res.render("extra/extras", {
-        ext: extra,
-        currentLanguage: currentLanguage,
-        pageTitle: "Admin Products",
-        path: "/admin/products",
+    const extra = await req.admin.createExtra();
+
+    async function createExtraTranslation() {
+      await ExtraTranslation.create({
+        name: roName,
+        languageId: 1,
+        extraId: extra.id,
+        restaurantId: req.admin.id,
       });
-    });
+      await ExtraTranslation.create({
+        name: huName,
+        languageId: 2,
+        restaurantId: req.admin.id,
+        extraId: extra.id,
+      });
+
+      await ExtraTranslation.create({
+        name: enName,
+        languageId: 3,
+        extraId: extra.id,
+        restaurantId: req.admin.id,
+      });
+    }
+
+    async function addAllergenToExtra() {
+      for (let i = 0; i <= allergen.length - 1; i++) {
+        await ExtraHasAllergen.create({
+          extraId: extra.id,
+          allergenId: allergenId[i],
+          active: filteredStatus[i] == "on" ? 1 : 0,
+          restaurantId: req.admin.id,
+        });
+      }
+    }
+
+    async function add() {
+      const variants = await ProductVariants.findAll({
+        where: { restaurantId: req.admin.id },
+      });
+
+      for (let i = 0; i < variants.length; i++) {
+        let productVariantsId = [];
+        let extraId = [];
+
+        productVariantsId = variants[i].id;
+        extraId = extra.id;
+
+        await ProductVariantsExtras.create({
+          active: 0,
+          restaurantId: req.admin.id,
+          extraId: extraId,
+          quantityMax: 0,
+          quantityMin: 0,
+          discountedPrice: 0,
+          price: 0,
+          productVariantId: productVariantsId,
+          requiredExtra: 0,
+        });
+      }
+    }
+
+    createExtraTranslation();
+    addAllergenToExtra();
+    add();
+
+    res.redirect("/admin/extra-index"),
+      {
+        allergenArray: allergen,
+      };
   } catch (err) {
     const error = new Error(err);
     error.httpStatusCode = 500;
@@ -163,17 +153,17 @@ exports.getEditExtra = async (req, res, next) => {
   const extraId = req.params.extraId;
   const extraIdArray = [extraId];
 
-  try {
-    await Extra.findByPk(extraId).then((extra) => {
-      if (!extra) {
-        return res.redirect("/");
-      }
-    });
-
-    if (!editMode) {
+  await Extra.findByPk(extraId).then((extra) => {
+    if (!extra) {
       return res.redirect("/");
     }
+  });
 
+  if (!editMode) {
+    return res.redirect("/");
+  }
+
+  try {
     const allergen = await Allergen.findAll({
       where: {
         restaurantId: req.admin.id,
@@ -243,6 +233,18 @@ exports.postEditExtra = async (req, res, next) => {
   const filteredStatus = req.body.status.filter(Boolean);
   const extraArray = [extraIdEditing];
   //
+  if (
+    extraIdEditing == "" ||
+    updatedRoName == "" ||
+    updatedHuName == "" ||
+    allergenId == "" ||
+    updatedEnName == "" ||
+    extTranId == "" ||
+    extraArray == "" ||
+    filteredStatus == ""
+  ) {
+    return res.redirect("/admin/extra-index");
+  }
   const extrasHasAllergen = await ExtraHasAllergen.findAll({
     where: {
       extraId: {
@@ -250,15 +252,16 @@ exports.postEditExtra = async (req, res, next) => {
       },
     },
   });
-  Extra.findAll({
-    include: [
-      {
-        model: ExtraTranslation,
-      },
-    ],
-  })
-    .then((extra) => {
-      async function msg() {
+
+  try {
+    Extra.findAll({
+      include: [
+        {
+          model: ExtraTranslation,
+        },
+      ],
+    }).then((extra) => {
+      async function updateExtraTranslation() {
         await ExtraTranslation.update(
           { name: updatedRoName },
           { where: { id: extTranId[0], languageId: 1 } }
@@ -273,7 +276,8 @@ exports.postEditExtra = async (req, res, next) => {
           { name: updatedEnName },
           { where: { id: extTranId[2], languageId: 3 } }
         );
-
+      }
+      async function updateExtraHasAllergen() {
         if (Array.isArray(extrasHasAllergen)) {
           for (let i = 0; i <= extrasHasAllergen.length - 1; i++) {
             let allergenIds = [allergenId[i]];
@@ -298,16 +302,18 @@ exports.postEditExtra = async (req, res, next) => {
           }
         }
       }
-      msg();
+
+      updateExtraTranslation();
+      updateExtraHasAllergen();
 
       res.redirect("/admin/extra-index"),
         {
           allergenArray: 1,
         };
-    })
-    .catch((err) => {
-      const error = new Error(err);
-      error.httpStatusCode = 500;
-      return next(error);
     });
+  } catch (err) {
+    const error = new Error(err);
+    error.httpStatusCode = 500;
+    return next(error);
+  }
 };

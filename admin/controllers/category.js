@@ -9,15 +9,12 @@ exports.getAddCategory = async (req, res, next) => {
     },
   });
   if (checkAllergenLength.length === 0) {
-    return res.redirect("/admin/vr-index");
+    return res.redirect("/admin/category-index");
   }
   res.render("category/edit-category", {
     pageTitle: "Add Product",
     path: "/admin/add-product",
     editing: false,
-    hasError: false,
-    errorMessage: null,
-    validationErrors: [],
   });
 };
 
@@ -26,22 +23,26 @@ exports.postAddCategory = async (req, res, next) => {
   const huName = req.body.huName;
   const enName = req.body.enName;
 
-  const category = await Category.create({
-    restaurantId: req.admin.id,
-  });
+  if (roName == "" || huName == "" || enName == "") {
+    return res.redirect("/admin/category-index");
+  }
 
-  async function extraTransaltion() {
+  try {
+    const category = await Category.create({
+      restaurantId: req.admin.id,
+    });
+
     await CategoryTranslation.create({
       name: roName,
       languageId: 1,
       productCategoryId: category.id,
       restaurantId: req.admin.id,
     });
+
     await CategoryTranslation.create({
       name: huName,
       languageId: 2,
       restaurantId: req.admin.id,
-
       productCategoryId: category.id,
     });
 
@@ -51,110 +52,100 @@ exports.postAddCategory = async (req, res, next) => {
       productCategoryId: category.id,
       restaurantId: req.admin.id,
     });
-  }
 
-  extraTransaltion()
-    .then((result) => {
-      res.redirect("/admin/category-index");
-    })
-    .catch((err) => {
-      const error = new Error(err);
-      error.httpStatusCode = 500;
-      return next(error);
-    });
+    res.redirect("/admin/category-index");
+  } catch (err) {
+    const error = new Error(err);
+    error.httpStatusCode = 500;
+    return next(error);
+  }
 };
 
 exports.getEditCategory = async (req, res, next) => {
   const editMode = req.query.edit;
-  const catId = req.params.categoryId;
+  const categoryId = req.params.categoryId;
 
   if (!editMode) {
     return res.redirect("/");
   }
 
-  await Category.findByPk(catId).then((category) => {
-    if (!category) {
+  await Category.findByPk(categoryId).then((category) => {
+    if (!category || category.restaurantId != req.admin.id) {
       return res.redirect("/");
     }
   });
 
-  await Category.findAll({
-    where: {
-      id: catId,
-      restaurantId: req.admin.id,
-    },
-    include: [
-      {
-        model: CategoryTranslation,
+  try {
+    await Category.findAll({
+      where: {
+        id: categoryId,
+        restaurantId: req.admin.id,
       },
-    ],
-  })
-    .then((category) => {
-      if (category[0].restaurantId !== req.admin.id) {
-        return res.redirect("/");
-      }
-
+      include: [
+        {
+          model: CategoryTranslation,
+        },
+      ],
+    }).then((category) => {
       res.render("category/edit-category", {
         pageTitle: "Edit Product",
         path: "/admin/edit-product",
         editing: editMode,
-        cat: category,
-        catId: catId,
-        hasError: false,
-        errorMessage: null,
-        validationErrors: [],
+        category: category,
+        categoryId: categoryId,
         extTranslations: category[0].productCategoryTranslations,
       });
-    })
-    .catch((err) => {
-      const error = new Error(err);
-      error.httpStatusCode = 500;
-      return next(error);
     });
+  } catch (err) {
+    const error = new Error(err);
+    error.httpStatusCode = 500;
+    return next(error);
+  }
 };
 
 exports.postEditCategory = async (req, res, next) => {
   const updatedRoName = req.body.roName;
   const updatedHuName = req.body.huName;
   const updatedEnName = req.body.enName;
-  const updatedSku = req.body.sku;
-  const catId = req.body.categoryId;
+  const categoryTranslationId = req.body.categoryTranslationId;
 
-  const catTranId = req.body.catTranId;
+  if (
+    updatedRoName == "" ||
+    updatedHuName == "" ||
+    updatedEnName == "" ||
+    categoryTranslationId == ""
+  ) {
+    return res.redirect("/admin/category-index");
+  }
 
-  Category.findAll({
-    where: { restaurantId: req.admin.id },
-    include: [
-      {
-        model: CategoryTranslation,
-      },
-    ],
-  })
-    .then((category) => {
-      async function msg() {
-        await Category.update({ sku: updatedSku }, { where: { id: catId } });
-        await CategoryTranslation.update(
-          { name: updatedRoName },
-          { where: { id: catTranId[0], languageId: 1 } }
-        );
+  try {
+    Category.findAll({
+      where: { restaurantId: req.admin.id },
+      include: [
+        {
+          model: CategoryTranslation,
+        },
+      ],
+    }).then(async (result) => {
+      await CategoryTranslation.update(
+        { name: updatedRoName },
+        { where: { id: categoryTranslationId[0], languageId: 1 } }
+      );
 
-        await CategoryTranslation.update(
-          { name: updatedHuName },
-          { where: { id: catTranId[1], languageId: 2 } }
-        );
+      await CategoryTranslation.update(
+        { name: updatedHuName },
+        { where: { id: categoryTranslationId[1], languageId: 2 } }
+      );
 
-        await CategoryTranslation.update(
-          { name: updatedEnName },
-          { where: { id: catTranId[2], languageId: 3 } }
-        );
-      }
-      msg();
-
-      res.redirect("/admin/vr-index");
-    })
-    .catch((err) => {
-      const error = new Error(err);
-      error.httpStatusCode = 500;
-      return next(error);
+      await CategoryTranslation.update(
+        { name: updatedEnName },
+        { where: { id: categoryTranslationId[2], languageId: 3 } }
+      );
     });
+    res.redirect("/admin/category-index");
+  } catch (err) {
+    const error = new Error(err);
+    error.httpStatusCode = 500;
+    return next(error);
+  }
 };
