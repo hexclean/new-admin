@@ -8,8 +8,8 @@ const sequelize = require("../../util/database");
 // @desc     Get all restaurants from selected city
 // @access   Public
 router.get("/:locationName", async (req, res) => {
-  var d = new Date();
-  var weekday = new Array(7);
+  let d = new Date();
+  let weekday = new Array(7);
   weekday[0] = "Sunday";
   weekday[1] = "Monday";
   weekday[2] = "Tuesday";
@@ -18,7 +18,8 @@ router.get("/:locationName", async (req, res) => {
   weekday[5] = "Friday";
   weekday[6] = "Saturday";
 
-  var n = weekday[d.getDay()];
+  let n = weekday[d.getDay()];
+  console.log(n);
 
   try {
     const locationName = req.params.locationName.split("-").join(" ");
@@ -43,7 +44,9 @@ router.get("/:locationName", async (req, res) => {
       ON loc.locationNameId = locName.id
       INNER JOIN locationNameTranslations as locNameTrans
       ON locName.id = locNameTrans.locationNameId
-      WHERE hoT.languageId = ${languageCode} AND hoT.name LIKE '%${n}%' AND locNameTrans.languageId = ${languageCode}  AND adInf.languageId = ${languageCode} AND locNameTrans.name LIKE '%${locationName}%';`,
+      WHERE hoT.languageId = ${languageCode} AND hoT.name LIKE '%Hétfő%'
+      AND locNameTrans.languageId = ${languageCode}  AND adInf.languageId = ${languageCode}
+      AND locNameTrans.name LIKE '%${locationName}%';`,
       { type: Sequelize.QueryTypes.SELECT }
     );
 
@@ -65,13 +68,31 @@ router.get("/targu-mures", async (req, res) => {
   const vasarhely = "Targu Mures";
   const languageCode = 2;
 
+  let d = new Date();
+  let weekday = new Array(7);
+  weekday[0] = "Sunday";
+  weekday[1] = "Monday";
+  weekday[2] = "Tuesday";
+  weekday[3] = "Wednesday";
+  weekday[4] = "Thursday";
+  weekday[5] = "Friday";
+  weekday[6] = "Saturday";
+
+  let n = weekday[d.getDay()];
+
   try {
     const locationTarguMures = await sequelize.query(
-      `SELECT ad.id AS restaurant_id, ad.imageUrl AS restaurant_profileImage, ad.commission AS restaurant_commission,
+      `SELECT hoH.open as restaurant_open, hoH.close AS restaurant_close,  ad.id AS restaurant_id, ad.imageUrl AS restaurant_profileImage, ad.commission AS restaurant_commission,
       ad.fullName AS restaurant_name, ad.newRestaurant AS restaurant_new, ad.discount AS restaurant_discount,
        adInf.shortCompanyDesc AS restaurant_description,
       ad.deliveryPrice AS restaurant_deliveryPrice, adInf.kitchen AS restaurant_kitchen
       FROM restaurants AS ad
+      INNER JOIN hours AS ho
+      ON ad.id = ho.restaurantId
+      INNER JOIN openingHours as hoH
+      ON ho.openingHoursId = hoH.id
+      INNER JOIN openingHoursTranslations hoT
+      ON hoT.openingHoursId = hoH.id
       INNER JOIN adminInfos AS adInf
       ON adInf.restaurantId = ad.id
       INNER JOIN locations AS loc
@@ -80,12 +101,16 @@ router.get("/targu-mures", async (req, res) => {
       ON loc.locationNameId = locName.id
       INNER JOIN locationNameTranslations as locNameTrans
       ON locName.id = locNameTrans.locationNameId
-      WHERE locNameTrans.languageId= ${languageCode} AND adInf.languageId=${languageCode} AND locNameTrans.name LIKE '%${vasarhely}%';`,
+      WHERE hoT.languageId = ${languageCode} AND hoT.name LIKE '%Hétfő%'
+      AND locNameTrans.languageId = ${languageCode}  AND adInf.languageId = ${languageCode}
+      AND locNameTrans.name LIKE '%${vasarhely}%';`,
       { type: Sequelize.QueryTypes.SELECT }
     );
+
     if (locationTarguMures.length == 0) {
       return res.status(404).json({ msg: "City not found" });
     }
+
     res.json(locationTarguMures);
   } catch (err) {
     console.error(err.message);
@@ -99,18 +124,44 @@ router.get("/targu-mures", async (req, res) => {
 router.get("/odorheiu-secuiesc", async (req, res) => {
   const udvarhely = "Székelyudvarhely";
   const languageCode = 2;
+
+  let d = new Date();
+  let weekday = new Array(7);
+  weekday[0] = "Sunday";
+  weekday[1] = "Monday";
+  weekday[2] = "Tuesday";
+  weekday[3] = "Wednesday";
+  weekday[4] = "Thursday";
+  weekday[5] = "Friday";
+  weekday[6] = "Saturday";
+
+  let n = weekday[d.getDay()];
+
   try {
     return sequelize
       .query(
-        `SELECT ad.fullName as restaurant_name, adInf.shortCompanyDesc AS restaurant_description, ad.deliveryPrice AS restaurant_deliveryPrice, adInf.kitchen AS restaurant_kitchen
-      FROM restaurants as ad
-      INNER JOIN adminInfos AS adInf
-      ON adInf.restaurantId = ad.id
-      INNER JOIN adminLocations AS adLoc
-      ON ad.id = adLoc.restaurantId
-      INNER JOIN adminLocationTranslations AS locTrans
-      ON locTrans.adminLocationsId = adLoc.id
-      WHERE locTrans.languageId= ${languageCode} AND adInf.languageId=${languageCode} AND locTrans.name LIKE '%${udvarhely}%';`,
+        `SELECT hoH.open as restaurant_open, hoH.close AS restaurant_close,  ad.id AS restaurant_id, ad.imageUrl AS restaurant_profileImage, ad.commission AS restaurant_commission,
+        ad.fullName AS restaurant_name, ad.newRestaurant AS restaurant_new, ad.discount AS restaurant_discount,
+         adInf.shortCompanyDesc AS restaurant_description,
+        ad.deliveryPrice AS restaurant_deliveryPrice, adInf.kitchen AS restaurant_kitchen
+        FROM restaurants AS ad
+        INNER JOIN hours AS ho
+        ON ad.id = ho.restaurantId
+        INNER JOIN openingHours as hoH
+        ON ho.openingHoursId = hoH.id
+        INNER JOIN openingHoursTranslations hoT
+        ON hoT.openingHoursId = hoH.id
+        INNER JOIN adminInfos AS adInf
+        ON adInf.restaurantId = ad.id
+        INNER JOIN locations AS loc
+        ON ad.id = loc.restaurantId
+        INNER JOIN locationNames AS locName
+        ON loc.locationNameId = locName.id
+        INNER JOIN locationNameTranslations as locNameTrans
+        ON locName.id = locNameTrans.locationNameId
+        WHERE hoT.languageId = ${languageCode} AND hoT.name LIKE '%Hétfő%'
+        AND locNameTrans.languageId = ${languageCode}  AND adInf.languageId = ${languageCode}
+        AND locNameTrans.name LIKE '%${udvarhely}%';`,
         { type: Sequelize.QueryTypes.SELECT }
       )
       .then((result) => {
