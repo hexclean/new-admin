@@ -64,7 +64,7 @@ router.get("/:locationName", async (req, res) => {
 // @route    GET api/location/targu-mures
 // @desc     Get all restaurants from Marosvásárhely (HOME)
 // @access   Public
-router.get("/Targu-Mures", async (req, res) => {
+router.get("/targu-mures", async (req, res) => {
   const vasarhely = "Târgu Mureș";
   const languageCode = 1;
 
@@ -121,7 +121,7 @@ router.get("/Targu-Mures", async (req, res) => {
 // @route    GET api/location by name
 // @desc     Get all restaurants from Székelyudvarhely (HOME)
 // @access   Public
-router.get("/Odorheiu-Secuiesc", async (req, res) => {
+router.get("/odorheiu-secuiesc", async (req, res) => {
   const udvarhely = "Székelyudvarhely";
   const languageCode = 1;
 
@@ -138,9 +138,8 @@ router.get("/Odorheiu-Secuiesc", async (req, res) => {
   let n = weekday[d.getDay()];
 
   try {
-    return sequelize
-      .query(
-        `SELECT hoH.open as restaurant_open, hoH.close AS restaurant_close,  ad.id AS restaurant_id, ad.imageUrl AS restaurant_profileImage, ad.commission AS restaurant_commission,
+    const locationOdorhei = await sequelize.query(
+      `SELECT hoH.open as restaurant_open, hoH.close AS restaurant_close,  ad.id AS restaurant_id, ad.imageUrl AS restaurant_profileImage, ad.commission AS restaurant_commission,
         ad.fullName AS restaurant_name, ad.newRestaurant AS restaurant_new, ad.discount AS restaurant_discount,
          adInf.shortCompanyDesc AS restaurant_description,
         ad.deliveryPrice AS restaurant_deliveryPrice, adInf.kitchen AS restaurant_kitchen
@@ -162,11 +161,9 @@ router.get("/Odorheiu-Secuiesc", async (req, res) => {
         WHERE hoT.languageId = ${languageCode}
         AND locNameTrans.languageId = ${languageCode}  AND adInf.languageId = ${languageCode}
         AND locNameTrans.name LIKE '%${udvarhely}%';`,
-        { type: Sequelize.QueryTypes.SELECT }
-      )
-      .then((result) => {
-        res.json(result);
-      });
+      { type: Sequelize.QueryTypes.SELECT }
+    );
+    res.json(locationOdorhei);
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Server Error");
@@ -180,9 +177,8 @@ router.get("/Miercurea-Ciuc", async (req, res) => {
   const csik = "Csíkszereda";
   const languageCode = 2;
   try {
-    return sequelize
-      .query(
-        `SELECT hoH.open as restaurant_open, hoH.close AS restaurant_close,  ad.id AS restaurant_id, ad.imageUrl AS restaurant_profileImage, ad.commission AS restaurant_commission,
+    const locationCiuc = await sequelize.query(
+      `SELECT hoH.open as restaurant_open, hoH.close AS restaurant_close,  ad.id AS restaurant_id, ad.imageUrl AS restaurant_profileImage, ad.commission AS restaurant_commission,
         ad.fullName AS restaurant_name, ad.newRestaurant AS restaurant_new, ad.discount AS restaurant_discount,
          adInf.shortCompanyDesc AS restaurant_description,
         ad.deliveryPrice AS restaurant_deliveryPrice, adInf.kitchen AS restaurant_kitchen
@@ -204,11 +200,9 @@ router.get("/Miercurea-Ciuc", async (req, res) => {
         WHERE hoT.languageId = ${languageCode}
         AND locNameTrans.languageId = ${languageCode}  AND adInf.languageId = ${languageCode}
         AND locNameTrans.name LIKE '%${csik}%';`,
-        { type: Sequelize.QueryTypes.SELECT }
-      )
-      .then((result) => {
-        res.json(result);
-      });
+      { type: Sequelize.QueryTypes.SELECT }
+    );
+    res.json(locationCiuc);
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Server Error");
