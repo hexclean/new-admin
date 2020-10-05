@@ -7,6 +7,34 @@ const sequelize = require("../../util/database");
 // @route    GET api/location/:locationName
 // @desc     Get all restaurants from selected city
 // @access   Public
+router.get("/", async (req, res) => {
+  try {
+    const languageCode = 1;
+    const locations = await sequelize.query(
+      `SELECT locNameTrans.name
+      FROM locations AS loc
+      INNER JOIN locationNames AS locName
+      ON loc.locationNameId = locName.id
+      INNER JOIN locationNameTranslations as locNameTrans
+      ON locName.id = locNameTrans.locationNameId
+      WHERE locNameTrans.languageId = ${languageCode};`,
+      { type: Sequelize.QueryTypes.SELECT }
+    );
+
+    if (!locations) {
+      return res.status(404).json({ msg: "City not found" });
+    }
+
+    res.json(locations);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
+
+// @route    GET api/location/:locationName
+// @desc     Get all restaurants from selected city
+// @access   Public
 router.get("/:locationName", async (req, res) => {
   let d = new Date();
   let weekday = new Array(7);
@@ -173,7 +201,7 @@ router.get("/odorheiu-secuiesc", async (req, res) => {
 // @route    GET api/location by name
 // @desc     Get all restaurants from Csíkszereda (HOME)
 // @access   Public
-router.get("/Miercurea-Ciuc", async (req, res) => {
+router.get("/miercurea-ciuc", async (req, res) => {
   const csik = "Csíkszereda";
   const languageCode = 2;
   try {
