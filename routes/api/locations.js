@@ -50,9 +50,9 @@ router.get("/:locationName", async (req, res) => {
       { type: Sequelize.QueryTypes.SELECT }
     );
 
-    if (selectedLocation.length == 0) {
-      return res.status(404).json({ msg: "City not found" });
-    }
+    // if (selectedLocation.length == 0) {
+    //   return res.status(404).json({ msg: "City not found" });
+    // }
 
     res.json(selectedLocation);
   } catch (err) {
@@ -64,8 +64,8 @@ router.get("/:locationName", async (req, res) => {
 // @route    GET api/location/targu-mures
 // @desc     Get all restaurants from Marosvásárhely (HOME)
 // @access   Public
-router.get("/targu-mures", async (req, res) => {
-  const vasarhely = "Targu Mures";
+router.get("/Targu-Mures", async (req, res) => {
+  const vasarhely = "targu-mures";
   const languageCode = 2;
 
   let d = new Date();
@@ -101,7 +101,7 @@ router.get("/targu-mures", async (req, res) => {
       ON loc.locationNameId = locName.id
       INNER JOIN locationNameTranslations as locNameTrans
       ON locName.id = locNameTrans.locationNameId
-      WHERE hoT.languageId = ${languageCode} AND hoT.name LIKE '%Hétfő%'
+      WHERE hoT.languageId = ${languageCode} 
       AND locNameTrans.languageId = ${languageCode}  AND adInf.languageId = ${languageCode}
       AND locNameTrans.name LIKE '%${vasarhely}%';`,
       { type: Sequelize.QueryTypes.SELECT }
@@ -121,7 +121,7 @@ router.get("/targu-mures", async (req, res) => {
 // @route    GET api/location by name
 // @desc     Get all restaurants from Székelyudvarhely (HOME)
 // @access   Public
-router.get("/odorheiu-secuiesc", async (req, res) => {
+router.get("/Odorheiu-Secuiesc", async (req, res) => {
   const udvarhely = "Székelyudvarhely";
   const languageCode = 2;
 
