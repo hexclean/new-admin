@@ -65,7 +65,7 @@ router.get("/:locationName", async (req, res) => {
 // @desc     Get all restaurants from Marosvásárhely (HOME)
 // @access   Public
 router.get("/Targu-Mures", async (req, res) => {
-  const vasarhely = "Targu Mures";
+  const vasarhely = "Târgu Mureș";
   const languageCode = 1;
 
   let d = new Date();
