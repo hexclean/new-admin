@@ -159,7 +159,7 @@ router.get("/Odorheiu-Secuiesc", async (req, res) => {
         ON loc.locationNameId = locName.id
         INNER JOIN locationNameTranslations as locNameTrans
         ON locName.id = locNameTrans.locationNameId
-        WHERE hoT.languageId = ${languageCode} AND hoT.name LIKE '%Hétfő%'
+        WHERE hoT.languageId = ${languageCode}
         AND locNameTrans.languageId = ${languageCode}  AND adInf.languageId = ${languageCode}
         AND locNameTrans.name LIKE '%${udvarhely}%';`,
         { type: Sequelize.QueryTypes.SELECT }
@@ -177,21 +177,33 @@ router.get("/Odorheiu-Secuiesc", async (req, res) => {
 // @desc     Get all restaurants from Csíkszereda (HOME)
 // @access   Public
 router.get("/Miercurea-Ciuc", async (req, res) => {
-  const cityParams = req.params.locationName;
   const csik = "Csíkszereda";
   const languageCode = 2;
   try {
     return sequelize
       .query(
-        `SELECT ad.fullName as restaurant_name, adInf.shortCompanyDesc AS restaurant_description, ad.deliveryPrice AS restaurant_deliveryPrice, adInf.kitchen AS restaurant_kitchen
-      FROM restaurants as ad
-      INNER JOIN adminInfos AS adInf
-      ON adInf.restaurantId = ad.id
-      INNER JOIN adminLocations AS adLoc
-      ON ad.id = adLoc.restaurantId
-      INNER JOIN adminLocationTranslations AS locTrans
-      ON locTrans.adminLocationsId = adLoc.id
-      WHERE locTrans.languageId= ${languageCode} AND adInf.languageId=${languageCode} AND locTrans.name LIKE '%${csik}%';`,
+        `SELECT hoH.open as restaurant_open, hoH.close AS restaurant_close,  ad.id AS restaurant_id, ad.imageUrl AS restaurant_profileImage, ad.commission AS restaurant_commission,
+        ad.fullName AS restaurant_name, ad.newRestaurant AS restaurant_new, ad.discount AS restaurant_discount,
+         adInf.shortCompanyDesc AS restaurant_description,
+        ad.deliveryPrice AS restaurant_deliveryPrice, adInf.kitchen AS restaurant_kitchen
+        FROM restaurants AS ad
+        INNER JOIN hours AS ho
+        ON ad.id = ho.restaurantId
+        INNER JOIN openingHours as hoH
+        ON ho.openingHoursId = hoH.id
+        INNER JOIN openingHoursTranslations hoT
+        ON hoT.openingHoursId = hoH.id
+        INNER JOIN adminInfos AS adInf
+        ON adInf.restaurantId = ad.id
+        INNER JOIN locations AS loc
+        ON ad.id = loc.restaurantId
+        INNER JOIN locationNames AS locName
+        ON loc.locationNameId = locName.id
+        INNER JOIN locationNameTranslations as locNameTrans
+        ON locName.id = locNameTrans.locationNameId
+        WHERE hoT.languageId = ${languageCode}
+        AND locNameTrans.languageId = ${languageCode}  AND adInf.languageId = ${languageCode}
+        AND locNameTrans.name LIKE '%${csik}%';`,
         { type: Sequelize.QueryTypes.SELECT }
       )
       .then((result) => {
