@@ -11,12 +11,8 @@ router.get("/", async (req, res) => {
   try {
     const languageCode = 1;
     const locations = await sequelize.query(
-      `SELECT locNameTrans.name
-      FROM locations AS loc
-      INNER JOIN locationNames AS locName
-      ON loc.locationNameId = locName.id
-      INNER JOIN locationNameTranslations as locNameTrans
-      ON locName.id = locNameTrans.locationNameId
+      `SELECT locNameTrans.name AS cities
+      FROM locationNameTranslations as locNameTrans
       WHERE locNameTrans.languageId = ${languageCode};`,
       { type: Sequelize.QueryTypes.SELECT }
     );
