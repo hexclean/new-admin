@@ -123,7 +123,7 @@ router.get("/Targu-Mures", async (req, res) => {
 // @access   Public
 router.get("/Odorheiu-Secuiesc", async (req, res) => {
   const udvarhely = "Székelyudvarhely";
-  const languageCode = 2;
+  const languageCode = 1;
 
   let d = new Date();
   let weekday = new Array(7);
