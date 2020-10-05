@@ -65,8 +65,8 @@ router.get("/:locationName", async (req, res) => {
 // @desc     Get all restaurants from Marosvásárhely (HOME)
 // @access   Public
 router.get("/Targu-Mures", async (req, res) => {
-  const vasarhely = "targu-mures";
-  const languageCode = 2;
+  const vasarhely = "Targu Mures";
+  const languageCode = 1;
 
   let d = new Date();
   let weekday = new Array(7);
@@ -176,7 +176,7 @@ router.get("/Odorheiu-Secuiesc", async (req, res) => {
 // @route    GET api/location by name
 // @desc     Get all restaurants from Csíkszereda (HOME)
 // @access   Public
-router.get("/miercurea-ciuc", async (req, res) => {
+router.get("/Miercurea-Ciuc", async (req, res) => {
   const cityParams = req.params.locationName;
   const csik = "Csíkszereda";
   const languageCode = 2;
