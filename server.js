@@ -113,7 +113,7 @@ app.use(
 
 // Define Routes
 app.use("/api/auth", require("./routes/api/auth"));
-app.use("/api/deliveryadress", require("./routes/api/delivery-adress"));
+app.use("/api/delivery-address", require("./routes/api/delivery-address"));
 app.use("/api/category", require("./routes/api/category"));
 app.use("/api/profile", require("./routes/api/profile"));
 app.use("/api/location", require("./routes/api/locations"));

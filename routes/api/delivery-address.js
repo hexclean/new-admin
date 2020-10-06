@@ -4,68 +4,57 @@ const UserDeliveryAdress = require("../../models/UserDeliveryAdress");
 const auth = require("../../middleware/auth");
 const { check, validationResult } = require("express-validator");
 const User = require("../../models/User");
-const sequelize = require("../../util/database");
+
 // @route    POST api/delivery address
 // @desc     Create delivery address
 // @access   Private
-router.post("/", auth, async (req, res) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
-  }
-  try {
-    const newDeliveryAdress = new UserDeliveryAdress({
-      name: req.body.name,
-      city: req.body.city,
-      street: req.body.street,
-      houseNumber: req.body.houseNumber,
-      floor: req.body.floor,
-      doorBell: req.body.doorBell,
-      doorNumber: req.body.doorNumber,
-      userId: req.user.id,
-    });
-    const deliveryAdress = await newDeliveryAdress.save();
+router.post(
+  "/",
+  [
+    check("street", "Street is required").isLength({ min: 2, max: 100 }),
+    check("houseNumber", "House Number is required").isLength({
+      min: 2,
+      max: 25,
+    }),
+  ],
+  auth,
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    const { street, houseNumber } = req.body;
+    try {
+      const newDeliveryAdress = await UserDeliveryAdress.create({
+        city: "Budapest",
+        street: street,
+        houseNumber: houseNumber,
+        userId: req.user.id,
+      });
+      // const deliveryAdress = await newDeliveryAdress.save();
 
-    res.json(deliveryAdress);
-  } catch (err) {
-    console.log(err.message);
-    res.status(500).send("server error");
+      res.json(newDeliveryAdress);
+    } catch (err) {
+      console.log(err);
+      console.log(err.message);
+      res.status(500).send("server error");
+    }
   }
-});
+);
 
 // @route    GET api/delivery address
 // @desc     GET delivery address
 // @access   Private
 router.get("/", auth, async (req, res) => {
   try {
-    const deliveryAdress = await UserDeliveryAdress.findAll({
+    await UserDeliveryAdress.findAll({
       where: { userId: req.user.id },
+    }).then((deliveryAddress) => {
+      res.json(deliveryAddress);
     });
-
-    res.json(deliveryAdress);
   } catch (err) {
-    console.log(err.message);
-    res.status(500).send("server error");
-  }
-});
-
-// @route    GET api/delivery adress
-// @desc     Get delivery adress by user
-// @access   Private
-router.get("/", auth, async (req, res) => {
-  try {
-    const deliveryAdress = await UserDeliveryAdress.findByPk(req.params.id);
-
-    if (!deliveryAdress) {
-      return res.status(404).json({ msg: "Delivery Adress not found" });
-    }
-    res.json(deliveryAdress);
-  } catch (err) {
-    console.log(err.message);
-    if (err.kind === "ObjecId") {
-      return res.status(404).json({ msg: "Delivery Adress not found" });
-    }
-    res.status(500).send("server error");
+    console.error(err.message);
+    res.status(500).send("Server error");
   }
 });
 
@@ -119,7 +108,7 @@ router.get("/:id", auth, async (req, res) => {
 });
 
 router.post(
-  "/delivery-adress/:id/edit",
+  "/delivery-adress/:id",
   // [
   //   check("name", "Please include a valid email").isLength({ min: 3 }),
   //   check(

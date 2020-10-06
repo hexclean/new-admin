@@ -8,10 +8,6 @@ const UserDeliveryAdress = sequelize.define("userDeliveryAdress", {
     allowNull: false,
     primaryKey: true,
   },
-  name: {
-    type: Sequelize.STRING,
-    allowNull: false,
-  },
   city: {
     type: Sequelize.STRING,
     allowNull: false,
@@ -23,15 +19,6 @@ const UserDeliveryAdress = sequelize.define("userDeliveryAdress", {
   houseNumber: {
     type: Sequelize.STRING,
     allowNull: false,
-  },
-  floor: {
-    type: Sequelize.STRING,
-  },
-  doorNumber: {
-    type: Sequelize.STRING,
-  },
-  doorBell: {
-    type: Sequelize.STRING,
   },
 });
 
