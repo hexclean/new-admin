@@ -9,6 +9,7 @@ const { check, validationResult } = require("express-validator");
 const User = require("../../models/User");
 const nodemailer = require("nodemailer");
 const sendgridTransport = require("nodemailer-sendgrid-transport");
+const { Op } = require("sequelize");
 
 const transporter = nodemailer.createTransport(
   sendgridTransport({
@@ -82,7 +83,7 @@ router.post(
   "/register",
   [
     check("email", "Please include a valid email").isEmail(),
-    check("name", "Please include a valid email").isLength({ min: 3, max: 20 }),
+    check("name", "Please include a valid name").isLength({ min: 3, max: 20 }),
     check(
       "password",
       "Please enter a password with 6 or more characters"
@@ -144,18 +145,18 @@ router.post(
   "/reset",
   [check("email", "This is not email format").isEmail()],
   async (req, res) => {
-    // const errors = validationResult(req);
-    // if (!errors.isEmpty()) {
-    //   return res.status(400).json({ errors: errors.array() });
-    // }
-    const email = req.body;
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    const { email } = req.body;
 
     crypto.randomBytes(32, (err, buffer) => {
       const token = buffer.toString("hex");
       User.findOne({ where: { email: email } })
         .then((user) => {
           user.resetToken = token;
-          user.resetTokenExpiration = Date.now() + 3600000;
+          user.resetTokenExpiration = Date.now() + 17600000;
           return user.save();
         })
         .then((result) => {
@@ -166,8 +167,10 @@ router.post(
             html: `
                   <p>You requested a password reset</p>
                   <p>Click this <a href="http://localhost:3000/reset-password/${token}">link</a> to set a new password.</p>
+                  <p>Vigyazz mert csak 1,5 oraig ervenyes a link</p>
                 `,
           });
+          res.json("Succes");
         })
         .catch((err) => {
           console.log(err);
@@ -179,46 +182,46 @@ router.post(
 router.post(
   "/reset-password/:token",
   [check("newPassword", "Password min 6 length").isLength({ min: 5 })],
-  async (req, res) => {
+  async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
+
+    const { newPassword } = req.body;
     const token = req.params.token;
+
     let resetUser;
 
-    let tokens = await User.findAll();
-    for (let i = 0; i < tokens.length; i++) {
-      if (tokens[i].resetToken) {
-      }
+    const userToken = await User.findAll({
+      where: {
+        resetToken: {
+          [Op.eq]: token,
+        },
+      },
+    });
+    console.log(userToken);
+    if (userToken.length == 0) {
+      return res.status(400).json({ msg: "No token available" });
     }
-    const newPassword = req.body.newPassword;
-    // for (let i = 0; i < tokens.length; i++) {
 
-    // }
-
-    //2020-10-06 16:40:54
-    User.findOne({
+    await User.findOne({
       where: {
         resetToken: token,
-        // resetTokenExpiration: { $gt: Date.now() },
       },
     })
       .then((user) => {
-        // if (user.resetToken == null) {
-        //   return res.status(400).json({ msg: "No token available" });
-        // }
         resetUser = user;
         return bcrypt.hash(newPassword, 12);
       })
       .then((hashedPassword) => {
         resetUser.password = hashedPassword;
-        resetUser.resetToken = null;
-        resetUser.resetTokenExpiration = null;
+        resetUser.resetToken = 0;
+        resetUser.resetTokenExpiration = 0;
         return resetUser.save();
       })
       .then((result) => {
-        res.redirect("/login");
+        res.json("Succes");
       })
       .catch((err) => {
         console.log(err);
