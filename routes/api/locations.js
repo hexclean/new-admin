@@ -1,19 +1,29 @@
 const express = require("express");
 const router = express.Router();
 const Sequelize = require("sequelize");
-
+const currentLanguage = require("../../middleware/language");
 const sequelize = require("../../util/database");
 
 // @route    GET api/location/:locationName
 // @desc     Get all restaurants from selected city
 // @access   Public
 router.get("/", async (req, res) => {
+  // let lang = req.query.lang;
+  // console.log("req.lang", req.lang);
+  // if (lang == "ro") {
+  //   languageCode = 1;
+  // } else if (lang == "hu") {
+  //   languageCode = 2;
+  // } else if (lang == "en") {
+  //   languageCode = 3;
+  // } else {
+  //   languageCode = 1;
+  // }
+  console.log(req.lang);
   try {
-    const languageCode = 1;
     const locations = await sequelize.query(
       `SELECT locNameTrans.name AS cities
-      FROM locationNameTranslations as locNameTrans
-      WHERE locNameTrans.languageId = ${languageCode};`,
+      FROM locationNameTranslations as locNameTrans;`,
       { type: Sequelize.QueryTypes.SELECT }
     );
 
@@ -31,7 +41,15 @@ router.get("/", async (req, res) => {
 // @route    GET api/location/:locationName
 // @desc     Get all restaurants from selected city
 // @access   Public
-router.get("/:locationName", async (req, res) => {
+router.get("/:locationName/:lang", async (req, res) => {
+  const locationName = req.params.locationName.split("-").join(" ");
+  const languageCode = 2;
+  const lang = req.params.lang;
+
+  if (lang != "ro") {
+    return res.status(404).json({ msg: "404 error" });
+  }
+
   let d = new Date();
   let weekday = new Array(7);
   weekday[0] = "Sunday";
@@ -46,8 +64,6 @@ router.get("/:locationName", async (req, res) => {
   console.log(n);
 
   try {
-    const locationName = req.params.locationName.split("-").join(" ");
-    const languageCode = 2;
     const selectedLocation = await sequelize.query(
       `SELECT hoH.open as restaurant_open, hoH.close AS restaurant_close,  ad.id AS restaurant_id, ad.imageUrl AS restaurant_profileImage, ad.commission AS restaurant_commission,
       ad.fullName AS restaurant_name, ad.newRestaurant AS restaurant_new, ad.discount AS restaurant_discount,
@@ -68,7 +84,7 @@ router.get("/:locationName", async (req, res) => {
       ON loc.locationNameId = locName.id
       INNER JOIN locationNameTranslations as locNameTrans
       ON locName.id = locNameTrans.locationNameId
-      WHERE hoT.languageId = ${languageCode} AND hoT.name LIKE '%Hétfő%'
+      WHERE hoT.languageId = ${languageCode}
       AND locNameTrans.languageId = ${languageCode}  AND adInf.languageId = ${languageCode}
       AND locNameTrans.name LIKE '%${locationName}%';`,
       { type: Sequelize.QueryTypes.SELECT }

@@ -34,6 +34,7 @@ const CouponCode = require("../models/CouponCode");
 const Hours = require("../models/Hours");
 const OpeningHours = require("../models/OpeningHours");
 const OpeningHoursTranslation = require("../models/OpeningHoursTranslation");
+
 function databaseConfig() {
   ProductVariantsExtras.belongsTo(Admin, {
     as: "theAdminInfo",

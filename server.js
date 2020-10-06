@@ -57,6 +57,7 @@ app.use((req, res, next) => {
     })
     .catch((err) => console.log(err));
 });
+
 sessionStore.sync();
 
 app.use(express.json({ extended: false }));
@@ -106,17 +107,13 @@ app.use(
 app.use(express.json({ extended: false }));
 
 app.use(flash());
-
 app.use(
   multer({ storage: fileStorage, fileFilter: fileFilter }).single("image")
 );
 
 // Define Routes
-// app.use("/users", require("./routes/users"));
-app.use("/api/login", require("./routes/api/login"));
+app.use("/api/auth", require("./routes/api/auth"));
 app.use("/api/deliveryadress", require("./routes/api/delivery-adress"));
-// app.use("/api/products", require("./routes/api/products"));
-app.use("/api/register", require("./routes/api/register"));
 app.use("/api/category", require("./routes/api/category"));
 app.use("/api/reset", require("./routes/api/reset"));
 app.use("/api/profile", require("./routes/api/profile"));

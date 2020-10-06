@@ -41,7 +41,7 @@ router.post("/", async (req, res) => {
           subject: "Password reset",
           html: `
                 <p>You requested a password reset</p>
-                <p>Click this <a href="http://localhost:3000/new-password/${token}">link</a> to set a new password.</p>
+                <p>Click this <a href="http://localhost:3000/reset-password/${token}">link</a> to set a new password.</p>
               `,
         });
       })
@@ -51,33 +51,28 @@ router.post("/", async (req, res) => {
   });
 });
 
-router.get("/reset/:token", async (req, res) => {
+router.post("/reset-password/:token", async (req, res) => {
   const token = req.params.token;
-  User.findOne({
-    where: { resetToken: token, resetTokenExpiration: { $gt: Date.now() } },
-  })
-    // .then((user) => {
-    //   //   userId: user.id,
-    //   //   passwordToken: token
-    //   console.log("dsad");
-    // })
-    .catch((err) => {
-      console.log(err);
-    });
-});
-
-router.post("/newpassword/:token", async (req, res) => {
-  const token = req.params.token;
-  const newPassword = req.body.password;
-  const userId = req.body.userId;
-  const passwordToken = req.body.passwordToken;
   let resetUser;
-
+  const newPassword = req.body.password;
+  const passwordAgain = req.body.passwordAgain;
+  if (
+    newPassword != passwordAgain ||
+    newPassword == "" ||
+    passwordAgain == ""
+  ) {
+    return res
+      .status(404)
+      .json({ msg: "Password don't match or can't be empty" });
+  }
+  const tokens = User.findAll();
+  if (token != tokens.resetToken) {
+    return res.status(404).json({ msg: "No token available" });
+  }
   User.findOne({
     where: {
-      resetToken: passwordToken,
-      resetTokenExpiration: { $gt: Date.now() },
-      id: userId,
+      resetToken: token,
+      // resetTokenExpiration: { $gt: Date.now() },
     },
   })
     .then((user) => {
@@ -85,12 +80,15 @@ router.post("/newpassword/:token", async (req, res) => {
       return bcrypt.hash(newPassword, 12);
     })
     .then((hashedPassword) => {
+      console.log("resetUser.id", resetUser.id);
       resetUser.password = hashedPassword;
-      resetUser.resetToken = undefined;
-      resetUser.resetTokenExpiration = undefined;
+      resetUser.resetToken = null;
+      resetUser.resetTokenExpiration = null;
       return resetUser.save();
     })
-
+    .then((result) => {
+      res.redirect("/login");
+    })
     .catch((err) => {
       console.log(err);
     });
