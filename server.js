@@ -115,7 +115,6 @@ app.use(
 app.use("/api/auth", require("./routes/api/auth"));
 app.use("/api/deliveryadress", require("./routes/api/delivery-adress"));
 app.use("/api/category", require("./routes/api/category"));
-app.use("/api/reset", require("./routes/api/reset"));
 app.use("/api/profile", require("./routes/api/profile"));
 app.use("/api/location", require("./routes/api/locations"));
 // app.use("/api/order", require("./routes/api/order"));

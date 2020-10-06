@@ -1,29 +1,28 @@
 const express = require("express");
 const router = express.Router();
 const Sequelize = require("sequelize");
-const currentLanguage = require("../../middleware/language");
 const sequelize = require("../../util/database");
 
 // @route    GET api/location/:locationName
 // @desc     Get all restaurants from selected city
 // @access   Public
-router.get("/", async (req, res) => {
-  // let lang = req.query.lang;
-  // console.log("req.lang", req.lang);
-  // if (lang == "ro") {
-  //   languageCode = 1;
-  // } else if (lang == "hu") {
-  //   languageCode = 2;
-  // } else if (lang == "en") {
-  //   languageCode = 3;
-  // } else {
-  //   languageCode = 1;
-  // }
+router.get("/:lang", async (req, res) => {
+  let lang = req.params.lang;
+  if (lang == "ro") {
+    languageCode = 1;
+  } else if (lang == "hu") {
+    languageCode = 2;
+  } else if (lang == "en") {
+    languageCode = 3;
+  } else {
+    languageCode = 1;
+  }
   console.log(req.lang);
   try {
     const locations = await sequelize.query(
       `SELECT locNameTrans.name AS cities
-      FROM locationNameTranslations as locNameTrans;`,
+      FROM locationNameTranslations as locNameTrans
+      WHERE locNameTrans.languageId = ${languageCode};`,
       { type: Sequelize.QueryTypes.SELECT }
     );
 
@@ -41,14 +40,18 @@ router.get("/", async (req, res) => {
 // @route    GET api/location/:locationName
 // @desc     Get all restaurants from selected city
 // @access   Public
-router.get("/:locationName/:lang", async (req, res) => {
-  const locationName = req.params.locationName.split("-").join(" ");
-  const languageCode = 2;
-  const lang = req.params.lang;
-
-  if (lang != "ro") {
+router.get("/:lang/:locationName", async (req, res, next) => {
+  let lang = req.params.lang;
+  if (lang == "ro") {
+    languageCode = 1;
+  } else if (lang == "hu") {
+    languageCode = 2;
+  } else if (lang == "en") {
+    languageCode = 3;
+  } else {
     return res.status(404).json({ msg: "404 error" });
   }
+  const locationName = req.params.locationName.split("-").join(" ");
 
   let d = new Date();
   let weekday = new Array(7);
@@ -104,9 +107,18 @@ router.get("/:locationName/:lang", async (req, res) => {
 // @route    GET api/location/targu-mures
 // @desc     Get all restaurants from Marosvásárhely (HOME)
 // @access   Public
-router.get("/targu-mures", async (req, res) => {
+router.get("/:lang/targu-mures", async (req, res) => {
+  let lang = req.params.lang;
+  if (lang == "ro") {
+    languageCode = 1;
+  } else if (lang == "hu") {
+    languageCode = 2;
+  } else if (lang == "en") {
+    languageCode = 3;
+  } else {
+    return res.status(404).json({ msg: "404 error" });
+  }
   const vasarhely = "Târgu Mureș";
-  const languageCode = 1;
 
   let d = new Date();
   let weekday = new Array(7);
@@ -161,9 +173,18 @@ router.get("/targu-mures", async (req, res) => {
 // @route    GET api/location by name
 // @desc     Get all restaurants from Székelyudvarhely (HOME)
 // @access   Public
-router.get("/odorheiu-secuiesc", async (req, res) => {
+router.get("/:lang/odorheiu-secuiesc", async (req, res) => {
+  let lang = req.params.lang;
+  if (lang == "ro") {
+    languageCode = 1;
+  } else if (lang == "hu") {
+    languageCode = 2;
+  } else if (lang == "en") {
+    languageCode = 3;
+  } else {
+    return res.status(404).json({ msg: "404 error" });
+  }
   const udvarhely = "Székelyudvarhely";
-  const languageCode = 1;
 
   let d = new Date();
   let weekday = new Array(7);
@@ -213,9 +234,18 @@ router.get("/odorheiu-secuiesc", async (req, res) => {
 // @route    GET api/location by name
 // @desc     Get all restaurants from Csíkszereda (HOME)
 // @access   Public
-router.get("/miercurea-ciuc", async (req, res) => {
+router.get("/:lang/miercurea-ciuc", async (req, res) => {
+  let lang = req.params.lang;
+  if (lang == "ro") {
+    languageCode = 1;
+  } else if (lang == "hu") {
+    languageCode = 2;
+  } else if (lang == "en") {
+    languageCode = 3;
+  } else {
+    return res.status(404).json({ msg: "404 error" });
+  }
   const csik = "Csíkszereda";
-  const languageCode = 2;
   try {
     const locationCiuc = await sequelize.query(
       `SELECT hoH.open as restaurant_open, hoH.close AS restaurant_close,  ad.id AS restaurant_id, ad.imageUrl AS restaurant_profileImage, ad.commission AS restaurant_commission,

@@ -82,10 +82,11 @@ router.post(
   "/register",
   [
     check("email", "Please include a valid email").isEmail(),
+    check("name", "Please include a valid email").isLength({ min: 3, max: 20 }),
     check(
       "password",
       "Please enter a password with 6 or more characters"
-    ).isLength({ min: 6 }),
+    ).isLength({ min: 5, max: 20 }),
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -139,81 +140,90 @@ router.post(
   }
 );
 
-router.post("/reset", async (req, res) => {
-  crypto.randomBytes(32, (err, buffer) => {
-    if (err) {
-      console.log(err);
-      return res.redirect("/reset");
-    }
-    const token = buffer.toString("hex");
-    User.findOne({ where: { email: req.body.email } })
-      .then((user) => {
-        if (!user) {
-          console.log("no user");
-        }
-        user.resetToken = token;
-        user.resetTokenExpiration = Date.now() + 3600000;
-        return user.save();
-      })
-      .then((result) => {
-        res.redirect("/");
-        transporter.sendMail({
-          to: req.body.email,
-          from: "shop@node-complete.com",
-          subject: "Password reset",
-          html: `
+router.post(
+  "/reset",
+  [check("email", "This is not email format").isEmail()],
+  async (req, res) => {
+    // const errors = validationResult(req);
+    // if (!errors.isEmpty()) {
+    //   return res.status(400).json({ errors: errors.array() });
+    // }
+    const email = req.body;
+
+    crypto.randomBytes(32, (err, buffer) => {
+      const token = buffer.toString("hex");
+      User.findOne({ where: { email: email } })
+        .then((user) => {
+          user.resetToken = token;
+          user.resetTokenExpiration = Date.now() + 3600000;
+          return user.save();
+        })
+        .then((result) => {
+          transporter.sendMail({
+            to: email,
+            from: "shop@node-complete.com",
+            subject: "Password reset",
+            html: `
                   <p>You requested a password reset</p>
                   <p>Click this <a href="http://localhost:3000/reset-password/${token}">link</a> to set a new password.</p>
                 `,
+          });
+        })
+        .catch((err) => {
+          console.log(err);
         });
+    });
+  }
+);
+
+router.post(
+  "/reset-password/:token",
+  [check("newPassword", "Password min 6 length").isLength({ min: 5 })],
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    const token = req.params.token;
+    let resetUser;
+
+    let tokens = await User.findAll();
+    for (let i = 0; i < tokens.length; i++) {
+      if (tokens[i].resetToken) {
+      }
+    }
+    const newPassword = req.body.newPassword;
+    // for (let i = 0; i < tokens.length; i++) {
+
+    // }
+
+    //2020-10-06 16:40:54
+    User.findOne({
+      where: {
+        resetToken: token,
+        // resetTokenExpiration: { $gt: Date.now() },
+      },
+    })
+      .then((user) => {
+        // if (user.resetToken == null) {
+        //   return res.status(400).json({ msg: "No token available" });
+        // }
+        resetUser = user;
+        return bcrypt.hash(newPassword, 12);
+      })
+      .then((hashedPassword) => {
+        resetUser.password = hashedPassword;
+        resetUser.resetToken = null;
+        resetUser.resetTokenExpiration = null;
+        return resetUser.save();
+      })
+      .then((result) => {
+        res.redirect("/login");
       })
       .catch((err) => {
         console.log(err);
       });
-  });
-});
-
-router.post("/reset-password/:token", async (req, res) => {
-  const token = req.params.token;
-  let resetUser;
-  const newPassword = req.body.password;
-  const passwordAgain = req.body.passwordAgain;
-  if (
-    newPassword != passwordAgain ||
-    newPassword == "" ||
-    passwordAgain == ""
-  ) {
-    return res
-      .status(404)
-      .json({ msg: "Password don't match or can't be empty" });
   }
-  const tokens = User.findAll();
-  if (token != tokens.resetToken) {
-    return res.status(404).json({ msg: "No token available" });
-  }
-  User.findOne({
-    where: {
-      resetToken: token,
-      // resetTokenExpiration: { $gt: Date.now() },
-    },
-  })
-    .then((user) => {
-      resetUser = user;
-      return bcrypt.hash(newPassword, 12);
-    })
-    .then((hashedPassword) => {
-      console.log("resetUser.id", resetUser.id);
-      resetUser.password = hashedPassword;
-      resetUser.resetToken = null;
-      resetUser.resetTokenExpiration = null;
-      return resetUser.save();
-    })
-    .then((result) => {
-      res.redirect("/login");
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-});
+);
 
 module.exports = router;
