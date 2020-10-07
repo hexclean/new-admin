@@ -200,7 +200,7 @@ router.post(
         },
       },
     });
-    console.log(userToken);
+
     if (userToken.length == 0) {
       return res.status(400).json({ msg: "No token available" });
     }

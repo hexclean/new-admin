@@ -1,7 +1,7 @@
 const Sequelize = require("sequelize");
 const sequelize = require("../util/database");
 
-const RestaurantsReviews = sequelize.define("RestaurantsReviews", {
+const ProductsReview = sequelize.define("ProductsReview", {
   id: {
     type: Sequelize.INTEGER,
     autoIncrement: true,
@@ -15,4 +15,4 @@ const RestaurantsReviews = sequelize.define("RestaurantsReviews", {
   genLinkExpiration: Sequelize.STRING,
 });
 
-module.exports = RestaurantsReviews;
+module.exports = ProductsReview;

@@ -119,6 +119,7 @@ app.use("/api/profile", require("./routes/api/profile"));
 app.use("/api/location", require("./routes/api/locations"));
 // app.use("/api/order", require("./routes/api/order"));
 app.use("/api/products", require("./routes/api/products"));
+app.use("/api/reviews", require("./routes/api/reviews"));
 app.use("/api/restaurant", require("./routes/api/restaurants"));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use("/admin", adminRoutes);

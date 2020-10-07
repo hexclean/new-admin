@@ -34,8 +34,23 @@ const CouponCode = require("../models/CouponCode");
 const Hours = require("../models/Hours");
 const OpeningHours = require("../models/OpeningHours");
 const OpeningHoursTranslation = require("../models/OpeningHoursTranslation");
+const RestaurantsReviews = require("../models/RestaurantsReviews");
+const ProductsReview = require("../models/ProductsReview");
 
 function databaseConfig() {
+  RestaurantsReviews.belongsTo(Admin, {
+    constrains: true,
+    onDelete: "CASCADE",
+  });
+  RestaurantsReviews.belongsTo(User, { constrains: true, onDelete: "CASCADE" });
+  Admin.hasMany(RestaurantsReviews, { foreignKey: "restaurantId" });
+  User.hasMany(RestaurantsReviews, { foreignKey: "userId" });
+
+  ProductsReview.belongsTo(Admin, { constrains: true, onDelete: "CASCADE" });
+  ProductsReview.belongsTo(User, { constrains: true, onDelete: "CASCADE" });
+  Admin.hasMany(ProductsReview, { foreignKey: "restaurantId" });
+  User.hasMany(ProductsReview, { foreignKey: "userId" });
+
   ProductVariantsExtras.belongsTo(Admin, {
     as: "theAdminInfo",
     foreignKey: "restaurantId",
