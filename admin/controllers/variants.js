@@ -186,76 +186,6 @@ exports.postAddVariant = async (req, res, next) => {
     });
 };
 
-exports.postEditVariant = async (req, res, next) => {
-  const extId = req.body.extraId;
-  const updatedSku = req.body.sku;
-  const varId = req.body.variantId;
-  const updatedExtraPrice = req.body.price;
-  const updatedExtraQuantityMin = req.body.quantityMin;
-  const updatedExtraQuantityMax = req.body.quantityMax;
-  const filteredStatus = req.body.status.filter(Boolean);
-  const filteredOptions = req.body.statusOption.filter(Boolean);
-  const maxOption = req.body.maxOption;
-  const categoryRo = req.body.categoryRo;
-  const Op = Sequelize.Op;
-  const dasd = req.body.varId;
-  let variantId = [dasd];
-  const productVarToExt = await ProductVariantsExtras.findAll({
-    where: {
-      productVariantId: {
-        [Op.in]: variantId,
-      },
-    },
-  });
-
-  ProductVariants.findAll()
-    .then((variant) => {
-      async function msg() {
-        await ProductVariants.findByPk(varId).then((variant) => {
-          variant.sku = updatedSku;
-          variant.maxOption = maxOption;
-          variant.categoryId = categoryRo;
-          return variant.save();
-        });
-
-        if (Array.isArray(productVarToExt)) {
-          const Op = Sequelize.Op;
-          for (let i = 0; i <= productVarToExt.length - 1; i++) {
-            let extrasIds = [extId[i]];
-            let variantId = [varId];
-            await ProductVariantsExtras.update(
-              {
-                price: updatedExtraPrice[i] || 0,
-                quantityMin: updatedExtraQuantityMin[i] || 0,
-                quantityMax: updatedExtraQuantityMax[i] || 0,
-                discountedPrice: updatedExtraPrice[i] * 0.8 || 0,
-                active: filteredStatus[i] == "on" ? 1 : 0,
-                requiredExtra: filteredOptions[i] == "on" ? 1 : 0,
-              },
-              {
-                where: {
-                  extraId: {
-                    [Op.in]: extrasIds,
-                  },
-                  productVariantId: {
-                    [Op.in]: variantId,
-                  },
-                },
-              }
-            );
-          }
-        }
-      }
-      msg();
-      res.redirect("/admin/variant-index");
-    })
-    .catch((err) => {
-      const error = new Error(err);
-      error.httpStatusCode = 500;
-      return next(error);
-    });
-};
-
 exports.getEditVariant = async (req, res, next) => {
   const editMode = req.query.edit;
   if (!editMode) {
@@ -361,6 +291,76 @@ exports.getEditVariant = async (req, res, next) => {
         isActive: variant[0].productVariantsExtras,
         currentExtraName: currentExtraName,
       });
+    })
+    .catch((err) => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
+};
+
+exports.postEditVariant = async (req, res, next) => {
+  const extId = req.body.extraId;
+  const updatedSku = req.body.sku;
+  const varId = req.body.variantId;
+  const updatedExtraPrice = req.body.price;
+  const updatedExtraQuantityMin = req.body.quantityMin;
+  const updatedExtraQuantityMax = req.body.quantityMax;
+  const filteredStatus = req.body.status.filter(Boolean);
+  const filteredOptions = req.body.statusOption.filter(Boolean);
+  const maxOption = req.body.maxOption;
+  const categoryRo = req.body.categoryRo;
+  const Op = Sequelize.Op;
+  const dasd = req.body.varId;
+  let variantId = [dasd];
+  const productVarToExt = await ProductVariantsExtras.findAll({
+    where: {
+      productVariantId: {
+        [Op.in]: variantId,
+      },
+    },
+  });
+
+  ProductVariants.findAll()
+    .then((variant) => {
+      async function msg() {
+        await ProductVariants.findByPk(varId).then((variant) => {
+          variant.sku = updatedSku;
+          variant.maxOption = maxOption;
+          variant.categoryId = categoryRo;
+          return variant.save();
+        });
+
+        if (Array.isArray(productVarToExt)) {
+          const Op = Sequelize.Op;
+          for (let i = 0; i <= productVarToExt.length - 1; i++) {
+            let extrasIds = [extId[i]];
+            let variantId = [varId];
+            await ProductVariantsExtras.update(
+              {
+                price: updatedExtraPrice[i] || 0,
+                quantityMin: updatedExtraQuantityMin[i] || 0,
+                quantityMax: updatedExtraQuantityMax[i] || 0,
+                discountedPrice: updatedExtraPrice[i] * 0.8 || 0,
+                active: filteredStatus[i] == "on" ? 1 : 0,
+                requiredExtra: filteredOptions[i] == "on" ? 1 : 0,
+              },
+              {
+                where: {
+                  extraId: {
+                    [Op.in]: extrasIds,
+                  },
+                  productVariantId: {
+                    [Op.in]: variantId,
+                  },
+                },
+              }
+            );
+          }
+        }
+      }
+      msg();
+      res.redirect("/admin/variant-index");
     })
     .catch((err) => {
       const error = new Error(err);
