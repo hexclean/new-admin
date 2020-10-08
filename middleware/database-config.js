@@ -46,9 +46,13 @@ function databaseConfig() {
   Admin.hasMany(RestaurantsReviews, { foreignKey: "restaurantId" });
   User.hasMany(RestaurantsReviews, { foreignKey: "userId" });
 
-  ProductsReview.belongsTo(Admin, { constrains: true, onDelete: "CASCADE" });
+  ProductsReview.belongsTo(ProductVariant, {
+    constrains: true,
+    onDelete: "CASCADE",
+  });
   ProductsReview.belongsTo(User, { constrains: true, onDelete: "CASCADE" });
-  Admin.hasMany(ProductsReview, { foreignKey: "restaurantId" });
+  ProductVariant.hasMany(ProductsReview);
+
   User.hasMany(ProductsReview, { foreignKey: "userId" });
 
   ProductVariantsExtras.belongsTo(Admin, {
