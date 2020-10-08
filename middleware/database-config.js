@@ -36,8 +36,28 @@ const OpeningHours = require("../models/OpeningHours");
 const OpeningHoursTranslation = require("../models/OpeningHoursTranslation");
 const RestaurantsReviews = require("../models/RestaurantsReviews");
 const ProductsReview = require("../models/ProductsReview");
+const Order = require("../models/Order");
+const OrderItem = require("../models/OrderItem");
 
 function databaseConfig() {
+  OrderItem.belongsTo(Order, {
+    constrains: true,
+    onDelete: "CASCADE",
+  });
+  Order.hasMany(OrderItem);
+
+  OrderItem.belongsTo(ProductVariant, {
+    constrains: true,
+    onDelete: "CASCADE",
+  });
+  ProductVariant.hasMany(OrderItem);
+
+  Order.belongsTo(User, {
+    constrains: true,
+    onDelete: "CASCADE",
+  });
+  User.hasMany(Order);
+
   RestaurantsReviews.belongsTo(Admin, {
     constrains: true,
     onDelete: "CASCADE",
