@@ -46,6 +46,12 @@ function databaseConfig() {
   });
   Order.hasMany(OrderItem);
 
+  Order.belongsTo(UserDeliveryAdress, {
+    constrains: true,
+    onDelete: "CASCADE",
+  });
+  UserDeliveryAdress.hasMany(Order);
+
   OrderItem.belongsTo(ProductVariant, {
     constrains: true,
     onDelete: "CASCADE",
