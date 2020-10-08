@@ -20,6 +20,36 @@ const transporter = nodemailer.createTransport(
   })
 );
 
+async function badProductReview() {
+  // const DATE = new Date();
+  // DATE.setDate(DATE.getDate() + 1);
+  const mailOptions = {
+    from: "shop@node-complete.com",
+    to: "erdosjozsef20@gmail.com",
+    subject: "Form send",
+    html: `Content`,
+  };
+  const DELAY = 600 * 60 * 10000;
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) console.log("Mail failed!! :(");
+    else console.log("Mail sent to " + mailOptions.to);
+  }),
+    DELAY;
+}
+
+// async function badProductReview() {
+//   transporter.sendMail({
+//     to: email,
+//     from: "shop@node-complete.com",
+//     subject: "Password reset",
+//     html: `
+//           <p>You requested a password reset</p>
+//           <p>Click this <a href="http://localhost:3000/reset-password/${token}">link</a> to set a new password.</p>
+//           <p>Vigyazz mert csak 1,5 oraig ervenyes a link</p>
+//         `,
+//   });
+// }
+
 // @route    POST api/reviews
 // @desc     Review Admin
 // @access   Private
@@ -111,7 +141,7 @@ router.post(
         userId: req.user.id,
       },
     });
-
+    console.log(req.user.id);
     if (
       review.length == 0 ||
       !genLink ||
@@ -139,7 +169,11 @@ router.post(
         return user.save();
       })
       .then((result) => {
-        res.json("Succes");
+        if (rating <= 3) {
+          // badProductReview();
+          console.log("fuggvenyhivas uj email kuldes");
+        }
+        return res.json(result);
       })
       .catch((err) => {
         console.log(err.message);
