@@ -4,6 +4,9 @@
     "en": "Engleză",
     "hu": "Ungurește"
   },
+  "box_name_ro_validation": "Box romanian name is required",
+  "box_name_hu_validation": "Box hungarian name is required",
+  "box_name_en_validation": "Box english name is required",
   "menu_orders": "Comenzii",
   "menu_dashboard": "Profilul",
   "menu_daily_menu": "Meniul Zilei",

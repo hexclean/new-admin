@@ -12,6 +12,8 @@ const Category = require("../../models/ProductCategory");
 const CategoryTranslation = require("../../models/ProductCategoryTranslation");
 const Box = require("../../models/Box");
 const BoxTranslation = require("../../models/BoxTranslation");
+const Restaurant = require("../../models/Restaurant");
+const RestaurantRole = require("../../models/RestaurantRole");
 
 exports.getAddProduct = async (req, res, next) => {
   let currentCategoryName = [];
@@ -657,6 +659,81 @@ exports.getCategoryVariants = async (req, res, next) => {
       res.render("admin/searchedVariants", {
         variants: variant,
         editing: false,
+      });
+    })
+    .catch((err) => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
+};
+
+exports.getTest = async (req, res, next) => {
+  let currentProductName = [];
+  let currentProductDescription = [];
+
+  const checkVariantLength = await ProductVariants.findAll({
+    where: { restaurantId: req.admin.id },
+  });
+  const checkBoxLength = await Box.findAll({
+    where: { restaurantId: req.admin.id },
+  });
+
+  const restaurantRole = await Restaurant.findAll({
+    where: { id: req.admin.id },
+    include: [
+      {
+        model: RestaurantRole,
+      },
+    ],
+  });
+
+  await Product.findAll({
+    where: { restaurantId: restaurantRole[0].RestaurantRoles[0].id, active: 1 },
+    include: [
+      {
+        model: ProductTranslation,
+      },
+      { model: ProductFinal },
+    ],
+  })
+
+    .then((product) => {
+      for (let i = 0; i < product.length; i++) {
+        var currentLanguage = req.cookies.language;
+
+        if (currentLanguage == "ro") {
+          currentProductName[i] = product[i].productTranslations[0].title;
+        } else if (currentLanguage == "hu") {
+          currentProductName[i] = product[i].productTranslations[1].title;
+        } else {
+          currentProductName[i] = product[i].productTranslations[2].title;
+        }
+      }
+
+      for (let i = 0; i < product.length; i++) {
+        var currentLanguage = req.cookies.language;
+
+        if (currentLanguage == "ro") {
+          currentProductDescription[i] =
+            product[i].productTranslations[0].description;
+        } else if (currentLanguage == "hu") {
+          currentProductDescription[i] =
+            product[i].productTranslations[1].description;
+        } else {
+          currentProductDescription[i] =
+            product[i].productTranslations[2].description;
+        }
+      }
+      res.render("test/index", {
+        prods: product,
+        checkVariantLength: checkVariantLength,
+        currentLanguage: currentLanguage,
+        currentProductName: currentProductName,
+        currentProductDescription: currentProductDescription,
+        checkBoxLength: checkBoxLength,
+        pageTitle: "Admin Products",
+        path: "/admin/products",
       });
     })
     .catch((err) => {

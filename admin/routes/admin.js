@@ -100,6 +100,8 @@ router.post("/add-extra", isAuth, extraController.postAddExtra);
 // Product
 router.get("/add-product", isAuth, adminController.getAddProduct);
 router.get("/products", isAuth, adminController.getProducts);
+router.get("/test", isAuth, adminController.getTest);
+
 router.post("/add-product", adminController.postAddProduct);
 router.get("/edit-product/:productId", isAuth, adminController.getEditProduct);
 router.post("/edit-product", isAuth, adminController.postEditProduct);

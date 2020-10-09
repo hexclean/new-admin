@@ -144,8 +144,8 @@ const PORT = process.env.PORT || 5000;
 app.use(errorController.get404);
 
 sequelize
-  .sync({ force: true })
-  // .sync()
+  // .sync({ force: true })
+  .sync()
   .then((result) => {
     app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
   })

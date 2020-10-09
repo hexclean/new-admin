@@ -23,6 +23,7 @@ const Restaurant = sequelize.define("restaurant", {
   deliveryPrice: Sequelize.FLOAT,
   newRestaurant: Sequelize.INTEGER,
   discount: Sequelize.INTEGER,
+  active: Sequelize.INTEGER,
 });
 
 module.exports = Restaurant;

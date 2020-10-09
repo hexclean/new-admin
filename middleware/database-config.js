@@ -25,7 +25,7 @@ const Allergen = require("../models/Allergen");
 const AllergenTranslation = require("../models/AllergenTranslation");
 const ProductHasAllergen = require("../models/ProductHasAllergen");
 const ExtraHasAllergen = require("../models/ExtraHasAllergen");
-
+const RestaurantRole = require("../models/RestaurantRole");
 const User = require("../models/User");
 const UserDeliveryAdress = require("../models/UserDeliveryAdress");
 const UserProfile = require("../models/UserProfile");
@@ -40,6 +40,12 @@ const Order = require("../models/Order");
 const OrderItem = require("../models/OrderItem");
 
 function databaseConfig() {
+  RestaurantRole.belongsTo(Admin, {
+    constrains: true,
+    onDelete: "CASCADE",
+  });
+  Admin.hasMany(RestaurantRole);
+
   OrderItem.belongsTo(Order, {
     constrains: true,
     onDelete: "CASCADE",

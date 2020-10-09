@@ -25,15 +25,11 @@
       check_price();
     });
 
-    $("#price").focusout(function () {
-      check_price_input();
-    });
-
     function check_roName() {
       var roName_length = $("#roName").val().length;
 
       if (roName_length < 2 || roName_length > 15) {
-        $("#roName_error_message").html("roname");
+        $("#roName_error_message").html("<%= lingua.box_name_ro_validation %>");
         $("#roName_error_message").show();
         error_roName = true;
       } else {
@@ -45,7 +41,7 @@
       var huName_length = $("#huName").val().length;
 
       if (huName_length < 2 || huName_length > 15) {
-        $("#huName_error_message").html("huname");
+        $("#huName_error_message").html("<%= lingua.box_name_hu_validation %>");
         $("#huName_error_message").show();
         error_huName = true;
       } else {
@@ -57,7 +53,7 @@
       var enName_length = $("#enName").val().length;
 
       if (enName_length < 2 || enName_length > 15) {
-        $("#enName_error_message").html("enname");
+        $("#enName_error_message").html("<%= lingua.box_name_en_validation %>");
         $("#enName_error_message").show();
         error_enName = true;
       } else {
@@ -68,8 +64,8 @@
     function check_price() {
       var price_length = $("#price").val().length;
 
-      if (price_length < 2 || price_length > 15) {
-        $("#price_error_message").html("price");
+      if (price_length < 1 || price_length > 15) {
+        $("#price_error_message").html("<%= lingua.box_price_validation %>");
         $("#price_error_message").show();
         error_price = true;
       } else {

@@ -1,17 +1,16 @@
 const Sequelize = require("sequelize");
+
 const sequelize = require("../util/database");
 
-const Box = sequelize.define("Box", {
+const RestaurantRole = sequelize.define("RestaurantRole", {
   id: {
     type: Sequelize.INTEGER,
     autoIncrement: true,
     allowNull: false,
     primaryKey: true,
   },
-  price: {
-    type: Sequelize.FLOAT,
-    allowNull: false,
-  },
+  active: Sequelize.INTEGER,
+  role: Sequelize.INTEGER,
 });
 
-module.exports = Box;
+module.exports = RestaurantRole;
