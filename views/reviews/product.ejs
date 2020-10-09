@@ -1,0 +1,86 @@
+
+
+
+<%- include('../includes/head.ejs') %>
+</head>
+<body class="ms-body ms-aside-left-open ms-primary-theme ms-has-quickbar">
+   <%- include('../includes/navigation.ejs') %>
+   <main class="body-content">
+      <%- include('../includes/navigation-bar.ejs') %>
+     <div class="col-md-12">
+          <div class="ms-panel">
+            <div class="ms-panel-header">
+              <h6>Termek velemenyek</h6>
+
+            </div>
+            <div class="ms-panel-body">
+              <div class="row">
+                <% for (let i = 0; i < review.length; i++) { %>
+                <div class="col-lg-4 col-md-6 col-sm-6 review-bottom">
+                  <div class="ms-card no-margin">
+                    <div class="ms-card-body">
+                      <div class="media fs-14">
+                        <div class="mr-2 align-self-center">
+                          <img src="/img/customer.jpg" class="ms-img-round" alt="people">
+                        </div>
+                        <div class="media-body">
+                          <h6><%= review[i].title %></h6>
+                          <div class="dropdown float-right">
+                          
+                          
+                            <ul class="dropdown-menu dropdown-menu-right">
+                              <li class="ms-dropdown-list">
+                                <a class="media p-2" href="#">
+                                  <div class="media-body">
+                                    <span>Sales</span>
+                                  </div>
+                                </a>
+                                <a class="media p-2" href="#">
+                                  <div class="media-body">
+                                    <span>Details</span>
+                                  </div>
+                                </a>
+                                <a class="media p-2" href="#">
+                                  <div class="media-body">
+                                    <span>Remove</span>
+                                  </div>
+                                </a>
+                              </li>
+                            </ul>
+                          </div>
+                          <p class="fs-12 my-1 text-disabled"><%= review[i].time.toLocaleString('fi-FI', { timeZone: 'Europe/Bucharest' }) %></p>
+                        </div>
+
+                      </div>
+                     
+                      <p><%= review[i].message %></p>
+                    </div>
+                    <div class="ms-card-img">
+                      <img src="/<%= review[i].imageUrl %>" alt="card_img">
+                    </div>
+                    <div class="ms-card-footer text-disabled d-flex">
+                        <div class="ms-card-options">
+                          <i class="material-icons">Rating: <b><%= review[i].rating %></b></i>
+                        </div>
+                        <% if ( review[i].rating <=3) { %>
+                        <div class="ms-card-options">
+                           
+                            <svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-exclamation-circle-fill" fill="red" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/>
+                              </svg> 
+                        </div>
+                        <% } %>
+                      </div>
+                   
+                  </div>
+                </div>
+                <% } %>
+              </div>
+            </div>
+          </div>
+        </div>
+   </main>
+   
+   <%- include('../includes/end.ejs')
+      %>
+</body>

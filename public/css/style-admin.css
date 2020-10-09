@@ -6720,6 +6720,9 @@ table td .progress {
 .ms-twitter-feed .ms-feed-user + p {
   display: inline-block;
 }
+.review-bottom{
+  padding-bottom: 25px;
+}
 .ms-feed p {
   font-size: 14px;
 }

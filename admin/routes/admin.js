@@ -6,6 +6,7 @@ const faqController = require("../controllers/faq");
 const categoryController = require("../controllers/category");
 const boxController = require("../controllers/box");
 const couponController = require("../controllers/coupon");
+const reviewController = require("../controllers/review");
 const adminProfileController = require("../controllers/profile");
 const dailyMenuController = require("../controllers/daily-menu");
 const allergenController = require("../controllers/allergen");
@@ -100,7 +101,6 @@ router.post("/add-extra", isAuth, extraController.postAddExtra);
 // Product
 router.get("/add-product", isAuth, adminController.getAddProduct);
 router.get("/products", isAuth, adminController.getProducts);
-router.get("/test", isAuth, adminController.getTest);
 
 router.post("/add-product", adminController.postAddProduct);
 router.get("/edit-product/:productId", isAuth, adminController.getEditProduct);
@@ -176,5 +176,8 @@ router.post(
   isAuth,
   deletedItemsController.postRestoreProduct
 );
+
+// Review
+router.get("/products-reviews", isAuth, reviewController.getProductsReview);
 
 module.exports = router;
