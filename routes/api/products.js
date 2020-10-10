@@ -23,27 +23,92 @@ router.get("/:locationName/:partnerId", async (req, res) => {
       FROM foodnet.productFinals as prodFin 
       INNER JOIN foodnet.products as prod ON prodFin.productId = prod.id INNER JOIN foodnet.restaurants as adm On prod.restaurantId = adm.id 
       INNER JOIN foodnet.productTranslations as prodTrans ON prodTrans.productId = prod.id 
-      INNER JOIN foodnet.productVariants as var ON prodFin.variantId = var.id 
-      INNER JOIN foodnet.productVariantTranslations as varTrans ON varTrans.productVariantId = var.id 
-      INNER JOIN foodnet.productCategories as cat ON cat.id = varTrans.categoryId 
+      INNER JOIN foodnet.productVariants as var ON prodFin.variantId = var.id
+      INNER JOIN foodnet.productCategories as cat
+      on var.categoryId = cat.id
       inner join foodnet.productCategoryTranslations as catTrans ON catTrans.productCategoryId = cat.id 
-      left join foodnet.productVariantsExtras AS varExtras ON varExtras.productVariantId = varTrans.productVariantId 
+      LEFT JOIN foodnet.productVariantsExtras as varExtras
+      on varExtras.productVariantId = var.id
       left join foodnet.extras as ext on ext.id = varExtras.extraId 
       left join foodnet.extraTranslations as extTrans on extTrans.extraId = ext.id
-       WHERE catTrans.languageId =2 AND varTrans.languageId =2 AND extTrans.languageId=2  and prodTrans.languageId =2 and prodFin.active=${egy} and adm.fullName LIKE '%${params}%' and varExtras.active=1;`,
+       WHERE catTrans.languageId =2 AND extTrans.languageId=2 and prodTrans.languageId =2 and prodFin.active=${egy} and adm.fullName LIKE '%${params}%' and varExtras.active=1;`,
       { type: Sequelize.QueryTypes.SELECT }
     )
     .then((results) => {
-      const done = results.reduce((accumulator, currentValue) => {
-        const { variantTranslationName, categoryName } = currentValue;
-        // const key = categoryName + " - " + variantTranslationName;
+      const groupedByExtra = [];
+      for (let d of results) {
+        const extras = {
+          extraId: d.extraId,
+          name: d.name,
+          price: d.price,
+          discountedPrice: d.discountedPrice,
+          minOrder: d.minOrder,
+          maxOrder: d.maxOrder,
+        };
+        const item = {
+          VRID: d.VRID,
+          categoryName: d.categoryName,
+          partnerName: d.partnerName,
+          productId: d.productId,
+          productImageUrl: d.productImageUrl,
+          productTitle: d.productTitle,
+          productDescription: d.productDescription,
+          productPrice: d.productPrice,
+          productDiscountedPrice: d.productDiscountedPrice,
+          extras: [],
+        };
+        item.extras = extras;
+        groupedByExtra.push(item);
+      }
+      let groupByExtras = groupedByExtra.reduce((r, a) => {
+        r[a.VRID] = [...(r[a.VRID] || []), a];
+        return r;
+      }, {});
+      const items = [];
+      for (const [key, value] of Object.entries(groupByExtras)) {
+        let item = {};
+        if (value.length > 1) {
+          let extras = [];
+          let product = value[0];
+          item = {
+            VRID: product.VRID,
+            categoryName: product.categoryName,
+            partnerName: product.partnerName,
+            productId: product.productId,
+            productImageUrl: product.productImageUrl,
+            productTitle: product.productTitle,
+            productDescription: product.productDescription,
+            productPrice: product.productPrice,
+            productDiscountedPrice: product.productDiscountedPrice,
+            extras: [],
+          };
+          for (let d of value) {
+            console.log(value);
+            extras.push({
+              extraId: d.extras.extraId,
+              name: d.extras.name,
+              price: d.extras.price,
+              discountedPrice: d.extras.discountedPrice,
+              minOrder: d.extras.minOrder,
+              maxOrder: d.extras.maxOrder,
+            });
+            // console.log(extras);
+          }
+          item.extras = extras;
+        } else {
+          item = value.shift();
+        }
+        items.push(item);
+      }
+      const groupedByCategory = items.reduce((accumulator, currentValue) => {
+        const { categoryName } = currentValue;
         const key = categoryName;
         accumulator[key] = accumulator[key] || [];
-
         accumulator[key].push(currentValue);
         return accumulator;
       }, Object.create(null));
-      return res.json(done);
+
+      return res.json(groupedByCategory);
     });
 });
 

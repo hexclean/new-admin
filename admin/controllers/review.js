@@ -39,7 +39,6 @@ exports.getProductsReview = async (req, res, next) => {
       for (var i = 0; i < review.length; i++) {
         sum += review[i].rating;
       }
-      console.log(rat);
       var avg = sum / review.length;
       res.render("reviews/product", {
         pageTitle: "Admin Products",
