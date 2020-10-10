@@ -83,7 +83,6 @@ router.get("/:locationName/:partnerId", async (req, res) => {
             extras: [],
           };
           for (let d of value) {
-            console.log(value);
             extras.push({
               extraId: d.extras.extraId,
               name: d.extras.name,
@@ -92,7 +91,6 @@ router.get("/:locationName/:partnerId", async (req, res) => {
               minOrder: d.extras.minOrder,
               maxOrder: d.extras.maxOrder,
             });
-            // console.log(extras);
           }
           item.extras = extras;
         } else {

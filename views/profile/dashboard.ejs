@@ -9,25 +9,32 @@
     <%- include('../includes/navigation-bar.ejs') %>
     <div class="ms-content-wrapper">
       <div class="ms-profile-overview">
-        <div class="ms-profile-cover">
-          
+        <div style="background-image: url('/<%= admin.coverUrl %>');" class="ms-profile-cover">
+          <img class="ms-profile-img" src="/<%= admin.imageUrl %>" alt="people">
           <div class="ms-profile-user-info">
-            <h3 class="ms-profile-username text-white"><%= admin.fullName %></h3>           
-          </div>        
+            <h4 class="ms-profile-username text-white"><%= admin.fullName %></h4>
+           
+          </div>
+          <div class="ms-profile-user-buttons">
+           
+          </div>
         </div>
         <ul class="ms-profile-navigation nav nav-tabs tabs-bordered" role="tablist">
           <li role="presentation"><a href="#tab1" aria-controls="tab1" class="active show" role="tab" data-toggle="tab"> Overview </a></li>
           <li role="presentation"><a href="/admin/edit-profile/<%= admin.id %>?edit=true"> Alapadatok</a></li>
           <li role="presentation"><a href="/admin/edit-opening-hours/<%= admin.id %>?edit=true"> Nyitva Tartás</a></li>
-          <li role="presentation"><a href="/admin/edit-images/<%= admin.id %>?edit=true"> Profil-Boritokep</a></li>
-
+          <li role="presentation"><a href="/admin/edit-profile-image/<%= admin.id %>?edit=true"> Profilkep</a></li>
+          <li role="presentation"><a href="/admin/edit-cover-image/<%= admin.id %>?edit=true"> Boritokep</a></li>
         </ul>
         <div class="tab-content">
           <div class="tab-pane" id="tab1">
+    
           </div>
           <div class="tab-pane" id="tab2">
+    
           </div>
           <div class="tab-pane" id="tab3">
+    
           </div>
         </div>
       </div>

@@ -289,7 +289,7 @@ exports.getDashboard = (req, res, next) => {
     });
 };
 
-exports.getEditImages = (req, res, next) => {
+exports.getEditProfileImages = (req, res, next) => {
   const editMode = req.query.edit;
   const restaurantId = req.admin.id;
 
@@ -298,7 +298,7 @@ exports.getEditImages = (req, res, next) => {
       if (!admin) {
         return res.redirect("/admin/products");
       }
-      res.render("profile/edit-photo", {
+      res.render("profile/edit-profile-image", {
         pageTitle: "Edit admin",
         editing: editMode,
         path: "/admin/edit-admin",
@@ -312,7 +312,7 @@ exports.getEditImages = (req, res, next) => {
     });
 };
 
-exports.postEditImages = async (req, res, next) => {
+exports.postEditProfileImages = async (req, res, next) => {
   const image = req.file;
   const imageUrl = image.path;
 
@@ -321,6 +321,51 @@ exports.postEditImages = async (req, res, next) => {
       Admin.update(
         {
           imageUrl: imageUrl,
+        },
+        { where: { id: req.admin.id } }
+      );
+
+      res.redirect("/admin/dashboard");
+    });
+  } catch (err) {
+    const error = new Error(err);
+    error.httpStatusCode = 500;
+    return next(error);
+  }
+};
+
+exports.getEditCoverImages = (req, res, next) => {
+  const editMode = req.query.edit;
+  const restaurantId = req.admin.id;
+
+  Admin.findByPk(restaurantId)
+    .then((admin) => {
+      if (!admin) {
+        return res.redirect("/admin/products");
+      }
+      res.render("profile/edit-cover-image", {
+        pageTitle: "Edit admin",
+        editing: editMode,
+        path: "/admin/edit-admin",
+        admin: admin,
+      });
+    })
+    .catch((err) => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
+};
+
+exports.postEditCoverImages = async (req, res, next) => {
+  const image = req.file;
+  const imageUrl = image.path;
+
+  try {
+    await Admin.findByPk(req.admin.id).then((restaurant) => {
+      Admin.update(
+        {
+          coverUrl: imageUrl,
         },
         { where: { id: req.admin.id } }
       );

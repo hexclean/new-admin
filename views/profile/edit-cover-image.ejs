@@ -1,0 +1,63 @@
+<%- include('../includes/head.ejs') %>
+</head>
+<body class="ms-body ms-aside-left-open ms-primary-theme ms-has-quickbar">
+<%- include('../includes/navigation.ejs') %> 
+
+  <main class="body-content">
+    <%- include('../includes/navigation-bar.ejs') %> 
+    <form
+      class="ms-content-wrapper"
+      action="/admin/<% if (editing) { %>edit-cover-image<% } else { %>add-image<% } %>"
+      method="POST"
+      enctype="multipart/form-data">
+      <div class="ms-profile-overview">
+        <div class="ms-profile-cover">
+          
+          <div class="ms-profile-user-info">
+            <h3 class="ms-profile-username text-white"><%= admin.fullName %></h3>           
+          </div>        
+        </div>
+      </div>
+
+      <img src="/<%= admin.coverUrl %>"/>
+     
+
+      <div class="col-md-12 mb-3">
+        <label for="validationCustom12">Profile</label>
+        <div class="custom-file" id="image">
+           <input  accept="image/png, image/jpeg,image/jpeg" type="file" name="image" id="image" />
+        </div>
+        <span class="error_form" id="file_error_message"></span>
+     </div>
+
+    
+
+
+        <div class="col-xl-6 col-md-12">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="ms-panel">
+                
+         
+                <% if (editing) { %>
+                  <input
+                    type="hidden"
+                    value="<%= admin.id %>"
+                    name="restaurantId"/>
+                  <% } %>
+
+                  <button class="btn" type="submit">
+                    <% if (editing) { %>Update Product<% } else { %>Add
+                    Product<% } %>
+                  </button>
+              
+                </div>
+              </div>
+            </div>
+          </div>
+
+    
+  </form>
+  </main>
+ <%- include('../includes/end.ejs') %>
+</body>

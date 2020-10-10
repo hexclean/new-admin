@@ -123,9 +123,27 @@ router.post(
   adminProfileController.postEditOpeningHours
 );
 
-router.get("/edit-images/:restaurantId", adminProfileController.getEditImages);
+router.get(
+  "/edit-profile-image/:restaurantId",
+  adminProfileController.getEditProfileImages
+);
 
-router.post("/edit-images", isAuth, adminProfileController.postEditImages);
+router.post(
+  "/edit-profile-image",
+  isAuth,
+  adminProfileController.postEditProfileImages
+);
+
+router.get(
+  "/edit-cover-image/:restaurantId",
+  adminProfileController.getEditCoverImages
+);
+
+router.post(
+  "/edit-cover-image",
+  isAuth,
+  adminProfileController.postEditCoverImages
+);
 
 router.post("/edit-profile", isAuth, adminProfileController.postEditProfile);
 
