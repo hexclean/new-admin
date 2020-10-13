@@ -31,43 +31,27 @@ router.post("/", auth, async (req, res) => {
     console.log();
     restaurantVarId.push(restaurant[i].id);
   }
-  console.log(restaurantVarId);
-  // console.log(restaurant);
-  // userId = req.user.id
-  // const product = [1];
-  // const {
-  //   product,
-  //   message,
-  //   restaurant_id,
-  //   userDeliveryAddressId,
-  //   quantity,
-  // } = req.body;
 
-  // var totalPrice = 0;
-  // product.map((product) => {
-  //   totalPrice += parseFloat(product.productPrice) * parseInt(product.quantity);
-  // });
-
+  const deliveryAddressId = req.body.deliveryAddressId;
+  const restaurantId = req.body.restaurantId;
   const products = req.body.products;
-  // products.map((prod) => {
-  // test.push(prod.variantId);
-  // console.log("--", prod);
-  // if (prod.variantId !== restaurantVarId) {
-  //   return console.log("dasdsadas");
-  // }
+  var totalPrice = 0;
+
+  // products.map((product) => {
+  //   totalPrice += parseFloat(product.price) * parseInt(product.quantity);
   // });
   const order = await Order.create({
     // totalPrice: totalPrice,
     userId: req.user.id,
-    restaurantId: 1,
-    userDeliveryAdressId: 1,
+    restaurantId: restaurantId,
+    userDeliveryAdressId: deliveryAddressId,
   });
 
   const orderId = order.id;
-  console.log("orderId", orderId);
 
   await Promise.all(
     products.map(async (prod) => {
+      console.log(prod);
       const orderItem = await OrderItem.create({
         message: prod.message,
         productVariantId: prod.variantId,
@@ -78,7 +62,7 @@ router.post("/", auth, async (req, res) => {
       await OrderItemExtra.create({
         quantity: prod.quantity,
         OrderItemId: orderItem.id,
-        extraId: 1,
+        extraId: prod.extras.id,
       });
     })
   );
