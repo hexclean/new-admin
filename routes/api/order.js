@@ -35,13 +35,30 @@ router.post("/", auth, async (req, res) => {
   const deliveryAddressId = req.body.deliveryAddressId;
   const restaurantId = req.body.restaurantId;
   const products = req.body.products;
-  var totalPrice = 0;
+  // const extras = req.body.extras;
 
-  // products.map((product) => {
-  //   totalPrice += parseFloat(product.price) * parseInt(product.quantity);
-  // });
+  var totalPrice = 0;
+  var totalVariantPrice = 0;
+  var totalExtraPrice = 0;
+
+  products.map(async (products) => {
+    totalVariantPrice +=
+      parseFloat(products.variantPrice) * parseInt(products.quantity);
+
+    const extras = products.extras;
+    extras.map((extra) => {
+      totalExtraPrice +=
+        parseFloat(extra.extraPrice) * parseInt(extra.quantity);
+    });
+  });
+
+  totalPrice = totalVariantPrice + totalExtraPrice;
+  console.log("---totalPrice------", totalPrice);
+  console.log("totalVariantPrice", totalVariantPrice);
+  console.log("totalExtraPrice", totalExtraPrice);
+
   const order = await Order.create({
-    // totalPrice: totalPrice,
+    totalPrice: 1,
     userId: req.user.id,
     restaurantId: restaurantId,
     userDeliveryAdressId: deliveryAddressId,
@@ -51,7 +68,8 @@ router.post("/", auth, async (req, res) => {
 
   await Promise.all(
     products.map(async (prod) => {
-      console.log(prod);
+      const extras = prod.extras;
+      extras.map((extra) => console.log("extra.id"));
       const orderItem = await OrderItem.create({
         message: prod.message,
         productVariantId: prod.variantId,

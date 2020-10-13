@@ -10,6 +10,7 @@ const OrderItem = sequelize.define("OrderItem", {
   },
   quantity: Sequelize.INTEGER,
   message: Sequelize.STRING,
+  variantPrice: Sequelize.INTEGER,
 });
 
 module.exports = OrderItem;

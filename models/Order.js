@@ -8,12 +8,12 @@ const Order = sequelize.define("Order", {
     allowNull: false,
     primaryKey: true,
   },
-  // totalPrice: {
-  //   type: Sequelize.FLOAT,
-  //   allowNull: false,
-  // },
-  // cutlery: Sequelize.INTEGER,
-  // take: Sequelize.INTEGER
+  totalPrice: {
+    type: Sequelize.FLOAT,
+    allowNull: false,
+  },
+  cutlery: Sequelize.INTEGER,
+  take: Sequelize.INTEGER,
 });
 
 module.exports = Order;
