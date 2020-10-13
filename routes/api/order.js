@@ -8,7 +8,7 @@ const Restaurant = require("../../models/Restaurant");
 const User = require("../../models/User");
 const OrderItem = require("../../models/OrderItem");
 const Variants = require("../../models/ProductVariant");
-
+const ProductVariantExtras = require("../../models/ProductVariantsExtras");
 // @route    POST api/orders
 // @desc     Create an order
 // @access   Private
@@ -19,25 +19,20 @@ router.post("/", auth, async (req, res) => {
   }
   let restaurant = [];
   let restaurantVarId = [];
-  let test = [];
-  restaurant = await Variants.findAll({
-    include: [
-      {
-        model: Restaurant,
-      },
-    ],
+  let extraId = [1, 2];
+  let checkExtraPrice = [];
+  const test = await ProductVariantExtras.findAll({
+    where: { extraId: extraId },
   });
-  for (let i = 0; i < restaurant.length; i++) {
-    console.log();
-    restaurantVarId.push(restaurant[i].id);
+  for (let i = 0; i < test.length; i++) {
+    checkExtraPrice = test[i].price;
   }
-
+  console.log(checkExtraPrice);
   const deliveryAddressId = req.body.deliveryAddressId;
   const restaurantId = req.body.restaurantId;
   const products = req.body.products;
   const cutlery = req.body.cutlery;
   const take = req.body.take;
-  // const extras = req.body.extras;
 
   var totalPrice = 0;
   var totalVariantPrice = 0;
@@ -74,7 +69,6 @@ router.post("/", auth, async (req, res) => {
         message: prod.message,
         productVariantId: prod.variantId,
         quantity: prod.quantity,
-        // price: product.productPrice,
         OrderId: orderId,
       });
       await OrderItemExtra.create({
