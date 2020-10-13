@@ -35,6 +35,8 @@ router.post("/", auth, async (req, res) => {
   const deliveryAddressId = req.body.deliveryAddressId;
   const restaurantId = req.body.restaurantId;
   const products = req.body.products;
+  const cutlery = req.body.cutlery;
+  const take = req.body.take;
   // const extras = req.body.extras;
 
   var totalPrice = 0;
@@ -51,14 +53,12 @@ router.post("/", auth, async (req, res) => {
         parseFloat(extra.extraPrice) * parseInt(extra.quantity);
     });
   });
-
   totalPrice = totalVariantPrice + totalExtraPrice;
-  console.log("---totalPrice------", totalPrice);
-  console.log("totalVariantPrice", totalVariantPrice);
-  console.log("totalExtraPrice", totalExtraPrice);
 
   const order = await Order.create({
-    totalPrice: 1,
+    totalPrice: totalPrice,
+    cutlery: cutlery,
+    take: take,
     userId: req.user.id,
     restaurantId: restaurantId,
     userDeliveryAdressId: deliveryAddressId,
