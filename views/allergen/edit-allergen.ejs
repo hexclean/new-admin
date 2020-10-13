@@ -28,8 +28,9 @@
                                  class="form-control <%= validationErrors.find(e => e.param === 'roName') ? 'invalid' : '' %>"
                                  type="text"
                                  name="roName"
+                                 autocomplete="off"
                                  id="roName"
-                                 value="<% if (editing || hasError) { %><%= extra[0].allergenTranslations[0].name %><% } %>">
+                                 value="<% if (editing) { %><%= extra[0].allergenTranslations[0].name %><% } %>">
                            </div>
                            <span class="error_form" id="roName_error_message"></span>
                         </div>
@@ -40,8 +41,9 @@
                                  class="form-control <%= validationErrors.find(e => e.param === 'huName') ? 'invalid' : '' %>"
                                  type="text"
                                  name="huName"
+                                 autocomplete="off"
                                  id="huName"
-                                 value="<% if (editing || hasError) { %><%= extra[0].allergenTranslations[1].name %><% } %>">
+                                 value="<% if (editing) { %><%= extra[0].allergenTranslations[1].name %><% } %>">
                            </div>
                            <span class="error_form" id="huName_error_message"></span>
                         </div>
@@ -51,9 +53,10 @@
                               <input
                                  class="form-control <%= validationErrors.find(e => e.param === 'enName') ? 'invalid' : '' %>"
                                  type="text"
+                                 autocomplete="off"
                                  name="enName"
                                  id="enName"
-                                 value="<% if (editing || hasError) { %><%= extra[0].allergenTranslations[2].name %><% } %>">
+                                 value="<% if (editing) { %><%= extra[0].allergenTranslations[2].name %><% } %>">
                            </div>
                            <span class="error_form" id="enName_error_message"></span>
                         </div>

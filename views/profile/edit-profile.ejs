@@ -46,6 +46,7 @@
                         class="form-control"
                         type="text"
                         name="email"
+                        autocomplete="off"
                         disabled
                         id="email"
                         value="<% if (editing) { %><%= admin[0].id %><% } %>"
@@ -56,6 +57,7 @@
                   <input
                   class="form-control"
                   type="text"
+                  autocomplete="off"
                   name="fullName"
                   id="fullName"
                   value="<% if (editing) { %><%= admin[0].fullName %><% } %>"
@@ -66,6 +68,7 @@
                   <input
                   class="form-control"
                   type="text"
+                  autocomplete="off"
                   name="phoneNumber"
                   id="phoneNumber"
                   value="<% if (editing) { %><%= admin[0].phoneNumber %><% } %>"
@@ -79,6 +82,7 @@
                   <input
                   class="form-control"
                   type="text"
+                  autocomplete="off"
                   name="commission"
                   id="commission"
                   disabled
@@ -91,6 +95,7 @@
                   <input
                   class="form-control"
                   type="text"
+                  autocomplete="off"
                   name="date"
                   id="date"
                   disabled
@@ -115,6 +120,7 @@
                   <input
                   class="form-control"
                   type="text"
+                  autocomplete="off"
                   name="roAdress"
                   id="roAdress"
                   value="<% if (editing ) { %><%= admin[0].adminInfos[0].adress %><% } %>"
@@ -125,6 +131,7 @@
                   <input
                         class="form-control"
                         type="text"
+                        autocomplete="off"
                         name="huAdress"
                         id="huAdress"
                         value="<% if (editing) { %><%= admin[0].adminInfos[1].adress %><% } %>"
@@ -136,6 +143,7 @@
                   <input
                         class="form-control"
                         type="text"
+                        autocomplete="off"
                         name="enAdress"
                         id="enAdress"
                         value="<% if (editing) { %><%= admin[0].adminInfos[2].adress %><% } %>"
@@ -177,6 +185,7 @@
                   <input
                         class="form-control"
                         type="text"
+                        autocomplete="off"
                         name="roShortCompanyDesc"
                         id="roShortCompanyDesc"
                         value="<% if (editing) { %><%= admin[0].adminInfos[0].shortCompanyDesc %><% } %>"
@@ -187,6 +196,7 @@
                   <input
                         class="form-control"
                         type="text"
+                        autocomplete="off"
                         name="huShortCompanyDesc"
                         id="huShortCompanyDesc"
                         value="<% if (editing) { %><%= admin[0].adminInfos[1].shortCompanyDesc %><% } %>"
@@ -199,6 +209,7 @@
                   type="text"
                   name="enShortCompanyDesc"
                   id="enShortCompanyDesc"
+                  autocomplete="off"
                   value="<% if (editing) { %><%= admin[0].adminInfos[2].shortCompanyDesc %><% } %>"
                 />
                 </div>

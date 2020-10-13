@@ -35,6 +35,7 @@
                               <input
                                  class="form-control"
                                  type="text"
+                                 autocomplete="off"
                                  name="roTitle"
                                  id="roTitle"
                                  value="<% if (editing) { %><%= product[0].dailyMenuTranslations[0].title %><% } %>">
@@ -45,6 +46,7 @@
                               <input
                                  class="form-control"
                                  type="text"
+                                 autocomplete="off"
                                  name="huTitle"
                                  id="huTitle"
                                  value="<% if (editing) { %><%= product[0].dailyMenuTranslations[1].title %><% } %>">
@@ -54,6 +56,7 @@
                               <input
                                  class="form-control"
                                  type="text"
+                                 autocomplete="off"
                                  name="enTitle"
                                  id="enTitle"
                                  value="<% if (editing) { %><%= product[0].dailyMenuTranslations[2].title %><% } %>">
@@ -79,7 +82,7 @@
                               <div class="input-group">
                                  <input
                                     class="form-control"
-                                    type="number"
+                                    autocomplete="off"
                                     name="price"
                                     id="price"
                                     step="0.01"
@@ -95,6 +98,7 @@
                               <div class="input-group">
                                  <textarea
                                     class="form-control"
+                                    autocomplete="off"
                                     name="roDescription"
                                     id="roDescription"
                                     rows="5"> <% if (editing) { %><%= product[0].dailyMenuTranslations[0].description %><% } %></textarea
@@ -109,6 +113,7 @@
                               <div class="input-group">
                                  <textarea
                                     class="form-control"
+                                    autocomplete="off"
                                     name="huDescription"
                                     id="huDescription"
                                     rows="5"> <% if (editing) { %><%= product[0].dailyMenuTranslations[1].description %><% } %></textarea
@@ -123,6 +128,7 @@
                               <div class="input-group">
                                  <textarea
                                     class="form-control"
+                                    autocomplete="off"
                                     name="enDescription"
                                     id="enDescription"
                                     rows="5"> <% if (editing) { %><%= product[0].dailyMenuTranslations[2].description %><% } %></textarea

@@ -38,6 +38,7 @@ const RestaurantsReviews = require("../models/RestaurantsReviews");
 const ProductsReview = require("../models/ProductsReview");
 const Order = require("../models/Order");
 const OrderItem = require("../models/OrderItem");
+const OrderItemExtra = require("../models/OrderItemExtra");
 
 function databaseConfig() {
   RestaurantRole.belongsTo(Admin, {
@@ -45,6 +46,24 @@ function databaseConfig() {
     onDelete: "CASCADE",
   });
   Admin.hasMany(RestaurantRole);
+
+  OrderItemExtra.belongsTo(Extra, {
+    constrains: true,
+    onDelete: "CASCADE",
+  });
+  Extra.hasMany(OrderItemExtra);
+
+  OrderItemExtra.belongsTo(OrderItem, {
+    constrains: true,
+    onDelete: "CASCADE",
+  });
+  OrderItem.hasMany(OrderItemExtra);
+
+  Order.belongsTo(Admin, {
+    constrains: true,
+    onDelete: "CASCADE",
+  });
+  Admin.hasMany(Order);
 
   OrderItem.belongsTo(Order, {
     constrains: true,

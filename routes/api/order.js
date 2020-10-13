@@ -2,10 +2,12 @@ const express = require("express");
 const router = express.Router();
 const auth = require("../../middleware/auth");
 const { check, validationResult } = require("express-validator");
-
-const Order = require("../../models/Orders");
+const OrderItemExtra = require("../../models/OrderItemExtra");
+const Order = require("../../models/Order");
+const Restaurant = require("../../models/Restaurant");
 const User = require("../../models/User");
 const OrderItem = require("../../models/OrderItem");
+const Variants = require("../../models/ProductVariant");
 
 // @route    POST api/orders
 // @desc     Create an order
@@ -15,42 +17,74 @@ router.post("/", auth, async (req, res) => {
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
   }
+  let restaurant = [];
+  let restaurantVarId = [];
+  let test = [];
+  restaurant = await Variants.findAll({
+    include: [
+      {
+        model: Restaurant,
+      },
+    ],
+  });
+  for (let i = 0; i < restaurant.length; i++) {
+    console.log();
+    restaurantVarId.push(restaurant[i].id);
+  }
+  console.log(restaurantVarId);
+  // console.log(restaurant);
+  // userId = req.user.id
+  // const product = [1];
+  // const {
+  //   product,
+  //   message,
+  //   restaurant_id,
+  //   userDeliveryAddressId,
+  //   quantity,
+  // } = req.body;
 
-  const { restaurant_id, products } = req.body;
-  var totalPrice = 0;
-  products.map((product) => {
-    totalPrice += parseFloat(product.price) * parseInt(product.quantity);
+  // var totalPrice = 0;
+  // product.map((product) => {
+  //   totalPrice += parseFloat(product.productPrice) * parseInt(product.quantity);
+  // });
+
+  const products = req.body.products;
+  // products.map((prod) => {
+  // test.push(prod.variantId);
+  // console.log("--", prod);
+  // if (prod.variantId !== restaurantVarId) {
+  //   return console.log("dasdsadas");
+  // }
+  // });
+  const order = await Order.create({
+    // totalPrice: totalPrice,
+    userId: req.user.id,
+    restaurantId: 1,
+    userDeliveryAdressId: 1,
   });
 
-  const order = new Order({
-    totalPrice: totalPrice,
-    user: req.user.id,
-    admin: restaurant_id,
-    status: "Rendelve",
-  });
+  const orderId = order.id;
+  console.log("orderId", orderId);
 
-  order.save((err, savedOrder) => {
-    const { _id: savedOrderId } = savedOrder;
-    products.map((product) => {
-      const item = new OrderItem({
-        quantity: product.quantity,
-        product: product.product,
-        price: product.price,
-        orderId: savedOrderId,
-        user: req.user.id,
+  await Promise.all(
+    products.map(async (prod) => {
+      const orderItem = await OrderItem.create({
+        message: prod.message,
+        productVariantId: prod.variantId,
+        quantity: prod.quantity,
+        // price: product.productPrice,
+        OrderId: orderId,
       });
-      User.findById({ _id: req.user.id }).then((user) => {
-        user.restaurantId = restaurant_id;
-        user.dbOrder += 1;
-        user.totalOrder += totalPrice;
-        return user.save();
+      await OrderItemExtra.create({
+        quantity: prod.quantity,
+        OrderItemId: orderItem.id,
+        extraId: 1,
       });
-      item.save();
-    });
-  });
+    })
+  );
 
   try {
-    res.json(order);
+    res.json(req.body);
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Server Error");

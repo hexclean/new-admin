@@ -27,6 +27,7 @@
                               <input
                                  class="form-control"
                                  type="text"
+                                 autocomplete="off"
                                  name="sku"
                                  id="sku"
                                  value="<% if (editing) { %><%= variant[0].productVariantsExtras[0].productVariant.sku %><% } %>">
@@ -96,7 +97,7 @@
          </div>
          </div>
          </div>
-         <input type="text" name="search" id="search" placeholder="Search extra" class="form-control"
+         <input type="text" name="search" id="search" autocomplete="off" placeholder="Search extra" class="form-control"
             />
          <div class="ms-panel ms-btn-display">
             <div class="ms-panel-header">
@@ -125,7 +126,7 @@
                               <div class="row"> 
                                  <label class="ms-switch" >                 
                                  <input type="hidden" value="off" class="status-<%= variant[i].productVariantsExtras[0].extraId %>" name="status[<%= variant[i].productVariantsExtras[0].extraId %>]" >          
-                                 <input    data-extraId="<%= variant[i].productVariantsExtras[0].extraId %>"  class="status-checkbox status-checkbox-<%= variant[i].productVariantsExtras[0].extraId %>" type="checkbox">
+                                 <input data-extraId="<%= variant[i].productVariantsExtras[0].extraId %>"  class="status-checkbox status-checkbox-<%= variant[i].productVariantsExtras[0].extraId %>" type="checkbox">
                                  <span class="ms-switch-slider ms-switch-success round"></span>
                                  </label> 
                               </div>
@@ -149,6 +150,7 @@
                                        type="text"
                                        name="price"
                                        id="price"
+                                       autocomplete="off"
                                        value="<% if (editing) { %><%= variant[i].productVariantsExtras[0].price %><% } %>"
                                        />
                                  </div>
@@ -178,6 +180,7 @@
                                        type="number" 
                                        name="quantityMin"
                                        id="quantityMin"
+                                       autocomplete="off"
                                        onKeyDown="if(this.value.length==18) return false;"
                                        value="<% if (editing) { %><%= variant[i].productVariantsExtras[0].quantityMin %><% } %>"
                                        />
@@ -194,6 +197,7 @@
                                        type="text"
                                        name="quantityMax"
                                        id="quantityMax"
+                                       autocomplete="off"
                                        value="<% if (editing) { %><%= variant[i].productVariantsExtras[0].quantityMax %><% } %>"
                                        />
                                  </div>
@@ -249,6 +253,7 @@
                                        class="price_<%= ext[i].id %> extra_price_input"
                                        type="text"
                                        name="price"
+                                       autocomplete="off"
                                        id="price"
                                        value="<% if (editing) { %><%= ext[i].price %><% } %>"
                                        />
@@ -263,6 +268,7 @@
                                     <input disabled
                                        class="form-control"
                                        type="text"
+                                       autocomplete="off"
                                        name="discountedPrice"
                                        id="discountedPrice"
                                        value="<% if (editing) { %><%= ext[i].discountedPrice %><% } %>"
@@ -279,6 +285,7 @@
                                        type="number"
                                        name="quantityMin"
                                        id="quantityMin"
+                                       autocomplete="off"
                                        onKeyDown="if(this.value.length==18) return false;"
                                        value="<% if (editing) { %><%= ext[i].quantityMin %><% } %>"
                                        />
@@ -295,6 +302,7 @@
                                        type="text"
                                        name="quantityMax"
                                        id="quantityMax"
+                                       autocomplete="off"
                                        value="<% if (editing) { %><%= ext[i].quantityMax %><% } %>"
                                        />
                                  </div>

@@ -15,10 +15,10 @@ router.get("/:locationName/:partnerId", async (req, res) => {
   const params = req.params.partnerId.split("-").join(" ");
   const egy = 1;
 
-  // FROM foodnet.extras as ext INNER JOIN foodnet.extraTranslations as extTrans on ext.id = extTrans.extraId INNER JOIN  foodnet.productVariantsExtras as prodVariant ON ext.id = prodVariant.extraId WHERE prodVariant.productVariantId =${currentValue["VRID"]} AND prodVariant.active=1 and extTrans.languageId=2;
+  // FROM foodnet.extras as ext INNER JOIN foodnet.extraTranslations as extTrans on ext.id = extTrans.extraId INNER JOIN  foodnet.productVariantsExtras as prodVariant ON ext.id = prodVariant.extraId WHERE prodVariant.productVariantId =${currentValue["variantId"]} AND prodVariant.active=1 and extTrans.languageId=2;
   return sequelize
     .query(
-      `SELECT prodFin.variantId as VRID, catTrans.name as categoryName, adm.fullName as partnerName, prod.id as productId, prod.imageUrl as productImageUrl, prodTrans.title as productTitle, prodTrans.description productDescription, prodFin.price as productPrice, prodFin.discountedPrice as productDiscountedPrice,
+      `SELECT prodFin.variantId as variantId, catTrans.name as categoryName, adm.fullName as partnerName, prod.id as productId, prod.imageUrl as productImageUrl, prodTrans.title as productTitle, prodTrans.description productDescription, prodFin.price as productPrice, prodFin.discountedPrice as productDiscountedPrice,
       varExtras.extraId as extraId, extTrans.name, varExtras.price  as price, varExtras.discountedPrice as discountedPrice, varExtras.quantityMin as minOrder, varExtras.quantityMax as maxOrder
       FROM foodnet.productFinals as prodFin 
       INNER JOIN foodnet.products as prod ON prodFin.productId = prod.id INNER JOIN foodnet.restaurants as adm On prod.restaurantId = adm.id 
@@ -46,7 +46,7 @@ router.get("/:locationName/:partnerId", async (req, res) => {
           maxOrder: d.maxOrder,
         };
         const item = {
-          VRID: d.VRID,
+          variantId: d.variantId,
           categoryName: d.categoryName,
           partnerName: d.partnerName,
           productId: d.productId,
@@ -61,7 +61,7 @@ router.get("/:locationName/:partnerId", async (req, res) => {
         groupedByExtra.push(item);
       }
       let groupByExtras = groupedByExtra.reduce((r, a) => {
-        r[a.VRID] = [...(r[a.VRID] || []), a];
+        r[a.variantId] = [...(r[a.variantId] || []), a];
         return r;
       }, {});
       const items = [];
@@ -71,7 +71,7 @@ router.get("/:locationName/:partnerId", async (req, res) => {
           let extras = [];
           let product = value[0];
           item = {
-            VRID: product.VRID,
+            variantId: product.variantId,
             categoryName: product.categoryName,
             partnerName: product.partnerName,
             productId: product.productId,
