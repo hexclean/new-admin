@@ -41,7 +41,7 @@ router.post("/", auth, async (req, res) => {
         frontendExtraId.push(extra.id);
       });
     });
-
+    totalPrice = totalVariantPrice + totalExtraPrice;
     let extraId = frontendExtraId;
     let checkExtraPrice = [];
     let checkVariantPrice = [];
@@ -125,7 +125,7 @@ router.post("/", auth, async (req, res) => {
         })
       );
     }
-    return res.json("DAS");
+    return res.json(req.body);
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Server Error");
