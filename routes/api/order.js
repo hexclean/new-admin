@@ -19,15 +19,16 @@ router.post("/", auth, async (req, res) => {
   }
   let restaurant = [];
   let restaurantVarId = [];
-  let extraId = [1, 2];
+  let extraId = [1, 2, 3];
   let checkExtraPrice = [];
+  let variantId = [1, 2];
   const test = await ProductVariantExtras.findAll({
-    where: { extraId: extraId },
+    where: { extraId: extraId, productVariantId: variantId, active: 1 },
   });
-  for (let i = 0; i < test.length; i++) {
-    checkExtraPrice = test[i].price;
-  }
-  console.log(checkExtraPrice);
+  // for (let i = 0; i < test.length; i++) {
+  //   checkExtraPrice = test[i].price;
+  // }
+  console.log(test);
   const deliveryAddressId = req.body.deliveryAddressId;
   const restaurantId = req.body.restaurantId;
   const products = req.body.products;
@@ -64,17 +65,19 @@ router.post("/", auth, async (req, res) => {
   await Promise.all(
     products.map(async (prod) => {
       const extras = prod.extras;
-      extras.map((extra) => console.log("extra.id"));
-      const orderItem = await OrderItem.create({
-        message: prod.message,
-        productVariantId: prod.variantId,
-        quantity: prod.quantity,
-        OrderId: orderId,
-      });
-      await OrderItemExtra.create({
-        quantity: prod.quantity,
-        OrderItemId: orderItem.id,
-        extraId: prod.extras.id,
+      extras.map(async (extras) => {
+        const orderItem = await OrderItem.create({
+          message: prod.message,
+          productVariantId: prod.variantId,
+          quantity: prod.quantity,
+          OrderId: orderId,
+        });
+
+        await OrderItemExtra.create({
+          quantity: prod.quantity,
+          OrderItemId: orderItem.id,
+          extraId: extras.id,
+        });
       });
     })
   );
