@@ -9,6 +9,7 @@ const User = require("../../models/User");
 const OrderItem = require("../../models/OrderItem");
 const Variants = require("../../models/ProductVariant");
 const ProductVariantExtras = require("../../models/ProductVariantsExtras");
+const ProductFinal = require("../../models/ProductFinal");
 // @route    POST api/orders
 // @desc     Create an order
 // @access   Private
@@ -17,23 +18,27 @@ router.post("/", auth, async (req, res) => {
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
   }
-  let restaurant = [];
-  let restaurantVarId = [];
+
   let extraId = [1, 2, 3];
   let checkExtraPrice = [];
+  let checkVariantPrice = [];
   let variantId = [1, 2];
 
-  const validateFinalPrice = await ProductVariantExtras.findAll({
+  const validateExtraPrice = await ProductVariantExtras.findAll({
     where: { extraId: extraId, productVariantId: variantId, active: 1 },
   });
 
-  for (let i = 0; i < validateFinalPrice.length; i++) {
-    checkExtraPrice[i] = validateFinalPrice[i].price;
-    // checkExtraPrice.push("extraId" + validateFinalPrice[i].price);
+  const validateVariantPrice = await ProductFinal.findAll({
+    where: { variantId: variantId, active: 1 },
+  });
+
+  for (let i = 0; i < validateExtraPrice.length; i++) {
+    checkExtraPrice[i] = validateExtraPrice[i].price;
   }
 
-  // console.log(checkExtraPrice);
-  // console.log(checkExtraPrice.reduce((a, b) => a + b, 0));
+  for (let i = 0; i < validateVariantPrice.length; i++) {
+    checkVariantPrice[i] = validateVariantPrice[i].price;
+  }
 
   const deliveryAddressId = req.body.deliveryAddressId;
   const restaurantId = req.body.restaurantId;
@@ -44,36 +49,43 @@ router.post("/", auth, async (req, res) => {
   var totalPrice = 0;
   var totalVariantPrice = 0;
   var totalExtraPrice = 0;
-  let extraQuantityFrontend;
+  let extraQuantityFrontend = [];
+  let variantQuantityFrontend = [];
+
   products.map(async (products) => {
     totalVariantPrice +=
       parseFloat(products.variantPrice) * parseInt(products.quantity);
-
+    variantQuantityFrontend.push(products.quantity);
     const extras = products.extras;
     extras.map((extra) => {
       totalExtraPrice +=
         parseFloat(extra.extraPrice) * parseInt(extra.quantity);
-      // extraQuantityFrontend.push(extra.quantity);
+      extraQuantityFrontend.push(extra.quantity);
     });
   });
   totalPrice = totalVariantPrice + totalExtraPrice;
+
   async function sum() {
-    // console.log(checkExtraPrice);
-    let validateSum = checkExtraPrice;
+    let testVariant = checkVariantPrice;
     let testPrice = checkExtraPrice;
-    let testArray = [1, 10, 10];
-    let quantityExtra = extraQuantityFrontend;
+    let extraQuantity = extraQuantityFrontend;
+    let variantQuantity = variantQuantityFrontend;
 
     var sum = testPrice.map(function (num, idx) {
-      return num * testArray[idx];
+      return num * extraQuantity[idx];
     });
-    // int a[] = {2, 6, 1, 4};
-    // int b[] = {2, 1, 4, 4};
-    // int result[] = new int[a.length];
-    // Arrays.setAll(result, i -> a[i] + b[i]);
-    console.log(sum.reduce((a, b) => a + b, 0));
+    var sum2 = testVariant.map(function (num, idx) {
+      return num * variantQuantity[idx];
+    });
+
+    if (sum2.reduce((a, b) => a + b, 0) !== totalExtraPrice) {
+      console.log("MARHA");
+    }
+
+    console.log(sum2.reduce((a, b) => a + b, 0));
   }
   sum();
+
   const order = await Order.create({
     totalPrice: totalPrice,
     cutlery: cutlery,
