@@ -17,7 +17,6 @@ router.get("/:lang", async (req, res) => {
   } else {
     languageCode = 1;
   }
-  console.log(req.lang);
   try {
     const locations = await sequelize.query(
       `SELECT locNameTrans.name AS cities
