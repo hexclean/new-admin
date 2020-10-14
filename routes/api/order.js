@@ -14,21 +14,20 @@ const ProductFinal = require("../../models/ProductFinal");
 // @desc     Create an order
 // @access   Private
 router.post("/", auth, async (req, res) => {
+  const deliveryAddressId = req.body.deliveryAddressId;
+  const restaurantId = req.body.restaurantId;
+  const products = req.body.products;
+  const cutlery = req.body.cutlery;
+  const take = req.body.take;
+
+  var totalPrice = 0;
+  var totalVariantPrice = 0;
+  var totalExtraPrice = 0;
+  let extraQuantityFrontend = [];
+  let variantQuantityFrontend = [];
+  let frontendVariantId = [];
+  let frontendExtraId = [];
   try {
-    const deliveryAddressId = req.body.deliveryAddressId;
-    const restaurantId = req.body.restaurantId;
-    const products = req.body.products;
-    const cutlery = req.body.cutlery;
-    const take = req.body.take;
-
-    var totalPrice = 0;
-    var totalVariantPrice = 0;
-    var totalExtraPrice = 0;
-    let extraQuantityFrontend = [];
-    let variantQuantityFrontend = [];
-    let frontendVariantId = [];
-    let frontendExtraId = [];
-
     products.map(async (products) => {
       totalVariantPrice +=
         parseFloat(products.variantPrice) * parseInt(products.quantity);
@@ -69,13 +68,10 @@ router.post("/", auth, async (req, res) => {
     let extraQuantity = extraQuantityFrontend;
     let variantQuantity = variantQuantityFrontend;
 
-    var finalServerValudationExtra = await testPrice.map(function (num, idx) {
+    var finalServerValudationExtra = testPrice.map(function (num, idx) {
       return num * extraQuantity[idx];
     });
-    var finalServerValudationVariant = await testVariant.map(function (
-      num,
-      idx
-    ) {
+    var finalServerValudationVariant = testVariant.map(function (num, idx) {
       return num * variantQuantity[idx];
     });
 
@@ -92,47 +88,44 @@ router.post("/", auth, async (req, res) => {
       0
     );
 
-    async function sum() {
-      if (
-        validateServerExtraPrice != totalExtraPrice ||
-        validateServerVariantPrice != totalVariantPrice
-      ) {
-        return res.status(404).json({ msg: "You can't buy at a lower price" });
-      } else {
-        const order = await Order.create({
-          totalPrice: totalPrice,
-          cutlery: cutlery,
-          take: take,
-          userId: req.user.id,
-          restaurantId: restaurantId,
-          userDeliveryAdressId: deliveryAddressId,
-        });
+    if (
+      validateServerExtraPrice != totalExtraPrice ||
+      validateServerVariantPrice != totalVariantPrice
+    ) {
+      return res.status(404).json({ msg: "You can't buy at a lower price" });
+    } else {
+      const order = await Order.create({
+        totalPrice: totalPrice,
+        cutlery: cutlery,
+        take: take,
+        userId: req.user.id,
+        restaurantId: restaurantId,
+        userDeliveryAdressId: deliveryAddressId,
+      });
 
-        const orderId = order.id;
+      const orderId = order.id;
 
-        await Promise.all(
-          products.map(async (prod) => {
-            const extras = prod.extras;
-            extras.map(async (extras) => {
-              const orderItem = await OrderItem.create({
-                message: prod.message,
-                productVariantId: prod.variantId,
-                quantity: prod.quantity,
-                OrderId: orderId,
-              });
-
-              await OrderItemExtra.create({
-                quantity: prod.quantity,
-                OrderItemId: orderItem.id,
-                extraId: extras.id,
-              });
+      await Promise.all(
+        products.map(async (prod) => {
+          const extras = prod.extras;
+          extras.map(async (extras) => {
+            const orderItem = await OrderItem.create({
+              message: prod.message,
+              productVariantId: prod.variantId,
+              quantity: prod.quantity,
+              OrderId: orderId,
             });
-          })
-        );
-      }
+
+            await OrderItemExtra.create({
+              quantity: prod.quantity,
+              OrderItemId: orderItem.id,
+              extraId: extras.id,
+            });
+          });
+        })
+      );
     }
-    sum();
-    return res.json("Success");
+    return res.json("DAS");
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Server Error");
