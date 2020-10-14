@@ -22,13 +22,19 @@ router.post("/", auth, async (req, res) => {
   let extraId = [1, 2, 3];
   let checkExtraPrice = [];
   let variantId = [1, 2];
-  const test = await ProductVariantExtras.findAll({
+
+  const validateFinalPrice = await ProductVariantExtras.findAll({
     where: { extraId: extraId, productVariantId: variantId, active: 1 },
   });
-  // for (let i = 0; i < test.length; i++) {
-  //   checkExtraPrice = test[i].price;
-  // }
-  console.log(test);
+
+  for (let i = 0; i < validateFinalPrice.length; i++) {
+    checkExtraPrice[i] = validateFinalPrice[i].price;
+    // checkExtraPrice.push("extraId" + validateFinalPrice[i].price);
+  }
+
+  // console.log(checkExtraPrice);
+  // console.log(checkExtraPrice.reduce((a, b) => a + b, 0));
+
   const deliveryAddressId = req.body.deliveryAddressId;
   const restaurantId = req.body.restaurantId;
   const products = req.body.products;
@@ -38,7 +44,7 @@ router.post("/", auth, async (req, res) => {
   var totalPrice = 0;
   var totalVariantPrice = 0;
   var totalExtraPrice = 0;
-
+  let extraQuantityFrontend;
   products.map(async (products) => {
     totalVariantPrice +=
       parseFloat(products.variantPrice) * parseInt(products.quantity);
@@ -47,10 +53,27 @@ router.post("/", auth, async (req, res) => {
     extras.map((extra) => {
       totalExtraPrice +=
         parseFloat(extra.extraPrice) * parseInt(extra.quantity);
+      // extraQuantityFrontend.push(extra.quantity);
     });
   });
   totalPrice = totalVariantPrice + totalExtraPrice;
+  async function sum() {
+    // console.log(checkExtraPrice);
+    let validateSum = checkExtraPrice;
+    let testPrice = checkExtraPrice;
+    let testArray = [1, 10, 10];
+    let quantityExtra = extraQuantityFrontend;
 
+    var sum = testPrice.map(function (num, idx) {
+      return num * testArray[idx];
+    });
+    // int a[] = {2, 6, 1, 4};
+    // int b[] = {2, 1, 4, 4};
+    // int result[] = new int[a.length];
+    // Arrays.setAll(result, i -> a[i] + b[i]);
+    console.log(sum.reduce((a, b) => a + b, 0));
+  }
+  sum();
   const order = await Order.create({
     totalPrice: totalPrice,
     cutlery: cutlery,
