@@ -14,35 +14,39 @@ const ProductFinal = require("../../models/ProductFinal");
 // @desc     Create an order
 // @access   Private
 router.post("/", auth, async (req, res) => {
-  const deliveryAddressId = req.body.deliveryAddressId;
-  const restaurantId = req.body.restaurantId;
-  const products = req.body.products;
-  const cutlery = req.body.cutlery;
-  const take = req.body.take;
-
-  var totalPrice = 0;
-  var totalVariantPrice = 0;
-  var totalExtraPrice = 0;
-  let extraQuantityFrontend = [];
-  let variantQuantityFrontend = [];
   try {
+    const deliveryAddressId = req.body.deliveryAddressId;
+    const restaurantId = req.body.restaurantId;
+    const products = req.body.products;
+    const cutlery = req.body.cutlery;
+    const take = req.body.take;
+
+    var totalPrice = 0;
+    var totalVariantPrice = 0;
+    var totalExtraPrice = 0;
+    let extraQuantityFrontend = [];
+    let variantQuantityFrontend = [];
+    let frontendVariantId = [];
+    let frontendExtraId = [];
+
     products.map(async (products) => {
       totalVariantPrice +=
         parseFloat(products.variantPrice) * parseInt(products.quantity);
       variantQuantityFrontend.push(products.quantity);
+      frontendVariantId.push(products.variantId);
       const extras = products.extras;
-      extras.map((extra) => {
+      extras.map(async (extra) => {
         totalExtraPrice +=
           parseFloat(extra.extraPrice) * parseInt(extra.quantity);
         extraQuantityFrontend.push(extra.quantity);
+        frontendExtraId.push(extra.id);
       });
     });
-    totalPrice = totalVariantPrice + totalExtraPrice;
 
-    let extraId = [1, 2, 3];
+    let extraId = frontendExtraId;
     let checkExtraPrice = [];
     let checkVariantPrice = [];
-    let variantId = [1, 2];
+    let variantId = frontendVariantId;
 
     const validateExtraPrice = await ProductVariantExtras.findAll({
       where: { extraId: extraId, productVariantId: variantId, active: 1 },
@@ -59,32 +63,36 @@ router.post("/", auth, async (req, res) => {
     for (let i = 0; i < validateVariantPrice.length; i++) {
       checkVariantPrice[i] = validateVariantPrice[i].price;
     }
+
+    let testVariant = checkVariantPrice;
+    let testPrice = checkExtraPrice;
+    let extraQuantity = extraQuantityFrontend;
+    let variantQuantity = variantQuantityFrontend;
+
+    var finalServerValudationExtra = await testPrice.map(function (num, idx) {
+      return num * extraQuantity[idx];
+    });
+    var finalServerValudationVariant = await testVariant.map(function (
+      num,
+      idx
+    ) {
+      return num * variantQuantity[idx];
+    });
+
+    let validateServerExtraPrice = 0;
+    let validateServerVariantPrice = 0;
+
+    validateServerExtraPrice = finalServerValudationExtra.reduce(
+      (a, b) => a + b,
+      0
+    );
+
+    validateServerVariantPrice = finalServerValudationVariant.reduce(
+      (a, b) => a + b,
+      0
+    );
+
     async function sum() {
-      let testVariant = checkVariantPrice;
-      let testPrice = checkExtraPrice;
-      let extraQuantity = extraQuantityFrontend;
-      let variantQuantity = variantQuantityFrontend;
-
-      var finalServerValudationExtra = testPrice.map(function (num, idx) {
-        return num * extraQuantity[idx];
-      });
-      var finalServerValudationVariant = testVariant.map(function (num, idx) {
-        return num * variantQuantity[idx];
-      });
-
-      let validateServerExtraPrice = 0;
-      let validateServerVariantPrice = 0;
-
-      validateServerExtraPrice = finalServerValudationExtra.reduce(
-        (a, b) => a + b,
-        0
-      );
-
-      validateServerVariantPrice = finalServerValudationVariant.reduce(
-        (a, b) => a + b,
-        0
-      );
-
       if (
         validateServerExtraPrice != totalExtraPrice ||
         validateServerVariantPrice != totalVariantPrice
