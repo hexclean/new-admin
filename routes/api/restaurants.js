@@ -175,6 +175,9 @@ router.post("/restaurantFilter", async (req, res) => {
                 include: [
                   {
                     model: Restaurant,
+                    attributes: {
+                      exclude: ["password"],
+                    },
                     include: [
                       {
                         model: RestaurantDescription,
@@ -195,7 +198,7 @@ router.post("/restaurantFilter", async (req, res) => {
   for (let i = 0; i <= filteredRestaurants.length - 1; i++) {
     console.log("filteredRestaurants.length", filteredRestaurants.length);
     console.log("i--", i);
-    finalRestaurants[i] = filteredRestaurants[i].restaurant.email;
+    finalRestaurants[i] = filteredRestaurants[i].restaurant;
   }
   console.log(finalRestaurants);
   // async function test() {
