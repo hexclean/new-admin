@@ -134,7 +134,17 @@ router.get("/list/:locationName", async (req, res) => {
 
 ///
 router.post("/restaurantFilter", async (req, res) => {
-  const lang = req.body.language;
+  const lang = req.body.lang;
+  let languageCode;
+  if (lang == "ro") {
+    languageCode = 1;
+  } else if (lang == "hu") {
+    languageCode = 2;
+  } else if (lang == "en") {
+    languageCode = 3;
+  } else {
+    return res.status(404).json({ msg: "404 language not found" });
+  }
   const city = req.body.city;
 
   const freeDelivery = [req.body.freeDelivery];
@@ -197,7 +207,7 @@ router.post("/restaurantFilter", async (req, res) => {
                     include: [
                       {
                         model: RestaurantDescription,
-                        where: { languageId: 1 },
+                        where: { languageId: languageCode },
                         attributes: {
                           exclude: [
                             "adress",
@@ -218,10 +228,7 @@ router.post("/restaurantFilter", async (req, res) => {
       },
     ],
   });
-  // console.log(
-  //   "searchedRestaurant",
-  //   searchedRestaurant[0].locationName.locations[0].length
-  // );
+
   if (searchedRestaurant[0].locationName.locations[0] !== undefined) {
     filteredRestaurants =
       searchedRestaurant[0].locationName.locations[0].RestaurantFilters;
