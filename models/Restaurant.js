@@ -9,6 +9,7 @@ const Restaurant = sequelize.define("restaurant", {
     allowNull: false,
     primaryKey: true,
   },
+  // star: Sequelize.INTEGER,
   commission: Sequelize.FLOAT,
   phoneNumber: Sequelize.STRING,
   email: Sequelize.STRING,

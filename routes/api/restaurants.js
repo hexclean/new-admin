@@ -7,6 +7,7 @@ const LocationName = require("../../models/LocationName");
 const LocationNameTransalation = require("../../models/LocationNameTranslation");
 const RestaurantFilters = require("../../models/RestaurantFilters");
 const RestaurantDescription = require("../../models/AdminInfo");
+const RestaurantReview = require("../../models/RestaurantsReviews");
 const sequelize = require("../../util/database");
 const { Op } = require("sequelize");
 router.get("/:lang/:locationName/:restaurantName", async (req, res) => {
@@ -176,11 +177,36 @@ router.post("/restaurantFilter", async (req, res) => {
                   {
                     model: Restaurant,
                     attributes: {
-                      exclude: ["password"],
+                      exclude: [
+                        "password",
+                        "commission",
+                        "phoneNumber",
+                        "email",
+                        "coverUrl",
+                        "minimumOrderUser",
+                        "minimumOrderSubscriber",
+                        "avgTransport",
+                        "deliveryPrice",
+                        "newRestaurant",
+                        "discount",
+                        "active",
+                        "createdAt",
+                        "updatedAt",
+                      ],
                     },
                     include: [
                       {
                         model: RestaurantDescription,
+                        where: { languageId: 1 },
+                        attributes: {
+                          exclude: [
+                            "adress",
+                            "kitchen",
+                            "createdAt",
+                            "updatedAt",
+                            "languageId",
+                          ],
+                        },
                       },
                     ],
                   },
@@ -194,57 +220,13 @@ router.post("/restaurantFilter", async (req, res) => {
   });
   filteredRestaurants =
     searchedRestaurant[0].locationName.locations[0].RestaurantFilters;
-  // console.log(filteredRestaurants[0].restaurant);
-  for (let i = 0; i <= filteredRestaurants.length - 1; i++) {
-    console.log("filteredRestaurants.length", filteredRestaurants.length);
-    console.log("i--", i);
-    finalRestaurants[i] = filteredRestaurants[i].restaurant;
-  }
-  console.log(finalRestaurants);
-  // async function test() {
-  //   for (let i = 0; i <= searchedRestaurant.length; i++) {
-  //     filteredRestaurants[i] =
-  //       searchedRestaurant[i].locationName.locations[i].RestaurantFilters[
-  //         i
-  //       ].restaurant.fullName;
-  //   }
-  //   console.log(filteredRestaurants);
-  // }
-  // test();
-  // searchedRestaurant.map((result) =>
-  //   filteredRestaurants.push(
-  //     result.locationName.locations[0].RestaurantFilters[0].restaurant.fullName
-  //   )
-  // );
 
-  // console.log(filteredRestaurants);
-  // if (searchedRestaurant.length >= 1) {
-  //   for (let i = 0; i <= searchedRestaurant.length; i++) {
-  //     console.log("searchedRestaurant.length---", searchedRestaurant.length);
-  //     console.log("iii", i);
-  //     filteredRestaurants[i] =
-  //       searchedRestaurant[0].locationName.locations[0].RestaurantFilters[i]
-  //         .restaurant.fullName + ["dasda"];
-  //   }
-  // } else {
-  //   for (let i = 0; i <= searchedRestaurant.length - 1; i++) {
-  //     console.log("searchedRestaurant.length---", searchedRestaurant.length);
-  //     console.log("iii", i);
-  //     filteredRestaurants[i] =
-  //       searchedRestaurant[0].locationName.locations[0].RestaurantFilters[0].restaurant.fullName;
-  //   }
-  // }
-
-  // console.log(filteredRestaurants);
-  // filteredRestaurants.push();
-  // console.log(searchedRestaurant[0].restaurant.locations[0].locationName);
   try {
-    // searchedRestaurant.map((result) =>
-    //   filteredRestaurants[0].push(
-    //     result.locationName.locations[0].RestaurantFilters.restaurant.fullName
-    //   )
-    // );
-    // for (let i=0; i<=searchedRestaurant.length )
+    for (let i = 0; i <= filteredRestaurants.length - 1; i++) {
+      console.log("filteredRestaurants.length", filteredRestaurants.length);
+      console.log("i--", i);
+      finalRestaurants[i] = filteredRestaurants[i].restaurant;
+    }
     res.json(finalRestaurants);
   } catch (err) {
     console.error(err.message);

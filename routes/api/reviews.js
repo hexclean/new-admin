@@ -3,10 +3,9 @@ const router = express.Router();
 const auth = require("../../middleware/auth");
 const RestaurantsReview = require("../../models/RestaurantsReviews");
 const ProductsReview = require("../../models/ProductsReview");
-
+const Restaurant = require("../../models/Restaurant");
 const { check, validationResult } = require("express-validator");
 const User = require("../../models/User");
-const Restaurant = require("../../models/Restaurant");
 const nodemailer = require("nodemailer");
 const sendgridTransport = require("nodemailer-sendgrid-transport");
 const { Op } = require("sequelize");
