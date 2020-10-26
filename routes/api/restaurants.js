@@ -218,15 +218,22 @@ router.post("/restaurantFilter", async (req, res) => {
       },
     ],
   });
-  filteredRestaurants =
-    searchedRestaurant[0].locationName.locations[0].RestaurantFilters;
+  // console.log(
+  //   "searchedRestaurant",
+  //   searchedRestaurant[0].locationName.locations[0].length
+  // );
+  if (searchedRestaurant[0].locationName.locations[0] !== undefined) {
+    filteredRestaurants =
+      searchedRestaurant[0].locationName.locations[0].RestaurantFilters;
+  } else {
+    return res.json("No restaurant found");
+  }
 
   try {
     for (let i = 0; i <= filteredRestaurants.length - 1; i++) {
-      console.log("filteredRestaurants.length", filteredRestaurants.length);
-      console.log("i--", i);
       finalRestaurants[i] = filteredRestaurants[i].restaurant;
     }
+
     res.json(finalRestaurants);
   } catch (err) {
     console.error(err.message);
