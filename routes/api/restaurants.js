@@ -132,6 +132,21 @@ router.get("/list/:locationName", async (req, res) => {
     });
 });
 
+// {
+//   "freeDelivery": 1,
+//    "newest": 1,
+//     "withinOneHour": 1,
+//      "dailyMenu": 1,
+//       "pizza": 1,
+//        "hamburger": 1,
+//         "money": 1,
+//            "card": 1,
+//              "salad": 1,
+//              "soup": 1,
+//              "lang": "rof"
+
+// }
+
 ///
 router.post("/restaurantFilter", async (req, res) => {
   const lang = req.body.lang;
@@ -143,7 +158,7 @@ router.post("/restaurantFilter", async (req, res) => {
   } else if (lang == "en") {
     languageCode = 3;
   } else {
-    return res.status(404).json({ msg: "404 language not found" });
+    return res.status(404).json({ msg: "language not found" });
   }
   const city = req.body.city;
 
