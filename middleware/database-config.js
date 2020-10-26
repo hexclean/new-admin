@@ -39,8 +39,21 @@ const ProductsReview = require("../models/ProductsReview");
 const Order = require("../models/Order");
 const OrderItem = require("../models/OrderItem");
 const OrderItemExtra = require("../models/OrderItemExtra");
+const RestaurantFilter = require("../models/RestaurantFilters");
 
 function databaseConfig() {
+  RestaurantFilter.belongsTo(Location, {
+    constrains: true,
+    onDelete: "CASCADE",
+  });
+  Location.hasMany(RestaurantFilter);
+
+  RestaurantFilter.belongsTo(Admin, {
+    constrains: true,
+    onDelete: "CASCADE",
+  });
+  Admin.hasMany(RestaurantFilter);
+
   RestaurantRole.belongsTo(Admin, {
     constrains: true,
     onDelete: "CASCADE",
@@ -342,7 +355,6 @@ function databaseConfig() {
   Admin.hasMany(Location);
 
   Location.belongsTo(LocationName, {
-    as: "locationFina;",
     foreignKey: "locationNameId",
   });
 
@@ -351,7 +363,6 @@ function databaseConfig() {
   });
 
   LocationNameTranslation.belongsTo(LocationName, {
-    as: "locationTranslation",
     foreignKey: "locationNameId",
   });
   LocationName.hasMany(LocationNameTranslation, {
@@ -359,7 +370,6 @@ function databaseConfig() {
   });
 
   Location.belongsTo(LocationName, {
-    as: "locationTranslation",
     foreignKey: "restaurantId",
   });
   LocationName.hasMany(Location, {
@@ -367,7 +377,6 @@ function databaseConfig() {
   });
 
   LocationNameTranslation.belongsTo(Language, {
-    as: "extraLanguage",
     foreignKey: "languageId",
   });
   Language.hasMany(LocationNameTranslation, { foreignKey: "languageId" });

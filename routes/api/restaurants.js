@@ -1,9 +1,14 @@
 const express = require("express");
 const router = express.Router();
 const Sequelize = require("sequelize");
-
+const Restaurant = require("../../models/Restaurant");
+const Location = require("../../models/Location");
+const LocationName = require("../../models/LocationName");
+const LocationNameTransalation = require("../../models/LocationNameTranslation");
+const RestaurantFilters = require("../../models/RestaurantFilters");
+const RestaurantDescription = require("../../models/AdminInfo");
 const sequelize = require("../../util/database");
-
+const { Op } = require("sequelize");
 router.get("/:lang/:locationName/:restaurantName", async (req, res) => {
   let lang = req.params.lang;
   if (lang == "ro") {
@@ -124,6 +129,124 @@ router.get("/list/:locationName", async (req, res) => {
     .then((results) => {
       return res.json(results);
     });
+});
+
+///
+router.post("/restaurantFilter", async (req, res) => {
+  const lang = req.body.language;
+  const city = req.body.city;
+
+  const freeDelivery = [req.body.freeDelivery];
+  const newest = [req.body.newest];
+  const withinOneHour = [req.body.withinOneHour];
+  const pizza = [req.body.pizza];
+  const hamburger = [req.body.hamburger];
+  const dailyMenu = [req.body.dailyMenu];
+  const soup = [req.body.soup];
+  const salad = [req.body.salad];
+  const money = [req.body.money];
+  const card = [req.body.card];
+  let filteredRestaurants = [];
+  let finalRestaurants = [];
+  const searchedRestaurant = await LocationNameTransalation.findAll({
+    where: { name: "en" },
+
+    include: [
+      {
+        model: LocationName,
+        include: [
+          {
+            model: Location,
+            include: [
+              {
+                model: RestaurantFilters,
+                where: {
+                  freeDelivery: { [Op.in]: freeDelivery },
+                  newest: { [Op.in]: newest },
+                  withinOneHour: { [Op.in]: withinOneHour },
+                  hamburger: { [Op.in]: hamburger },
+                  pizza: { [Op.in]: pizza },
+                  dailyMenu: { [Op.in]: dailyMenu },
+                  soup: { [Op.in]: soup },
+                  salad: { [Op.in]: salad },
+                  money: { [Op.in]: money },
+                  card: { [Op.in]: card },
+                },
+                include: [
+                  {
+                    model: Restaurant,
+                    include: [
+                      {
+                        model: RestaurantDescription,
+                      },
+                    ],
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  });
+  filteredRestaurants =
+    searchedRestaurant[0].locationName.locations[0].RestaurantFilters;
+  // console.log(filteredRestaurants[0].restaurant);
+  for (let i = 0; i <= filteredRestaurants.length - 1; i++) {
+    console.log("filteredRestaurants.length", filteredRestaurants.length);
+    console.log("i--", i);
+    finalRestaurants[i] = filteredRestaurants[i].restaurant.email;
+  }
+  console.log(finalRestaurants);
+  // async function test() {
+  //   for (let i = 0; i <= searchedRestaurant.length; i++) {
+  //     filteredRestaurants[i] =
+  //       searchedRestaurant[i].locationName.locations[i].RestaurantFilters[
+  //         i
+  //       ].restaurant.fullName;
+  //   }
+  //   console.log(filteredRestaurants);
+  // }
+  // test();
+  // searchedRestaurant.map((result) =>
+  //   filteredRestaurants.push(
+  //     result.locationName.locations[0].RestaurantFilters[0].restaurant.fullName
+  //   )
+  // );
+
+  // console.log(filteredRestaurants);
+  // if (searchedRestaurant.length >= 1) {
+  //   for (let i = 0; i <= searchedRestaurant.length; i++) {
+  //     console.log("searchedRestaurant.length---", searchedRestaurant.length);
+  //     console.log("iii", i);
+  //     filteredRestaurants[i] =
+  //       searchedRestaurant[0].locationName.locations[0].RestaurantFilters[i]
+  //         .restaurant.fullName + ["dasda"];
+  //   }
+  // } else {
+  //   for (let i = 0; i <= searchedRestaurant.length - 1; i++) {
+  //     console.log("searchedRestaurant.length---", searchedRestaurant.length);
+  //     console.log("iii", i);
+  //     filteredRestaurants[i] =
+  //       searchedRestaurant[0].locationName.locations[0].RestaurantFilters[0].restaurant.fullName;
+  //   }
+  // }
+
+  // console.log(filteredRestaurants);
+  // filteredRestaurants.push();
+  // console.log(searchedRestaurant[0].restaurant.locations[0].locationName);
+  try {
+    // searchedRestaurant.map((result) =>
+    //   filteredRestaurants[0].push(
+    //     result.locationName.locations[0].RestaurantFilters.restaurant.fullName
+    //   )
+    // );
+    // for (let i=0; i<=searchedRestaurant.length )
+    res.json(finalRestaurants);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
 });
 
 module.exports = router;
