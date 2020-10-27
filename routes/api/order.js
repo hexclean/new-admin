@@ -13,6 +13,7 @@ const OrderItem = require("../../models/OrderItem");
 const Variants = require("../../models/ProductVariant");
 const ProductVariantExtras = require("../../models/ProductVariantsExtras");
 const ProductFinal = require("../../models/ProductFinal");
+
 // @route    POST api/orders
 // @desc     Create an order
 // @access   Private
@@ -24,9 +25,7 @@ router.post("/", orderUser, async (req, res, next) => {
   const take = req.body.take;
   const token = req.header("x-auth-token");
   let checkUser;
-  // if (cutlery != 0 && cutlery != 1) {
-  //   return res.status(404).json({ msg: "cutlery" });
-  // }
+
   if (token != undefined) {
     checkUser = await User.findAll({
       where: { id: req.user.id },
@@ -120,7 +119,7 @@ router.post("/", orderUser, async (req, res, next) => {
     ) {
       return res
         .status(404)
-        .json({ msg: "You can't buy at. Please don't cheat..." });
+        .json({ msg: "You can't buy! Please don't cheat ..." });
     }
     if (token != undefined) {
       const order = await Order.create({
