@@ -36,8 +36,10 @@ router.post("/", orderUser, async (req, res, next) => {
         },
       ],
     });
-  } else {
-    return next();
+  }
+
+  if (checkUser == undefined) {
+    checkUser = 1;
   }
 
   var totalPrice = 0;
@@ -113,13 +115,13 @@ router.post("/", orderUser, async (req, res, next) => {
       validateServerExtraPrice != totalExtraPrice ||
       validateServerVariantPrice != totalVariantPrice ||
       checkRestaurantId != restaurantId ||
-      checkUser.length < 1 ||
+      checkUser.length === 0 ||
       (cutlery != 0 && cutlery != 1) ||
       (take != 0 && take != 1)
     ) {
       return res
         .status(404)
-        .json({ msg: "You can't buy! Please don't cheat ..." });
+        .json({ msg: "You can't buy! Please don't cheat..." });
     }
     if (token != undefined) {
       const order = await Order.create({
