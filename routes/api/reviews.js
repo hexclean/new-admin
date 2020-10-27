@@ -76,7 +76,7 @@ router.post(
         userId: req.user.id,
       },
     });
-
+    let reviewRestaurantId = review.restaurantId;
     if (
       review.length == 0 ||
       !genLink ||

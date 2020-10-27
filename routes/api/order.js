@@ -1,11 +1,14 @@
 const express = require("express");
+const jwt = require("jsonwebtoken");
+const config = require("config");
 const router = express.Router();
-const auth = require("../../middleware/auth");
+const orderUser = require("../../middleware/orderUser");
 const { check, validationResult } = require("express-validator");
 const OrderItemExtra = require("../../models/OrderItemExtra");
 const Order = require("../../models/Order");
 const Restaurant = require("../../models/Restaurant");
 const User = require("../../models/User");
+const UserDeliveryAddress = require("../../models/UserDeliveryAdress");
 const OrderItem = require("../../models/OrderItem");
 const Variants = require("../../models/ProductVariant");
 const ProductVariantExtras = require("../../models/ProductVariantsExtras");
@@ -13,12 +16,30 @@ const ProductFinal = require("../../models/ProductFinal");
 // @route    POST api/orders
 // @desc     Create an order
 // @access   Private
-router.post("/", auth, async (req, res) => {
+router.post("/", orderUser, async (req, res, next) => {
   const deliveryAddressId = req.body.deliveryAddressId;
   const restaurantId = req.body.restaurantId;
   const products = req.body.products;
   const cutlery = req.body.cutlery;
   const take = req.body.take;
+  const token = req.header("x-auth-token");
+  let checkUser;
+  // if (cutlery != 0 && cutlery != 1) {
+  //   return res.status(404).json({ msg: "cutlery" });
+  // }
+  if (token != undefined) {
+    checkUser = await User.findAll({
+      where: { id: req.user.id },
+      include: [
+        {
+          model: UserDeliveryAddress,
+          where: { id: deliveryAddressId },
+        },
+      ],
+    });
+  } else {
+    return next();
+  }
 
   var totalPrice = 0;
   var totalVariantPrice = 0;
@@ -67,6 +88,7 @@ router.post("/", auth, async (req, res) => {
     let testPrice = checkExtraPrice;
     let extraQuantity = extraQuantityFrontend;
     let variantQuantity = variantQuantityFrontend;
+    let checkRestaurantId = validateExtraPrice[0].restaurantId;
 
     var finalServerValudationExtra = testPrice.map(function (num, idx) {
       return num * extraQuantity[idx];
@@ -90,13 +112,21 @@ router.post("/", auth, async (req, res) => {
 
     if (
       validateServerExtraPrice != totalExtraPrice ||
-      validateServerVariantPrice != totalVariantPrice
+      validateServerVariantPrice != totalVariantPrice ||
+      checkRestaurantId != restaurantId ||
+      checkUser.length < 1 ||
+      (cutlery != 0 && cutlery != 1) ||
+      (take != 0 && take != 1)
     ) {
-      return res.status(404).json({ msg: "You can't buy at a lower price" });
-    } else {
+      return res
+        .status(404)
+        .json({ msg: "You can't buy at. Please don't cheat..." });
+    }
+    if (token != undefined) {
       const order = await Order.create({
         totalPrice: totalPrice,
         cutlery: cutlery,
+        orderType: 0,
         take: take,
         userId: req.user.id,
         restaurantId: restaurantId,
@@ -124,7 +154,39 @@ router.post("/", auth, async (req, res) => {
           });
         })
       );
+    } else {
+      const order = await Order.create({
+        totalPrice: totalPrice,
+        cutlery: cutlery,
+        orderType: 1,
+        city: "Vasarhely",
+        take: take,
+        restaurantId: restaurantId,
+      });
+
+      const orderId = order.id;
+
+      await Promise.all(
+        products.map(async (prod) => {
+          const extras = prod.extras;
+          extras.map(async (extras) => {
+            const orderItem = await OrderItem.create({
+              message: prod.message,
+              productVariantId: prod.variantId,
+              quantity: prod.quantity,
+              OrderId: orderId,
+            });
+
+            await OrderItemExtra.create({
+              quantity: prod.quantity,
+              OrderItemId: orderItem.id,
+              extraId: extras.id,
+            });
+          });
+        })
+      );
     }
+
     return res.json(req.body);
   } catch (err) {
     console.error(err.message);
