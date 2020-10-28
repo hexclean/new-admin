@@ -36,9 +36,7 @@ router.post("/", orderUser, async (req, res, next) => {
         },
       ],
     });
-  }
-
-  if (checkUser == undefined) {
+  } else {
     checkUser = 1;
   }
 
