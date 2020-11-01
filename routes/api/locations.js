@@ -54,16 +54,15 @@ router.get("/:lang/:locationName", async (req, res, next) => {
 
   let d = new Date();
   let weekday = new Array(7);
-  weekday[0] = "Sunday";
-  weekday[1] = "Monday";
-  weekday[2] = "Tuesday";
-  weekday[3] = "Wednesday";
-  weekday[4] = "Thursday";
-  weekday[5] = "Friday";
-  weekday[6] = "Saturday";
+  weekday[0] = "vasarnap";
+  weekday[1] = "hetfo";
+  weekday[2] = "kedd";
+  weekday[3] = "szerda";
+  weekday[4] = "csutortok";
+  weekday[5] = "pentek";
+  weekday[6] = "szombat";
 
-  let n = weekday[d.getDay()];
-  console.log(n);
+  let today = weekday[d.getDay()];
 
   try {
     const selectedLocation = await sequelize.query(
@@ -87,7 +86,7 @@ router.get("/:lang/:locationName", async (req, res, next) => {
       INNER JOIN locationNameTranslations as locNameTrans
       ON locName.id = locNameTrans.locationNameId
       WHERE hoT.languageId = ${languageCode}
-      AND locNameTrans.languageId = ${languageCode} AND hoH.sku LIKE '%hetfo%'
+      AND locNameTrans.languageId = ${languageCode} AND hoH.sku LIKE '%${today}%'
       AND adInf.languageId = ${languageCode}
       AND locNameTrans.name LIKE '%${locationName}%' AND locNameTrans.languageId= ${languageCode} ;`,
       { type: Sequelize.QueryTypes.SELECT }
