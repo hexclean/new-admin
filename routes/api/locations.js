@@ -88,7 +88,7 @@ router.get("/:lang/:locationName", async (req, res, next) => {
       ON locName.id = locNameTrans.locationNameId
       WHERE hoT.languageId = ${languageCode}
       AND locNameTrans.languageId = ${languageCode}  AND adInf.languageId = ${languageCode}
-      AND locNameTrans.name LIKE '%${locationName}%';`,
+      AND locNameTrans.name LIKE '%${locationName}%' AND locNameTrans.languageId= ${languageCode} ;`,
       { type: Sequelize.QueryTypes.SELECT }
     );
 
