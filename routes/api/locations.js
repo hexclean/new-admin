@@ -66,10 +66,9 @@ router.get("/:lang/:locationName", async (req, res, next) => {
 
   try {
     const selectedLocation = await sequelize.query(
-      `SELECT hoH.open as restaurant_open, hoH.close AS restaurant_close,  ad.id AS restaurant_id, ad.imageUrl AS restaurant_profileImage, ad.commission AS restaurant_commission,
+      `SELECT hoH.open as restaurant_open, hoH.close AS restaurant_close,  ad.id AS restaurant_id, ad.imageUrl AS restaurant_profileImage,
       ad.fullName AS restaurant_name, ad.newRestaurant AS restaurant_new, ad.discount AS restaurant_discount,
-       adInf.shortCompanyDesc AS restaurant_description,
-      ad.deliveryPrice AS restaurant_deliveryPrice, adInf.kitchen AS restaurant_kitchen
+       adInf.shortCompanyDesc AS restaurant_description
       FROM restaurants AS ad
       INNER JOIN hours AS ho
       ON ad.id = ho.restaurantId
@@ -92,9 +91,9 @@ router.get("/:lang/:locationName", async (req, res, next) => {
       { type: Sequelize.QueryTypes.SELECT }
     );
 
-    // if (selectedLocation.length == 0) {
-    //   return res.status(404).json({ msg: "City not found" });
-    // }
+    if (selectedLocation.length == 0) {
+      return res.status(404).json({ msg: "City not found" });
+    }
 
     res.json(selectedLocation);
   } catch (err) {
