@@ -87,7 +87,7 @@ router.get("/:lang/:locationName", async (req, res, next) => {
       WHERE hoT.languageId = ${languageCode}
       AND locNameTrans.languageId = ${languageCode} AND hoH.sku LIKE '%${today}%'
       AND adInf.languageId = ${languageCode}
-      AND locNameTrans.name LIKE '%${locationName}%' AND locNameTrans.languageId= ${languageCode} ;`,
+      AND locNameTrans.name LIKE '%${locationName}%' AND locNameTrans.languageId= ${languageCode} LIMIT 5;`,
       { type: Sequelize.QueryTypes.SELECT }
     );
 
