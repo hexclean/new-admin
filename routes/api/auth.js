@@ -251,7 +251,6 @@ router.post(
     if (!errors.isEmpty()) {
       return res.json({ result: [{ errors: errors.array() }], status: 400 });
     }
-    var now = new Date().toISOString().replace(/T/, " ").replace(/\..+/, "");
     const { email } = req.body;
     const resetCode = Math.floor(100000 + Math.random() * 900000);
     await User.findOne({
@@ -306,7 +305,7 @@ router.post(
 
         //         `,
         // });
-        res.json({ result: [{ now }], status: 200 });
+        res.json({ result: [{ msg: "Check your emails" }], status: 200 });
       })
       .catch((err) => {
         console.log(err.message);
@@ -345,12 +344,6 @@ router.post("/verification/:email", async (req, res, next) => {
           status: 400,
         });
       } else {
-        res.json(
-          code[i].code_expiration
-            .toISOString()
-            .replace(/T/, " ")
-            .replace(/\..+/, "")
-        );
         res.json({
           result: [{ code }],
           status: 200,
