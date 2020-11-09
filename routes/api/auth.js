@@ -339,6 +339,12 @@ router.post("/verification/:email", async (req, res, next) => {
           .replace(/T/, " ")
           .replace(/\..+/, "") > now
       ) {
+        console.log(
+          code[i].code_expiration
+            .toISOString()
+            .replace(/T/, " ")
+            .replace(/\..+/, "")
+        );
         res.json({
           result: [{ msg: "Invalid code for this user" }],
           status: 400,
