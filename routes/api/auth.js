@@ -33,7 +33,7 @@ router.post(
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+      return res.json({ result: [{ errors: errors.array() }], status: 400 });
     }
 
     const { email, password } = req.body;
@@ -42,17 +42,13 @@ router.post(
       let user = await User.findOne({ where: { email: email } });
 
       if (!user) {
-        return res
-          .status(400)
-          .json({ errors: [{ msg: "Invalid password or email" }] });
+        return res.json({ result: [{ msg: "User not found" }], status: 404 });
       }
 
       const isMatch = await bcrypt.compare(password, user.password);
 
       if (!isMatch) {
-        return res
-          .status(400)
-          .json({ errors: [{ msg: "Invalid Credentials..." }] });
+        return res.json({ result: [{ msg: "User not found" }], status: 400 });
       }
 
       const payload = {
@@ -93,7 +89,7 @@ router.post(
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+      return res.json({ result: [{ errors: errors.array() }], status: 400 });
     }
 
     const { email, password, name } = req.body;
@@ -102,9 +98,7 @@ router.post(
       let user = await User.findOne({ where: { email: email } });
 
       if (user) {
-        return res
-          .status(400)
-          .json({ errors: [{ msg: "User already exists" }] });
+        return res.json({ result: [{ msg: "Server error" }], status: 409 });
       }
 
       user = new User({
@@ -136,7 +130,7 @@ router.post(
       );
     } catch (err) {
       console.error(err.message);
-      res.status(500).send("Server error");
+      res.json({ result: [{ msg: "Server error" }], status: 500 });
     }
   }
 );
@@ -304,41 +298,61 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
     const { email } = req.body;
-    const code = Math.floor(100000 + Math.random() * 900000);
+    const resetCode = Math.floor(100000 + Math.random() * 900000);
     await User.findOne({
       where: {
         email: email,
       },
+      attributes: {
+        exclude: [
+          "password",
+          "fullName",
+          "phoneNumber",
+          "resetToken",
+          "resetTokenExpiration",
+          "role",
+          "subscriber",
+          "newsletter",
+          "createdAt",
+          "updatedAt",
+        ],
+      },
       include: [
         {
           model: ResetPasswordApp,
+          attributes: {
+            exclude: ["id", "createdAt", "updatedAt", "userId"],
+          },
         },
       ],
     })
       .then(async (user) => {
+        if (!user) {
+          return;
+        }
+        console.log(user);
         await ResetPasswordApp.create({
           userId: user.id,
-          code: code,
+          code: resetCode,
           expiartion: Date.now() + 17600000,
         });
       })
       .then((result) => {
-        console.log(result);
         // transporter.sendMail({
         //   to: email,
         //   from: "shop@node-complete.com",
         //   subject: "Password reset",
         //   html: `
         //           <p>You requested a password reset</p>
-        //           <p>Click this <a href="http://localhost:3000/reset-password/${token}">link</a> to set a new password.</p>
+        //           <p>Your reset code is: ${resetCode}</p>
         //           <p>Vigyazz mert csak 1,5 oraig ervenyes a link</p>
         //         `,
         // });
-        res.json("Succes");
+        res.json({ result: [{ msg: "Check your emails" }], status: 200 });
       })
       .catch((err) => {
         console.log(err.message);
-        res.status(500).send("server error");
+        res.json({ result: [{ msg: "Server error" }], status: 500 });
       });
   }
 );
