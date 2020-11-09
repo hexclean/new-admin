@@ -42,13 +42,19 @@ router.post(
       let user = await User.findOne({ where: { email: email } });
 
       if (!user) {
-        return res.json({ result: [{ msg: "User not found" }], status: 404 });
+        return res.json({
+          result: [{ msg: "User or password incorrect" }],
+          status: 404,
+        });
       }
 
       const isMatch = await bcrypt.compare(password, user.password);
 
       if (!isMatch) {
-        return res.json({ result: [{ msg: "User not found" }], status: 400 });
+        return res.json({
+          result: [{ msg: "User or password incorrect" }],
+          status: 400,
+        });
       }
 
       const payload = {
@@ -98,7 +104,10 @@ router.post(
       let user = await User.findOne({ where: { email: email } });
 
       if (user) {
-        return res.json({ result: [{ msg: "Server error" }], status: 409 });
+        return res.json({
+          result: [{ msg: "User already exist" }],
+          status: 409,
+        });
       }
 
       user = new User({
