@@ -19,8 +19,8 @@ const transporter = nodemailer.createTransport(
     },
   })
 );
-//dasdas
-
+const Sequelize = require("sequelize");
+const sequelize = require("../../util/database");
 // @route    POST api/login
 // @desc     Authenticate user & get token
 // @access   Public
@@ -69,12 +69,12 @@ router.post(
         { expiresIn: "60 days" },
         (err, token) => {
           if (err) throw err;
-          res.json({ token });
+          res.json({ result: [{ token }], status: 201 });
         }
       );
     } catch (err) {
       console.error(err.message);
-      res.status(500).send("Server error");
+      res.json({ result: [{ msg: "Server error" }], status: 500 });
     }
   }
 );
@@ -134,7 +134,7 @@ router.post(
         { expiresIn: 360000 },
         (err, token) => {
           if (err) throw err;
-          res.json({ token });
+          res.json({ result: [{ token }], status: 201 });
         }
       );
     } catch (err) {
@@ -144,6 +144,9 @@ router.post(
   }
 );
 
+// @route    POST api/reset
+// @desc     New password request from web
+// @access   Public
 router.post(
   "/reset",
   [check("email", "This is not email format").isEmail()],
@@ -177,12 +180,15 @@ router.post(
         })
         .catch((err) => {
           console.log(err.message);
-          res.status(500).send("server error");
+          res.json({ result: [{ msg: "Server error" }], status: 500 });
         });
     });
   }
 );
 
+// @route    POST api/reset-password/:token
+// @desc     Change password on web
+// @access   Public
 router.post(
   "/reset-password/:token",
   [check("newPassword", "Password min 6 length").isLength({ min: 5 })],
@@ -234,77 +240,16 @@ router.post(
   }
 );
 
-// @route    POST api/check code
-// @desc     Register user
+// @route    POST api/reset
+// @desc     New password request from app
 // @access   Public
-router.post(
-  "/register",
-  [
-    check("email", "Please include a valid email").isEmail(),
-    check("name", "Please include a valid name").isLength({ min: 3, max: 20 }),
-    check(
-      "password",
-      "Please enter a password with 6 or more characters"
-    ).isLength({ min: 5, max: 20 }),
-  ],
-  async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
-
-    const { email, password, name } = req.body;
-
-    try {
-      let user = await User.findOne({ where: { email: email } });
-
-      if (user) {
-        return res
-          .status(400)
-          .json({ errors: [{ msg: "User already exists" }] });
-      }
-
-      user = new User({
-        email: email,
-        password: password,
-        fullName: name,
-      });
-
-      const salt = await bcrypt.genSalt(10);
-
-      user.password = await bcrypt.hash(password, salt);
-
-      await user.save();
-
-      const payload = {
-        user: {
-          id: user.id,
-        },
-      };
-
-      jwt.sign(
-        payload,
-        config.get("jwtSecret"),
-        { expiresIn: 360000 },
-        (err, token) => {
-          if (err) throw err;
-          res.json({ token });
-        }
-      );
-    } catch (err) {
-      console.error(err.message);
-      res.status(500).send("Server error");
-    }
-  }
-);
-
 router.post(
   "/reset-app",
   [check("email", "This is not email format").isEmail()],
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+      return res.json({ result: [{ errors: errors.array() }], status: 400 });
     }
     const { email } = req.body;
     const resetCode = Math.floor(100000 + Math.random() * 900000);
@@ -339,7 +284,6 @@ router.post(
         if (!user) {
           return;
         }
-        console.log(user);
         await ResetPasswordApp.create({
           userId: user.id,
           code: resetCode,
@@ -354,7 +298,7 @@ router.post(
         //   html: `
         //           <p>You requested a password reset</p>
         //           <p>Your reset code is: ${resetCode}</p>
-        //           <p>Vigyazz mert csak 1,5 oraig ervenyes a link</p>
+        //           <p>The code is valid for 1 hour</p>
         //         `,
         // });
         res.json({ result: [{ msg: "Check your emails" }], status: 200 });
@@ -365,5 +309,86 @@ router.post(
       });
   }
 );
+
+// @route    POST api/reset-password/app
+// @desc     Check code availability
+// @access   Public
+router.post("/verification/:email", async (req, res, next) => {
+  const email = req.params.email;
+
+  // const selectedLocation = await sequelize.query(
+  //   `SELECT *
+  //   FROM users AS usr
+  //   INNER JOIN ResetPasswordApps AS res
+  //   ON usr.id = res.userId`,
+  //   { type: Sequelize.QueryTypes.SELECT }
+  // );
+  // if (userToken.length == 0) {
+  //   return res.status(400).json({ msg: "No token available" });
+  // }
+
+  try {
+    const selectedLocation = await sequelize.query(
+      `SELECT usr.id as userId, usr.email as user_email, res.code as reset_code, res.expiartion as code_expiration
+      FROM users AS usr
+      INNER JOIN ResetPasswordApps AS res
+      ON usr.id = res.userId
+      WHERE usr.email LIKE '%${email}%'`,
+      { type: Sequelize.QueryTypes.SELECT }
+    );
+
+    // if (selectedLocation.length == 0) {
+    //   return res.json({
+    //     result: [{ msg: "No reset code found for this user" }],
+    //     status: 404,
+    //   });
+    // }
+
+    var now = new Date().toISOString().replace(/T/, " ").replace(/\..+/, "");
+
+    for (let i = 0; i <= selectedLocation.length - 1; i++) {
+      if (
+        selectedLocation[i].code_expiration
+          .toISOString()
+          .replace(/T/, " ")
+          .replace(/\..+/, "") < now
+      ) {
+        console.log("Jo", now);
+      } else {
+        console.log("Rossz");
+      }
+      console.log("dbTIME", selectedLocation[i].code_expiration);
+    }
+
+    res.json(selectedLocation);
+  } catch (err) {
+    console.error(err.message);
+    2;
+    res.json({ result: [{ msg: "Server error" }], status: 500 });
+  }
+
+  // await User.findOne({
+  //   where: {
+  //     resetToken: token,
+  //   },
+  // })
+  //   .then((user) => {
+  //     resetUser = user;
+  //     return bcrypt.hash(newPassword, 12);
+  //   })
+  //   .then((hashedPassword) => {
+  //     resetUser.password = hashedPassword;
+  //     resetUser.resetToken = 0;
+  //     resetUser.resetTokenExpiration = 0;
+  //     return resetUser.save();
+  //   })
+  //   .then((result) => {
+  //     res.json(selectedLocation);
+  //   })
+  //   .catch((err) => {
+  //     console.log(err.message);
+  //     res.status(500).send("server error");
+  //   });
+});
 
 module.exports = router;
