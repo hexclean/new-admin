@@ -10,7 +10,7 @@ const User = require("../../models/User");
 const nodemailer = require("nodemailer");
 const sendgridTransport = require("nodemailer-sendgrid-transport");
 const { Op } = require("sequelize");
-
+const ResetPasswordApp = require("../../models/ResetPasswordApp");
 const transporter = nodemailer.createTransport(
   sendgridTransport({
     auth: {
@@ -19,6 +19,7 @@ const transporter = nodemailer.createTransport(
     },
   })
 );
+//dasdas
 
 // @route    POST api/login
 // @desc     Authenticate user & get token
@@ -221,6 +222,118 @@ router.post(
         return resetUser.save();
       })
       .then((result) => {
+        res.json("Succes");
+      })
+      .catch((err) => {
+        console.log(err.message);
+        res.status(500).send("server error");
+      });
+  }
+);
+
+// @route    POST api/check code
+// @desc     Register user
+// @access   Public
+router.post(
+  "/register",
+  [
+    check("email", "Please include a valid email").isEmail(),
+    check("name", "Please include a valid name").isLength({ min: 3, max: 20 }),
+    check(
+      "password",
+      "Please enter a password with 6 or more characters"
+    ).isLength({ min: 5, max: 20 }),
+  ],
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const { email, password, name } = req.body;
+
+    try {
+      let user = await User.findOne({ where: { email: email } });
+
+      if (user) {
+        return res
+          .status(400)
+          .json({ errors: [{ msg: "User already exists" }] });
+      }
+
+      user = new User({
+        email: email,
+        password: password,
+        fullName: name,
+      });
+
+      const salt = await bcrypt.genSalt(10);
+
+      user.password = await bcrypt.hash(password, salt);
+
+      await user.save();
+
+      const payload = {
+        user: {
+          id: user.id,
+        },
+      };
+
+      jwt.sign(
+        payload,
+        config.get("jwtSecret"),
+        { expiresIn: 360000 },
+        (err, token) => {
+          if (err) throw err;
+          res.json({ token });
+        }
+      );
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send("Server error");
+    }
+  }
+);
+
+router.post(
+  "/reset-app",
+  [check("email", "This is not email format").isEmail()],
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    const { email } = req.body;
+    const code = Math.floor(100000 + Math.random() * 900000);
+    await User.findOne({
+      where: {
+        email: email,
+      },
+      include: [
+        {
+          model: ResetPasswordApp,
+        },
+      ],
+    })
+      .then(async (user) => {
+        await ResetPasswordApp.create({
+          userId: user.id,
+          code: code,
+          expiartion: Date.now() + 17600000,
+        });
+      })
+      .then((result) => {
+        console.log(result);
+        // transporter.sendMail({
+        //   to: email,
+        //   from: "shop@node-complete.com",
+        //   subject: "Password reset",
+        //   html: `
+        //           <p>You requested a password reset</p>
+        //           <p>Click this <a href="http://localhost:3000/reset-password/${token}">link</a> to set a new password.</p>
+        //           <p>Vigyazz mert csak 1,5 oraig ervenyes a link</p>
+        //         `,
+        // });
         res.json("Succes");
       })
       .catch((err) => {

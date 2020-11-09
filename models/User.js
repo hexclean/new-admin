@@ -29,6 +29,7 @@ const User = sequelize.define("user", {
   resetTokenExpiration: Sequelize.DATE,
   role: Sequelize.INTEGER,
   subscriber: Sequelize.INTEGER,
+  newsletter: Sequelize.INTEGER,
 });
 
 module.exports = User;

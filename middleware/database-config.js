@@ -40,6 +40,7 @@ const Order = require("../models/Order");
 const OrderItem = require("../models/OrderItem");
 const OrderItemExtra = require("../models/OrderItemExtra");
 const RestaurantFilter = require("../models/RestaurantFilters");
+const ResetPasswordApp = require("../models/ResetPasswordApp");
 
 function databaseConfig() {
   RestaurantFilter.belongsTo(Location, {
@@ -53,6 +54,12 @@ function databaseConfig() {
     onDelete: "CASCADE",
   });
   Admin.hasMany(RestaurantFilter);
+
+  ResetPasswordApp.belongsTo(User, {
+    constrains: true,
+    onDelete: "CASCADE",
+  });
+  User.hasMany(ResetPasswordApp);
 
   RestaurantRole.belongsTo(Admin, {
     constrains: true,
