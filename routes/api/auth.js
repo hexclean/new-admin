@@ -295,16 +295,14 @@ router.post(
         });
       })
       .then((result) => {
-        // transporter.sendMail({
-        //   to: email,
-        //   from: "reset-password@foodnet.ro",
-        //   subject: "Request for reset password",
-        //   html: `
-
-        //           <p>Your reset code is: ${resetCode}</p>
-
-        //         `,
-        // });
+        transporter.sendMail({
+          to: email,
+          from: "reset-password@foodnet.ro",
+          subject: "Request for reset password",
+          html: `
+                  <p>Your reset code is: ${resetCode}</p>
+                `,
+        });
         res.json({ result: [{ msg: "Check your emails" }], status: 200 });
       })
       .catch((err) => {
