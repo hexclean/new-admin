@@ -331,7 +331,6 @@ router.post("/verification/:email", async (req, res, next) => {
     );
 
     var now = new Date().toISOString().replace(/T/, " ").replace(/\..+/, "");
-
     for (let i = 0; i <= code.length - 1; i++) {
       if (
         code[i].code_expiration
@@ -339,16 +338,16 @@ router.post("/verification/:email", async (req, res, next) => {
           .replace(/T/, " ")
           .replace(/\..+/, "") > now
       ) {
-        console.log(
+        // res.json({
+        //   result: [{ msg: "Invalid code for this user" }],
+        //   status: 400,
+        // });
+        res.json(
           code[i].code_expiration
             .toISOString()
             .replace(/T/, " ")
             .replace(/\..+/, "")
         );
-        res.json({
-          result: [{ msg: "Invalid code for this user" }],
-          status: 400,
-        });
       } else {
         res.json({
           result: [{ code }],
