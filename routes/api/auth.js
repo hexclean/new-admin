@@ -287,7 +287,7 @@ router.post(
         const currentCode = await ResetPasswordApp.create({
           userId: user.id,
           code: resetCode,
-          expiartion: Date.now() + 17600000,
+          expiartion: Date.now() - 86400000,
         });
 
         await ResetPasswordApp.destroy({
@@ -331,6 +331,7 @@ router.post("/verification/:email", async (req, res, next) => {
     );
 
     var now = new Date().toISOString().replace(/T/, " ").replace(/\..+/, "");
+
     for (let i = 0; i <= code.length - 1; i++) {
       if (
         code[i].code_expiration
@@ -338,11 +339,10 @@ router.post("/verification/:email", async (req, res, next) => {
           .replace(/T/, " ")
           .replace(/\..+/, "") > now
       ) {
-        // res.json({
-        //   result: [{ msg: "Invalid code for this user" }],
-        //   status: 400,
-        // });
-        res.json(now);
+        res.json({
+          result: [{ msg: "Invalid code for this user" }],
+          status: 400,
+        });
       } else {
         res.json({
           result: [{ code }],
