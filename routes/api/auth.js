@@ -284,21 +284,25 @@ router.post(
         if (!user) {
           return;
         }
-        await ResetPasswordApp.create({
+        const currentCode = await ResetPasswordApp.create({
           userId: user.id,
           code: resetCode,
           expiartion: Date.now() + 17600000,
+        });
+
+        await ResetPasswordApp.destroy({
+          where: { id: { [Op.notIn]: [currentCode.id] } },
         });
       })
       .then((result) => {
         // transporter.sendMail({
         //   to: email,
-        //   from: "shop@node-complete.com",
-        //   subject: "Password reset",
+        //   from: "reset-password@foodnet.ro",
+        //   subject: "Request for reset password",
         //   html: `
-        //           <p>You requested a password reset</p>
+
         //           <p>Your reset code is: ${resetCode}</p>
-        //           <p>The code is valid for 1 hour</p>
+
         //         `,
         // });
         res.json({ result: [{ msg: "Check your emails" }], status: 200 });
@@ -316,19 +320,8 @@ router.post(
 router.post("/verification/:email", async (req, res, next) => {
   const email = req.params.email;
 
-  // const selectedLocation = await sequelize.query(
-  //   `SELECT *
-  //   FROM users AS usr
-  //   INNER JOIN ResetPasswordApps AS res
-  //   ON usr.id = res.userId`,
-  //   { type: Sequelize.QueryTypes.SELECT }
-  // );
-  // if (userToken.length == 0) {
-  //   return res.status(400).json({ msg: "No token available" });
-  // }
-
   try {
-    const selectedLocation = await sequelize.query(
+    const code = await sequelize.query(
       `SELECT usr.id as userId, usr.email as user_email, res.code as reset_code, res.expiartion as code_expiration
       FROM users AS usr
       INNER JOIN ResetPasswordApps AS res
@@ -337,33 +330,28 @@ router.post("/verification/:email", async (req, res, next) => {
       { type: Sequelize.QueryTypes.SELECT }
     );
 
-    // if (selectedLocation.length == 0) {
-    //   return res.json({
-    //     result: [{ msg: "No reset code found for this user" }],
-    //     status: 404,
-    //   });
-    // }
-
     var now = new Date().toISOString().replace(/T/, " ").replace(/\..+/, "");
 
-    for (let i = 0; i <= selectedLocation.length - 1; i++) {
+    for (let i = 0; i <= code.length - 1; i++) {
       if (
-        selectedLocation[i].code_expiration
+        code[i].code_expiration
           .toISOString()
           .replace(/T/, " ")
-          .replace(/\..+/, "") < now
+          .replace(/\..+/, "") > now
       ) {
-        console.log("Jo", now);
+        res.json({
+          result: [{ msg: "Invalid code for this user" }],
+          status: 400,
+        });
       } else {
-        console.log("Rossz");
+        res.json({
+          result: [{ code }],
+          status: 200,
+        });
       }
-      console.log("dbTIME", selectedLocation[i].code_expiration);
     }
-
-    res.json(selectedLocation);
   } catch (err) {
     console.error(err.message);
-    2;
     res.json({ result: [{ msg: "Server error" }], status: 500 });
   }
 
