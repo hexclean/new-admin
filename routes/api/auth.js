@@ -345,7 +345,7 @@ router.post("/verification/:email", async (req, res, next) => {
         });
       } else {
         res.json({
-          result: [{ code }],
+          result: [{ now }],
           status: 200,
         });
       }
@@ -354,29 +354,6 @@ router.post("/verification/:email", async (req, res, next) => {
     console.error(err.message);
     res.json({ result: [{ msg: "Server error" }], status: 500 });
   }
-
-  // await User.findOne({
-  //   where: {
-  //     resetToken: token,
-  //   },
-  // })
-  //   .then((user) => {
-  //     resetUser = user;
-  //     return bcrypt.hash(newPassword, 12);
-  //   })
-  //   .then((hashedPassword) => {
-  //     resetUser.password = hashedPassword;
-  //     resetUser.resetToken = 0;
-  //     resetUser.resetTokenExpiration = 0;
-  //     return resetUser.save();
-  //   })
-  //   .then((result) => {
-  //     res.json(selectedLocation);
-  //   })
-  //   .catch((err) => {
-  //     console.log(err.message);
-  //     res.status(500).send("server error");
-  //   });
 });
 
 module.exports = router;
