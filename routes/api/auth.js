@@ -67,10 +67,10 @@ router.post(
       jwt.sign(
         payload,
         config.get("jwtSecret"),
-        { expiresIn: "60 days" },
+        { expiresIn: "30 days" },
         (err, token) => {
           if (err) throw err;
-          res.json({ result: [{ token }], status: 201 });
+          res.json({ result: [{ token }], status: 200 });
         }
       );
     } catch (err) {
@@ -270,13 +270,14 @@ router.post(
           "newsletter",
           "createdAt",
           "updatedAt",
+          "code",
         ],
       },
       include: [
         {
           model: ResetPasswordApp,
           attributes: {
-            exclude: ["id", "createdAt", "updatedAt", "userId"],
+            exclude: ["id", "createdAt", "updatedAt", "userId", "code"],
           },
         },
       ],
