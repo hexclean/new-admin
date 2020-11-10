@@ -308,11 +308,14 @@ router.post(
                   <p>Your reset code is: ${resetCode}</p>
                 `,
         });
-        res.json({ result: [{ msg: "Check your emails" }], status: 200 });
+        return res.json({
+          result: [{ msg: "Check your emails" }],
+          status: 200,
+        });
       })
       .catch((err) => {
         console.log(err.message);
-        res.json({ result: [{ msg: "Server error" }], status: 500 });
+        return res.json({ result: [{ msg: "Server error" }], status: 500 });
       });
   }
 );
@@ -325,7 +328,7 @@ router.post("/verification/:email", async (req, res, next) => {
 
   try {
     const code = await sequelize.query(
-      `SELECT usr.id as userId, usr.email as user_email, res.code as reset_code, res.expiartion as code_expiration
+      `SELECT usr.id as userId, usr.code as user_code, usr.email as user_email, res.code as reset_code, res.expiartion as code_expiration
       FROM users AS usr
       INNER JOIN ResetPasswordApps AS res
       ON usr.id = res.userId
@@ -340,7 +343,8 @@ router.post("/verification/:email", async (req, res, next) => {
         code[i].code_expiration
           .toISOString()
           .replace(/T/, " ")
-          .replace(/\..+/, "") > now
+          .replace(/\..+/, "") > now ||
+        code[i].user_code == 0
       ) {
         res.json({
           result: [{ msg: "Invalid code for this user" }],
