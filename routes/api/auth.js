@@ -362,14 +362,14 @@ router.post(
                     result: [],
                   });
                 } else {
-                  // await transporter.sendMail({
-                  //   to: email,
-                  //   from: "reset-password@foodnet.ro",
-                  //   subject: "Request for reset password",
-                  //   html: `
-                  //         <p>Your reset code is: ${resetCode}</p>
-                  //       `,
-                  // });
+                  await transporter.sendMail({
+                    to: email,
+                    from: "reset-password@foodnet.ro",
+                    subject: "Request for reset password",
+                    html: `
+                          <p>Your reset code is: ${resetCode}</p>
+                        `,
+                  });
 
                   return res.json({
                     status: 200,
