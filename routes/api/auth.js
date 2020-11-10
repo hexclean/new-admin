@@ -241,19 +241,14 @@ router.post(
   }
 );
 
-// @route    POST api/reset
-// @desc     New password request from app
+// @route    POST api/reset-password/app
+// @desc     Check code availability
 // @access   Public
-router.post(
-  "/reset-app",
-  [check("email", "This is not email format").isEmail()],
-  async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.json({ result: [{ errors: errors.array() }], status: 400 });
-    }
-    const { email } = req.body;
-    const resetCode = Math.floor(100000 + Math.random() * 900000);
+router.post("/verification", async (req, res, next) => {
+  const { email } = req.body;
+  const resetCode = Math.floor(100000 + Math.random() * 900000);
+  var now = new Date().toISOString().replace(/T/, " ").replace(/\..+/, "");
+  try {
     await User.findOne({
       where: {
         email: email,
@@ -281,12 +276,13 @@ router.post(
           },
         },
       ],
-    })
-      .then(async (user) => {
-        if (!user) {
-          return;
-        }
-
+    }).then(async (user) => {
+      if (user == null) {
+        return res.json({
+          result: [{ msg: "Check your emails" }],
+          status: 400,
+        });
+      } else {
         await User.update({ code: resetCode }, { where: { email: email } });
 
         const currentCode = await ResetPasswordApp.create({
@@ -298,65 +294,55 @@ router.post(
         await ResetPasswordApp.destroy({
           where: { id: { [Op.notIn]: [currentCode.id] } },
         });
-      })
-      .then((result) => {
-        transporter.sendMail({
-          to: email,
-          from: "reset-password@foodnet.ro",
-          subject: "Request for reset password",
-          html: `
-                  <p>Your reset code is: ${resetCode}</p>
-                `,
-        });
-        return res.json({
-          result: [{ msg: "Check your emails" }],
-          status: 200,
-        });
-      })
-      .catch((err) => {
-        console.log(err.message);
-        return res.json({ result: [{ msg: "Server error" }], status: 500 });
-      });
-  }
-);
 
-// @route    POST api/reset-password/app
-// @desc     Check code availability
-// @access   Public
-router.post("/verification/:email", async (req, res, next) => {
-  const email = req.params.email;
+        await sequelize
+          .query(
+            `SELECT usr.id as userId, usr.code as user_code, usr.email as user_email, res.code as reset_code, res.expiartion as code_expiration
+          FROM users AS usr
+          INNER JOIN ResetPasswordApps AS res
+          ON usr.id = res.userId
+          WHERE usr.email LIKE '%${email}%'`,
+            { type: Sequelize.QueryTypes.SELECT }
+          )
+          .then(async (result) => {
+            if (result.length == 0) {
+              return res.json({
+                result: [{ msg: "Invalid code for this user" }],
+                status: 400,
+              });
+            }
 
-  try {
-    const code = await sequelize.query(
-      `SELECT usr.id as userId, usr.code as user_code, usr.email as user_email, res.code as reset_code, res.expiartion as code_expiration
-      FROM users AS usr
-      INNER JOIN ResetPasswordApps AS res
-      ON usr.id = res.userId
-      WHERE usr.email LIKE '%${email}%'`,
-      { type: Sequelize.QueryTypes.SELECT }
-    );
+            for (let i = 0; i <= result.length - 1; i++) {
+              if (
+                result[i].code_expiration
+                  .toISOString()
+                  .replace(/T/, " ")
+                  .replace(/\..+/, "") > now ||
+                result[i].user_code == 0
+              ) {
+                return res.json({
+                  result: [{ msg: "Invalid code for this user" }],
+                  status: 400,
+                });
+              } else {
+                await transporter.sendMail({
+                  to: email,
+                  from: "reset-password@foodnet.ro",
+                  subject: "Request for reset password",
+                  html: `
+                        <p>Your reset code is: ${resetCode}</p>
+                      `,
+                });
 
-    var now = new Date().toISOString().replace(/T/, " ").replace(/\..+/, "");
-
-    for (let i = 0; i <= code.length - 1; i++) {
-      if (
-        code[i].code_expiration
-          .toISOString()
-          .replace(/T/, " ")
-          .replace(/\..+/, "") > now ||
-        code[i].user_code == 0
-      ) {
-        res.json({
-          result: [{ msg: "Invalid code for this user" }],
-          status: 400,
-        });
-      } else {
-        res.json({
-          result: [{ code }],
-          status: 200,
-        });
+                return res.json({
+                  result: [{ result }],
+                  status: 200,
+                });
+              }
+            }
+          });
       }
-    }
+    });
   } catch (err) {
     console.error(err.message);
     res.json({ result: [{ msg: "Server error" }], status: 500 });
@@ -383,6 +369,7 @@ router.post(
         email: email,
       },
     });
+
     if (checkCode.length == 0 || checkCode[0].code != code) {
       return res.json({
         result: [{ msg: "Invalid code for this user" }],
