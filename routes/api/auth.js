@@ -21,6 +21,7 @@ const transporter = nodemailer.createTransport(
 );
 const Sequelize = require("sequelize");
 const sequelize = require("../../util/database");
+
 // @route    POST api/login
 // @desc     Authenticate user & get token
 // @access   Public
@@ -284,6 +285,9 @@ router.post(
         if (!user) {
           return;
         }
+
+        await User.update({ code: resetCode }, { where: { email: email } });
+
         const currentCode = await ResetPasswordApp.create({
           userId: user.id,
           code: resetCode,
@@ -353,5 +357,63 @@ router.post("/verification/:email", async (req, res, next) => {
     res.json({ result: [{ msg: "Server error" }], status: 500 });
   }
 });
+
+// @route    POST api/reset-password-app/:token
+// @desc     Change password in app
+// @access   Public
+router.post(
+  "/reset-password-app",
+  [check("newPassword", "Password min 6 length").isLength({ min: 5 })],
+  async (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const { newPassword, email, code } = req.body;
+    let resetUser;
+
+    const checkCode = await User.findAll({
+      where: {
+        email: email,
+      },
+    });
+    if (checkCode.length == 0 || checkCode[0].code != code) {
+      return res.json({
+        result: [{ msg: "Invalid code for this user" }],
+        status: 400,
+      });
+    }
+
+    await User.findOne({
+      where: {
+        email: email,
+        code: code,
+      },
+    })
+      .then((user) => {
+        resetUser = user;
+        return bcrypt.hash(newPassword, 12);
+      })
+      .then((hashedPassword) => {
+        resetUser.password = hashedPassword;
+        resetUser.code = 0;
+        return resetUser.save();
+      })
+      .then(async (result) => {
+        await ResetPasswordApp.update(
+          { code: 0 },
+          { where: { userId: checkCode[0].id } }
+        );
+        return res.json({
+          result: [{ msg: "You have successfully changed your password" }],
+          status: 200,
+        });
+      })
+      .catch((err) => {
+        res.json({ result: [{ msg: "Server error" }], status: 500 });
+      });
+  }
+);
 
 module.exports = router;
