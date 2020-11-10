@@ -370,6 +370,14 @@ router.post(
       },
     });
 
+    const user = await User.findOne({ where: { email: email } });
+
+    const payload = {
+      user: {
+        id: user.id,
+      },
+    };
+
     if (checkCode.length == 0 || checkCode[0].code != code) {
       return res.json({
         result: [{ msg: "Invalid code for this user" }],
@@ -397,10 +405,19 @@ router.post(
           { code: 0 },
           { where: { userId: checkCode[0].id } }
         );
-        return res.json({
-          result: [{ msg: "You have successfully changed your password" }],
-          status: 200,
-        });
+        jwt.sign(
+          payload,
+          config.get("jwtSecret"),
+          { expiresIn: 360000 },
+          (err, token) => {
+            if (err) throw err;
+            return res.json({
+              result: [{ msg: "You have successfully changed your password" }],
+              token,
+              status: 200,
+            });
+          }
+        );
       })
       .catch((err) => {
         res.json({ result: [{ msg: "Server error" }], status: 500 });
