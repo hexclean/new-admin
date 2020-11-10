@@ -335,7 +335,7 @@ router.post("/verification", async (req, res, next) => {
                 });
 
                 return res.json({
-                  result: [{ result }],
+                  result,
                   status: 200,
                 });
               }
