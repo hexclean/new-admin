@@ -34,7 +34,11 @@ router.post(
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.json({ result: [{ errors: errors.array() }], status: 400 });
+      return res.json({
+        status: 400,
+        msg: "Email or password incorrect",
+        result: [],
+      });
     }
 
     const { email, password } = req.body;
@@ -44,8 +48,9 @@ router.post(
 
       if (!user) {
         return res.json({
-          result: [{ msg: "User or password incorrect" }],
-          status: 404,
+          status: 400,
+          msg: "User or password incorrect",
+          result: [],
         });
       }
 
@@ -53,8 +58,9 @@ router.post(
 
       if (!isMatch) {
         return res.json({
-          result: [{ msg: "User or password incorrect" }],
           status: 400,
+          msg: "User or password incorrect",
+          result: [],
         });
       }
 
@@ -70,12 +76,16 @@ router.post(
         { expiresIn: "30 days" },
         (err, token) => {
           if (err) throw err;
-          res.json({ result: [{ token }], status: 200 });
+          res.json({
+            status: 200,
+            msg: "Login success",
+            result: [{ token: token }],
+          });
         }
       );
     } catch (err) {
       console.error(err.message);
-      res.json({ result: [{ msg: "Server error" }], status: 500 });
+      res.json({ status: 500, result: [{ msg: "Server error" }] });
     }
   }
 );
@@ -90,13 +100,18 @@ router.post(
     check("name", "Please include a valid name").isLength({ min: 3, max: 20 }),
     check(
       "password",
-      "Please enter a password with 6 or more characters"
+      "Please enter a password with 5 or more characters"
     ).isLength({ min: 5, max: 20 }),
   ],
   async (req, res) => {
     const errors = validationResult(req);
+
     if (!errors.isEmpty()) {
-      return res.json({ result: [{ errors: errors.array() }], status: 400 });
+      return res.json({
+        status: 400,
+        msg: "Invalid credentials",
+        result: [],
+      });
     }
 
     const { email, password, name } = req.body;
@@ -106,8 +121,9 @@ router.post(
 
       if (user) {
         return res.json({
-          result: [{ msg: "User already exist" }],
-          status: 409,
+          status: 400,
+          msg: "User already exist",
+          result: [],
         });
       }
 
@@ -135,12 +151,16 @@ router.post(
         { expiresIn: 360000 },
         (err, token) => {
           if (err) throw err;
-          res.json({ result: [{ token }], status: 201 });
+          res.json({
+            status: 201,
+            msg: "'Registartion success",
+            result: [{ token }],
+          });
         }
       );
     } catch (err) {
       console.error(err.message);
-      res.json({ result: [{ msg: "Server error" }], status: 500 });
+      res.json({ status: 500, msg: "Server error", result: [] });
     }
   }
 );
@@ -244,121 +264,148 @@ router.post(
 // @route    POST api/reset-password/app
 // @desc     Check code availability
 // @access   Public
-router.post("/verification", async (req, res, next) => {
-  const { email } = req.body;
-  const resetCode = Math.floor(100000 + Math.random() * 900000);
-  var now = new Date().toISOString().replace(/T/, " ").replace(/\..+/, "");
-  try {
-    await User.findOne({
-      where: {
-        email: email,
-      },
-      attributes: {
-        exclude: [
-          "password",
-          "fullName",
-          "phoneNumber",
-          "resetToken",
-          "resetTokenExpiration",
-          "role",
-          "subscriber",
-          "newsletter",
-          "createdAt",
-          "updatedAt",
-          "code",
-        ],
-      },
-      include: [
-        {
-          model: ResetPasswordApp,
-          attributes: {
-            exclude: ["id", "createdAt", "updatedAt", "userId", "code"],
-          },
+router.post(
+  "/verification",
+  [check("email", "Please include a valid email").isEmail()],
+  async (req, res, next) => {
+    const { email } = req.body;
+    const resetCode = Math.floor(100000 + Math.random() * 900000);
+    var now = new Date().toISOString().replace(/T/, " ").replace(/\..+/, "");
+
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.json({
+        status: 400,
+        msg: "Email cannot be empty",
+        result: [],
+      });
+    }
+
+    try {
+      await User.findOne({
+        where: {
+          email: email,
         },
-      ],
-    }).then(async (user) => {
-      if (user == null) {
-        return res.json({
-          result: [{ msg: "Check your emails" }],
-          status: 400,
-        });
-      } else {
-        await User.update({ code: resetCode }, { where: { email: email } });
+        attributes: {
+          exclude: [
+            "password",
+            "fullName",
+            "phoneNumber",
+            "resetToken",
+            "resetTokenExpiration",
+            "role",
+            "subscriber",
+            "newsletter",
+            "createdAt",
+            "updatedAt",
+            "code",
+          ],
+        },
+        include: [
+          {
+            model: ResetPasswordApp,
+            attributes: {
+              exclude: ["id", "createdAt", "updatedAt", "userId", "code"],
+            },
+          },
+        ],
+      }).then(async (user) => {
+        if (user == null) {
+          return res.json({
+            status: 400,
+            msg: "Check your emails",
+            result: [],
+          });
+        } else {
+          await User.update({ code: resetCode }, { where: { email: email } });
 
-        const currentCode = await ResetPasswordApp.create({
-          userId: user.id,
-          code: resetCode,
-          expiartion: Date.now() - 86400000,
-        });
+          const currentCode = await ResetPasswordApp.create({
+            userId: user.id,
+            code: resetCode,
+            expiartion: Date.now() - 86400000,
+          });
 
-        await ResetPasswordApp.destroy({
-          where: { id: { [Op.notIn]: [currentCode.id] } },
-        });
+          await ResetPasswordApp.destroy({
+            where: { id: { [Op.notIn]: [currentCode.id] } },
+          });
 
-        await sequelize
-          .query(
-            `SELECT usr.id as userId, usr.code as user_code, usr.email as user_email, res.code as reset_code, res.expiartion as code_expiration
+          await sequelize
+            .query(
+              `SELECT usr.id as userId, usr.code as user_code, usr.email as user_email, res.code as reset_code, res.expiartion as code_expiration
           FROM users AS usr
           INNER JOIN ResetPasswordApps AS res
           ON usr.id = res.userId
           WHERE usr.email LIKE '%${email}%'`,
-            { type: Sequelize.QueryTypes.SELECT }
-          )
-          .then(async (result) => {
-            if (result.length == 0) {
-              return res.json({
-                result: [{ msg: "Invalid code for this user" }],
-                status: 400,
-              });
-            }
-
-            for (let i = 0; i <= result.length - 1; i++) {
-              if (
-                result[i].code_expiration
-                  .toISOString()
-                  .replace(/T/, " ")
-                  .replace(/\..+/, "") > now ||
-                result[i].user_code == 0
-              ) {
+              { type: Sequelize.QueryTypes.SELECT }
+            )
+            .then(async (result) => {
+              if (result.length == 0) {
                 return res.json({
-                  result: [{ msg: "Invalid code for this user" }],
                   status: 400,
-                });
-              } else {
-                await transporter.sendMail({
-                  to: email,
-                  from: "reset-password@foodnet.ro",
-                  subject: "Request for reset password",
-                  html: `
-                        <p>Your reset code is: ${resetCode}</p>
-                      `,
-                });
-
-                return res.json({
-                  result,
-                  status: 200,
+                  msg: "Invalid code for this user",
+                  result: [],
                 });
               }
-            }
-          });
-      }
-    });
-  } catch (err) {
-    console.error(err.message);
-    res.json({ result: [{ msg: "Server error" }], status: 500 });
+
+              for (let i = 0; i <= result.length - 1; i++) {
+                if (
+                  result[i].code_expiration
+                    .toISOString()
+                    .replace(/T/, " ")
+                    .replace(/\..+/, "") > now ||
+                  result[i].user_code == 0
+                ) {
+                  return res.json({
+                    status: 400,
+                    msg: "Invalid code for this user",
+                    result: [],
+                  });
+                } else {
+                  // await transporter.sendMail({
+                  //   to: email,
+                  //   from: "reset-password@foodnet.ro",
+                  //   subject: "Request for reset password",
+                  //   html: `
+                  //         <p>Your reset code is: ${resetCode}</p>
+                  //       `,
+                  // });
+
+                  return res.json({
+                    status: 200,
+                    msg: "Successfully sent email",
+                    result,
+                  });
+                }
+              }
+            });
+        }
+      });
+    } catch (err) {
+      console.error(err.message);
+      res.json({ result: [{ msg: "Server error" }], status: 500 });
+    }
   }
-});
+);
 
 // @route    POST api/reset-password-app/:token
 // @desc     Change password in app
 // @access   Public
 router.post(
   "/reset-password-app",
-  [check("newPassword", "Password min 6 length").isLength({ min: 5 })],
+  [
+    check("newPassword", "newPassword min 5 length").isLength({ min: 5 }),
+    check("email", "Please include a valid email").isEmail(),
+    check("code", "Please include code").isLength({ min: 6, max: 6 }),
+  ],
   async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+      return res.json({
+        status: 400,
+        msg: "Invalid credentials",
+        result: [],
+      });
     }
 
     const { newPassword, email, code } = req.body;
@@ -380,8 +427,9 @@ router.post(
 
     if (checkCode.length == 0 || checkCode[0].code != code) {
       return res.json({
-        result: [{ msg: "Invalid code for this user" }],
         status: 400,
+        msg: "Invalid code for this user",
+        result: [],
       });
     }
 
@@ -412,15 +460,15 @@ router.post(
           (err, token) => {
             if (err) throw err;
             return res.json({
-              result: [{ msg: "You have successfully changed your password" }],
-              token,
               status: 200,
+              msg: "You have successfully changed your password",
+              result: [{ token: token }],
             });
           }
         );
       })
       .catch((err) => {
-        res.json({ result: [{ msg: "Server error" }], status: 500 });
+        res.json({ status: 500, msg: "Server error", result: [] });
       });
   }
 );
