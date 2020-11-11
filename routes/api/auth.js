@@ -115,7 +115,6 @@ router.post(
     }
 
     const { email, password, name, code } = req.body;
-
     try {
       let user = await User.findOne({ where: { email: email } });
 
@@ -156,6 +155,7 @@ router.post(
             status: 201,
             msg: "'Registartion success",
             result: [{ token }],
+            body: req.body,
           });
         }
       );

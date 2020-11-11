@@ -10,7 +10,7 @@ const sequelize = new Sequelize(
   }
 );
 
-// const sequelize = new Sequelize("foodnet", "root", "", {
+// const sequelize = new Sequelize("foodnet2", "root", "", {
 //   dialect: "mysql",
 //   host: "localhost",
 // });
