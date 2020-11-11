@@ -155,7 +155,6 @@ router.post(
             status: 201,
             msg: "'Registartion success",
             result: [{ token }],
-            body: req.body,
           });
         }
       );
