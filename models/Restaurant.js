@@ -25,6 +25,7 @@ const Restaurant = sequelize.define("restaurant", {
   newRestaurant: Sequelize.INTEGER,
   discount: Sequelize.INTEGER,
   active: Sequelize.INTEGER,
+  rating: Sequelize.INTEGER,
 });
 
 module.exports = Restaurant;
