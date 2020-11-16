@@ -133,22 +133,6 @@ router.get("/list/:locationName", async (req, res) => {
     });
 });
 
-// {
-//   "freeDelivery": 1,
-//    "newest": 1,
-//     "withinOneHour": 1,
-//      "dailyMenu": 1,
-//       "pizza": 1,
-//        "hamburger": 1,
-//         "money": 1,
-//            "card": 1,
-//              "salad": 1,
-//              "soup": 1,
-//              "lang": "rof"
-
-// }
-
-///
 router.post("/restaurantFilter/:lang/:locationName", async (req, res) => {
   const lang = req.params.lang;
   let languageCode;
@@ -161,9 +145,9 @@ router.post("/restaurantFilter/:lang/:locationName", async (req, res) => {
   } else {
     return res.status(404).json({ msg: "language not found" });
   }
+
   const city = req.params.locationName.split("-").join(" ");
 
-  console.log("city", city);
   const freeDelivery = [req.body.freeDelivery];
   const newest = [req.body.newest];
   const withinOneHour = [req.body.withinOneHour];
@@ -176,7 +160,6 @@ router.post("/restaurantFilter/:lang/:locationName", async (req, res) => {
   const card = [req.body.card];
   let filteredRestaurants = [];
   let finalRestaurants = [];
-  console.log(req.body);
 
   const searchedRestaurant = await LocationNameTransalation.findAll({
     where: { name: city, languageId: languageCode },
