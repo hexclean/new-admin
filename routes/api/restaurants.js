@@ -232,14 +232,22 @@ router.post("/restaurantFilter/:lang/:locationName", async (req, res) => {
   });
 
   if (searchedRestaurant.length == 0) {
-    return res.json("No restaurant found");
+    return res.json({
+      status: 400,
+      msg: "No restaurant found",
+      result: [],
+    });
   }
 
   if (searchedRestaurant[0].locationName.locations[0] !== undefined) {
     filteredRestaurants =
       searchedRestaurant[0].locationName.locations[0].RestaurantFilters;
   } else {
-    return res.json("No restaurant found");
+    return res.json({
+      status: 400,
+      msg: "No restaurant found",
+      result: [],
+    });
   }
 
   try {
@@ -247,10 +255,18 @@ router.post("/restaurantFilter/:lang/:locationName", async (req, res) => {
       finalRestaurants[i] = filteredRestaurants[i].restaurant;
     }
 
-    res.json(finalRestaurants);
+    return res.json({
+      status: 200,
+      msg: "Filtered restaurants",
+      finalRestaurants,
+    });
   } catch (err) {
     console.error(err.message);
-    res.status(500).send("Server Error");
+    return res.json({
+      status: 500,
+      msg: "Server error",
+      result: [],
+    });
   }
 });
 
