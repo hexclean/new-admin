@@ -10,6 +10,7 @@ const RestaurantDescription = require("../../models/AdminInfo");
 const RestaurantReview = require("../../models/RestaurantsReviews");
 const sequelize = require("../../util/database");
 const { Op } = require("sequelize");
+
 router.get("/:lang/:locationName/:restaurantName", async (req, res) => {
   let lang = req.params.lang;
   if (lang == "ro") {
@@ -148,8 +149,8 @@ router.get("/list/:locationName", async (req, res) => {
 // }
 
 ///
-router.post("/restaurantFilter", async (req, res) => {
-  const lang = req.body.lang;
+router.post("/restaurantFilter/:lang/:locationName", async (req, res) => {
+  const lang = req.params.lang;
   let languageCode;
   if (lang == "ro") {
     languageCode = 1;
@@ -160,8 +161,9 @@ router.post("/restaurantFilter", async (req, res) => {
   } else {
     return res.status(404).json({ msg: "language not found" });
   }
-  const city = req.body.city;
+  const city = req.params.locationName.split("-").join(" ");
 
+  console.log("city", city);
   const freeDelivery = [req.body.freeDelivery];
   const newest = [req.body.newest];
   const withinOneHour = [req.body.withinOneHour];
@@ -174,8 +176,10 @@ router.post("/restaurantFilter", async (req, res) => {
   const card = [req.body.card];
   let filteredRestaurants = [];
   let finalRestaurants = [];
+  console.log(req.body);
+
   const searchedRestaurant = await LocationNameTransalation.findAll({
-    where: { name: "en" },
+    where: { name: city, languageId: languageCode },
 
     include: [
       {
@@ -243,6 +247,10 @@ router.post("/restaurantFilter", async (req, res) => {
       },
     ],
   });
+
+  if (searchedRestaurant.length == 0) {
+    return res.json("No restaurant found");
+  }
 
   if (searchedRestaurant[0].locationName.locations[0] !== undefined) {
     filteredRestaurants =
