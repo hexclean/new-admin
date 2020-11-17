@@ -174,16 +174,16 @@ router.post("/restaurantFilter/:lang/:locationName", async (req, res) => {
               {
                 model: RestaurantFilters,
                 where: {
-                  freeDelivery: { [Op.in]: freeDelivery },
-                  newest: { [Op.in]: newest },
-                  withinOneHour: { [Op.in]: withinOneHour },
-                  hamburger: { [Op.in]: hamburger },
-                  pizza: { [Op.in]: pizza },
-                  dailyMenu: { [Op.in]: dailyMenu },
-                  soup: { [Op.in]: soup },
-                  salad: { [Op.in]: salad },
-                  money: { [Op.in]: money },
-                  card: { [Op.in]: card },
+                  freeDelivery: { [Op.or]: freeDelivery },
+                  newest: { [Op.or]: newest },
+                  withinOneHour: { [Op.or]: withinOneHour },
+                  hamburger: { [Op.or]: hamburger },
+                  pizza: { [Op.or]: pizza },
+                  dailyMenu: { [Op.or]: dailyMenu },
+                  soup: { [Op.or]: soup },
+                  salad: { [Op.or]: salad },
+                  money: { [Op.or]: money },
+                  card: { [Op.or]: card },
                 },
                 include: [
                   {
