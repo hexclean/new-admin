@@ -102,19 +102,29 @@ router.get("/promotion/:lang/:locationName", async (req, res, next) => {
       AND locNameTrans.languageId = ${languageCode} AND hoH.sku LIKE '%${today}%'
       AND adInf.languageId = ${languageCode}
       AND locNameTrans.name LIKE '%${locationName}%' AND locNameTrans.languageId= ${languageCode} 
-      ORDER BY promotion ASC
+      ORDER BY promotion DESC
       LIMIT 5;`,
       { type: Sequelize.QueryTypes.SELECT }
     );
 
     if (selectedLocation.length == 0) {
-      return res.status(404).json({ msg: "City not found" });
+      return res.json({
+        status: 404,
+        msg: "City not found",
+        result: [],
+      });
     }
 
-    res.json(selectedLocation);
+    return res.json({
+      status: 200,
+      msg: "Success",
+      selectedLocation,
+    });
   } catch (err) {
-    console.error(err.message);
-    res.status(500).send("Server Error");
+    return res.json({
+      status: 500,
+      msg: "Server error",
+    });
   }
 });
 
