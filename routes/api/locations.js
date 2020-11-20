@@ -112,14 +112,14 @@ router.get("/:lang/:locationName", async (req, res, next) => {
     if (selectedLocation.length == 0) {
       return res.json({
         status: 404,
-        msg: "City not found",
+        msg: "Restaurant not found",
         result: [],
       });
     }
 
     return res.json({
       status: 200,
-      msg: "Location list successfuly appear",
+      msg: "Restaurant list successfuly appear",
       selectedLocation,
     });
   } catch (err) {
@@ -128,7 +128,7 @@ router.get("/:lang/:locationName", async (req, res, next) => {
   }
 });
 
-// @route    GET api/location/targu-mures
+// @route    GET api/location/home/:lang/:locationName
 // @desc     Get all restaurants from Marosvásárhely (HOME)
 // @access   Public
 router.get("/home/:lang/:locationName", async (req, res, next) => {
@@ -161,7 +161,7 @@ router.get("/home/:lang/:locationName", async (req, res, next) => {
   let today = weekday[d.getDay()];
 
   try {
-    const selectedLocation = await sequelize.query(
+    const restaurants = await sequelize.query(
       `SELECT hoH.open as restaurant_open, hoH.close AS restaurant_close, ad.rating AS restaurant_rating,  ad.id AS restaurant_id, ad.imageUrl AS restaurant_profileImage,
       ad.fullName AS restaurant_name, ad.newRestaurant AS restaurant_new, ad.discount AS restaurant_discount,
        adInf.shortCompanyDesc AS restaurant_description
@@ -187,18 +187,18 @@ router.get("/home/:lang/:locationName", async (req, res, next) => {
       { type: Sequelize.QueryTypes.SELECT }
     );
 
-    if (selectedLocation.length == 0) {
+    if (restaurants.length == 0) {
       return res.json({
         status: 404,
-        msg: "City not found",
+        msg: "Restaurant not found",
         result: [],
       });
     }
 
     return res.json({
       status: 200,
-      msg: "Location list successfuly appear",
-      selectedLocation,
+      msg: "Restaurant list successfuly appear",
+      restaurants,
     });
   } catch (err) {
     console.error(err.message);
