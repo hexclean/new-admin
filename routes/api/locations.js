@@ -15,21 +15,33 @@ router.get("/:lang", async (req, res) => {
   } else if (lang == "en") {
     languageCode = 3;
   } else {
-    languageCode = 1;
+    return res.json({
+      status: 404,
+      msg: "Language not found",
+      result: [],
+    });
   }
   try {
     const locations = await sequelize.query(
-      `SELECT locNameTrans.name AS cities
+      `SELECT loc.id, locNameTrans.name AS cities
       FROM locationNameTranslations as locNameTrans
       WHERE locNameTrans.languageId = ${languageCode};`,
       { type: Sequelize.QueryTypes.SELECT }
     );
 
     if (!locations) {
-      return res.status(404).json({ msg: "City not found" });
+      return res.json({
+        status: 404,
+        msg: "City not found",
+        result: [],
+      });
     }
 
-    res.json(locations);
+    return res.json({
+      status: 200,
+      msg: "Location list successfuly appear",
+      locations,
+    });
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Server Error");
