@@ -396,7 +396,15 @@ router.post("/search", async (req, res) => {
       const { RestaurantFilters } = locations[k];
       for (let j = 0; j < RestaurantFilters.length; ++j) {
         const { restaurant } = RestaurantFilters[j];
-        finalResult.push(restaurant);
+        const shortCompanyDesc = restaurant.adminInfos[0].shortCompanyDesc;
+        finalResult.push({
+          id: restaurant.id,
+          fullName: restaurant.fullName,
+          imageUrl: restaurant.imageUrl,
+          rating: restaurant.rating,
+          promotion: restaurant.promotion,
+          shortCompanyDesc: shortCompanyDesc,
+        });
       }
     }
   }
