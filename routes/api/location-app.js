@@ -319,6 +319,7 @@ router.post("/search", async (req, res) => {
     return res.status(404).json({ msg: "language not found" });
   }
   const city = req.body.location.split("-").join(" ");
+  console.log("city----", city);
   var whereStatement = {};
   var fullNameStatement = {};
 
@@ -335,14 +336,13 @@ router.post("/search", async (req, res) => {
   if (req.body.searchString) {
     fullNameStatement = {
       fullName: {
-        // [Sequelize.Op.iLike]: ,
         [Op.like]: `%${req.body.searchString}%`,
       },
     };
   }
 
   const filteredResult = await LocationNameTransalation.findAll({
-    where: { name: city, languageId: 1 },
+    where: { name: city, languageId: languageCode },
 
     include: [
       {
