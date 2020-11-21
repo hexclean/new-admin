@@ -370,8 +370,6 @@ router.post("/search", async (req, res) => {
                         "minimumOrderSubscriber",
                         "avgTransport",
                         "deliveryPrice",
-                        "newRestaurant",
-                        "discount",
                         "active",
                         "createdAt",
                         "updatedAt",
@@ -424,15 +422,15 @@ router.post("/search", async (req, res) => {
         const shortCompanyDesc = restaurant.adminInfos[0].shortCompanyDesc;
         const { open, close } = restaurant.hours[0].openingHour;
         finalResult.push({
-          open,
-          close,
-          id: restaurant.id,
-          fullName: restaurant.fullName,
-          imageUrl: restaurant.imageUrl,
-          rating: restaurant.rating,
-          promotion: restaurant.promotion,
+          restaurant_open: open,
+          restaurant_close: close,
+          restaurant_rating: restaurant.rating,
+          restaurant_id: restaurant.id,
+          restaurant_profileImage: restaurant.imageUrl,
+          restaurant_name: restaurant.fullName,
+          restaurant_new: restaurant.newRestaurant,
+          restaurant_discount: restaurant.discount,
           shortCompanyDesc: shortCompanyDesc,
-          opening: "",
         });
       }
     }
@@ -441,7 +439,7 @@ router.post("/search", async (req, res) => {
   return res.json({
     status: 200,
     msg: "Filtered restaurants",
-    filteredResult,
+    finalResult,
   });
 });
 
