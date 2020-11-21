@@ -239,28 +239,6 @@ router.post("/search", async (req, res) => {
   if (req.body.filters.card == 1) whereStatement.card = 1;
   if (req.body.filters.withinOneHour == 1) whereStatement.withinOneHour = 1;
 
-  // if (req.body.searchString)
-  // whereStatement.username = { $like: "%" + searchParams.username + "%" };
-  // const filteredResult = await RestaurantFilters.findAll({
-  //   where: whereStatement,
-  //   include: [
-  //     {
-  //       model: RestaurantDescription,
-  //     },
-  //   ],
-
-  //   include: [
-  //     {
-  //       model: Restaurant,
-  //       include: [
-  //         {
-  //           model: RestaurantDescription,
-  //         },
-  //       ],
-  //     },
-  //   ],
-  // });
-
   const filteredResult = await LocationNameTransalation.findAll({
     where: { name: city, languageId: 1 },
 
