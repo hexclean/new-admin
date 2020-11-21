@@ -19,22 +19,22 @@ const transporter = nodemailer.createTransport(
   })
 );
 
-async function badProductReview() {
-  // const DATE = new Date();
-  // DATE.setDate(DATE.getDate() + 1);
-  const mailOptions = {
-    from: "shop@node-complete.com",
-    to: "erdosjozsef20@gmail.com",
-    subject: "Form send",
-    html: `Content`,
-  };
-  const DELAY = 600 * 60 * 10000;
-  transporter.sendMail(mailOptions, (error, info) => {
-    if (error) console.log("Mail failed!! :(");
-    else console.log("Mail sent to " + mailOptions.to);
-  }),
-    DELAY;
-}
+// async function badProductReview() {
+//   // const DATE = new Date();
+//   // DATE.setDate(DATE.getDate() + 1);
+//   const mailOptions = {
+//     from: "shop@node-complete.com",
+//     to: "erdosjozsef20@gmail.com",
+//     subject: "Form send",
+//     html: `Content`,
+//   };
+//   // const DELAY = 600 * 60 * 10000;
+//   // transporter.sendMail(mailOptions, (error, info) => {
+//   //   if (error) console.log("Mail failed!! :(");
+//   //   else console.log("Mail sent to " + mailOptions.to);
+//   // }),
+//   //   DELAY;
+// }
 
 // async function badProductReview() {
 //   transporter.sendMail({
@@ -62,7 +62,11 @@ router.post(
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+      return res.json({
+        status: 400,
+        msg: "Invalid credentials",
+        result: [],
+      });
     }
 
     const genLink = req.params.genLink;
@@ -76,7 +80,7 @@ router.post(
         userId: req.user.id,
       },
     });
-    let reviewRestaurantId = review.restaurantId;
+
     if (
       review.length == 0 ||
       !genLink ||
@@ -84,9 +88,11 @@ router.post(
       //   ||
       //   Date.now() - 3800000 < Date.now()
     ) {
-      return res
-        .status(400)
-        .json({ msg: "Can't add review, link is expirated or you voted" });
+      return res.json({
+        status: 400,
+        msg: "Can't add review, link is expirated or you voted",
+        result: [],
+      });
     }
 
     await RestaurantsReview.findOne({
@@ -104,11 +110,23 @@ router.post(
         return user.save();
       })
       .then((result) => {
-        res.json("Succes");
+        return res.json({
+          status: 201,
+          msg: "Success",
+          result: [
+            {
+              message: result.message,
+              rating: result.rating,
+            },
+          ],
+        });
       })
       .catch((err) => {
-        console.log(err.message);
-        res.status(500).send("server error");
+        return res.json({
+          status: 500,
+          msg: "Server error",
+          result: [],
+        });
       });
   }
 );

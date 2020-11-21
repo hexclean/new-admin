@@ -1,16 +1,12 @@
 const express = require("express");
-const jwt = require("jsonwebtoken");
-const config = require("config");
+
 const router = express.Router();
 const orderUser = require("../../middleware/orderUser");
-const { check, validationResult } = require("express-validator");
 const OrderItemExtra = require("../../models/OrderItemExtra");
 const Order = require("../../models/Order");
-const Restaurant = require("../../models/Restaurant");
 const User = require("../../models/User");
 const UserDeliveryAddress = require("../../models/UserDeliveryAdress");
 const OrderItem = require("../../models/OrderItem");
-const Variants = require("../../models/ProductVariant");
 const ProductVariantExtras = require("../../models/ProductVariantsExtras");
 const ProductFinal = require("../../models/ProductFinal");
 
@@ -61,6 +57,7 @@ router.post("/", orderUser, async (req, res, next) => {
         frontendExtraId.push(extra.id);
       });
     });
+    console.log(totalVariantPrice);
     totalPrice = totalVariantPrice + totalExtraPrice;
     let extraId = frontendExtraId;
     let checkExtraPrice = [];
@@ -117,9 +114,11 @@ router.post("/", orderUser, async (req, res, next) => {
       (cutlery != 0 && cutlery != 1) ||
       (take != 0 && take != 1)
     ) {
-      return res
-        .status(404)
-        .json({ msg: "You can't buy! Please don't cheat..." });
+      res.json({
+        status: 400,
+        msg: "Please don't cheat",
+        result: [],
+      });
     }
     if (token != undefined) {
       const order = await Order.create({
@@ -186,10 +185,17 @@ router.post("/", orderUser, async (req, res, next) => {
       );
     }
 
-    return res.json(req.body);
+    res.json({
+      status: 200,
+      msg: "Successful order",
+      result: [],
+    });
   } catch (err) {
-    console.error(err.message);
-    res.status(500).send("Server Error");
+    res.json({
+      status: 500,
+      msg: "Server error",
+      result: [],
+    });
   }
 });
 
