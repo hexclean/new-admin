@@ -2,7 +2,13 @@ const express = require("express");
 const router = express.Router();
 const Sequelize = require("sequelize");
 const sequelize = require("../../util/database");
-
+const { Op } = require("sequelize");
+const RestaurantFilters = require("../../models/RestaurantFilters");
+const LocationNameTransalation = require("../../models/LocationNameTranslation");
+const LocationName = require("../../models/LocationName");
+const Restaurant = require("../../models/Restaurant");
+const RestaurantDescription = require("../../models/AdminInfo");
+const Location = require("../../models/Location");
 // @route    GET api/location/:locationName
 // @desc     Get all restaurants from selected city
 // @access   Public
@@ -284,6 +290,246 @@ router.get("/:lang/:locationName", async (req, res, next) => {
       msg: "Server error",
     });
   }
+});
+
+router.post("/search", async (req, res) => {
+  const lang = req.body.lang;
+  let languageCode;
+  if (lang == "ro") {
+    languageCode = 1;
+  } else if (lang == "hu") {
+    languageCode = 2;
+  } else if (lang == "en") {
+    languageCode = 3;
+  } else {
+    return res.status(404).json({ msg: "language not found" });
+  }
+  const city = req.body.location.split("-").join(" ");
+  var whereStatement = {};
+
+  if (req.body.filters.freeDelivery == 1) whereStatement.freeDelivery = 1;
+  if (req.body.filters.newest == 1) whereStatement.newest = 1;
+  if (req.body.filters.pizza == 1) whereStatement.pizza = 1;
+  if (req.body.filters.hamburger == 1) whereStatement.hamburger = 1;
+  if (req.body.filters.dailyMenu == 1) whereStatement.dailyMenu = 1;
+  if (req.body.filters.soup == 1) whereStatement.soup = 1;
+  if (req.body.filters.salad == 1) whereStatement.salad = 1;
+  if (req.body.filters.money == 1) whereStatement.money = 1;
+  if (req.body.filters.card == 1) whereStatement.card = 1;
+  if (req.body.filters.withinOneHour == 1) whereStatement.withinOneHour = 1;
+
+  const filteredResult = await LocationNameTransalation.findAll({
+    where: { name: city, languageId: 1 },
+
+    include: [
+      {
+        model: LocationName,
+        include: [
+          {
+            model: Location,
+            include: [
+              {
+                model: RestaurantFilters,
+                where: whereStatement,
+
+                include: [
+                  {
+                    model: Restaurant,
+                    where: {
+                      fullName: {
+                        [Op.like]: req.body.searchString,
+                      },
+                    },
+                    attributes: {
+                      exclude: [
+                        "password",
+                        "commission",
+                        "phoneNumber",
+                        "email",
+                        "coverUrl",
+                        "minimumOrderUser",
+                        "minimumOrderSubscriber",
+                        "avgTransport",
+                        "deliveryPrice",
+                        "newRestaurant",
+                        "discount",
+                        "active",
+                        "createdAt",
+                        "updatedAt",
+                      ],
+                    },
+                    include: [
+                      {
+                        model: RestaurantDescription,
+                        where: { languageId: languageCode },
+                        attributes: {
+                          exclude: [
+                            "adress",
+                            "kitchen",
+                            "createdAt",
+                            "updatedAt",
+                            "languageId",
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  });
+  let finalResult = [];
+
+  for (let i = 0; i < filteredResult.length; i++) {
+    const { locationName } = filteredResult[i];
+    const { locations } = locationName;
+    for (let k = 0; k < locations.length; ++k) {
+      const { RestaurantFilters } = locations[k];
+      for (let j = 0; j < RestaurantFilters.length; ++j) {
+        const { restaurant } = RestaurantFilters[j];
+        finalResult.push(restaurant);
+      }
+    }
+  }
+
+  if (finalResult.length == 0) {
+    return res.json({
+      status: 404,
+      msg: "No restaurant found",
+      result: [],
+    });
+  }
+
+  return res.json({
+    status: 200,
+    msg: "Filtered restaurants",
+    finalResult,
+  });
+
+  // const freeDelivery = [req.body.freeDelivery];
+  // const newest = [req.body.newest];
+  // const withinOneHour = [req.body.withinOneHour];
+  // const pizza = [req.body.pizza];
+  // const hamburger = [req.body.hamburger];
+  // const dailyMenu = [req.body.dailyMenu];
+  // const soup = [req.body.soup];
+  // const salad = [req.body.salad];
+  // const money = [req.body.money];
+  // const card = [req.body.card];
+  // let filteredRestaurants = [];
+  // let finalRestaurants = [];
+
+  // const searchedRestaurant = await LocationNameTransalation.findAll({
+  //   where: { name: city, languageId: languageCode },
+
+  //   include: [
+  //     {
+  //       model: LocationName,
+  //       include: [
+  //         {
+  //           model: Location,
+  //           include: [
+  //             {
+  //               model: RestaurantFilters,
+  //               where: {
+  //                 freeDelivery: { [Op.or]: freeDelivery },
+  //                 newest: { [Op.or]: newest },
+  //                 withinOneHour: { [Op.or]: withinOneHour },
+  //                 hamburger: { [Op.or]: hamburger },
+  //                 pizza: { [Op.or]: pizza },
+  //                 dailyMenu: { [Op.or]: dailyMenu },
+  //                 soup: { [Op.or]: soup },
+  //                 salad: { [Op.or]: salad },
+  //                 money: { [Op.or]: money },
+  //                 card: { [Op.or]: card },
+  //               },
+  //               include: [
+  //                 {
+  //                   model: Restaurant,
+  //                   attributes: {
+  //                     exclude: [
+  //                       "password",
+  //                       "commission",
+  //                       "phoneNumber",
+  //                       "email",
+  //                       "coverUrl",
+  //                       "minimumOrderUser",
+  //                       "minimumOrderSubscriber",
+  //                       "avgTransport",
+  //                       "deliveryPrice",
+  //                       "newRestaurant",
+  //                       "discount",
+  //                       "active",
+  //                       "createdAt",
+  //                       "updatedAt",
+  //                     ],
+  //                   },
+  //                   include: [
+  //                     {
+  //                       model: RestaurantDescription,
+  //                       where: { languageId: languageCode },
+  //                       attributes: {
+  //                         exclude: [
+  //                           "adress",
+  //                           "kitchen",
+  //                           "createdAt",
+  //                           "updatedAt",
+  //                           "languageId",
+  //                         ],
+  //                       },
+  //                     },
+  //                   ],
+  //                 },
+  //               ],
+  //             },
+  //           ],
+  //         },
+  //       ],
+  //     },
+  //   ],
+  // });
+
+  // if (searchedRestaurant.length == 0) {
+  //   return res.json({
+  //     status: 400,
+  //     msg: "No restaurant found",
+  //     result: [],
+  //   });
+  // }
+
+  // if (searchedRestaurant[0].locationName.locations[0] !== undefined) {
+  //   filteredRestaurants =
+  //     searchedRestaurant[0].locationName.locations[0].RestaurantFilters;
+  // } else {
+  //   return res.json({
+  //     status: 400,
+  //     msg: "No restaurant found",
+  //     result: [],
+  //   });
+  // }
+
+  // try {
+  // console.log(req.body);
+  // for (let i = 0; i <= filteredRestaurants.length - 1; i++) {
+  //   finalRestaurants[i] = filteredRestaurants[i].restaurant;
+  // }
+  // return res.json({
+  //   status: 200,
+  //   msg: "Filtered restaurants",
+  //   finalRestaurants,
+  // });
+  // } catch (err) {
+  //   console.error(err.message);
+  //   return res.json({
+  //     status: 500,
+  //     msg: "Server error",
+  //     result: [],
+  //   });
+  // }
 });
 
 module.exports = router;
