@@ -430,7 +430,7 @@ router.post("/search", async (req, res) => {
           restaurant_name: restaurant.fullName,
           restaurant_new: restaurant.newRestaurant,
           restaurant_discount: restaurant.discount,
-          shortCompanyDesc: shortCompanyDesc,
+          restaurant_description: shortCompanyDesc,
         });
       }
     }
