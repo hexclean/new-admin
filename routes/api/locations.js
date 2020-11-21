@@ -262,7 +262,7 @@ router.post("/search", async (req, res) => {
   // });
 
   const filteredResult = await LocationNameTransalation.findAll({
-    where: { name: city, languageId: languageCode },
+    where: { name: city, languageId: 1 },
 
     include: [
       {
@@ -320,8 +320,21 @@ router.post("/search", async (req, res) => {
       },
     ],
   });
+  let finalResult = [];
 
-  return res.json(filteredResult);
+  for (let i = 0; i < filteredResult.length; i++) {
+    const { locationName } = filteredResult[i];
+    const { locations } = locationName;
+    for (let k = 0; k < locations.length; ++k) {
+      const { RestaurantFilters } = locations[k];
+      for (let j = 0; j < RestaurantFilters.length; ++j) {
+        const { restaurant } = RestaurantFilters[j];
+        finalResult.push(restaurant);
+      }
+    }
+  }
+
+  return res.json(finalResult);
 
   // const freeDelivery = [req.body.freeDelivery];
   // const newest = [req.body.newest];
