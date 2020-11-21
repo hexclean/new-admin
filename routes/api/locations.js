@@ -2,7 +2,12 @@ const express = require("express");
 const router = express.Router();
 const Sequelize = require("sequelize");
 const sequelize = require("../../util/database");
-const Filters = require("../../models/RestaurantFilters");
+const RestaurantFilters = require("../../models/RestaurantFilters");
+const LocationNameTransalation = require("../../models/LocationNameTranslation");
+const LocationName = require("../../models/LocationName");
+const Restaurant = require("../../models/Restaurant");
+const RestaurantDescription = require("../../models/AdminInfo");
+const Location = require("../../models/Location");
 
 // @route    GET api/location/:locationName
 // @desc     Get all restaurants from selected city
@@ -220,7 +225,7 @@ router.post("/search", async (req, res) => {
   } else {
     return res.status(404).json({ msg: "language not found" });
   }
-  // const city = req.params.locationName.split("-").join(" ");
+  const city = req.body.location.split("-").join(" ");
   var whereStatement = {};
 
   if (req.body.filters.freeDelivery == 1) whereStatement.freeDelivery = 1;
@@ -236,8 +241,84 @@ router.post("/search", async (req, res) => {
 
   // if (req.body.searchString)
   // whereStatement.username = { $like: "%" + searchParams.username + "%" };
-  const filteredResult = await Filters.findAll({
-    where: whereStatement,
+  // const filteredResult = await RestaurantFilters.findAll({
+  //   where: whereStatement,
+  //   include: [
+  //     {
+  //       model: RestaurantDescription,
+  //     },
+  //   ],
+
+  //   include: [
+  //     {
+  //       model: Restaurant,
+  //       include: [
+  //         {
+  //           model: RestaurantDescription,
+  //         },
+  //       ],
+  //     },
+  //   ],
+  // });
+
+  const filteredResult = await LocationNameTransalation.findAll({
+    where: { name: city, languageId: languageCode },
+
+    include: [
+      {
+        model: LocationName,
+        include: [
+          {
+            model: Location,
+            include: [
+              {
+                model: RestaurantFilters,
+                where: whereStatement,
+
+                include: [
+                  {
+                    model: Restaurant,
+                    attributes: {
+                      exclude: [
+                        "password",
+                        "commission",
+                        "phoneNumber",
+                        "email",
+                        "coverUrl",
+                        "minimumOrderUser",
+                        "minimumOrderSubscriber",
+                        "avgTransport",
+                        "deliveryPrice",
+                        "newRestaurant",
+                        "discount",
+                        "active",
+                        "createdAt",
+                        "updatedAt",
+                      ],
+                    },
+                    include: [
+                      {
+                        model: RestaurantDescription,
+                        where: { languageId: languageCode },
+                        attributes: {
+                          exclude: [
+                            "adress",
+                            "kitchen",
+                            "createdAt",
+                            "updatedAt",
+                            "languageId",
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    ],
   });
 
   return res.json(filteredResult);
