@@ -321,7 +321,8 @@ router.post("/search", async (req, res) => {
   if (req.body.searchString) {
     fullNameStatement = {
       fullName: {
-        [Op.like]: req.body.searchString,
+        // [Sequelize.Op.iLike]: ,
+        [Op.like]: `%${req.body.searchString}%`,
       },
     };
   }
