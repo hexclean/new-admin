@@ -9,6 +9,9 @@ const LocationName = require("../../models/LocationName");
 const Restaurant = require("../../models/Restaurant");
 const RestaurantDescription = require("../../models/AdminInfo");
 const Location = require("../../models/Location");
+const Hours = require("../../models/Hours");
+const OpeningHours = require("../../models/OpeningHours");
+const OpeningHoursTransaltion = require("../../models/OpeningHoursTranslation");
 // @route    GET api/location/:locationName
 // @desc     Get all restaurants from selected city
 // @access   Public
@@ -294,6 +297,17 @@ router.get("/:lang/:locationName", async (req, res, next) => {
 
 router.post("/search", async (req, res) => {
   const lang = req.body.lang;
+  let d = new Date();
+  let weekday = new Array(7);
+  weekday[0] = "vasarnap";
+  weekday[1] = "hetfo";
+  weekday[2] = "kedd";
+  weekday[3] = "szerda";
+  weekday[4] = "csutortok";
+  weekday[5] = "pentek";
+  weekday[6] = "szombat";
+
+  let today = weekday[d.getDay()];
   let languageCode;
   if (lang == "ro") {
     languageCode = 1;
@@ -363,7 +377,17 @@ router.post("/search", async (req, res) => {
                         "updatedAt",
                       ],
                     },
+
                     include: [
+                      {
+                        model: Hours,
+                        include: [
+                          {
+                            model: OpeningHours,
+                            where: { sku: today },
+                          },
+                        ],
+                      },
                       {
                         model: RestaurantDescription,
                         where: { languageId: languageCode },
@@ -387,6 +411,7 @@ router.post("/search", async (req, res) => {
       },
     ],
   });
+  console.log("filteredResult", filteredResult);
   let finalResult = [];
 
   for (let i = 0; i < filteredResult.length; i++) {
@@ -397,13 +422,17 @@ router.post("/search", async (req, res) => {
       for (let j = 0; j < RestaurantFilters.length; ++j) {
         const { restaurant } = RestaurantFilters[j];
         const shortCompanyDesc = restaurant.adminInfos[0].shortCompanyDesc;
+        const { open, close } = restaurant.hours[0].openingHour;
         finalResult.push({
+          open,
+          close,
           id: restaurant.id,
           fullName: restaurant.fullName,
           imageUrl: restaurant.imageUrl,
           rating: restaurant.rating,
           promotion: restaurant.promotion,
           shortCompanyDesc: shortCompanyDesc,
+          opening: "",
         });
       }
     }
@@ -412,7 +441,7 @@ router.post("/search", async (req, res) => {
   return res.json({
     status: 200,
     msg: "Filtered restaurants",
-    finalResult,
+    filteredResult,
   });
 });
 
