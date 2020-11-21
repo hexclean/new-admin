@@ -409,7 +409,7 @@ router.post("/search", async (req, res) => {
       },
     ],
   });
-  let finalResult = [];
+  let result = [];
 
   for (let i = 0; i < filteredResult.length; i++) {
     const { locationName } = filteredResult[i];
@@ -420,7 +420,7 @@ router.post("/search", async (req, res) => {
         const { restaurant } = RestaurantFilters[j];
         const shortCompanyDesc = restaurant.adminInfos[0].shortCompanyDesc;
         const { open, close } = restaurant.hours[0].openingHour;
-        finalResult.push({
+        result.push({
           restaurant_open: open,
           restaurant_close: close,
           restaurant_rating: restaurant.rating,
@@ -434,8 +434,8 @@ router.post("/search", async (req, res) => {
       }
     }
   }
-
-  if (!finalResult) {
+  console.log(result.length);
+  if (result.length == 0) {
     return res.json({
       status: 404,
       msg: "No restaurant found",
@@ -446,7 +446,7 @@ router.post("/search", async (req, res) => {
   return res.json({
     status: 200,
     msg: "Filtered restaurants",
-    finalResult,
+    result,
   });
 });
 
