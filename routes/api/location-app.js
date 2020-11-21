@@ -409,7 +409,6 @@ router.post("/search", async (req, res) => {
       },
     ],
   });
-  console.log("filteredResult", filteredResult);
   let finalResult = [];
 
   for (let i = 0; i < filteredResult.length; i++) {
@@ -434,6 +433,14 @@ router.post("/search", async (req, res) => {
         });
       }
     }
+  }
+
+  if (!finalResult) {
+    return res.json({
+      status: 404,
+      msg: "No restaurant found",
+      result: [],
+    });
   }
 
   return res.json({
