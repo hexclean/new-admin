@@ -12,9 +12,10 @@ const Restaurant = require("../../models/Restaurant");
 const sequelize = require("../../util/database");
 const c = require("config");
 const { localsName } = require("ejs");
+const { NUMBER } = require("sequelize");
 
 router.get("/:restaurantName/:lang", async (req, res) => {
-  const params = req.params.restaurantName.split("-").join(" ");
+  const restaurantName = req.params.restaurantName.split("-").join(" ");
   const lang = req.params.lang;
   let languageCode;
   if (lang == "ro") {
@@ -31,7 +32,6 @@ router.get("/:restaurantName/:lang", async (req, res) => {
     });
   }
 
-  // FROM foodnet.extras as ext INNER JOIN foodnet.extraTranslations as extTrans on ext.id = extTrans.extraId INNER JOIN  foodnet.productVariantsExtras as prodVariant ON ext.id = prodVariant.extraId WHERE prodVariant.productVariantId =${currentValue["variantId"]} AND prodVariant.active=1 and extTrans.languageId=2;
   return sequelize
     .query(
       `SELECT prodFin.variantId as variantId, catTrans.name as categoryName, adm.fullName as partnerName, prod.id as productId, prod.imageUrl as productImageUrl,
@@ -43,9 +43,8 @@ router.get("/:restaurantName/:lang", async (req, res) => {
       INNER JOIN productCategories as cat
       on var.categoryId = cat.id
       inner join productCategoryTranslations as catTrans ON catTrans.productCategoryId = cat.id 
-
-       WHERE catTrans.languageId =${languageCode}  and prodFin.active=1 and adm.fullName LIKE '%${params}%' AND
-       prodTrans.languageId =${languageCode}
+      WHERE catTrans.languageId =${languageCode}  and prodFin.active=1 and adm.fullName LIKE '%${restaurantName}%' AND
+      prodTrans.languageId =${languageCode}
        `,
       { type: Sequelize.QueryTypes.SELECT }
     )
@@ -83,7 +82,6 @@ router.get("/:restaurantName/:lang", async (req, res) => {
 
 router.get("/allergen/:restaurantName/:lang/:productId", async (req, res) => {
   const restaurantName = req.params.restaurantName.split("-").join(" ");
-  console.log("----", restaurantName);
   const lang = req.params.lang;
   const productId = req.params.productId;
   let languageCode;
@@ -131,40 +129,22 @@ router.get("/allergen/:restaurantName/:lang/:productId", async (req, res) => {
     });
 });
 
-router.get("/category/:restaurantName/:lang/:categoryId?", async (req, res) => {
-  var categoryId = req.params.categoryId;
-  const restaurantName = req.params.restaurantName.split("-").join(" ");
-  const lang = req.params.lang;
+router.post("/category", async (req, res) => {
+  var categoryId = req.body.categoryId;
+
+  if (categoryId.length > 0) {
+    if (isNaN(categoryId)) {
+      return res.json({
+        status: 400,
+        msg: "Something went wrong",
+        result: [],
+      });
+    }
+  }
+  const restaurantName = req.body.restaurantName.split("-").join(" ");
+  const lang = req.body.lang;
   let languageCode;
-  let checkCategory;
-
-  if (categoryId != undefined) {
-    checkCategory = await Categories.findAll({
-      where: { id: categoryId },
-    });
-  }
-  const checkRestaurant = await Restaurant.findAll({
-    where: { fullName: restaurantName },
-  });
-
-  if (categoryId != undefined) {
-    if (checkCategory.length == 0) {
-      return res.json({
-        status: 400,
-        msg: "This category does not belong to the restaurant!",
-        result: [],
-      });
-    }
-  }
-  if (categoryId != undefined) {
-    if (checkCategory[0].restaurantId != checkRestaurant[0].id) {
-      return res.json({
-        status: 400,
-        msg: "This category does not belong to the restaurant!",
-        result: [],
-      });
-    }
-  }
+  console.log("categoryId", categoryId);
 
   if (lang == "ro") {
     languageCode = 1;
@@ -180,7 +160,7 @@ router.get("/category/:restaurantName/:lang/:categoryId?", async (req, res) => {
     });
   }
 
-  if (categoryId == undefined) {
+  if (categoryId == 0) {
     const result = await sequelize.query(
       `
     SELECT cat.id as category_id, catTrans.name as category_name
@@ -199,6 +179,7 @@ router.get("/category/:restaurantName/:lang/:categoryId?", async (req, res) => {
       result,
     });
   } else {
+    const searchedProduct = req.body.searchedProduct;
     const result = await sequelize.query(
       `SELECT prod.id as productId, prod.imageUrl as productImageUrl, prodTrans.title as productTitle,
         prodTrans.description as productDescription, prodFin.price as productPrice, prodFin.discountedPrice as productDiscountedPrice,
@@ -217,7 +198,7 @@ router.get("/category/:restaurantName/:lang/:categoryId?", async (req, res) => {
                 inner join restaurants as res
                 on res.id = prodVar.restaurantId
                 WHERE catTrans.languageId =${languageCode} and prodFin.active =1 and prodTrans.languageId=${languageCode}
-                and cat.id = ${categoryId};
+                and cat.id = ${categoryId} AND prodTrans.title lIKE "%${searchedProduct}%";
        `,
       { type: Sequelize.QueryTypes.SELECT }
     );

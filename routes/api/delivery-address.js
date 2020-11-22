@@ -31,7 +31,6 @@ router.post(
         houseNumber: houseNumber,
         userId: req.user.id,
       });
-      // const deliveryAdress = await newDeliveryAdress.save();
 
       res.json(newDeliveryAdress);
     } catch (err) {
