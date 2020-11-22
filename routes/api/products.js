@@ -147,6 +147,14 @@ router.get("/category/:restaurantName/:lang/:categoryId?", async (req, res) => {
     where: { fullName: restaurantName },
   });
 
+  if (checkCategory.length == 0) {
+    return res.json({
+      status: 400,
+      msg: "This category does not belong to the restaurant!",
+      result: [],
+    });
+  }
+
   if (categoryId != undefined) {
     if (checkCategory[0].restaurantId != checkRestaurant[0].id) {
       return res.json({
