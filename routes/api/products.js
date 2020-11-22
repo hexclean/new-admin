@@ -215,7 +215,7 @@ router.get("/category/:restaurantName/:lang/:categoryId?", async (req, res) => {
     if (result.length == 0) {
       return res.json({
         status: 404,
-        msg: "Product not found",
+        msg: "Product not found in this category name",
         result,
       });
     }
@@ -225,90 +225,6 @@ router.get("/category/:restaurantName/:lang/:categoryId?", async (req, res) => {
       result,
     });
   }
-
-  // .then((result) => {
-  //   if (result.length == 0) {
-  //     return res.json({
-  //       status: 404,
-  //       msg: "Allergen not found",
-  //       result: [],
-  //     });
-  //   }
-  // res.json({
-  //   status: 200,
-  //   msg: "Product allergen successfully listed",
-  //   result,
-  // });
-  // });
 });
-
-// router.get("/variant/:id/extras/:lang", async (req, res) => {
-//   const variantId = req.params.id;
-//   let languageCode;
-//   let lang = req.params.lang;
-//   if (lang == "ro") {
-//     languageCode = 1;
-//   } else if (lang == "hu") {
-//     languageCode = 2;
-//   } else if (lang == "en") {
-//     languageCode = 3;
-//   } else {
-//     return res.json({
-//       status: 404,
-//       msg: "Language not found",
-//       result: [],
-//     });
-//   }
-//   return sequelize
-//     .query(
-//       `SELECT extTrans.id AS extra_id, extTrans.name AS extra_name,
-//       prodVrExt.price AS extra_price, prodVrExt.discountedPrice AS extra_discountedPrice,
-//       prodVrExt.quantityMin AS extra_minQuantity, prodVrExt.quantityMax AS extra_maxQuantity
-//       FROM productVariantsExtras as prodVrExt
-//       INNER JOIN extras as ext
-//       ON prodVrExt.extraId = ext.id
-//       INNER JOIN extraTranslations as extTrans
-//       On extTrans.extraId = ext.id
-//       WHERE prodVrExt.productVariantId = ${variantId}
-//       AND prodVrExt.active = 1
-//       AND extTrans.languageId = ${languageCode}
-//       `,
-//       { type: Sequelize.QueryTypes.SELECT }
-//     )
-//     .then((results) => {
-//       const groupedByExtra = [];
-//       for (let d of results) {
-//         const item = {
-//           extra_id: d.extra_id,
-//           extra_name: d.extra_name,
-//           extra_price: d.extra_price,
-//           extra_discountedPrice: d.extra_discountedPrice,
-//           extra_minQuantity: d.extra_minQuantity,
-//           extra_maxQuantity: d.extra_maxQuantity,
-//           productDescription: d.productDescription,
-//           allergens: [],
-//         };
-//         groupedByExtra.push(item);
-//       }
-
-//       const groupedByCategory = groupedByExtra.reduce(
-//         (accumulator, currentValue) => {
-//           const { extra_name } = currentValue;
-//           const key = extra_name;
-//           accumulator[key] = accumulator[key] || [];
-//           accumulator[key].push(currentValue);
-//           return accumulator;
-//         },
-//         Object.create(null)
-//       );
-
-//       return res.json(groupedByCategory);
-//     });
-// });
-
-// router.get("/variant/:id/allergens", async (req, res) => {
-//   const variantId = req.params.id;
-//   return res.json(variantId);
-// });
 
 module.exports = router;
