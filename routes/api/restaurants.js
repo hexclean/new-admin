@@ -61,7 +61,7 @@ router.get("/:lang/:locationName/:restaurantName", async (req, res) => {
 });
 
 router.get(
-  "/:lang/:locationName/:prestaurantName/products",
+  "/:lang/:locationName/:restaurantName/products",
   async (req, res) => {
     let lang = req.params.lang;
     if (lang == "ro") {
@@ -74,7 +74,7 @@ router.get(
       languageCode = 1;
     }
     const locationName = req.params.locationName.split("-").join(" ");
-    const restaurantName = req.params.prestaurantName.split("-").join(" ");
+    const restaurantName = req.params.restaurantName.split("-").join(" ");
     return sequelize
       .query(
         `SELECT ad.id AS restaurant_id, ad.fullName as restaurant_name, adInf.shortCompanyDesc AS restaurant_description, ad.deliveryPrice AS restaurant_deliveryPrice, adInf.kitchen AS restaurant_kitchen
@@ -93,44 +93,5 @@ router.get(
       });
   }
 );
-
-router.get("/search", async (req, res) => {
-  return sequelize
-    .query(
-      `SELECT  *
-      FROM foodnet.restaurants as ad
-      INNER JOIN foodnet.adminHomeSearches as sc
-      ON ad.id = sc.restaurantId
-      INNER JOIN foodnet.adminHomeSearchTranslations as sctrans
-      ON sc.id = sctrans.adminHomeSearchId
-      where sctrans.languageId =2 and sctrans.active=1`,
-      { type: Sequelize.QueryTypes.SELECT }
-    )
-    .then((results) => {
-      return res.json(results);
-    });
-});
-
-router.get("/list/:locationName", async (req, res) => {
-  const params = req.params.locationName;
-  const languageCode = 2;
-  return sequelize
-    .query(
-      `SELECT ad.fullName as restaurant_name, adInf.shortCompanyDesc AS restaurant_description, ad.deliveryPrice AS restaurant_deliveryPrice, adInf.kitchen AS restaurant_kitchen
-      FROM foodnet.restaurants as ad
-      INNER JOIN foodnet.adminInfos AS adInf
-      ON adInf.restaurantId = ad.id
-      INNER JOIN foodnet.adminLocations AS adLoc
-      ON ad.id = adLoc.restaurantId
-      INNER JOIN foodnet.adminLocationTranslations AS locTrans
-      ON locTrans.adminLocationsId = adLoc.id
-      where locTrans.languageId =${languageCode} and adInf.languageId=${languageCode} and locTrans.name LIKE '%${params}%'
-      `,
-      { type: Sequelize.QueryTypes.SELECT }
-    )
-    .then((results) => {
-      return res.json(results);
-    });
-});
 
 module.exports = router;

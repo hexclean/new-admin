@@ -434,7 +434,6 @@ router.post("/search", async (req, res) => {
       }
     }
   }
-  console.log(result.length);
   if (result.length == 0) {
     return res.json({
       status: 404,

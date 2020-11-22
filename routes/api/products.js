@@ -11,40 +11,28 @@ const ProductCategories = require("../../models/ProductCategory");
 
 const sequelize = require("../../util/database");
 
-router.get("/:locationName/:partnerId", async (req, res) => {
-  const params = req.params.partnerId.split("-").join(" ");
+router.get("/:restaurantName/:catego", async (req, res) => {
+  const params = req.params.restaurantName.split("-").join(" ");
   const egy = 1;
 
   // FROM foodnet.extras as ext INNER JOIN foodnet.extraTranslations as extTrans on ext.id = extTrans.extraId INNER JOIN  foodnet.productVariantsExtras as prodVariant ON ext.id = prodVariant.extraId WHERE prodVariant.productVariantId =${currentValue["variantId"]} AND prodVariant.active=1 and extTrans.languageId=2;
   return sequelize
     .query(
-      `SELECT prodFin.variantId as variantId, catTrans.name as categoryName, adm.fullName as partnerName, prod.id as productId, prod.imageUrl as productImageUrl, prodTrans.title as productTitle, prodTrans.description productDescription, prodFin.price as productPrice, prodFin.discountedPrice as productDiscountedPrice,
-      varExtras.extraId as extraId, extTrans.name, varExtras.price  as price, varExtras.discountedPrice as discountedPrice, varExtras.quantityMin as minOrder, varExtras.quantityMax as maxOrder
-      FROM foodnet.productFinals as prodFin 
-      INNER JOIN foodnet.products as prod ON prodFin.productId = prod.id INNER JOIN foodnet.restaurants as adm On prod.restaurantId = adm.id 
-      INNER JOIN foodnet.productTranslations as prodTrans ON prodTrans.productId = prod.id 
-      INNER JOIN foodnet.productVariants as var ON prodFin.variantId = var.id
-      INNER JOIN foodnet.productCategories as cat
+      `SELECT prodFin.variantId as variantId, catTrans.name as categoryName, adm.fullName as partnerName, prod.id as productId, prod.imageUrl as productImageUrl, prodTrans.title as productTitle, prodTrans.description productDescription, prodFin.price as productPrice, prodFin.discountedPrice as productDiscountedPrice
+      FROM productFinals as prodFin 
+      INNER JOIN products as prod ON prodFin.productId = prod.id INNER JOIN restaurants as adm On prod.restaurantId = adm.id 
+      INNER JOIN productTranslations as prodTrans ON prodTrans.productId = prod.id 
+      INNER JOIN productVariants as var ON prodFin.variantId = var.id
+      INNER JOIN productCategories as cat
       on var.categoryId = cat.id
-      inner join foodnet.productCategoryTranslations as catTrans ON catTrans.productCategoryId = cat.id 
-      LEFT JOIN foodnet.productVariantsExtras as varExtras
-      on varExtras.productVariantId = var.id
-      left join foodnet.extras as ext on ext.id = varExtras.extraId 
-      left join foodnet.extraTranslations as extTrans on extTrans.extraId = ext.id
-       WHERE catTrans.languageId =2 AND extTrans.languageId=2 and prodTrans.languageId =2 and prodFin.active=${egy} and adm.fullName LIKE '%${params}%' and varExtras.active=1;`,
+      inner join productCategoryTranslations as catTrans ON catTrans.productCategoryId = cat.id 
+
+       WHERE catTrans.languageId =2  and prodTrans.languageId =2 and prodFin.active=${egy} and adm.fullName LIKE '%${params}%'`,
       { type: Sequelize.QueryTypes.SELECT }
     )
     .then((results) => {
-      const groupedByExtra = [];
+      const items = [];
       for (let d of results) {
-        const extras = {
-          extraId: d.extraId,
-          name: d.name,
-          price: d.price,
-          discountedPrice: d.discountedPrice,
-          minOrder: d.minOrder,
-          maxOrder: d.maxOrder,
-        };
         const item = {
           variantId: d.variantId,
           categoryName: d.categoryName,
@@ -56,46 +44,8 @@ router.get("/:locationName/:partnerId", async (req, res) => {
           productPrice: d.productPrice,
           productDiscountedPrice: d.productDiscountedPrice,
           extras: [],
+          allergens: [],
         };
-        item.extras = extras;
-        groupedByExtra.push(item);
-      }
-      let groupByExtras = groupedByExtra.reduce((r, a) => {
-        r[a.variantId] = [...(r[a.variantId] || []), a];
-        return r;
-      }, {});
-      const items = [];
-      for (const [key, value] of Object.entries(groupByExtras)) {
-        let item = {};
-        if (value.length > 1) {
-          let extras = [];
-          let product = value[0];
-          item = {
-            variantId: product.variantId,
-            categoryName: product.categoryName,
-            partnerName: product.partnerName,
-            productId: product.productId,
-            productImageUrl: product.productImageUrl,
-            productTitle: product.productTitle,
-            productDescription: product.productDescription,
-            productPrice: product.productPrice,
-            productDiscountedPrice: product.productDiscountedPrice,
-            extras: [],
-          };
-          for (let d of value) {
-            extras.push({
-              extraId: d.extras.extraId,
-              name: d.extras.name,
-              price: d.extras.price,
-              discountedPrice: d.extras.discountedPrice,
-              minOrder: d.extras.minOrder,
-              maxOrder: d.extras.maxOrder,
-            });
-          }
-          item.extras = extras;
-        } else {
-          item = value.shift();
-        }
         items.push(item);
       }
       const groupedByCategory = items.reduce((accumulator, currentValue) => {
@@ -108,6 +58,56 @@ router.get("/:locationName/:partnerId", async (req, res) => {
 
       return res.json(groupedByCategory);
     });
+});
+
+router.get("/variant/:id/extras/:lang", async (req, res) => {
+  const variantId = req.params.id;
+  let languageCode;
+  let lang = req.params.lang;
+  if (lang == "ro") {
+    languageCode = 1;
+  } else if (lang == "hu") {
+    languageCode = 2;
+  } else if (lang == "en") {
+    languageCode = 3;
+  } else {
+    return res.json({
+      status: 404,
+      msg: "Language not found",
+      result: [],
+    });
+  }
+  return sequelize
+    .query(
+      `SELECT extTrans.id AS extra_id, extTrans.name AS extra_name,
+      allTrans.allergenId as allergen_id, allTrans.name AS allergen_name
+      FROM productVariantsExtras as prodVrExt 
+      INNER JOIN extras as ext
+      ON prodVrExt.extraId = ext.id
+      INNER JOIN extraTranslations as extTrans
+      On extTrans.extraId = ext.id 
+      INNER JOIN extraHasAllergens as extAll
+      ON extAll.extraId = ext.id
+      INNER JOIN allergens as al
+      ON al.id = extAll.allergenId
+      INNER JOIN allergenTranslations as allTrans
+      ON allTrans.allergenId = al.id
+      WHERE prodVrExt.productVariantId = ${variantId}
+      AND prodVrExt.active = 1
+
+      AND extTrans.languageId = ${languageCode}
+      AND allTrans.languageId = ${languageCode}
+      `,
+      { type: Sequelize.QueryTypes.SELECT }
+    )
+    .then((result) => {
+      return res.json(result);
+    });
+});
+
+router.get("/variant/:id/allergens", async (req, res) => {
+  const variantId = req.params.id;
+  return res.json(variantId);
 });
 
 router.get("/", async (req, res) => {
