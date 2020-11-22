@@ -8,7 +8,7 @@ const ProductFinal = require("../../models/ProductFinal");
 const Variants = require("../../models/ProductVariant");
 const ProductTranslation = require("../../models/ProductTranslation");
 const ProductCategories = require("../../models/ProductCategory");
-
+const Restaurant = require("../../models/Restaurant");
 const sequelize = require("../../util/database");
 const c = require("config");
 const { localsName } = require("ejs");
@@ -133,11 +133,30 @@ router.get("/allergen/:restaurantName/:lang/:productId", async (req, res) => {
 
 router.get("/category/:restaurantName/:lang/:categoryId?", async (req, res) => {
   var categoryId = req.params.categoryId;
-  console.log("categoryId", categoryId);
   const restaurantName = req.params.restaurantName.split("-").join(" ");
-
   const lang = req.params.lang;
   let languageCode;
+  let checkCategory;
+
+  if (categoryId != undefined) {
+    checkCategory = await Categories.findAll({
+      where: { id: categoryId },
+    });
+  }
+  const checkRestaurant = await Restaurant.findAll({
+    where: { fullName: restaurantName },
+  });
+
+  if (categoryId != undefined) {
+    if (checkCategory[0].restaurantId != checkRestaurant[0].id) {
+      return res.json({
+        status: 400,
+        msg: "This category does not belong to the restaurant!",
+        result: [],
+      });
+    }
+  }
+
   if (lang == "ro") {
     languageCode = 1;
   } else if (lang == "hu") {
@@ -145,7 +164,7 @@ router.get("/category/:restaurantName/:lang/:categoryId?", async (req, res) => {
   } else if (lang == "en") {
     languageCode = 3;
   } else {
-    res.json({
+    return res.json({
       status: 404,
       msg: "Language not found",
       result: [],
@@ -165,9 +184,9 @@ router.get("/category/:restaurantName/:lang/:categoryId?", async (req, res) => {
        `,
       { type: Sequelize.QueryTypes.SELECT }
     );
-    res.json({
+    return res.json({
       status: 200,
-      msg: "undefined",
+      msg: "Category list successfully listed",
       result,
     });
   } else {
@@ -193,9 +212,16 @@ router.get("/category/:restaurantName/:lang/:categoryId?", async (req, res) => {
        `,
       { type: Sequelize.QueryTypes.SELECT }
     );
-    res.json({
+    if (result.length == 0) {
+      return res.json({
+        status: 404,
+        msg: "Product not found",
+        result,
+      });
+    }
+    return res.json({
       status: 200,
-      msg: "Product allergen successfully listed",
+      msg: "Successful filtering in the category",
       result,
     });
   }
