@@ -49,12 +49,6 @@ function databaseConfig() {
   });
   Location.hasMany(RestaurantFilter);
 
-  ExtraHasAllergen.belongsTo(ProductVariantsExtras, {
-    constrains: true,
-    onDelete: "CASCADE",
-  });
-  ProductVariantsExtras.hasMany(ExtraHasAllergen);
-
   RestaurantFilter.belongsTo(Admin, {
     constrains: true,
     onDelete: "CASCADE",
