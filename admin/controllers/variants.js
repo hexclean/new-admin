@@ -10,6 +10,8 @@ const ProductsFinal = require("../../models/ProductFinal");
 const Products = require("../../models/Product");
 const Sequelize = require("sequelize");
 const Allergen = require("../../models/Allergen");
+const ExtraHasAllergen = require("../../models/ExtraHasAllergen");
+const Extra = require("../../models/Extra");
 const ITEMS_PER_PAGE = 4;
 const Op = Sequelize.Op;
 
@@ -313,7 +315,6 @@ exports.postEditVariant = async (req, res, next) => {
   } else {
     adminCommission / 10;
   }
-  // const adminCommission = req.admin.commission / 10;
 
   const updatedSku = req.body.sku;
   const varId = req.body.variantId;
@@ -344,6 +345,19 @@ exports.postEditVariant = async (req, res, next) => {
           variant.categoryId = categoryRo;
           return variant.save();
         });
+
+        await ExtraHasAllergen.update(
+          {
+            active: filteredStatus[i] == "on" ? 1 : 0,
+          },
+          {
+            where: {
+              productVariantId: {
+                [Op.in]: variantId,
+              },
+            },
+          }
+        );
 
         if (Array.isArray(productVarToExt)) {
           const Op = Sequelize.Op;

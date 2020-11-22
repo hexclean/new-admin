@@ -81,34 +81,21 @@ router.get("/variant/:id/extras/:lang", async (req, res) => {
     .query(
       `SELECT extTrans.id AS extra_id, extTrans.name AS extra_name,
       prodVrExt.price AS extra_price, prodVrExt.discountedPrice AS extra_discountedPrice,
-      prodVrExt.quantityMin AS extra_minQuantity, prodVrExt.quantityMax AS extra_maxQuantity,
-      allTrans.allergenId as allergen_id, allTrans.name AS allergen_name
+      prodVrExt.quantityMin AS extra_minQuantity, prodVrExt.quantityMax AS extra_maxQuantity
       FROM productVariantsExtras as prodVrExt 
       INNER JOIN extras as ext
       ON prodVrExt.extraId = ext.id
       INNER JOIN extraTranslations as extTrans
       On extTrans.extraId = ext.id 
-      INNER JOIN extraHasAllergens as extAll
-      ON extAll.extraId = ext.id
-      INNER JOIN allergens as al
-      ON al.id = extAll.allergenId
-      INNER JOIN allergenTranslations as allTrans
-      ON allTrans.allergenId = al.id
       WHERE prodVrExt.productVariantId = ${variantId}
       AND prodVrExt.active = 1
-
       AND extTrans.languageId = ${languageCode}
-      AND allTrans.languageId = ${languageCode}
       `,
       { type: Sequelize.QueryTypes.SELECT }
     )
     .then((results) => {
       const groupedByExtra = [];
       for (let d of results) {
-        const allergens = {
-          allergen_id: d.allergen_id,
-          allergen_name: d.allergen_name,
-        };
         const item = {
           extra_id: d.extra_id,
           extra_name: d.extra_name,
@@ -119,49 +106,19 @@ router.get("/variant/:id/extras/:lang", async (req, res) => {
           productDescription: d.productDescription,
           allergens: [],
         };
-        item.allergens = allergens;
         groupedByExtra.push(item);
       }
-      let groupByExtras = groupedByExtra.reduce((r, a) => {
-        r[a.extra_id] = [...(r[a.extra_id] || []), a];
-        return r;
-      }, {});
 
-      const items = [];
-      for (const [key, value] of Object.entries(groupByExtras)) {
-        let item = {};
-        if (value.length > 1) {
-          let allergens = [];
-          let product = value[0];
-          item = {
-            extra_id: product.extra_id,
-            extra_name: product.extra_name,
-            extra_price: product.extra_price,
-            extra_discountedPrice: product.extra_discountedPrice,
-            extra_minQuantity: product.extra_minQuantity,
-            extra_maxQuantity: product.extra_maxQuantity,
-            productDescription: product.productDescription,
-            allergens: [],
-          };
-          for (let d of value) {
-            allergens.push({
-              allergen_id: d.allergens.allergen_id,
-              allergen_name: d.allergens.allergen_name,
-            });
-          }
-          item.allergens = allergens;
-        } else {
-          item = value.shift();
-        }
-        items.push(item);
-      }
-      const groupedByCategory = items.reduce((accumulator, currentValue) => {
-        const { extra_name } = currentValue;
-        const key = extra_name;
-        accumulator[key] = accumulator[key] || [];
-        accumulator[key].push(currentValue);
-        return accumulator;
-      }, Object.create(null));
+      const groupedByCategory = groupedByExtra.reduce(
+        (accumulator, currentValue) => {
+          const { extra_name } = currentValue;
+          const key = extra_name;
+          accumulator[key] = accumulator[key] || [];
+          accumulator[key].push(currentValue);
+          return accumulator;
+        },
+        Object.create(null)
+      );
 
       return res.json(groupedByCategory);
     });
