@@ -60,38 +60,4 @@ router.get("/:lang/:locationName/:restaurantName", async (req, res) => {
   }
 });
 
-router.get(
-  "/:lang/:locationName/:restaurantName/products",
-  async (req, res) => {
-    let lang = req.params.lang;
-    if (lang == "ro") {
-      languageCode = 1;
-    } else if (lang == "hu") {
-      languageCode = 2;
-    } else if (lang == "en") {
-      languageCode = 3;
-    } else {
-      languageCode = 1;
-    }
-    const locationName = req.params.locationName.split("-").join(" ");
-    const restaurantName = req.params.restaurantName.split("-").join(" ");
-    return sequelize
-      .query(
-        `SELECT ad.id AS restaurant_id, ad.fullName as restaurant_name, adInf.shortCompanyDesc AS restaurant_description, ad.deliveryPrice AS restaurant_deliveryPrice, adInf.kitchen AS restaurant_kitchen
-      FROM foodnet.restaurants as ad
-      INNER JOIN foodnet.adminInfos AS adInf
-      ON adInf.restaurantId = ad.id
-      INNER JOIN foodnet.adminLocations AS adLoc
-      ON ad.id = adLoc.restaurantId
-      INNER JOIN foodnet.adminLocationTranslations AS locTrans
-      ON locTrans.adminLocationsId = adLoc.id
-      WHERE locTrans.languageId= ${languageCode} AND ad.fullName LIKE '%${restaurantName}%' AND adInf.languageId=${languageCode} AND locTrans.name LIKE '%${locationName}%';`,
-        { type: Sequelize.QueryTypes.SELECT }
-      )
-      .then((results) => {
-        return res.json(results);
-      });
-  }
-);
-
 module.exports = router;
