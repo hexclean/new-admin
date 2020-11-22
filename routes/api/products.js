@@ -79,6 +79,44 @@ router.get("/:restaurantName/:lang", async (req, res) => {
     });
 });
 
+router.get("/allergen/:restaurantName/:lang/:productId", async (req, res) => {
+  const params = req.params.restaurantName.split("-").join(" ");
+  const lang = req.params.lang;
+  const productId = req.params.productId;
+  let languageCode;
+  if (lang == "ro") {
+    languageCode = 1;
+  } else if (lang == "hu") {
+    languageCode = 2;
+  } else if (lang == "en") {
+    languageCode = 3;
+  } else {
+    res.json({
+      status: 404,
+      msg: "Language not found",
+      result: [],
+    });
+  }
+
+  return sequelize
+    .query(
+      `SELECT prod.id as product_id,al.id as allergen_id, alTrans.name as allergen_name
+      from products as prod inner join productHasAllergens as prodHas on prodHas.productId = prod.id
+      inner join allergens as al on al.id = prodHas.allergenId inner join allergenTranslations as alTrans on alTrans.allergenId = al.id
+      WHERE prod.id = 2 AND prodHas.productId = ${productId}
+      AND alTrans.languageId =${languageCode} AND prodHas.active =1
+       `,
+      { type: Sequelize.QueryTypes.SELECT }
+    )
+    .then((result) => {
+      res.json({
+        status: 200,
+        msg: "Product allergen successfully listed",
+        result,
+      });
+    });
+});
+
 router.get("/variant/:id/extras/:lang", async (req, res) => {
   const variantId = req.params.id;
   let languageCode;
