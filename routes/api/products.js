@@ -80,6 +80,8 @@ router.get("/variant/:id/extras/:lang", async (req, res) => {
   return sequelize
     .query(
       `SELECT extTrans.id AS extra_id, extTrans.name AS extra_name,
+      prodVrExt.price AS extra_price, prodVrExt.discountedPrice AS extra_discountedPrice,
+      prodVrExt.quantityMin AS extra_minQuantity, prodVrExt.quantityMax AS extra_maxQuantity,
       allTrans.allergenId as allergen_id, allTrans.name AS allergen_name
       FROM productVariantsExtras as prodVrExt 
       INNER JOIN extras as ext
@@ -100,8 +102,68 @@ router.get("/variant/:id/extras/:lang", async (req, res) => {
       `,
       { type: Sequelize.QueryTypes.SELECT }
     )
-    .then((result) => {
-      return res.json(result);
+    .then((results) => {
+      const groupedByExtra = [];
+      for (let d of results) {
+        const allergens = {
+          allergen_id: d.allergen_id,
+          allergen_name: d.allergen_name,
+        };
+        const item = {
+          extra_id: d.extra_id,
+          extra_name: d.extra_name,
+          extra_price: d.extra_price,
+          extra_discountedPrice: d.extra_discountedPrice,
+          extra_minQuantity: d.extra_minQuantity,
+          extra_maxQuantity: d.extra_maxQuantity,
+          productDescription: d.productDescription,
+          allergens: [],
+        };
+        item.allergens = allergens;
+        groupedByExtra.push(item);
+      }
+      let groupByExtras = groupedByExtra.reduce((r, a) => {
+        r[a.extra_id] = [...(r[a.extra_id] || []), a];
+        return r;
+      }, {});
+
+      const items = [];
+      for (const [key, value] of Object.entries(groupByExtras)) {
+        let item = {};
+        if (value.length > 1) {
+          let allergens = [];
+          let product = value[0];
+          item = {
+            extra_id: product.extra_id,
+            extra_name: product.extra_name,
+            extra_price: product.extra_price,
+            extra_discountedPrice: product.extra_discountedPrice,
+            extra_minQuantity: product.extra_minQuantity,
+            extra_maxQuantity: product.extra_maxQuantity,
+            productDescription: product.productDescription,
+            allergens: [],
+          };
+          for (let d of value) {
+            allergens.push({
+              allergen_id: d.allergens.allergen_id,
+              allergen_name: d.allergens.allergen_name,
+            });
+          }
+          item.allergens = allergens;
+        } else {
+          item = value.shift();
+        }
+        items.push(item);
+      }
+      const groupedByCategory = items.reduce((accumulator, currentValue) => {
+        const { extra_name } = currentValue;
+        const key = extra_name;
+        accumulator[key] = accumulator[key] || [];
+        accumulator[key].push(currentValue);
+        return accumulator;
+      }, Object.create(null));
+
+      return res.json(groupedByCategory);
     });
 });
 
