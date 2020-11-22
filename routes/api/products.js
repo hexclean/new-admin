@@ -11,14 +11,25 @@ const ProductCategories = require("../../models/ProductCategory");
 
 const sequelize = require("../../util/database");
 
-router.get("/:restaurantName", async (req, res) => {
+router.get("/:restaurantName/:lang", async (req, res) => {
   const params = req.params.restaurantName.split("-").join(" ");
-  const egy = 1;
+  const lang = req.params.lang;
+  let languageCode;
+  if (lang == "ro") {
+    languageCode = 1;
+  } else if (lang == "hu") {
+    languageCode = 2;
+  } else if (lang == "en") {
+    languageCode = 3;
+  } else {
+    return res.status(404).json({ msg: "language not found" });
+  }
 
   // FROM foodnet.extras as ext INNER JOIN foodnet.extraTranslations as extTrans on ext.id = extTrans.extraId INNER JOIN  foodnet.productVariantsExtras as prodVariant ON ext.id = prodVariant.extraId WHERE prodVariant.productVariantId =${currentValue["variantId"]} AND prodVariant.active=1 and extTrans.languageId=2;
   return sequelize
     .query(
-      `SELECT prodFin.variantId as variantId, catTrans.name as categoryName, adm.fullName as partnerName, prod.id as productId, prod.imageUrl as productImageUrl, prodTrans.title as productTitle, prodTrans.description productDescription, prodFin.price as productPrice, prodFin.discountedPrice as productDiscountedPrice
+      `SELECT prodFin.variantId as variantId, catTrans.name as categoryName, adm.fullName as partnerName, prod.id as productId, prod.imageUrl as productImageUrl,
+      prodTrans.title as productTitle, prodTrans.description productDescription, prodFin.price as productPrice,prodFin.discountedPrice as productDiscountedPrice
       FROM productFinals as prodFin 
       INNER JOIN products as prod ON prodFin.productId = prod.id INNER JOIN restaurants as adm On prod.restaurantId = adm.id 
       INNER JOIN productTranslations as prodTrans ON prodTrans.productId = prod.id 
@@ -27,7 +38,9 @@ router.get("/:restaurantName", async (req, res) => {
       on var.categoryId = cat.id
       inner join productCategoryTranslations as catTrans ON catTrans.productCategoryId = cat.id 
 
-       WHERE catTrans.languageId =2  and prodFin.active=${egy} and adm.fullName LIKE '%${params}%'`,
+       WHERE catTrans.languageId =${languageCode}  and prodFin.active=1 and adm.fullName LIKE '%${params}%' AND
+       prodTrans.languageId =${languageCode}
+       `,
       { type: Sequelize.QueryTypes.SELECT }
     )
     .then((results) => {
