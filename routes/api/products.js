@@ -101,14 +101,23 @@ router.get("/allergen/:restaurantName/:lang/:productId", async (req, res) => {
   return sequelize
     .query(
       `SELECT prod.id as product_id,al.id as allergen_id, alTrans.name as allergen_name
-      from products as prod inner join productHasAllergens as prodHas on prodHas.productId = prod.id
+      from products as prod
+      inner join productHasAllergens as prodHas
+      on prodHas.productId = prod.id
       inner join allergens as al on al.id = prodHas.allergenId inner join allergenTranslations as alTrans on alTrans.allergenId = al.id
-      WHERE prod.id = 2 AND prodHas.productId = ${productId}
+      WHERE prod.id =${productId} AND prodHas.productId = ${productId}
       AND alTrans.languageId =${languageCode} AND prodHas.active =1
        `,
       { type: Sequelize.QueryTypes.SELECT }
     )
     .then((result) => {
+      if (result.length == 0) {
+        return res.json({
+          status: 404,
+          msg: "Allergen not found",
+          result: [],
+        });
+      }
       res.json({
         status: 200,
         msg: "Product allergen successfully listed",
