@@ -22,7 +22,11 @@ router.get("/:restaurantName/:lang", async (req, res) => {
   } else if (lang == "en") {
     languageCode = 3;
   } else {
-    return res.status(404).json({ msg: "language not found" });
+    res.json({
+      status: 404,
+      msg: "Language not found",
+      result: [],
+    });
   }
 
   // FROM foodnet.extras as ext INNER JOIN foodnet.extraTranslations as extTrans on ext.id = extTrans.extraId INNER JOIN  foodnet.productVariantsExtras as prodVariant ON ext.id = prodVariant.extraId WHERE prodVariant.productVariantId =${currentValue["variantId"]} AND prodVariant.active=1 and extTrans.languageId=2;
@@ -43,9 +47,9 @@ router.get("/:restaurantName/:lang", async (req, res) => {
        `,
       { type: Sequelize.QueryTypes.SELECT }
     )
-    .then((results) => {
+    .then((resultsList) => {
       const items = [];
-      for (let d of results) {
+      for (let d of resultsList) {
         const item = {
           variantId: d.variantId,
           categoryName: d.categoryName,
@@ -59,7 +63,7 @@ router.get("/:restaurantName/:lang", async (req, res) => {
         };
         items.push(item);
       }
-      const groupedByCategory = items.reduce((accumulator, currentValue) => {
+      const result = items.reduce((accumulator, currentValue) => {
         const { categoryName } = currentValue;
         const key = categoryName;
         accumulator[key] = accumulator[key] || [];
@@ -67,7 +71,11 @@ router.get("/:restaurantName/:lang", async (req, res) => {
         return accumulator;
       }, Object.create(null));
 
-      return res.json(groupedByCategory);
+      res.json({
+        status: 200,
+        msg: "Products list successfully listed",
+        result,
+      });
     });
 });
 
