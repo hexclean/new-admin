@@ -14,6 +14,7 @@ const Box = require("../../models/Box");
 const BoxTranslation = require("../../models/BoxTranslation");
 const Restaurant = require("../../models/Restaurant");
 const RestaurantRole = require("../../models/RestaurantRole");
+var fs = require("fs");
 
 exports.getAddProduct = async (req, res, next) => {
   let currentCategoryName = [];
@@ -113,7 +114,12 @@ exports.postAddProduct = async (req, res, next) => {
   const huDescription = req.body.huDescription;
   const enDescription = req.body.enDescription;
   const image = req.file;
-  const imageUrl = image.path;
+  console.log(
+    "image-----------------------",
+    image.originalname.replace(/^data:image\/png;base64,/, "")
+  );
+  const imageUrl = image.originalname;
+  console.log("imageUrl++++++++++++++++++++", imageUrl);
   const extId = req.body.extraId;
   const filteredStatusAllergen = req.body.statusAllergen.filter(Boolean);
   const filteredStatusBox = req.body.statusBox.filter(Boolean);
@@ -144,6 +150,14 @@ exports.postAddProduct = async (req, res, next) => {
       restaurantId: req.admin.id,
     },
   });
+
+  function base64_encode(imageUrl) {
+    // read binary data
+    var bitmap = fs.readFileSync(imageUrl);
+    // convert binary data to base64 encoded string
+    return new Buffer(bitmap).toString("base64");
+  }
+  console.log(base64_encode());
 
   const product = await req.admin.createProduct({
     imageUrl: imageUrl,
