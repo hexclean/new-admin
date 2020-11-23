@@ -24,7 +24,7 @@ router.get("/info/:lang/:restaurantName", async (req, res) => {
   try {
     const result = await sequelize.query(
       `
-      SELECT res.id as restaurant_id, res.avgTransport as restaurant_avgTransport, 
+      SELECT res.id as restaurant_id, res.avgTransport as restaurant_avgTransport, res.rating as restaurant_rating,
       res.discount as restaurant_discount, res.phoneNumber as restaurant_phoneNumber,
       resIn.adress as restaurant_address, resIn.shortCompanyDesc as restaurant_description
       FROM restaurants as res

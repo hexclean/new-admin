@@ -114,19 +114,6 @@ router.get("/promotion/:lang/:locationName", async (req, res, next) => {
       { type: Sequelize.QueryTypes.SELECT }
     );
 
-    const avgReview = await sequelize.query(
-      `SELECT round(AVG(resRev.rating),0) as ratingAvg
-      FROM RestaurantsReviews as resRev
-      inner join restaurants as res
-      on res.id = resRev.restaurantId
-      inner join users as usr
-      on usr.id = resRev.userId
-      WHERE res.fullName LIKE "%${restaurantName}%";
-       `,
-      { type: Sequelize.QueryTypes.SELECT }
-    );
-    const AVGrating = avgReview[0].ratingAvg;
-
     if (result.length == 0) {
       return res.json({
         status: 404,
@@ -138,7 +125,7 @@ router.get("/promotion/:lang/:locationName", async (req, res, next) => {
     return res.json({
       status: 200,
       msg: "Success",
-      result: [{ AVGrating, ratings: result }],
+      result,
     });
   } catch (err) {
     return res.json({
@@ -205,19 +192,6 @@ router.get("/popular/:lang/:locationName", async (req, res, next) => {
       { type: Sequelize.QueryTypes.SELECT }
     );
 
-    const avgReview = await sequelize.query(
-      `SELECT round(AVG(resRev.rating),0) as ratingAvg
-      FROM RestaurantsReviews as resRev
-      inner join restaurants as res
-      on res.id = resRev.restaurantId
-      inner join users as usr
-      on usr.id = resRev.userId
-      WHERE res.fullName LIKE "%${restaurantName}%";
-       `,
-      { type: Sequelize.QueryTypes.SELECT }
-    );
-    const AVGrating = avgReview[0].ratingAvg;
-
     if (result.length == 0) {
       return res.json({
         status: 404,
@@ -229,7 +203,7 @@ router.get("/popular/:lang/:locationName", async (req, res, next) => {
     return res.json({
       status: 200,
       msg: "Success",
-      result: [{ AVGrating, ratings: result }],
+      result,
     });
   } catch (err) {
     return res.json({
@@ -452,23 +426,11 @@ router.post("/search", async (req, res) => {
           restaurant_new: restaurant.newRestaurant,
           restaurant_discount: restaurant.discount,
           restaurant_description: shortCompanyDesc,
+          restaurant_AVGrating: restaurant.rating,
         });
       }
     }
   }
-  const avgReview = await sequelize.query(
-    `SELECT round(AVG(resRev.rating),0) as ratingAvg
-    FROM RestaurantsReviews as resRev
-    inner join restaurants as res
-    on res.id = resRev.restaurantId
-    inner join users as usr
-    on usr.id = resRev.userId
-    WHERE res.fullName LIKE "%${restaurantName}%";
-     `,
-    { type: Sequelize.QueryTypes.SELECT }
-  );
-  const AVGrating = avgReview[0].ratingAvg;
-
   if (result.length == 0) {
     return res.json({
       status: 404,
@@ -480,7 +442,7 @@ router.post("/search", async (req, res) => {
   return res.json({
     status: 200,
     msg: "Filtered restaurants",
-    result: [{ AVGrating, ratings: result }],
+    result,
   });
 });
 
