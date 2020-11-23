@@ -229,7 +229,7 @@ router.get("/:lang/:locationName", async (req, res, next) => {
   } else {
     return res.json({
       status: 404,
-      msg: "City not found",
+      msg: "Language not found",
       selectedLocation,
     });
   }
@@ -249,7 +249,7 @@ router.get("/:lang/:locationName", async (req, res, next) => {
 
   try {
     const selectedLocation = await sequelize.query(
-      `SELECT hoH.open as restaurant_open, hoH.close AS restaurant_close, ad.rating AS restaurant_rating,  ad.id AS restaurant_id, ad.imageUrl AS restaurant_profileImage,
+      `SELECT hoH.open as restaurant_open, hoH.close AS restaurant_close, ad.rating AS restaurant_rating,  ad.id AS restaurant_id, ad.coverUrl AS restaurant_profileImage,
       ad.fullName AS restaurant_name, ad.newRestaurant AS restaurant_new, ad.discount AS restaurant_discount,
        adInf.shortCompanyDesc AS restaurant_description
       FROM restaurants AS ad
