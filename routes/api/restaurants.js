@@ -1,15 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Sequelize = require("sequelize");
-const Restaurant = require("../../models/Restaurant");
-const Location = require("../../models/Location");
-const LocationName = require("../../models/LocationName");
-const LocationNameTransalation = require("../../models/LocationNameTranslation");
-const RestaurantFilters = require("../../models/RestaurantFilters");
-const RestaurantDescription = require("../../models/AdminInfo");
-const RestaurantReview = require("../../models/RestaurantsReviews");
 const sequelize = require("../../util/database");
-const { Op } = require("sequelize");
 
 router.get("/info/:lang/:restaurantName", async (req, res) => {
   let lang = req.params.lang;
@@ -64,6 +56,17 @@ router.post("/review", async (req, res) => {
 
   try {
     if (rating == 0) {
+      const avgReview = await sequelize.query(
+        `SELECT round(AVG(resRev.rating),0) as ratingAvg
+        FROM RestaurantsReviews as resRev
+        inner join restaurants as res
+        on res.id = resRev.restaurantId
+        inner join users as usr
+        on usr.id = resRev.userId
+        WHERE res.fullName LIKE "%${restaurantName}%";
+         `,
+        { type: Sequelize.QueryTypes.SELECT }
+      );
       const result = await sequelize.query(
         `SELECT resRev.id as ratingId, usr.fullName as user_name, resRev.rating as user_rating, resRev.message as user_message
         FROM RestaurantsReviews as resRev
@@ -75,12 +78,26 @@ router.post("/review", async (req, res) => {
          `,
         { type: Sequelize.QueryTypes.SELECT }
       );
+
+      const AVGrating = avgReview[0].ratingAvg;
+
       return res.json({
         status: 200,
         msg: "Review list successfully listed",
-        result,
+        result: [{ AVGrating, ratings: result }],
       });
     } else {
+      const avgReview = await sequelize.query(
+        `SELECT round(AVG(resRev.rating),0) as ratingAvg
+        FROM RestaurantsReviews as resRev
+        inner join restaurants as res
+        on res.id = resRev.restaurantId
+        inner join users as usr
+        on usr.id = resRev.userId
+        WHERE res.fullName LIKE "%${restaurantName}%";
+         `,
+        { type: Sequelize.QueryTypes.SELECT }
+      );
       const result = await sequelize.query(
         `SELECT resRev.id as ratingId, usr.fullName as user_name, resRev.rating as user_rating, resRev.message as user_message
       FROM RestaurantsReviews as resRev
@@ -92,6 +109,8 @@ router.post("/review", async (req, res) => {
       resRev.rating =${rating};`,
         { type: Sequelize.QueryTypes.SELECT }
       );
+      const AVGrating = avgReview[0].ratingAvg;
+
       if (result.length == 0) {
         return res.json({
           status: 404,
@@ -99,13 +118,15 @@ router.post("/review", async (req, res) => {
           result,
         });
       }
+
       return res.json({
         status: 200,
         msg: "Restaurant details listed",
-        result,
+        result: [{ AVGrating, ratings: result }],
       });
     }
   } catch (err) {
+    console.log(err);
     return res.json({
       status: 500,
       msg: "Server error",
@@ -113,7 +134,5 @@ router.post("/review", async (req, res) => {
     });
   }
 });
-
-//HBBUBBH
 
 module.exports = router;

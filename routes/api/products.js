@@ -73,7 +73,25 @@ router.get("/:restaurantName/:lang", async (req, res) => {
         const { categoryName } = currentValue;
         const key = categoryName;
         accumulator[key] = accumulator[key] || [];
+        console.log("accumulator[key]", key);
         accumulator[key].push(currentValue);
+        sequelize.query(
+          `SELECT adm.imageUrl as restaurant_ProfileImg,adm.coverUrl as restaurant_coverImg, adm.rating AS restaurant_rating, prodFin.variantId as variantId, catTrans.name as categoryName, adm.fullName as partnerName, prod.id as productId, prod.imageUrl as productImageUrl,
+      prodTrans.title as productTitle, prodTrans.description productDescription, prodFin.price as productPrice,prodFin.discountedPrice as productDiscountedPrice
+      FROM productFinals as prodFin 
+      INNER JOIN products as prod ON prodFin.productId = prod.id
+      INNER JOIN restaurants as adm
+      On prod.restaurantId = adm.id 
+      INNER JOIN productTranslations as prodTrans ON prodTrans.productId = prod.id 
+      INNER JOIN productVariants as var ON prodFin.variantId = var.id
+      INNER JOIN productCategories as cat
+      on var.categoryId = cat.id
+      inner join productCategoryTranslations as catTrans ON catTrans.productCategoryId = cat.id 
+      WHERE catTrans.languageId =${languageCode}  and prodFin.active=1 and adm.fullName LIKE '%${restaurantName}%' AND
+      prodTrans.languageId =${languageCode}
+       `,
+          { type: Sequelize.QueryTypes.SELECT }
+        );
         return accumulator;
       }, Object.create(null));
 

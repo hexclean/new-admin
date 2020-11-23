@@ -114,6 +114,19 @@ router.get("/promotion/:lang/:locationName", async (req, res, next) => {
       { type: Sequelize.QueryTypes.SELECT }
     );
 
+    const avgReview = await sequelize.query(
+      `SELECT round(AVG(resRev.rating),0) as ratingAvg
+      FROM RestaurantsReviews as resRev
+      inner join restaurants as res
+      on res.id = resRev.restaurantId
+      inner join users as usr
+      on usr.id = resRev.userId
+      WHERE res.fullName LIKE "%${restaurantName}%";
+       `,
+      { type: Sequelize.QueryTypes.SELECT }
+    );
+    const AVGrating = avgReview[0].ratingAvg;
+
     if (result.length == 0) {
       return res.json({
         status: 404,
@@ -125,7 +138,7 @@ router.get("/promotion/:lang/:locationName", async (req, res, next) => {
     return res.json({
       status: 200,
       msg: "Success",
-      result,
+      result: [{ AVGrating, ratings: result }],
     });
   } catch (err) {
     return res.json({
@@ -192,6 +205,19 @@ router.get("/popular/:lang/:locationName", async (req, res, next) => {
       { type: Sequelize.QueryTypes.SELECT }
     );
 
+    const avgReview = await sequelize.query(
+      `SELECT round(AVG(resRev.rating),0) as ratingAvg
+      FROM RestaurantsReviews as resRev
+      inner join restaurants as res
+      on res.id = resRev.restaurantId
+      inner join users as usr
+      on usr.id = resRev.userId
+      WHERE res.fullName LIKE "%${restaurantName}%";
+       `,
+      { type: Sequelize.QueryTypes.SELECT }
+    );
+    const AVGrating = avgReview[0].ratingAvg;
+
     if (result.length == 0) {
       return res.json({
         status: 404,
@@ -203,7 +229,7 @@ router.get("/popular/:lang/:locationName", async (req, res, next) => {
     return res.json({
       status: 200,
       msg: "Success",
-      result,
+      result: [{ AVGrating, ratings: result }],
     });
   } catch (err) {
     return res.json({
@@ -316,7 +342,6 @@ router.post("/search", async (req, res) => {
     return res.status(404).json({ msg: "language not found" });
   }
   const city = req.body.location.split("-").join(" ");
-  console.log("city----", city);
   var whereStatement = {};
   var fullNameStatement = {};
 
@@ -431,6 +456,19 @@ router.post("/search", async (req, res) => {
       }
     }
   }
+  const avgReview = await sequelize.query(
+    `SELECT round(AVG(resRev.rating),0) as ratingAvg
+    FROM RestaurantsReviews as resRev
+    inner join restaurants as res
+    on res.id = resRev.restaurantId
+    inner join users as usr
+    on usr.id = resRev.userId
+    WHERE res.fullName LIKE "%${restaurantName}%";
+     `,
+    { type: Sequelize.QueryTypes.SELECT }
+  );
+  const AVGrating = avgReview[0].ratingAvg;
+
   if (result.length == 0) {
     return res.json({
       status: 404,
@@ -442,7 +480,7 @@ router.post("/search", async (req, res) => {
   return res.json({
     status: 200,
     msg: "Filtered restaurants",
-    result,
+    result: [{ AVGrating, ratings: result }],
   });
 });
 
