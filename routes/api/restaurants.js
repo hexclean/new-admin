@@ -58,29 +58,53 @@ router.get("/info/:restaurantName/:lang", async (req, res) => {
   }
 });
 
-router.get("/reviews/:restaurantName", async (req, res) => {
-  const restaurantName = req.params.restaurantName.split("-").join(" ");
+router.post("/review", async (req, res) => {
+  let restaurantName = req.body.restaurantName;
+  let rating = req.body.rating;
 
   try {
-    const result = await sequelize.query(
-      `
-      SELECT res.id as restaurant_id, res.avgTransport as restaurant_avgTransport, 
-      res.discount as restaurant_discount, res.phoneNumber as restaurant_phoneNumber,
-      resIn.adress as restaurant_address, resIn.shortCompanyDesc as restaurant_description
-      FROM restaurants as res
-      inner JOIN adminInfos as resIn
-      on res.id = resIn.restaurantId
-      WHERE res.fullName like "%${restaurantName}%" and resIn.languageId=${languageCode};`,
-      { type: Sequelize.QueryTypes.SELECT }
-    );
-    if (result.length == 0) {
-      return res.status(404).json({ msg: "This restaurant not have data" });
+    if (rating == 0) {
+      const result = await sequelize.query(
+        `SELECT resRev.id as ratingId, usr.fullName as user_name, resRev.rating as user_rating, resRev.message as user_message
+        FROM RestaurantsReviews as resRev
+        inner join restaurants as res
+        on res.id = resRev.restaurantId
+        inner join users as usr
+        on usr.id = resRev.userId
+        WHERE res.fullName LIKE "%${restaurantName}%";
+         `,
+        { type: Sequelize.QueryTypes.SELECT }
+      );
+      return res.json({
+        status: 200,
+        msg: "Review list successfully listed",
+        result,
+      });
+    } else {
+      const result = await sequelize.query(
+        `SELECT resRev.id as ratingId, usr.fullName as user_name, resRev.rating as user_rating, resRev.message as user_message
+      FROM RestaurantsReviews as resRev
+      inner join restaurants as res
+      on res.id = resRev.restaurantId
+      inner join users as usr
+      on usr.id = resRev.userId
+      WHERE res.fullName LIKE "%${restaurantName}%" AND 
+      resRev.rating =${rating};`,
+        { type: Sequelize.QueryTypes.SELECT }
+      );
+      if (result.length == 0) {
+        return res.json({
+          status: 404,
+          msg: "This restaurant not have rating",
+          result,
+        });
+      }
+      return res.json({
+        status: 200,
+        msg: "Restaurant details listed",
+        result,
+      });
     }
-    return res.json({
-      status: 200,
-      msg: "Restaurant details listed",
-      result,
-    });
   } catch (err) {
     return res.json({
       status: 500,

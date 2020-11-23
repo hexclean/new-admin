@@ -136,7 +136,7 @@ router.get("/allergen/:restaurantName/:lang/:productId", async (req, res) => {
 
 router.post("/category", async (req, res) => {
   var categoryId = req.body.categoryId;
-  console.log("categoryId", categoryId.length);
+
   if (categoryId.length > 0) {
     if (isNaN(categoryId)) {
       return res.json({
