@@ -114,12 +114,9 @@ exports.postAddProduct = async (req, res, next) => {
   const huDescription = req.body.huDescription;
   const enDescription = req.body.enDescription;
   const image = req.file;
-  console.log(
-    "image-----------------------",
-    image.originalname.replace(/^data:image\/png;base64,/, "")
-  );
-  const imageUrl = image.originalname;
-  console.log("imageUrl++++++++++++++++++++", imageUrl);
+
+  var strBase64 = Buffer.from(image.filename).toString("base64");
+  console.log("strBase64", strBase64);
   const extId = req.body.extraId;
   const filteredStatusAllergen = req.body.statusAllergen.filter(Boolean);
   const filteredStatusBox = req.body.statusBox.filter(Boolean);
@@ -151,16 +148,8 @@ exports.postAddProduct = async (req, res, next) => {
     },
   });
 
-  function base64_encode(imageUrl) {
-    // read binary data
-    var bitmap = fs.readFileSync(imageUrl);
-    // convert binary data to base64 encoded string
-    return new Buffer(bitmap).toString("base64");
-  }
-  console.log(base64_encode());
-
   const product = await req.admin.createProduct({
-    imageUrl: imageUrl,
+    imageUrl: strBase64,
     active: 1,
   });
 

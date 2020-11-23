@@ -11,7 +11,7 @@ const RestaurantReview = require("../../models/RestaurantsReviews");
 const sequelize = require("../../util/database");
 const { Op } = require("sequelize");
 
-router.get("/info/:restaurantName/:lang", async (req, res) => {
+router.get("/info/:lang/:restaurantName", async (req, res) => {
   let lang = req.params.lang;
   const restaurantName = req.params.restaurantName.split("-").join(" ");
 
