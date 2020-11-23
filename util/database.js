@@ -16,7 +16,7 @@ const sequelize = new Sequelize(
 //   dialect: "mysql",
 //   host: "localhost",
 // });
-// console.log("  breq.connection.remoteAddress", req.connection.remoteAddress);
+console.log("  breq.connection.remoteAddress", req.connection.remoteAddress);
 
 // if (os.hostname().indexOf("local")) {
 //   console.log("++++++++++");
