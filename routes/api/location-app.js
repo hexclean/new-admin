@@ -11,7 +11,6 @@ const RestaurantDescription = require("../../models/AdminInfo");
 const Location = require("../../models/Location");
 const Hours = require("../../models/Hours");
 const OpeningHours = require("../../models/OpeningHours");
-const OpeningHoursTransaltion = require("../../models/OpeningHoursTranslation");
 // @route    GET api/location/:locationName
 // @desc     Get all restaurants from selected city
 // @access   Public
@@ -58,7 +57,6 @@ router.get("/:lang", async (req, res) => {
     });
   }
 });
-
 // @route    GET api/promotion/location/:locationName
 // @desc     Get all restaurants who pay me
 // @access   Public
@@ -73,6 +71,7 @@ router.get("/promotion/:lang/:locationName", async (req, res, next) => {
   } else {
     return res.status(404).json({ msg: "404 error" });
   }
+
   const locationName = req.params.locationName.split("-").join(" ");
 
   let d = new Date();
@@ -89,7 +88,7 @@ router.get("/promotion/:lang/:locationName", async (req, res, next) => {
 
   try {
     const selectedLocation = await sequelize.query(
-      `SELECT hoH.open as restaurant_open, hoH.close AS restaurant_close, ad.rating AS restaurant_rating,  ad.id AS restaurant_id, ad.imageUrl AS restaurant_profileImage,
+      `SELECT hoH.open as restaurant_open, hoH.close AS restaurant_close, ad.rating AS restaurant_rating,  ad.id AS restaurant_id, ad.coverUrl AS restaurant_profileImage,
       ad.fullName AS restaurant_name, ad.newRestaurant AS restaurant_new, ad.discount AS restaurant_discount,
        adInf.shortCompanyDesc AS restaurant_description
       FROM restaurants AS ad
@@ -167,7 +166,7 @@ router.get("/popular/:lang/:locationName", async (req, res, next) => {
 
   try {
     const selectedLocation = await sequelize.query(
-      `SELECT hoH.open as restaurant_open, hoH.close AS restaurant_close, ad.rating AS restaurant_rating,  ad.id AS restaurant_id, ad.imageUrl AS restaurant_profileImage,
+      `SELECT hoH.open as restaurant_open, hoH.close AS restaurant_close, ad.rating AS restaurant_rating,  ad.id AS restaurant_id, ad.coverUrl AS restaurant_profileImage,
       ad.fullName AS restaurant_name, ad.newRestaurant AS restaurant_new, ad.discount AS restaurant_discount,
        adInf.shortCompanyDesc AS restaurant_description
       FROM restaurants AS ad

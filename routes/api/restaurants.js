@@ -32,7 +32,39 @@ router.get("/info/:restaurantName/:lang", async (req, res) => {
   try {
     const result = await sequelize.query(
       `
-      SELECT res.id as restaurant_id, res.avgTransport as restaurang_avgTransport, 
+      SELECT res.id as restaurant_id, res.avgTransport as restaurant_avgTransport, 
+      res.discount as restaurant_discount, res.phoneNumber as restaurant_phoneNumber,
+      resIn.adress as restaurant_address, resIn.shortCompanyDesc as restaurant_description
+      FROM restaurants as res
+      inner JOIN adminInfos as resIn
+      on res.id = resIn.restaurantId
+      WHERE res.fullName like "%${restaurantName}%" and resIn.languageId=${languageCode};`,
+      { type: Sequelize.QueryTypes.SELECT }
+    );
+    if (result.length == 0) {
+      return res.status(404).json({ msg: "This restaurant not have data" });
+    }
+    return res.json({
+      status: 200,
+      msg: "Restaurant details listed",
+      result,
+    });
+  } catch (err) {
+    return res.json({
+      status: 500,
+      msg: "Server error",
+      result: [],
+    });
+  }
+});
+
+router.get("/reviews/:restaurantName", async (req, res) => {
+  const restaurantName = req.params.restaurantName.split("-").join(" ");
+
+  try {
+    const result = await sequelize.query(
+      `
+      SELECT res.id as restaurant_id, res.avgTransport as restaurant_avgTransport, 
       res.discount as restaurant_discount, res.phoneNumber as restaurant_phoneNumber,
       resIn.adress as restaurant_address, resIn.shortCompanyDesc as restaurant_description
       FROM restaurants as res
