@@ -34,7 +34,7 @@ router.get("/:restaurantName/:lang", async (req, res) => {
 
   return sequelize
     .query(
-      `SELECT adm.imageUrl as restaurant_ProfileImg, prodFin.variantId as variantId, catTrans.name as categoryName, adm.fullName as partnerName, prod.id as productId, prod.imageUrl as productImageUrl,
+      `SELECT adm.imageUrl as restaurant_ProfileImg,adm.coverUrl as restaurant_coverImg, prodFin.variantId as variantId, catTrans.name as categoryName, adm.fullName as partnerName, prod.id as productId, prod.imageUrl as productImageUrl,
       prodTrans.title as productTitle, prodTrans.description productDescription, prodFin.price as productPrice,prodFin.discountedPrice as productDiscountedPrice
       FROM productFinals as prodFin 
       INNER JOIN products as prod ON prodFin.productId = prod.id
@@ -64,6 +64,7 @@ router.get("/:restaurantName/:lang", async (req, res) => {
           productPrice: d.productPrice,
           productDiscountedPrice: d.productDiscountedPrice,
           restaurant_ProfileImg: d.restaurant_ProfileImg,
+          restaurant_coverImg: d.restaurant_coverImg,
         };
         items.push(item);
       }

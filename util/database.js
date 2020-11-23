@@ -1,5 +1,6 @@
 const Sequelize = require("sequelize");
 const db = {};
+var os = require("os");
 
 const sequelize = new Sequelize(
   "x0nfgxnh2o2y198n",
@@ -15,6 +16,13 @@ const sequelize = new Sequelize(
 //   dialect: "mysql",
 //   host: "localhost",
 // });
+// console.log("  breq.connection.remoteAddress", os.hostname());
+
+// if (os.hostname().indexOf("local")) {
+//   console.log("++++++++++");
+// } else {
+//   console.log("-------");
+// }
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
