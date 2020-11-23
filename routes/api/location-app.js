@@ -128,7 +128,6 @@ router.get("/promotion/:lang/:locationName", async (req, res, next) => {
       selectedLocation,
     });
   } catch (err) {
-    console.log(err.message);
     return res.json({
       status: 500,
       msg: "Server error",
@@ -247,7 +246,7 @@ router.get("/:lang/:locationName", async (req, res, next) => {
   let today = weekday[d.getDay()];
 
   try {
-    const selectedLocation = await sequelize.query(
+    const result = await sequelize.query(
       `SELECT hoH.open as restaurant_open, hoH.close AS restaurant_close, ad.rating AS restaurant_rating, ad.id AS restaurant_id, ad.coverUrl AS restaurant_coverImage, ad.imageUrl as restaurant_profileImage,
       ad.fullName AS restaurant_name, ad.newRestaurant AS restaurant_new, ad.discount AS restaurant_discount, adInf.shortCompanyDesc AS restaurant_description
       FROM restaurants AS ad
@@ -272,7 +271,7 @@ router.get("/:lang/:locationName", async (req, res, next) => {
       { type: Sequelize.QueryTypes.SELECT }
     );
 
-    if (selectedLocation.length == 0) {
+    if (result.length == 0) {
       return res.json({
         status: 404,
         msg: "City not found",
@@ -283,7 +282,7 @@ router.get("/:lang/:locationName", async (req, res, next) => {
     return res.json({
       status: 200,
       msg: "Success",
-      selectedLocation,
+      result,
     });
   } catch (err) {
     return res.json({
