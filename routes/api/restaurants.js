@@ -42,14 +42,19 @@ router.get("/info/:restaurantName/:lang", async (req, res) => {
       { type: Sequelize.QueryTypes.SELECT }
     );
     if (result.length == 0) {
-      return res
-        .status(404)
-        .json({ msg: "This restaurant isn't located in this town" });
+      return res.status(404).json({ msg: "This restaurant not have data" });
     }
-    res.json(result);
+    return res.json({
+      status: 200,
+      msg: "Restaurant details listed",
+      result,
+    });
   } catch (err) {
-    console.error(err.message);
-    res.status(500).send("Server Error");
+    return res.json({
+      status: 500,
+      msg: "Server error",
+      result: [],
+    });
   }
 });
 
