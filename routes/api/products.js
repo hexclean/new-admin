@@ -34,10 +34,12 @@ router.get("/:restaurantName/:lang", async (req, res) => {
 
   return sequelize
     .query(
-      `SELECT prodFin.variantId as variantId, catTrans.name as categoryName, adm.fullName as partnerName, prod.id as productId, prod.imageUrl as productImageUrl,
+      `SELECT adm.imageUrl as restaurant_ProfileImg, prodFin.variantId as variantId, catTrans.name as categoryName, adm.fullName as partnerName, prod.id as productId, prod.imageUrl as productImageUrl,
       prodTrans.title as productTitle, prodTrans.description productDescription, prodFin.price as productPrice,prodFin.discountedPrice as productDiscountedPrice
       FROM productFinals as prodFin 
-      INNER JOIN products as prod ON prodFin.productId = prod.id INNER JOIN restaurants as adm On prod.restaurantId = adm.id 
+      INNER JOIN products as prod ON prodFin.productId = prod.id
+      INNER JOIN restaurants as adm
+      On prod.restaurantId = adm.id 
       INNER JOIN productTranslations as prodTrans ON prodTrans.productId = prod.id 
       INNER JOIN productVariants as var ON prodFin.variantId = var.id
       INNER JOIN productCategories as cat
@@ -61,6 +63,7 @@ router.get("/:restaurantName/:lang", async (req, res) => {
           productDescription: d.productDescription,
           productPrice: d.productPrice,
           productDiscountedPrice: d.productDiscountedPrice,
+          restaurant_ProfileImg: d.restaurant_ProfileImg,
         };
         items.push(item);
       }
@@ -131,7 +134,7 @@ router.get("/allergen/:restaurantName/:lang/:productId", async (req, res) => {
 
 router.post("/category", async (req, res) => {
   var categoryId = req.body.categoryId;
-
+  console.log("categoryId", categoryId.length);
   if (categoryId.length > 0) {
     if (isNaN(categoryId)) {
       return res.json({
@@ -141,10 +144,10 @@ router.post("/category", async (req, res) => {
       });
     }
   }
-  const restaurantName = req.body.restaurantName.split("-").join(" ");
+
+  const restaurantName = req.body.restaurantName;
   const lang = req.body.lang;
   let languageCode;
-  console.log("categoryId", categoryId);
 
   if (lang == "ro") {
     languageCode = 1;
