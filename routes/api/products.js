@@ -185,28 +185,9 @@ router.post("/category", async (req, res) => {
     });
   }
 
-  if (categoryId == 0) {
-    const result = await sequelize.query(
-      `
-    SELECT cat.id as category_id, catTrans.name as category_name
-  	FROM productCategories as cat
-    inner JOIN productCategoryTranslations as catTrans
-    on cat.id = catTrans.productCategoryId
-    inner join restaurants as res
-    on res.id = cat.restaurantId
-    WHERE catTrans.languageId= ${languageCode} AND res.fullName LIKE "%${restaurantName}%";
-       `,
-      { type: Sequelize.QueryTypes.SELECT }
-    );
-    return res.json({
-      status: 200,
-      msg: "Product list successfully listed",
-      result,
-    });
-  } else {
-    const searchedProduct = req.body.searchedProduct;
-    const result = await sequelize.query(
-      `SELECT prod.id as productId, prod.imageUrl as productImageUrl, prodTrans.title as productTitle,
+  const searchedProduct = req.body.searchedProduct;
+  const result = await sequelize.query(
+    `SELECT prod.id as productId, prod.imageUrl as productImageUrl, prodTrans.title as productTitle,
         prodTrans.description as productDescription, prodFin.price as productPrice, prodFin.discountedPrice as productDiscountedPrice, catTrans.name as category_name,
         res.fullName as partnerName
                 FROM productFinals as prodFin
@@ -223,41 +204,39 @@ router.post("/category", async (req, res) => {
                 inner join restaurants as res
                 on res.id = prodVar.restaurantId
                 WHERE catTrans.languageId =${languageCode} and prodFin.active =1 and prodTrans.languageId=${languageCode}
-                and cat.id = ${categoryId} AND prodTrans.title lIKE "%${searchedProduct}%";
+                and cat.id = ${categoryId} AND prodTrans.title lIKE "%${searchedProduct}%" AND res.fullName LIKE "%${restaurantName}%";
        `,
-      { type: Sequelize.QueryTypes.SELECT }
-    );
-    const items = [];
-    for (let d of result) {
-      const item = {
-        category_name: d.category_name,
-      };
-      items.push(item);
-    }
-    let newIt = [];
-    for (let i = 0; i < 1; i++) {
-      newIt.push(items[0]);
-    }
-    if (result.length == 0) {
-      return res.json({
-        status: 200,
-        msg: "Product not found in this category name",
-        result: [],
-      });
-    }
-    let category_name = newIt[0].category_name;
-    // console.log(newIt[0].category_name);
+    { type: Sequelize.QueryTypes.SELECT }
+  );
+  const items = [];
+  for (let d of result) {
+    const item = {
+      category_name: d.category_name,
+    };
+    items.push(item);
+  }
+  let newIt = [];
+  for (let i = 0; i < 1; i++) {
+    newIt.push(items[0]);
+  }
+  if (result.length == 0) {
     return res.json({
       status: 200,
-      msg: "Product list successfully listed",
-      result: [
-        {
-          category_name,
-          product_list: result,
-        },
-      ],
+      msg: "Product not found in this category name",
+      result: [],
     });
   }
+  let category_name = newIt[0].category_name;
+  return res.json({
+    status: 200,
+    msg: "Product list successfully listed",
+    result: [
+      {
+        category_name,
+        product_list: result,
+      },
+    ],
+  });
 });
 
 module.exports = router;
