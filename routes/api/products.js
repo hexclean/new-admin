@@ -200,7 +200,7 @@ router.post("/category", async (req, res) => {
     );
     return res.json({
       status: 200,
-      msg: "Category list successfully listed",
+      msg: "Product list successfully listed",
       result,
     });
   } else {
@@ -249,15 +249,13 @@ router.post("/category", async (req, res) => {
     // console.log(newIt[0].category_name);
     return res.json({
       status: 200,
-      msg: "Successful filtering in the category",
+      msg: "Product list successfully listed",
       result: [
         {
           category_name,
           product_list: result,
         },
       ],
-
-      // },
     });
   }
 });
