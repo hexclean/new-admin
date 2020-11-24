@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
-const auth = require("../../middleware/auth");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 const config = require("config");
@@ -11,6 +10,9 @@ const nodemailer = require("nodemailer");
 const sendgridTransport = require("nodemailer-sendgrid-transport");
 const { Op } = require("sequelize");
 const ResetPasswordApp = require("../../models/ResetPasswordApp");
+const Sequelize = require("sequelize");
+const sequelize = require("../../util/database");
+
 const transporter = nodemailer.createTransport(
   sendgridTransport({
     auth: {
@@ -19,8 +21,6 @@ const transporter = nodemailer.createTransport(
     },
   })
 );
-const Sequelize = require("sequelize");
-const sequelize = require("../../util/database");
 
 // @route    POST api/login
 // @desc     Authenticate user & get token
@@ -153,7 +153,7 @@ router.post(
           if (err) throw err;
           res.json({
             status: 201,
-            msg: "'Registartion success",
+            msg: "'Registration success",
             result: [{ token }],
           });
         }
@@ -174,7 +174,11 @@ router.post(
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+      return res.json({
+        status: 400,
+        msg: "Invalid credentials",
+        result: [],
+      });
     }
     const { email } = req.body;
 
@@ -189,19 +193,26 @@ router.post(
         .then((result) => {
           transporter.sendMail({
             to: email,
-            from: "shop@node-complete.com",
+            from: "reset-password@foodnet.ro",
             subject: "Password reset",
             html: `
                   <p>You requested a password reset</p>
-                  <p>Click this <a href="http://localhost:3000/reset-password/${token}">link</a> to set a new password.</p>
-                  <p>Vigyazz mert csak 1,5 oraig ervenyes a link</p>
+                  <p>Click this <a href="https://shielded-anchorage-51692.herokuapp.com/reset-password/${token}">link</a> to set a new password.</p>
                 `,
           });
-          res.json("Succes");
+
+          return res.json({
+            status: 200,
+            msg: "Email successfully sent",
+            result: [],
+          });
         })
         .catch((err) => {
-          console.log(err.message);
-          res.json({ result: [{ msg: "Server error" }], status: 500 });
+          return res.json({
+            status: 500,
+            msg: "Server error",
+            result: [],
+          });
         });
     });
   }
@@ -212,14 +223,27 @@ router.post(
 // @access   Public
 router.post(
   "/reset-password/:token",
-  [check("newPassword", "Password min 6 length").isLength({ min: 5 })],
+  [
+    check(
+      "password",
+      "The password must be at least 6 characters long"
+    ).isLength({ min: 6 }),
+    check(
+      "passwordAgain",
+      "The password must be at least 6 characters long"
+    ).isLength({ min: 6 }),
+  ],
   async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+      return res.json({
+        status: 400,
+        msg: "The password must be at least 6 characters long",
+        result: [],
+      });
     }
 
-    const { newPassword } = req.body;
+    const { password, passwordAgain } = req.body;
     const token = req.params.token;
 
     let resetUser;
@@ -233,17 +257,37 @@ router.post(
     });
 
     if (userToken.length == 0) {
-      return res.status(400).json({ msg: "No token available" });
+      return res.json({
+        status: 400,
+        msg: "No token available",
+        result: [],
+      });
     }
+
+    if (password != passwordAgain) {
+      return res.json({
+        status: 400,
+        msg: "Password and password again do not match",
+        result: [],
+      });
+    }
+
+    const payload = {
+      user: {
+        id: userToken.id,
+      },
+    };
 
     await User.findOne({
       where: {
-        resetToken: token,
+        resetToken: {
+          [Op.eq]: token,
+        },
       },
     })
       .then((user) => {
         resetUser = user;
-        return bcrypt.hash(newPassword, 12);
+        return bcrypt.hash(password, 12);
       })
       .then((hashedPassword) => {
         resetUser.password = hashedPassword;
@@ -252,11 +296,27 @@ router.post(
         return resetUser.save();
       })
       .then((result) => {
-        res.json("Succes");
+        jwt.sign(
+          payload,
+          config.get("jwtSecret"),
+          { expiresIn: 360000 },
+          (err, token) => {
+            if (err) throw err;
+            return res.json({
+              status: 200,
+              msg: "You have successfully changed your password",
+              result: [{ token: token }],
+            });
+          }
+        );
       })
       .catch((err) => {
         console.log(err.message);
-        res.status(500).send("server error");
+        return res.json({
+          status: 500,
+          msg: "Server error",
+          result: [],
+        });
       });
   }
 );
@@ -382,13 +442,16 @@ router.post(
         }
       });
     } catch (err) {
-      console.error(err.message);
-      res.json({ result: [{ msg: "Server error" }], status: 500 });
+      return res.json({
+        status: 500,
+        msg: "Server error",
+        result: [],
+      });
     }
   }
 );
 
-// @route    POST api/reset-password-app/:token
+// @route    POST api/reset-password-app/:code
 // @desc     Change password in app
 // @access   Public
 router.post(
