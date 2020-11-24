@@ -105,10 +105,10 @@ router.post("/", async (req, res) => {
     });
 });
 
-router.get("/allergen/:restaurantName/:lang/:productId", async (req, res) => {
-  const restaurantName = req.params.restaurantName.split("-").join(" ");
-  const lang = req.params.lang;
-  const productId = req.params.productId;
+router.post("/allergen", async (req, res) => {
+  const restaurantName = req.body.restaurantName;
+  const lang = req.body.lang;
+  const productId = req.body.productId;
   let languageCode;
   if (lang == "ro") {
     languageCode = 1;
@@ -126,7 +126,7 @@ router.get("/allergen/:restaurantName/:lang/:productId", async (req, res) => {
 
   return sequelize
     .query(
-      `SELECT prod.id as product_id,al.id as allergen_id, alTrans.name as allergen_name, res.fullName as restaurant_name
+      `SELECT prod.id as product_id,al.id as allergen_id, alTrans.name as allergen_name
       from products as prod
       inner join restaurants as res
       on res.id = prod.restaurantId
