@@ -313,36 +313,22 @@ router.get("/:restaurantName/:lang/:cat", async (req, res) => {
         ],
       });
       ////
-
+      let allergenName = [];
+      let item444;
       for (let i = 0; i < filteredResultAllergen.length; i++) {
-        const locationName2 = filteredResultAllergen[i].productHasAllergens;
-        const locationName3 = locationName2;
-        // console.log("locationNae", locationName3);
-        // const { locations } = locationName;
-        for (let k = 0; k < locationName3.length; ++k) {
-          let test = locationName3[i].allergenIdProduct;
-          console.log("test", test.allergenTranslations[0].name);
+        const allergenArray1 = filteredResultAllergen[i].productHasAllergens;
+        const allergenArray2 = allergenArray1;
+
+        const items22 = [];
+
+        for (let k = 0; k < allergenArray2.length; k++) {
+          item444 = {
+            allergen_id: allergenArray2[k].allergenIdProduct.id,
+            allergen_name:
+              allergenArray2[k].allergenIdProduct.allergenTranslations[0].name,
+          };
         }
-        //   const { RestaurantFilters } = locations[k];
-        //   for (let j = 0; j < RestaurantFilters.length; ++j) {
-        //     const { restaurant } = RestaurantFilters[j];
-        //     const shortCompanyDesc = restaurant.adminInfos[0].shortCompanyDesc;
-        //     const { open, close } = restaurant.hours[0].openingHour;
-        //     result.push({
-        //       restaurant_open: open,
-        //       restaurant_close: close,
-        //       restaurant_rating: restaurant.rating,
-        //       restaurant_id: restaurant.id,
-        //       restaurant_profileImage: restaurant.imageUrl,
-        //       restaurant_coverImage: restaurant.coverUrl,
-        //       restaurant_name: restaurant.fullName,
-        //       restaurant_new: restaurant.newRestaurant,
-        //       restaurant_discount: restaurant.discount,
-        //       restaurant_description: shortCompanyDesc,
-        //       restaurant_AVGrating: restaurant.rating,
-        //     });
-        //   }
-        // }
+        items22.push(item444);
       }
 
       ///
@@ -359,7 +345,7 @@ router.get("/:restaurantName/:lang/:cat", async (req, res) => {
           productDescription: d.productDescription,
           productPrice: d.productPrice,
           productDiscountedPrice: d.productDiscountedPrice,
-          allergens: "allergen list",
+          allergens: [item444],
         };
         items.push(item);
       }
@@ -375,7 +361,11 @@ router.get("/:restaurantName/:lang/:cat", async (req, res) => {
       res.json({
         status: 200,
         msg: "Products list successfully listed",
-        filteredResultAllergen,
+        result: [
+          {
+            product_list: result,
+          },
+        ],
       });
     });
 });

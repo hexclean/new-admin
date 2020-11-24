@@ -187,7 +187,6 @@ router.post(
       })
       .then((result) => {
         if (rating <= 3) {
-          // badProductReview();
           console.log("fuggvenyhivas uj email kuldes");
         }
         return res.json(result);
