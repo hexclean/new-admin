@@ -13,9 +13,12 @@ const Allergen = require("../../models/Allergen");
 const ProductHasAllergen = require("../../models/ProductHasAllergen");
 const Products = require("../../models/Product");
 const { localsName } = require("ejs");
-router.get("/:restaurantName/:lang", async (req, res) => {
-  const restaurantName = req.params.restaurantName.split("-").join(" ");
-  const lang = req.params.lang;
+
+router.post("/", async (req, res) => {
+  const restaurantName = req.body.restaurantName;
+  const lang = req.body.lang;
+  const searchedProduct = req.body.searchedProduct;
+
   let languageCode;
   if (lang == "ro") {
     languageCode = 1;
@@ -43,9 +46,9 @@ router.get("/:restaurantName/:lang", async (req, res) => {
       INNER JOIN productVariants as var ON prodFin.variantId = var.id
       INNER JOIN productCategories as cat
       on var.categoryId = cat.id
-      inner join productCategoryTranslations as catTrans ON catTrans.productCategoryId = cat.id 
+      inner join productCategoryTranslations as catTrans ON catTrans.productCategoryId = cat.id
       WHERE catTrans.languageId =${languageCode}  and prodFin.active=1 and adm.fullName LIKE '%${restaurantName}%' AND
-      prodTrans.languageId =${languageCode}
+      prodTrans.languageId =${languageCode} and prodTrans.title LIKE "%${searchedProduct}%"
        `,
       { type: Sequelize.QueryTypes.SELECT }
     )
@@ -204,7 +207,7 @@ router.post("/category", async (req, res) => {
     const searchedProduct = req.body.searchedProduct;
     const result = await sequelize.query(
       `SELECT prod.id as productId, prod.imageUrl as productImageUrl, prodTrans.title as productTitle,
-        prodTrans.description as productDescription, prodFin.price as productPrice, prodFin.discountedPrice as productDiscountedPrice,
+        prodTrans.description as productDescription, prodFin.price as productPrice, prodFin.discountedPrice as productDiscountedPrice, catTrans.name as category_name,
         res.fullName as partnerName
                 FROM productFinals as prodFin
                 inner join products as prod
@@ -224,150 +227,39 @@ router.post("/category", async (req, res) => {
        `,
       { type: Sequelize.QueryTypes.SELECT }
     );
+    const items = [];
+    for (let d of result) {
+      const item = {
+        category_name: d.category_name,
+      };
+      items.push(item);
+    }
+    let newIt = [];
+    for (let i = 0; i < 1; i++) {
+      newIt.push(items[0]);
+    }
     if (result.length == 0) {
       return res.json({
-        status: 404,
+        status: 200,
         msg: "Product not found in this category name",
-        result,
+        result: [],
       });
     }
+    let category_name = newIt[0].category_name;
+    // console.log(newIt[0].category_name);
     return res.json({
       status: 200,
       msg: "Successful filtering in the category",
-      result,
-    });
-  }
-});
-
-router.get("/:restaurantName/:lang/:cat", async (req, res) => {
-  const params = req.params.restaurantName.split("-").join(" ");
-  const lang = req.params.lang;
-  const cat = req.params.cat;
-  let languageCode;
-  if (lang == "ro") {
-    languageCode = 1;
-  } else if (lang == "hu") {
-    languageCode = 2;
-  } else if (lang == "en") {
-    languageCode = 3;
-  } else {
-    res.json({
-      status: 404,
-      msg: "Language not found",
-      result: [],
-    });
-  }
-
-  return await sequelize
-    .query(
-      `SELECT prodFin.variantId as variantId, catTrans.name as categoryName, adm.fullName as partnerName, prod.id as productId, prod.imageUrl as productImageUrl,
-      prodTrans.title as productTitle, prodTrans.description productDescription, prodFin.price as productPrice,prodFin.discountedPrice as productDiscountedPrice
-      FROM productFinals as prodFin 
-      INNER JOIN products as prod ON prodFin.productId = prod.id INNER JOIN restaurants as adm On prod.restaurantId = adm.id 
-      INNER JOIN productTranslations as prodTrans ON prodTrans.productId = prod.id 
-      INNER JOIN productVariants as var ON prodFin.variantId = var.id
-      INNER JOIN productCategories as cat
-      on var.categoryId = cat.id
-      inner join productCategoryTranslations as catTrans ON catTrans.productCategoryId = cat.id 
-       WHERE catTrans.languageId =${languageCode}  and prodFin.active=1 and adm.fullName LIKE '%${params}%' AND
-       prodTrans.languageId =${languageCode} and cat.id = ${cat}
-       `,
-      { type: Sequelize.QueryTypes.SELECT }
-    )
-    .then(async (resultsList) => {
-      let allergenList = [];
-      let allergenFinal = [];
-      let list = [];
-      for (let i = 0; i < resultsList.length; i++) {
-        list.push(resultsList[i].productId);
-      }
-      const filteredResultAllergen = await Products.findAll({
-        where: {
-          id: {
-            [Op.in]: list,
-          },
+      result: [
+        {
+          category_name,
+          product_list: result,
         },
-        include: [
-          {
-            model: Restaurant,
-            model: ProductHasAllergen,
-            where: {
-              productId: {
-                [Op.in]: list,
-              },
-              active: 1,
-            },
-            include: [
-              {
-                model: Allergen,
-                include: [
-                  {
-                    model: AllergenTranslation,
-                    where: { languageId: 1 },
-                  },
-                ],
-                as: "allergenIdProduct",
-              },
-            ],
-          },
-        ],
-      });
-      ////
-      let allergenName = [];
-      let item444;
-      for (let i = 0; i < filteredResultAllergen.length; i++) {
-        const allergenArray1 = filteredResultAllergen[i].productHasAllergens;
-        const allergenArray2 = allergenArray1;
+      ],
 
-        const items22 = [];
-
-        for (let k = 0; k < allergenArray2.length; k++) {
-          item444 = {
-            allergen_id: allergenArray2[k].allergenIdProduct.id,
-            allergen_name:
-              allergenArray2[k].allergenIdProduct.allergenTranslations[0].name,
-          };
-        }
-        items22.push(item444);
-      }
-
-      ///
-
-      const items = [];
-      for (let d of resultsList) {
-        const item = {
-          variantId: d.variantId,
-          categoryName: d.categoryName,
-          partnerName: d.partnerName,
-          productId: d.productId,
-          productImageUrl: d.productImageUrl,
-          productTitle: d.productTitle,
-          productDescription: d.productDescription,
-          productPrice: d.productPrice,
-          productDiscountedPrice: d.productDiscountedPrice,
-          allergens: [item444],
-        };
-        items.push(item);
-      }
-
-      const result = items.reduce((accumulator, currentValue) => {
-        const { categoryName } = currentValue;
-        const key = categoryName;
-        accumulator[key] = accumulator[key] || [];
-        accumulator[key].push(currentValue);
-        return accumulator;
-      }, Object.create(null));
-
-      res.json({
-        status: 200,
-        msg: "Products list successfully listed",
-        result: [
-          {
-            product_list: result,
-          },
-        ],
-      });
+      // },
     });
+  }
 });
 
 module.exports = router;
