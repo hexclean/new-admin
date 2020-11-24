@@ -404,6 +404,7 @@ router.post("/search", async (req, res) => {
       },
     ],
   });
+
   let result = [];
 
   for (let i = 0; i < filteredResult.length; i++) {

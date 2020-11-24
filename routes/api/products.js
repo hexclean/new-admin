@@ -1,8 +1,18 @@
 const express = require("express");
 const router = express.Router();
 const Sequelize = require("sequelize");
-const sequelize = require("../../util/database");
+const Op = Sequelize.Op;
 
+const sequelize = require("../../util/database");
+const RestaurantFilters = require("../../models/RestaurantFilters");
+const LocationNameTransalation = require("../../models/LocationNameTranslation");
+const AllergenTranslation = require("../../models/AllergenTranslation");
+const Restaurant = require("../../models/Restaurant");
+const RestaurantDescription = require("../../models/AdminInfo");
+const Allergen = require("../../models/Allergen");
+const ProductHasAllergen = require("../../models/ProductHasAllergen");
+const Products = require("../../models/Product");
+const { localsName } = require("ejs");
 router.get("/:restaurantName/:lang", async (req, res) => {
   const restaurantName = req.params.restaurantName.split("-").join(" ");
   const lang = req.params.lang;
@@ -248,8 +258,7 @@ router.get("/:restaurantName/:lang/:cat", async (req, res) => {
     });
   }
 
-  // FROM foodnet.extras as ext INNER JOIN foodnet.extraTranslations as extTrans on ext.id = extTrans.extraId INNER JOIN  foodnet.productVariantsExtras as prodVariant ON ext.id = prodVariant.extraId WHERE prodVariant.productVariantId =${currentValue["variantId"]} AND prodVariant.active=1 and extTrans.languageId=2;
-  return sequelize
+  return await sequelize
     .query(
       `SELECT prodFin.variantId as variantId, catTrans.name as categoryName, adm.fullName as partnerName, prod.id as productId, prod.imageUrl as productImageUrl,
       prodTrans.title as productTitle, prodTrans.description productDescription, prodFin.price as productPrice,prodFin.discountedPrice as productDiscountedPrice
@@ -265,7 +274,79 @@ router.get("/:restaurantName/:lang/:cat", async (req, res) => {
        `,
       { type: Sequelize.QueryTypes.SELECT }
     )
-    .then((resultsList) => {
+    .then(async (resultsList) => {
+      let allergenList = [];
+      let allergenFinal = [];
+      let list = [];
+      for (let i = 0; i < resultsList.length; i++) {
+        list.push(resultsList[i].productId);
+      }
+      const filteredResultAllergen = await Products.findAll({
+        where: {
+          id: {
+            [Op.in]: list,
+          },
+        },
+        include: [
+          {
+            model: Restaurant,
+            model: ProductHasAllergen,
+            where: {
+              productId: {
+                [Op.in]: list,
+              },
+              active: 1,
+            },
+            include: [
+              {
+                model: Allergen,
+                include: [
+                  {
+                    model: AllergenTranslation,
+                    where: { languageId: 1 },
+                  },
+                ],
+                as: "allergenIdProduct",
+              },
+            ],
+          },
+        ],
+      });
+      ////
+
+      for (let i = 0; i < filteredResultAllergen.length; i++) {
+        const locationName2 = filteredResultAllergen[i].productHasAllergens;
+        const locationName3 = locationName2;
+        // console.log("locationNae", locationName3);
+        // const { locations } = locationName;
+        for (let k = 0; k < locationName3.length; ++k) {
+          let test = locationName3[i].allergenIdProduct;
+          console.log("test", test.allergenTranslations[0].name);
+        }
+        //   const { RestaurantFilters } = locations[k];
+        //   for (let j = 0; j < RestaurantFilters.length; ++j) {
+        //     const { restaurant } = RestaurantFilters[j];
+        //     const shortCompanyDesc = restaurant.adminInfos[0].shortCompanyDesc;
+        //     const { open, close } = restaurant.hours[0].openingHour;
+        //     result.push({
+        //       restaurant_open: open,
+        //       restaurant_close: close,
+        //       restaurant_rating: restaurant.rating,
+        //       restaurant_id: restaurant.id,
+        //       restaurant_profileImage: restaurant.imageUrl,
+        //       restaurant_coverImage: restaurant.coverUrl,
+        //       restaurant_name: restaurant.fullName,
+        //       restaurant_new: restaurant.newRestaurant,
+        //       restaurant_discount: restaurant.discount,
+        //       restaurant_description: shortCompanyDesc,
+        //       restaurant_AVGrating: restaurant.rating,
+        //     });
+        //   }
+        // }
+      }
+
+      ///
+
       const items = [];
       for (let d of resultsList) {
         const item = {
@@ -278,9 +359,11 @@ router.get("/:restaurantName/:lang/:cat", async (req, res) => {
           productDescription: d.productDescription,
           productPrice: d.productPrice,
           productDiscountedPrice: d.productDiscountedPrice,
+          allergens: "allergen list",
         };
         items.push(item);
       }
+
       const result = items.reduce((accumulator, currentValue) => {
         const { categoryName } = currentValue;
         const key = categoryName;
@@ -292,7 +375,7 @@ router.get("/:restaurantName/:lang/:cat", async (req, res) => {
       res.json({
         status: 200,
         msg: "Products list successfully listed",
-        result,
+        filteredResultAllergen,
       });
     });
 });
