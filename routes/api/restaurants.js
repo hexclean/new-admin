@@ -113,7 +113,7 @@ router.post("/review", async (req, res) => {
 
       if (result.length == 0) {
         return res.json({
-          status: 404,
+          status: 200,
           msg: "This restaurant not have rating",
           result,
         });

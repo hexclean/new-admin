@@ -1,18 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const db = require("../../server");
 const Sequelize = require("sequelize");
-const Categories = require("../../models/ProductCategory");
-const Product = require("../../models/Product");
-const ProductFinal = require("../../models/ProductFinal");
-const Variants = require("../../models/ProductVariant");
-const ProductTranslation = require("../../models/ProductTranslation");
-const ProductCategories = require("../../models/ProductCategory");
-const Restaurant = require("../../models/Restaurant");
 const sequelize = require("../../util/database");
-const c = require("config");
-const { localsName } = require("ejs");
-const { NUMBER } = require("sequelize");
 
 router.get("/:restaurantName/:lang", async (req, res) => {
   const restaurantName = req.params.restaurantName.split("-").join(" ");
@@ -238,6 +227,74 @@ router.post("/category", async (req, res) => {
       result,
     });
   }
+});
+
+router.get("/:restaurantName/:lang/:cat", async (req, res) => {
+  const params = req.params.restaurantName.split("-").join(" ");
+  const lang = req.params.lang;
+  const cat = req.params.cat;
+  let languageCode;
+  if (lang == "ro") {
+    languageCode = 1;
+  } else if (lang == "hu") {
+    languageCode = 2;
+  } else if (lang == "en") {
+    languageCode = 3;
+  } else {
+    res.json({
+      status: 404,
+      msg: "Language not found",
+      result: [],
+    });
+  }
+
+  // FROM foodnet.extras as ext INNER JOIN foodnet.extraTranslations as extTrans on ext.id = extTrans.extraId INNER JOIN  foodnet.productVariantsExtras as prodVariant ON ext.id = prodVariant.extraId WHERE prodVariant.productVariantId =${currentValue["variantId"]} AND prodVariant.active=1 and extTrans.languageId=2;
+  return sequelize
+    .query(
+      `SELECT prodFin.variantId as variantId, catTrans.name as categoryName, adm.fullName as partnerName, prod.id as productId, prod.imageUrl as productImageUrl,
+      prodTrans.title as productTitle, prodTrans.description productDescription, prodFin.price as productPrice,prodFin.discountedPrice as productDiscountedPrice
+      FROM productFinals as prodFin 
+      INNER JOIN products as prod ON prodFin.productId = prod.id INNER JOIN restaurants as adm On prod.restaurantId = adm.id 
+      INNER JOIN productTranslations as prodTrans ON prodTrans.productId = prod.id 
+      INNER JOIN productVariants as var ON prodFin.variantId = var.id
+      INNER JOIN productCategories as cat
+      on var.categoryId = cat.id
+      inner join productCategoryTranslations as catTrans ON catTrans.productCategoryId = cat.id 
+       WHERE catTrans.languageId =${languageCode}  and prodFin.active=1 and adm.fullName LIKE '%${params}%' AND
+       prodTrans.languageId =${languageCode} and cat.id = ${cat}
+       `,
+      { type: Sequelize.QueryTypes.SELECT }
+    )
+    .then((resultsList) => {
+      const items = [];
+      for (let d of resultsList) {
+        const item = {
+          variantId: d.variantId,
+          categoryName: d.categoryName,
+          partnerName: d.partnerName,
+          productId: d.productId,
+          productImageUrl: d.productImageUrl,
+          productTitle: d.productTitle,
+          productDescription: d.productDescription,
+          productPrice: d.productPrice,
+          productDiscountedPrice: d.productDiscountedPrice,
+        };
+        items.push(item);
+      }
+      const result = items.reduce((accumulator, currentValue) => {
+        const { categoryName } = currentValue;
+        const key = categoryName;
+        accumulator[key] = accumulator[key] || [];
+        accumulator[key].push(currentValue);
+        return accumulator;
+      }, Object.create(null));
+
+      res.json({
+        status: 200,
+        msg: "Products list successfully listed",
+        result,
+      });
+    });
 });
 
 module.exports = router;
