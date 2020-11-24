@@ -1,18 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Sequelize = require("sequelize");
-const Op = Sequelize.Op;
-
 const sequelize = require("../../util/database");
-const RestaurantFilters = require("../../models/RestaurantFilters");
-const LocationNameTransalation = require("../../models/LocationNameTranslation");
-const AllergenTranslation = require("../../models/AllergenTranslation");
-const Restaurant = require("../../models/Restaurant");
-const RestaurantDescription = require("../../models/AdminInfo");
-const Allergen = require("../../models/Allergen");
-const ProductHasAllergen = require("../../models/ProductHasAllergen");
-const Products = require("../../models/Product");
-const { localsName } = require("ejs");
 
 router.post("/", async (req, res) => {
   const restaurantName = req.body.restaurantName;
@@ -36,7 +25,7 @@ router.post("/", async (req, res) => {
 
   return sequelize
     .query(
-      `SELECT adm.imageUrl as restaurant_ProfileImg,adm.coverUrl as restaurant_coverImg, adm.rating AS restaurant_rating, prodFin.variantId as variantId, catTrans.name as categoryName, adm.fullName as partnerName, prod.id as productId, prod.imageUrl as productImageUrl,
+      `SELECT cat.id as category_id, prodFin.variantId as variantId, prod.id as productId, adm.imageUrl as restaurant_ProfileImg,adm.coverUrl as restaurant_coverImg, adm.rating AS restaurant_rating, catTrans.name as categoryName, adm.fullName as partnerName, prod.imageUrl as productImageUrl,
       prodTrans.title as productTitle, prodTrans.description productDescription, prodFin.price as productPrice,prodFin.discountedPrice as productDiscountedPrice
       FROM productFinals as prodFin 
       INNER JOIN products as prod ON prodFin.productId = prod.id
@@ -57,9 +46,10 @@ router.post("/", async (req, res) => {
       for (let d of resultsList) {
         const item = {
           variantId: d.variantId,
+          category_id: d.category_id,
+          productId: d.productId,
           categoryName: d.categoryName,
           partnerName: d.partnerName,
-          productId: d.productId,
           productImageUrl: d.productImageUrl,
           productTitle: d.productTitle,
           productDescription: d.productDescription,
@@ -75,10 +65,9 @@ router.post("/", async (req, res) => {
         const { categoryName } = currentValue;
         const key = categoryName;
         accumulator[key] = accumulator[key] || [];
-        console.log("accumulator[key]", key);
         accumulator[key].push(currentValue);
         sequelize.query(
-          `SELECT adm.imageUrl as restaurant_ProfileImg,adm.coverUrl as restaurant_coverImg, adm.rating AS restaurant_rating, prodFin.variantId as variantId, catTrans.name as categoryName, adm.fullName as partnerName, prod.id as productId, prod.imageUrl as productImageUrl,
+          `SELECT prodFin.variantId as variantId, prod.id as productId, cat.id as category_id, adm.imageUrl as restaurant_ProfileImg,adm.coverUrl as restaurant_coverImg, adm.rating AS restaurant_rating,  catTrans.name as categoryName, adm.fullName as partnerName,  prod.imageUrl as productImageUrl,
       prodTrans.title as productTitle, prodTrans.description productDescription, prodFin.price as productPrice,prodFin.discountedPrice as productDiscountedPrice
       FROM productFinals as prodFin 
       INNER JOIN products as prod ON prodFin.productId = prod.id
@@ -94,13 +83,14 @@ router.post("/", async (req, res) => {
        `,
           { type: Sequelize.QueryTypes.SELECT }
         );
+
         return accumulator;
       }, Object.create(null));
 
       res.json({
         status: 200,
         msg: "Products list successfully listed",
-        result,
+        result: result,
       });
     });
 });
@@ -155,21 +145,37 @@ router.post("/allergen", async (req, res) => {
 });
 
 router.post("/category", async (req, res) => {
+  const searchedProduct = req.body.searchedProduct;
   var categoryId = req.body.categoryId;
-
-  if (categoryId.length > 0) {
-    if (isNaN(categoryId)) {
-      return res.json({
-        status: 400,
-        msg: "Something went wrong",
-        result: [],
-      });
-    }
-  }
-
   const restaurantName = req.body.restaurantName;
   const lang = req.body.lang;
   let languageCode;
+  const items = [];
+  let newIt = [];
+
+  if (isNaN(categoryId)) {
+    return res.json({
+      status: 400,
+      msg: "Something went wrong",
+      result: [],
+    });
+  }
+
+  if (categoryId == "") {
+    return res.json({
+      status: 200,
+      msg: "Category is empty",
+      result: [],
+    });
+  }
+
+  // if (searchedProduct == "") {
+  //   return res.json({
+  //     status: 200,
+  //     msg: "Product is empty",
+  //     result: [],
+  //   });
+  // }
 
   if (lang == "ro") {
     languageCode = 1;
@@ -185,7 +191,6 @@ router.post("/category", async (req, res) => {
     });
   }
 
-  const searchedProduct = req.body.searchedProduct;
   const result = await sequelize.query(
     `SELECT prod.id as productId, prod.imageUrl as productImageUrl, prodTrans.title as productTitle,
         prodTrans.description as productDescription, prodFin.price as productPrice, prodFin.discountedPrice as productDiscountedPrice, catTrans.name as category_name,
@@ -208,17 +213,18 @@ router.post("/category", async (req, res) => {
        `,
     { type: Sequelize.QueryTypes.SELECT }
   );
-  const items = [];
+
   for (let d of result) {
     const item = {
       category_name: d.category_name,
     };
     items.push(item);
   }
-  let newIt = [];
+
   for (let i = 0; i < 1; i++) {
     newIt.push(items[0]);
   }
+
   if (result.length == 0) {
     return res.json({
       status: 200,
@@ -226,6 +232,7 @@ router.post("/category", async (req, res) => {
       result: [],
     });
   }
+
   let category_name = newIt[0].category_name;
   return res.json({
     status: 200,

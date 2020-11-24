@@ -45,7 +45,7 @@ router.get("/:lang", async (req, res) => {
 
     return res.json({
       status: 200,
-      msg: "Location list successfuly appear",
+      msg: "Location list successfully appear",
       locations,
     });
   } catch (err) {
