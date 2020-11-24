@@ -115,7 +115,7 @@ router.post("/review", async (req, res) => {
         return res.json({
           status: 200,
           msg: "This restaurant not have rating",
-          result,
+          result: [{ AVGrating, ratings: result }],
         });
       }
 
