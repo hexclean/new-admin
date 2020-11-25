@@ -29,7 +29,7 @@ router.post(
   "/login",
   [
     check("email", "This is not email format").isEmail(),
-    check("password", "Password is required").isLength({ min: 3, max: 30 }),
+    check("password", "Password is required").isLength({ min: 6, max: 30 }),
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -97,7 +97,7 @@ router.post(
   "/register",
   [
     check("email", "Please include a valid email").isEmail(),
-    check("name", "Please include a valid name").isLength({ min: 3, max: 20 }),
+    check("name", "Please include a valid name").isLength({ min: 6, max: 20 }),
     check(
       "password",
       "Please enter a password with 5 or more characters"
