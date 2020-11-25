@@ -29,7 +29,7 @@ router.post(
   "/login",
   [
     check("email", "This is not email format").isEmail(),
-    check("password", "Password is required").isEmpty(),
+    check("password", "Password is required").isLength({ min: 3, max: 30 }),
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -101,7 +101,7 @@ router.post(
     check(
       "password",
       "Please enter a password with 5 or more characters"
-    ).isLength({ min: 5, max: 20 }),
+    ).isLength({ min: 5, max: 30 }),
   ],
   async (req, res) => {
     const errors = validationResult(req);
