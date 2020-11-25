@@ -29,14 +29,14 @@ router.post(
   "/login",
   [
     check("email", "This is not email format").isEmail(),
-    check("password", "Password is required").exists(),
+    check("password", "Password is required").isEmpty(),
   ],
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.json({
         status: 400,
-        msg: "Email or password incorrect",
+        msg: "Invalid credentials",
         result: [],
       });
     }
