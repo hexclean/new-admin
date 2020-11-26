@@ -3,7 +3,7 @@ const router = express.Router();
 const Sequelize = require("sequelize");
 const sequelize = require("../../util/database");
 const RestaurantFilters = require("../../models/RestaurantFilters");
-const LocationNameTransalation = require("../../models/LocationNameTranslation");
+const LocationNameTranslation = require("../../models/LocationNameTranslation");
 const LocationName = require("../../models/LocationName");
 const Restaurant = require("../../models/Restaurant");
 const RestaurantDescription = require("../../models/AdminInfo");
@@ -47,7 +47,7 @@ router.get("/:lang", async (req, res) => {
 
     return res.json({
       status: 200,
-      msg: "Location list successfuly appear",
+      msg: "Location list successfully appear",
       locations,
     });
   } catch (err) {
@@ -239,7 +239,7 @@ router.post("/search", async (req, res) => {
   if (req.body.filters.card == 1) whereStatement.card = 1;
   if (req.body.filters.withinOneHour == 1) whereStatement.withinOneHour = 1;
 
-  const filteredResult = await LocationNameTransalation.findAll({
+  const filteredResult = await LocationNameTranslation.findAll({
     where: { name: city, languageId: 1 },
 
     include: [
@@ -280,7 +280,7 @@ router.post("/search", async (req, res) => {
                         where: { languageId: languageCode },
                         attributes: {
                           exclude: [
-                            "adress",
+                            "address",
                             "kitchen",
                             "createdAt",
                             "updatedAt",

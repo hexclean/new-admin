@@ -12,11 +12,10 @@ const AdminInfo = sequelize.define("adminInfo", {
   restaurantId: {
     type: Sequelize.INTEGER,
   },
-  adress: {
+  address: {
     type: Sequelize.STRING,
   },
   shortCompanyDesc: Sequelize.STRING,
-  kitchen: Sequelize.STRING,
 });
 
 module.exports = AdminInfo;

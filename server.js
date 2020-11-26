@@ -10,7 +10,7 @@ const multer = require("multer");
 const path = require("path");
 const SequelizeStore = require("connect-session-sequelize")(session.Store);
 const sequelize = require("./util/database");
-const { databaseConfig } = require("./middleware/database-config");
+const { databaseConfig } = require("./util/database-config");
 const app = express();
 const db = require("./util/database");
 
@@ -141,7 +141,7 @@ databaseConfig();
 // });
 
 // Config PORT
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 3000;
 app.use(errorController.get404);
 
 sequelize

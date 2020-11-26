@@ -11,8 +11,6 @@ const LocationName = require("../models/LocationName");
 const LocationNameTranslation = require("../models/LocationNameTranslation");
 const ProductVariantsExtras = require("../models/ProductVariantsExtras");
 const Language = require("../models/Language");
-const adminHomeSearch = require("../models/adminHomeSearch");
-const adminHomeSearchTranslation = require("../models/adminHomeSearchTranslation");
 const Admin = require("../models/Restaurant");
 const AdminInfo = require("../models/AdminInfo");
 const DailyMenuHasAllergen = require("../models/DailyMenuHasAllergen");
@@ -27,7 +25,7 @@ const ProductHasAllergen = require("../models/ProductHasAllergen");
 const ExtraHasAllergen = require("../models/ExtraHasAllergen");
 const RestaurantRole = require("../models/RestaurantRole");
 const User = require("../models/User");
-const UserDeliveryAdress = require("../models/UserDeliveryAdress");
+const UserDeliveryAddress = require("../models/UserDeliveryAddress");
 const UserProfile = require("../models/UserProfile");
 const CouponCode = require("../models/CouponCode");
 //Opening Hours
@@ -91,11 +89,11 @@ function databaseConfig() {
   });
   Order.hasMany(OrderItem);
 
-  Order.belongsTo(UserDeliveryAdress, {
+  Order.belongsTo(UserDeliveryAddress, {
     constrains: true,
     onDelete: "CASCADE",
   });
-  UserDeliveryAdress.hasMany(Order);
+  UserDeliveryAddress.hasMany(Order);
 
   OrderItem.belongsTo(ProductVariant, {
     constrains: true,
@@ -335,17 +333,6 @@ function databaseConfig() {
 
   Language.hasMany(AllergenTranslation, { foreignKey: "languageId" });
 
-  Admin.hasMany(adminHomeSearch, { foreignKey: "restaurantId" });
-  adminHomeSearchTranslation.belongsTo(adminHomeSearch, {
-    as: "adminLTrans",
-    foreignKey: "adminHomeSearchId",
-  });
-  adminHomeSearch.hasMany(adminHomeSearchTranslation, {
-    foreignKey: "adminHomeSearchId",
-  });
-
-  Language.hasMany(adminHomeSearchTranslation, { foreignKey: "languageId" });
-
   UserProfile.belongsTo(User, {
     as: "userProfile",
     foreignKey: "userId",
@@ -353,7 +340,7 @@ function databaseConfig() {
 
   User.hasOne(UserProfile, { foreignKey: "userId" });
 
-  UserDeliveryAdress.belongsTo(User, {
+  UserDeliveryAddress.belongsTo(User, {
     as: "userDelAdress",
     foreignKey: "userId",
   });
@@ -388,9 +375,8 @@ function databaseConfig() {
   });
   Language.hasMany(LocationNameTranslation, { foreignKey: "languageId" });
 
-  User.hasMany(UserDeliveryAdress, { foreignKey: "userId" });
+  User.hasMany(UserDeliveryAddress, { foreignKey: "userId" });
 
-  // OPENING HOURS
   Hours.belongsTo(Admin, { constrains: true, onDelete: "CASCADE" });
   Admin.hasMany(Hours);
 

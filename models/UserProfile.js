@@ -13,20 +13,6 @@ const UserProfile = sequelize.define("userProfile", {
     allowNull: false,
     unique: true,
   },
-  //   password: {
-  //     type: Sequelize.STRING,
-  //     allowNull: false,
-  //   },
-  //   fullName: {
-  //     type: Sequelize.STRING,
-  //     allowNull: false,
-  //     unique: true,
-  //   },
-  //   phoneNumber: {
-  //     type: Sequelize.STRING,
-  //     allowNull: false,
-  //     unique: true,
-  //   },
 });
 
 module.exports = UserProfile;

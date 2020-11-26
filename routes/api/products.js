@@ -169,14 +169,6 @@ router.post("/category", async (req, res) => {
     });
   }
 
-  // if (searchedProduct == "") {
-  //   return res.json({
-  //     status: 200,
-  //     msg: "Product is empty",
-  //     result: [],
-  //   });
-  // }
-
   if (lang == "ro") {
     languageCode = 1;
   } else if (lang == "hu") {

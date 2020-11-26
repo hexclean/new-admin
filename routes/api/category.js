@@ -8,10 +8,10 @@ router.get("/:locationName/:partnerId", async (req, res) => {
   return sequelize
     .query(
       `SELECT catTrans.name as categoryTranslationName, catTrans.languageId as categoryTranslationLanguageId
-      FROM foodnet.restaurants as ad
-      INNER JOIN foodnet.productCategories as cat
+      FROM restaurants as ad
+      INNER JOIN productCategories as cat
       ON ad.id = cat.restaurantId
-      INNER JOIN foodnet.productCategoryTranslations as catTrans
+      INNER JOIN productCategoryTranslations as catTrans
       ON cat.id = catTrans.productCategoryId
       where catTrans.languageId =2 and ad.fullName LIKE '%${partnerFullName}%'
         `,

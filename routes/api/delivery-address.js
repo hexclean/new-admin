@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const UserDeliveryAdress = require("../../models/UserDeliveryAdress");
+const UserDeliveryAddress = require("../../models/UserDeliveryAddress");
 const auth = require("../../middleware/auth");
 const { check, validationResult } = require("express-validator");
 const User = require("../../models/User");
@@ -25,7 +25,7 @@ router.post(
     }
     const { street, houseNumber } = req.body;
     try {
-      const newDeliveryAdress = await UserDeliveryAdress.create({
+      const newDeliveryAdress = await UserDeliveryAddress.create({
         city: "Budapest",
         street: street,
         houseNumber: houseNumber,
@@ -46,7 +46,7 @@ router.post(
 // @access   Private
 router.get("/", auth, async (req, res) => {
   try {
-    await UserDeliveryAdress.findAll({
+    await UserDeliveryAddress.findAll({
       where: { userId: req.user.id },
     }).then((deliveryAddress) => {
       res.json(deliveryAddress);
@@ -62,17 +62,17 @@ router.get("/", auth, async (req, res) => {
 // @access   Private
 router.delete("/:id", auth, async (req, res) => {
   try {
-    const deliveryAdress = await UserDeliveryAdress.findByPk(req.params.id);
+    const deliveryAddress = await UserDeliveryAddress.findByPk(req.params.id);
 
-    if (!deliveryAdress) {
-      return res.status(404).json({ msg: "Delivey Adress not found" });
+    if (!deliveryAddress) {
+      return res.status(404).json({ msg: "Delivery Adress not found" });
     }
 
-    if (deliveryAdress.userId !== req.user.id) {
+    if (deliveryAddress.userId !== req.user.id) {
       return res.status(401).json({ msg: "User not authorized" });
     }
 
-    await deliveryAdress.destroy();
+    await deliveryAddress.destroy();
 
     res.json({ msg: "Success" });
   } catch (err) {
@@ -86,7 +86,7 @@ router.delete("/:id", auth, async (req, res) => {
 
 router.get("/:id", auth, async (req, res) => {
   try {
-    let deliveryAddress = await UserDeliveryAdress.findByPk(req.params.id);
+    let deliveryAddress = await UserDeliveryAddress.findByPk(req.params.id);
 
     if (!deliveryAddress) {
       return res.status(404).json({ msg: "Delivey Adress not found" });
@@ -118,7 +118,7 @@ router.post(
   auth,
   async (req, res) => {
     try {
-      let deliveryAddressParamsId = await UserDeliveryAdress.findByPk(
+      let deliveryAddressParamsId = await UserDeliveryAddress.findByPk(
         req.params.id
       );
 
@@ -130,7 +130,7 @@ router.post(
         return res.status(401).json({ msg: "User not authorized" });
       }
 
-      const result = await UserDeliveryAdress.update(
+      const result = await UserDeliveryAddress.update(
         {
           name: req.body.name,
           city: req.body.city,

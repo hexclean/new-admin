@@ -90,7 +90,7 @@ router.post(
     ) {
       return res.json({
         status: 400,
-        msg: "Can't add review, link is expirated or you voted",
+        msg: "Can't add review, link is expired or you voted",
         result: [],
       });
     }

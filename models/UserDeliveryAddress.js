@@ -1,7 +1,7 @@
 const Sequelize = require("sequelize");
 const sequelize = require("../util/database");
 
-const UserDeliveryAdress = sequelize.define("userDeliveryAdress", {
+const UserDeliveryAddress = sequelize.define("userDeliveryAdress", {
   id: {
     type: Sequelize.INTEGER,
     autoIncrement: true,
@@ -22,4 +22,4 @@ const UserDeliveryAdress = sequelize.define("userDeliveryAdress", {
   },
 });
 
-module.exports = UserDeliveryAdress;
+module.exports = UserDeliveryAddress;

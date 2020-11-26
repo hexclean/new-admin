@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const auth = require("../../middleware/auth");
 const User = require("../../models/User");
-const UserDeliveryAdress = require("../../models/UserDeliveryAdress");
+const UserDeliveryAddress = require("../../models/UserDeliveryAddress");
 const UserProfile = require("../../models/User");
 const Sequelize = require("sequelize");
 const Op = Sequelize.Op;
@@ -65,7 +65,7 @@ router.delete("/", auth, async (req, res) => {
     await UserProfile.destroy({ where: { id: req.user.id } });
 
     // Remove Delivery Adresses
-    await UserDeliveryAdress.destroy({
+    await UserDeliveryAddress.destroy({
       where: { userId: { [Op.in]: req.user.id } },
     });
 

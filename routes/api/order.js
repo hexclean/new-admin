@@ -1,11 +1,10 @@
 const express = require("express");
-
 const router = express.Router();
 const orderUser = require("../../middleware/orderUser");
 const OrderItemExtra = require("../../models/OrderItemExtra");
 const Order = require("../../models/Order");
 const User = require("../../models/User");
-const UserDeliveryAddress = require("../../models/UserDeliveryAdress");
+const UserDeliveryAddress = require("../../models/UserDeliveryAddress");
 const OrderItem = require("../../models/OrderItem");
 const ProductVariantExtras = require("../../models/ProductVariantsExtras");
 const ProductFinal = require("../../models/ProductFinal");
@@ -86,22 +85,22 @@ router.post("/", orderUser, async (req, res, next) => {
     let variantQuantity = variantQuantityFrontend;
     let checkRestaurantId = validateExtraPrice[0].restaurantId;
 
-    var finalServerValudationExtra = testPrice.map(function (num, idx) {
+    var finalServerValidationExtra = testPrice.map(function (num, idx) {
       return num * extraQuantity[idx];
     });
-    var finalServerValudationVariant = testVariant.map(function (num, idx) {
+    var finalServerValidationVariant = testVariant.map(function (num, idx) {
       return num * variantQuantity[idx];
     });
 
     let validateServerExtraPrice = 0;
     let validateServerVariantPrice = 0;
 
-    validateServerExtraPrice = finalServerValudationExtra.reduce(
+    validateServerExtraPrice = finalServerValidationExtra.reduce(
       (a, b) => a + b,
       0
     );
 
-    validateServerVariantPrice = finalServerValudationVariant.reduce(
+    validateServerVariantPrice = finalServerValidationVariant.reduce(
       (a, b) => a + b,
       0
     );
