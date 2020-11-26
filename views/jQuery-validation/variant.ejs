@@ -14,10 +14,10 @@
 <script>
   $(document).ready(function () {
     $("select#maxOption").val(
-      "<% if (editing) { %><%=  variant[0].productVariantsExtras[0].ProductVariant.maxOption %><% } %>"
+      "<% if (editing) { %><%=  variant[0].ProductVariantsExtras[0].Variant.maxOption %><% } %>"
     );
     $("select#categoryRo").val(
-      "<% if (editing) { %><%=  variant[0].productVariantsExtras[0].ProductVariant.categoryId %><% } %>"
+      "<% if (editing) { %><%=  variant[0].ProductVariantsExtras[0].Variant.categoryId %><% } %>"
     );
   });
 </script>
@@ -210,20 +210,20 @@
 </script>
 
 <% if (editing) { %> <% for (let i = 0; i < variant.length; i++) { %> <% if
-(variant[i].productVariantsExtras[0].active ==1) { %>
+(variant[i].ProductVariantsExtras[0].active ==1) { %>
 <script>
   $(document).ready(function () {
-    var activeCheckbox = "<%= variant[i].productVariantsExtras[0].extraId %>";
+    var activeCheckbox = "<%= variant[i].ProductVariantsExtras[0].extraId %>";
     $(".status-checkbox-" + activeCheckbox).prop("checked", true);
     $(".status-" + activeCheckbox).val("on");
   });
 </script>
 <% } %> <% } %> <% } %> <% if (editing) { %> <% for (let i = 0; i <
 variant.length; i++) { %> <% if (
-variant[i].productVariantsExtras[0].requiredExtra == 1) { %>
+variant[i].ProductVariantsExtras[0].requiredExtra == 1) { %>
 <script>
   $(document).ready(function () {
-    var activeCheckbox = "<%= variant[i].productVariantsExtras[0].extraId %>";
+    var activeCheckbox = "<%= variant[i].ProductVariantsExtras[0].extraId %>";
     $(".status-checkbox-option-" + activeCheckbox).prop("checked", true);
     $(".statusOption" + activeCheckbox).val("on");
   });

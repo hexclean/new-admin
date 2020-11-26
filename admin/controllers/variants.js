@@ -152,6 +152,7 @@ exports.postAddVariant = async (req, res, next) => {
     restaurantId: req.admin.id,
     categoryId: categoryRo,
     maxOption: maxOption,
+    variantId: variant.id,
   });
 
   async function productVariantTransaltion() {
@@ -237,7 +238,6 @@ exports.getEditVariant = async (req, res, next) => {
       },
     ],
   });
-  console.log(cat);
   let categoryList = [];
   for (let i = 0; i < cat.length; i++) {
     categoryList = cat[i].CategoryTranslations[0];
@@ -330,9 +330,10 @@ exports.postEditVariant = async (req, res, next) => {
   const Op = Sequelize.Op;
   const dasd = req.body.varId;
   let variantId = [dasd];
+  console.log(req.body);
   const productVarToExt = await ProductVariantsExtras.findAll({
     where: {
-      productVariantId: {
+      variantId: {
         [Op.in]: variantId,
       },
     },
@@ -348,24 +349,23 @@ exports.postEditVariant = async (req, res, next) => {
           return variant.save();
         });
 
-        await ExtraHasAllergen.update(
-          {
-            active: filteredStatus[i] == "on" ? 1 : 0,
-          },
-          {
-            where: {
-              productVariantId: {
-                [Op.in]: variantId,
-              },
-            },
-          }
-        );
-
         if (Array.isArray(productVarToExt)) {
           const Op = Sequelize.Op;
           for (let i = 0; i <= productVarToExt.length - 1; i++) {
             let extrasIds = [extId[i]];
             let variantId = [varId];
+            // await ExtraHasAllergen.update(
+            //   {
+            //     active: filteredStatus[i] == "on" ? 1 : 0,
+            //   },
+            //   {
+            //     where: {
+            //       variantId: {
+            //         [Op.in]: variantId,
+            //       },
+            //     },
+            //   }
+            // );
             await ProductVariantsExtras.update(
               {
                 price: updatedExtraPrice[i] || 0,
@@ -380,7 +380,7 @@ exports.postEditVariant = async (req, res, next) => {
                   extraId: {
                     [Op.in]: extrasIds,
                   },
-                  productVariantId: {
+                  variantId: {
                     [Op.in]: variantId,
                   },
                 },
@@ -393,6 +393,7 @@ exports.postEditVariant = async (req, res, next) => {
       res.redirect("/admin/variant-index");
     })
     .catch((err) => {
+      console.log(err);
       const error = new Error(err);
       error.httpStatusCode = 500;
       return next(error);

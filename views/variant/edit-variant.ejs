@@ -30,7 +30,7 @@
                                  autocomplete="off"
                                  name="sku"
                                  id="sku"
-                                 value="<% if (editing) { %><%= variant[0].productVariantsExtras[0].productVariant.sku %><% } %>">
+                                 value="<% if (editing) { %><%= variant[0].ProductVariantsExtras[0].Variant.sku %><% } %>">
                            </div>
                            <span class="error_form" id="sku_error_message"></span>
                         </div>
@@ -41,7 +41,7 @@
                               <select class="form-control" for="categoryRo" id="categoryRo" name="categoryRo">
                                  <option disabled="true" value="list">Variáns kategótia</option>
                                  <% for(let i = 0; i < cat.length; i++) { %>
-                                 <option id="categoryRo" name="categoryRo" value='<%= cat[i].id %>'><%= cat[i].productCategoryTranslations[`${currentLanguage}`].name %></option>
+                                 <option id="categoryRo" name="categoryRo" value='<%= cat[i].id %>'><%= cat[i].CategoryTranslations[`${currentLanguage}`].name %></option>
                                  <% } %>
                               </select>
                            </div>
@@ -117,16 +117,16 @@
                      <% for (let i = 0; i < variant.length; i++) { %>
                      <input
                         type="hidden"
-                        value="<%= variant[i].productVariantsExtras[0].extraId %>"
+                        value="<%= variant[i].ProductVariantsExtras[0].extraId %>"
                         name="extraId"
                         />          
-                     <div class="col-xl-3 cfol-lg-4 col-md-6 col-sm-6 extra_box" data-extra="<%= variant[i].productVariantsExtras[0].extraId %>">
+                     <div class="col-xl-3 cfol-lg-4 col-md-6 col-sm-6 extra_box" data-extra="<%= variant[i].ProductVariantsExtras[0].extraId %>">
                         <div class="ms-card">
                            <div class="d-flex justify-content-center extra-margin-top">
                               <div class="row"> 
                                  <label class="ms-switch" >                 
-                                 <input type="hidden" value="off" class="status-<%= variant[i].productVariantsExtras[0].extraId %>" name="status[<%= variant[i].productVariantsExtras[0].extraId %>]" >          
-                                 <input data-extraId="<%= variant[i].productVariantsExtras[0].extraId %>"  class="status-checkbox status-checkbox-<%= variant[i].productVariantsExtras[0].extraId %>" type="checkbox">
+                                 <input type="hidden" value="off" class="status-<%= variant[i].ProductVariantsExtras[0].extraId %>" name="status[<%= variant[i].ProductVariantsExtras[0].extraId %>]" >          
+                                 <input data-extraId="<%= variant[i].ProductVariantsExtras[0].extraId %>"  class="status-checkbox status-checkbox-<%= variant[i].ProductVariantsExtras[0].extraId %>" type="checkbox">
                                  <span class="ms-switch-slider ms-switch-success round"></span>
                                  </label> 
                               </div>
@@ -140,21 +140,21 @@
                            </div>
                            <div class="ms-card-body">
                               <div class="new d-flex justify-content-center extra-name">
-                                 <h6 class="mb-0"><b><%=  variant[i].extraTranslations[`${currentLanguage}`].name %></b> </h6>
+                                 <h6 class="mb-0"><b><%=  variant[i].ExtraTranslations[`${currentLanguage}`].name %></b> </h6>
                               </div>
                               <div class="col-md-12 mb-3">
                                  <label for="price">Price</label>
                                  <div class="input-group">
                                     <input
-                                       class="price_<%= variant[i].productVariantsExtras[0].extraId %> extra_price_input"
+                                       class="price_<%= variant[i].ProductVariantsExtras[0].extraId %> extra_price_input"
                                        type="text"
                                        name="price"
                                        id="price"
                                        autocomplete="off"
-                                       value="<% if (editing) { %><%= variant[i].productVariantsExtras[0].price %><% } %>"
+                                       value="<% if (editing) { %><%= variant[i].ProductVariantsExtras[0].price %><% } %>"
                                        />
                                  </div>
-                                 <span class="extra_error_message error_form" id="price_error_message_<%= variant[i].productVariantsExtras[0].extraId %>"></span>
+                                 <span class="extra_error_message error_form" id="price_error_message_<%= variant[i].ProductVariantsExtras[0].extraId %>"></span>
                               </div>
                               <div class="col-md-12 mb-3">
                                  <label for="discountedPrice"
@@ -166,7 +166,7 @@
                                        type="text"
                                        name="discountedPrice"
                                        id="discountedPrice"
-                                       value="<% if (editing) { %><%= variant[i].productVariantsExtras[0].discountedPrice %><% } %>"
+                                       value="<% if (editing) { %><%= variant[i].ProductVariantsExtras[0].discountedPrice %><% } %>"
                                        />
                                  </div>
                               </div>
@@ -176,16 +176,16 @@
                                     >
                                  <div class="input-group">
                                     <input
-                                       class="qtMin_<%= variant[i].productVariantsExtras[0].extraId %> extra_qtMin_input"
+                                       class="qtMin_<%= variant[i].ProductVariantsExtras[0].extraId %> extra_qtMin_input"
                                        type="number" 
                                        name="quantityMin"
                                        id="quantityMin"
                                        autocomplete="off"
                                        onKeyDown="if(this.value.length==18) return false;"
-                                       value="<% if (editing) { %><%= variant[i].productVariantsExtras[0].quantityMin %><% } %>"
+                                       value="<% if (editing) { %><%= variant[i].ProductVariantsExtras[0].quantityMin %><% } %>"
                                        />
                                  </div>
-                                 <span class="extra_error_message error_form" id="qtMin_error_message_<%= variant[i].productVariantsExtras[0].extraId %>"></span>
+                                 <span class="extra_error_message error_form" id="qtMin_error_message_<%= variant[i].ProductVariantsExtras[0].extraId %>"></span>
                               </div>
                               <div class="col-md-12 mb-3">
                                  <label for="quantityMax"
@@ -193,15 +193,15 @@
                                     >
                                  <div class="input-group">
                                     <input
-                                       class="qtMax_<%= variant[i].productVariantsExtras[0].extraId %> extra_qtMax_input"
+                                       class="qtMax_<%= variant[i].ProductVariantsExtras[0].extraId %> extra_qtMax_input"
                                        type="text"
                                        name="quantityMax"
                                        id="quantityMax"
                                        autocomplete="off"
-                                       value="<% if (editing) { %><%= variant[i].productVariantsExtras[0].quantityMax %><% } %>"
+                                       value="<% if (editing) { %><%= variant[i].ProductVariantsExtras[0].quantityMax %><% } %>"
                                        />
                                  </div>
-                                 <span class="extra_error_message error_form" id="qtMax_error_message_<%= variant[i].productVariantsExtras[0].extraId %>"></span>
+                                 <span class="extra_error_message error_form" id="qtMax_error_message_<%= variant[i].ProductVariantsExtras[0].extraId %>"></span>
                               </div>
                            </div>
                         </div>

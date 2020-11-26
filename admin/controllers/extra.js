@@ -126,7 +126,7 @@ exports.postAddExtra = async (req, res, next) => {
           quantityMin: 0,
           discountedPrice: 0,
           price: 0,
-          productVariantId: productVariantsId,
+          variantId: productVariantsId,
           requiredExtra: 0,
         });
       }
