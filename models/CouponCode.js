@@ -1,7 +1,7 @@
 const Sequelize = require("sequelize");
 const sequelize = require("../util/database");
 
-const CouponCode = sequelize.define("couponCode", {
+const CouponCode = sequelize.define("CouponCode", {
   id: {
     type: Sequelize.INTEGER,
     autoIncrement: true,

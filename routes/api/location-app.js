@@ -7,7 +7,7 @@ const RestaurantFilters = require("../../models/RestaurantFilters");
 const LocationNameTranslation = require("../../models/LocationNameTranslation");
 const LocationName = require("../../models/LocationName");
 const Restaurant = require("../../models/Restaurant");
-const RestaurantDescription = require("../../models/AdminInfo");
+const RestaurantInfo = require("../../models/RestaurantInfo");
 const Location = require("../../models/Location");
 const Hours = require("../../models/Hours");
 const OpeningHours = require("../../models/OpeningHours");
@@ -382,7 +382,7 @@ router.post("/search", async (req, res) => {
                         ],
                       },
                       {
-                        model: RestaurantDescription,
+                        model: RestaurantInfo,
                         where: { languageId: languageCode },
                         attributes: {
                           exclude: [

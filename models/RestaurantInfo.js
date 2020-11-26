@@ -1,16 +1,12 @@
 const Sequelize = require("sequelize");
 const sequelize = require("../util/database");
 
-const AdminInfo = sequelize.define("adminInfo", {
+const RestaurantInfo = sequelize.define("RestaurantInfo", {
   id: {
     type: Sequelize.INTEGER,
     autoIncrement: true,
     allowNull: false,
     primaryKey: true,
-  },
-
-  restaurantId: {
-    type: Sequelize.INTEGER,
   },
   address: {
     type: Sequelize.STRING,
@@ -18,4 +14,4 @@ const AdminInfo = sequelize.define("adminInfo", {
   shortCompanyDesc: Sequelize.STRING,
 });
 
-module.exports = AdminInfo;
+module.exports = RestaurantInfo;

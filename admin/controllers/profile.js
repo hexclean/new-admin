@@ -1,5 +1,5 @@
 const Admin = require("../../models/Restaurant");
-const AdminInfo = require("../../models/AdminInfo");
+const RestaurantInfo = require("../../models/RestaurantInfo");
 const fileHelper = require("../../util/file");
 const Hours = require("../../models/Hours.js");
 const OpeningHours = require("../../models/OpeningHours");
@@ -17,7 +17,7 @@ exports.getEditProfile = async (req, res, next) => {
     where: { id: req.admin.id },
     include: [
       {
-        model: AdminInfo,
+        model: RestaurantInfo,
       },
     ],
   })
@@ -221,7 +221,7 @@ exports.postEditProfile = async (req, res, next) => {
   Admin.findAll({
     include: [
       {
-        model: AdminInfo,
+        model: RestaurantInfo,
         where: { restaurantId: req.admin.id },
       },
     ],
@@ -240,17 +240,17 @@ exports.postEditProfile = async (req, res, next) => {
           { where: { id: req.admin.id } }
         );
 
-        await AdminInfo.update(
+        await RestaurantInfo.update(
           { shortCompanyDesc: roShortCompanyDesc, adress: roAdress },
           { where: { restaurantId: req.admin.id, languageId: 1 } }
         );
 
-        await AdminInfo.update(
+        await RestaurantInfo.update(
           { shortCompanyDesc: huShortCompanyDesc, adress: huAdress },
           { where: { restaurantId: req.admin.id, languageId: 2 } }
         );
 
-        await AdminInfo.update(
+        await RestaurantInfo.update(
           { shortCompanyDesc: enShortCompanyDesc, adress: enAdress },
           { where: { restaurantId: req.admin.id, languageId: 3 } }
         );

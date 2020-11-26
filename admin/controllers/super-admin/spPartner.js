@@ -1,11 +1,11 @@
 const Partners = require("../../../models/Restaurant");
-const PartnersTranslation = require("../../../models/AdminInfo");
+const RestaurantInfo = require("../../../models/RestaurantInfo");
 
 exports.getPartners = (req, res, next) => {
   Partners.findAll({
     include: [
       {
-        model: PartnersTranslation,
+        model: RestaurantInfo,
       },
     ],
   })
@@ -42,7 +42,7 @@ exports.getEditPartner = async (req, res, next) => {
     where: { id: partId },
     include: [
       {
-        model: PartnersTranslation,
+        model: RestaurantInfo,
         where: { languageId: 1 },
       },
     ],
@@ -59,7 +59,7 @@ exports.getEditPartner = async (req, res, next) => {
     where: { id: partId },
     include: [
       {
-        model: PartnersTranslation,
+        model: RestaurantInfo,
         where: { languageId: 2 },
       },
     ],
@@ -76,7 +76,7 @@ exports.getEditPartner = async (req, res, next) => {
     where: { id: partId },
     include: [
       {
-        model: PartnersTranslation,
+        model: RestaurantInfo,
         where: { languageId: 3 },
       },
     ],
@@ -93,7 +93,7 @@ exports.getEditPartner = async (req, res, next) => {
     where: { id: partId },
     include: [
       {
-        model: PartnersTranslation,
+        model: RestaurantInfo,
         where: { languageId: 1 },
       },
     ],
@@ -109,7 +109,7 @@ exports.getEditPartner = async (req, res, next) => {
     where: { id: partId },
     include: [
       {
-        model: PartnersTranslation,
+        model: RestaurantInfo,
         where: { languageId: 2 },
       },
     ],
@@ -125,7 +125,7 @@ exports.getEditPartner = async (req, res, next) => {
     where: { id: partId },
     include: [
       {
-        model: PartnersTranslation,
+        model: RestaurantInfo,
         where: { languageId: 3 },
       },
     ],
@@ -141,7 +141,7 @@ exports.getEditPartner = async (req, res, next) => {
     where: { id: partId },
     include: [
       {
-        model: PartnersTranslation,
+        model: RestaurantInfo,
       },
     ],
   })
@@ -196,7 +196,7 @@ exports.postEditPartner = async (req, res, next) => {
   Partners.findAll({
     include: [
       {
-        model: PartnersTranslation,
+        model: RestaurantInfo,
       },
     ],
   })
@@ -217,7 +217,7 @@ exports.postEditPartner = async (req, res, next) => {
           { where: { id: partId } }
         );
 
-        await PartnersTranslation.update(
+        await RestaurantInfo.update(
           {
             shortCompanyDesc: partnerShortDescRoView,
             adress: addressRo,
@@ -225,7 +225,7 @@ exports.postEditPartner = async (req, res, next) => {
           { where: { restaurantId: partId, languageId: 1 } }
         );
 
-        await PartnersTranslation.update(
+        await RestaurantInfo.update(
           {
             shortCompanyDesc: partnerShortDescHuView,
             adress: addressHu,
@@ -233,7 +233,7 @@ exports.postEditPartner = async (req, res, next) => {
           { where: { restaurantId: partId, languageId: 2 } }
         );
 
-        await PartnersTranslation.update(
+        await RestaurantInfo.update(
           {
             shortCompanyDesc: partnerShortDescEnView,
             adress: addressEn,

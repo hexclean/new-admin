@@ -1,7 +1,7 @@
 const Sequelize = require("sequelize");
 const sequelize = require("../util/database");
 
-const Language = sequelize.define("language", {
+const Language = sequelize.define("Language", {
   id: {
     type: Sequelize.INTEGER,
     autoIncrement: true,

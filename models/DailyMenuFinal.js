@@ -1,7 +1,7 @@
 const Sequelize = require("sequelize");
 const sequelize = require("../util/database");
 
-const DailyMenuFinal = sequelize.define("dailyMenuFinal", {
+const DailyMenuFinal = sequelize.define("DailyMenuFinal", {
   id: {
     type: Sequelize.INTEGER,
     autoIncrement: true,

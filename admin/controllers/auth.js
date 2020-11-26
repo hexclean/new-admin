@@ -1,6 +1,6 @@
 const bcrypt = require("bcryptjs");
 const Admin = require("../../models/Restaurant");
-const AdminInfo = require("../../models/AdminInfo");
+const RestaurantInfo = require("../../models/RestaurantInfo");
 const nodemailer = require("nodemailer");
 const sendgridTransport = require("nodemailer-sendgrid-transport");
 const OpeningHours = require("../../models/OpeningHours");
@@ -99,21 +99,21 @@ exports.postSignup = async (req, res, next) => {
           password: hashedPassword,
           fullName: "-",
         });
-        await AdminInfo.create({
+        await RestaurantInfo.create({
           restaurantId: admin.id,
           adress: "",
           languageId: 1,
           shortCompanyDesc: "",
         });
 
-        await AdminInfo.create({
+        await RestaurantInfo.create({
           restaurantId: admin.id,
           adress: "",
           languageId: 2,
           shortCompanyDesc: "",
         });
 
-        await AdminInfo.create({
+        await RestaurantInfo.create({
           restaurantId: admin.id,
           adress: "",
           languageId: 3,

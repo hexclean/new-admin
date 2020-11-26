@@ -1,5 +1,5 @@
-const Category = require("../../models/ProductCategory");
-const CategoryTranslation = require("../../models/ProductCategoryTranslation");
+const Category = require("../../models/Category");
+const CategoryTranslation = require("../../models/CategoryTranslation");
 const Allergen = require("../../models/Allergen");
 
 exports.getAddCategory = async (req, res, next) => {

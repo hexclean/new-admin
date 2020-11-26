@@ -1,7 +1,7 @@
 const Sequelize = require("sequelize");
 const sequelize = require("../util/database");
 
-const ExtraHasAllergen = sequelize.define("extraHasAllergen", {
+const ExtraHasAllergen = sequelize.define("ExtraHasAllergen", {
   id: {
     type: Sequelize.INTEGER,
     autoIncrement: true,

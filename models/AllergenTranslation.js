@@ -1,7 +1,7 @@
 const Sequelize = require("sequelize");
 const sequelize = require("../util/database");
 
-const AllergenTranslation = sequelize.define("allergenTranslation", {
+const AllergenTranslation = sequelize.define("AllergenTranslation", {
   id: {
     type: Sequelize.INTEGER,
     autoIncrement: true,
@@ -10,9 +10,6 @@ const AllergenTranslation = sequelize.define("allergenTranslation", {
   },
   name: {
     type: Sequelize.STRING,
-  },
-  restaurantId: {
-    type: Sequelize.INTEGER,
   },
 });
 

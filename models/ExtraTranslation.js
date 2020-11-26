@@ -1,7 +1,7 @@
 const Sequelize = require("sequelize");
 const sequelize = require("../util/database");
 
-const ExtraTranslation = sequelize.define("extraTranslation", {
+const ExtraTranslation = sequelize.define("ExtraTranslation", {
   id: {
     type: Sequelize.INTEGER,
     autoIncrement: true,
@@ -10,9 +10,6 @@ const ExtraTranslation = sequelize.define("extraTranslation", {
   },
   name: {
     type: Sequelize.STRING,
-  },
-  restaurantId: {
-    type: Sequelize.INTEGER,
   },
 });
 

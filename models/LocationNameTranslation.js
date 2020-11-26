@@ -1,7 +1,7 @@
 const Sequelize = require("sequelize");
 const sequelize = require("../util/database");
 
-const LocationNameTranslation = sequelize.define("locationNameTranslation", {
+const LocationNameTranslation = sequelize.define("LocationNameTranslation", {
   id: {
     type: Sequelize.INTEGER,
     autoIncrement: true,

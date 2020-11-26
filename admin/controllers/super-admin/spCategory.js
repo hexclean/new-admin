@@ -1,5 +1,5 @@
-const Category = require("../../../models/ProductCategory");
-const CategoryTranslation = require("../../../models/ProductCategoryTranslation");
+const Category = require("../../../models/Category");
+const CategoryTranslation = require("../../../models/CategoryTranslation");
 
 exports.getCategory = (req, res, next) => {
   Category.findAll({

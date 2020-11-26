@@ -5,15 +5,7 @@ var os = require("os");
 //   host: "private-foodnet-database-do-user-8133521-0.b.db.ondigitalocean.com",
 //   port: 25060,
 // });
-const sequelize = new Sequelize(
-  "x0nfgxnh2o2y198n",
-  "lphjb6a4r5qdgfgz",
-  "li4e0dhgofk9vhtt",
-  {
-    dialect: "mysql",
-    host: "durvbryvdw2sjcm5.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
-  }
-);
+
 // const sequelize = new Sequelize("mysql", "doadmin", "e5bb18t1ls1ork7m", {
 //   host: "private-foodnet-database-do-user-8133521-0.b.db.ondigitalocean.com",
 //   dialect: "mysql",
@@ -31,7 +23,11 @@ const sequelize = new Sequelize(
 //     host: "foodnet-database-do-user-8133521-0.b.db.ondigitalocean.com",
 //   }
 // );
-
+// var sequelize = new Sequelize("defaultdb", "doadmin", "e5bb18t1ls1ork7m", {
+//   host: "foodnet-database-do-user-8133521-0.b.db.ondigitalocean.com",
+//   port: 25060,
+//   dialect: "mysql",
+// });
 // username = doadmin
 // password = e5bb18t1ls1ork7m hide
 // // host = foodnet-database-do-user-8133521-0.b.db.ondigitalocean.com
@@ -46,10 +42,10 @@ const sequelize = new Sequelize(
 // database = defaultdb
 // sslmode = REQUIRED
 
-// const sequelize = new Sequelize("foodnet14", "root", "", {
-//   dialect: "mysql",
-//   host: "localhost",
-// });
+const sequelize = new Sequelize("foodnet21", "root", "", {
+  dialect: "mysql",
+  host: "localhost",
+});
 // console.log("  breq.connection.remoteAddress", req.connection.remoteAddress);
 
 // if (os.hostname().indexOf("local")) {

@@ -1,7 +1,7 @@
 const Sequelize = require("sequelize");
 const sequelize = require("../util/database");
 
-const DailyMenuHasAllergen = sequelize.define("dailyMenuHasAllergen", {
+const DailyMenuHasAllergen = sequelize.define("DailyMenuHasAllergen", {
   id: {
     type: Sequelize.INTEGER,
     autoIncrement: true,

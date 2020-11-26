@@ -1,7 +1,7 @@
 const Sequelize = require("sequelize");
 const sequelize = require("../util/database");
 
-const ProductVariant = sequelize.define("productVariant", {
+const Variant = sequelize.define("Variant", {
   id: {
     type: Sequelize.INTEGER,
     autoIncrement: true,
@@ -15,4 +15,4 @@ const ProductVariant = sequelize.define("productVariant", {
   maxOption: Sequelize.INTEGER,
 });
 
-module.exports = ProductVariant;
+module.exports = Variant;

@@ -1,7 +1,7 @@
 const Sequelize = require("sequelize");
 const sequelize = require("../util/database");
 
-const DailyMenuTranslation = sequelize.define("dailyMenuTranslation", {
+const DailyMenuTranslation = sequelize.define("DailyMenuTranslation", {
   id: {
     type: Sequelize.INTEGER,
     autoIncrement: true,
@@ -13,9 +13,6 @@ const DailyMenuTranslation = sequelize.define("dailyMenuTranslation", {
   },
   description: {
     type: Sequelize.STRING,
-  },
-  restaurantId: {
-    type: Sequelize.INTEGER,
   },
 });
 

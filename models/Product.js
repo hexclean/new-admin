@@ -1,28 +1,7 @@
-// const Sequelize = require("sequelize");
-// const sequelize = require("../util/database");
-
-// const Product = sequelize.define("product", {
-//   id: {
-//     type: Sequelize.INTEGER,
-//     autoIncrement: true,
-//     allowNull: false,
-//     primaryKey: true,
-//   },
-//   imageUrl: {
-//     type: Sequelize.BLOB("tiny"),
-//     allowNull: false,
-//   },
-//   active: {
-//     type: Sequelize.INTEGER,
-//   },
-// });
-
-// module.exports = Product;
-
 const Sequelize = require("sequelize");
 const sequelize = require("../util/database");
 
-const Product = sequelize.define("product", {
+const Product = sequelize.define("Product", {
   id: {
     type: Sequelize.INTEGER,
     autoIncrement: true,
@@ -30,7 +9,7 @@ const Product = sequelize.define("product", {
     primaryKey: true,
   },
   imageUrl: {
-    type: Sequelize.STRING,
+    type: Sequelize.BLOB("tiny"),
     allowNull: false,
   },
   active: {
