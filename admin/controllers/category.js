@@ -35,21 +35,21 @@ exports.postAddCategory = async (req, res, next) => {
     await CategoryTranslation.create({
       name: roName,
       languageId: 1,
-      productCategoryId: category.id,
+      categoryId: category.id,
       restaurantId: req.admin.id,
     });
 
     await CategoryTranslation.create({
       name: huName,
       languageId: 2,
+      categoryId: category.id,
       restaurantId: req.admin.id,
-      productCategoryId: category.id,
     });
 
     await CategoryTranslation.create({
       name: enName,
       languageId: 3,
-      productCategoryId: category.id,
+      categoryId: category.id,
       restaurantId: req.admin.id,
     });
 
@@ -93,7 +93,7 @@ exports.getEditCategory = async (req, res, next) => {
         editing: editMode,
         category: category,
         categoryId: categoryId,
-        extTranslations: category[0].productCategoryTranslations,
+        extTranslations: category[0].CategoryTranslations,
       });
     });
   } catch (err) {
@@ -127,6 +127,7 @@ exports.postEditCategory = async (req, res, next) => {
         },
       ],
     }).then(async (result) => {
+      console.log(result);
       await CategoryTranslation.update(
         { name: updatedRoName },
         { where: { id: categoryTranslationId[0], languageId: 1 } }

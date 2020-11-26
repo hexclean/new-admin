@@ -2,7 +2,7 @@ const Extra = require("../../models/Extra");
 const ExtraTranslation = require("../../models/ExtraTranslation");
 const Allergen = require("../../models/Allergen");
 const ProductVariantsExtras = require("../../models/ProductVariantsExtras");
-const ProductVariants = require("../../models/ProductVariant");
+const ProductVariants = require("../../models/Variant");
 const AllegenTranslation = require("../../models/AllergenTranslation");
 const ExtraHasAllergen = require("../../models/ExtraHasAllergen");
 const Sequelize = require("sequelize");
@@ -78,12 +78,12 @@ exports.postAddExtra = async (req, res, next) => {
         name: roName,
         languageId: 1,
         extraId: extra.id,
-        restaurantId: req.admin.id,
+        // restaurantId: req.admin.id,
       });
       await ExtraTranslation.create({
         name: huName,
         languageId: 2,
-        restaurantId: req.admin.id,
+        // restaurantId: req.admin.id,
         extraId: extra.id,
       });
 
@@ -91,7 +91,7 @@ exports.postAddExtra = async (req, res, next) => {
         name: enName,
         languageId: 3,
         extraId: extra.id,
-        restaurantId: req.admin.id,
+        // restaurantId: req.admin.id,
       });
     }
 
@@ -214,7 +214,7 @@ exports.getEditExtra = async (req, res, next) => {
       extraIdEditing: extraId,
       allergenArray: allergen,
       isActive: allergenActive,
-      extraTranslation: extra[0].extraTranslations,
+      extraTranslation: extra[0].ExtraTranslations,
     });
   } catch (err) {
     const error = new Error(err);

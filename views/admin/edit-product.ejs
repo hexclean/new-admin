@@ -30,7 +30,7 @@
                                  type="text"
                                  name="roTitle"
                                  id="roTitle"
-                                 value="<% if (editing) { %><%= product[0].productTranslations[0].title %><% } %>">
+                                 value="<% if (editing) { %><%= product[0].ProductTranslations[0].title %><% } %>">
                            </div>
                            <span class="error_form" id="roName_error_message"></span>
                         </div>
@@ -42,7 +42,7 @@
                                  type="text"
                                  name="huTitle"
                                  id="huTitle"
-                                 value="<% if (editing) { %><%= product[0].productTranslations[1].title %><% } %>">
+                                 value="<% if (editing) { %><%= product[0].ProductTranslations[1].title %><% } %>">
                            </div>
                            <span class="error_form" id="huName_error_message"></span>
                         </div>
@@ -54,7 +54,7 @@
                                  type="text"
                                  name="enTitle"
                                  id="enTitle"
-                                 value="<% if (editing) { %><%= product[0].productTranslations[2].title %><% } %>">
+                                 value="<% if (editing) { %><%= product[0].ProductTranslations[2].title %><% } %>">
                            </div>
                            <span class="error_form" id="enName_error_message"></span>
                         </div>
@@ -65,7 +65,7 @@
                                  class="form-control"
                                  name="roDescription"
                                  id="roDescription"
-                                 rows="5"><% if (editing) { %><%= product[0].productTranslations[0].description %><% } %></textarea>
+                                 rows="5"><% if (editing) { %><%= product[0].ProductTranslations[0].description %><% } %></textarea>
                            </div>
                            <span class="error_form" id="roDescription_error_message"></span>
                         </div>
@@ -76,7 +76,7 @@
                                  class="form-control"
                                  name="huDescription"
                                  id="huDescription"
-                                 rows="5"><% if (editing) { %><%= product[0].productTranslations[1].description %><% } %></textarea>
+                                 rows="5"><% if (editing) { %><%= product[0].ProductTranslations[1].description %><% } %></textarea>
                            </div>
                            <span class="error_form" id="huDescription_error_message"></span>
                         </div>
@@ -87,7 +87,7 @@
                                  class="form-control"
                                  name="enDescription"
                                  id="enDescription"
-                                 rows="5"><% if (editing) { %><%= product[0].productTranslations[2].description %><% } %></textarea>
+                                 rows="5"><% if (editing) { %><%= product[0].ProductTranslations[2].description %><% } %></textarea>
                            </div>
                            <span class="error_form" id="enDescription_error_message"></span>
                         </div>
@@ -151,7 +151,7 @@
                                        <label class="ms-switch" data-extra="<%= boxArray[i].id %>">
                                        <input type="hidden" value="off" class="statusBox-<%= boxArray[i].id %>" name="statusBox[<%= boxArray[i].id %>]" > 
                                        <input data-boxId="<%= boxArray[i].id %>"  class="statusBox-checkbox statusBox-checkbox-<%= boxArray[i].id %>" type="checkbox"> <span class="ms-switch-slider ms-switch-success round"></span>
-                                       </label> <span> <%= boxArray[i].boxTranslations[`${currentLanguage}`].name %> </span> <b>:</b> <span> <%= boxArray[i].price %> </span>lei
+                                       </label> <span> <%= boxArray[i].BoxTranslations[`${currentLanguage}`].name %> </span> <b>:</b> <span> <%= boxArray[i].price %> </span>lei
                                     </li>
                                     <% } %>
                                  </ul>
@@ -182,7 +182,7 @@
                                        <label class="ms-switch" data-extra="<%= allergenArray[i].id %>">
                                        <input type="hidden" value="off" class="statusAllergen-<%= allergenArray[i].id %>" name="statusAllergen[<%= allergenArray[i].id %>]" > 
                                        <input data-allergenId="<%= allergenArray[i].id %>"  class="statusAllergen-checkbox statusAllergen-checkbox-<%= allergenArray[i].id %>" type="checkbox"> <span class="ms-switch-slider ms-switch-success round"></span>
-                                       </label> <span> <%= allergenArray[i].allergenTranslations[`${currentLanguage}`].name %> </span>
+                                       </label> <span> <%= allergenArray[i].AllergenTranslations[`${currentLanguage}`].name %> </span>
                                     </li>
                                     <% } %>
                                  </ul>
@@ -204,7 +204,7 @@
                   <option disabled="true" value="list">Variáns kategótia</option>
                   <% for(let i = 0; i < cat.length; i++) { %>
 
-                  <option id="categoryRo" name="categoryRo" value='<%= cat[i].id %>'><%= cat[i].productCategoryTranslations[`${currentLanguage}`].name %></option>
+                  <option id="categoryRo" name="categoryRo" value='<%= cat[i].id %>'><%= cat[i].CategoryTranslations[`${currentLanguage}`].name %></option>
                   <% } %>
                </select>
             </div>
@@ -214,7 +214,7 @@
         
          <div class="ms-panel ms-btn-display">
             <div class="ms-panel-header">
-               <h6>A  <% if (editing) { %>  <%= product[0].productTranslations[0].title %>  <% } %> hozzárendelhető extrái:</h6>
+               <h6>A  <% if (editing) { %>  <%= product[0].ProductTranslations[0].title %>  <% } %> hozzárendelhető extrái:</h6>
             </div>
          </div>
          <% if (editing) { %>  <% if (productVariant.length > 0) { %>

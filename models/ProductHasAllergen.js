@@ -1,7 +1,7 @@
 const Sequelize = require("sequelize");
 const sequelize = require("../util/database");
 
-const ProductHasAllergen = sequelize.define("productHasAllergen", {
+const ProductHasAllergen = sequelize.define("ProductHasAllergen", {
   id: {
     type: Sequelize.INTEGER,
     autoIncrement: true,
@@ -9,6 +9,10 @@ const ProductHasAllergen = sequelize.define("productHasAllergen", {
     primaryKey: true,
   },
   active: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+  },
+  restaurantId: {
     type: Sequelize.INTEGER,
     allowNull: false,
   },

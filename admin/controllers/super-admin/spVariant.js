@@ -1,4 +1,4 @@
-const Variants = require("../../../models/ProductVariant");
+const Variants = require("../../../models/Variant");
 
 exports.getVariants = (req, res, next) => {
   Variants.findAll({})

@@ -8,17 +8,26 @@ const Variant = require("../../models/Variant");
 const Allergen = require("../../models/Allergen");
 
 function extras() {
-  Extra.belongsTo(Restaurant, { constrains: true, onDelete: "CASCADE" });
+  Extra.belongsTo(Restaurant, {
+    constrains: true,
+    onDelete: "CASCADE",
+    foreignKey: "restaurantId",
+  });
 
   Restaurant.hasMany(Extra, { foreignKey: "restaurantId" });
 
-  ExtraTranslation.belongsTo(Extra, { constrains: true, onDelete: "CASCADE" });
+  ExtraTranslation.belongsTo(Extra, {
+    constrains: true,
+    onDelete: "CASCADE",
+    foreignKey: "extraId",
+  });
 
   Extra.hasMany(ExtraTranslation, { foreignKey: "extraId" });
 
   ExtraTranslation.belongsTo(Language, {
     constrains: true,
     onDelete: "CASCADE",
+    foreignKey: "languageId",
   });
 
   Language.hasMany(ExtraTranslation, { foreignKey: "languageId" });
@@ -26,33 +35,31 @@ function extras() {
   ExtraHasAllergen.belongsTo(Restaurant, {
     constrains: true,
     onDelete: "CASCADE",
-  });
-
-  Restaurant.hasMany(ExtraHasAllergen, {
     foreignKey: "restaurantId",
   });
+
+  Restaurant.hasMany(ExtraHasAllergen, { foreignKey: "restaurantId" });
 
   ExtraHasAllergen.belongsTo(Allergen, {
     constrains: true,
     onDelete: "CASCADE",
-  });
-
-  Allergen.hasMany(ExtraHasAllergen, {
     foreignKey: "allergenId",
   });
+
+  Allergen.hasMany(ExtraHasAllergen, { foreignKey: "allergenId" });
 
   ExtraHasAllergen.belongsTo(Extra, {
     constrains: true,
     onDelete: "CASCADE",
-  });
-
-  Extra.hasMany(ExtraHasAllergen, {
     foreignKey: "extraId",
   });
+
+  Extra.hasMany(ExtraHasAllergen, { foreignKey: "extraId" });
 
   VariantsExtras.belongsTo(Variant, {
     constrains: true,
     onDelete: "CASCADE",
+    foreignKey: "variantId",
   });
 
   Variant.hasMany(VariantsExtras, { foreignKey: "variantId" });
@@ -60,12 +67,15 @@ function extras() {
   VariantsExtras.belongsTo(Extra, {
     constrains: true,
     onDelete: "CASCADE",
+    foreignKey: "extraId",
   });
+
   Extra.hasMany(VariantsExtras, { foreignKey: "extraId" });
 
   VariantsExtras.belongsTo(Restaurant, {
     constrains: true,
     onDelete: "CASCADE",
+    foreignKey: "restaurantId",
   });
 
   Restaurant.hasMany(VariantsExtras, { foreignKey: "restaurantId" });

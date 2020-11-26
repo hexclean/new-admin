@@ -8,36 +8,35 @@ function categories() {
   Category.belongsTo(Restaurant, {
     constrains: true,
     onDelete: "CASCADE",
-  });
-
-  Restaurant.hasMany(Category, {
     foreignKey: "restaurantId",
   });
+
+  Restaurant.hasMany(Category, { foreignKey: "restaurantId" });
 
   CategoryTranslation.belongsTo(Category, {
     constrains: true,
     onDelete: "CASCADE",
-  });
-
-  Category.hasMany(CategoryTranslation, {
     foreignKey: "categoryId",
   });
+
+  Category.hasMany(CategoryTranslation, { foreignKey: "categoryId" });
 
   CategoryTranslation.belongsTo(Language, {
     constrains: true,
     onDelete: "CASCADE",
+    foreignKey: "languageId",
   });
 
   Language.hasMany(CategoryTranslation, { foreignKey: "languageId" });
 
+  ////teszt
   Variant.belongsTo(Category, {
     constrains: true,
     onDelete: "CASCADE",
-  });
-
-  Category.hasMany(Variant, {
     foreignKey: "categoryId",
   });
+
+  Category.hasMany(Variant, { foreignKey: "languageId" });
 }
 
 module.exports = { categories };

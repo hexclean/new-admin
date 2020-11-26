@@ -8,55 +8,55 @@ const Allergen = require("../../models/Allergen");
 
 function dailyMenus() {
   DailyMenu.belongsTo(Restaurant, { constrains: true, onDelete: "CASCADE" });
-  Restaurant.hasMany(DailyMenu, { foreignKey: "restaurantId" });
+  // Restaurant.hasMany(DailyMenu);
 
   DailyMenuTranslation.belongsTo(DailyMenu, {
     constrains: true,
     onDelete: "CASCADE",
+    foreignKey: "dailyMenuId",
   });
 
-  DailyMenu.hasMany(DailyMenuTranslation, { foreignKey: "dailyMenuId" });
+  // DailyMenu.hasMany(DailyMenuTranslation);
 
   DailyMenuTranslation.belongsTo(Language, {
     constrains: true,
     onDelete: "CASCADE",
+    foreignKey: "languageId",
   });
 
-  Language.hasMany(DailyMenuTranslation, { foreignKey: "languageId" });
+  // Language.hasMany(DailyMenuTranslation);
 
   DailyMenuFinal.belongsTo(DailyMenu, {
     constrains: true,
     onDelete: "CASCADE",
+    foreignKey: "dailyMenuId",
   });
 
-  DailyMenu.hasMany(DailyMenuFinal, { foreignKey: "dailyMenuId" });
+  // DailyMenu.hasMany(DailyMenuFinal);
 
   DailyMenuHasAllergen.belongsTo(Allergen, {
     constrains: true,
     onDelete: "CASCADE",
-  });
-
-  Allergen.hasMany(DailyMenuHasAllergen, {
     foreignKey: "allergenId",
   });
+
+  // Allergen.hasMany(DailyMenuHasAllergen);
 
   DailyMenuHasAllergen.belongsTo(DailyMenu, {
     constrains: true,
     onDelete: "CASCADE",
-  });
-
-  DailyMenu.hasMany(DailyMenuHasAllergen, {
     foreignKey: "dailyMenuId",
   });
+
+  // DailyMenu.hasMany(DailyMenuHasAllergen);
 
   DailyMenuHasAllergen.belongsTo(Restaurant, {
     constrains: true,
     onDelete: "CASCADE",
-  });
-
-  Restaurant.hasMany(DailyMenuHasAllergen, {
     foreignKey: "restaurantId",
   });
+
+  // Restaurant.hasMany(DailyMenuHasAllergen);
 }
 
 module.exports = { dailyMenus };

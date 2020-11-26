@@ -2,14 +2,13 @@ const Sequelize = require("sequelize");
 
 const sequelize = require("../util/database");
 
-const Restaurant = sequelize.define("restaurant", {
+const Restaurant = sequelize.define("Restaurant", {
   id: {
     type: Sequelize.INTEGER,
     autoIncrement: true,
     allowNull: false,
     primaryKey: true,
   },
-  // star: Sequelize.INTEGER,
   commission: Sequelize.FLOAT,
   phoneNumber: Sequelize.STRING,
   email: Sequelize.STRING,

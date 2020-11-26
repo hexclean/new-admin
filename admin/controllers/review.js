@@ -1,5 +1,5 @@
 const ProductFinal = require("../../models/ProductFinal");
-const Variant = require("../../models/ProductVariant");
+const Variant = require("../../models/Variant");
 const User = require("../../models/User");
 const ProductReview = require("../../models/ProductsReview");
 const Restaurant = require("../../models/Restaurant");

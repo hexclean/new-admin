@@ -1,12 +1,12 @@
 const fileHelper = require("../../util/file");
 const Product = require("../../models/Product");
-const ProductVariant = require("../../models/ProductVariant");
+const ProductVariant = require("../../models/Variant");
 const ProductTranslation = require("../../models/ProductTranslation");
 const ProductFinal = require("../../models/ProductFinal");
 const Sequelize = require("sequelize");
 const Allergen = require("../../models/Allergen");
 const ProductHasAllergen = require("../../models/ProductHasAllergen");
-const ProductVariants = require("../../models/ProductVariant");
+const ProductVariants = require("../../models/Variant");
 const AllegenTranslation = require("../../models/AllergenTranslation");
 const Category = require("../../models/Category");
 const CategoryTranslation = require("../../models/CategoryTranslation");
@@ -148,7 +148,8 @@ exports.postAddProduct = async (req, res, next) => {
     },
   });
 
-  const product = await req.admin.createProduct({
+  const product = await Product.create({
+    restaurantId: req.admin.id,
     imageUrl: strBase64,
     active: 1,
   });
@@ -337,7 +338,6 @@ exports.getEditProduct = async (req, res, next) => {
         model: ProductFinal,
         include: [
           {
-            as: "theVariantd",
             model: ProductVariant,
           },
         ],
@@ -347,7 +347,7 @@ exports.getEditProduct = async (req, res, next) => {
     .then((product) => {
       let productVariantTest = [];
       for (let i = 0; i < product.length; i++) {
-        productVariantTest = product[i].productFinals;
+        productVariantTest = product[i].ProductFinals;
       }
       res.render("admin/edit-product", {
         isActiveAllergen: allergenTest,
@@ -576,6 +576,7 @@ exports.getProducts = async (req, res, next) => {
 
   await Product.findAll({
     where: { restaurantId: req.admin.id, active: 1 },
+
     include: [
       {
         model: ProductTranslation,
@@ -589,11 +590,11 @@ exports.getProducts = async (req, res, next) => {
         var currentLanguage = req.cookies.language;
 
         if (currentLanguage == "ro") {
-          currentProductName[i] = product[i].productTranslations[0].title;
+          currentProductName[i] = product[i].ProductTranslations[0].title;
         } else if (currentLanguage == "hu") {
-          currentProductName[i] = product[i].productTranslations[1].title;
+          currentProductName[i] = product[i].ProductTranslations[1].title;
         } else {
-          currentProductName[i] = product[i].productTranslations[2].title;
+          currentProductName[i] = product[i].ProductTranslations[2].title;
         }
       }
 
@@ -602,13 +603,13 @@ exports.getProducts = async (req, res, next) => {
 
         if (currentLanguage == "ro") {
           currentProductDescription[i] =
-            product[i].productTranslations[0].description;
+            product[i].ProductTranslations[0].description;
         } else if (currentLanguage == "hu") {
           currentProductDescription[i] =
-            product[i].productTranslations[1].description;
+            product[i].ProductTranslations[1].description;
         } else {
           currentProductDescription[i] =
-            product[i].productTranslations[2].description;
+            product[i].ProductTranslations[2].description;
         }
       }
       res.render("admin/products", {

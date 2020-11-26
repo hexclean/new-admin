@@ -1,4 +1,4 @@
-const ProductVariants = require("../../models/ProductVariant");
+const ProductVariants = require("../../models/Variant");
 const Category = require("../../models/Category");
 const CategoryTranslation = require("../../models/CategoryTranslation");
 const Extras = require("../../models/Extra");
@@ -114,11 +114,11 @@ exports.getExtraIndex = async (req, res, next) => {
         var currentLanguage = req.cookies.language;
 
         if (currentLanguage == "ro") {
-          currentExtraName[i] = extra[i].extraTranslations[0].name;
+          currentExtraName[i] = extra[i].ExtraTranslations[0].name;
         } else if (currentLanguage == "hu") {
-          currentExtraName[i] = extra[i].extraTranslations[1].name;
+          currentExtraName[i] = extra[i].ExtraTranslations[1].name;
         } else {
-          currentExtraName[i] = extra[i].extraTranslations[2].name;
+          currentExtraName[i] = extra[i].ExtraTranslations[2].name;
         }
       }
 
@@ -184,16 +184,13 @@ exports.getCategoryIndex = async (req, res, next) => {
     .then((category) => {
       for (let i = 0; i < category.length; i++) {
         var currentLanguage = req.cookies.language;
-
+        console.log(category);
         if (currentLanguage == "ro") {
-          currentCategoryName[i] =
-            category[i].productCategoryTranslations[0].name;
+          currentCategoryName[i] = category[i].CategoryTranslations[0].name;
         } else if (currentLanguage == "hu") {
-          currentCategoryName[i] =
-            category[i].productCategoryTranslations[1].name;
+          currentCategoryName[i] = category[i].CategoryTranslations[1].name;
         } else {
-          currentCategoryName[i] =
-            category[i].productCategoryTranslations[2].name;
+          currentCategoryName[i] = category[i].CategoryTranslations[2].name;
         }
       }
 
@@ -254,11 +251,11 @@ exports.getAllergenIndex = async (req, res, next) => {
         var currentLanguage = req.cookies.language;
 
         if (currentLanguage == "ro") {
-          currentAllergenName[i] = allergen[i].allergenTranslations[0].name;
+          currentAllergenName[i] = allergen[i].AllergenTranslations[0].name;
         } else if (currentLanguage == "hu") {
-          currentAllergenName[i] = allergen[i].allergenTranslations[1].name;
+          currentAllergenName[i] = allergen[i].AllergenTranslations[1].name;
         } else {
-          currentAllergenName[i] = allergen[i].allergenTranslations[2].name;
+          currentAllergenName[i] = allergen[i].AllergenTranslations[2].name;
         }
       }
 
@@ -318,11 +315,11 @@ exports.getBoxIndex = async (req, res, next) => {
         var currentLanguage = req.cookies.language;
 
         if (currentLanguage == "ro") {
-          currentBoxName[i] = box[i].boxTranslations[0].name;
+          currentBoxName[i] = box[i].BoxTranslations[0].name;
         } else if (currentLanguage == "hu") {
-          currentBoxName[i] = box[i].boxTranslations[1].name;
+          currentBoxName[i] = box[i].BoxTranslations[1].name;
         } else {
-          currentBoxName[i] = box[i].boxTranslations[2].name;
+          currentBoxName[i] = box[i].BoxTranslations[2].name;
         }
       }
 

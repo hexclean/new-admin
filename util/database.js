@@ -42,7 +42,7 @@ var os = require("os");
 // database = defaultdb
 // sslmode = REQUIRED
 
-const sequelize = new Sequelize("foodnet21", "root", "", {
+const sequelize = new Sequelize("foodnet35", "root", "", {
   dialect: "mysql",
   host: "localhost",
 });

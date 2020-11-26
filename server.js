@@ -88,10 +88,10 @@ const fileFilter = (req, file, cb) => {
 app.set("view engine", "ejs");
 app.set("views", "views");
 
-// const adminRoutes = require("./admin/routes/admin");
-// const indexRoutes = require("./admin/routes/index");
-// const authRoutes = require("./admin/routes/auth");
-// const superRoutes = require("./admin/routes/super-admin");
+const adminRoutes = require("./admin/routes/admin");
+const indexRoutes = require("./admin/routes/index");
+const authRoutes = require("./admin/routes/auth");
+const superRoutes = require("./admin/routes/super-admin");
 
 app.use(express.static(path.join(__dirname, "public")));
 app.use("/images", express.static(path.join(__dirname, "images")));
@@ -112,22 +112,22 @@ app.use(
 );
 
 // Define Routes
-// app.use("/api/auth", require("./routes/api/auth"));
-// app.use("/api/delivery-address", require("./routes/api/delivery-address"));
-// app.use("/api/category", require("./routes/api/category"));
-// app.use("/api/profile", require("./routes/api/profile"));
-// app.use("/api/location", require("./routes/api/locations"));
-// app.use("/api/location-app", require("./routes/api/location-app"));
-// app.use("/api/order", require("./routes/api/order"));
-// app.use("/api/products", require("./routes/api/products"));
-// app.use("/api/reviews", require("./routes/api/reviews"));
-// app.use("/api/restaurant", require("./routes/api/restaurants"));
-// app.use(bodyParser.urlencoded({ extended: false }));
-// app.use("/admin", adminRoutes);
-// app.use("/super-admin", superRoutes);
-// app.use(indexRoutes);
-// app.use(authRoutes);
-// app.get("/500", errorController.get500);
+app.use("/api/auth", require("./routes/api/auth"));
+app.use("/api/delivery-address", require("./routes/api/delivery-address"));
+app.use("/api/category", require("./routes/api/category"));
+app.use("/api/profile", require("./routes/api/profile"));
+app.use("/api/location", require("./routes/api/locations"));
+app.use("/api/location-app", require("./routes/api/location-app"));
+app.use("/api/order", require("./routes/api/order"));
+app.use("/api/products", require("./routes/api/products"));
+app.use("/api/reviews", require("./routes/api/reviews"));
+app.use("/api/restaurant", require("./routes/api/restaurants"));
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use("/admin", adminRoutes);
+app.use("/super-admin", superRoutes);
+app.use(indexRoutes);
+app.use(authRoutes);
+app.get("/500", errorController.get500);
 
 // Database configuration
 databaseConfig();
@@ -141,7 +141,7 @@ databaseConfig();
 // });
 
 // Config PORT
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 3000;
 app.use(errorController.get404);
 
 sequelize

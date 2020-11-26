@@ -32,7 +32,7 @@
                                  name="roName"
                                  autocomplete="off"
                                  id="roName"
-                                 value="<% if (editing) { %><%= extra[0].extraTranslations[0].name %><% } %>">
+                                 value="<% if (editing) { %><%= extra[0].ExtraTranslations[0].name %><% } %>">
                            </div>
                            <span class="error_form" id="roName_error_message"></span>
                         </div>
@@ -45,7 +45,7 @@
                                  name="huName"
                                  autocomplete="off"
                                  id="huName"
-                                 value="<% if (editing) { %><%= extra[0].extraTranslations[1].name %><% } %>">
+                                 value="<% if (editing) { %><%= extra[0].ExtraTranslations[1].name %><% } %>">
                            </div>
                            <span class="error_form" id="huName_error_message"></span>
                         </div>
@@ -58,7 +58,7 @@
                                  name="enName"
                                  autocomplete="off"
                                  id="enName"
-                                 value="<% if (editing) { %><%= extra[0].extraTranslations[2].name %><% } %>">
+                                 value="<% if (editing) { %><%= extra[0].ExtraTranslations[2].name %><% } %>">
                            </div>
                            <span class="error_form" id="enName_error_message"></span>
                         </div>
@@ -91,11 +91,11 @@
 
                   <% if (editing) { %>
                      <% for (let i = 0; i < isActive.length; i++) { %>
-                        <% if (isActive[i].extraHasAllergens[0].active == 1) { %>
+                        <% if (isActive[i].ExtraHasAllergens[0].active == 1) { %>
                            
                            <script>
                                $(document).ready(function() {
-                               var activeCheckbox ="<%= isActive[i].extraHasAllergens[0].allergenId %>";
+                               var activeCheckbox ="<%= isActive[i].ExtraHasAllergens[0].allergenId %>";
                                $('.status-checkbox-'+activeCheckbox).prop('checked', true);
                                $('.status-'+activeCheckbox).val('on');
                                });
@@ -130,7 +130,7 @@
                              <label class="ms-switch" data-extra="<%= allergenArray[i].id %>">
                               <input type="hidden" value="off" class="status-<%= allergenArray[i].id %>" name="status[<%= allergenArray[i].id %>]" > 
                                <input data-extraId="<%= allergenArray[i].id %>"  class="status-checkbox status-checkbox-<%= allergenArray[i].id %>" type="checkbox"> <span class="ms-switch-slider ms-switch-success round"></span>
-                             </label> <span> <%= allergenArray[i].allergenTranslations[0].name %> </span>
+                             </label> <span> <%= allergenArray[i].AllergenTranslations[0].name %> </span>
                            </li>
                            <% } %>
                          </ul>

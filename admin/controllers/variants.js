@@ -1,5 +1,5 @@
 const ProductVariantsExtras = require("../../models/ProductVariantsExtras");
-const ProductVariants = require("../../models/ProductVariant");
+const ProductVariants = require("../../models/Variant");
 const ProductVariantExtras = require("../../models/ProductVariantsExtras");
 const ProductExtra = require("../../models/Extra");
 const Category = require("../../models/Category");
@@ -63,13 +63,13 @@ exports.getAddVariant = async (req, res, next) => {
   });
   for (let i = 0; i < ext.length; i++) {
     var currentLanguage = req.cookies.language;
-
+    console.log(ext);
     if (currentLanguage == "ro") {
-      currentExtraName[i] = ext[i].extraTranslations[0].name;
+      currentExtraName[i] = ext[i].ExtraTranslations[0].name;
     } else if (currentLanguage == "hu") {
-      currentExtraName[i] = ext[i].extraTranslations[1].name;
+      currentExtraName[i] = ext[i].ExtraTranslations[1].name;
     } else {
-      currentExtraName[i] = ext[i].extraTranslations[2].name;
+      currentExtraName[i] = ext[i].ExtraTranslations[2].name;
     }
   }
   for (let i = 0; i < cat.length; i++) {
@@ -147,8 +147,9 @@ exports.postAddVariant = async (req, res, next) => {
     ],
   });
 
-  const variant = await req.admin.createProductVariant({
+  const variant = await ProductVariants.create({
     sku: sku,
+    restaurantId: req.admin.id,
     categoryId: categoryRo,
     maxOption: maxOption,
   });
@@ -236,10 +237,10 @@ exports.getEditVariant = async (req, res, next) => {
       },
     ],
   });
-
+  console.log(cat);
   let categoryList = [];
   for (let i = 0; i < cat.length; i++) {
-    categoryList = cat[i].productCategoryTranslations[0];
+    categoryList = cat[i].CategoryTranslations[0];
   }
 
   for (let i = 0; i < productVarToExt.length; i++) {
@@ -296,12 +297,13 @@ exports.getEditVariant = async (req, res, next) => {
         productVarToExt: productVarToExt,
         errorMessage: null,
         validationErrors: [],
-        isActive: variant[0].productVariantsExtras,
+        isActive: variant[0].ProductVariantsExtras,
         currentExtraName: currentExtraName,
       });
     })
     .catch((err) => {
       const error = new Error(err);
+      console.log(err);
       error.httpStatusCode = 500;
       return next(error);
     });

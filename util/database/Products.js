@@ -8,53 +8,59 @@ const Allergen = require("../../models/Allergen");
 const ProductHasAllergen = require("../../models/ProductHasAllergen");
 
 function products() {
-  Product.belongsTo(Restaurant, { constrains: true, onDelete: "CASCADE" });
-  Restaurant.hasMany(Product, { foreignKey: "restaurantId" });
+  Product.belongsTo(Restaurant, {
+    constrains: true,
+    onDelete: "CASCADE",
+    foreignKey: "restaurantId",
+  });
 
-  /* Product -> ProductTranslation  */
+  // Restaurant.hasMany(Product);
+
   ProductTranslation.belongsTo(Product, {
     constrains: true,
     onDelete: "CASCADE",
+    foreignKey: "productId",
   });
   Product.hasMany(ProductTranslation, { foreignKey: "productId" });
 
-  /* ProductTranslation -> Language  */
   ProductTranslation.belongsTo(Language, {
     constrains: true,
     onDelete: "CASCADE",
+    foreignKey: "languageId",
   });
+
   Language.hasMany(ProductTranslation, { foreignKey: "languageId" });
 
-  /* Product -> ProductFinal  */
   ProductFinal.belongsTo(Product, {
     constrains: true,
     onDelete: "CASCADE",
-  });
-  Product.hasMany(ProductFinal, { foreignKey: "productId" });
-
-  /* Product -> ProductHasAllergen  */
-  ProductHasAllergen.belongsTo(Product, {
-    constrains: true,
-    onDelete: "CASCADE",
-  });
-  Product.hasMany(ProductHasAllergen, {
     foreignKey: "productId",
   });
 
-  /* ProductHasAllergen -> Allergen  */
+  Product.hasMany(ProductFinal, { foreignKey: "productId" });
+
+  ProductHasAllergen.belongsTo(Product, {
+    constrains: true,
+    onDelete: "CASCADE",
+    foreignKey: "productId",
+  });
+
+  Product.hasMany(ProductHasAllergen, { foreignKey: "productId" });
+
   ProductHasAllergen.belongsTo(Allergen, {
     constrains: true,
     onDelete: "CASCADE",
-  });
-  Allergen.hasMany(ProductHasAllergen, {
     foreignKey: "allergenId",
   });
 
-  /* ProductFinal -> Variant  */
+  Allergen.hasMany(ProductHasAllergen, { foreignKey: "allergenId" });
+
   ProductFinal.belongsTo(Variant, {
     constrains: true,
     onDelete: "CASCADE",
+    foreignKey: "variantId",
   });
+
   Variant.hasMany(ProductFinal, { foreignKey: "variantId" });
 }
 

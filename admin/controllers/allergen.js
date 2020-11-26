@@ -173,7 +173,7 @@ exports.getEditAllergen = async (req, res, next) => {
         hasError: false,
         errorMessage: null,
         validationErrors: [],
-        extTranslations: extra[0].allergenTranslations,
+        extTranslations: extra[0].AllergenTranslations,
       });
     })
     .catch((err) => {

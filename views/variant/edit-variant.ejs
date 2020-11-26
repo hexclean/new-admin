@@ -54,7 +54,7 @@
                               <select class="form-control" for="categoryRo" id="categoryRo" name="categoryRo">
                                  <option disabled="true" value="list">Variáns kategótia</option>
                                  <% for(let i = 0; i < cat.length; i++) { %>
-                                 <option id="categoryRo" name="categoryRo" value='<%= cat[i].id %>'><%= cat[i].productCategoryTranslations[`${currentLanguage}`].name %></option>
+                                 <option id="categoryRo" name="categoryRo" value='<%= cat[i].id %>'><%= cat[i].CategoryTranslations[`${currentLanguage}`].name %></option>
                                  <% } %>
                               </select>
                            </div>

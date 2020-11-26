@@ -6,9 +6,6 @@ exports.getAddBox = (req, res, next) => {
     pageTitle: "Add Product",
     path: "/admin/add-product",
     editing: false,
-    hasError: false,
-    errorMessage: null,
-    validationErrors: [],
   });
 };
 
@@ -17,6 +14,7 @@ exports.postAddBox = async (req, res, next) => {
   const huName = req.body.huName;
   const enName = req.body.enName;
   const price = req.body.price;
+  console.log(req.body);
   const box = await Box.create({
     restaurantId: req.admin.id,
     price: price,
@@ -27,12 +25,12 @@ exports.postAddBox = async (req, res, next) => {
       name: roName,
       languageId: 1,
       boxId: box.id,
-      restaurantId: req.admin.id,
+      // restaurantId: req.admin.id,
     });
     await BoxTranslation.create({
       name: huName,
       languageId: 2,
-      restaurantId: req.admin.id,
+      // restaurantId: req.admin.id,
       boxId: box.id,
     });
 
@@ -40,7 +38,7 @@ exports.postAddBox = async (req, res, next) => {
       name: enName,
       languageId: 3,
       boxId: box.id,
-      restaurantId: req.admin.id,
+      // restaurantId: req.admin.id,
     });
   }
 
@@ -91,7 +89,7 @@ exports.getEditBox = async (req, res, next) => {
         editing: editMode,
         cat: box,
         boxId: boxId,
-        boxTranslations: box[0].boxTranslations,
+        boxTranslations: box[0].BoxTranslations,
       });
     })
     .catch((err) => {

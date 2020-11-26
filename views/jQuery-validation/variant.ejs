@@ -14,10 +14,10 @@
 <script>
   $(document).ready(function () {
     $("select#maxOption").val(
-      "<% if (editing) { %><%=  variant[0].productVariantsExtras[0].productVariant.maxOption %><% } %>"
+      "<% if (editing) { %><%=  variant[0].productVariantsExtras[0].ProductVariant.maxOption %><% } %>"
     );
     $("select#categoryRo").val(
-      "<% if (editing) { %><%=  variant[0].productVariantsExtras[0].productVariant.categoryId %><% } %>"
+      "<% if (editing) { %><%=  variant[0].productVariantsExtras[0].ProductVariant.categoryId %><% } %>"
     );
   });
 </script>

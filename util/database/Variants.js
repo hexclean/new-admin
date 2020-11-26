@@ -5,8 +5,9 @@ function variants() {
   Variant.belongsTo(Restaurant, {
     constrains: true,
     onDelete: "CASCADE",
+    foreignKey: "restaurantId",
   });
-  Restaurant.hasMany(Variant, { foreignKey: "restaurantId" });
+  // Restaurant.hasMany(Variant);
 }
 
 module.exports = { variants };

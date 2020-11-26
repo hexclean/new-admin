@@ -1,6 +1,6 @@
 const Sequelize = require("sequelize");
 const Op = Sequelize.Op;
-const ProductVariants = require("../../models/ProductVariant");
+const ProductVariants = require("../../models/Variant");
 const Category = require("../../models/Category");
 const CategoryTranslation = require("../../models/CategoryTranslation");
 const Extras = require("../../models/Extra");

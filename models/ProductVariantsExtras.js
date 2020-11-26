@@ -1,7 +1,7 @@
 const Sequelize = require("sequelize");
 const sequelize = require("../util/database");
 
-const ProductVariantsExtras = sequelize.define("productVariantsExtras", {
+const ProductVariantsExtras = sequelize.define("ProductVariantsExtras", {
   id: {
     type: Sequelize.INTEGER,
     autoIncrement: true,

@@ -8,31 +8,41 @@ function openingHours() {
   Hours.belongsTo(OpeningHours, {
     constrains: true,
     onDelete: "CASCADE",
-  });
-
-  OpeningHours.hasMany(Hours, {
     foreignKey: "openingHoursId",
   });
 
-  Hours.belongsTo(Restaurant, { constrains: true, onDelete: "CASCADE" });
-  Restaurant.hasMany(Hours, { foreignKey: "restaurantId" });
+  // OpeningHours.hasMany(Hours);
 
-  OpeningHours.belongsTo(Restaurant, { constrains: true, onDelete: "CASCADE" });
-  Restaurant.hasMany(OpeningHours, { foreignKey: "restaurantId" });
+  Hours.belongsTo(Restaurant, {
+    constrains: true,
+    onDelete: "CASCADE",
+    foreignKey: "restaurantId",
+  });
+
+  // Restaurant.hasMany(Hours);
+
+  OpeningHours.belongsTo(Restaurant, {
+    constrains: true,
+    onDelete: "CASCADE",
+    foreignKey: "restaurantId",
+  });
+
+  // Restaurant.hasMany(OpeningHours);
 
   OpeningHoursTranslation.belongsTo(OpeningHours, {
     constrains: true,
     onDelete: "CASCADE",
-  });
-  OpeningHours.hasMany(OpeningHoursTranslation, {
     foreignKey: "openingHoursId",
   });
+
+  // OpeningHours.hasMany(OpeningHoursTranslation);
 
   OpeningHoursTranslation.belongsTo(Language, {
     constrains: true,
     onDelete: "CASCADE",
+    foreignKey: "languageId",
   });
-  Language.hasMany(OpeningHoursTranslation, { foreignKey: "languageId" });
+  // Language.hasMany(OpeningHoursTranslation);
 }
 
 module.exports = { openingHours };

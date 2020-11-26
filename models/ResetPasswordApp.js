@@ -12,7 +12,7 @@ const ResetPasswordApp = sequelize.define("ResetPasswordApp", {
     type: Sequelize.STRING,
     allowNull: false,
   },
-  expiartion: {
+  expiration: {
     type: Sequelize.DATE,
     allowNull: false,
   },

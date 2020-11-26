@@ -323,11 +323,11 @@ boxEnabled.length; i++) { %> <% if (boxEnabled[i].boxId !=undefined) { %>
 </script>
 <% } %> <% } %> <% } %> <% if (editing) { %> <% for (let i = 0; i <
 isActiveAllergen.length; i++) { %> <% if
-(isActiveAllergen[i].productHasAllergens[0].active == 1) { %>
+(isActiveAllergen[i].ProductHasAllergens[0].active == 1) { %>
 <script>
   $(document).ready(function () {
     var activeCheckbox =
-      "<%= isActiveAllergen[i].productHasAllergens[0].allergenId %>";
+      "<%= isActiveAllergen[i].ProductHasAllergens[0].allergenId %>";
     $(".statusAllergen-checkbox-" + activeCheckbox).prop("checked", true);
     $(".statusAllergen-" + activeCheckbox).val("on");
   });

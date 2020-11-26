@@ -1,7 +1,7 @@
 const Sequelize = require("sequelize");
 const sequelize = require("../util/database");
 
-const VariantCategory = sequelize.define("variantCategory", {
+const VariantCategory = sequelize.define("VariantCategory", {
   id: {
     type: Sequelize.INTEGER,
     autoIncrement: true,
@@ -10,9 +10,6 @@ const VariantCategory = sequelize.define("variantCategory", {
   },
   name: {
     type: Sequelize.STRING,
-  },
-  restaurantId: {
-    type: Sequelize.INTEGER,
   },
 });
 
