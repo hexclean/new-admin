@@ -11,6 +11,7 @@ sequelize = new Sequelize("defaultdb", "doadmin", "s27c8agot7l7a13z", {
 //   dialect: "mysql",
 //   host: "localhost",
 // });
+//ok
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
