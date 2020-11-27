@@ -29,14 +29,13 @@ function categories() {
 
   Language.hasMany(CategoryTranslation, { foreignKey: "languageId" });
 
-  ////teszt
   Variant.belongsTo(Category, {
     constrains: true,
     onDelete: "CASCADE",
     foreignKey: "categoryId",
   });
 
-  Category.hasMany(Variant, { foreignKey: "languageId" });
+  Category.hasMany(Variant, { foreignKey: "categoryId" });
 }
 
 module.exports = { categories };

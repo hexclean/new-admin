@@ -10,28 +10,28 @@ function users() {
     onDelete: "CASCADE",
     foreignKey: "userId",
   });
-  // User.hasMany(UserDeliveryAddress);
+  User.hasMany(UserDeliveryAddress, { foreignKey: "userId" });
 
   ResetPasswordApp.belongsTo(User, {
     constrains: true,
     onDelete: "CASCADE",
     foreignKey: "userId",
   });
-  // User.hasMany(ResetPasswordApp);
+  User.hasMany(ResetPasswordApp, { foreignKey: "userId" });
 
   RestaurantsReviews.belongsTo(User, {
     constrains: true,
     onDelete: "CASCADE",
     foreignKey: "userId",
   });
-  // User.hasMany(RestaurantsReviews);
+  User.hasMany(RestaurantsReviews, { foreignKey: "userId" });
 
   UserProfile.belongsTo(User, {
     constrains: true,
     onDelete: "CASCADE",
     foreignKey: "userId",
   });
-  // User.hasMany(UserProfile);
+  User.hasMany(UserProfile, { foreignKey: "userId" });
 }
 
 module.exports = { users };

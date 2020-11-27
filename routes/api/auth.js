@@ -181,40 +181,48 @@ router.post(
       });
     }
     const { email } = req.body;
-
-    crypto.randomBytes(32, (err, buffer) => {
-      const token = buffer.toString("hex");
-      User.findOne({ where: { email: email } })
-        .then((user) => {
-          user.resetToken = token;
-          user.resetTokenExpiration = Date.now() + 17600000;
-          return user.save();
-        })
-        .then((result) => {
-          transporter.sendMail({
-            to: email,
-            from: "reset-password@foodnet.ro",
-            subject: "Password reset",
-            html: `
+    const test = await User.findOne({ where: { email: email } });
+    if (!test) {
+      return res.json({
+        status: 200,
+        msg: "Email successfully sent",
+        result: [],
+      });
+    } else {
+      crypto.randomBytes(32, (err, buffer) => {
+        const token = buffer.toString("hex");
+        User.findOne({ where: { email: email } })
+          .then((user) => {
+            user.resetToken = token;
+            user.resetTokenExpiration = Date.now() + 17600000;
+            return user.save();
+          })
+          .then((result) => {
+            transporter.sendMail({
+              to: email,
+              from: "reset-password@foodnet.ro",
+              subject: "Password reset",
+              html: `
                   <p>You requested a password reset</p>
                   <p>Click this <a href="https://shielded-anchorage-51692.herokuapp.com/reset-password/${token}">link</a> to set a new password.</p>
                 `,
-          });
+            });
 
-          return res.json({
-            status: 200,
-            msg: "Email successfully sent",
-            result: [],
+            return res.json({
+              status: 200,
+              msg: "Email successfully sent",
+              result: [],
+            });
+          })
+          .catch((err) => {
+            return res.json({
+              status: 500,
+              msg: "Server error",
+              result: [],
+            });
           });
-        })
-        .catch((err) => {
-          return res.json({
-            status: 500,
-            msg: "Server error",
-            result: [],
-          });
-        });
-    });
+      });
+    }
   }
 );
 

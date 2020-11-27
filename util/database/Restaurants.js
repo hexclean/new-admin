@@ -10,28 +10,28 @@ function restaurants() {
     onDelete: "CASCADE",
     foreignKey: "restaurantId",
   });
-  // Restaurant.hasMany(RestaurantInfo);
+  Restaurant.hasMany(RestaurantInfo, { foreignKey: "restaurantId" });
 
   RestaurantInfo.belongsTo(Language, {
     constrains: true,
     onDelete: "CASCADE",
     foreignKey: "languageId",
   });
-  // Language.hasMany(RestaurantInfo);
+  Language.hasMany(RestaurantInfo, { foreignKey: "restaurantId" });
 
   RestaurantRole.belongsTo(Restaurant, {
     constrains: true,
     onDelete: "CASCADE",
     foreignKey: "restaurantId",
   });
-  // Restaurant.hasMany(RestaurantRole);
+  Restaurant.hasMany(RestaurantRole, { foreignKey: "restaurantId" });
 
   RestaurantsReviews.belongsTo(Restaurant, {
     constrains: true,
     onDelete: "CASCADE",
     foreignKey: "restaurantId",
   });
-  // Restaurant.hasMany(RestaurantsReviews);
+  Restaurant.hasMany(RestaurantsReviews, { foreignKey: "restaurantId" });
 }
 
 module.exports = { restaurants };

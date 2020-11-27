@@ -12,7 +12,7 @@ function locations() {
     foreignKey: "restaurantId",
   });
 
-  // Restaurant.hasMany(Location);
+  Restaurant.hasMany(Location, { foreignKey: "restaurantId" });
 
   Location.belongsTo(LocationName, {
     constrains: true,
@@ -20,14 +20,16 @@ function locations() {
     foreignKey: "locationNameId",
   });
 
-  // LocationName.hasMany(Location);
+  LocationName.hasMany(Location, { foreignKey: "locationNameId" });
 
   LocationNameTranslation.belongsTo(LocationName, {
     constrains: true,
     onDelete: "CASCADE",
     foreignKey: "locationNameId",
   });
-  // LocationName.hasMany(LocationNameTranslation);
+  LocationName.hasMany(LocationNameTranslation, {
+    foreignKey: "locationNameId",
+  });
 
   LocationNameTranslation.belongsTo(Language, {
     constrains: true,
@@ -35,21 +37,25 @@ function locations() {
     foreignKey: "languageId",
   });
 
-  // Language.hasMany(LocationNameTranslation);
+  Language.hasMany(LocationNameTranslation, { foreignKey: "languageId" });
 
   RestaurantFilter.belongsTo(Location, {
     constrains: true,
     onDelete: "CASCADE",
     foreignKey: "locationId",
   });
-  // Location.hasMany(RestaurantFilter);
+  Location.hasMany(RestaurantFilter, {
+    foreignKey: "locationId",
+  });
 
   RestaurantFilter.belongsTo(Restaurant, {
     constrains: true,
     onDelete: "CASCADE",
     foreignKey: "restaurantId",
   });
-  // Restaurant.hasMany(RestaurantFilter);
+  Restaurant.hasMany(RestaurantFilter, {
+    foreignKey: "restaurantId",
+  });
 }
 
 module.exports = { locations };

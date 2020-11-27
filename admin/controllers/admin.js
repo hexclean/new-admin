@@ -114,9 +114,12 @@ exports.postAddProduct = async (req, res, next) => {
   const huDescription = req.body.huDescription;
   const enDescription = req.body.enDescription;
   const image = req.file;
-
-  var strBase64 = Buffer.from(image.filename).toString("base64");
-  console.log("strBase64", strBase64);
+  const buff = Buffer.from(image, "utf-8");
+  const base64 = buff.toString("base64");
+  console.log(base64);
+  // var binaryData = fs.readFileSync(image);
+  // var strBase64 = Buffer.from(binaryData).toString("base64");
+  // console.log(strBase64);
   const extId = req.body.extraId;
   const filteredStatusAllergen = req.body.statusAllergen.filter(Boolean);
   const filteredStatusBox = req.body.statusBox.filter(Boolean);

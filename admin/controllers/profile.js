@@ -292,7 +292,6 @@ exports.getDashboard = (req, res, next) => {
 exports.getEditProfileImages = (req, res, next) => {
   const editMode = req.query.edit;
   const restaurantId = req.admin.id;
-
   Admin.findByPk(restaurantId)
     .then((admin) => {
       if (!admin) {
@@ -314,13 +313,15 @@ exports.getEditProfileImages = (req, res, next) => {
 
 exports.postEditProfileImages = async (req, res, next) => {
   const image = req.file;
-  const imageUrl = image.path;
-
+  console.log(image);
+  const buff = Buffer.from(image.filename, "utf-8");
+  const base64 = buff.toString("base64");
+  console.log(base64);
   try {
     await Admin.findByPk(req.admin.id).then((restaurant) => {
       Admin.update(
         {
-          imageUrl: imageUrl,
+          imageUrl: base64,
         },
         { where: { id: req.admin.id } }
       );
@@ -359,13 +360,13 @@ exports.getEditCoverImages = (req, res, next) => {
 
 exports.postEditCoverImages = async (req, res, next) => {
   const image = req.file;
-  const imageUrl = image.path;
+  var strBase64 = Buffer.from(image.filename).toString("base64");
 
   try {
     await Admin.findByPk(req.admin.id).then((restaurant) => {
       Admin.update(
         {
-          coverUrl: imageUrl,
+          coverUrl: strBase64,
         },
         { where: { id: req.admin.id } }
       );

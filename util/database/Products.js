@@ -14,7 +14,7 @@ function products() {
     foreignKey: "restaurantId",
   });
 
-  // Restaurant.hasMany(Product);
+  Restaurant.hasMany(Product, { foreignKey: "restaurantId" });
 
   ProductTranslation.belongsTo(Product, {
     constrains: true,

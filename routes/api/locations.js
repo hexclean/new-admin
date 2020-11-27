@@ -87,10 +87,10 @@ router.get("/:lang/:locationName", async (req, res, next) => {
   weekday[6] = "szombat";
 
   let today = weekday[d.getDay()];
-
   try {
-    const selectedLocation = await sequelize.query(
-      `SELECT hoH.open as restaurant_open, hoH.close AS restaurant_close, ad.rating AS restaurant_rating,  ad.id AS restaurant_id, ad.coverUrl AS restaurant_profileImage,
+    await sequelize
+      .query(
+        `SELECT hoH.open as restaurant_open, hoH.close AS restaurant_close, ad.rating AS restaurant_rating,  ad.id AS restaurant_id, ad.imageUrl AS restaurant_profileImage,
       ad.fullName AS restaurant_name, ad.newRestaurant AS restaurant_new, ad.discount AS restaurant_discount,
        adInf.shortCompanyDesc AS restaurant_description
       FROM restaurants AS ad
@@ -100,7 +100,7 @@ router.get("/:lang/:locationName", async (req, res, next) => {
       ON ho.openingHoursId = hoH.id
       INNER JOIN openingHoursTranslations hoT
       ON hoT.openingHoursId = hoH.id
-      INNER JOIN adminInfos AS adInf
+      INNER JOIN RestaurantInfos AS adInf
       ON adInf.restaurantId = ad.id
       INNER JOIN locations AS loc
       ON ad.id = loc.restaurantId
@@ -112,22 +112,39 @@ router.get("/:lang/:locationName", async (req, res, next) => {
       AND locNameTrans.languageId = ${languageCode} AND hoH.sku LIKE '%${today}%'
       AND adInf.languageId = ${languageCode}
       AND locNameTrans.name LIKE '%${locationName}%' AND locNameTrans.languageId= ${languageCode} LIMIT 4;`,
-      { type: Sequelize.QueryTypes.SELECT }
-    );
-
-    if (selectedLocation.length == 0) {
-      return res.json({
-        status: 404,
-        msg: "Restaurant not found",
-        result: [],
+        { type: Sequelize.QueryTypes.SELECT }
+      )
+      .then((resu) => {
+        const result = [];
+        for (let d of resu) {
+          const item = {
+            restaurant_id: d.restaurant_id,
+            restaurant_open: d.restaurant_open,
+            restaurant_close: d.restaurant_close,
+            restaurant_rating: d.restaurant_rating,
+            restaurant_name: d.restaurant_name,
+            restaurant_new: d.restaurant_new,
+            restaurant_discount: d.restaurant_discount,
+            restaurant_description: d.restaurant_description,
+            restaurant_profileImage: d.restaurant_profileImage.toString(
+              "base64"
+            ),
+          };
+          result.push(item);
+        }
+        if (result.length == 0) {
+          return res.json({
+            status: 404,
+            msg: "Restaurant not found",
+            result: [],
+          });
+        }
+        return res.json({
+          status: 200,
+          msg: "Restaurant list successfully appear",
+          result,
+        });
       });
-    }
-
-    return res.json({
-      status: 200,
-      msg: "Restaurant list successfuly appear",
-      selectedLocation,
-    });
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Server Error");
@@ -167,8 +184,9 @@ router.get("/home/:lang/:locationName", async (req, res, next) => {
   let today = weekday[d.getDay()];
 
   try {
-    const restaurants = await sequelize.query(
-      `SELECT hoH.open as restaurant_open, hoH.close AS restaurant_close, ad.rating AS restaurant_rating,  ad.id AS restaurant_id, ad.imageUrl AS restaurant_profileImage,
+    await sequelize
+      .query(
+        `SELECT hoH.open as restaurant_open, hoH.close AS restaurant_close, ad.rating AS restaurant_rating,  ad.id AS restaurant_id, ad.imageUrl AS restaurant_profileImage,
       ad.fullName AS restaurant_name, ad.newRestaurant AS restaurant_new, ad.discount AS restaurant_discount,
        adInf.shortCompanyDesc AS restaurant_description
       FROM restaurants AS ad
@@ -178,7 +196,7 @@ router.get("/home/:lang/:locationName", async (req, res, next) => {
       ON ho.openingHoursId = hoH.id
       INNER JOIN openingHoursTranslations hoT
       ON hoT.openingHoursId = hoH.id
-      INNER JOIN adminInfos AS adInf
+      INNER JOIN RestaurantInfos AS adInf
       ON adInf.restaurantId = ad.id
       INNER JOIN locations AS loc
       ON ad.id = loc.restaurantId
@@ -190,8 +208,27 @@ router.get("/home/:lang/:locationName", async (req, res, next) => {
       AND locNameTrans.languageId = ${languageCode} AND hoH.sku LIKE '%${today}%'
       AND adInf.languageId = ${languageCode}
       AND locNameTrans.name LIKE '%${locationName}%' AND locNameTrans.languageId= ${languageCode} LIMIT 4;`,
-      { type: Sequelize.QueryTypes.SELECT }
-    );
+        { type: Sequelize.QueryTypes.SELECT }
+      )
+      .then((result) => {
+        const items = [];
+        for (let d of result) {
+          const item = {
+            restaurant_id: d.restaurant_id,
+            restaurant_open: d.restaurant_open,
+            restaurant_close: d.restaurant_close,
+            restaurant_rating: d.restaurant_rating,
+            restaurant_name: d.restaurant_name,
+            restaurant_new: d.restaurant_new,
+            restaurant_discount: d.restaurant_discount,
+            restaurant_description: d.restaurant_description,
+            restaurant_profileImage: d.restaurant_profileImage.toString(
+              "base64"
+            ),
+          };
+          items.push(item);
+        }
+      });
 
     if (restaurants.length == 0) {
       return res.json({

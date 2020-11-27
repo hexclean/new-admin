@@ -8,7 +8,7 @@ sequelize = new Sequelize("defaultdb", "doadmin", "s27c8agot7l7a13z", {
   port: 25060,
 });
 
-// const sequelize = new Sequelize("foodnet35", "root", "", {
+// const sequelize = new Sequelize("foodnet40", "root", "", {
 //   dialect: "mysql",
 //   host: "localhost",
 // });

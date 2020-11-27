@@ -14,14 +14,14 @@ function orders() {
     foreignKey: "restaurantId",
   });
 
-  // Restaurant.hasMany(Order);
+  Restaurant.hasMany(Order, { foreignKey: "restaurantId" });
 
   OrderItem.belongsTo(Order, {
     constrains: true,
     onDelete: "CASCADE",
     foreignKey: "orderId",
   });
-  // Order.hasMany(OrderItem);
+  Order.hasMany(OrderItem, { foreignKey: "orderId" });
 
   OrderItem.belongsTo(Variant, {
     constrains: true,
@@ -29,7 +29,7 @@ function orders() {
     foreignKey: "variantId",
   });
 
-  // Variant.hasMany(OrderItem);
+  Variant.hasMany(OrderItem, { foreignKey: "variantId" });
 
   OrderItemExtra.belongsTo(Extra, {
     constrains: true,
@@ -37,21 +37,21 @@ function orders() {
     foreignKey: "extraId",
   });
 
-  // Extra.hasMany(OrderItemExtra);
+  Extra.hasMany(OrderItemExtra, { foreignKey: "extraId" });
 
   OrderItemExtra.belongsTo(OrderItem, {
     constrains: true,
     onDelete: "CASCADE",
     foreignKey: "orderItemId",
   });
-  // OrderItem.hasMany(OrderItemExtra);
+  OrderItem.hasMany(OrderItemExtra, { foreignKey: "orderItemId" });
 
   Order.belongsTo(User, {
     constrains: true,
     onDelete: "CASCADE",
     foreignKey: "userId",
   });
-  // User.hasMany(Order);
+  User.hasMany(Order, { foreignKey: "userId" });
 
   Order.belongsTo(UserDeliveryAddress, {
     constrains: true,
@@ -59,7 +59,7 @@ function orders() {
     foreignKey: "userDeliveryAddressId",
   });
 
-  // UserDeliveryAddress.hasMany(Order);
+  UserDeliveryAddress.hasMany(Order, { foreignKey: "userDeliveryAddressId" });
 }
 
 module.exports = { orders };
