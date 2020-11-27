@@ -152,7 +152,6 @@ exports.postAddVariant = async (req, res, next) => {
     restaurantId: req.admin.id,
     categoryId: categoryRo,
     maxOption: maxOption,
-    variantId: variant.id,
   });
 
   async function productVariantTransaltion() {
