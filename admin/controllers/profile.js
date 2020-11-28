@@ -361,16 +361,13 @@ exports.getEditCoverImages = (req, res, next) => {
 
 exports.postEditCoverImages = async (req, res, next) => {
   const image = req.file;
-
-  var finalCoverImage = {
-    path: image.path,
-  };
+  const finalCoverImage = image.path;
 
   try {
     await Admin.findByPk(req.admin.id).then((restaurant) => {
       Admin.update(
         {
-          coverImagePath: finalCoverImage.path,
+          coverImagePath: finalCoverImage,
         },
         { where: { id: req.admin.id } }
       );
