@@ -113,8 +113,6 @@ app.use(
 );
 
 // Define Routes
-app.use("/api/auth", require("./routes/api/auth"));
-
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use("/admin", adminRoutes);
 app.use("/super-admin", superRoutes);
