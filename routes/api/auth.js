@@ -45,7 +45,7 @@ router.post(
 
     try {
       let user = await User.findOne({ where: { email: email } });
-
+console.log(user);
       if (!user) {
         return res.json({
           status: 400,

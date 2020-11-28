@@ -62,7 +62,7 @@ exports.postLogin = (req, res, next) => {
               res.redirect("/");
             });
           }
-          createOpeningHour();
+          // createOpeningHour();
           res.redirect("/login");
         })
         .catch((err) => {
