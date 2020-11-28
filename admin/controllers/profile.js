@@ -313,13 +313,10 @@ exports.getEditProfileImages = (req, res, next) => {
 
 exports.postEditProfileImages = async (req, res, next) => {
   const image = req.file;
-  let buff = fs.readFileSync(image.path);
-  let encode_image = buff.toString("base64");
 
   var finalImage = {
-    contentType: req.file.mimetype,
-    path: req.file.path,
-    image: new Buffer(encode_image, "base64"),
+    contentType: image.mimetype,
+    path: image.path,
   };
 
   // console.log(finalImage);
@@ -327,7 +324,6 @@ exports.postEditProfileImages = async (req, res, next) => {
     await Admin.findByPk(req.admin.id).then((restaurant) => {
       Admin.update(
         {
-          profileImage: finalImage.contentType,
           profileImageContentType: finalImage.contentType,
           profileImagePath: finalImage.path,
         },
