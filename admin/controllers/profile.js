@@ -313,16 +313,13 @@ exports.getEditProfileImages = (req, res, next) => {
 
 exports.postEditProfileImages = async (req, res, next) => {
   const image = req.file;
-
-  var finalProfileImage = {
-    path: image.path,
-  };
+  const profileImage = image.path;
 
   try {
     await Admin.findByPk(req.admin.id).then((restaurant) => {
       Admin.update(
         {
-          profileImagePath: finalProfileImage.path,
+          profileImage: profileImage,
         },
         { where: { id: req.admin.id } }
       );
@@ -361,13 +358,13 @@ exports.getEditCoverImages = (req, res, next) => {
 
 exports.postEditCoverImages = async (req, res, next) => {
   const image = req.file;
-  const finalCoverImage = image.path;
+  const coverImage = image.path;
 
   try {
     await Admin.findByPk(req.admin.id).then((restaurant) => {
       Admin.update(
         {
-          coverImagePath: finalCoverImage,
+          coverImage: coverImage,
         },
         { where: { id: req.admin.id } }
       );
