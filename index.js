@@ -136,7 +136,7 @@ databaseConfig();
 // Config PORT
 const PORT = process.env.PORT || 3000;
 app.use(errorController.get404);
-
+//
 sequelize
   // .sync({ force: true })
   .sync()
