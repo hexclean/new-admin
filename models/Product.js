@@ -9,8 +9,7 @@ const Product = sequelize.define("Product", {
     primaryKey: true,
   },
   imageUrl: {
-    type: Sequelize.BLOB("tiny"),
-    allowNull: false,
+    type: Sequelize.BLOB("long"),
   },
   active: {
     type: Sequelize.INTEGER,

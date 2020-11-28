@@ -16,10 +16,10 @@ const Restaurant = sequelize.define("Restaurant", {
   password: Sequelize.STRING,
   fullName: Sequelize.STRING,
   imageUrl: {
-    type: Sequelize.BLOB("tiny"),
+    type: Sequelize.BLOB("long"),
   },
   coverUrl: {
-    type: Sequelize.BLOB("tiny"),
+    type: Sequelize.BLOB("long"),
   },
   minimumOrderUser: Sequelize.FLOAT,
   minimumOrderSubscriber: Sequelize.FLOAT,

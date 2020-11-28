@@ -4,7 +4,7 @@ const fileHelper = require("../../util/file");
 const Hours = require("../../models/Hours.js");
 const OpeningHours = require("../../models/OpeningHours");
 const OpeningHoursTranslation = require("../../models/OpeningHoursTranslation");
-
+const fs = require("fs");
 exports.getEditProfile = async (req, res, next) => {
   restaurantId = req.admin.id;
   adminIdParams = req.params.restaurantId;
@@ -314,14 +314,14 @@ exports.getEditProfileImages = (req, res, next) => {
 exports.postEditProfileImages = async (req, res, next) => {
   const image = req.file;
   console.log(image);
-  const buff = Buffer.from(image.filename, "utf-8");
-  const base64 = buff.toString("base64");
-  console.log(base64);
+  let buff = fs.readFileSync(image.path);
+  let base64data = buff.toString("base64");
+
   try {
     await Admin.findByPk(req.admin.id).then((restaurant) => {
       Admin.update(
         {
-          imageUrl: base64,
+          imageUrl: base64data,
         },
         { where: { id: req.admin.id } }
       );
