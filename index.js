@@ -51,6 +51,7 @@ app.use((req, res, next) => {
     return next();
   }
   Admin.findByPk(req.session.admin.id)
+
     .then((admin) => {
       req.admin = admin;
       next();
