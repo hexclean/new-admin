@@ -8,7 +8,6 @@ const Product = sequelize.define("Product", {
     allowNull: false,
     primaryKey: true,
   },
-  // productImageContentType: Sequelize.STRING,
   productImagePath: Sequelize.STRING,
   active: {
     type: Sequelize.INTEGER,

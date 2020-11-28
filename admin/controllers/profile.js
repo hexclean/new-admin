@@ -314,18 +314,15 @@ exports.getEditProfileImages = (req, res, next) => {
 exports.postEditProfileImages = async (req, res, next) => {
   const image = req.file;
 
-  var finalImage = {
-    contentType: image.mimetype,
+  var finalProfileImage = {
     path: image.path,
   };
 
-  // console.log(finalImage);
   try {
     await Admin.findByPk(req.admin.id).then((restaurant) => {
       Admin.update(
         {
-          profileImageContentType: finalImage.contentType,
-          profileImagePath: finalImage.path,
+          profileImagePath: finalProfileImage.path,
         },
         { where: { id: req.admin.id } }
       );
@@ -364,13 +361,16 @@ exports.getEditCoverImages = (req, res, next) => {
 
 exports.postEditCoverImages = async (req, res, next) => {
   const image = req.file;
-  var strBase64 = Buffer.from(image.filename).toString("base64");
+
+  var finalCoverImage = {
+    path: image.path,
+  };
 
   try {
     await Admin.findByPk(req.admin.id).then((restaurant) => {
       Admin.update(
         {
-          coverUrl: strBase64,
+          coverImagePath: finalCoverImage.path,
         },
         { where: { id: req.admin.id } }
       );

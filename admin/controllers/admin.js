@@ -7,7 +7,7 @@ const Sequelize = require("sequelize");
 const Allergen = require("../../models/Allergen");
 const ProductHasAllergen = require("../../models/ProductHasAllergen");
 const ProductVariants = require("../../models/Variant");
-const AllegenTranslation = require("../../models/AllergenTranslation");
+const AllergenTranslation = require("../../models/AllergenTranslation");
 const Category = require("../../models/Category");
 const CategoryTranslation = require("../../models/CategoryTranslation");
 const Box = require("../../models/Box");
@@ -25,7 +25,7 @@ exports.getAddProduct = async (req, res, next) => {
       },
       include: [
         {
-          model: AllegenTranslation,
+          model: AllergenTranslation,
         },
       ],
     });
@@ -135,7 +135,7 @@ exports.postAddProduct = async (req, res, next) => {
     },
     include: [
       {
-        model: AllegenTranslation,
+        model: AllergenTranslation,
       },
     ],
   });
@@ -152,7 +152,7 @@ exports.postAddProduct = async (req, res, next) => {
     active: 1,
   });
 
-  async function productTransaltion() {
+  async function productTranslation() {
     await ProductTranslation.create({
       title: roTitle,
       languageId: 1,
@@ -208,7 +208,7 @@ exports.postAddProduct = async (req, res, next) => {
     }
   }
 
-  productTransaltion()
+  productTranslation()
     .then((result) => {
       createVariant();
       allergens();
@@ -269,7 +269,7 @@ exports.getEditProduct = async (req, res, next) => {
     },
     include: [
       {
-        model: AllegenTranslation,
+        model: AllergenTranslation,
       },
       { model: ProductHasAllergen },
     ],
@@ -281,7 +281,7 @@ exports.getEditProduct = async (req, res, next) => {
     },
     include: [
       {
-        model: AllegenTranslation,
+        model: AllergenTranslation,
       },
       {
         model: ProductHasAllergen,
