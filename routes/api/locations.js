@@ -93,20 +93,20 @@ router.get("/:lang/:locationName", async (req, res, next) => {
         `SELECT hoH.open as restaurant_open, hoH.close AS restaurant_close, ad.rating AS restaurant_rating,  ad.id AS restaurant_id, ad.imageUrl AS restaurant_profileImage,
       ad.fullName AS restaurant_name, ad.newRestaurant AS restaurant_new, ad.discount AS restaurant_discount,
        adInf.shortCompanyDesc AS restaurant_description
-      FROM restaurants AS ad
-      INNER JOIN hours AS ho
+      FROM Restaurants AS ad
+      INNER JOIN Hours AS ho
       ON ad.id = ho.restaurantId
-      INNER JOIN openingHours as hoH
+      INNER JOIN OpeningHours as hoH
       ON ho.openingHoursId = hoH.id
-      INNER JOIN openingHoursTranslations hoT
+      INNER JOIN OpeningHoursTranslations hoT
       ON hoT.openingHoursId = hoH.id
       INNER JOIN RestaurantInfos AS adInf
       ON adInf.restaurantId = ad.id
-      INNER JOIN locations AS loc
+      INNER JOIN Locations AS loc
       ON ad.id = loc.restaurantId
-      INNER JOIN locationNames AS locName
+      INNER JOIN LocationNames AS locName
       ON loc.locationNameId = locName.id
-      INNER JOIN locationNameTranslations as locNameTrans
+      INNER JOIN LocationNameTranslations as locNameTrans
       ON locName.id = locNameTrans.locationNameId
       WHERE hoT.languageId = ${languageCode}
       AND locNameTrans.languageId = ${languageCode} AND hoH.sku LIKE '%${today}%'

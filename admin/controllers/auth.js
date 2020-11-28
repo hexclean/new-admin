@@ -100,21 +100,21 @@ exports.postSignup = async (req, res, next) => {
         });
         await RestaurantInfo.create({
           restaurantId: admin.id,
-          adress: "",
+          address: "",
           languageId: 1,
           shortCompanyDesc: "",
         });
 
         await RestaurantInfo.create({
           restaurantId: admin.id,
-          adress: "",
+          address: "",
           languageId: 2,
           shortCompanyDesc: "",
         });
 
         await RestaurantInfo.create({
           restaurantId: admin.id,
-          adress: "",
+          address: "",
           languageId: 3,
           shortCompanyDesc: "",
         });
