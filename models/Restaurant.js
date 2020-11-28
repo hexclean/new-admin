@@ -15,17 +15,11 @@ const Restaurant = sequelize.define("Restaurant", {
   password: Sequelize.STRING,
   password: Sequelize.STRING,
   fullName: Sequelize.STRING,
-  profileImage: {
-    type: Sequelize.BLOB("long"),
-  },
-  profileImageContentType: {
-    type: Sequelize.STRING,
-  },
+  profileImage: Sequelize.BLOB("long"),
+  profileImageContentType: Sequelize.STRING,
   profileImagePath: Sequelize.STRING,
   //
-  coverUrl: {
-    type: Sequelize.BLOB("long"),
-  },
+  coverUrl: Sequelize.BLOB("long"),
   minimumOrderUser: Sequelize.FLOAT,
   minimumOrderSubscriber: Sequelize.FLOAT,
   avgTransport: Sequelize.STRING,
