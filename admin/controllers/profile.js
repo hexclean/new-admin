@@ -313,15 +313,23 @@ exports.getEditProfileImages = (req, res, next) => {
 
 exports.postEditProfileImages = async (req, res, next) => {
   const image = req.file;
-  console.log(image);
   let buff = fs.readFileSync(image.path);
-  let base64data = buff.toString("base64");
+  let encode_image = buff.toString("base64");
 
+  var finalImage = {
+    contentType: req.file.mimetype,
+    path: req.file.path,
+    image: new Buffer(encode_image, "base64"),
+  };
+
+  // console.log(finalImage);
   try {
     await Admin.findByPk(req.admin.id).then((restaurant) => {
       Admin.update(
         {
-          imageUrl: base64data,
+          profileImage: finalImage.contentType,
+          profileImageContentType: finalImage.contentType,
+          profileImagePath: finalImage.path,
         },
         { where: { id: req.admin.id } }
       );
