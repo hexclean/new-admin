@@ -18,7 +18,7 @@ const Restaurant = sequelize.define("Restaurant", {
   imageUrl: {
     type: Sequelize.BLOB("tiny"),
   },
-  imageUrl: {
+  coverUrl: {
     type: Sequelize.BLOB("tiny"),
   },
   minimumOrderUser: Sequelize.FLOAT,
