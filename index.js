@@ -114,15 +114,7 @@ app.use(
 
 // Define Routes
 app.use("/api/auth", require("./routes/api/auth"));
-// app.use("/api/delivery-address", require("./routes/api/delivery-address"));
-// app.use("/api/category", require("./routes/api/category"));
-// app.use("/api/profile", require("./routes/api/profile"));
-// app.use("/api/location", require("./routes/api/locations"));
-// app.use("/api/location-app", require("./routes/api/location-app"));
-// app.use("/api/order", require("./routes/api/order"));
-// app.use("/api/products", require("./routes/api/products"));
-// app.use("/api/reviews", require("./routes/api/reviews"));
-// app.use("/api/restaurant", require("./routes/api/restaurants"));
+
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use("/admin", adminRoutes);
 app.use("/super-admin", superRoutes);
