@@ -114,12 +114,7 @@ exports.postAddProduct = async (req, res, next) => {
   const huDescription = req.body.huDescription;
   const enDescription = req.body.enDescription;
   const image = req.file;
-  const buff = Buffer.from(image, "utf-8");
-  const base64 = buff.toString("base64");
-  console.log(base64);
-  // var binaryData = fs.readFileSync(image);
-  // var strBase64 = Buffer.from(binaryData).toString("base64");
-  // console.log(strBase64);
+  const imageUrl = image.path;
   const extId = req.body.extraId;
   const filteredStatusAllergen = req.body.statusAllergen.filter(Boolean);
   const filteredStatusBox = req.body.statusBox.filter(Boolean);
@@ -153,7 +148,7 @@ exports.postAddProduct = async (req, res, next) => {
 
   const product = await Product.create({
     restaurantId: req.admin.id,
-    imageUrl: strBase64,
+    productImagePath: imageUrl,
     active: 1,
   });
 
@@ -451,8 +446,8 @@ exports.postEditProduct = async (req, res, next) => {
             return res.redirect("/");
           }
           if (image) {
-            fileHelper.deleteFile(product.imageUrl);
-            product.imageUrl = image.path;
+            fileHelper.deleteFile(product.productImagePath);
+            product.productImagePath = image.path;
           }
           return product.save();
         });

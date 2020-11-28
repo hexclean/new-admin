@@ -138,10 +138,10 @@ exports.postEditAdmin = (req, res, next) => {
         hu: updatedHuDesc,
         ro: updatedRoDesc,
       };
-      if (image) {
-        fileHelper.deleteFile(product.imageUrl);
-        product.imageUrl = image.path;
-      }
+      // if (image) {
+      //   fileHelper.deleteFile(product.imageUrl);
+      //   product.imageUrl = image.path;
+      // }
       return product.save().then((result) => {
         res.redirect("/admin/products");
       });

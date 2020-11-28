@@ -76,7 +76,7 @@ exports.postAddDailyMenu = async (req, res, next) => {
 
   const dailyMenu = await DailyMenu.create({
     restaurantId: req.admin.id,
-    imageUrl: imageUrl,
+    dailyMenuImagePath: imageUrl,
     active: 1,
   });
 
@@ -253,8 +253,8 @@ exports.postEditDailyMenu = async (req, res, next) => {
             return res.redirect("/");
           }
           if (image) {
-            fileHelper.deleteFile(product.imageUrl);
-            product.imageUrl = image.path;
+            fileHelper.deleteFile(product.dailyMenuImagePath);
+            product.dailyMenuImagePath = image.path;
           }
           return product.save();
         });

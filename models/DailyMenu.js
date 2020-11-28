@@ -12,10 +12,7 @@ const DailyMenu = sequelize.define("DailyMenu", {
     type: Sequelize.STRING,
     allowNull: false,
   },
-  imageUrl: {
-    type: Sequelize.BLOB("tiny"),
-    allowNull: false,
-  },
+  dailyMenuImagePath: Sequelize.STRING,
 });
 
 module.exports = DailyMenu;

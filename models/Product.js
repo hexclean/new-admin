@@ -8,9 +8,8 @@ const Product = sequelize.define("Product", {
     allowNull: false,
     primaryKey: true,
   },
-  imageUrl: {
-    type: Sequelize.BLOB("long"),
-  },
+  // productImageContentType: Sequelize.STRING,
+  productImagePath: Sequelize.STRING,
   active: {
     type: Sequelize.INTEGER,
   },
