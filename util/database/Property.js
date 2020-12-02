@@ -80,6 +80,14 @@ function property() {
   });
 
   Property.hasMany(CategoryProperty, { foreignKey: "propertyId" });
+
+  CategoryProperty.belongsTo(Restaurant, {
+    constrains: true,
+    onDelete: "CASCADE",
+    foreignKey: "restaurantId",
+  });
+
+  Restaurant.hasMany(CategoryProperty, { foreignKey: "restaurantId" });
 }
 
 module.exports = { property };

@@ -81,9 +81,14 @@
                              <div class="col-md-6">
                                <ul class="ms-list ms-list-display">
                                  <% for (let i=0; i < property.length; i++ ) { %>
+                                    <input
+                                    type="hidden"
+                                    value="<%= property[i].id %>"
+                                    name="propertyId"
+                                    /> 
                                  <li>
                                     <label class="ms-checkbox-wrap ms-checkbox-success" data-extra="<%= property[i].id %>">
-                                       <input type="hidden" value="off" class="status-<%= property[i].id %>" name="status[<%= property[i].id %>]" >
+                                       <input type="hidden" value="off" class="status-<%= property[i].id %>" name="status[<%= property[i].id %>]" value="" >
                                       <input data-propertyId="<%= property[i].id %>" class="status-checkbox status-checkbox-<%= property[i].id %>" type="checkbox" value="<%= property[i].id %>"> <i class="ms-checkbox-check"></i>
                                     </label> <span> <%= property[i].PropertyTranslations[0].name %> </span>
                                   </li>

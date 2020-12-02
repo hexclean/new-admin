@@ -192,7 +192,6 @@ exports.getCategoryIndex = async (req, res, next) => {
     .then((category) => {
       for (let i = 0; i < category.length; i++) {
         var currentLanguage = req.cookies.language;
-        console.log(category);
         if (currentLanguage == "ro") {
           currentCategoryName[i] = category[i].CategoryTranslations[0].name;
         } else if (currentLanguage == "hu") {

@@ -45,58 +45,50 @@ exports.postAddCategory = async (req, res, next) => {
   const enName = req.body.enName;
   const filteredStatus = req.body.status.filter(Boolean);
   const propertyId = req.body.propertyId;
-  console.log("filteredStatus.length", filteredStatus.length);
+  console.log("propertyId", propertyId);
+  console.log("filteredStatus.length", filteredStatus);
   if (roName == "" || huName == "" || enName == "") {
     return res.redirect("/admin/category-index");
   }
 
   try {
-    const category = await Category.create({
-      restaurantId: req.admin.id,
-    });
-
-    await CategoryTranslation.create({
-      name: roName,
-      languageId: 1,
-      categoryId: category.id,
-      restaurantId: req.admin.id,
-    });
-
-    await CategoryTranslation.create({
-      name: huName,
-      languageId: 2,
-      categoryId: category.id,
-      restaurantId: req.admin.id,
-    });
-
-    await CategoryTranslation.create({
-      name: enName,
-      languageId: 3,
-      categoryId: category.id,
-      restaurantId: req.admin.id,
-    });
-
-    for (let i = 0; i <= filteredStatus.length - 1; i++) {
-      await CategoryProperty.create({
-        categoryId: category.id,
-        propertyId: propertyId[i],
-        active: filteredStatus[i] == "on" ? 1 : 0,
+    async function createExtraTranslation() {
+      const category = await Category.create({
         restaurantId: req.admin.id,
       });
-      // await AdminLogs.create({
-      //   restaurant_id: req.admin.id,
-      //   operation_type: "POST",
-      //   description: `Allergen added to extraId: ${
-      //     extra.id
-      //   } with allergenId: ${allergenId} active equal to 0.
-      //     Allergen added to extraId: ${extra.id} with allergenId: ${
-      //     filteredStatus[i] == "on" ? 1 : 0
-      //   } active equal to 1
-      //     `,
-      //   route: "addAllergenToExtra",
-      // });
+
+      await CategoryTranslation.create({
+        name: roName,
+        languageId: 1,
+        categoryId: category.id,
+        restaurantId: req.admin.id,
+      });
+
+      await CategoryTranslation.create({
+        name: huName,
+        languageId: 2,
+        categoryId: category.id,
+        restaurantId: req.admin.id,
+      });
+
+      await CategoryTranslation.create({
+        name: enName,
+        languageId: 3,
+        categoryId: category.id,
+        restaurantId: req.admin.id,
+      });
+
+      for (let i = 0; i <= filteredStatus.length - 1; i++) {
+        await CategoryProperty.create({
+          categoryId: category.id,
+          propertyId: propertyId[i],
+          active: filteredStatus[i] == "on" ? 1 : 0,
+          restaurantId: req.admin.id,
+        });
+      }
     }
 
+    createExtraTranslation();
     res.redirect("/admin/category-index");
   } catch (err) {
     const error = new Error(err);
@@ -171,7 +163,6 @@ exports.postEditCategory = async (req, res, next) => {
         },
       ],
     }).then(async (result) => {
-      console.log(result);
       await CategoryTranslation.update(
         { name: updatedRoName },
         { where: { id: categoryTranslationId[0], languageId: 1 } }
