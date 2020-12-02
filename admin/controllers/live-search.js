@@ -9,7 +9,6 @@ const Allergen = require("../../models/Allergen");
 const AllergenTranslation = require("../../models/AllergenTranslation");
 const Box = require("../../models/Box");
 const BoxTranslation = require("../../models/BoxTranslation");
-const ITEMS_PER_PAGE = 10;
 
 exports.getFilteredExtra = async (req, res, next) => {
   var categoryName = req.params.extraId;

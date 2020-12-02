@@ -10,6 +10,7 @@ const Box = require("../../models/Box");
 const BoxTranslation = require("../../models/BoxTranslation");
 const ITEMS_PER_PAGE = 10;
 const Op = Sequelize.Op;
+const AdminLogs = require("../../models/AdminLogs");
 
 exports.getVariantIndex = async (req, res, next) => {
   const page = +req.query.page || 1;
@@ -69,6 +70,13 @@ exports.getVariantIndex = async (req, res, next) => {
 };
 
 exports.getExtraIndex = async (req, res, next) => {
+  await AdminLogs.create({
+    restaurant_id: req.admin.id,
+    operation_type: "GET",
+    description: "Opened list of all extra",
+    route: "getBoxIndex",
+  });
+
   const page = +req.query.page || 1;
   let totalItems;
   let currentExtraName = [];
@@ -283,7 +291,12 @@ exports.getBoxIndex = async (req, res, next) => {
   const page = +req.query.page || 1;
   let totalItems;
   let currentBoxName = [];
-
+  await AdminLogs.create({
+    restaurant_id: req.admin.id,
+    operation_type: "GET",
+    description: "Opened list of all boxes",
+    route: "getBoxIndex",
+  });
   await Box.findAll({
     where: {
       restaurantId: req.admin.id,

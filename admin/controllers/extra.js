@@ -3,13 +3,20 @@ const ExtraTranslation = require("../../models/ExtraTranslation");
 const Allergen = require("../../models/Allergen");
 const ProductVariantsExtras = require("../../models/ProductVariantsExtras");
 const ProductVariants = require("../../models/Variant");
-const AllegenTranslation = require("../../models/AllergenTranslation");
+const AllergenTranslation = require("../../models/AllergenTranslation");
 const ExtraHasAllergen = require("../../models/ExtraHasAllergen");
 const Sequelize = require("sequelize");
 const Op = Sequelize.Op;
+const AdminLogs = require("../../models/AdminLogs");
 
 // Show create extra page
 exports.getAddExtra = async (req, res, next) => {
+  await AdminLogs.create({
+    restaurant_id: req.admin.id,
+    operation_type: "GET",
+    description: "Opened the extra creation page",
+    route: "getAddExtra",
+  });
   try {
     // Get all restaurant ellergen
     const allergen = await Allergen.findAll({
@@ -18,7 +25,7 @@ exports.getAddExtra = async (req, res, next) => {
       },
       include: [
         {
-          model: AllegenTranslation,
+          model: AllergenTranslation,
         },
       ],
     });
@@ -65,7 +72,7 @@ exports.postAddExtra = async (req, res, next) => {
     },
     include: [
       {
-        model: AllegenTranslation,
+        model: AllergenTranslation,
       },
     ],
   });
@@ -78,12 +85,10 @@ exports.postAddExtra = async (req, res, next) => {
         name: roName,
         languageId: 1,
         extraId: extra.id,
-        // restaurantId: req.admin.id,
       });
       await ExtraTranslation.create({
         name: huName,
         languageId: 2,
-        // restaurantId: req.admin.id,
         extraId: extra.id,
       });
 
@@ -91,7 +96,15 @@ exports.postAddExtra = async (req, res, next) => {
         name: enName,
         languageId: 3,
         extraId: extra.id,
-        // restaurantId: req.admin.id,
+      });
+
+      await AdminLogs.create({
+        restaurant_id: req.admin.id,
+        operation_type: "POST",
+        description: `Extra created with ${extra.id} id.
+        Box Translations: ro: ${roName}, hu: ${huName}, en: ${enName}
+        `,
+        route: "postAddExtra",
       });
     }
 
@@ -102,6 +115,18 @@ exports.postAddExtra = async (req, res, next) => {
           allergenId: allergenId[i],
           active: filteredStatus[i] == "on" ? 1 : 0,
           restaurantId: req.admin.id,
+        });
+        await AdminLogs.create({
+          restaurant_id: req.admin.id,
+          operation_type: "POST",
+          description: `Allergen added to extraId: ${
+            extra.id
+          } with allergenId: ${allergenId} active equal to 0.
+          Allergen added to extraId: ${extra.id} with allergenId: ${
+            filteredStatus[i] == "on" ? 1 : 0
+          } active equal to 1 
+          `,
+          route: "addAllergenToExtra",
         });
       }
     }
@@ -126,8 +151,15 @@ exports.postAddExtra = async (req, res, next) => {
           quantityMin: 0,
           discountedPrice: 0,
           price: 0,
-          variantId: productVariantsId,
+          variantId: variantId,
           requiredExtra: 0,
+        });
+        await AdminLogs.create({
+          restaurant_id: req.admin.id,
+          operation_type: "POST",
+          description: `ProductVariantsExtras created with extraId: ${extraId} and 
+          variantId: ${variantId}`,
+          route: "add",
         });
       }
     }
@@ -170,7 +202,7 @@ exports.getEditExtra = async (req, res, next) => {
       },
       include: [
         {
-          model: AllegenTranslation,
+          model: AllergenTranslation,
         },
         { model: ExtraHasAllergen },
       ],
@@ -182,7 +214,7 @@ exports.getEditExtra = async (req, res, next) => {
       },
       include: [
         {
-          model: AllegenTranslation,
+          model: AllergenTranslation,
         },
         {
           model: ExtraHasAllergen,

@@ -1,5 +1,6 @@
 const express = require("express");
 const adminController = require("../controllers/admin");
+const propertyController = require("../controllers/property");
 const extraController = require("../controllers/extra");
 const variantsController = require("../controllers/variants");
 const faqController = require("../controllers/faq");
@@ -15,6 +16,12 @@ const comboController = require("../controllers/combo");
 const liveSearchController = require("../controllers/live-search");
 const isAuth = require("../../middleware/is-auth");
 const router = express.Router();
+
+// BOX
+router.get("/add-property", isAuth, propertyController.getAddProperty);
+router.post("/add-property", isAuth, propertyController.postAddProperty);
+router.get("/edit-box/:boxId", isAuth, propertyController.getEditBox);
+router.post("/edit-box", isAuth, propertyController.postEditBox);
 
 // LIVE SEARCH
 router.get(

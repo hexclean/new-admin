@@ -13,6 +13,7 @@ const RestaurantsReviews = sequelize.define("RestaurantsReviews", {
   rating: Sequelize.INTEGER,
   genLink: Sequelize.STRING,
   genLinkExpiration: Sequelize.STRING,
+  reviewActive: Sequelize.INTEGER,
 });
 
 module.exports = RestaurantsReviews;

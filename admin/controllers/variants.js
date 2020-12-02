@@ -154,7 +154,7 @@ exports.postAddVariant = async (req, res, next) => {
     maxOption: maxOption,
   });
 
-  async function productVariantTransaltion() {
+  async function productVariantTranslation() {
     for (let i = 0; i <= productId.length - 1; i++) {
       await ProductsFinal.create({
         price: 0,
@@ -172,7 +172,7 @@ exports.postAddVariant = async (req, res, next) => {
         discountedPrice: updatedExtraPrice[i] * adminCommission || 0,
         quantityMin: updatedExtraQuantityMin[i] || 0,
         quantityMax: updatedExtraQuantityMax[i] || 0,
-        productVariantId: variant.id,
+        variantId: variant.id,
         extraId: extId[i],
         active: filteredStatus[i] == "on" ? 1 : 0,
         restaurantId: req.admin.id,
@@ -180,7 +180,7 @@ exports.postAddVariant = async (req, res, next) => {
       });
     }
   }
-  productVariantTransaltion()
+  productVariantTranslation()
     .then((result) => {
       res.redirect("/admin/variant-index"),
         {
@@ -267,7 +267,7 @@ exports.getEditVariant = async (req, res, next) => {
           {
             model: ProductVariants,
             where: {
-              productVariantId: varId,
+              variantId: varId,
             },
             where: {
               id: varId,

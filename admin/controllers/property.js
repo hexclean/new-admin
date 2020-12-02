@@ -1,64 +1,96 @@
-const Box = require("../../models/Box");
-const BoxTranslation = require("../../models/BoxTranslation");
+const Property = require("../../models/Property");
+const PropertyTranslation = require("../../models/PropertyTranslation");
+const Restaurant = require("../../models/Restaurant");
+const PropertyValue = require("../../models/PropertyValue");
+const PropertyValueTranslation = require("../../models/PropertyValueTranslation");
+const Language = require("../../models/Language");
 const AdminLogs = require("../../models/AdminLogs");
 
-exports.getAddBox = async (req, res, next) => {
-  await AdminLogs.create({
-    restaurant_id: req.admin.id,
-    operation_type: "GET",
-    description: "Opened the box creation page",
-    route: "getAddBox",
-  });
-  res.render("box/edit-box", {
+exports.getAddProperty = async (req, res, next) => {
+  //   await AdminLogs.create({
+  //     restaurant_id: req.admin.id,
+  //     operation_type: "GET",
+  //     description: "Opened the box creation page",
+  //     route: "getAddBox",
+  //   });
+  res.render("property/add-property", {
     pageTitle: "Add Product",
     path: "/admin/add-product",
     editing: false,
   });
 };
 
-exports.postAddBox = async (req, res, next) => {
+exports.postAddProperty = async (req, res, next) => {
   const roName = req.body.roName;
   const huName = req.body.huName;
   const enName = req.body.enName;
-  const price = req.body.price;
-  console.log(req.body);
-  const box = await Box.create({
+  //
+  const roPropertVName = req.body.roPropertVName;
+  const huPropertVName = req.body.huPropertVName;
+  const enPropertVName = req.body.enPropertVName;
+
+  const property = await Property.create({
     restaurantId: req.admin.id,
-    price: price,
   });
 
-  async function createBox() {
-    await BoxTranslation.create({
+  async function createProperty() {
+    await PropertyTranslation.create({
       name: roName,
       languageId: 1,
-      boxId: box.id,
+      propertyId: property.id,
     });
-    await BoxTranslation.create({
+    await PropertyTranslation.create({
       name: huName,
       languageId: 2,
-      boxId: box.id,
+      propertyId: property.id,
     });
 
-    await BoxTranslation.create({
+    await PropertyTranslation.create({
       name: enName,
       languageId: 3,
-      boxId: box.id,
+      propertyId: property.id,
     });
   }
-  await AdminLogs.create({
-    restaurant_id: req.admin.id,
-    operation_type: "POST",
-    description: `Box created with ${box.id} id.
-    Box Translations: ro: ${roName}, hu: ${huName}, en: ${enName}, price: ${price}
-    `,
-    route: "postAddBox",
+  //
+  const propertyValue = await PropertyValue.create({
+    restaurantId: req.admin.id,
+    propertyId: property.id,
   });
 
-  createBox()
+  async function createPropertyV() {
+    await PropertyValueTranslation.create({
+      name: roPropertVName,
+      languageId: 1,
+      propertyValueId: propertyValue.id,
+    });
+    await PropertyValueTranslation.create({
+      name: huPropertVName,
+      languageId: 2,
+      propertyValueId: propertyValue.id,
+    });
+
+    await PropertyValueTranslation.create({
+      name: enPropertVName,
+      languageId: 3,
+      propertyValueId: propertyValue.id,
+    });
+  }
+  //   await AdminLogs.create({
+  //     restaurant_id: req.admin.id,
+  //     operation_type: "POST",
+  //     description: `Box created with ${property.id} id.
+  //     Box Translations: ro: ${roName}, hu: ${huName}, en: ${enName}, price: ${price}
+  //     `,
+  //     route: "postAddBox",
+  //   });
+
+  createProperty()
     .then((result) => {
+      createPropertyV();
       res.redirect("/admin/box-index");
     })
     .catch((err) => {
+      console.log(err);
       const error = new Error(err);
       error.httpStatusCode = 500;
       return next(error);

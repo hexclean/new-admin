@@ -10,6 +10,7 @@ const { orders } = require("./database/Orders");
 const { variants } = require("./database/Variants");
 const { restaurants } = require("./database/Restaurants");
 const { users } = require("./database/Users");
+const { property } = require("./database/Property");
 
 function databaseConfig() {
   restaurants();
@@ -24,6 +25,7 @@ function databaseConfig() {
   locations();
   orders();
   users();
+  property();
 }
 
 module.exports = { databaseConfig };

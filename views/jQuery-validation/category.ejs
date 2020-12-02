@@ -94,3 +94,16 @@
     });
   });
 </script>
+
+<script>
+  $(document).ready(function () {
+    $(".status-checkbox").click(function () {
+      var propertyId = $(this).attr("data-propertyId");
+      if ($(this).is(":checked")) {
+        $(".status-" + propertyId).val("on");
+      } else {
+        $(".status-" + propertyId).val("off");
+      }
+    });
+  });
+</script>

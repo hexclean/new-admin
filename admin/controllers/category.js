@@ -1,6 +1,12 @@
 const Category = require("../../models/Category");
 const CategoryTranslation = require("../../models/CategoryTranslation");
 const Allergen = require("../../models/Allergen");
+const Property = require("../../models/Property");
+const PropertyTranslation = require("../../models/PropertyTranslation");
+const Sequelize = require("sequelize");
+const CategoryProperty = require("../../models/CategoryProperty");
+
+const Op = Sequelize.Op;
 
 exports.getAddCategory = async (req, res, next) => {
   const checkAllergenLength = await Allergen.findAll({
@@ -8,6 +14,20 @@ exports.getAddCategory = async (req, res, next) => {
       restaurantId: req.admin.id,
     },
   });
+  const property = await Property.findAll({
+    where: {
+      restaurantId: req.admin.id,
+    },
+    include: [
+      {
+        model: PropertyTranslation,
+        where: {
+          languageId: 1,
+        },
+      },
+    ],
+  });
+
   if (checkAllergenLength.length === 0) {
     return res.redirect("/admin/category-index");
   }
@@ -15,6 +35,7 @@ exports.getAddCategory = async (req, res, next) => {
     pageTitle: "Add Product",
     path: "/admin/add-product",
     editing: false,
+    property: property,
   });
 };
 
@@ -22,7 +43,9 @@ exports.postAddCategory = async (req, res, next) => {
   const roName = req.body.roName;
   const huName = req.body.huName;
   const enName = req.body.enName;
-
+  const filteredStatus = req.body.status.filter(Boolean);
+  const propertyId = req.body.propertyId;
+  console.log("filteredStatus.length", filteredStatus.length);
   if (roName == "" || huName == "" || enName == "") {
     return res.redirect("/admin/category-index");
   }
@@ -52,6 +75,27 @@ exports.postAddCategory = async (req, res, next) => {
       categoryId: category.id,
       restaurantId: req.admin.id,
     });
+
+    for (let i = 0; i <= filteredStatus.length - 1; i++) {
+      await CategoryProperty.create({
+        categoryId: category.id,
+        propertyId: propertyId[i],
+        active: filteredStatus[i] == "on" ? 1 : 0,
+        restaurantId: req.admin.id,
+      });
+      // await AdminLogs.create({
+      //   restaurant_id: req.admin.id,
+      //   operation_type: "POST",
+      //   description: `Allergen added to extraId: ${
+      //     extra.id
+      //   } with allergenId: ${allergenId} active equal to 0.
+      //     Allergen added to extraId: ${extra.id} with allergenId: ${
+      //     filteredStatus[i] == "on" ? 1 : 0
+      //   } active equal to 1
+      //     `,
+      //   route: "addAllergenToExtra",
+      // });
+    }
 
     res.redirect("/admin/category-index");
   } catch (err) {

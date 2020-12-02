@@ -20,6 +20,8 @@ const UserDeliveryAddress = sequelize.define("UserDeliveryAddress", {
     type: Sequelize.STRING,
     allowNull: false,
   },
+  floor: Sequelize.STRING,
+  doorNumber: Sequelize.STRING,
 });
 
 module.exports = UserDeliveryAddress;

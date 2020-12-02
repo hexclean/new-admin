@@ -67,6 +67,35 @@
             </div>
             <div class="col-xl-6 col-md-12">
                <div class="row">
+                  <div class="col-xl-6 col-md-12">
+                     <div class="ms-panel">
+                       <div class="ms-panel-header">
+                         <h6>Checkboxes</h6>
+                       </div>
+                       <div class="ms-panel-body">
+                         <p class="ms-directions">Use <code>.ms-checkbox-{state}</code> in <code>.ms-checkbox-wrap</code>
+                         </p>
+                        
+                    
+                           <div class="row">
+                             <div class="col-md-6">
+                               <ul class="ms-list ms-list-display">
+                                 <% for (let i=0; i < property.length; i++ ) { %>
+                                 <li>
+                                    <label class="ms-checkbox-wrap ms-checkbox-success" data-extra="<%= property[i].id %>">
+                                       <input type="hidden" value="off" class="status-<%= property[i].id %>" name="status[<%= property[i].id %>]" >
+                                      <input data-propertyId="<%= property[i].id %>" class="status-checkbox status-checkbox-<%= property[i].id %>" type="checkbox" value="<%= property[i].id %>"> <i class="ms-checkbox-check"></i>
+                                    </label> <span> <%= property[i].PropertyTranslations[0].name %> </span>
+                                  </li>
+                                  <% } %>
+                               </ul>
+                             </div>
+                             
+                           </div>
+                 
+                       </div>
+                     </div>
+                   </div>
                   <div class="col-md-12">
                      <div class="ms-panel">
                         <div class="ms-panel-header">
