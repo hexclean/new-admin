@@ -1,6 +1,5 @@
 <%- include('../includes/head.ejs') %>
 <%- include('../jQuery-validation/box.ejs') %>
-
 <script>
    let counter =0;
     $(function() {
@@ -68,7 +67,6 @@
    <%- include('../includes/navigation.ejs') %>
    <main class="body-content">
       <%- include('../includes/navigation-bar.ejs') %>
-     
       <form 
          id="createBox_form"
          class="ms-content-wrapper" 
@@ -79,11 +77,10 @@
             <div class="col-xl-6 col-md-12">
                <div class="ms-panel ms-panel-fh">
                   <div class="ms-panel-header">
-                     <h6>Add Property</h6>
+                     <h6>Add Product Form</h6>
                   </div>
                   <div class="ms-panel-body">
                      <div class="form-row">
-
                         <div class="col-md-12 mb-3">
                            <label for="roName"><%= lingua.box_name_ro %></label>
                            <div class="input-group">
@@ -93,7 +90,7 @@
                                  autocomplete="off"
                                  name="roName"
                                  id="roName"
-                                 value="<% if (editing) { %><%= prop[0].PropertyTranslations[0].name %><% } %>">
+                                 value="<% if (editing) { %><%=  %><% } %>">
                            </div>
                            <span class="error_form" id="roName_error_message"></span>
                         </div>
@@ -106,7 +103,7 @@
                                  autocomplete="off"
                                  name="huName"
                                  id="huName"
-                                 value="<% if (editing) { %><%= prop[0].PropertyTranslations[1].name %><% } %>">
+                                 value="<% if (editing) { %><%=  %><% } %>">
                            </div>
                            <span class="error_form" id="huName_error_message"></span>
                         </div>
@@ -119,44 +116,84 @@
                                  autocomplete="off"
                                  name="enName"
                                  id="enName"
-                                 value="<% if (editing) { %><%= prop[0].PropertyTranslations[2].name %><% } %>">
+                                 value="<% if (editing) { %><%=  %><% } %>">
                            </div>
                            <span class="error_form" id="enName_error_message"></span>
                         </div>
                      </div>
                   </div>
                   <% if (editing) { %>
-                     <input type="hidden" value="<%= propertyId %>" name="propertyId">
-                  
-                     <% } %>
-                     <button type="submit" id="createProperty" class="btn btn-success has-icon" ><% if (editing) { %>Update Property<% } else { %>Add Property<% } %></button>
+                  <input type="hidden" value="<%= propertyId %>" name="propertyId">
+                  <% } %>
+                  <button type="submit" id="createProperty" class="btn btn-success has-icon" ><% if (editing) { %>Update Product<% } else { %>Add Product<% } %></button>
                </div>
-               
             </div>
+
+            <% if(editing){ %>
+               
             <div class="col-xl-6 col-md-12">
                <div class="row">
                   <div class="col-md-12">
                      <div class="ms-panel">
-                      
                         <div class="ms-panel-header">
                            <h6>Product</h6>
                         </div>
-                            <div class="service_box">
-       <div class="form">
-           <form class="cmxform">
-              
-               <button class="btn btn-success has-icon" id="add">Add</button>
-           </form>
-       </div>
-   </div>
-                  
+                        <% for(let i = 0; i < items.length; i++) { %>
+                           <% if (i%3 == 0) { %>
+                              <hr class="line-colour-hr-pr">
+                         <% } %>
+                         <div class="ms-panel-body format-div-pr">
+                           <div class="form-row">
+                              <div class="col-md-12 mb-3">
+                                 <label for="roName"><%= lingua.box_name_ro %></label>
+                                 <div class="input-group">
+                                    <input
+                                       class="form-control"
+                                       type="text"
+                                       autocomplete="off"
+                                       name="roName"
+                                       id="roName"
+                                       value="<% if (editing) { %><%= items[i].name %><% } %>">
+                                 </div>
+                                 <span class="error_form" id="roName_error_message"></span>
+                              </div>
+                           </div>
+                        </div>
+                        <% } %>
                      </div>
                   </div>
                </div>
             </div>
+
+           
+            <% } else{ %>  
+
+               <div class="col-xl-6 col-md-12">
+                  <div class="row">
+                     <div class="col-md-12">
+                        <div class="ms-panel">
+                         
+                           <div class="ms-panel-header">
+                              <h6>Product</h6>
+                           </div>
+                               <div class="service_box">
+                           <div class="form">
+                            <form class="cmxform">
+                              
+                           <button class="btn btn-success has-icon" id="add">Add</button>
+                           </form>
+                        </div>
+                     </div>
+                                    
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               <% } %>
+
+         </div>
          </div>
          </div>
       </form>
    </main>
    <%- include('../includes/end.ejs') %>
-</body>

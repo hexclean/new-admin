@@ -94,7 +94,7 @@ exports.postAddProperty = async (req, res, next) => {
 exports.getEditProperty = async (req, res, next) => {
   const editMode = req.query.edit;
   const propertyId = req.params.propertyId;
-
+  let items = [];
   if (!editMode) {
     return res.redirect("/");
   }
@@ -122,22 +122,16 @@ exports.getEditProperty = async (req, res, next) => {
         include: [
           {
             model: PropertyValueTranslation,
-            where: { languageId: 1 },
+            // where: { languageId: 1 },
           },
         ],
       },
     ],
   });
   for (let i = 0; i < propValue.length; i++) {
-    //   let newArr = propValue[i].PropertyValues[i].PropertyValueTranslations;
-    //   let counter = newArr.length;
-    const items = [];
-    // console.log(
-    //   "newArr.length",
-    //   propValue[i].PropertyValues[i].PropertyValueTranslations.length
-    // );
-    // for (let d of propValue) {
+    // console.log(propValue[i].PropertyValues[i]);
     let arrayLength = propValue[i].PropertyValues[i].PropertyValueTranslations;
+    // console.log(arrayLength);
     for (let j = 0; j <= arrayLength.length - 1; j++) {
       console.log(arrayLength[j].name);
 
@@ -178,10 +172,12 @@ exports.getEditProperty = async (req, res, next) => {
 
       res.render("property/edit-property", {
         pageTitle: "Edit Product",
+        items: items,
         path: "/admin/edit-product",
         editing: editMode,
         prop: property,
         propertyId: propertyId,
+
         // boxTranslations: box[0].BoxTranslations,
       });
     })

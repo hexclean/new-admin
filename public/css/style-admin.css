@@ -431,10 +431,15 @@ Version: 1.0.0
 .ms-dark-theme .ms-text-danger {
   color: #ffffff;
 }
-.button-remove-ct{
+.button-remove-ct {
+  margin-left: 241px;
+}
 
-    margin-left: 241px;
-
+.format-div-pr {
+  padding-bottom: 0px !important;
+}
+.line-colour-hr-pr {
+  border-color: red !important;
 }
 .ms-text-dark,
 .ms-text-dark:hover,
@@ -471,7 +476,7 @@ Version: 1.0.0
   border-color: red !important;
 }
 
-.category-search{
+.category-search {
   border-color: red !important;
 }
 
@@ -6724,7 +6729,7 @@ table td .progress {
 .ms-twitter-feed .ms-feed-user + p {
   display: inline-block;
 }
-.review-bottom{
+.review-bottom {
   padding-bottom: 25px;
 }
 .ms-feed p {
