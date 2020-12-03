@@ -2,48 +2,52 @@
 <%- include('../jQuery-validation/box.ejs') %>
 
 <script>
+   let counter =0;
     $(function() {
         $('#add').on('click', function( e ) {
+           
+           counter +=1;
+          
             e.preventDefault();
             $('<div/>').addClass( 'new-text-div' )
             .html( $(`   <div class="ms-panel-body">
                      <div class="form-row">
-
+                        <input type="hidden" value="${counter}" name="propVName">
                         <div class="col-md-12 mb-3">
-                           <label for="roName"><%= lingua.box_name_ro %></label>
+                           <label for="propVroName${counter}"><%= lingua.box_name_ro %></label>
                            <div class="input-group">
                               <input
                                  class="form-control"
                                  type="text"
                                  autocomplete="off"
-                                 name="roName"
-                                 id="roName"
+                                 name="propVroName${counter}"
+                                 id="propVroName${counter}"
                                  value="<% if (editing) { %><%=  %><% } %>">
                            </div>
                            <span class="error_form" id="roName_error_message"></span>
                         </div>
                         <div class="col-md-12 mb-3">
-                           <label for="roName"><%= lingua.box_name_ro %></label>
+                           <label for="propVhuName${counter}"><%= lingua.box_name_ro %></label>
                            <div class="input-group">
                               <input
                                  class="form-control"
                                  type="text"
                                  autocomplete="off"
-                                 name="roName"
-                                 id="roName"
+                                 name="propVhuName${counter}"
+                                 id="propVhuName${counter}"
                                  value="<% if (editing) { %><%=  %><% } %>">
                            </div>
                            <span class="error_form" id="roName_error_message"></span>
                         </div>
                         <div class="col-md-12 mb-3">
-                           <label for="roName"><%= lingua.box_name_ro %></label>
+                           <label for="propVenName${counter}"><%= lingua.box_name_ro %></label>
                            <div class="input-group">
                               <input
                                  class="form-control"
                                  type="text"
                                  autocomplete="off"
-                                 name="roName"
-                                 id="roName"
+                                 name="propVenName${counter}"
+                                 id="propVenName${counter}"
                                  value="<% if (editing) { %><%=  %><% } %>">
                            </div>
                            <span class="error_form" id="roName_error_message"></span>

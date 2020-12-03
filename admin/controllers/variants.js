@@ -61,9 +61,9 @@ exports.getAddVariant = async (req, res, next) => {
       },
     ],
   });
+
   for (let i = 0; i < ext.length; i++) {
     var currentLanguage = req.cookies.language;
-    console.log(ext);
     if (currentLanguage == "ro") {
       currentExtraName[i] = ext[i].ExtraTranslations[0].name;
     } else if (currentLanguage == "hu") {

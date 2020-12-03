@@ -14,7 +14,6 @@ const Box = require("../../models/Box");
 const BoxTranslation = require("../../models/BoxTranslation");
 const Restaurant = require("../../models/Restaurant");
 const RestaurantRole = require("../../models/RestaurantRole");
-var fs = require("fs");
 
 exports.getAddProduct = async (req, res, next) => {
   let currentCategoryName = [];
@@ -183,7 +182,6 @@ exports.postAddProduct = async (req, res, next) => {
     }
 
     for (let i = 0; i <= ext.length - 1; i++) {
-      console.log(filteredStatus[i]);
       await ProductFinal.create({
         price: price[i] || 0,
         productId: product.id,
