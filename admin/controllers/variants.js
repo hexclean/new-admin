@@ -1,7 +1,5 @@
 const ProductVariantsExtras = require("../../models/ProductVariantsExtras");
 const ProductVariants = require("../../models/Variant");
-const ProductVariantExtras = require("../../models/ProductVariantsExtras");
-const ProductExtra = require("../../models/Extra");
 const Category = require("../../models/Category");
 const CategoryTranslation = require("../../models/CategoryTranslation");
 const Extras = require("../../models/Extra");
@@ -9,10 +7,11 @@ const ExtraTranslations = require("../../models/ExtraTranslation");
 const ProductsFinal = require("../../models/ProductFinal");
 const Products = require("../../models/Product");
 const Sequelize = require("sequelize");
-const Allergen = require("../../models/Allergen");
-const ExtraHasAllergen = require("../../models/ExtraHasAllergen");
-const Extra = require("../../models/Extra");
-const ITEMS_PER_PAGE = 4;
+const CategoryProperty = require("../../models/CategoryProperty");
+const Property = require("../../models/Property");
+const PropertyValue = require("../../models/PropertyValue");
+const PropertyTranslation = require("../../models/PropertyTranslation");
+const PropertyValueTranslation = require("../../models/PropertyValueTranslation");
 const Op = Sequelize.Op;
 
 exports.getIndex = async (req, res, next) => {
@@ -25,6 +24,59 @@ exports.getIndex = async (req, res, next) => {
 exports.getAddVariant = async (req, res, next) => {
   let currentExtraName = [];
   let currentCategoryName = [];
+  var currentLanguage = req.cookies.language;
+
+  if (currentLanguage == "ro") {
+    currentCategoryName = 0;
+  } else if (currentLanguage == "hu") {
+    currentCategoryName = 1;
+  } else {
+    currentCategoryName = 2;
+  }
+  const checkCategoryProperty = await CategoryProperty.findAll({
+    where: { restaurantId: req.admin.id, categoryId: 1 },
+    include: [
+      {
+        model: Property,
+        include: [
+          {
+            model: PropertyTranslation,
+          },
+        ],
+      },
+    ],
+  });
+
+  const checkCategoryPropertyValue = await CategoryProperty.findAll({
+    where: { restaurantId: req.admin.id, categoryId: 1 },
+    include: [
+      {
+        model: Property,
+        include: [
+          {
+            model: PropertyTranslation,
+          },
+        ],
+        include: [
+          {
+            model: PropertyValue,
+            include: [
+              {
+                model: PropertyValueTranslation,
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  });
+
+  let finalProperty = [];
+  for (let i = 0; i < checkCategoryPropertyValue.length; i++) {
+    const newArray = checkCategoryPropertyValue[i].Property.PropertyValues;
+    finalProperty = newArray[0].PropertyValueTranslations;
+    console.log(newArray[0].PropertyValueTranslations[0].name);
+  }
 
   const ext = await Extras.findAll({
     where: { restaurantId: req.admin.id },
@@ -72,17 +124,6 @@ exports.getAddVariant = async (req, res, next) => {
       currentExtraName[i] = ext[i].ExtraTranslations[2].name;
     }
   }
-  for (let i = 0; i < cat.length; i++) {
-    var currentLanguage = req.cookies.language;
-
-    if (currentLanguage == "ro") {
-      currentCategoryName = 0;
-    } else if (currentLanguage == "hu") {
-      currentCategoryName = 1;
-    } else {
-      currentCategoryName = 2;
-    }
-  }
 
   res.render("variant/edit-variant", {
     pageTitle: "Add Product",
@@ -93,8 +134,9 @@ exports.getAddVariant = async (req, res, next) => {
     currentExtraName: currentExtraName,
     currentLanguage: currentCategoryName,
     cat: cat,
-    errorMessage: null,
-    validationErrors: [],
+    finalProperty: finalProperty,
+    checkCategoryProperty: checkCategoryProperty,
+    checkCategoryPropertyValue: checkCategoryPropertyValue,
   });
 };
 

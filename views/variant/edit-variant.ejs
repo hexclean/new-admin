@@ -58,7 +58,6 @@
                                  <% } %>
                               </select>
                            </div>
-                           <span class="error_form" id="category_error_message"></span>
                         </div>
                         <% } %>
                       
@@ -82,6 +81,7 @@
                                   </select>
                               </div>
                            </div>
+                           
                            <% if (editing) { %>
                            <input type="hidden" value="<%= variantIdByParams %>" name="variantId">
                            <% } %>
@@ -90,10 +90,49 @@
                            Product<% } %>
                            </button>
                         </div>
+
                      </div>
                   </div>
                </div>
             </div>
+
+            
+                  <div class="col-xl-6 col-md-12">
+                     <div class="ms-panel">
+                       <div class="ms-panel-header">
+                         <h6>Checkboxes</h6>
+                       </div>
+                       <div class="ms-panel-body">
+                         <p class="ms-directions">Use <code>.ms-checkbox-{state}</code> in <code>.ms-checkbox-wrap</code>
+                         </p>
+
+                        <div class="row">
+                           <div class="col-md-6">
+                              <% for(let i = 0; i < checkCategoryProperty.length; i++) { %>
+                              <select class="form-control" for="catPr" id="catPr" name="catPr">
+                                 <option disabled="true" value="list">Variáns kategótia</option>
+                                 <option id="catPr" name="catPr" value='<%= checkCategoryProperty[i].id %>'><%= checkCategoryProperty[i].Property.PropertyTranslations[`${currentLanguage}`].name %>
+                                 </option>
+                              </select>
+                              <% } %>
+                           </div>
+                           <div class="col-md-6">
+                             
+                              <select class="form-control" for="catPr" id="catPr" name="catPr">
+                                 <% for(let j = 0; j < checkCategoryPropertyValue.length; j++) { %>
+                                 <option disabled="true" value="list">Variáns kategótia</option>
+                                 <option id="catPr" name="catPr" value='<%= finalProperty[j].id %>'><%= finalProperty[`${currentLanguage}`].name %>
+                                 </option>
+                                 <% } %>
+                              </select>
+                             
+                           </div>
+                         </div>
+                       </div>
+                     </div>
+                   </div>
+                
+               
          </div>
          </div>
          </div>
