@@ -17,10 +17,14 @@ const liveSearchController = require("../controllers/live-search");
 const isAuth = require("../../middleware/is-auth");
 const router = express.Router();
 
-// BOX
+// PROPERTY
 router.get("/add-property", isAuth, propertyController.getAddProperty);
 router.post("/add-property", isAuth, propertyController.postAddProperty);
-router.get("/edit-box/:boxId", isAuth, propertyController.getEditBox);
+router.get(
+  "/edit-property/:propertyId",
+  isAuth,
+  propertyController.getEditProperty
+);
 router.post("/edit-box", isAuth, propertyController.postEditBox);
 
 // LIVE SEARCH

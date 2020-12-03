@@ -79,7 +79,7 @@
             <div class="col-xl-6 col-md-12">
                <div class="ms-panel ms-panel-fh">
                   <div class="ms-panel-header">
-                     <h6>Add Product Form</h6>
+                     <h6>Add Property</h6>
                   </div>
                   <div class="ms-panel-body">
                      <div class="form-row">
@@ -93,7 +93,7 @@
                                  autocomplete="off"
                                  name="roName"
                                  id="roName"
-                                 value="<% if (editing) { %><%=  %><% } %>">
+                                 value="<% if (editing) { %><%= prop[0].PropertyTranslations[0].name %><% } %>">
                            </div>
                            <span class="error_form" id="roName_error_message"></span>
                         </div>
@@ -106,7 +106,7 @@
                                  autocomplete="off"
                                  name="huName"
                                  id="huName"
-                                 value="<% if (editing) { %><%=  %><% } %>">
+                                 value="<% if (editing) { %><%= prop[0].PropertyTranslations[1].name %><% } %>">
                            </div>
                            <span class="error_form" id="huName_error_message"></span>
                         </div>
@@ -119,7 +119,7 @@
                                  autocomplete="off"
                                  name="enName"
                                  id="enName"
-                                 value="<% if (editing) { %><%=  %><% } %>">
+                                 value="<% if (editing) { %><%= prop[0].PropertyTranslations[2].name %><% } %>">
                            </div>
                            <span class="error_form" id="enName_error_message"></span>
                         </div>
@@ -129,7 +129,7 @@
                      <input type="hidden" value="<%= propertyId %>" name="propertyId">
                   
                      <% } %>
-                     <button type="submit" id="createProperty" class="btn btn-success has-icon" ><% if (editing) { %>Update Product<% } else { %>Add Product<% } %></button>
+                     <button type="submit" id="createProperty" class="btn btn-success has-icon" ><% if (editing) { %>Update Property<% } else { %>Add Property<% } %></button>
                </div>
                
             </div>

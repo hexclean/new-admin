@@ -13,7 +13,7 @@ exports.getAddProperty = async (req, res, next) => {
   //     description: "Opened the box creation page",
   //     route: "getAddBox",
   //   });
-  res.render("property/add-property", {
+  res.render("property/edit-property", {
     pageTitle: "Add Product",
     path: "/admin/add-product",
     editing: false,
@@ -77,14 +77,6 @@ exports.postAddProperty = async (req, res, next) => {
       });
     }
   }
-  //   await AdminLogs.create({
-  //     restaurant_id: req.admin.id,
-  //     operation_type: "POST",
-  //     description: `Box created with ${property.id} id.
-  //     Box Translations: ro: ${roName}, hu: ${huName}, en: ${enName}, price: ${price}
-  //     `,
-  //     route: "postAddBox",
-  //   });
 
   createProperty()
     .then((result) => {
@@ -99,49 +91,101 @@ exports.postAddProperty = async (req, res, next) => {
     });
 };
 
-exports.getEditBox = async (req, res, next) => {
+exports.getEditProperty = async (req, res, next) => {
   const editMode = req.query.edit;
-  const boxId = req.params.boxId;
+  const propertyId = req.params.propertyId;
 
   if (!editMode) {
     return res.redirect("/");
   }
 
-  await Box.findByPk(boxId).then((box) => {
-    if (!box) {
+  await Property.findByPk(propertyId).then((property) => {
+    if (!property) {
       return res.redirect("/");
     }
   });
-
-  await Box.findAll({
+  let propValArr = [];
+  const propValue = await Property.findAll({
     where: {
-      id: boxId,
+      id: propertyId,
       restaurantId: req.admin.id,
     },
     include: [
       {
-        model: BoxTranslation,
+        model: PropertyTranslation,
+      },
+    ],
+    include: [
+      {
+        model: PropertyValue,
+        where: { propertyId: propertyId },
+        include: [
+          {
+            model: PropertyValueTranslation,
+            where: { languageId: 1 },
+          },
+        ],
+      },
+    ],
+  });
+  for (let i = 0; i < propValue.length; i++) {
+    //   let newArr = propValue[i].PropertyValues[i].PropertyValueTranslations;
+    //   let counter = newArr.length;
+    const items = [];
+    let newArr = [];
+    // console.log(
+    //   "newArr.length",
+    //   propValue[i].PropertyValues[i].PropertyValueTranslations.length
+    // );
+    // for (let d of propValue) {
+    let arrayLength = propValue[i].PropertyValues[i].PropertyValueTranslations;
+    for (let j = 0; j <= arrayLength.length - 1; j++) {
+      console.log(arrayLength[j].name);
+    }
+    // const item = {
+    //   alma: "d[0].PropertyValues",
+    // };
+    // console.log(propValue[i].PropertyValues[i].PropertyValueTranslations);
+    // items.push(items);
+    // }
+    // for (let i = 1; i <= newArr.length; i++) {
+    //   console.log("newArr.length", newArr.length);
+    //   console.log(newArr[i].PropertyValueTranslations);
+    // }
+
+    // console.log(propValue[0].PropertyValues[0].PropertyValueTranslations);
+  }
+
+  await Property.findAll({
+    where: {
+      id: propertyId,
+      restaurantId: req.admin.id,
+    },
+    include: [
+      {
+        model: PropertyTranslation,
       },
     ],
   })
-    .then(async (box) => {
-      await AdminLogs.create({
-        restaurant_id: req.admin.id,
-        operation_type: "GET",
-        description: `Opened edit box with ${boxId} id`,
-        route: "getEditBox",
-      });
-      if (box[0].restaurantId !== req.admin.id) {
+    .then(async (property) => {
+      // console.log(property[0].PropertyValues);
+      // await AdminLogs.create({
+      //   restaurant_id: req.admin.id,
+      //   operation_type: "GET",
+      //   description: `Opened edit box with ${boxId} id`,
+      //   route: "getEditBox",
+      // });
+      if (property[0].restaurantId !== req.admin.id) {
         return res.redirect("/");
       }
 
-      res.render("box/edit-box", {
+      res.render("property/edit-property", {
         pageTitle: "Edit Product",
         path: "/admin/edit-product",
         editing: editMode,
-        cat: box,
-        boxId: boxId,
-        boxTranslations: box[0].BoxTranslations,
+        prop: property,
+        propertyId: propertyId,
+        // boxTranslations: box[0].BoxTranslations,
       });
     })
     .catch((err) => {
