@@ -132,7 +132,6 @@ exports.getEditProperty = async (req, res, next) => {
     //   let newArr = propValue[i].PropertyValues[i].PropertyValueTranslations;
     //   let counter = newArr.length;
     const items = [];
-    let newArr = [];
     // console.log(
     //   "newArr.length",
     //   propValue[i].PropertyValues[i].PropertyValueTranslations.length
@@ -141,18 +140,20 @@ exports.getEditProperty = async (req, res, next) => {
     let arrayLength = propValue[i].PropertyValues[i].PropertyValueTranslations;
     for (let j = 0; j <= arrayLength.length - 1; j++) {
       console.log(arrayLength[j].name);
-    }
-    // const item = {
-    //   alma: "d[0].PropertyValues",
-    // };
-    // console.log(propValue[i].PropertyValues[i].PropertyValueTranslations);
-    // items.push(items);
-    // }
-    // for (let i = 1; i <= newArr.length; i++) {
-    //   console.log("newArr.length", newArr.length);
-    //   console.log(newArr[i].PropertyValueTranslations);
-    // }
 
+      const item = {
+        name: arrayLength[j].name,
+      };
+
+      // console.log(propValue[i].PropertyValues[i].PropertyValueTranslations);
+      items.push(item);
+      console.log(items);
+      // }
+      // for (let i = 1; i <= newArr.length; i++) {
+      //   console.log("newArr.length", newArr.length);
+      //   console.log(newArr[i].PropertyValueTranslations);
+      // }
+    }
     // console.log(propValue[0].PropertyValues[0].PropertyValueTranslations);
   }
 
