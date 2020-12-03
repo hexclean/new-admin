@@ -142,19 +142,15 @@ exports.getEditProperty = async (req, res, next) => {
       console.log(arrayLength[j].name);
 
       const item = {
+        id: arrayLength[j].id,
         name: arrayLength[j].name,
+        propertyValueId: arrayLength[j].propertyValueId,
+        languageId: arrayLength[j].languageId,
       };
 
-      // console.log(propValue[i].PropertyValues[i].PropertyValueTranslations);
       items.push(item);
       console.log(items);
-      // }
-      // for (let i = 1; i <= newArr.length; i++) {
-      //   console.log("newArr.length", newArr.length);
-      //   console.log(newArr[i].PropertyValueTranslations);
-      // }
     }
-    // console.log(propValue[0].PropertyValues[0].PropertyValueTranslations);
   }
 
   await Property.findAll({
