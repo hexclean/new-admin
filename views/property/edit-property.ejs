@@ -90,7 +90,7 @@
                                  autocomplete="off"
                                  name="roName"
                                  id="roName"
-                                 value="<% if (editing) { %><%=  %><% } %>">
+                                 value="<% if (editing) { %><%= propTrans[0].name %><% } %>">
                            </div>
                            <span class="error_form" id="roName_error_message"></span>
                         </div>
@@ -103,7 +103,7 @@
                                  autocomplete="off"
                                  name="huName"
                                  id="huName"
-                                 value="<% if (editing) { %><%=  %><% } %>">
+                                 value="<% if (editing) { %><%= propTrans[1].name %><% } %>">
                            </div>
                            <span class="error_form" id="huName_error_message"></span>
                         </div>
@@ -116,7 +116,7 @@
                                  autocomplete="off"
                                  name="enName"
                                  id="enName"
-                                 value="<% if (editing) { %><%=  %><% } %>">
+                                 value="<% if (editing) { %><%= propTrans[2].name %><% } %>">
                            </div>
                            <span class="error_form" id="enName_error_message"></span>
                         </div>
@@ -124,6 +124,9 @@
                   </div>
                   <% if (editing) { %>
                   <input type="hidden" value="<%= propertyId %>" name="propertyId">
+                  <%for (let i = 0; i < propTrans.length; i++){%>
+                     <input type="hidden" value="<%= propTrans[i].id %>" name="propTransId">
+                     <%}%>
                   <% } %>
                   <button type="submit" id="createProperty" class="btn btn-success has-icon" ><% if (editing) { %>Update Product<% } else { %>Add Product<% } %></button>
                </div>
@@ -147,11 +150,13 @@
                               <div class="col-md-12 mb-3">
                                  <label for="roName"><%= lingua.box_name_ro %></label>
                                  <div class="input-group">
+                                    <input type="hidden" value="<%= items[i].id %>" name="prodVarTransId">
+                                    <input type="hidden" value="<%= items[i].languageId %>" name="prodVarTransLanguageId">
                                     <input
                                        class="form-control"
                                        type="text"
                                        autocomplete="off"
-                                       name="<%= items[i].id %>_languageId<%=items[i].languageId %>"
+                                       name="updatedName"
                                        id="roName"
                                        value="<% if (editing) { %><%= items[i].name %><% } %>">
                                  </div>

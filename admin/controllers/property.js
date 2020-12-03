@@ -5,6 +5,7 @@ const PropertyValue = require("../../models/PropertyValue");
 const PropertyValueTranslation = require("../../models/PropertyValueTranslation");
 const Language = require("../../models/Language");
 const AdminLogs = require("../../models/AdminLogs");
+const ProductTranslation = require("../../models/ProductTranslation");
 
 exports.getAddProperty = async (req, res, next) => {
   //   await AdminLogs.create({
@@ -104,7 +105,6 @@ exports.getEditProperty = async (req, res, next) => {
       return res.redirect("/");
     }
   });
-  let propValArr = [];
   const propValue = await Property.findAll({
     where: {
       id: propertyId,
@@ -122,28 +122,21 @@ exports.getEditProperty = async (req, res, next) => {
         include: [
           {
             model: PropertyValueTranslation,
-            // where: { languageId: 1 },
           },
         ],
       },
     ],
   });
   for (let i = 0; i < propValue.length; i++) {
-    // console.log(propValue[i].PropertyValues[i]);
     let arrayLength = propValue[i].PropertyValues[i].PropertyValueTranslations;
-    // console.log(arrayLength);
     for (let j = 0; j <= arrayLength.length - 1; j++) {
-      console.log(arrayLength[j].name);
-
       const item = {
         id: arrayLength[j].id,
         name: arrayLength[j].name,
         propertyValueId: arrayLength[j].propertyValueId,
         languageId: arrayLength[j].languageId,
       };
-
       items.push(item);
-      console.log(items);
     }
   }
 
@@ -159,13 +152,6 @@ exports.getEditProperty = async (req, res, next) => {
     ],
   })
     .then(async (property) => {
-      // console.log(property[0].PropertyValues);
-      // await AdminLogs.create({
-      //   restaurant_id: req.admin.id,
-      //   operation_type: "GET",
-      //   description: `Opened edit box with ${boxId} id`,
-      //   route: "getEditBox",
-      // });
       if (property[0].restaurantId !== req.admin.id) {
         return res.redirect("/");
       }
@@ -177,8 +163,7 @@ exports.getEditProperty = async (req, res, next) => {
         editing: editMode,
         prop: property,
         propertyId: propertyId,
-
-        // boxTranslations: box[0].BoxTranslations,
+        propTrans: property[0].PropertyTranslations,
       });
     })
     .catch((err) => {
@@ -188,51 +173,72 @@ exports.getEditProperty = async (req, res, next) => {
     });
 };
 
-exports.postEditBox = async (req, res, next) => {
+exports.postEditProperty = async (req, res, next) => {
   const updatedRoName = req.body.roName;
   const updatedHuName = req.body.huName;
   const updatedEnName = req.body.enName;
-  const price = req.body.price;
-  const boxId = req.body.boxId;
-  const boxTranslationsId = req.body.boxTranslationsId;
+  const propertyId = req.body.propertyId;
+  const propTransId = req.body.propTransId;
+  let prodVarTransId = [];
+  prodVarTransId = req.body.prodVarTransId;
+  let finalLengthOfVaTran = prodVarTransId.length / 3;
 
-  Box.findAll({
-    where: { restaurantId: req.admin.id },
+  Property.findAll({
+    where: { restaurantId: req.admin.id, id: propertyId },
     include: [
       {
-        model: BoxTranslation,
+        model: PropertyTranslation,
       },
     ],
   })
-    .then((category) => {
-      async function updateBox() {
-        await Box.update({ price: price }, { where: { id: boxId } });
-        await BoxTranslation.update(
-          { name: updatedRoName },
-          { where: { id: boxTranslationsId[0], languageId: 1 } }
-        );
+    .then((property) => {
+      async function createPropertyV() {
+        for (let i = 1; i <= finalLengthOfVaTran; i++) {
+          const updatedName = req.body.updatedName;
+          let array = [];
+          const propVroName = req.body["updatedName"];
+          const prodVarTransId = req.body["prodVarTransId"];
+          // console.log("prodVarTransId", prodVarTransId);
+          // const propVhuName = req.body["propVhuName" + i];
+          // const propVenName = req.body["propVenName" + i];
+          array.push(prodVarTransId);
+          console.log(req.body);
+          await PropertyTranslation.update(
+            { name: updatedRoName },
+            { where: { id: prodVarTransId, languageId: 1 } }
+          );
 
-        await BoxTranslation.update(
-          { name: updatedHuName },
-          { where: { id: boxTranslationsId[1], languageId: 2 } }
-        );
+          await PropertyTranslation.update(
+            { name: updatedRoName },
+            { where: { id: prodVarTransId, languageId: 2 } }
+          );
 
-        await BoxTranslation.update(
-          { name: updatedEnName },
-          { where: { id: boxTranslationsId[2], languageId: 3 } }
-        );
-
-        await AdminLogs.create({
-          restaurant_id: req.admin.id,
-          operation_type: "POST",
-          description: `Box updated with ${boxId} id.
-          Box Translations: ro: ${updatedRoName}, hu: ${updatedHuName}, en: ${updatedEnName}, price: ${price}
-          `,
-          route: "postEditBox",
-        });
+          await PropertyTranslation.update(
+            { name: updatedRoName },
+            { where: { id: prodVarTransId, languageId: 3 } }
+          );
+        }
       }
 
-      updateBox();
+      async function updateProperty() {
+        await PropertyTranslation.update(
+          { name: updatedRoName },
+          { where: { id: propTransId[0], languageId: 1 } }
+        );
+
+        await PropertyTranslation.update(
+          { name: updatedHuName },
+          { where: { id: propTransId[1], languageId: 2 } }
+        );
+
+        await PropertyTranslation.update(
+          { name: updatedEnName },
+          { where: { id: propTransId[2], languageId: 3 } }
+        );
+      }
+
+      updateProperty();
+      createPropertyV();
       res.redirect("/admin/box-index");
     })
     .catch((err) => {

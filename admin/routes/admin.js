@@ -25,7 +25,7 @@ router.get(
   isAuth,
   propertyController.getEditProperty
 );
-router.post("/edit-box", isAuth, propertyController.postEditBox);
+router.post("/edit-property", isAuth, propertyController.postEditProperty);
 
 // LIVE SEARCH
 router.get(

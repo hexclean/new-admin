@@ -155,7 +155,7 @@ exports.postEditBox = async (req, res, next) => {
           restaurant_id: req.admin.id,
           operation_type: "POST",
           description: `Box updated with ${boxId} id.
-          Box Translations: ro: ${updatedRoName}, hu: ${updatedHuName}, en: ${updatedEnName}, price: ${price}
+          Box Translations: ro: ${updatedRoName}, hu: ${updatedHuName}, en: ${updatedEnName}, price: ${updatedEnName}
           `,
           route: "postEditBox",
         });
