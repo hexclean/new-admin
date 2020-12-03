@@ -1,7 +1,64 @@
 <%- include('../includes/head.ejs') %>
 <%- include('../jQuery-validation/box.ejs') %>
 
+<script>
+    $(function() {
+        $('#add').on('click', function( e ) {
+            e.preventDefault();
+            $('<div/>').addClass( 'new-text-div' )
+            .html( $(`   <div class="ms-panel-body">
+                     <div class="form-row">
 
+                        <div class="col-md-12 mb-3">
+                           <label for="roName"><%= lingua.box_name_ro %></label>
+                           <div class="input-group">
+                              <input
+                                 class="form-control"
+                                 type="text"
+                                 autocomplete="off"
+                                 name="roName"
+                                 id="roName"
+                                 value="<% if (editing) { %><%=  %><% } %>">
+                           </div>
+                           <span class="error_form" id="roName_error_message"></span>
+                        </div>
+                        <div class="col-md-12 mb-3">
+                           <label for="roName"><%= lingua.box_name_ro %></label>
+                           <div class="input-group">
+                              <input
+                                 class="form-control"
+                                 type="text"
+                                 autocomplete="off"
+                                 name="roName"
+                                 id="roName"
+                                 value="<% if (editing) { %><%=  %><% } %>">
+                           </div>
+                           <span class="error_form" id="roName_error_message"></span>
+                        </div>
+                        <div class="col-md-12 mb-3">
+                           <label for="roName"><%= lingua.box_name_ro %></label>
+                           <div class="input-group">
+                              <input
+                                 class="form-control"
+                                 type="text"
+                                 autocomplete="off"
+                                 name="roName"
+                                 id="roName"
+                                 value="<% if (editing) { %><%=  %><% } %>">
+                           </div>
+                           <span class="error_form" id="roName_error_message"></span>
+                        </div>
+                        </div>
+                        </div>`).addClass( 'someclass' ) )
+            .append( $('<button/>').addClass( 'remove btn-danger button-remove-ct' ).text( 'Remove' ) )
+            .insertBefore( this );
+        });
+        $(document).on('click', 'button.remove', function( e ) {
+            e.preventDefault();
+            $(this).closest( 'div.new-text-div' ).remove();
+        });
+    });
+</script>
 </head>
 <body class="ms-body ms-aside-left-open ms-primary-theme ms-has-quickbar">
    <%- include('../includes/navigation.ejs') %>
@@ -64,71 +121,31 @@
                         </div>
                      </div>
                   </div>
+                  <% if (editing) { %>
+                     <input type="hidden" value="<%= propertyId %>" name="propertyId">
+                  
+                     <% } %>
+                     <button type="submit" id="createProperty" class="btn btn-success has-icon" ><% if (editing) { %>Update Product<% } else { %>Add Product<% } %></button>
                </div>
+               
             </div>
             <div class="col-xl-6 col-md-12">
                <div class="row">
                   <div class="col-md-12">
                      <div class="ms-panel">
-                        <div class="col-xl-6 col-md-12">
-                            <div class="ms-panel ms-panel-fh">
-                               <div class="ms-panel-header">
-                                  <h6>Add Product Form</h6>
-                               </div>
-                               <div class="ms-panel-body">
-                                  <div class="form-row">
-             
-                                     <div class="col-md-12 mb-3">
-                                        <label for="roPropertVName"><%= lingua.box_name_ro %></label>
-                                        <div class="input-group">
-                                           <input
-                                              class="form-control"
-                                              type="text"
-                                              autocomplete="off"
-                                              name="roPropertVName"
-                                              id="roPropertVName"
-                                              value="<% if (editing) { %><%=  %><% } %>">
-                                        </div>
-                                        <span class="error_form" id="roName_error_message"></span>
-                                     </div>
-                                     <div class="col-md-12 mb-3">
-                                        <label for="huPropertVName"><%= lingua.box_name_hu %></label>
-                                        <div class="input-group">
-                                           <input
-                                              class="form-control"
-                                              type="text"
-                                              autocomplete="off"
-                                              name="huPropertVName"
-                                              id="huPropertVName"
-                                              value="<% if (editing) { %><%=  %><% } %>">
-                                        </div>
-                                        <span class="error_form" id="huName_error_message"></span>
-                                     </div>
-                                     <div class="col-md-12 mb-3">
-                                        <label for="enPropertVName"><%= lingua.box_name_en %></label>
-                                        <div class="input-group">
-                                           <input
-                                              class="form-control"
-                                              type="text"
-                                              autocomplete="off"
-                                              name="enPropertVName"
-                                              id="enPropertVName"
-                                              value="<% if (editing) { %><%=  %><% } %>">
-                                        </div>
-                                        <span class="error_form" id="enName_error_message"></span>
-                                     </div>
-                                  </div>
-                               </div>
-                            </div>
-                         </div>
+                      
                         <div class="ms-panel-header">
                            <h6>Product</h6>
                         </div>
-                        <% if (editing) { %>
-                        <input type="hidden" value="<%= propertyId %>" name="propertyId">
-                     
-                        <% } %>
-                        <button type="submit" id="createProperty" class="btn btn-success has-icon" ><% if (editing) { %>Update Product<% } else { %>Add Product<% } %></button>
+                            <div class="service_box">
+       <div class="form">
+           <form class="cmxform">
+              
+               <button class="btn btn-success has-icon" id="add">Add</button>
+           </form>
+       </div>
+   </div>
+                  
                      </div>
                   </div>
                </div>

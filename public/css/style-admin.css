@@ -431,7 +431,11 @@ Version: 1.0.0
 .ms-dark-theme .ms-text-danger {
   color: #ffffff;
 }
+.button-remove-ct{
 
+    margin-left: 241px;
+
+}
 .ms-text-dark,
 .ms-text-dark:hover,
 .ms-text-dark:focus {

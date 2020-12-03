@@ -2,7 +2,9 @@ const Category = require("../../models/Category");
 const CategoryTranslation = require("../../models/CategoryTranslation");
 const Allergen = require("../../models/Allergen");
 const Property = require("../../models/Property");
+const PropertyValue = require("../../models/PropertyValue");
 const PropertyTranslation = require("../../models/PropertyTranslation");
+const PropertyValueTranslation = require("../../models/PropertyValueTranslation");
 const Sequelize = require("sequelize");
 const CategoryProperty = require("../../models/CategoryProperty");
 
@@ -28,6 +30,34 @@ exports.getAddCategory = async (req, res, next) => {
     ],
   });
 
+  const property77 = await Property.findAll({
+    where: {
+      restaurantId: req.admin.id,
+    },
+    include: [
+      {
+        model: PropertyTranslation,
+        where: {
+          languageId: 1,
+        },
+      },
+    ],
+    include: [
+      {
+        model: PropertyValue,
+        where: { propertyId: 1 },
+        include: [
+          {
+            model: PropertyValueTranslation,
+            where: { languageId: 1 },
+          },
+        ],
+      },
+    ],
+  });
+
+  console.log(property77);
+
   if (checkAllergenLength.length === 0) {
     return res.redirect("/admin/category-index");
   }
@@ -45,8 +75,7 @@ exports.postAddCategory = async (req, res, next) => {
   const enName = req.body.enName;
   const filteredStatus = req.body.status.filter(Boolean);
   const propertyId = req.body.propertyId;
-  console.log("propertyId", propertyId);
-  console.log("filteredStatus.length", filteredStatus);
+
   if (roName == "" || huName == "" || enName == "") {
     return res.redirect("/admin/category-index");
   }
