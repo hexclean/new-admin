@@ -76,28 +76,58 @@
                          <p class="ms-directions">Use <code>.ms-checkbox-{state}</code> in <code>.ms-checkbox-wrap</code>
                          </p>
                         
-                    
-                           <div class="row">
-                             <div class="col-md-6">
-                               <ul class="ms-list ms-list-display">
-                                 <% for (let i=0; i < property.length; i++ ) { %>
-                                    <input
-                                    type="hidden"
-                                    value="<%= property[i].id %>"
-                                    name="propertyId"
-                                    /> 
-                                 <li>
-                                    <label class="ms-checkbox-wrap ms-checkbox-success" data-extra="<%= property[i].id %>">
-                                       <input type="hidden" value="off" class="status-<%= property[i].id %>" name="status[<%= property[i].id %>]" value="" >
-                                      <input data-propertyId="<%= property[i].id %>" class="status-checkbox status-checkbox-<%= property[i].id %>" type="checkbox" value="<%= property[i].id %>"> <i class="ms-checkbox-check"></i>
-                                    </label> <span> <%= property[i].PropertyTranslations[0].name %> </span>
-                                  </li>
-                                  <% } %>
-                               </ul>
-                             </div>
-                             
+
+
+                         <% if(editing){ %>
+                           <% for (let i = 0; i < isActiveProperty.length; i++) { %>
+                              <% if (isActiveProperty[i].active == 1 ) { %>
+                                 
+                                 <script>
+                                     $(document).ready(function() {
+                                     var activeCheckbox ="<%= isActiveProperty[i].propertyId %>";
+                                     $('.status-checkbox-'+activeCheckbox).prop('checked', true);
+                                     $('.status-'+activeCheckbox).val('on');
+                                     });
+                                 </script>
+                                    
+                                    <% } 
+                                    %>
+                                 <% } %>
+                                 <% } %>
+                                 
+
+                        
+                        <div class="row">
+                           <div class="col-md-6">
+                             <ul class="ms-list ms-list-display">
+                               <% for (let i=0; i < property.length; i++ ) { %>
+                                  <input
+                                  type="hidden"
+                                  value="<%= property[i].id %>"
+                                  name="propertyId"
+                                  /> 
+                               <li>
+                                  <label class="ms-checkbox-wrap ms-checkbox-success" data-extra="<%= property[i].id %>">
+                                     <input type="hidden" value="off" class="status-<%= property[i].id %>" name="status[<%= property[i].id %>]" value="" >
+                                    <input data-propertyId="<%= property[i].id %>" class="status-checkbox status-checkbox-<%= property[i].id %>" type="checkbox" value="<%= property[i].id %>"> <i class="ms-checkbox-check"></i>
+                                  </label> <span> <%= property[i].PropertyTranslations[0].name %> </span>
+                                </li>
+                                <% } %>
+                             </ul>
                            </div>
-                 
+                         </div>
+               
+
+
+
+
+
+
+
+
+
+
+
                        </div>
                      </div>
                    </div>

@@ -140,6 +140,24 @@ exports.getEditCategory = async (req, res, next) => {
     }
   });
 
+  const isActiveProperty = await CategoryProperty.findAll({
+    where: { restaurantId: req.admin.id, categoryId: categoryId },
+  });
+
+  console.log(isActiveProperty);
+  const property = await Property.findAll({
+    where: {
+      restaurantId: req.admin.id,
+    },
+    include: [
+      {
+        model: PropertyTranslation,
+        where: {
+          languageId: 1,
+        },
+      },
+    ],
+  });
   try {
     await Category.findAll({
       where: {
@@ -159,6 +177,8 @@ exports.getEditCategory = async (req, res, next) => {
         category: category,
         categoryId: categoryId,
         extTranslations: category[0].CategoryTranslations,
+        isActiveProperty: isActiveProperty,
+        property: property,
       });
     });
   } catch (err) {

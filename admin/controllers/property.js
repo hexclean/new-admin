@@ -47,41 +47,34 @@ exports.postAddProperty = async (req, res, next) => {
       propertyId: property.id,
     });
   }
-  // const propertyValue = await PropertyValue.create({
-  //   restaurantId: req.admin.id,
-  //   propertyId: property.id,
-  // });
+  const propertyValue = await PropertyValue.create({
+    restaurantId: req.admin.id,
+    propertyId: property.id,
+  });
 
   async function createPropertyV() {
     const propVName = req.body.propVName;
-    let idArray = [];
     for (let i = 1; i <= propVName.length; i++) {
-      const body = req.body["propVhuName" + i];
+      const propVroName = req.body["propVroName" + i];
+      const propVhuName = req.body["propVhuName" + i];
+      const propVenName = req.body["propVenName" + i];
 
-      // const propVroName = req.body.propVroName[i];
-      // let alma = "sas" + [i];
-      console.log(i);
-      console.log("propVroName", body);
-      // console.log(req.body);
-      // const propVhuName = req.body.propVroName[i];
-      // const propVenName = req.body.propVroName[i];
-      // console.log("propVenName", alma);
-      // await PropertyValueTranslation.create({
-      //   name: propVroName[i],
-      //   languageId: 1,
-      //   propertyValueId: propertyValue.id,
-      // });
-      // await PropertyValueTranslation.create({
-      //   name: propVhuName[i],
-      //   languageId: 2,
-      //   propertyValueId: propertyValue.id,
-      // });
+      await PropertyValueTranslation.create({
+        name: propVroName,
+        languageId: 1,
+        propertyValueId: propertyValue.id,
+      });
+      await PropertyValueTranslation.create({
+        name: propVhuName,
+        languageId: 2,
+        propertyValueId: propertyValue.id,
+      });
 
-      // await PropertyValueTranslation.create({
-      //   name: propVenName[i],
-      //   languageId: 3,
-      //   propertyValueId: propertyValue.id,
-      // });
+      await PropertyValueTranslation.create({
+        name: propVenName,
+        languageId: 3,
+        propertyValueId: propertyValue.id,
+      });
     }
   }
   //   await AdminLogs.create({
@@ -96,7 +89,7 @@ exports.postAddProperty = async (req, res, next) => {
   createProperty()
     .then((result) => {
       createPropertyV();
-      // res.redirect("/admin/box-index");
+      res.redirect("/admin/box-index");
     })
     .catch((err) => {
       console.log(err);
