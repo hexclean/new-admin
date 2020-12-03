@@ -144,7 +144,6 @@ exports.getEditCategory = async (req, res, next) => {
     where: { restaurantId: req.admin.id, categoryId: categoryId },
   });
 
-  console.log(isActiveProperty);
   const property = await Property.findAll({
     where: {
       restaurantId: req.admin.id,
@@ -189,10 +188,14 @@ exports.getEditCategory = async (req, res, next) => {
 };
 
 exports.postEditCategory = async (req, res, next) => {
+  const categoryId = req.body.categoryId;
+  console.log("categoryId", categoryId);
   const updatedRoName = req.body.roName;
   const updatedHuName = req.body.huName;
   const updatedEnName = req.body.enName;
   const categoryTranslationId = req.body.categoryTranslationId;
+  const filteredStatus = req.body.status.filter(Boolean);
+  const propertyId = req.body.propertyId;
 
   if (
     updatedRoName == "" ||
@@ -202,6 +205,9 @@ exports.postEditCategory = async (req, res, next) => {
   ) {
     return res.redirect("/admin/category-index");
   }
+  const isActiveProperty = await CategoryProperty.findAll({
+    where: { restaurantId: req.admin.id, categoryId: categoryId },
+  });
 
   try {
     Category.findAll({
@@ -227,6 +233,29 @@ exports.postEditCategory = async (req, res, next) => {
         { where: { id: categoryTranslationId[2], languageId: 3 } }
       );
     });
+    async function updateExtraHasAllergen() {
+      if (Array.isArray(isActiveProperty)) {
+        for (let i = 0; i <= isActiveProperty.length - 1; i++) {
+          let propertyIds = [propertyId[i]];
+
+          await CategoryProperty.update(
+            {
+              active: filteredStatus[i] == "on" ? 1 : 0,
+            },
+            {
+              where: {
+                categoryId: categoryId,
+                restaurantId: req.admin.id,
+                propertyId: {
+                  [Op.in]: propertyIds,
+                },
+              },
+            }
+          );
+        }
+      }
+    }
+    updateExtraHasAllergen();
     res.redirect("/admin/category-index");
   } catch (err) {
     const error = new Error(err);

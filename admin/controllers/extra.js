@@ -137,10 +137,10 @@ exports.postAddExtra = async (req, res, next) => {
       });
 
       for (let i = 0; i < variants.length; i++) {
-        let productVariantsId = [];
+        let variantId = [];
         let extraId = [];
 
-        productVariantsId = variants[i].id;
+        variantId = variants[i].id;
         extraId = extra.id;
 
         await ProductVariantsExtras.create({
