@@ -193,29 +193,30 @@ exports.postEditProperty = async (req, res, next) => {
   })
     .then((property) => {
       async function createPropertyV() {
-        for (let i = 1; i <= finalLengthOfVaTran; i++) {
+        for (let i = 0; i < finalLengthOfVaTran; i++) {
           const updatedName = req.body.updatedName;
           let array = [];
           const propVroName = req.body["updatedName"];
           const prodVarTransId = req.body["prodVarTransId"];
+          const prodVarTransLangId = req.body["prodVarTransLanguageId"];
           // console.log("prodVarTransId", prodVarTransId);
           // const propVhuName = req.body["propVhuName" + i];
           // const propVenName = req.body["propVenName" + i];
           array.push(prodVarTransId);
           console.log(req.body);
           await PropertyTranslation.update(
-            { name: updatedRoName },
-            { where: { id: prodVarTransId, languageId: 1 } }
+            { name: propVroName[i] },
+            { where: { languageId: prodVarTransLangId[i] } }
           );
 
           await PropertyTranslation.update(
-            { name: updatedRoName },
-            { where: { id: prodVarTransId, languageId: 2 } }
+            { name: propVroName[i] },
+            { where: { languageId: prodVarTransLangId[i] } }
           );
 
           await PropertyTranslation.update(
-            { name: updatedRoName },
-            { where: { id: prodVarTransId, languageId: 3 } }
+            { name: propVroName[i] },
+            { where: { languageId: prodVarTransLangId[i] } }
           );
         }
       }
@@ -238,7 +239,7 @@ exports.postEditProperty = async (req, res, next) => {
       }
 
       updateProperty();
-      createPropertyV();
+      // createPropertyV();
       res.redirect("/admin/box-index");
     })
     .catch((err) => {
