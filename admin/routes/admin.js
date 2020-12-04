@@ -9,7 +9,6 @@ const boxController = require("../controllers/box");
 const couponController = require("../controllers/coupon");
 const reviewController = require("../controllers/review");
 const adminProfileController = require("../controllers/profile");
-const dailyMenuController = require("../controllers/daily-menu");
 const allergenController = require("../controllers/allergen");
 const deletedItemsController = require("../controllers/deleted-items");
 const comboController = require("../controllers/combo");
@@ -163,23 +162,6 @@ router.get(
   adminProfileController.getEditProfile
 );
 router.get("/dashboard", isAuth, adminProfileController.getDashboard);
-
-// Daily Menu
-router.get("/daily-menus-index", isAuth, dailyMenuController.getIndex);
-router.post("/delete-daily-menu", dailyMenuController.postDeleteDailyMenu);
-router.get("/add-daily-menu", isAuth, dailyMenuController.getAddDailyMenu);
-router.post("/add-daily-menu", isAuth, dailyMenuController.postAddDailyMenu);
-router.get(
-  "/edit-daily-menu/:dailyMenuId",
-  isAuth,
-  dailyMenuController.getEditDailyMenu
-);
-router.post(
-  "/edit-daily-menu",
-  isAuth,
-
-  dailyMenuController.postEditDailyMenu
-);
 
 // Allergen
 router.get("/allergen/search", isAuth, allergenController.getSearch);

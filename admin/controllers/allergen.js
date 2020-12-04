@@ -1,6 +1,5 @@
 const Allergen = require("../../models/Allergen");
 const AllergensTranslation = require("../../models/AllergenTranslation");
-const DailyMenu = require("../../models/DailyMenu");
 const Sequelize = require("sequelize");
 const Extra = require("../../models/Extra");
 const ExtraHasAllergen = require("../../models/ExtraHasAllergen");
@@ -29,7 +28,7 @@ exports.postAddAllergen = async (req, res, next) => {
     restaurantId: req.admin.id,
   });
 
-  async function extraTransaltion() {
+  async function extraTranslation() {
     await AllergensTranslation.create({
       name: roName,
       languageId: 1,
@@ -86,29 +85,11 @@ exports.postAddAllergen = async (req, res, next) => {
       return;
     }
   }
-  async function DailyMenuAllergen() {
-    const totalDailyMenu = await DailyMenu.findAll({
-      where: { restaurantId: req.admin.id },
-    });
-    if (Array.isArray(totalDailyMenu)) {
-      for (let i = 0; i <= totalDailyMenu.length - 1; i++) {
-        await ProductHasAllergen.create({
-          active: 0,
-          restaurantId: req.admin.id,
-          allergenId: allergen.id,
-          dailyMenuId: totalDailyMenu[i].id,
-        });
-      }
-    } else {
-      return;
-    }
-  }
 
-  extraTransaltion()
+  extraTranslation()
     .then((result) => {
       extraMenuAllergen();
       productMenuAllergen();
-      DailyMenuAllergen();
       res.redirect("/admin/allergen-index");
     })
     .catch((err) => {

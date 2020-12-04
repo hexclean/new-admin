@@ -94,29 +94,6 @@ exports.postEditVariant = async (req, res, next) => {
     ],
   })
     .then((result) => {
-      async function updateDailyMenuDescription() {
-        await VariantsTranslation.update(
-          {
-            name: variantNameRoView,
-          },
-          { where: { productVariantId: varId, languageId: 1 } }
-        );
-
-        await VariantsTranslation.update(
-          {
-            name: variantNameHuView,
-          },
-          { where: { productVariantId: varId, languageId: 2 } }
-        );
-
-        await VariantsTranslation.update(
-          {
-            name: variantNameEnView,
-          },
-          { where: { productVariantId: varId, languageId: 3 } }
-        );
-      }
-      updateDailyMenuDescription();
       res.redirect("/super-admin/variants");
     })
     .catch((err) => {

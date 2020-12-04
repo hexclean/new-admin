@@ -3,7 +3,6 @@ const spLocationController = require("../controllers/super-admin/spLocation");
 const spDashboardController = require("../controllers/super-admin/spDashboard");
 const spPartnerController = require("../controllers/super-admin/spPartner");
 const spProductController = require("../controllers/super-admin/spProduct");
-const spDailyMenuController = require("../controllers/super-admin/spDailyMenu");
 const spVariantController = require("../controllers/super-admin/spVariant");
 const spExtraController = require("../controllers/super-admin/spExtra");
 const spCategoryController = require("../controllers/super-admin/spCategory");
@@ -75,27 +74,6 @@ router.post(
   superAdmin,
 
   spProductController.postEditProduct
-);
-
-// Daily Menu
-router.get(
-  "/daily-menus",
-  isAuth,
-  superAdmin,
-  spDailyMenuController.getDailyMenus
-);
-router.get(
-  "/edit-daily-menu/:dailyMenuId",
-  isAuth,
-  superAdmin,
-  spDailyMenuController.getEditDailyMenu
-);
-router.post(
-  "/edit-daily-menu",
-  isAuth,
-  superAdmin,
-
-  spDailyMenuController.postEditDailyMenu
 );
 
 // Variants

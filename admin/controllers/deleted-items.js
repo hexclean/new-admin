@@ -1,6 +1,5 @@
 const Products = require("../../models/Product");
 const ProductsTranslation = require("../../models/ProductTranslation");
-const DailyMenu = require("../../models/DailyMenu");
 const ITEMS_PER_PAGE = 30;
 
 exports.getIndex = async (req, res, next) => {

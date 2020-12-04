@@ -3,7 +3,6 @@ const { products } = require("./database/Products");
 const { categories } = require("./database/Categories");
 const { extras } = require("./database/Extras");
 const { boxes } = require("./database/Boxes");
-const { dailyMenus } = require("./database/DailyMenus");
 const { locations } = require("./database/Locations");
 const { allergens } = require("./database/Allergens");
 const { orders } = require("./database/Orders");
@@ -20,7 +19,6 @@ function databaseConfig() {
   categories();
   extras();
   boxes();
-  dailyMenus();
   openingHours();
   locations();
   orders();

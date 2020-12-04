@@ -130,29 +130,6 @@ exports.postEditExtra = async (req, res, next) => {
     ],
   })
     .then((result) => {
-      async function updateDailyMenuDescription() {
-        await ExtrasTranslation.update(
-          {
-            name: extraNameRoView,
-          },
-          { where: { extraId: extId, languageId: 1 } }
-        );
-
-        await ExtrasTranslation.update(
-          {
-            name: extraNameHuView,
-          },
-          { where: { extraId: extId, languageId: 2 } }
-        );
-
-        await ExtrasTranslation.update(
-          {
-            name: extraNameEnView,
-          },
-          { where: { extraId: extId, languageId: 3 } }
-        );
-      }
-      updateDailyMenuDescription();
       res.redirect("/super-admin/extras");
     })
     .catch((err) => {

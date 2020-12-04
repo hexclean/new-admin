@@ -12,6 +12,8 @@ const Product = sequelize.define("Product", {
   active: {
     type: Sequelize.INTEGER,
   },
+  isDailyMenu: Sequelize.INTEGER,
+  time: Sequelize.DATE,
 });
 
 module.exports = Product;

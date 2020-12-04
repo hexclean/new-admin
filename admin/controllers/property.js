@@ -6,6 +6,8 @@ const PropertyValueTranslation = require("../../models/PropertyValueTranslation"
 const Language = require("../../models/Language");
 const AdminLogs = require("../../models/AdminLogs");
 const ProductTranslation = require("../../models/ProductTranslation");
+const Categories = require("../../models/Category");
+const CategoryProperty = require("../../models/CategoryProperty");
 
 exports.getAddProperty = async (req, res, next) => {
   //   await AdminLogs.create({
@@ -79,9 +81,32 @@ exports.postAddProperty = async (req, res, next) => {
     }
   }
 
+  async function add() {
+    const categories = await Categories.findAll({
+      where: { restaurantId: req.admin.id },
+    });
+
+    for (let i = 0; i < categories.length; i++) {
+      let categoriesId = [];
+      let propertyId = [];
+
+      categoriesId = categories[i].id;
+      propertyId = property.id;
+      if (categories.length != 0) {
+        await CategoryProperty.create({
+          restaurantId: req.admin.id,
+          propertyId: propertyId,
+          categoryId: categoriesId,
+          active: 0,
+        });
+      }
+    }
+  }
+
   createProperty()
     .then((result) => {
       createPropertyV();
+      add();
       res.redirect("/admin/box-index");
     })
     .catch((err) => {
