@@ -103,12 +103,11 @@ exports.getAddProduct = async (req, res, next) => {
 
 exports.postAddProduct = async (req, res, next) => {
   const allergenId = req.body.allergenId;
-  var filteredStatus = req.body.status.filter(Boolean);
+
   const roTitle = req.body.roTitle;
   const huTitle = req.body.huTitle;
   const enTitle = req.body.enTitle;
   const boxId = req.body.boxId;
-  const price = req.body.price;
   const roDescription = req.body.roDescription;
   const huDescription = req.body.huDescription;
   const enDescription = req.body.enDescription;
@@ -117,7 +116,11 @@ exports.postAddProduct = async (req, res, next) => {
   const extId = req.body.extraId;
   const filteredStatusAllergen = req.body.statusAllergen.filter(Boolean);
   const filteredStatusBox = req.body.statusBox.filter(Boolean);
-
+  const variant = await ProductVariant.findAll({
+    where: {
+      restaurantId: req.admin.id,
+    },
+  });
   const box = await Box.findAll({
     where: {
       restaurantId: req.admin.id,
@@ -137,12 +140,6 @@ exports.postAddProduct = async (req, res, next) => {
         model: AllergenTranslation,
       },
     ],
-  });
-
-  const ext = await ProductVariant.findAll({
-    where: {
-      restaurantId: req.admin.id,
-    },
   });
 
   const product = await Product.create({
@@ -172,6 +169,13 @@ exports.postAddProduct = async (req, res, next) => {
       productId: product.id,
     });
   }
+  let extraId = req.body.extraId;
+  var filteredStatus = req.body.status.filter(Boolean);
+  for (let j = 0; j <= extraId.length - 1; j++) {
+    console.log(extraId.length);
+    console.log("filteredStatus[j]", filteredStatus[j]);
+    var output = filteredStatus[j] != undefined ? filteredStatus[j] : "on";
+  }
 
   async function createVariant() {
     let boxIdFinal = 0;
@@ -180,14 +184,25 @@ exports.postAddProduct = async (req, res, next) => {
         boxIdFinal = filteredStatusBox[i].substring(2) + boxId[i];
       }
     }
+    let variantIdArr = [];
+    let vrId = [];
 
-    for (let i = 0; i <= ext.length - 1; i++) {
+    for (let i = 0; i <= variant.length - 1; i++) {
+      vrId.push(extraId[i]);
+      console.log("output", output);
+      console.log("variantId", variant[i].id);
+      console.log(
+        " Number.isInteger(vrId) ? vrId : variant[i].id",
+        Number.isInteger(vrId) ? vrId : variant[i].id
+      );
+      // console.log("  output ==  ? 1 : 0", output == "on" ? 1 : 0);
       await ProductFinal.create({
-        price: price[i] || 0,
+        // price: price[i] || 0,
+        price: 0,
         productId: product.id,
-        variantId: extId[i],
+        variantId: vrId == Number.isInteger(vrId) ? vrId : variant[i].id,
         discountedPrice: 0,
-        active: filteredStatus[i] == "on" ? 1 : 0,
+        active: output == "on" ? 1 : 0,
         boxId: Number.isInteger(boxIdFinal) ? null : boxIdFinal,
       });
     }
@@ -212,7 +227,7 @@ exports.postAddProduct = async (req, res, next) => {
       allergens();
       res.redirect("/admin/products"),
         {
-          ext: ext,
+          ext: variant,
         };
     })
     .catch((err) => {
