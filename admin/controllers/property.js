@@ -50,17 +50,19 @@ exports.postAddProperty = async (req, res, next) => {
       propertyId: property.id,
     });
   }
-  const propertyValue = await PropertyValue.create({
-    restaurantId: req.admin.id,
-    propertyId: property.id,
-  });
 
   async function createPropertyV() {
     const propVName = req.body.propVName;
+
     for (let i = 1; i <= propVName.length; i++) {
       const propVroName = req.body["propVroName" + i];
       const propVhuName = req.body["propVhuName" + i];
       const propVenName = req.body["propVenName" + i];
+
+      const propertyValue = await PropertyValue.create({
+        restaurantId: req.admin.id,
+        propertyId: property.id,
+      });
 
       await PropertyValueTranslation.create({
         name: propVroName,
@@ -224,9 +226,6 @@ exports.postEditProperty = async (req, res, next) => {
           const propVroName = req.body["updatedName"];
           const prodVarTransId = req.body["prodVarTransId"];
           const prodVarTransLangId = req.body["prodVarTransLanguageId"];
-          // console.log("prodVarTransId", prodVarTransId);
-          // const propVhuName = req.body["propVhuName" + i];
-          // const propVenName = req.body["propVenName" + i];
           array.push(prodVarTransId);
           console.log(req.body);
           await PropertyTranslation.update(

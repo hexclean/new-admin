@@ -335,6 +335,8 @@ exports.getEditVariant = async (req, res, next) => {
         cat: cat,
         currentLanguage: 1,
         testSelect: "Alma",
+        checkCategoryProperty: 6,
+        checkCategoryPropertyValue: 8,
         productVarToExt: productVarToExt,
         errorMessage: null,
         validationErrors: [],
