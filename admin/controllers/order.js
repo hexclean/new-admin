@@ -97,22 +97,28 @@ exports.getEditOrder = async (req, res, next) => {
     let message;
     let test = [];
     let extra = [];
+    const resultWithAll = [];
     // console.log(order);
     for (let i = 0; i < order.length; i++) {
       test = order[i].OrderItems;
       for (let j = 0; j < test.length; j++) {
-        extraQuantity.push(test[j].OrderItemExtras[0].quantity);
-        extraPrices.push(test[j].OrderItemExtras[0].extraPrice);
-        productQuantity.push(order[0].OrderItems[j].quantity);
-        productPrices.push(order[0].OrderItems[j].variantPrice);
+        // console.log(test[j].Variant.ProductFinals.productId);
         extras = test[j].Variant.ProductVariantsExtras;
+
         for (let k = 0; k < extras.length; k++) {
-          console.log(extras[k].Extra.ExtraTranslations[0].name);
+          console.log("j", extras[k].Extra);
+          const items = {
+            // productId: test[j].Variant.ProductFinals[j].productId,
+            extraQuantity: test[j].OrderItemExtras[0].quantity,
+            extraPrices: test[j].OrderItemExtras[0].extraPrice,
+            productQuantity: order[0].OrderItems[j].quantity,
+            productPrices: order[0].OrderItems[j].variantPrice,
+          };
+          resultWithAll.push(items);
         }
       }
     }
-    console.log(productQuantity);
-    console.log(productPrices);
+    // console.log(resultWithAll);
     // console.log(extraQuantity);
     // console.log(extraPrices);
     let totalPriceFinal;
