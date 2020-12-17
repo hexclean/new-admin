@@ -81,19 +81,27 @@ exports.getEditOrder = async (req, res, next) => {
     });
 
     let productQuantity = [];
+    let extraQuantity = [];
     let productPrices = [];
+    let extraPrices = [];
     let message;
     // console.log(order);
     for (let i = 0; i < order.length; i++) {
-      let test = order[i].OrderItems[i].OrderItemExtras;
+      let test = order[i].OrderItems;
       for (let j = 0; j < test.length; j++) {
-        console.log(test);
+        extraQuantity.push(test[j].OrderItemExtras[0].quantity);
+        extraPrices.push(test[j].OrderItemExtras[0].extraPrice);
+        productQuantity.push(order[0].OrderItems[j].quantity);
+        productPrices.push(order[0].OrderItems[j].variantPrice);
+
+        console.log(
+          test[j].Variant.ProductFinals[j].Product.ProductTranslations[0].title
+        );
       }
       //   console.log(test);
       //   for (let j = 0; j < test.length; j++) {
       //     console.log("jjj", j);
-      //     productQuantity.push(order[0].OrderItems[i].quantity);
-      //     productPrices.push(order[0].OrderItems[i].variantPrice);
+
       //     console.log("productQuantity", productQuantity);
       //     console.log("productPrices", productPrices);
       //     console.log("=--=-=-=-=-=-=", order[0].OrderItemExtras[j]);
@@ -101,8 +109,10 @@ exports.getEditOrder = async (req, res, next) => {
       //   console.log(order);
       //   console.log(order[0].length);
     }
-
-    // console.log(productQuantity);
+    console.log(productQuantity);
+    console.log(productPrices);
+    // console.log(extraQuantity);
+    // console.log(extraPrices);
     let totalPriceFinal;
     let cutlery;
     let take;
