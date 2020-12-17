@@ -1,12 +1,15 @@
 const Sequelize = require("sequelize");
 const Order = require("../../models/Order");
-
-const Orders = require("../../models/Order");
+const OrderDeliveryAddress = require("../../models/OrderDeliveryAddress");
+const LocationName = require("../../models/LocationName");
+const LocationNameTranslation = require("../../models/LocationNameTranslation");
+const OrderItem = require("../../models/OrderItem");
+const OrderItemExtra = require("../../models/OrderItemExtra");
 const Op = Sequelize.Op;
 const ITEMS_PER_PAGE = 20;
 
 exports.getOrders = async (req, res, next) => {
-  const orders = await Orders.findAll({
+  const orders = await Order.findAll({
     where: { restaurantId: req.admin.id },
   });
   res.render("order/orders", {
@@ -35,12 +38,22 @@ exports.getEditOrder = async (req, res, next) => {
     where: {
       id: orderId,
     },
+    include: [
+      {
+        model: OrderItem,
+        include: [{ model: OrderItemExtra }],
+      },
+      { model: OrderDeliveryAddress },
+      { model: LocationName, include: [{ model: LocationNameTranslation }] },
+    ],
+    // include: [
+    //   { model: LocationName, include: [{ model: LocationNameTranslation }] },
+    //   ,
+    // ],
   })
     .then((order) => {
-      //   if (extra[0].restaurantId !== req.admin.id) {
-      //     return res.redirect("/");
-      //   }
-
+      console.log(order);
+      //   for (let)
       res.render("order/edit-order", {
         pageTitle: "Edit Product",
         path: "/admin/edit-product",
