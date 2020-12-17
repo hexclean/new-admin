@@ -98,27 +98,28 @@ exports.getEditOrder = async (req, res, next) => {
     let test = [];
     let extra = [];
     const resultWithAll = [];
-    // console.log(order);
+
     for (let i = 0; i < order.length; i++) {
       test = order[i].OrderItems;
-      for (let j = 0; j < test.length; j++) {
-        // console.log(test[j].Variant.ProductFinals.productId);
-        extras = test[j].Variant.ProductVariantsExtras;
 
+      for (let j = 0; j < test.length; j++) {
+        // extras = test[j].Variant.ProductVariantsExtras;
+        extras = test[j].OrderItemExtras;
+        // console.log(extras);
         for (let k = 0; k < extras.length; k++) {
-          console.log("j", extras[k].Extra);
+          console.log("j", extras[k].quantity);
           const items = {
             // productId: test[j].Variant.ProductFinals[j].productId,
-            extraQuantity: test[j].OrderItemExtras[0].quantity,
-            extraPrices: test[j].OrderItemExtras[0].extraPrice,
-            productQuantity: order[0].OrderItems[j].quantity,
-            productPrices: order[0].OrderItems[j].variantPrice,
+            extraQuantity: extras[k].quantity,
+            extraPrices: extras[k].extraPrice,
+            // productQuantity: order[0].OrderItems[j].quantity,
+            // productPrices: order[0].OrderItems[j].variantPrice,
           };
           resultWithAll.push(items);
         }
       }
     }
-    // console.log(resultWithAll);
+    console.log(resultWithAll);
     // console.log(extraQuantity);
     // console.log(extraPrices);
     let totalPriceFinal;
