@@ -13,6 +13,7 @@ const allergenController = require("../controllers/allergen");
 const deletedItemsController = require("../controllers/deleted-items");
 const comboController = require("../controllers/combo");
 const liveSearchController = require("../controllers/live-search");
+const ordersController = require("../controllers/order");
 const isAuth = require("../../middleware/is-auth");
 const router = express.Router();
 
@@ -191,4 +192,7 @@ router.post(
 // Review
 router.get("/products-reviews", isAuth, reviewController.getProductsReview);
 
+// Orders
+router.get("/orders", isAuth, ordersController.getOrders);
+router.get("/edit-order/:orderId", isAuth, ordersController.getEditOrder);
 module.exports = router;
