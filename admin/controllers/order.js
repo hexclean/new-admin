@@ -156,6 +156,7 @@ exports.getEditOrder = async (req, res, next) => {
       take: take,
       orderIds: orderIds,
       test: test,
+      extras: extras,
     });
   } catch (err) {
     console.log(err);

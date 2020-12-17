@@ -65,27 +65,15 @@
                           <td><%= order[0].OrderItems[j].variantPrice %></td>
                           <td><%= order[0].OrderItems[j].variantPrice %></td>
                         </tr>
+                        <% for (let k = 0; k < extras.length; k++) { %>
                         <tr>
                           <td class="text-center">2</td>
-                          <td class="text-left">Fried Egg Sandwich</td>
+                          <td class="text-left"><%= extras[k].Extra.ExtraTranslations[0].name %></td>
                           <td>1</td>
                           <td>$69</td>
                           <td>$69</td>
                         </tr>
-                        <tr>
-                          <td class="text-center">2</td>
-                          <td class="text-left">Spicy Grilled Burger</td>
-                          <td>2</td>
-                          <td>$19</td>
-                          <td>$38</td>
-                        </tr>
-                        <tr>
-                          <td class="text-center">2</td>
-                          <td class="text-left">Peri Peri Fries</td>
-                          <td>2</td>
-                          <td>$9</td>
-                          <td>$18</td>
-                        </tr>
+                        <% } %>        
                       </tbody>
                       <tfoot>
                         <tr>
