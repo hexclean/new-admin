@@ -102,8 +102,8 @@ exports.getEditOrder = async (req, res, next) => {
     }
     console.log(productQuantity);
     console.log(productPrices);
-    // console.log(extraQuantity);
-    // console.log(extraPrices);
+    console.log(extraQuantity);
+    console.log(extraPrices);
     let totalPriceFinal;
     let cutlery;
     let take;
