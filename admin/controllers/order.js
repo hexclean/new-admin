@@ -85,9 +85,10 @@ exports.getEditOrder = async (req, res, next) => {
     let productPrices = [];
     let extraPrices = [];
     let message;
+    let test = [];
     // console.log(order);
     for (let i = 0; i < order.length; i++) {
-      let test = order[i].OrderItems;
+      test = order[i].OrderItems;
       for (let j = 0; j < test.length; j++) {
         extraQuantity.push(test[j].OrderItemExtras[0].quantity);
         extraPrices.push(test[j].OrderItemExtras[0].extraPrice);
@@ -98,16 +99,6 @@ exports.getEditOrder = async (req, res, next) => {
           test[j].Variant.ProductFinals[j].Product.ProductTranslations[0].title
         );
       }
-      //   console.log(test);
-      //   for (let j = 0; j < test.length; j++) {
-      //     console.log("jjj", j);
-
-      //     console.log("productQuantity", productQuantity);
-      //     console.log("productPrices", productPrices);
-      //     console.log("=--=-=-=-=-=-=", order[0].OrderItemExtras[j]);
-      //   }
-      //   console.log(order);
-      //   console.log(order[0].length);
     }
     console.log(productQuantity);
     console.log(productPrices);
@@ -153,6 +144,7 @@ exports.getEditOrder = async (req, res, next) => {
       cutlery: cutlery,
       take: take,
       orderIds: orderIds,
+      test: test,
     });
   } catch (err) {
     console.log(err);
