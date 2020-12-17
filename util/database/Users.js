@@ -4,6 +4,7 @@ const UserDeliveryAddress = require("../../models/UserDeliveryAddress");
 const UserProfile = require("../../models/UserProfile");
 const ResetPasswordApp = require("../../models/ResetPasswordApp");
 const LocationName = require("../../models/LocationName");
+const OrderDeliveryAddress = require("../../models/OrderDeliveryAddress");
 
 function users() {
   UserDeliveryAddress.belongsTo(User, {
@@ -12,6 +13,13 @@ function users() {
     foreignKey: "userId",
   });
   User.hasMany(UserDeliveryAddress, { foreignKey: "userId" });
+
+  OrderDeliveryAddress.belongsTo(User, {
+    constrains: true,
+    onDelete: "CASCADE",
+    foreignKey: "userId",
+  });
+  User.hasMany(OrderDeliveryAddress, { foreignKey: "userId" });
 
   ResetPasswordApp.belongsTo(User, {
     constrains: true,

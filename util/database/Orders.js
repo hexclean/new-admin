@@ -4,8 +4,9 @@ const Order = require("../../models/Order");
 const OrderItem = require("../../models/OrderItem");
 const OrderItemExtra = require("../../models/OrderItemExtra");
 const Variant = require("../../models/Variant");
-const UserDeliveryAddress = require("../../models/UserDeliveryAddress");
+const LocationName = require("../../models/LocationName");
 const User = require("../../models/User");
+const OrderDeliveryAddress = require("../../models/OrderDeliveryAddress");
 
 function orders() {
   Order.belongsTo(Restaurant, {
@@ -15,6 +16,14 @@ function orders() {
   });
 
   Restaurant.hasMany(Order, { foreignKey: "restaurantId" });
+
+  Order.belongsTo(OrderDeliveryAddress, {
+    constrains: true,
+    onDelete: "CASCADE",
+    foreignKey: "orderDeliveryAddressId",
+  });
+
+  OrderDeliveryAddress.hasMany(Order, { foreignKey: "orderDeliveryAddressId" });
 
   OrderItem.belongsTo(Order, {
     constrains: true,
@@ -53,13 +62,12 @@ function orders() {
   });
   User.hasMany(Order, { foreignKey: "userId" });
 
-  Order.belongsTo(UserDeliveryAddress, {
+  Order.belongsTo(LocationName, {
     constrains: true,
     onDelete: "CASCADE",
-    foreignKey: "userDeliveryAddressId",
+    foreignKey: "locationNameId",
   });
-
-  UserDeliveryAddress.hasMany(Order, { foreignKey: "userDeliveryAddressId" });
+  LocationName.hasMany(Order, { foreignKey: "locationNameId" });
 }
 
 module.exports = { orders };

@@ -15,7 +15,6 @@ const Order = sequelize.define("Order", {
   cutlery: Sequelize.INTEGER,
   take: Sequelize.INTEGER,
   orderType: Sequelize.INTEGER,
-  city: Sequelize.STRING,
 });
 
 module.exports = Order;
