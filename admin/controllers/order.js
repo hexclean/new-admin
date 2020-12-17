@@ -10,6 +10,10 @@ const Variant = require("../../models/Variant");
 const ProductFinal = require("../../models/ProductFinal");
 const Product = require("../../models/Product");
 const ProductTranslation = require("../../models/ProductTranslation");
+const ProductVariantsExtras = require("../../models/ProductVariantsExtras");
+const Extra = require("../../models/Extra");
+const ExtraTranslation = require("../../models/ExtraTranslation");
+
 const Op = Sequelize.Op;
 const ITEMS_PER_PAGE = 20;
 
@@ -63,6 +67,12 @@ exports.getEditOrder = async (req, res, next) => {
                     },
                   ],
                 },
+                {
+                  model: ProductVariantsExtras,
+                  include: [
+                    { model: Extra, include: [{ model: ExtraTranslation }] },
+                  ],
+                },
               ],
             },
           ],
@@ -86,6 +96,7 @@ exports.getEditOrder = async (req, res, next) => {
     let extraPrices = [];
     let message;
     let test = [];
+    let extra = [];
     // console.log(order);
     for (let i = 0; i < order.length; i++) {
       test = order[i].OrderItems;
@@ -94,16 +105,16 @@ exports.getEditOrder = async (req, res, next) => {
         extraPrices.push(test[j].OrderItemExtras[0].extraPrice);
         productQuantity.push(order[0].OrderItems[j].quantity);
         productPrices.push(order[0].OrderItems[j].variantPrice);
-
-        console.log(
-          test[j].Variant.ProductFinals[j].Product.ProductTranslations[0].title
-        );
+        extras = test[j].Variant.ProductVariantsExtras;
+        for (let k = 0; k < extras.length; k++) {
+          console.log(extras[k].Extra.ExtraTranslations[0].name);
+        }
       }
     }
     console.log(productQuantity);
     console.log(productPrices);
-    console.log(extraQuantity);
-    console.log(extraPrices);
+    // console.log(extraQuantity);
+    // console.log(extraPrices);
     let totalPriceFinal;
     let cutlery;
     let take;

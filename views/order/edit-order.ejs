@@ -59,11 +59,11 @@
                       </thead>
                       <tbody>
                         <tr>
-                          <td class="text-center">1</td>
+                          <td class="text-center"><%= order[0].OrderItems[j].quantity %></td>
                           <td class="text-left"><%= test[j].Variant.ProductFinals[j].Product.ProductTranslations[0].title %></td>
-                          <td>1</td>
-                          <td>$30</td>
-                          <td>$30</td>
+                          <td><%= order[0].OrderItems[j].quantity %></td>
+                          <td><%= order[0].OrderItems[j].variantPrice %></td>
+                          <td><%= order[0].OrderItems[j].variantPrice %></td>
                         </tr>
                         <tr>
                           <td class="text-center">2</td>
