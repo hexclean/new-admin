@@ -5,6 +5,11 @@ const LocationName = require("../../models/LocationName");
 const LocationNameTranslation = require("../../models/LocationNameTranslation");
 const OrderItem = require("../../models/OrderItem");
 const OrderItemExtra = require("../../models/OrderItemExtra");
+const User = require("../../models/User");
+const Variant = require("../../models/Variant");
+const ProductFinal = require("../../models/ProductFinal");
+const Product = require("../../models/Product");
+const ProductTranslation = require("../../models/ProductTranslation");
 const Op = Sequelize.Op;
 const ITEMS_PER_PAGE = 20;
 
@@ -23,50 +28,128 @@ exports.getOrders = async (req, res, next) => {
 exports.getEditOrder = async (req, res, next) => {
   const editMode = req.query.edit;
   const orderId = req.params.orderId;
-
-  if (!editMode) {
-    return res.redirect("/");
-  }
-
-  await Order.findByPk(orderId).then((order) => {
-    if (!order) {
+  try {
+    if (!editMode) {
       return res.redirect("/");
     }
-  });
 
-  await Order.findAll({
-    where: {
-      id: orderId,
-    },
-    include: [
-      {
-        model: OrderItem,
-        include: [{ model: OrderItemExtra }],
-      },
-      { model: OrderDeliveryAddress },
-      { model: LocationName, include: [{ model: LocationNameTranslation }] },
-    ],
-    // include: [
-    //   { model: LocationName, include: [{ model: LocationNameTranslation }] },
-    //   ,
-    // ],
-  })
-    .then((order) => {
-      console.log(order);
-      //   for (let)
-      res.render("order/edit-order", {
-        pageTitle: "Edit Product",
-        path: "/admin/edit-product",
-        editing: editMode,
-        order: order,
-      });
-    })
-    .catch((err) => {
-      console.log(err);
-      const error = new Error(err);
-      error.httpStatusCode = 500;
-      return next(error);
+    await Order.findByPk(orderId).then((order) => {
+      if (!order) {
+        return res.redirect("/");
+      }
     });
+
+    const order = await Order.findAll({
+      where: {
+        id: orderId,
+      },
+      include: [
+        {
+          model: OrderItem,
+
+          include: [
+            {
+              model: OrderItemExtra,
+            },
+            {
+              model: Variant,
+              include: [
+                {
+                  model: ProductFinal,
+                  include: [
+                    {
+                      model: Product,
+                      include: [{ model: ProductTranslation }],
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+        { model: OrderDeliveryAddress },
+        { model: User },
+        {
+          model: LocationName,
+          include: [
+            {
+              model: LocationNameTranslation,
+            },
+          ],
+        },
+      ],
+    });
+
+    let productQuantity = [];
+    let productPrices = [];
+    let message;
+    // console.log(order);
+    for (let i = 0; i < order.length; i++) {
+      let test = order[i].OrderItems[i].OrderItemExtras;
+      for (let j = 0; j < test.length; j++) {
+        console.log(test);
+      }
+      //   console.log(test);
+      //   for (let j = 0; j < test.length; j++) {
+      //     console.log("jjj", j);
+      //     productQuantity.push(order[0].OrderItems[i].quantity);
+      //     productPrices.push(order[0].OrderItems[i].variantPrice);
+      //     console.log("productQuantity", productQuantity);
+      //     console.log("productPrices", productPrices);
+      //     console.log("=--=-=-=-=-=-=", order[0].OrderItemExtras[j]);
+      //   }
+      //   console.log(order);
+      //   console.log(order[0].length);
+    }
+
+    // console.log(productQuantity);
+    let totalPriceFinal;
+    let cutlery;
+    let take;
+    let userName;
+    let orderCity;
+    let orderStreet;
+    let orderHouseNumber;
+    let orderFloor;
+    let orderDoorNumber;
+    let orderPhoneNumber;
+    let orderCreated;
+    let orderIds;
+    totalPriceFinal = order[0].totalPrice;
+    cutlery = order[0].cutlery;
+    take = order[0].take;
+    //   orderCity = order[0].OrderDeliveryAddress;
+    orderStreet = order[0].OrderDeliveryAddress.street;
+    orderHouseNumber = order[0].OrderDeliveryAddress.houseNumber;
+    orderFloor = order[0].OrderDeliveryAddress.floor;
+    orderDoorNumber = order[0].OrderDeliveryAddress.doorNumber;
+    orderPhoneNumber = order[0].OrderDeliveryAddress.phoneNumber;
+    orderCreated = order[0].createdAt;
+    userName = order[0].User.fullName;
+    orderIds = order[0].id;
+
+    res.render("order/edit-order", {
+      pageTitle: "Edit Product",
+      path: "/admin/edit-product",
+      editing: editMode,
+      order: order,
+      orderStreet: orderStreet,
+      orderHouseNumber: orderHouseNumber,
+      orderFloor: orderFloor,
+      orderDoorNumber: orderDoorNumber,
+      orderPhoneNumber: orderPhoneNumber,
+      orderCreated: orderCreated,
+      userName: userName,
+      cutlery: cutlery,
+      take: take,
+      orderIds: orderIds,
+    });
+  } catch (err) {
+    console.log(err);
+    const error = new Error(err);
+    error.httpStatusCode = 500;
+    return next(error);
+  }
 };
 
 exports.postEditAllergen = async (req, res, next) => {
