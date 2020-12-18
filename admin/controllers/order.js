@@ -94,11 +94,9 @@ exports.getEditOrder = async (req, res, next) => {
     let variants = order[0].OrderItems;
     for (let j = 0; j < variants.length; j++) {
       extras = variants[j].OrderItemExtras;
-      console.log(
-        variants[j].Variant.ProductVariantsExtras[j].Extra.ExtraTranslations[0]
-          .name
-      );
+
       for (let k = 0; k < extras.length; k++) {
+        console.log(extras[k]);
         const items = {
           product_id: variants[j].Variant.ProductFinals[j].productId,
           product_quantity: variants[j].quantity,
@@ -116,7 +114,6 @@ exports.getEditOrder = async (req, res, next) => {
         resultWithAll.push(items);
       }
     }
-    // console.log(resultWithAll);
     const merged = resultWithAll.reduce(
       (
         r,
@@ -125,19 +122,14 @@ exports.getEditOrder = async (req, res, next) => {
           product_quantity,
           product_price,
           product_name,
-          //   extra_id,
-          //   extra_quantity,
-          //   extra_price,
+
           ...rest
         }
       ) => {
         const key = `${product_id}-${product_quantity}-${product_price}-${product_name}`;
         r[key] = r[key] || {
           product_id,
-          //   extra_id,
 
-          //   extra_quantity,
-          //   extra_price,
           product_quantity,
           product_price,
           product_name,
