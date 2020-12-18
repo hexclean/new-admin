@@ -98,28 +98,70 @@ exports.getEditOrder = async (req, res, next) => {
     let test = [];
     let extra = [];
     const resultWithAll = [];
-
+    let orderItemProduct;
+    let orderExtra;
     for (let i = 0; i < order.length; i++) {
-      test = order[i].OrderItems;
-
-      for (let j = 0; j < test.length; j++) {
-        // extras = test[j].Variant.ProductVariantsExtras;
-        extras = test[j].OrderItemExtras;
-        // console.log(extras);
-        for (let k = 0; k < extras.length; k++) {
-          console.log("j", extras[k].quantity);
+      orderItemProduct = order[i].OrderItems;
+      for (let j = 0; j < orderItemProduct.length; j++) {
+        orderExtra = orderItemProduct[j].OrderItemExtras;
+        console.log(orderExtra.length);
+        for (let k = 0; k < orderExtra.length; k++) {
+          console.log("j", orderExtra[k]);
           const items = {
-            // productId: test[j].Variant.ProductFinals[j].productId,
-            extraQuantity: extras[k].quantity,
-            extraPrices: extras[k].extraPrice,
-            // productQuantity: order[0].OrderItems[j].quantity,
-            // productPrices: order[0].OrderItems[j].variantPrice,
+            extra_id: orderExtra[k].id,
+            extra_quantity: orderExtra[k].quantity,
           };
           resultWithAll.push(items);
         }
       }
+      console.log(resultWithAll);
+      //   for (let j = 0; j < orderItem.length; j++) {
+      //     ext = orderItem[j].Variant.ProductVariantsExtras;
+      //     extras = orderItem[j].OrderItemExtras;
+      //     for (let k = 0; k < extras.length; k++) {
+      //       const items = {
+      //         productId: orderItem[j].Variant.ProductFinals[j].productId,
+      //         extraQuantity: extras[k].quantity,
+      //         extraPrices: extras[k].extraPrice,
+      //         productQuantity: orderItem[j].quantity,
+      //         productPrices: orderItem[j].variantPrice,
+      //         extras: ext[j].Extra.ExtraTranslations[0].name,
+      //       };
+      //       resultWithAll.push(items);
+      //     }
+      //   }
     }
-    console.log(resultWithAll);
+
+    // const merged = resultWithAll.reduce(
+    //   (
+    //     r,
+    //     {
+    //       productId,
+    //       extraQuantity,
+    //       extraPrices,
+    //       productQuantity,
+    //       productPrices,
+    //       ...rest
+    //     }
+    //   ) => {
+    //     const key = `${productId}-${extraQuantity}-${extraPrices}-${productQuantity}-${productPrices}`;
+    //     r[key] = r[key] || {
+    //       productId,
+    //       extraQuantity,
+    //       extraPrices,
+    //       productQuantity,
+    //       productPrices,
+    //       extra_name: [],
+    //     };
+    //     r[key]["extra_name"].push(rest);
+    //     return r;
+    //   },
+    //   {}
+    // );
+
+    // const result = Object.values(merged);
+
+    // console.log(result);
     // console.log(extraQuantity);
     // console.log(extraPrices);
     let totalPriceFinal;

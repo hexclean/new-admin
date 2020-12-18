@@ -13,6 +13,9 @@ const Product = sequelize.define("Product", {
     type: Sequelize.INTEGER,
   },
   isDailyMenu: Sequelize.INTEGER,
+  // soldOut: Sequelize.INTEGER,
+  // startTime: Sequelize.DATE,
+  // endTime: Sequelize.DATE,
   time: Sequelize.DATE,
 });
 
