@@ -100,38 +100,32 @@ exports.getEditOrder = async (req, res, next) => {
     const resultWithAll = [];
     let orderItemProduct;
     let orderExtra;
-    for (let i = 0; i < order.length; i++) {
-      orderItemProduct = order[i].OrderItems;
-      for (let j = 0; j < orderItemProduct.length; j++) {
-        orderExtra = orderItemProduct[j].OrderItemExtras;
-        console.log(orderExtra.length);
-        for (let k = 0; k < orderExtra.length; k++) {
-          console.log("j", orderExtra[k]);
-          const items = {
-            extra_id: orderExtra[k].id,
-            extra_quantity: orderExtra[k].quantity,
-          };
-          resultWithAll.push(items);
-        }
+    let productName = [];
+    // for (let i = 0; i < order[0].OrderItems.length; i++) {
+    let variants = order[0].OrderItems;
+    // console.log(variants);
+    for (let j = 0; j < variants.length; j++) {
+      let extras = variants[j].OrderItemExtras;
+      //   console.log(variants[j]);
+      //   console.log(j);
+      for (let k = 0; k < extras.length; k++) {
+        console.log(k);
+        const items = {
+          extra_id: extras[k].extraId,
+          extra_quantity: extras[k].quantity,
+          extra_price: extras[k].extraPrice,
+          product_id: variants[j].Variant.ProductFinals[j].productId,
+          product_quantity: "q_q",
+          product_price: "p_p",
+          product_name:
+            variants[j].Variant.ProductFinals[j].Product.ProductTranslations[0]
+              .title,
+        };
+        resultWithAll.push(items);
       }
-      console.log(resultWithAll);
-      //   for (let j = 0; j < orderItem.length; j++) {
-      //     ext = orderItem[j].Variant.ProductVariantsExtras;
-      //     extras = orderItem[j].OrderItemExtras;
-      //     for (let k = 0; k < extras.length; k++) {
-      //       const items = {
-      //         productId: orderItem[j].Variant.ProductFinals[j].productId,
-      //         extraQuantity: extras[k].quantity,
-      //         extraPrices: extras[k].extraPrice,
-      //         productQuantity: orderItem[j].quantity,
-      //         productPrices: orderItem[j].variantPrice,
-      //         extras: ext[j].Extra.ExtraTranslations[0].name,
-      //       };
-      //       resultWithAll.push(items);
-      //     }
-      //   }
     }
-
+    // }
+    console.log(resultWithAll);
     // const merged = resultWithAll.reduce(
     //   (
     //     r,
