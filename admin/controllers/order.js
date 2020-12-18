@@ -89,76 +89,70 @@ exports.getEditOrder = async (req, res, next) => {
         },
       ],
     });
-
-    let productQuantity = [];
-    let extraQuantity = [];
-    let productPrices = [];
-    let extraPrices = [];
-    let message;
-    let test = [];
-    let extra = [];
+    let extras = [];
     const resultWithAll = [];
-    let orderItemProduct;
-    let orderExtra;
-    let productName = [];
-    // for (let i = 0; i < order[0].OrderItems.length; i++) {
     let variants = order[0].OrderItems;
-    // console.log(variants);
-    // console.log(variants);
     for (let j = 0; j < variants.length; j++) {
-      let extras = variants[j].OrderItemExtras;
-      //   console.log(extras[j]);
-      //   console.log(j);
+      extras = variants[j].OrderItemExtras;
+      console.log(
+        variants[j].Variant.ProductVariantsExtras[j].Extra.ExtraTranslations[0]
+          .name
+      );
       for (let k = 0; k < extras.length; k++) {
-        // console.log(k);
         const items = {
-          extra_id: extras[k].extraId,
-          extra_quantity: extras[k].quantity,
-          extra_price: extras[k].extraPrice,
           product_id: variants[j].Variant.ProductFinals[j].productId,
           product_quantity: variants[j].quantity,
           product_price: variants[j].variantPrice,
           product_name:
             variants[j].Variant.ProductFinals[j].Product.ProductTranslations[0]
               .title,
+          extra_id: extras[k].extraId,
+          extra_quantity: extras[k].quantity,
+          extra_price: extras[k].extraPrice,
+          extra_name:
+            variants[j].Variant.ProductVariantsExtras[k].Extra
+              .ExtraTranslations[0].name,
         };
         resultWithAll.push(items);
       }
     }
-    // }
-    console.log(resultWithAll);
-    // const merged = resultWithAll.reduce(
-    //   (
-    //     r,
-    //     {
-    //       productId,
-    //       extraQuantity,
-    //       extraPrices,
-    //       productQuantity,
-    //       productPrices,
-    //       ...rest
-    //     }
-    //   ) => {
-    //     const key = `${productId}-${extraQuantity}-${extraPrices}-${productQuantity}-${productPrices}`;
-    //     r[key] = r[key] || {
-    //       productId,
-    //       extraQuantity,
-    //       extraPrices,
-    //       productQuantity,
-    //       productPrices,
-    //       extra_name: [],
-    //     };
-    //     r[key]["extra_name"].push(rest);
-    //     return r;
-    //   },
-    //   {}
-    // );
+    // console.log(resultWithAll);
+    const merged = resultWithAll.reduce(
+      (
+        r,
+        {
+          product_id,
+          product_quantity,
+          product_price,
+          product_name,
+          //   extra_id,
+          //   extra_quantity,
+          //   extra_price,
+          ...rest
+        }
+      ) => {
+        const key = `${product_id}-${product_quantity}-${product_price}-${product_name}`;
+        r[key] = r[key] || {
+          product_id,
+          //   extra_id,
 
-    // const result = Object.values(merged);
+          //   extra_quantity,
+          //   extra_price,
+          product_quantity,
+          product_price,
+          product_name,
+          extras: [],
+        };
+        r[key]["extras"].push(rest);
+        return r;
+      },
+      {}
+    );
 
-    // console.log(result);
-    // console.log(extraQuantity);
-    // console.log(extraPrices);
+    const result = Object.values(merged);
+
+    console.log(result);
+
     let totalPriceFinal;
     let cutlery;
     let take;
@@ -199,8 +193,9 @@ exports.getEditOrder = async (req, res, next) => {
       cutlery: cutlery,
       take: take,
       orderIds: orderIds,
-      test: test,
+      variants: order[0].OrderItems,
       extras: extras,
+      result: result,
     });
   } catch (err) {
     console.log(err);

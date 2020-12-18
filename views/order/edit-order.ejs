@@ -43,15 +43,14 @@
                     </div>
                   </div>
                   <!-- Invoice Table -->
-                  <% for (let i =0; i < order.length; i++) { %>
-                    
-                    <% for (let j = 0; j < test.length; j++) { %>
+                  <% for (let i =0; i < result.length; i++) { %>
+                
                   <div class="ms-invoice-table table-responsive mt-5">
                     <table class="table table-hover text-right thead-light">
                       <thead>
                         <tr class="text-capitalize">
                           <th class="text-center w-5">id</th>
-                          <th class="text-left">description</th>
+                          <th class="text-left">Product Name</th>
                           <th>qty</th>
                           <th>Unit Cost</th>
                           <th>total</th>
@@ -59,19 +58,19 @@
                       </thead>
                       <tbody>
                         <tr>
-                          <td class="text-center"><%= order[0].OrderItems[j].quantity %></td>
-                          <td class="text-left"><%= test[j].Variant.ProductFinals[j].Product.ProductTranslations[0].title %></td>
-                          <td><%= order[0].OrderItems[j].quantity %></td>
-                          <td><%= order[0].OrderItems[j].variantPrice %></td>
-                          <td><%= order[0].OrderItems[j].variantPrice %></td>
+                          <td class="text-center"><%= result[i].product_id %></td>
+                          <td class="text-left"><%= result[i].product_name %></td>
+                          <td><%= result[i].product_quantity %></td>
+                          <td><%= result[i].product_price %></td>
+                          <td><%= result[i].product_price %></td>
                         </tr>
-                        <% for (let k = 0; k < extras.length; k++) { %>
+                        <% for (let k = 0; k < result[i].extras.length; ++k) { %>
                         <tr>
-                          <td class="text-center">2</td>
-                          <td class="text-left"><%= extras[k].Extra.ExtraTranslations[0].name %></td>
+                          <td class="text-center"><%=  result[i].extras[k].extra_id%></td>
+                          <td class="text-left"><%=  result[i].extras[k].extra_name%></td>
                           <td>1</td>
                           <td>$69</td>
-                          <td>$69</td>
+                          <td><%=  result[i].extras[k].extra_price%></td>
                         </tr>
                         <% } %>        
                       </tbody>
@@ -84,7 +83,7 @@
                     </table>
                   </div>
                   <% } %>
-                  <% } %>
+              
                   <!-- end -->
                   <div class="invoice-buttons text-right"> <a href="#" class="btn btn-primary mr-2">Print Invoice</a>
                     <a href="#" class="btn btn-primary">Send Invoice</a>
