@@ -104,19 +104,20 @@ exports.getEditOrder = async (req, res, next) => {
     // for (let i = 0; i < order[0].OrderItems.length; i++) {
     let variants = order[0].OrderItems;
     // console.log(variants);
+    // console.log(variants);
     for (let j = 0; j < variants.length; j++) {
       let extras = variants[j].OrderItemExtras;
-      //   console.log(variants[j]);
+      //   console.log(extras[j]);
       //   console.log(j);
       for (let k = 0; k < extras.length; k++) {
-        console.log(k);
+        // console.log(k);
         const items = {
           extra_id: extras[k].extraId,
           extra_quantity: extras[k].quantity,
           extra_price: extras[k].extraPrice,
           product_id: variants[j].Variant.ProductFinals[j].productId,
-          product_quantity: "q_q",
-          product_price: "p_p",
+          product_quantity: variants[j].quantity,
+          product_price: variants[j].variantPrice,
           product_name:
             variants[j].Variant.ProductFinals[j].Product.ProductTranslations[0]
               .title,
