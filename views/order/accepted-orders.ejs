@@ -8,12 +8,9 @@
     <div class="ms-content-wrapper">
       <div class="ms-profile-overview no-img-var">
          <ul class="ms-profile-navigation nav nav-tabs tabs-bordered" role="tablist">
-            <li role="presentation"><a href="#" aria-controls="tab1" class="active show" role="tab" data-toggle="tab">Új rendelések</a></li>
-            <li role="presentation"><a class="add-variant" href="/admin/accepted-orders">Elfogadott rendelések </a></li>
+            <li role="presentation"><a class="add-variant" href="/admin/orders">Új rendelések</a></li>
+            <li role="presentation"><a href="#" aria-controls="tab1" class="active show" role="tab" data-toggle="tab">Elfogadott rendelések </a></li>
             <li role="presentation"><a class="add-extra" href="/admin/extra-index">Törölt rendelések </a></li>
-          
-
-
          </ul>
         
       </div>
@@ -47,7 +44,7 @@
                   <a href="/admin/edit-order/<%= orders[i].id %>?edit=true"class="btn grid-btn mt-0 btn-sm btn-secondary" >Megtekintés</a>
                   </div>
                 </td>
-              
+             
               </tr>
             </tbody>
           </table>
@@ -78,23 +75,21 @@
                         <div class="invoice-address">
                            <h5>Név: <%= orders[i].User.fullName %></h5>
                            <h5>
-                           Telefonszám: <%= orders[i].OrderDeliveryAddress.phoneNumber %> 
+                           Telefonszám: <%= orderPhoneNumber %> 
                            <h5>
                            <h5>
                            Utca: <%= orders[i].OrderDeliveryAddress.street %> 
                            <h5>
                            <h5>
-                           Házszám: <%= orders[i].OrderDeliveryAddress.houseNumber %> 
+                           Házszám: <%= orderHouseNumber %> 
                            <h5>
                            <h5>
-                           Emelet: <%= orders[i].OrderDeliveryAddress.floor %> 
+                           Emelet: <%= orderFloor %> 
                            <h5>
                            <h5>
-                           Ajtó: <%= orders[i].OrderDeliveryAddress.doorNumber %> 
+                           Ajtó: <%= orderDoorNumber %> 
                            <h5>
-                              <h5>
-                                 E-mail: <%= orders[i].User.fullName %> 
-                                 <h5>
+                            
                         </div>
                      </div>
                      <div class="col-md-6 text-md-right">
@@ -152,95 +147,8 @@
                   value="<%= orders[i].id %>"
                   name="orderId"
                   />
-                  <!-- end -->
-                  <div class="invoice-buttons text-right">
-                     <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal<%= orders[i].id %>">
-                     Elfogadas
-                     </button>
-                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalFailed<%= orders[i].id %>">
-                        Elutasitas
-                        </button>
-                  </div>
-                  <!-- Button trigger modal -->
-                  <!-- Modal Success-->
-                  <div class="modal fade" id="exampleModal<%= orders[i].id %>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                     <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                           <div class="modal-header">
-                              <h5 class="modal-title" id="exampleModalLabel">Kb kiszallitasi ido megadas</h5>
-                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                              <span aria-hidden="true">&times;</span>
-                              </button>
-                           </div>
-                           <div class="modal-body">
-                            <div class="container">
-                              <div class="row">
-                                <div class="col-sm">
-                                  <label for="hours">Óra:</label>
-                                  <select class="form-control"  name="hours" id="hours">
-                                    <option selected="selected" value="0">0</option>
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                    <option value="5">5</option>
-                                  </select>
-                                </div>
-                                <div class="col-sm">
-                                  <label for="minutes">Perc:</label>
-                                  <select class="form-control minute-css"  name="minutes" id="minutes">
-                                    <option value="0">0</option>
-                                    <option value="5">5</option>
-                                    <option value="10">10</option>
-                                    <option value="15">15</option>
-                                    <option value="20">20</option>
-                                    <option value="25">25</option>
-                                    <option value="30">30</option>
-                                    <option value="35">35</option>
-                                    <option value="40">40</option>
-                                    <option value="45">45</option>
-                                    <option selected="selected"  value="50">50</option>
-                                    <option value="55">55</option>
-                                  </select>
-                                </div>
-                              
-                              </div>
-                            </div>
-                           </div>
-                           <div class="modal-footer">
-                              <button type="submit" class="btn btn-success">Rendelés befejezése</button>
-                              <button type="button"  data-dismiss="modal" class="btn btn-secondary">Bezárás</button>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-                  <!-- Modal Failed-->
-                  <div class="modal fade" id="exampleModalFailed<%= orders[i].id %>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                     <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                           <div class="modal-header">
-                              <h5 class="modal-title" id="exampleModalLabel">FAILED</h5>
-                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                              <span aria-hidden="true">&times;</span>
-                              </button>
-                           </div>
-                           <div class="modal-body">
-                            <div class="container">
-                              <div class="row">
-                               
-                                    <label for="failedDescription">Example textarea</label>
-                                    <textarea class="form-control" name="failedDescription"id="failedDescription" rows="5"></textarea>
-                                  
-                              </div>
-                            </div>
-                           </div>
-                           <div class="modal-footer">
-                              <button type="submit" class="btn btn-primary">Rendelés befejezése</button>
-                              <button type="button"  data-dismiss="modal" class="btn btn-secondary">Bezárás</button>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
+               
+               
                </div>
             </div>
          </div>
