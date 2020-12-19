@@ -47,7 +47,7 @@
     <form
     id="createBox_form"
     class="ms-content-wrapper"
-    action="/admin/<% if (editing) { %>edit-orders<% } else { %>add-box<% } %>"
+    action="/admin/<% if (editing) { %>edit-order<% } else { %>edit-order<% } %>"
     method="POST">
     <div class="ms-content-wrapper">
       <div class="row">
@@ -132,17 +132,23 @@
                         </tfoot>
                      </table>
                   </div>
+                 
                   <% } %>
+                  <input
+                  type="hidden"
+                  value="<%= orders[i].id %>"
+                  name="orderId"
+                  />
                   <!-- end -->
                   <div class="invoice-buttons text-right">
-                     <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal">
+                     <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal<%= orders[i].id %>">
                      Elfogadas
                      </button>
                      <a href="#" class="btn btn-primary">Elutasitas</a>
                   </div>
                   <!-- Button trigger modal -->
                   <!-- Modal -->
-                  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal fade" id="exampleModal<%= orders[i].id %>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                      <div class="modal-dialog" role="document">
                         <div class="modal-content">
                            <div class="modal-header">
