@@ -81,8 +81,9 @@ exports.getOrders = async (req, res, next) => {
   });
   console.log(orders);
   let extras = [];
-  const resultWithAll = [];
+
   for (let i = 0; i < orders.length; i++) {
+    const resultWithAll = [];
     let variants = orders[i].OrderItems;
 
     for (let j = 0; j < variants.length; j++) {
@@ -257,7 +258,6 @@ exports.getEditOrder = async (req, res, next) => {
         },
       ],
     });
-    console.log(order[0].User.email);
     let extras = [];
     const resultWithAll = [];
     let variants = order[0].OrderItems;
