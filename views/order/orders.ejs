@@ -6,12 +6,285 @@
   <main class="body-content">
     <%- include('../includes/navigation-bar.ejs') %>   
     <% for (let i =0; i < orders.length; i++) { %>
-      <div>
-        <a href="/admin/edit-order/<%= orders[i].id %>?edit=true"class="btn grid-btn mt-0 btn-sm btn-secondary" >View</a>
-        {Hello world}
-      </div>
+     
    
+
+    <p>
+     
+      <div class="ms-content-wrapper" data-toggle="collapse" href="#collapseExample<%= orders[i].id %>" aria-expanded="false" aria-controls="collapseExample<%= orders[i].id %>">
+        <div class="table-responsive">
+          <table class="table table-hover thead-primary">
+            <thead>
+              <tr>
+                <th scope="col">Rendelési szám</th>
+                <th scope="col">Név</th>
+                <th scope="col">Hova</th>
+            
+                <th scope="col">Végösszeg</th>
+                <th scope="col">Megtekintés</th>
+                <th scope="col">Elutasítás</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">#12</th>
+                <td>Erdős József</td>
+                <td>Székelyudvarhely</td>
+                <td>145,66</td>
+                <td>
+                  <div>
+                  <a href="/admin/edit-order/<%= orders[i].id %>?edit=true"class="btn grid-btn mt-0 btn-sm btn-secondary" >Megtekintés</a>
+                  </div>
+                </td>
+                <td>
+                  <div>
+                  <a href="/admin/edit-order/<%= orders[i].id %>?edit=true"class="btn grid-btn mt-0 btn-sm btn-secondary" >Elutasítás</a>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </p>
+    <div class="collapse" id="collapseExample<%= orders[i].id %>">
+    <!-- Start -->
+    <form
+    id="createBox_form"
+    class="ms-content-wrapper"
+    action="/admin/<% if (editing) { %>edit-order<% } else { %>add-box<% } %>"
+    method="POST">
+    <div class="ms-content-wrapper">
+      <div class="row">
+         <div class="col-md-12">
+            <div class="ms-panel">
+               <div class="ms-panel-header header-mini">
+                  <div class="d-flex justify-content-between">
+                     <h6>Szamla</h6>
+                     <h6>#<%= orderIds %></h6>
+                  </div>
+               </div>
+               <div class="ms-panel-body">
+                  <!-- Invoice To -->
+                  <h4>Kliens adatai: </h4>
+                  <div class="row align-items-center border-order-userinf">
+                     <div class="col-md-6 info-order-top">
+                        <div class="invoice-address">
+                           <h5>Név: <%= userName %></h5>
+                           <h5>
+                           Telefonszám: <%= orderPhoneNumber %> 
+                           <h5>
+                           <h5>
+                           Utca: <%= orderStreet %> 
+                           <h5>
+                           <h5>
+                           Házszám: <%= orderHouseNumber %> 
+                           <h5>
+                           <h5>
+                           Emelet: <%= orderFloor %> 
+                           <h5>
+                           <h5>
+                           Ajtó: <%= orderDoorNumber %> 
+                           <h5>
+                        </div>
+                     </div>
+                     <div class="col-md-6 text-md-right">
+                        <ul class="invoice-date">
+                           <li>Invoice Date : <%= orderCreated %></li>
+                           <li> <button class="btn btn-success has-icon" id="createVariant" type="submit">Adatok modositasa</button></li>
+                        </ul>
+                     </div>
+                     <div class="col-md-6 mb-3">
+                        <label for="sku">Nev</label>
+                        <div class="input-group">
+                           <input
+                              class="form-control"
+                              type="text"
+                              autocomplete="off"
+                              name="sku"
+                              disabled
+                              id="sku"
+                              value="<% if (editing) { %><%= userName %><% } %>">
+                        </div>
+                        <span class="error_form" id="sku_error_message"></span>
+                     </div>
+                     <div class="col-md-6 mb-3">
+                        <label for="sku">Telefonszám</label>
+                        <div class="input-group">
+                           <input
+                              class="form-control"
+                              type="text"
+                              autocomplete="off"
+                              name="sku"
+                              id="sku"
+                              value="<% if (editing) { %><%= orderPhoneNumber %><% } %>">
+                        </div>
+                        <span class="error_form" id="sku_error_message"></span>
+                     </div>
+                     <div class="col-md-6 mb-3">
+                        <label for="sku">Utca</label>
+                        <div class="input-group">
+                           <input
+                              class="form-control"
+                              type="text"
+                              autocomplete="off"
+                              name="sku"
+                              id="sku"
+                              value="<% if (editing) { %><%= orderStreet %><% } %>">
+                        </div>
+                        <span class="error_form" id="sku_error_message"></span>
+                     </div>
+                     <div class="col-md-6 mb-3">
+                        <label for="sku">Házszám</label>
+                        <div class="input-group">
+                           <input
+                              class="form-control"
+                              type="text"
+                              autocomplete="off"
+                              name="sku"
+                              id="sku"
+                              value="<% if (editing) { %><%= orderHouseNumber %><% } %>">
+                        </div>
+                        <span class="error_form" id="sku_error_message"></span>
+                     </div>
+                     <div class="col-md-6 mb-3">
+                        <label for="sku">Emelet</label>
+                        <div class="input-group">
+                           <input
+                              class="form-control"
+                              type="text"
+                              autocomplete="off"
+                              name="sku"
+                              id="sku"
+                              value="<% if (editing) { %><%= orderFloor %><% } %>">
+                        </div>
+                        <span class="error_form" id="sku_error_message"></span>
+                     </div>
+                     <div class="col-md-6 mb-3">
+                        <label for="sku">Ajtó</label>
+                        <div class="input-group">
+                           <input
+                              class="form-control"
+                              type="text"
+                              autocomplete="off"
+                              name="sku"
+                              id="sku"
+                              value="<% if (editing) { %><%= orderDoorNumber %><% } %>">
+                        </div>
+                        <span class="error_form" id="sku_error_message"></span>
+                     </div>
+                  </div>
+                  <!-- Invoice Table -->
+                  <% for (let i =0; i < result.length; i++) { %>
+                  <div class="ms-invoice-table table-responsive mt-5">
+                     <table class="table table-hover text-right thead-light">
+                        <thead>
+                           <tr class="text-capitalize">
+                              <th class="text-center w-5">id</th>
+                              <th class="text-left">Product Name</th>
+                              <th>qty</th>
+                              <th>Termek ar</th>
+                              <th>total</th>
+                           </tr>
+                        </thead>
+                        <tbody>
+                           <tr>
+                              <td class="text-center"><%= result[i].product_id %></td>
+                              <td class="text-left"><%= result[i].product_name %></td>
+                              <td><%= result[i].product_quantity %></td>
+                              <td><%= result[i].product_price %></td>
+                              <td><%= result[i].total_product_price %></td>
+                           </tr>
+                           <% for (let k = 0; k < result[i].extras.length; ++k) { %>
+                           <tr>
+                              <td class="text-center"><%=  result[i].extras[k].extra_id%></td>
+                              <td class="text-left"><%=  result[i].extras[k].extra_name%></td>
+                              <td><%=  result[i].extras[k].extra_quantity%></td>
+                              <td>$<%=  result[i].extras[k].extra_price%></td>
+                              <td><%=  result[i].extras[k].total_extra_price%></td>
+                           </tr>
+                           <% } %>        
+                        </tbody>
+                        <tfoot>
+                           <tr>
+                              <td colspan="4">Total Cost:</td>
+                              <td>$<%= result[i].total_cost_produce_extra %></td>
+                           </tr>
+                        </tfoot>
+                     </table>
+                  </div>
+                  <% } %>
+                  <!-- end -->
+                  <div class="invoice-buttons text-right">
+                     <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal">
+                     Elfogadas
+                     </button>
+                     <a href="#" class="btn btn-primary">Elutasitas</a>
+                  </div>
+                  <!-- Button trigger modal -->
+                  <!-- Modal -->
+                  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                     <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                           <div class="modal-header">
+                              <h5 class="modal-title" id="exampleModalLabel">Kb kiszallitasi ido megadas</h5>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                              </button>
+                           </div>
+                           <div class="modal-body">
+                            <div class="container">
+                              <div class="row">
+                                <div class="col-sm">
+                                  <label for="hours">Óra:</label>
+                                  <select class="form-control"  name="hours" id="hours">
+                                    <option selected="selected" value="0">0</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                  </select>
+                                </div>
+                                <div class="col-sm">
+                                  <label for="minutes">Perc:</label>
+                                  <select class="form-control minute-css"  name="minutes" id="minutes">
+                                    <option value="0">0</option>
+                                    <option value="5">5</option>
+                                    <option value="10">10</option>
+                                    <option value="15">15</option>
+                                    <option value="20">20</option>
+                                    <option value="25">25</option>
+                                    <option value="30">30</option>
+                                    <option value="35">35</option>
+                                    <option value="40">40</option>
+                                    <option value="45">45</option>
+                                    <option selected="selected"  value="50">50</option>
+                                    <option value="55">55</option>
+                                  </select>
+                                </div>
+                              
+                              </div>
+                            </div>
+                           </div>
+                           <div class="modal-footer">
+                              <button type="submit" class="btn btn-success">Rendelés befejezése</button>
+                              <button type="button"  data-dismiss="modal" class="btn btn-secondary">Bezárás</button>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+    </form>
+    <!-- End -->
+    </div>
+    
     <% } %>
+
   </main>
  
 <%- include('../includes/end.ejs')

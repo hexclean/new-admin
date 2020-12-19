@@ -490,8 +490,16 @@ Version: 1.0.0
   background-color: #d9534f;
 }
 .border-order-userinf {
-  border: 1px solid red;
+  border: 1px solid green;
+  border-radius: 6px !important;
 }
+
+.info-order-top {
+  padding-top: 30px;
+}
+/* // */
+
+/* dsad/ */
 .bg-dark {
   background-color: #34334a;
 }
