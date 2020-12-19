@@ -7,6 +7,7 @@ const Variant = require("../../models/Variant");
 const LocationName = require("../../models/LocationName");
 const User = require("../../models/User");
 const OrderDeliveryAddress = require("../../models/OrderDeliveryAddress");
+const OrderStatus = require("../../models/OrderStatus");
 
 function orders() {
   Order.belongsTo(Restaurant, {
@@ -16,6 +17,14 @@ function orders() {
   });
 
   Restaurant.hasMany(Order, { foreignKey: "restaurantId" });
+
+  Order.belongsTo(OrderStatus, {
+    constrains: true,
+    onDelete: "CASCADE",
+    foreignKey: "orderStatusId",
+  });
+
+  OrderStatus.hasMany(Order, { foreignKey: "orderStatusId" });
 
   Order.belongsTo(OrderDeliveryAddress, {
     constrains: true,

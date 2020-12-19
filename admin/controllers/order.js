@@ -79,7 +79,6 @@ exports.getOrders = async (req, res, next) => {
       },
     ],
   });
-  console.log(orders);
   let extras = [];
 
   for (let i = 0; i < orders.length; i++) {
