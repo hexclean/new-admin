@@ -37,17 +37,6 @@ const nexmo = new Nexmo(
 );
 exports.getOrders = async (req, res, next) => {
   const orders = await Order.findAll({
-    where: { restaurantId: req.admin.id },
-  });
-  let orderId = [];
-  for (let i = 0; i < orders.length; i++) {
-    orderId.push(orders[i].id);
-  }
-  console.log("orderId", orderId);
-  const order = await Order.findAll({
-    where: {
-      id: { [Op.in]: orderId },
-    },
     include: [
       {
         model: OrderItem,
@@ -90,72 +79,77 @@ exports.getOrders = async (req, res, next) => {
       },
     ],
   });
+  console.log(orders);
   let extras = [];
   const resultWithAll = [];
-  let variants = order[0].OrderItems;
-  for (let j = 0; j < variants.length; j++) {
-    extras = variants[j].OrderItemExtras;
+  for (let i = 0; i < orders.length; i++) {
+    let variants = orders[i].OrderItems;
 
-    for (let k = 0; k < extras.length; k++) {
-      let totalProductPrice = 0;
-      let totalExtraPrice = 0;
+    for (let j = 0; j < variants.length; j++) {
+      extras = variants[j].OrderItemExtras;
 
-      totalProductPrice +=
-        parseFloat(variants[j].variantPrice) * parseInt(variants[j].quantity);
-      totalExtraPrice +=
-        parseFloat(extras[k].extraPrice) * parseInt(extras[k].quantity);
+      for (let k = 0; k < extras.length; k++) {
+        let totalProductPrice = 0;
+        let totalExtraPrice = 0;
 
-      const items = {
-        product_id: variants[j].Variant.ProductFinals[j].productId,
-        product_quantity: variants[j].quantity,
-        product_price: variants[j].variantPrice,
-        product_name:
-          variants[j].Variant.ProductFinals[j].Product.ProductTranslations[0]
-            .title,
-        extra_id: extras[k].extraId,
-        extra_quantity: extras[k].quantity,
-        extra_price: extras[k].extraPrice,
-        extra_name:
-          variants[j].Variant.ProductVariantsExtras[k].Extra
-            .ExtraTranslations[0].name,
-        total_product_price: totalProductPrice,
-        total_extra_price: totalExtraPrice,
-      };
+        totalProductPrice +=
+          parseFloat(variants[j].variantPrice) * parseInt(variants[j].quantity);
+        totalExtraPrice +=
+          parseFloat(extras[k].extraPrice) * parseInt(extras[k].quantity);
 
-      resultWithAll.push(items);
-    }
-  }
-  const merged = resultWithAll.reduce(
-    (
-      r,
-      {
-        product_id,
-        product_quantity,
-        product_price,
-        product_name,
-        total_product_price,
+        const items = {
+          product_id: variants[j].Variant.ProductFinals[j].productId,
+          product_quantity: variants[j].quantity,
+          product_price: variants[j].variantPrice,
+          product_name:
+            variants[j].Variant.ProductFinals[j].Product.ProductTranslations[0]
+              .title,
+          extra_id: extras[k].extraId,
+          extra_quantity: extras[k].quantity,
+          extra_price: extras[k].extraPrice,
+          extra_name:
+            variants[j].Variant.ProductVariantsExtras[k].Extra
+              .ExtraTranslations[0].name,
+          total_product_price: totalProductPrice,
+          total_extra_price: totalExtraPrice,
+        };
 
-        ...rest
+        resultWithAll.push(items);
       }
-    ) => {
-      const key = `${product_id}-${product_quantity}-${product_price}-${product_name}-${total_product_price}`;
-      r[key] = r[key] || {
-        product_id,
-        product_quantity,
-        product_price,
-        product_name,
-        total_product_price,
+    }
 
-        extras: [],
-      };
-      r[key]["extras"].push(rest);
-      return r;
-    },
-    {}
-  );
+    const merged = resultWithAll.reduce(
+      (
+        r,
+        {
+          product_id,
+          product_quantity,
+          product_price,
+          product_name,
+          total_product_price,
 
-  const result = Object.values(merged);
+          ...rest
+        }
+      ) => {
+        const key = `${product_id}-${product_quantity}-${product_price}-${product_name}-${total_product_price}`;
+        r[key] = r[key] || {
+          product_id,
+          product_quantity,
+          product_price,
+          product_name,
+          total_product_price,
 
+          extras: [],
+        };
+        r[key]["extras"].push(rest);
+        return r;
+      },
+      {}
+    );
+
+    const result = Object.values(merged);
+    orders[i].products = result;
+  }
   let totalPriceFinal;
   let cutlery;
   let take;
@@ -168,25 +162,24 @@ exports.getOrders = async (req, res, next) => {
   let orderPhoneNumber;
   let orderCreated;
   let orderIds;
-  totalPriceFinal = order[0].totalPrice;
-  cutlery = order[0].cutlery;
-  take = order[0].take;
-  //   orderCity = order[0].OrderDeliveryAddress;
-  orderStreet = order[0].OrderDeliveryAddress.street;
-  orderHouseNumber = order[0].OrderDeliveryAddress.houseNumber;
-  orderFloor = order[0].OrderDeliveryAddress.floor;
-  orderDoorNumber = order[0].OrderDeliveryAddress.doorNumber;
-  orderPhoneNumber = order[0].OrderDeliveryAddress.phoneNumber;
-  orderCreated = order[0].createdAt;
-  userName = order[0].User.fullName;
-  orderIds = order[0].id;
+  totalPriceFinal = orders[0].totalPrice;
+  cutlery = orders[0].cutlery;
+  take = orders[0].take;
+  //   orderCity = orders[0].OrderDeliveryAddress;
+  orderStreet = orders[0].OrderDeliveryAddress.street;
+  orderHouseNumber = orders[0].OrderDeliveryAddress.houseNumber;
+  orderFloor = orders[0].OrderDeliveryAddress.floor;
+  orderDoorNumber = orders[0].OrderDeliveryAddress.doorNumber;
+  orderPhoneNumber = orders[0].OrderDeliveryAddress.phoneNumber;
+  orderCreated = orders[0].createdAt;
+  userName = orders[0].User.fullName;
+  orderIds = orders[0].id;
 
   res.render("order/orders", {
     pageTitle: "Add Product",
     path: "/admin/add-product",
     editing: false,
     orders: orders,
-    order: order,
     orderStreet: orderStreet,
     orderHouseNumber: orderHouseNumber,
     orderFloor: orderFloor,
@@ -197,9 +190,9 @@ exports.getOrders = async (req, res, next) => {
     cutlery: cutlery,
     take: take,
     orderIds: orderIds,
-    variants: order[0].OrderItems,
+    variants: orders[0].OrderItems,
     extras: extras,
-    result: result,
+    // result: 1,
   });
 };
 
@@ -392,63 +385,62 @@ exports.postEditOrder = async (req, res, next) => {
   const hours = req.body.hours;
   const minutes = req.body.minutes;
   const email = req.body.email;
+  const phoneNumber = req.body.phoneNumber;
   console.log("hours:", hours);
   console.log("minutes:", minutes);
   console.log("email", email);
   // api key: d5443b6c
   //   Api secret: 1BwKJBVaAkNDSG9W
   const from = "Vonage APIs";
-  const to = "40753541070";
+  //   const to = "40753541070"; -> helyes
+  const to = phoneNumber;
 
   try {
-    if (hours == "0") {
-      const text = `A rendelesed korulbelul ${minutes} perc mulva erkezik`;
-      nexmo.message.sendSms(from, to, text),
-        {
-          type: "unicode",
-        },
-        (err, responseData) => {
-          if (err) {
-            console.log(err);
-          } else {
-            console.dir(responseData);
-          }
-        };
-      //   transporter.sendMail({
-      //     to: email,
-      //     from: "order@foodnet.ro",
-      //     subject: "Delivery Time",
-      //     html: `
-      //         <p>A rendelesed korulbelul ${minutes} perc mulva erkezik</p>
-      //         <p></p>
-      //       `,
-      //   });
-    } else {
-      const text = `A rendelesed korulbelul ${hours} óra és ${minutes} perc mulva erkezik`;
-
-      nexmo.message.sendSms(from, to, text),
-        {
-          type: "unicode",
-        },
-        (err, responseData) => {
-          if (err) {
-            console.log(err);
-          } else {
-            console.dir(responseData);
-          }
-        };
-      //   transporter.sendMail({
-      //     to: email,
-      //     from: "order@foodnet.ro",
-      //     subject: "Delivery Time",
-      //     html: `
-      //         <p>>A rendelesed korulbelul ${hours} óra és ${minutes} perc mulva erkezik</p>
-      //         <p></p>
-      //       `,
-      //   });
-    }
-
-    // nexmo.message.sendSms("0753541070", "+40742521357", "Hello");
+    // if (hours == "0") {
+    //   const text = `A rendelesed korulbelul ${minutes} perc mulva erkezik`;
+    //   nexmo.message.sendSms(from, to, text),
+    //     {
+    //       type: "unicode",
+    //     },
+    //     (err, responseData) => {
+    //       if (err) {
+    //         console.log(err);
+    //       } else {
+    //         console.dir(responseData);
+    //       }
+    //     };
+    //   transporter.sendMail({
+    //     to: email,
+    //     from: "order@foodnet.ro",
+    //     subject: "Delivery Time",
+    //     html: `
+    //         <p>A rendelesed korulbelul ${minutes} perc mulva erkezik</p>
+    //         <p></p>
+    //       `,
+    //   });
+    // } else {
+    //   const text = `A rendelesed korulbelul ${hours} óra és ${minutes} perc mulva erkezik`;
+    //   nexmo.message.sendSms(from, to, text),
+    //     {
+    //       type: "unicode",
+    //     },
+    //     (err, responseData) => {
+    //       if (err) {
+    //         console.log(err);
+    //       } else {
+    //         console.dir(responseData);
+    //       }
+    //     };
+    //   transporter.sendMail({
+    //     to: email,
+    //     from: "order@foodnet.ro",
+    //     subject: "Delivery Time",
+    //     html: `
+    //         <p>>A rendelesed korulbelul ${hours} óra és ${minutes} perc mulva erkezik</p>
+    //         <p></p>
+    //       `,
+    //   });
+    // }
 
     res.redirect("/admin/orders");
     async function msg() {
