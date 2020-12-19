@@ -16,6 +16,9 @@ const ExtraTranslation = require("../../models/ExtraTranslation");
 const nodemailer = require("nodemailer");
 const sendgridTransport = require("nodemailer-sendgrid-transport");
 const Op = Sequelize.Op;
+const Nexmo = require("nexmo");
+// const socketio = require("socket.io");
+const { type } = require("os");
 const ITEMS_PER_PAGE = 20;
 const transporter = nodemailer.createTransport(
   sendgridTransport({
@@ -25,15 +28,26 @@ const transporter = nodemailer.createTransport(
     },
   })
 );
-
+const nexmo = new Nexmo(
+  {
+    apiKey: "d5443b6c",
+    apiSecret: "1BwKJBVaAkNDSG9W",
+  },
+  { debug: true }
+);
 exports.getOrders = async (req, res, next) => {
   const orders = await Order.findAll({
     where: { restaurantId: req.admin.id },
   });
+  let orderId = [];
+  for (let i = 0; i < orders.length; i++) {
+    orderId.push(orders[i].id);
+  }
+  console.log("orderId", orderId);
   const order = await Order.findAll({
-    // where: {
-    //   id: orderId,
-    // },
+    where: {
+      id: { [Op.in]: orderId },
+    },
     include: [
       {
         model: OrderItem,
@@ -209,6 +223,7 @@ exports.getEditOrder = async (req, res, next) => {
       },
       include: [
         {
+          model: User,
           model: OrderItem,
 
           include: [
@@ -249,6 +264,7 @@ exports.getEditOrder = async (req, res, next) => {
         },
       ],
     });
+    console.log(order[0].User.email);
     let extras = [];
     const resultWithAll = [];
     let variants = order[0].OrderItems;
@@ -358,6 +374,7 @@ exports.getEditOrder = async (req, res, next) => {
       variants: order[0].OrderItems,
       extras: extras,
       result: result,
+      userEmail: order[0].User.email,
     });
   } catch (err) {
     console.log(err);
@@ -374,19 +391,66 @@ exports.postEditOrder = async (req, res, next) => {
   const extTranId = req.body.extTranId;
   const hours = req.body.hours;
   const minutes = req.body.minutes;
-
+  const email = req.body.email;
   console.log("hours:", hours);
   console.log("minutes:", minutes);
+  console.log("email", email);
+  // api key: d5443b6c
+  //   Api secret: 1BwKJBVaAkNDSG9W
+  const from = "Vonage APIs";
+  const to = "40753541070";
+
   try {
-    // transporter.sendMail({
-    //   to: email,
-    //   from: "reset-password@foodnet.ro",
-    //   subject: "Password reset",
-    //   html: `
-    //         <p>You requested a password reset</p>
-    //         <p>Click this <a href="https://shielded-anchorage-51692.herokuapp.com/reset-password/${token}">link</a> to set a new password.</p>
-    //       `,
-    // });
+    if (hours == "0") {
+      const text = `A rendelesed korulbelul ${minutes} perc mulva erkezik`;
+      nexmo.message.sendSms(from, to, text),
+        {
+          type: "unicode",
+        },
+        (err, responseData) => {
+          if (err) {
+            console.log(err);
+          } else {
+            console.dir(responseData);
+          }
+        };
+      //   transporter.sendMail({
+      //     to: email,
+      //     from: "order@foodnet.ro",
+      //     subject: "Delivery Time",
+      //     html: `
+      //         <p>A rendelesed korulbelul ${minutes} perc mulva erkezik</p>
+      //         <p></p>
+      //       `,
+      //   });
+    } else {
+      const text = `A rendelesed korulbelul ${hours} óra és ${minutes} perc mulva erkezik`;
+
+      nexmo.message.sendSms(from, to, text),
+        {
+          type: "unicode",
+        },
+        (err, responseData) => {
+          if (err) {
+            console.log(err);
+          } else {
+            console.dir(responseData);
+          }
+        };
+      //   transporter.sendMail({
+      //     to: email,
+      //     from: "order@foodnet.ro",
+      //     subject: "Delivery Time",
+      //     html: `
+      //         <p>>A rendelesed korulbelul ${hours} óra és ${minutes} perc mulva erkezik</p>
+      //         <p></p>
+      //       `,
+      //   });
+    }
+
+    // nexmo.message.sendSms("0753541070", "+40742521357", "Hello");
+
+    res.redirect("/admin/orders");
     async function msg() {
       await AllergensTranslation.update(
         { name: updatedRoName },

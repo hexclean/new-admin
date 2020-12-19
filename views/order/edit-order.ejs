@@ -40,8 +40,16 @@
                                  <h5>
                                  Ajtó: <%= orderDoorNumber %> 
                                  <h5>
+                                  <h5>
+                                    E-mail: <%= userEmail %> 
+                                    <h5>
                               </div>
                            </div>
+                           <input
+                           type="hidden"
+                           value="<%= userEmail %>"
+                           name="email"
+                           />
                            <div class="col-md-6 text-md-right">
                               <ul class="invoice-date">
                                  <li>Invoice Date : <%= orderCreated %></li>
