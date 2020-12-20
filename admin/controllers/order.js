@@ -560,7 +560,7 @@ exports.postEditOrder = async (req, res, next) => {
   console.log("hours:", hours);
   console.log("minutes:", minutes);
   const failedDescription = req.body.failedDescription;
-  console.log("email", failedDescription.length !== 0);
+  console.log("email", failedDescription.length);
 
   // api key: d5443b6c
   //   Api secret: 1BwKJBVaAkNDSG9W
@@ -569,37 +569,36 @@ exports.postEditOrder = async (req, res, next) => {
   const to = phoneNumber;
   // console.log("failedDescription", failedDescription.length);
   try {
-    if ((hours == "0") & (failedDescription.length !== 0)) {
+    if (hours == "0" && failedDescription.length == 0) {
       console.log("x perc mulva erkezik");
-      // nexmo.message.sendSms(from, to, text),
-      //   {
-      //     type: "unicode",
-      //   },
-      //   (err, responseData) => {
-      //     if (err) {
-      //       console.log(err);
-      //     } else {
-      //       console.dir(responseData);
-      //     }
-      //   };
-      // transporter.sendMail({
-      //   to: email,
-      //   from: "order@foodnet.ro",
-      //   subject: "Delivery Time",
-      //   html: `
-      //     <p>A rendelesed korulbelul ${minutes} perc mulva erkezik</p>
-      //     <p></p>
-      //   `,
-      // });
     } else if (failedDescription.length !== 0) {
       console.log("ELUTASITVA!!");
     } else if ((hours !== "0") & (minutes !== "0")) {
       console.log("van ora es perc is");
-    } else if (minutes == "0") {
-      console.log("ennyi ora mulva jon a kaja nincs perc");
     } else {
-      console.log("itt nem tudom mi lesz");
+      console.log("ennyi ora mulva jon a kaja nincs perc");
     }
+
+    // nexmo.message.sendSms(from, to, text),
+    //   {
+    //     type: "unicode",
+    //   },
+    //   (err, responseData) => {
+    //     if (err) {
+    //       console.log(err);
+    //     } else {
+    //       console.dir(responseData);
+    //     }
+    //   };
+    // transporter.sendMail({
+    //   to: email,
+    //   from: "order@foodnet.ro",
+    //   subject: "Delivery Time",
+    //   html: `
+    //     <p>A rendelesed korulbelul ${minutes} perc mulva erkezik</p>
+    //     <p></p>
+    //   `,
+    // });
     // if (hours == "0" && failedDescription.length == 0) {
     //   console.log("igaz mert nem azt csinaltam");
     //   const text = `A rendelesed korulbelul ${minutes} perc mulva erkezik`;
