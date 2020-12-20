@@ -10,7 +10,7 @@
          <ul class="ms-profile-navigation nav nav-tabs tabs-bordered" role="tablist">
             <li role="presentation"><a href="#" aria-controls="tab1" class="active show" role="tab" data-toggle="tab">Új rendelések</a></li>
             <li role="presentation"><a class="add-variant" href="/admin/accepted-orders">Elfogadott rendelések </a></li>
-            <li role="presentation"><a class="add-extra" href="/admin/extra-index">Törölt rendelések </a></li>
+            <li role="presentation"><a class="add-extra" href="/admin/deleted-orders">Törölt rendelések </a></li>
           
 
 
@@ -215,6 +215,7 @@
                      </div>
                   </div>
                   <!-- Modal Failed-->
+               
                   <div class="modal fade" id="exampleModalFailed<%= orders[i].id %>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                      <div class="modal-dialog" role="document">
                         <div class="modal-content">
@@ -229,14 +230,14 @@
                               <div class="row">
                                
                                     <label for="failedDescription">Example textarea</label>
-                                    <textarea class="form-control" name="failedDescription"id="failedDescription" rows="5"></textarea>
+                                    <textarea class="form-control delval<%= orders[i].id %>" name="failedDescription"id="failedDescription<%= orders[i].id %>" rows="5"></textarea>
                                   
                               </div>
                             </div>
                            </div>
                            <div class="modal-footer">
                               <button type="submit" class="btn btn-primary">Rendelés befejezése</button>
-                              <button type="button"  data-dismiss="modal" class="btn btn-secondary">Bezárás</button>
+                              <button type="button" id="dbtnvaldelval<%= orders[i].id %>"  data-dismiss="modal" class="btn btn-secondary dbtnvaldelval<%= orders[i].id %>">Bezárás</button>
                            </div>
                         </div>
                      </div>

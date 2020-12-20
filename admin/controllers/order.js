@@ -13,6 +13,7 @@ const ProductTranslation = require("../../models/ProductTranslation");
 const ProductVariantsExtras = require("../../models/ProductVariantsExtras");
 const Extra = require("../../models/Extra");
 const ExtraTranslation = require("../../models/ExtraTranslation");
+const OrderStatus = require("../../models/OrderStatus");
 const nodemailer = require("nodemailer");
 const sendgridTransport = require("nodemailer-sendgrid-transport");
 const Op = Sequelize.Op;
@@ -547,7 +548,181 @@ exports.getEditOrder = async (req, res, next) => {
     return next(error);
   }
 };
+exports.getDeletedOrders = async (req, res, next) => {
+  const orders = await Order.findAll({
+    where: { orderStatusId: 3 },
+    include: [
+      {
+        model: OrderItem,
 
+        include: [
+          {
+            model: OrderItemExtra,
+          },
+          {
+            model: Variant,
+            include: [
+              {
+                model: ProductFinal,
+                include: [
+                  {
+                    model: Product,
+                    include: [{ model: ProductTranslation }],
+                  },
+                ],
+              },
+              {
+                model: ProductVariantsExtras,
+                include: [
+                  { model: Extra, include: [{ model: ExtraTranslation }] },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+      { model: OrderDeliveryAddress },
+      { model: User },
+
+      {
+        model: LocationName,
+        include: [
+          {
+            model: LocationNameTranslation,
+          },
+        ],
+      },
+    ],
+  });
+  // if (orders.length == 0) {
+  //   return res.json({
+  //     status: 404,
+  //     msg: "Order success",
+  //     result: [],
+  //   });
+  // }
+  let totalPriceFinal;
+  let cutlery;
+  let take;
+  let userName;
+  let orderCity;
+  let failedDescription;
+  let orderStreet;
+  let orderHouseNumber;
+  let orderFloor;
+  let orderDoorNumber;
+  let orderPhoneNumber;
+  let orderCreated;
+  let orderIds;
+  let extras = [];
+  if (orders.length != 0) {
+    for (let i = 0; i < orders.length; i++) {
+      const resultWithAll = [];
+      let variants = orders[i].OrderItems;
+
+      for (let j = 0; j < variants.length; j++) {
+        extras = variants[j].OrderItemExtras;
+
+        for (let k = 0; k < extras.length; k++) {
+          let totalProductPrice = 0;
+          let totalExtraPrice = 0;
+
+          totalProductPrice +=
+            parseFloat(variants[j].variantPrice) *
+            parseInt(variants[j].quantity);
+          totalExtraPrice +=
+            parseFloat(extras[k].extraPrice) * parseInt(extras[k].quantity);
+
+          const items = {
+            product_id: variants[j].Variant.ProductFinals[j].productId,
+            product_quantity: variants[j].quantity,
+            product_price: variants[j].variantPrice,
+            product_name:
+              variants[j].Variant.ProductFinals[j].Product
+                .ProductTranslations[0].title,
+            extra_id: extras[k].extraId,
+            extra_quantity: extras[k].quantity,
+            extra_price: extras[k].extraPrice,
+            extra_name:
+              variants[j].Variant.ProductVariantsExtras[k].Extra
+                .ExtraTranslations[0].name,
+            total_product_price: totalProductPrice,
+            total_extra_price: totalExtraPrice,
+          };
+
+          resultWithAll.push(items);
+        }
+      }
+
+      const merged = resultWithAll.reduce(
+        (
+          r,
+          {
+            product_id,
+            product_quantity,
+            product_price,
+            product_name,
+            total_product_price,
+
+            ...rest
+          }
+        ) => {
+          const key = `${product_id}-${product_quantity}-${product_price}-${product_name}-${total_product_price}`;
+          r[key] = r[key] || {
+            product_id,
+            product_quantity,
+            product_price,
+            product_name,
+            total_product_price,
+
+            extras: [],
+          };
+          r[key]["extras"].push(rest);
+          return r;
+        },
+        {}
+      );
+
+      const result = Object.values(merged);
+      orders[i].products = result;
+    }
+
+    totalPriceFinal = orders[0].totalPrice;
+    cutlery = orders[0].cutlery;
+    take = orders[0].take;
+    //   orderCity = orders[0].OrderDeliveryAddress;
+    orderStreet = orders[0].OrderDeliveryAddress.street;
+    orderHouseNumber = orders[0].OrderDeliveryAddress.houseNumber;
+    orderFloor = orders[0].OrderDeliveryAddress.floor;
+    orderDoorNumber = orders[0].OrderDeliveryAddress.doorNumber;
+    orderPhoneNumber = orders[0].OrderDeliveryAddress.phoneNumber;
+    orderCreated = orders[0].createdAt;
+    failedDescription = orders[0].deletedMessage;
+
+    userName = orders[0].User.fullName;
+
+    orderIds = orders[0].id;
+  }
+
+  res.render("order/deleted-orders", {
+    pageTitle: "Add Product",
+    path: "/admin/add-product",
+    editing: false,
+    orders: orders,
+    orderStreet: orderStreet,
+    orderHouseNumber: orderHouseNumber,
+    orderFloor: orderFloor,
+    orderDoorNumber: orderDoorNumber,
+    orderPhoneNumber: orderPhoneNumber,
+    orderCreated: orderCreated,
+    userName: userName,
+    cutlery: cutlery,
+    take: take,
+    orderIds: orderIds,
+    extras: extras,
+    failedDescription: failedDescription,
+  });
+};
 exports.postEditOrder = async (req, res, next) => {
   const updatedRoName = req.body.roName;
   const updatedHuName = req.body.huName;
@@ -561,7 +736,7 @@ exports.postEditOrder = async (req, res, next) => {
   console.log("minutes:", minutes);
   const failedDescription = req.body.failedDescription;
   console.log("email", failedDescription.length);
-
+  const orderId = req.body.orderId;
   // api key: d5443b6c
   //   Api secret: 1BwKJBVaAkNDSG9W
   const from = "Vonage APIs";
@@ -570,12 +745,24 @@ exports.postEditOrder = async (req, res, next) => {
   // console.log("failedDescription", failedDescription.length);
   try {
     if (hours == "0" && failedDescription.length == 0) {
+      await Order.update({ orderStatusId: 2 }, { where: { id: orderId } });
+
       console.log("x perc mulva erkezik");
+      console.log("orderId", orderId);
     } else if (failedDescription.length !== 0) {
+      await Order.update(
+        { orderStatusId: 3, deletedMessage: failedDescription },
+        { where: { id: orderId } }
+      );
       console.log("ELUTASITVA!!");
+      console.log("orderId", orderId);
     } else if ((hours !== "0") & (minutes !== "0")) {
+      await Order.update({ orderStatusId: 2 }, { where: { id: orderId } });
       console.log("van ora es perc is");
+      console.log("orderId", orderId);
     } else {
+      console.log("orderId", orderId);
+      await Order.update({ orderStatusId: 2 }, { where: { id: orderId } });
       console.log("ennyi ora mulva jon a kaja nincs perc");
     }
 

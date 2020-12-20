@@ -195,6 +195,7 @@ router.get("/products-reviews", isAuth, reviewController.getProductsReview);
 // Orders
 router.get("/orders", isAuth, ordersController.getOrders);
 router.get("/accepted-orders", isAuth, ordersController.getAcceptedOrders);
+router.get("/deleted-orders", isAuth, ordersController.getDeletedOrders);
 router.get("/edit-order/:orderId", isAuth, ordersController.getEditOrder);
 router.post("/edit-order", isAuth, ordersController.postEditOrder);
 module.exports = router;
