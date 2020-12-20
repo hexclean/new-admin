@@ -422,7 +422,9 @@ Version: 1.0.0
 .allergen-name {
   font-size: 20px;
 }
-
+.accepted-order-list {
+  background-color: #07be6e !important;
+}
 .border-allergen {
   border-color: red !important;
   border-radius: 3px red !important;
