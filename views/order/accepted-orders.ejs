@@ -29,6 +29,7 @@
                 <th scope="col">Név</th>
                 <th scope="col">Hova</th>
                 <th scope="col">Végösszeg</th>
+                <th scope="col">Statusz</th>
                 <th scope="col">Megtekintés</th>
               
               </tr>
@@ -36,9 +37,10 @@
             <tbody>
               <tr>
                 <th scope="row">#<%= orders[i].id %></th>
-                <td>Erdős József</td>
+                <td><%= orders[i].User.fullName %></td>
                 <td>Székelyudvarhely</td>
                 <td>145,66</td>
+                <td>Elfogadott</td>
                 <td>
                   <div>
                   <a href="/admin/edit-order/<%= orders[i].id %>?edit=true"class="btn grid-btn mt-0 btn-sm btn-secondary" >Megtekintés</a>

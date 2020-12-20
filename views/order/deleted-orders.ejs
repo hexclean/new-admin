@@ -30,15 +30,17 @@
                 <th scope="col">Hova</th>
                 <th scope="col">Végösszeg</th>
                 <th scope="col">Megtekintés</th>
+                <th scope="col">Megtekintés</th>
               
               </tr>
             </thead>
             <tbody>
               <tr>
                 <th scope="row">#<%= orders[i].id %></th>
-                <td>Erdős József</td>
+                <td><%= orders[i].User.fullName %></td>
                 <td>Székelyudvarhely</td>
                 <td>145,66</td>
+                <td>Torult</td>
                 <td>
                   <div>
                   <a href="/admin/edit-order/<%= orders[i].id %>?edit=true"class="btn grid-btn mt-0 btn-sm btn-secondary" >Megtekintés</a>

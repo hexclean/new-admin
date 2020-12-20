@@ -38,7 +38,7 @@ const nexmo = new Nexmo(
 );
 exports.getOrders = async (req, res, next) => {
   const orders = await Order.findAll({
-    where: { orderStatusId: 1 },
+    where: { orderStatusId: 1, restaurantId: req.admin.id },
     include: [
       {
         model: OrderItem,
@@ -201,7 +201,7 @@ exports.getOrders = async (req, res, next) => {
 
 exports.getAcceptedOrders = async (req, res, next) => {
   const orders = await Order.findAll({
-    where: { orderStatusId: 2 },
+    where: { orderStatusId: 2, restaurantId: req.admin.id },
     include: [
       {
         model: OrderItem,
@@ -386,6 +386,7 @@ exports.getEditOrder = async (req, res, next) => {
     const order = await Order.findAll({
       where: {
         id: orderId,
+        restaurantId: req.admin.id,
       },
       include: [
         {
@@ -550,7 +551,7 @@ exports.getEditOrder = async (req, res, next) => {
 };
 exports.getDeletedOrders = async (req, res, next) => {
   const orders = await Order.findAll({
-    where: { orderStatusId: 3 },
+    where: { orderStatusId: 3, restaurantId: req.admin.id },
     include: [
       {
         model: OrderItem,
