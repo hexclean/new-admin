@@ -1,5 +1,5 @@
 const ProductVariantsExtras = require("../../models/ProductVariantsExtras");
-const ProductVariants = require("../../models/Variant");
+const Variant = require("../../models/Variant");
 const Category = require("../../models/Category");
 const CategoryTranslation = require("../../models/CategoryTranslation");
 const Extras = require("../../models/Extra");
@@ -33,50 +33,6 @@ exports.getAddVariant = async (req, res, next) => {
     currentCategoryName = 1;
   } else {
     currentCategoryName = 2;
-  }
-  const checkCategoryProperty = await CategoryProperty.findAll({
-    where: { restaurantId: req.admin.id, categoryId: 1 },
-    include: [
-      {
-        model: Property,
-        include: [
-          {
-            model: PropertyTranslation,
-          },
-        ],
-      },
-    ],
-  });
-
-  const checkCategoryPropertyValue = await CategoryProperty.findAll({
-    where: { restaurantId: req.admin.id, categoryId: 1 },
-    include: [
-      {
-        model: Property,
-        include: [
-          {
-            model: PropertyTranslation,
-          },
-        ],
-        include: [
-          {
-            model: PropertyValue,
-            include: [
-              {
-                model: PropertyValueTranslation,
-              },
-            ],
-          },
-        ],
-      },
-    ],
-  });
-
-  let finalProperty = [];
-  for (let i = 0; i < checkCategoryPropertyValue.length; i++) {
-    const newArray = checkCategoryPropertyValue[i].Property.PropertyValues;
-    finalProperty = newArray[0].PropertyValueTranslations;
-    console.log(newArray[0].PropertyValueTranslations[0].name);
   }
 
   const ext = await Extras.findAll({
@@ -135,9 +91,6 @@ exports.getAddVariant = async (req, res, next) => {
     currentExtraName: currentExtraName,
     currentLanguage: currentCategoryName,
     cat: cat,
-    finalProperty: finalProperty,
-    checkCategoryProperty: checkCategoryProperty,
-    checkCategoryPropertyValue: checkCategoryPropertyValue,
   });
 };
 
@@ -145,18 +98,12 @@ exports.postAddVariant = async (req, res, next) => {
   const propertyId = req.body.propertyId;
   const propertyValueId = req.body.propertyValueId;
   const extId = req.body.extraId;
-  let adminCommission = req.admin.commission;
-  if (req.admin.commission >= 10) {
-    adminCommission / 100;
-  } else {
-    adminCommission / 10;
-  }
 
   const sku = req.body.sku;
   const updatedExtraPrice = req.body.price;
   const updatedExtraQuantityMin = req.body.quantityMin;
   const updatedExtraQuantityMax = req.body.quantityMax;
-  const categoryRo = req.body.categoryRo;
+  const categoryId = req.body.categoryId;
   const maxOption = req.body.maxOption;
   const filteredStatus = req.body.status.filter(Boolean);
   const filteredOptions = req.body.statusOption.filter(Boolean);
@@ -172,7 +119,7 @@ exports.postAddVariant = async (req, res, next) => {
         model: ProductVariantsExtras,
         include: [
           {
-            model: ProductVariants,
+            model: Variant,
           },
         ],
       },
@@ -191,11 +138,11 @@ exports.postAddVariant = async (req, res, next) => {
       },
     ],
   });
-
-  const variant = await ProductVariants.create({
+  console.log(req.body);
+  const variant = await Variant.create({
     sku: sku,
     restaurantId: req.admin.id,
-    categoryId: categoryRo,
+    categoryId: categoryId,
     maxOption: maxOption,
   });
 
@@ -214,7 +161,7 @@ exports.postAddVariant = async (req, res, next) => {
     for (let i = 0; i <= ext.length - 1; i++) {
       await ProductVariantsExtras.create({
         price: updatedExtraPrice[i] || 0,
-        discountedPrice: updatedExtraPrice[i] * adminCommission || 0,
+        discountedPrice: 1,
         quantityMin: updatedExtraQuantityMin[i] || 0,
         quantityMax: updatedExtraQuantityMax[i] || 0,
         variantId: variant.id,
@@ -233,7 +180,6 @@ exports.postAddVariant = async (req, res, next) => {
 
   productVariantTranslation()
     .then((result) => {
-      console.log(req.body);
       res.redirect("/admin/variant-index"),
         {
           ext: ext,
@@ -255,11 +201,12 @@ exports.getEditVariant = async (req, res, next) => {
   let currentExtraName = [];
   const varId = req.params.variantId;
 
-  await ProductVariants.findByPk(varId).then((variant) => {
+  await Variant.findByPk(varId).then((variant) => {
     if (!variant) {
       return res.redirect("/");
     }
   });
+
   const productVarToExt = await Extras.findAll({
     where: { restaurantId: req.admin.id },
     include: [
@@ -289,10 +236,6 @@ exports.getEditVariant = async (req, res, next) => {
       },
     ],
   });
-  let categoryList = [];
-  for (let i = 0; i < cat.length; i++) {
-    categoryList = cat[i].CategoryTranslations[0];
-  }
 
   for (let i = 0; i < productVarToExt.length; i++) {
     var currentLanguage = req.cookies.language;
@@ -317,7 +260,7 @@ exports.getEditVariant = async (req, res, next) => {
         model: ProductVariantsExtras,
         include: [
           {
-            model: ProductVariants,
+            model: Variant,
             where: {
               variantId: varId,
             },
@@ -338,18 +281,10 @@ exports.getEditVariant = async (req, res, next) => {
         varId: varId,
         variant: variant,
         variantIdByParams: varId,
-        categoryIdJoin: cat,
-        hasError: false,
         ext: ext,
-        categoryList: categoryList,
         cat: cat,
         currentLanguage: 1,
-        testSelect: "Alma",
-        checkCategoryProperty: 6,
-        checkCategoryPropertyValue: 8,
         productVarToExt: productVarToExt,
-        errorMessage: null,
-        validationErrors: [],
         isActive: variant[0].ProductVariantsExtras,
         currentExtraName: currentExtraName,
       });
@@ -379,7 +314,7 @@ exports.postEditVariant = async (req, res, next) => {
   const filteredStatus = req.body.status.filter(Boolean);
   const filteredOptions = req.body.statusOption.filter(Boolean);
   const maxOption = req.body.maxOption;
-  const categoryRo = req.body.categoryRo;
+  const categoryId = req.body.categoryId;
   const Op = Sequelize.Op;
   const dasd = req.body.varId;
   let variantId = [dasd];
@@ -392,13 +327,13 @@ exports.postEditVariant = async (req, res, next) => {
     },
   });
 
-  ProductVariants.findAll()
+  Variant.findAll()
     .then((variant) => {
       async function msg() {
-        await ProductVariants.findByPk(varId).then((variant) => {
+        await Variant.findByPk(varId).then((variant) => {
           variant.sku = updatedSku;
           variant.maxOption = maxOption;
-          variant.categoryId = categoryRo;
+          variant.categoryId = categoryId;
           return variant.save();
         });
 
@@ -424,7 +359,7 @@ exports.postEditVariant = async (req, res, next) => {
                 price: updatedExtraPrice[i] || 0,
                 quantityMin: updatedExtraQuantityMin[i] || 0,
                 quantityMax: updatedExtraQuantityMax[i] || 0,
-                discountedPrice: updatedExtraPrice[i] * adminCommission || 0,
+                discountedPrice: 1,
                 active: filteredStatus[i] == "on" ? 1 : 0,
                 requiredExtra: filteredOptions[i] == "on" ? 1 : 0,
               },
@@ -455,7 +390,7 @@ exports.postEditVariant = async (req, res, next) => {
 
 exports.postDeleteVariant = (req, res, next) => {
   const prodId = req.body.variantId;
-  ProductVariants.findByPk(prodId)
+  Variant.findByPk(prodId)
     .then((product) => {
       product.active = 0;
       return product.save();

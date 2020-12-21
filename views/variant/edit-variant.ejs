@@ -36,7 +36,7 @@
                         </div>
                         <% if (editing) { %>
                         <div class="col-md-6 mb-3">
-                           <label for="validationCustom22">RO</label>
+                           <label for="validationCustom22">edit</label>
                            <div class="input-group">
                               <select class="form-control" for="categoryRo" id="categoryRo" name="categoryRo">
                                  <option disabled="true" value="list">Variáns kategótia</option>
@@ -111,7 +111,11 @@
 
                         <div id="propByCat" class="row">
                           
-                        
+                           <div class="col-md-6">
+                             
+                       
+                             
+                           </div>
                          </div>
                        </div>
                      </div>
@@ -181,20 +185,7 @@
                                  </div>
                                  <span class="extra_error_message error_form" id="price_error_message_<%= variant[i].ProductVariantsExtras[0].extraId %>"></span>
                               </div>
-                              <div class="col-md-12 mb-3">
-                                 <label for="discountedPrice"
-                                    >Discounted Price</label
-                                    >
-                                 <div class="input-group">
-                                    <input disabled
-                                       class="form-control"
-                                       type="text"
-                                       name="discountedPrice"
-                                       id="discountedPrice"
-                                       value="<% if (editing) { %><%= variant[i].ProductVariantsExtras[0].discountedPrice %><% } %>"
-                                       />
-                                 </div>
-                              </div>
+                             
                               <div class="col-md-12 mb-3">
                                  <label for="quantityMin"
                                     >Quantity Minimum</label
@@ -285,21 +276,7 @@
                                  </div>
                                  <span class="extra_error_message error_form" id="price_error_message_<%= ext[i].id %>"></span>
                               </div>
-                              <div class="col-md-12 mb-3">
-                                 <label for="discountedPrice"
-                                    >Discounted Price</label
-                                    >
-                                 <div class="input-group">
-                                    <input disabled
-                                       class="form-control"
-                                       type="text"
-                                       autocomplete="off"
-                                       name="discountedPrice"
-                                       id="discountedPrice"
-                                       value="<% if (editing) { %><%= ext[i].discountedPrice %><% } %>"
-                                       />
-                                 </div>
-                              </div>
+                             
                               <div class="col-md-12 mb-3">
                                  <label for="quantityMin"
                                     >Quantity Minimum</label
