@@ -1,3 +1,4 @@
+<% if(editing){ %>
 <div class="container">
   <div class="row">
     <div class="col-sm">
@@ -40,3 +41,47 @@
   </div>
   <% } %>
 </div>
+<% } else{ %>
+<div class="container">
+  <div class="row">
+    <div class="col-sm">
+      <select
+        class="form-control"
+        for="propertyId"
+        id="propertyId"
+        name="propertyId"
+      >
+        <% for(let i = 0; i < result.length; i++) { %>
+        <option
+          id="propertyId"
+          name="propertyId"
+          value="<%= result[i].Property.id %>"
+          ><%= result[i].Property.PropertyTranslations[0].name %></option
+        >
+      </select>
+    </div>
+    <div class="col-sm">
+      <select
+        class="form-control"
+        for="propertyValueId"
+        id="propertyValueId"
+        name="propertyValueId"
+      >
+        <option value="" selected disabled hidden>Choose here</option>
+        <% for(let j = 0; j < result[i].Property.PropertyValues.length; j++) {
+        %>
+        <option
+          id="propertyValueId"
+          name="propertyValueId"
+          value="<%= result[i].Property.PropertyValues[j].id %>"
+          ><%=
+          result[i].Property.PropertyValues[j].PropertyValueTranslations[0].name
+          %>
+        </option>
+        <% } %>
+      </select>
+    </div>
+  </div>
+  <% } %>
+</div>
+<% } %>

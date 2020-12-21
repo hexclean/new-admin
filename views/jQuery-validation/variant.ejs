@@ -16,8 +16,11 @@
     $("select#maxOption").val(
       "<% if (editing) { %><%=  variant[0].ProductVariantsExtras[0].Variant.maxOption %><% } %>"
     );
-    $("select#categoryRo").val(
+    $("select#categoryId").val(
       "<% if (editing) { %><%=  variant[0].ProductVariantsExtras[0].Variant.categoryId %><% } %>"
+    );
+    $("select#propertyValueId").val(
+      "<% if (editing) { %><%=  testing3 %><% } %>"
     );
   });
 </script>

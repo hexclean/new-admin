@@ -200,13 +200,18 @@ exports.getEditVariant = async (req, res, next) => {
   }
   let currentExtraName = [];
   const varId = req.params.variantId;
-
+  let categoryId;
   await Variant.findByPk(varId).then((variant) => {
+    categoryId = variant.categoryId;
+    // console.log(variant);
     if (!variant) {
       return res.redirect("/");
     }
   });
-
+  const test3 = await Variant.findAll({
+    where: { id: varId },
+    include: [{ model: VariantPropertyValue }],
+  });
   const productVarToExt = await Extras.findAll({
     where: { restaurantId: req.admin.id },
     include: [
@@ -226,6 +231,25 @@ exports.getEditVariant = async (req, res, next) => {
       },
     ],
   });
+
+  const result = await CategoryProperty.findAll({
+    where: { id: categoryId },
+    include: [
+      {
+        model: Property,
+        include: [
+          {
+            model: PropertyTranslation,
+          },
+          {
+            model: PropertyValue,
+            include: [{ model: PropertyValueTranslation }],
+          },
+        ],
+      },
+    ],
+  });
+  // console.log();
 
   const cat = await Category.findAll({
     where: { restaurantId: req.admin.id },
@@ -283,10 +307,12 @@ exports.getEditVariant = async (req, res, next) => {
         variantIdByParams: varId,
         ext: ext,
         cat: cat,
+        result: result,
         currentLanguage: 1,
         productVarToExt: productVarToExt,
         isActive: variant[0].ProductVariantsExtras,
         currentExtraName: currentExtraName,
+        testing3: test3[0].VariantPropertyValues[0].propertyValueId,
       });
     })
     .catch((err) => {
@@ -342,18 +368,7 @@ exports.postEditVariant = async (req, res, next) => {
           for (let i = 0; i <= productVarToExt.length - 1; i++) {
             let extrasIds = [extId[i]];
             let variantId = [varId];
-            // await ExtraHasAllergen.update(
-            //   {
-            //     active: filteredStatus[i] == "on" ? 1 : 0,
-            //   },
-            //   {
-            //     where: {
-            //       variantId: {
-            //         [Op.in]: variantId,
-            //       },
-            //     },
-            //   }
-            // );
+
             await ProductVariantsExtras.update(
               {
                 price: updatedExtraPrice[i] || 0,
@@ -484,7 +499,50 @@ exports.getFilteredProperty = async (req, res, next) => {
       editing: false,
       languageId: languageId,
     });
-    // })
+  } catch (error) {
+    console.log(error);
+    error.httpStatusCode = 500;
+    return next(error);
+  }
+};
+
+exports.getTest = async (req, res, next) => {
+  var categoryId = req.params.categoryId;
+  var languageId;
+  var currentLanguage = req.cookies.language;
+
+  if (currentLanguage == "ro") {
+    languageId = 1;
+  } else if (currentLanguage == "hu") {
+    languageId = 2;
+  } else {
+    languageId = 3;
+  }
+
+  const result = await CategoryProperty.findAll({
+    where: { id: categoryId },
+    include: [
+      {
+        model: Property,
+        include: [
+          {
+            model: PropertyTranslation,
+          },
+          {
+            model: PropertyValue,
+            include: [{ model: PropertyValueTranslation }],
+          },
+        ],
+      },
+    ],
+  });
+
+  try {
+    res.render("variant/current-property", {
+      result: result,
+      editing: false,
+      languageId: languageId,
+    });
   } catch (error) {
     console.log(error);
     error.httpStatusCode = 500;

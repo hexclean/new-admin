@@ -79,6 +79,11 @@ router.get(
   variantsController.getFilterExtras
 );
 router.get(
+  "/edit-variant/search-variant-category/:categoryId",
+  isAuth,
+  variantsController.getTest
+);
+router.get(
   "/search-variant-category/:categoryId",
   isAuth,
   variantsController.getFilteredProperty
