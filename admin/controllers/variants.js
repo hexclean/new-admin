@@ -504,40 +504,19 @@ exports.getFilterExtras = async (req, res, next) => {
 
 exports.getFilteredProperty = async (req, res, next) => {
   var categoryId = req.params.categoryId;
-  console.log("=--=-=-=-=-=-=", categoryId);
-  // var currentExtraName;
-  // var currentLanguage = req.cookies.language;
+  var currentExtraName;
+  var currentLanguage = req.cookies.language;
 
-  // if (categoryId.length == 1) {
-  //   categoryId = [];
-  // }
+  if (currentLanguage == "ro") {
+    currentExtraName = 1;
+  } else if (currentLanguage == "hu") {
+    currentExtraName = 2;
+  } else {
+    currentExtraName = 3;
+  }
 
-  // if (currentLanguage == "ro") {
-  //   currentExtraName = 1;
-  // } else if (currentLanguage == "hu") {
-  //   currentExtraName = 2;
-  // } else {
-  //   currentExtraName = 3;
-  // }
-
-  // await Extras.findAll({
-  //   where: {
-  //     restaurantId: req.admin.id,
-  //   },
-  //   include: [
-  //     {
-  //       model: ExtraTranslations,
-  //       where: {
-  //         name: { [Op.like]: "%" + categoryId + "%" },
-  //         languageId: currentExtraName,
-  //       },
-  //     },
-  //   ],
-  // })
-
-  //   .then((extra) => {
   const result = await CategoryProperty.findAll({
-    where: { id: 6 },
+    where: { id: categoryId },
     include: [
       {
         model: Property,
@@ -553,19 +532,10 @@ exports.getFilteredProperty = async (req, res, next) => {
       },
     ],
   });
-  for (let i = 0; i < result.length; i++) {
-    let prop = result[i].Property;
-    let propTrans = result[i].Property.PropertyTranslations[0].name;
-    // console.log(propTrans);
-    for (let j = 0; j < prop.PropertyValues.length; j++) {
-      console.log(prop.PropertyValues[j].PropertyValueTranslations[0].name);
-    }
-  }
-  // console.log(result[0].Property);
-  const propertyId = result[0].Property.id;
+
   try {
     res.render("variant/current-property", {
-      // ext: extra,
+      result: result,
       editing: false,
       // extras: extra,
     });

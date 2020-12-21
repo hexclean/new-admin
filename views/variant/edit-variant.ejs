@@ -110,26 +110,8 @@
                          </p>
 
                         <div id="propByCat" class="row">
-                           <div class="col-md-6">
-                              <% for(let i = 0; i < checkCategoryProperty.length; i++) { %>
-                              <select class="form-control" for="catPr" id="catPr" name="catPr">
-                                 <option disabled="true" value="list">Variáns kategótia</option>
-                                 <option id="catPr" name="catPr" value='<%= checkCategoryProperty[i].id %>'><%= checkCategoryProperty[i].Property.PropertyTranslations[`${currentLanguage}`].name %>
-                                 </option>
-                              </select>
-                              <% } %>
-                           </div>
-                           <div class="col-md-6">
-                             
-                              <select class="form-control" for="catPr" id="catPr" name="catPr">
-                                 <% for(let j = 0; j < checkCategoryPropertyValue.length; j++) { %>
-                                 <option disabled="true" value="list">Variáns kategótia</option>
-                                 <option id="catPr" name="catPr" value='<%= finalProperty[j].id %>'><%= finalProperty[`${currentLanguage}`].name %>
-                                 </option>
-                                 <% } %>
-                              </select>
-                             
-                           </div>
+                          
+                        
                          </div>
                        </div>
                      </div>

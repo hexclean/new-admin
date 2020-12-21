@@ -1,1 +1,43 @@
-<h1>hello</h1>
+<div class="container">
+  <div class="row">
+    <div class="col-sm">
+      <select
+        class="form-control"
+        for="categoryId"
+        id="categoryId"
+        name="categoryId"
+      >
+        <option value="" selected disabled hidden>Property</option>
+        <% for(let i = 0; i < result.length; i++) { %>
+        <option
+          id="categoryId"
+          name="categoryId"
+          value="<%= result[i].Property.id %>"
+          ><%= result[i].Property.PropertyTranslations[0].name %></option
+        >
+      </select>
+    </div>
+    <div class="col-sm">
+      <select
+        class="form-control"
+        for="categoryId"
+        id="categoryId"
+        name="categoryId"
+      >
+        <option value="" selected disabled hidden>Choose here</option>
+        <% for(let j = 0; j < result[i].Property.PropertyValues.length; j++) {
+        %>
+        <option
+          id="categoryId"
+          name="categoryId"
+          value="<%= result[i].Property.PropertyValues[j].id %>"
+          ><%=
+          result[i].Property.PropertyValues[j].PropertyValueTranslations[0].name
+          %>
+        </option>
+        <% } %>
+      </select>
+    </div>
+  </div>
+  <% } %>
+</div>
