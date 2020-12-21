@@ -537,21 +537,32 @@ exports.getFilteredProperty = async (req, res, next) => {
 
   //   .then((extra) => {
   const result = await CategoryProperty.findAll({
-    where: { id: 1 },
+    where: { id: 6 },
     include: [
       {
         model: Property,
         include: [
           {
+            model: PropertyTranslation,
+          },
+          {
             model: PropertyValue,
             include: [{ model: PropertyValueTranslation }],
           },
         ],
-        include: [{ model: PropertyTranslation }],
       },
     ],
   });
-  console.log(result);
+  for (let i = 0; i < result.length; i++) {
+    let prop = result[i].Property;
+    let propTrans = result[i].Property.PropertyTranslations[0].name;
+    // console.log(propTrans);
+    for (let j = 0; j < prop.PropertyValues.length; j++) {
+      console.log(prop.PropertyValues[j].PropertyValueTranslations[0].name);
+    }
+  }
+  // console.log(result[0].Property);
+  const propertyId = result[0].Property.id;
   try {
     res.render("variant/current-property", {
       // ext: extra,
