@@ -501,3 +501,67 @@ exports.getFilterExtras = async (req, res, next) => {
       return next(error);
     });
 };
+
+exports.getFilteredProperty = async (req, res, next) => {
+  var categoryId = req.params.categoryId;
+  console.log("=--=-=-=-=-=-=", categoryId);
+  // var currentExtraName;
+  // var currentLanguage = req.cookies.language;
+
+  // if (categoryId.length == 1) {
+  //   categoryId = [];
+  // }
+
+  // if (currentLanguage == "ro") {
+  //   currentExtraName = 1;
+  // } else if (currentLanguage == "hu") {
+  //   currentExtraName = 2;
+  // } else {
+  //   currentExtraName = 3;
+  // }
+
+  // await Extras.findAll({
+  //   where: {
+  //     restaurantId: req.admin.id,
+  //   },
+  //   include: [
+  //     {
+  //       model: ExtraTranslations,
+  //       where: {
+  //         name: { [Op.like]: "%" + categoryId + "%" },
+  //         languageId: currentExtraName,
+  //       },
+  //     },
+  //   ],
+  // })
+
+  //   .then((extra) => {
+  const result = await CategoryProperty.findAll({
+    where: { id: 1 },
+    include: [
+      {
+        model: Property,
+        include: [
+          {
+            model: PropertyValue,
+            include: [{ model: PropertyValueTranslation }],
+          },
+        ],
+        include: [{ model: PropertyTranslation }],
+      },
+    ],
+  });
+  console.log(result);
+  try {
+    res.render("variant/current-property", {
+      // ext: extra,
+      editing: false,
+      // extras: extra,
+    });
+    // })
+  } catch (error) {
+    console.log(error);
+    error.httpStatusCode = 500;
+    return next(error);
+  }
+};

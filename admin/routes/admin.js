@@ -78,6 +78,11 @@ router.get(
   isAuth,
   variantsController.getFilterExtras
 );
+router.get(
+  "/search-variant-category/:categoryId",
+  isAuth,
+  variantsController.getFilteredProperty
+);
 router.post("/edit-variant", isAuth, variantsController.postEditVariant);
 router.post("/delete-variant", isAuth, variantsController.postDeleteVariant);
 
@@ -198,4 +203,5 @@ router.get("/accepted-orders", isAuth, ordersController.getAcceptedOrders);
 router.get("/deleted-orders", isAuth, ordersController.getDeletedOrders);
 router.get("/edit-order/:orderId", isAuth, ordersController.getEditOrder);
 router.post("/edit-order", isAuth, ordersController.postEditOrder);
+router.post("/filter-order", isAuth, ordersController.getFilterOrders);
 module.exports = router;

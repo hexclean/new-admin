@@ -11,13 +11,24 @@
             <li role="presentation"><a href="#" aria-controls="tab1" class="active show" role="tab" data-toggle="tab">Új rendelések</a></li>
             <li role="presentation"><a class="add-variant" href="/admin/accepted-orders">Elfogadott rendelések </a></li>
             <li role="presentation"><a class="add-extra" href="/admin/deleted-orders">Törölt rendelések </a></li>
-          
-
-
-         </ul>
-        
+         </ul>  
       </div>
    </div>
+   <form
+   id="createBox_form"
+   class="ms-content-wrapper"
+   action="/admin/<% if (editing) { %>filter-order<% } else { %>filter-order<% } %>"
+   method="POST">
+   <script>
+      $( function() {
+        $( "#datepicker" ).datepicker();
+      } );
+      </script>
+      <p>Date: <input autocomplete="off" type="text" name="datepicker" id="datepicker"></p>
+      <p>Email: <input autocomplete="off" type="text" name="email" id="email"></p>
+      <button type="submit" class="btn btn-success">Rendelés befejezése</button>
+
+      </form>
    <% if (orders.length ==0) { %>
       <h2>Order not found</h2>
     <% } %>
@@ -34,13 +45,12 @@
                 <th scope="col">Végösszeg</th>
                 <th scope="col">Statusz</th>
                 <th scope="col">Megtekintés</th>
-              
               </tr>
             </thead>
             <tbody>
               <tr>
                 <th scope="row">#<%= orders[i].id %></th>
-                <td>Erdős József</td>
+                <td><%= orders[i].User.fullName %></td>
                 <td>Székelyudvarhely</td>
                 <td>145,66</td>
                 <td>Uj</td>

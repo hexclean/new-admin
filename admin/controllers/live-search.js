@@ -225,3 +225,35 @@ exports.getFilteredVariant = async (req, res, next) => {
       return next(error);
     });
 };
+
+exports.getFilteredOrders = async (req, res, next) => {
+  var variantName = req.params.variantId;
+
+  if (variantName.length == 1) {
+    variantName = [];
+  }
+
+  await ProductVariants.findAll({
+    where: {
+      sku: { [Op.like]: "%" + variantName + "%" },
+      restaurantId: req.admin.id,
+    },
+    // where: {
+    //   // sku: { [Op.like]: "%" + variantName + "%" },0
+    // },
+  })
+
+    .then((variant) => {
+      console.log("variantName", variantName);
+      console.log(variant);
+      res.render("live-search/search-variant", {
+        variant: variant,
+        editing: false,
+      });
+    })
+    .catch((err) => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
+};

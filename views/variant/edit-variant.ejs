@@ -48,13 +48,16 @@
                            <span class="error_form" id="category_error_message"></span>
                         </div>
                         <% } else { %>
+
+
                         <div class="col-md-6 mb-3">
-                           <label for="validationCustom22">RO</label>
+                           <label for="validationCustom22">ROyugyugyu</label>
                            <div class="input-group">
-                              <select class="form-control" for="categoryRo" id="categoryRo" name="categoryRo">
+                              <select class="form-control" for="categoryId" id="categoryId" name="categoryId">
                                  <option disabled="true" value="list">Variáns kategótia</option>
                                  <% for(let i = 0; i < cat.length; i++) { %>
-                                 <option id="categoryRo" name="categoryRo" value='<%= cat[i].id %>'><%= cat[i].CategoryTranslations[`${currentLanguage}`].name %></option>
+                                 <option id="categoryId" name="categoryId" value='<%= cat[i].id %>'><%= cat[i].CategoryTranslations[`${currentLanguage}`].name %></option>
+
                                  <% } %>
                               </select>
                            </div>
@@ -106,7 +109,7 @@
                          <p class="ms-directions">Use <code>.ms-checkbox-{state}</code> in <code>.ms-checkbox-wrap</code>
                          </p>
 
-                        <div class="row">
+                        <div id="propByCat" class="row">
                            <div class="col-md-6">
                               <% for(let i = 0; i < checkCategoryProperty.length; i++) { %>
                               <select class="form-control" for="catPr" id="catPr" name="catPr">
@@ -136,6 +139,7 @@
          </div>
          </div>
          </div>
+         fsdfds
          <input type="text" name="search" id="search" autocomplete="off" placeholder="Search extra" class="form-control"
             />
          <div class="ms-panel ms-btn-display">
