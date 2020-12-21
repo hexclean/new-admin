@@ -12,6 +12,7 @@ const Property = require("../../models/Property");
 const PropertyValue = require("../../models/PropertyValue");
 const PropertyTranslation = require("../../models/PropertyTranslation");
 const PropertyValueTranslation = require("../../models/PropertyValueTranslation");
+const VariantPropertyValue = require("../../models/VariantPropertyValue");
 const Op = Sequelize.Op;
 
 exports.getIndex = async (req, res, next) => {
@@ -141,6 +142,8 @@ exports.getAddVariant = async (req, res, next) => {
 };
 
 exports.postAddVariant = async (req, res, next) => {
+  const propertyId = req.body.propertyId;
+  const propertyValueId = req.body.propertyValueId;
   const extId = req.body.extraId;
   let adminCommission = req.admin.commission;
   if (req.admin.commission >= 10) {
@@ -222,8 +225,15 @@ exports.postAddVariant = async (req, res, next) => {
       });
     }
   }
+  await VariantPropertyValue.create({
+    variantId: variant.id,
+    propertyValueId: propertyValueId,
+    propertyId: propertyId,
+  });
+
   productVariantTranslation()
     .then((result) => {
+      console.log(req.body);
       res.redirect("/admin/variant-index"),
         {
           ext: ext,
@@ -504,15 +514,15 @@ exports.getFilterExtras = async (req, res, next) => {
 
 exports.getFilteredProperty = async (req, res, next) => {
   var categoryId = req.params.categoryId;
-  var currentExtraName;
+  var languageId;
   var currentLanguage = req.cookies.language;
 
   if (currentLanguage == "ro") {
-    currentExtraName = 1;
+    languageId = 1;
   } else if (currentLanguage == "hu") {
-    currentExtraName = 2;
+    languageId = 2;
   } else {
-    currentExtraName = 3;
+    languageId = 3;
   }
 
   const result = await CategoryProperty.findAll({
@@ -537,7 +547,7 @@ exports.getFilteredProperty = async (req, res, next) => {
     res.render("variant/current-property", {
       result: result,
       editing: false,
-      // extras: extra,
+      languageId: languageId,
     });
     // })
   } catch (error) {

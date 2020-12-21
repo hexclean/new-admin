@@ -3,15 +3,14 @@
     <div class="col-sm">
       <select
         class="form-control"
-        for="categoryId"
-        id="categoryId"
-        name="categoryId"
+        for="propertyId"
+        id="propertyId"
+        name="propertyId"
       >
-        <option value="" selected disabled hidden>Property</option>
         <% for(let i = 0; i < result.length; i++) { %>
         <option
-          id="categoryId"
-          name="categoryId"
+          id="propertyId"
+          name="propertyId"
           value="<%= result[i].Property.id %>"
           ><%= result[i].Property.PropertyTranslations[0].name %></option
         >
@@ -20,16 +19,16 @@
     <div class="col-sm">
       <select
         class="form-control"
-        for="categoryId"
-        id="categoryId"
-        name="categoryId"
+        for="propertyValueId"
+        id="propertyValueId"
+        name="propertyValueId"
       >
         <option value="" selected disabled hidden>Choose here</option>
         <% for(let j = 0; j < result[i].Property.PropertyValues.length; j++) {
         %>
         <option
-          id="categoryId"
-          name="categoryId"
+          id="propertyValueId"
+          name="propertyValueId"
           value="<%= result[i].Property.PropertyValues[j].id %>"
           ><%=
           result[i].Property.PropertyValues[j].PropertyValueTranslations[0].name
