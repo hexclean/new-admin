@@ -137,6 +137,7 @@ app.use(errorController.get404);
 //
 sequelize
   // .sync({ force: true })
+  //
   .sync()
   .then((result) => {
     app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
