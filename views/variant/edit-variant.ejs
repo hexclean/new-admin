@@ -1,6 +1,5 @@
 <%- include('../includes/head.ejs') %>
 <%- include('../jQuery-validation/variant.ejs') %>
-
 </head>
 <body class="ms-body ms-aside-left-open ms-primary-theme ms-has-quickbar">
    <%- include('../includes/navigation.ejs') %>
@@ -12,7 +11,6 @@
          method="POST"
          enctype="multipart/form-data"
          id="variant_form">
-         
          <div class="row">
             <div class="col-xl-6 col-md-12">
                <div class="ms-panel ms-panel-fh">
@@ -35,8 +33,6 @@
                            <span class="error_form" id="sku_error_message"></span>
                         </div>
                         <% if (editing) { %>
-                      
-                            
                         <div class="col-md-6 mb-3">
                            <label for="validationCustom22">edit</label>
                            <div class="input-group">
@@ -50,8 +46,6 @@
                            <span class="error_form" id="category_error_message"></span>
                         </div>
                         <% } else { %>
-
-
                         <div class="col-md-6 mb-3">
                            <label for="validationCustom22">ROyugyugyu</label>
                            <div class="input-group">
@@ -59,14 +53,11 @@
                                  <option disabled="true" value="list">Variáns kategótia</option>
                                  <% for(let i = 0; i < cat.length; i++) { %>
                                  <option id="categoryId" name="categoryId" value='<%= cat[i].id %>'><%= cat[i].CategoryTranslations[`${currentLanguage}`].name %></option>
-
                                  <% } %>
                               </select>
                            </div>
                         </div>
                         <% } %>
-                      
-                         
                         <div>
                            <div>
                               <div class="form-group">
@@ -78,10 +69,9 @@
                                     <option value="3">3</option>
                                     <option value="4">4</option>
                                     <option value="5">5</option>
-                                  </select>
+                                 </select>
                               </div>
                            </div>
-                           
                            <% if (editing) { %>
                            <input type="hidden" value="<%= variantIdByParams %>" name="variantId">
                            <% } %>
@@ -90,94 +80,83 @@
                            Product<% } %>
                            </button>
                         </div>
-
                      </div>
                   </div>
                </div>
             </div>
-
             <% if(editing){ %>
-               <div class="col-xl-6 col-md-12">
-                  <div class="ms-panel">
-                    <div class="ms-panel-header">
-                      <h6>Checkbovdfgdxes</h6>
-                    </div>
-                    <div class="ms-panel-body">
-                      <p class="ms-directions">Use <code>.ms-checkbox-{state}</code> in <code>.ms-checkbox-wrap</code>
-                      </p>
-                     <div id="propByCat" class="row">
-                      <div class="container">
-  <div class="row">
-    <div class="col-sm">
-      <select
-        class="form-control"
-        for="propertyId"
-        id="propertyId"
-        name="propertyId"
-      >
-        <% for(let i = 0; i < result.length; i++) { %>
-        <option
-          id="propertyId"
-          name="propertyId"
-          value="<%= result[i].Property.id %>"
-          ><%= result[i].Property.PropertyTranslations[0].name %></option
-        >
-      </select>
-    </div>
-    <div class="col-sm">
-      <select
-        class="form-control"
-        for="propertyValueId"
-        id="propertyValueId"
-        name="propertyValueId"
-      >
-        <option value="" selected disabled hidden>Choose here</option>
-        <% for(let j = 0; j < result[i].Property.PropertyValues.length; j++) {
-        %>
-        <option
-          id="propertyValueId"
-          name="propertyValueId"
-          value="<%= result[i].Property.PropertyValues[j].id %>"
-          ><%=
-          result[i].Property.PropertyValues[j].PropertyValueTranslations[0].name
-          %>
-        </option>
-        <% } %>
-      </select>
-    </div>
-  </div>
-  <% } %>
-</div>
-
-                      </div>
-                    </div>
+            <div class="col-xl-6 col-md-12">
+               <div class="ms-panel">
+                  <div class="ms-panel-header">
+                     <h6>Checkbovdfgdxes</h6>
                   </div>
-                </div>
-             <% } else{ %>  
-               <div class="col-xl-6 col-md-12">
-                  <div class="ms-panel">
-                    <div class="ms-panel-header">
-                      <h6>Checkboxes</h6>
-                    </div>
-                    <div class="ms-panel-body">
-                      <p class="ms-directions">Use <code>.ms-checkbox-{state}</code> in <code>.ms-checkbox-wrap</code>
-                      </p>
-
+                  <div class="ms-panel-body">
+                     <p class="ms-directions">Use <code>.ms-checkbox-{state}</code> in <code>.ms-checkbox-wrap</code>
+                     </p>
                      <div id="propByCat" class="row">
-                       
-                        <div class="col-md-6">
-                          
-                    
-                          
+                        <div class="container">
+                           <div class="row">
+                              <div class="col-sm">
+                                 <select
+                                    class="form-control"
+                                    for="propertyId"
+                                    id="propertyId"
+                                    name="propertyId"
+                                    >
+                                    <% for(let i = 0; i < result.length; i++) { %>
+                                    <option
+                                       id="propertyId"
+                                       name="propertyId"
+                                       value="<%= result[i].Property.id %>"
+                                       ><%= result[i].Property.PropertyTranslations[0].name %></option
+                                       >
+                                 </select>
+                              </div>
+                              <div class="col-sm">
+                                 <select
+                                    class="form-control"
+                                    for="propertyValueId"
+                                    id="propertyValueId"
+                                    name="propertyValueId"
+                                    >
+                                    <option value="" selected disabled hidden>Choose here</option>
+                                    <% for(let j = 0; j < result[i].Property.PropertyValues.length; j++) {
+                                       %>
+                                    <option
+                                       id="propertyValueId"
+                                       name="propertyValueId"
+                                       value="<%= result[i].Property.PropertyValues[j].id %>"
+                                       ><%=
+                                       result[i].Property.PropertyValues[j].PropertyValueTranslations[0].name
+                                       %>
+                                    </option>
+                                    <% } %>
+                                 </select>
+                              </div>
+                           </div>
+                           <% } %>
                         </div>
-                      </div>
-                    </div>
+                     </div>
                   </div>
-                </div>
+               </div>
+            </div>
+            <% } else{ %>  
+            <div class="col-xl-6 col-md-12">
+               <div class="ms-panel">
+                  <div class="ms-panel-header">
+                     <h6>Checkboxes</h6>
+                  </div>
+                  <div class="ms-panel-body">
+                     <p class="ms-directions">Use <code>.ms-checkbox-{state}</code> in <code>.ms-checkbox-wrap</code>
+                     </p>
+                     <div id="propByCat" class="row">
+                        <div class="col-md-6">
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
             <% } %>
-                
-                
-               
          </div>
          </div>
          </div>
@@ -241,7 +220,6 @@
                                  </div>
                                  <span class="extra_error_message error_form" id="price_error_message_<%= variant[i].ProductVariantsExtras[0].extraId %>"></span>
                               </div>
-                             
                               <div class="col-md-12 mb-3">
                                  <label for="quantityMin"
                                     >Quantity Minimum</label
@@ -332,7 +310,6 @@
                                  </div>
                                  <span class="extra_error_message error_form" id="price_error_message_<%= ext[i].id %>"></span>
                               </div>
-                             
                               <div class="col-md-12 mb-3">
                                  <label for="quantityMin"
                                     >Quantity Minimum</label

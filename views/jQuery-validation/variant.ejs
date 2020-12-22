@@ -227,7 +227,7 @@
 
 <script>
   $(document).ready(function () {
-    $("#categoryId").click(function () {
+    $("#categoryId").on("change", function () {
       const categoryId = $("#categoryId").val();
       $.get("search-variant-category/" + categoryId).done(function (data) {
         $("#propByCat").html(data);
