@@ -97,6 +97,9 @@ router.get(
 );
 router.post("/edit-category", isAuth, categoryController.postEditCategory);
 
+router.get("/order-category", isAuth, categoryController.getOrderCategory);
+router.post("/order-category", isAuth, categoryController.postOrderCategory);
+
 // BOX
 router.get("/add-box", isAuth, boxController.getAddBox);
 router.post("/add-box", isAuth, boxController.postAddBox);

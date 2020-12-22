@@ -8,6 +8,7 @@ const Category = sequelize.define("Category", {
     allowNull: false,
     primaryKey: true,
   },
+  order: Sequelize.INTEGER,
 });
 
 module.exports = Category;

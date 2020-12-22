@@ -1,0 +1,42 @@
+<%- include('../includes/head.ejs') %>
+<%- include('../jQuery-validation/category.ejs') %>
+
+</head>
+<body class="ms-body ms-aside-left-open ms-primary-theme ms-has-quickbar">
+   <%- include('../includes/navigation.ejs') %>
+   <main class="body-content">
+      <%- include('../includes/navigation-bar.ejs') %>
+     
+      <form 
+         id="orderCategory"
+         class="ms-content-wrapper" 
+         action="/admin/order-category"
+         method="POST"
+         enctype="multipart/form-data">
+         <% for (let i =0; i < category.length; i++) { %>
+            <div class="col-md-12 mb-3">
+                <label for="alma"><%= category[i].CategoryTranslations[0].name%></label>
+                <div class="input-group">
+                    <input
+                           type="hidden"
+                           value="<%= category[i].id %>"
+                           name="categoryId"
+                           />
+                   <input
+                      class="form-control"
+                      type="text"
+                      autocomplete="off"
+                      name="alma"
+                      id="alma"
+                      value="<%= category[i].id %>">
+                </div>
+                <span class="error_form" id="categoryName_error_message"></span>
+             </div>
+      
+       <% } %>
+       <button type="submit" id="orderCategory" class="btn btn-success has-icon" >dasdasdasds</button>
+
+      </form>
+   </main>
+   <%- include('../includes/end.ejs') %>
+</body>

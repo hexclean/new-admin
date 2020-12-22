@@ -9,7 +9,6 @@ const Sequelize = require("sequelize");
 const CategoryProperty = require("../../models/CategoryProperty");
 
 const Op = Sequelize.Op;
-
 exports.getAddCategory = async (req, res, next) => {
   const checkAllergenLength = await Allergen.findAll({
     where: {
@@ -68,7 +67,131 @@ exports.getAddCategory = async (req, res, next) => {
     property: property,
   });
 };
+exports.getOrderCategory = async (req, res, next) => {
+  const category = await Category.findAll({
+    where: { restaurantId: req.admin.id },
+    include: [{ model: CategoryTranslation, where: { languageId: 1 } }],
+  });
+  // console.log(category);
+  // const property77 = await Property.findAll({
+  //   where: {
+  //     restaurantId: req.admin.id,
+  //   },
+  //   include: [
+  //     {
+  //       model: PropertyTranslation,
+  //       where: {
+  //         languageId: 1,
+  //       },
+  //     },
+  //   ],
+  //   include: [
+  //     {
+  //       model: PropertyValue,
+  //       where: { propertyId: 1 },
+  //       include: [
+  //         {
+  //           model: PropertyValueTranslation,
+  //           where: { languageId: 1 },
+  //         },
+  //       ],
+  //     },
+  //   ],
+  // });
 
+  res.render("category/order-category", {
+    pageTitle: "Add Product",
+    path: "/admin/add-product",
+    editing: false,
+    category: category,
+    // property: property,
+  });
+};
+exports.postOrderCategory = async (req, res, next) => {
+  const alma = req.body.alma;
+  let newTest = [alma];
+  const categoryId = req.body.categoryId;
+  // const roName = req.body.roName;
+  // const huName = req.body.huName;
+  // const enName = req.body.enName;
+  // const filteredStatus = req.body.status.filter(Boolean);
+  // const propertyId = req.body.propertyId;
+
+  // if (roName == "" || huName == "" || enName == "") {
+  //   return res.redirect("/admin/category-index");
+  // }
+  try {
+    async function cc() {
+      for (let i = 0; i < newTest.length; i++) {
+        let categoryId = [req.body.categoryId];
+        let testId = categoryId[i];
+        console.log("testId", testId);
+        console.log(newTest);
+        await Category.update(
+          {
+            order: newTest[i],
+          },
+          {
+            where: {
+              restaurantId: req.admin.id,
+              // id: {
+              //   [Op.in]: testId[i],
+              // },
+            },
+          }
+        );
+      }
+    }
+    cc();
+  } catch (error) {
+    console.log(error);
+  }
+
+  // try {
+  //   async function createExtraTranslation() {
+  //     const category = await Category.create({
+  //       restaurantId: req.admin.id,
+  //     });
+
+  //     await CategoryTranslation.create({
+  //       name: roName,
+  //       languageId: 1,
+  //       categoryId: category.id,
+  //       restaurantId: req.admin.id,
+  //     });
+
+  //     await CategoryTranslation.create({
+  //       name: huName,
+  //       languageId: 2,
+  //       categoryId: category.id,
+  //       restaurantId: req.admin.id,
+  //     });
+
+  //     await CategoryTranslation.create({
+  //       name: enName,
+  //       languageId: 3,
+  //       categoryId: category.id,
+  //       restaurantId: req.admin.id,
+  //     });
+
+  //     for (let i = 0; i <= filteredStatus.length - 1; i++) {
+  //       await CategoryProperty.create({
+  //         categoryId: category.id,
+  //         propertyId: propertyId[i],
+  //         active: filteredStatus[i] == "on" ? 1 : 0,
+  //         restaurantId: req.admin.id,
+  //       });
+  //     }
+  //   }
+
+  //   createExtraTranslation();
+  //   res.redirect("/admin/category-index");
+  // } catch (err) {
+  //   const error = new Error(err);
+  //   error.httpStatusCode = 500;
+  //   return next(error);
+  // }
+};
 exports.postAddCategory = async (req, res, next) => {
   const roName = req.body.roName;
   const huName = req.body.huName;
