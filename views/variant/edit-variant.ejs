@@ -50,7 +50,7 @@
                            <label for="validationCustom22">ROyugyugyu</label>
                            <div class="input-group">
                               <select class="form-control" for="categoryId" id="categoryId" name="categoryId">
-                                 <option disabled="true" value="list">Variáns kategótia</option>
+                                 <option value="" selected disabled hidden>Kategoria Valasztas</option>
                                  <% for(let i = 0; i < cat.length; i++) { %>
                                  <option id="categoryId" name="categoryId" value='<%= cat[i].id %>'><%= cat[i].CategoryTranslations[`${currentLanguage}`].name %></option>
                                  <% } %>
@@ -63,7 +63,8 @@
                               <div class="form-group">
                                  <label for="maxOption">Example select</label>
                                  <select class="form-control" name="maxOption" id="maxOption">
-                                    <option value="0" selected="selected">0</option>
+                                    <option value="" selected disabled hidden>Kotelezo extra</option>
+                                    <option value="0">0</option>
                                     <option value="1">1</option>
                                     <option value="2">2</option>
                                     <option value="3">3</option>
