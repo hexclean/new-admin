@@ -351,6 +351,17 @@ exports.postEditVariant = async (req, res, next) => {
       },
     },
   });
+  await VariantPropertyValue.update(
+    {
+      propertyValueId: req.body.propertyValueId,
+      propertyId: req.body.propertyId,
+    },
+    {
+      where: {
+        variantId: dasd,
+      },
+    }
+  );
 
   Variant.findAll()
     .then((variant) => {
@@ -391,7 +402,9 @@ exports.postEditVariant = async (req, res, next) => {
           }
         }
       }
+
       msg();
+      console.log(req.body);
       res.redirect("/admin/variant-index");
     })
     .catch((err) => {
