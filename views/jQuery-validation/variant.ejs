@@ -201,13 +201,78 @@
     });
   });
 </script>
-<script>
+<!-- <script>
   $(document).ready(function () {
     $("#search").keyup(function () {
       const extraId = $("#search").val();
       $.get("search-variant-extras/" + extraId).done(function (data) {
         $("#searchedExtra").html(data);
       });
+    });
+  });
+</script> -->
+
+<!-- <% if(editing){ %>
+<script>
+  $(document).ready(function () {
+    const categoryId = $("#categoryId").val();
+    $(".extra-all").hide();
+    $(".extra-<%= currentCat %>").show();
+    // });if
+    if (true) {
+      $(document).ready(function () {
+        $("#categoryId").click(function () {
+          const categoryId = $("#categoryId").val();
+          $(".extra-all").hide();
+          $(".extra-" + categoryId).show();
+        });
+      });
+    }
+  });
+</script>
+<% } else{ %> -->
+<!-- <script>
+  $(document).ready(function () {
+    $("#search").keyup(function () {
+      const search = $("#search").val(),
+        count = 0;
+      console.log("search.leng", search.length);
+
+      if (search.length == 0) {
+        $(".extra-all").show();
+        console.log("HEHE");
+      }
+      // console.log(search);
+      $(".extra-all").hide();
+      $(".extra-" + search).show();
+    });
+  });
+</script> -->
+<!-- <% } %> -->
+<script>
+  $(document).ready(function () {
+    $("#search").keyup(function () {
+      // Retrieve the input field text and reset the count to zero
+      var filter = $(this).val(),
+        count = 0;
+
+      // Loop through the comment list
+      $(".extra-all").each(function () {
+        // If the list item does not contain the text phrase fade it out
+        if ($(this).text().search(new RegExp(filter, "i")) < 0) {
+          $(this).fadeOut();
+
+          // Show the list item if the phrase matches and increase the count by 1
+        } else {
+          $(this).show();
+          count++;
+        }
+      });
+
+      // Update the count
+      var numberItems = count;
+      console.log("Number of Comments = " + count);
+      // $("#filter-count").text("Number of Comments = " + count);
     });
   });
 </script>

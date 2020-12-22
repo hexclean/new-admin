@@ -1,35 +1,5 @@
 <%- include('../includes/head.ejs') %>
 
-<script>
-
-
-   $(document).ready(function() {
-
-      $('#search').keyup(function() {
-         const extraId = $('#search').val();
-         $.get( "get-filtered-category/"+ extraId )
-
-      .done(function( data ) {
-
-         $("#searchedCategory").html(data);
-         
-      });
-   });
-
-   $('#searchExtra').keyup(function() {
-         const extraId = $('#searchExtra').val();
-         $.get( "get-filtered-extra-index/"+ extraId )
-
-      .done(function( data ) {
-
-         $("#searchedExtra").html(data);
-         
-      });
-   });
-   })
-
-
-</script>
 
 </head>
 <body class="ms-body ms-aside-left-open ms-primary-theme ms-has-quickbar">

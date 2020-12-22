@@ -415,51 +415,51 @@ exports.postDeleteVariant = (req, res, next) => {
     .catch((err) => console.log(err));
 };
 
-exports.getFilterExtras = async (req, res, next) => {
-  var extraName = req.params.extraId;
-  var currentExtraName;
-  var currentLanguage = req.cookies.language;
+// exports.getFilterExtras = async (req, res, next) => {
+//   var extraName = req.params.extraId;
+//   var currentExtraName;
+//   var currentLanguage = req.cookies.language;
 
-  if (extraName.length == 1) {
-    extraName = [];
-  }
+//   if (extraName.length == 1) {
+//     extraName = [];
+//   }
 
-  if (currentLanguage == "ro") {
-    currentExtraName = 1;
-  } else if (currentLanguage == "hu") {
-    currentExtraName = 2;
-  } else {
-    currentExtraName = 3;
-  }
+//   if (currentLanguage == "ro") {
+//     currentExtraName = 1;
+//   } else if (currentLanguage == "hu") {
+//     currentExtraName = 2;
+//   } else {
+//     currentExtraName = 3;
+//   }
 
-  await Extras.findAll({
-    where: {
-      restaurantId: req.admin.id,
-    },
-    include: [
-      {
-        model: ExtraTranslations,
-        where: {
-          name: { [Op.like]: "%" + extraName + "%" },
-          languageId: currentExtraName,
-        },
-      },
-    ],
-  })
+//   await Extras.findAll({
+//     where: {
+//       restaurantId: req.admin.id,
+//     },
+//     include: [
+//       {
+//         model: ExtraTranslations,
+//         where: {
+//           name: { [Op.like]: "%" + extraName + "%" },
+//           languageId: currentExtraName,
+//         },
+//       },
+//     ],
+//   })
 
-    .then((extra) => {
-      res.render("variant/searchedExtra", {
-        ext: extra,
-        editing: false,
-        extras: extra,
-      });
-    })
-    .catch((err) => {
-      const error = new Error(err);
-      error.httpStatusCode = 500;
-      return next(error);
-    });
-};
+//     .then((extra) => {
+//       res.render("variant/searchedExtra", {
+//         ext: extra,
+//         editing: false,
+//         extras: extra,
+//       });
+//     })
+//     .catch((err) => {
+//       const error = new Error(err);
+//       error.httpStatusCode = 500;
+//       return next(error);
+//     });
+// };
 
 exports.getFilteredProperty = async (req, res, next) => {
   var categoryId = req.params.categoryId;

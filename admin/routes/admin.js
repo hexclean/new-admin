@@ -73,11 +73,7 @@ router.get(
   isAuth,
   variantsController.getEditVariant
 );
-router.get(
-  "/search-variant-extras/:extraId",
-  isAuth,
-  variantsController.getFilterExtras
-);
+
 router.get(
   "/edit-variant/search-variant-category/:categoryId",
   isAuth,
@@ -127,11 +123,6 @@ router.post("/add-product", adminController.postAddProduct);
 router.get("/edit-product/:productId", isAuth, adminController.getEditProduct);
 router.post("/edit-product", isAuth, adminController.postEditProduct);
 router.post("/delete-product", isAuth, adminController.postDeleteProduct);
-// router.get(
-//   "/get-category-variants/:categoryId",
-//   isAuth,
-//   adminController.getCategoryVariants
-// );
 
 // Profile
 router.get(
