@@ -17,6 +17,16 @@
    <form
    id="createBox_form"
    class="ms-content-wrapper"
+   action="/admin/<% if (editing) { %>download<% } else { %>download<% } %>"
+   method="POST">
+  
+     
+      <button type="submit" class="btn btn-success">Rendelés befejezése</button>
+
+      </form>
+   <form
+   id="createBox_form"
+   class="ms-content-wrapper"
    action="/admin/<% if (editing) { %>filter-order<% } else { %>filter-order<% } %>"
    method="POST">
    <script>

@@ -117,6 +117,12 @@
                            </div>
                         </div>
                         <% if (editing) { %>
+                           <script>
+                              $(document).ready(function () {
+                               
+                                $("select#categoryId").val("<% if (editing) { %><%=  currentCat %><% } %>");
+                              });
+                            </script> 
                         <input
                            type="hidden"
                            value="<%= productIds %>"
@@ -199,18 +205,18 @@
          <div class="col-md-6 mb-3">
             <label for="validationCustom22">RO</label>
             <div class="input-group">
-               
-               <select class="form-control" for="categoryRo" id="categoryRo" name="categoryRo">
+
+               <select class="form-control" for="categoryId" id="categoryId" name="categoryId">
                   <option disabled="true" value="list">Variáns kategótia</option>
                   <% for(let i = 0; i < cat.length; i++) { %>
 
-                  <option id="categoryRo" name="categoryRo" value='<%= cat[i].id %>'><%= cat[i].CategoryTranslations[`${currentLanguage}`].name %></option>
+                  <option id="categoryId" name="categoryId" value='<%= cat[i].id %>'><%= cat[i].CategoryTranslations[`${currentLanguage}`].name %></option>
                   <% } %>
                </select>
             </div>
             <span class="error_form" id="category_error_message"></span>
          </div>
-        
+        dfsd
         
          <div class="ms-panel ms-btn-display">
             <div class="ms-panel-header">
@@ -228,7 +234,7 @@
                         value="<%= productVariant[i].id %>"
                         name="variantIdUp"
                         />          
-                     <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 extra_box" data-extra="<%= productVariant[i].id %>">
+                     <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 extra_box category-<%= productVariant[i].categoryId %> category-all" data-extra="<%= productVariant[i].id %>">
                         <div class="ms-card">
                            <div class="d-flex justify-content-center extra-margin-top">
                               <div class="row"> 
@@ -301,7 +307,7 @@
 
                         
 
-                     <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 extra_box" data-extra="<%= extra.id %>">
+                     <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 extra_box category-<%= extra.categoryId %> category-all" data-extra="<%= extra.id %>">
                         <div class="ms-card">
                            <div class="d-flex justify-content-center extra-margin-top">
                               <div class="row"> 

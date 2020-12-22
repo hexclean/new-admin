@@ -256,7 +256,6 @@ exports.getEditVariant = async (req, res, next) => {
     include: [
       {
         model: CategoryTranslation,
-        where: { restaurantId: req.admin.id },
       },
     ],
   });

@@ -246,16 +246,39 @@
     });
   });
 </script>
+<% if(editing){ %>
 <script>
   $(document).ready(function () {
-    $("#categoryRo").click(function () {
-      const categoryId = $("#categoryRo").val();
-      $.get("get-category-variants/" + categoryId).done(function (data) {
-        $("#selectedVariantsCategory").html(data);
+    // $("#categoryId").click(function () {
+    console.log("adasd", "");
+
+    const categoryId = $("#categoryId").val();
+    $(".category-all").hide();
+    $(".category-<%= currentCat %>").show();
+    // });if
+    if (true) {
+      $(document).ready(function () {
+        $("#categoryId").click(function () {
+          const categoryId = $("#categoryId").val();
+          $(".category-all").hide();
+          $(".category-" + categoryId).show();
+        });
       });
+    }
+  });
+</script>
+<% } else{ %>
+<script>
+  $(document).ready(function () {
+    $("#categoryId").click(function () {
+      const categoryId = $("#categoryId").val();
+      $(".category-all").hide();
+      $(".category-" + categoryId).show();
     });
   });
 </script>
+<% } %>
+
 <script>
   $(document).ready(function () {
     $(".status-checkbox-option").click(function () {

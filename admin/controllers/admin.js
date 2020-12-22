@@ -1,6 +1,6 @@
 const fileHelper = require("../../util/file");
 const Product = require("../../models/Product");
-const ProductVariant = require("../../models/Variant");
+const Variant = require("../../models/Variant");
 const ProductTranslation = require("../../models/ProductTranslation");
 const ProductFinal = require("../../models/ProductFinal");
 const Sequelize = require("sequelize");
@@ -49,7 +49,7 @@ exports.getAddProduct = async (req, res, next) => {
       ],
     });
 
-    const ext = await ProductVariant.findAll({
+    const ext = await Variant.findAll({
       where: {
         restaurantId: req.admin.id,
       },
@@ -103,11 +103,12 @@ exports.getAddProduct = async (req, res, next) => {
 
 exports.postAddProduct = async (req, res, next) => {
   const allergenId = req.body.allergenId;
-
+  var filteredStatus = req.body.status.filter(Boolean);
   const roTitle = req.body.roTitle;
   const huTitle = req.body.huTitle;
   const enTitle = req.body.enTitle;
   const boxId = req.body.boxId;
+  const price = req.body.price;
   const roDescription = req.body.roDescription;
   const huDescription = req.body.huDescription;
   const enDescription = req.body.enDescription;
@@ -116,11 +117,7 @@ exports.postAddProduct = async (req, res, next) => {
   const extId = req.body.extraId;
   const filteredStatusAllergen = req.body.statusAllergen.filter(Boolean);
   const filteredStatusBox = req.body.statusBox.filter(Boolean);
-  const variant = await ProductVariant.findAll({
-    where: {
-      restaurantId: req.admin.id,
-    },
-  });
+
   const box = await Box.findAll({
     where: {
       restaurantId: req.admin.id,
@@ -142,13 +139,18 @@ exports.postAddProduct = async (req, res, next) => {
     ],
   });
 
-  const product = await Product.create({
-    restaurantId: req.admin.id,
+  const ext = await Variant.findAll({
+    where: {
+      restaurantId: req.admin.id,
+    },
+  });
+
+  const product = await req.admin.createProduct({
     productImagePath: imageUrl,
     active: 1,
   });
 
-  async function productTranslation() {
+  async function productTransaltion() {
     await ProductTranslation.create({
       title: roTitle,
       languageId: 1,
@@ -169,13 +171,6 @@ exports.postAddProduct = async (req, res, next) => {
       productId: product.id,
     });
   }
-  let extraId = req.body.extraId;
-  var filteredStatus = req.body.status.filter(Boolean);
-  for (let j = 0; j <= extraId.length - 1; j++) {
-    console.log(extraId.length);
-    console.log("filteredStatus[j]", filteredStatus[j]);
-    var output = filteredStatus[j] != undefined ? filteredStatus[j] : "on";
-  }
 
   async function createVariant() {
     let boxIdFinal = 0;
@@ -184,25 +179,14 @@ exports.postAddProduct = async (req, res, next) => {
         boxIdFinal = filteredStatusBox[i].substring(2) + boxId[i];
       }
     }
-    let variantIdArr = [];
-    let vrId = [];
 
-    for (let i = 0; i <= variant.length - 1; i++) {
-      vrId.push(extraId[i]);
-      console.log("output", output);
-      console.log("variantId", variant[i].id);
-      console.log(
-        " Number.isInteger(vrId) ? vrId : variant[i].id",
-        Number.isInteger(vrId) ? vrId : variant[i].id
-      );
-      // console.log("  output ==  ? 1 : 0", output == "on" ? 1 : 0);
+    for (let i = 0; i <= ext.length - 1; i++) {
       await ProductFinal.create({
-        // price: price[i] || 0,
-        price: 0,
+        price: price[i] || 0,
         productId: product.id,
-        variantId: vrId == Number.isInteger(vrId) ? vrId : variant[i].id,
+        variantId: extId[i],
         discountedPrice: 0,
-        active: output == "on" ? 1 : 0,
+        active: filteredStatus[i] == "on" ? 1 : 0,
         boxId: Number.isInteger(boxIdFinal) ? null : boxIdFinal,
       });
     }
@@ -220,14 +204,14 @@ exports.postAddProduct = async (req, res, next) => {
       }
     }
   }
-
-  productTranslation()
+  console.log(req.body);
+  productTransaltion()
     .then((result) => {
       createVariant();
       allergens();
       res.redirect("/admin/products"),
         {
-          ext: variant,
+          ext: ext,
         };
     })
     .catch((err) => {
@@ -236,7 +220,6 @@ exports.postAddProduct = async (req, res, next) => {
       return next(error);
     });
 };
-
 exports.getEditProduct = async (req, res, next) => {
   const editMode = req.query.edit;
   const prodId = req.params.productId;
@@ -265,7 +248,6 @@ exports.getEditProduct = async (req, res, next) => {
       return res.redirect("/");
     }
   });
-
   const box = await Box.findAll({
     where: {
       restaurantId: req.admin.id,
@@ -336,6 +318,27 @@ exports.getEditProduct = async (req, res, next) => {
     }
   }
 
+  const test78 = await Product.findAll({
+    where: {
+      id: prodId,
+      restaurantId: req.admin.id,
+    },
+    include: [
+      {
+        model: ProductTranslation,
+      },
+      {
+        model: ProductFinal,
+        where: { active: 1 },
+        include: [
+          {
+            model: Variant,
+          },
+        ],
+      },
+    ],
+  });
+  console.log(test78[0].ProductFinals[0].Variant.categoryId);
   Product.findAll({
     where: {
       id: prodId,
@@ -349,7 +352,7 @@ exports.getEditProduct = async (req, res, next) => {
         model: ProductFinal,
         include: [
           {
-            model: ProductVariant,
+            model: Variant,
           },
         ],
       },
@@ -365,6 +368,7 @@ exports.getEditProduct = async (req, res, next) => {
         pageTitle: "Edit Product",
         path: "/admin/edit-product",
         editing: editMode,
+        currentCat: test78[0].ProductFinals[0].Variant.categoryId,
         allergenArray: allergen,
         product: product,
         variantIdByParams: prodId,
@@ -557,6 +561,7 @@ exports.postEditProduct = async (req, res, next) => {
       }
       msg()
         .then((result) => {
+          console.log(req.body);
           variantsFn();
           productHasAllergenFn();
           res.redirect("/admin/products");
@@ -651,29 +656,6 @@ exports.postDeleteProduct = (req, res, next) => {
       product.active = 0;
       return product.save().then((result) => {
         res.redirect("/admin/products");
-      });
-    })
-    .catch((err) => {
-      const error = new Error(err);
-      error.httpStatusCode = 500;
-      return next(error);
-    });
-};
-
-exports.getCategoryVariants = async (req, res, next) => {
-  const categoryId = req.params.categoryId;
-
-  await ProductVariant.findAll({
-    where: {
-      restaurantId: req.admin.id,
-      categoryId: categoryId,
-    },
-  })
-
-    .then((variant) => {
-      res.render("admin/searchedVariants", {
-        variants: variant,
-        editing: false,
       });
     })
     .catch((err) => {

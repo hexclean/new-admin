@@ -11,10 +11,6 @@ const CategoryTranslation = sequelize.define("CategoryTranslation", {
   name: {
     type: Sequelize.STRING,
   },
-  restaurantId: {
-    type: Sequelize.INTEGER,
-    allowNull: false,
-  },
 });
 
 module.exports = CategoryTranslation;

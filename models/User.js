@@ -23,10 +23,8 @@ const User = sequelize.define("User", {
   },
   phoneNumber: {
     type: Sequelize.STRING,
-    unique: true,
   },
   resetToken: Sequelize.STRING,
-
   resetTokenExpiration: Sequelize.DATE,
   role: Sequelize.INTEGER,
   newsletter: Sequelize.INTEGER,

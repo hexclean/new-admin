@@ -127,11 +127,11 @@ router.post("/add-product", adminController.postAddProduct);
 router.get("/edit-product/:productId", isAuth, adminController.getEditProduct);
 router.post("/edit-product", isAuth, adminController.postEditProduct);
 router.post("/delete-product", isAuth, adminController.postDeleteProduct);
-router.get(
-  "/get-category-variants/:categoryId",
-  isAuth,
-  adminController.getCategoryVariants
-);
+// router.get(
+//   "/get-category-variants/:categoryId",
+//   isAuth,
+//   adminController.getCategoryVariants
+// );
 
 // Profile
 router.get(
@@ -209,4 +209,5 @@ router.get("/deleted-orders", isAuth, ordersController.getDeletedOrders);
 router.get("/edit-order/:orderId", isAuth, ordersController.getEditOrder);
 router.post("/edit-order", isAuth, ordersController.postEditOrder);
 router.post("/filter-order", isAuth, ordersController.getFilterOrders);
+router.post("/download", isAuth, ordersController.download);
 module.exports = router;

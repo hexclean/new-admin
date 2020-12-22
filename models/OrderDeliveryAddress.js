@@ -19,10 +19,7 @@ const OrderDeliveryAddress = sequelize.define("OrderDeliveryAddress", {
   },
   floor: Sequelize.STRING,
   doorNumber: Sequelize.STRING,
-  phoneNumber: {
-    type: Sequelize.STRING,
-    unique: true,
-  },
+  phoneNumber: Sequelize.STRING,
 });
 
 module.exports = OrderDeliveryAddress;
