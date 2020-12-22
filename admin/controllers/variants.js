@@ -440,9 +440,9 @@ exports.getFilteredProperty = async (req, res, next) => {
   } else {
     languageId = 3;
   }
-
+  console.log("categoryId", categoryId);
   const result = await CategoryProperty.findAll({
-    where: { restaurantId: req.admin.id, id: categoryId },
+    where: { restaurantId: req.admin.id, categoryId: categoryId, active: 1 },
     include: [
       {
         model: Property,
@@ -458,6 +458,8 @@ exports.getFilteredProperty = async (req, res, next) => {
       },
     ],
   });
+
+  console.log(result);
 
   try {
     res.render("variant/current-property", {
