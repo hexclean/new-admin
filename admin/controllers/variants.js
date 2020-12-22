@@ -442,7 +442,7 @@ exports.getFilteredProperty = async (req, res, next) => {
   }
 
   const result = await CategoryProperty.findAll({
-    where: { id: categoryId },
+    where: { restaurantId: req.admin.id, id: categoryId },
     include: [
       {
         model: Property,
