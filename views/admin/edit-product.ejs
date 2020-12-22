@@ -207,7 +207,7 @@
             <div class="input-group">
 
                <select class="form-control" for="categoryId" id="categoryId" name="categoryId">
-                  <option disabled="true" value="list">Variáns kategótia</option>
+                  <option value="" selected disabled hidden>Kategoria Valasztas</option>
                   <% for(let i = 0; i < cat.length; i++) { %>
 
                   <option id="categoryId" name="categoryId" value='<%= cat[i].id %>'><%= cat[i].CategoryTranslations[`${currentLanguage}`].name %></option>
