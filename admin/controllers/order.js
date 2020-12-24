@@ -55,6 +55,7 @@ exports.getOrders = async (req, res, next) => {
             include: [
               {
                 model: ProductFinal,
+                where: { active: 1 },
                 include: [
                   {
                     model: Product,
@@ -64,6 +65,7 @@ exports.getOrders = async (req, res, next) => {
               },
               {
                 model: ProductVariantsExtras,
+                where: { active: 1 },
                 include: [
                   { model: Extra, include: [{ model: ExtraTranslation }] },
                 ],
@@ -85,6 +87,7 @@ exports.getOrders = async (req, res, next) => {
       },
     ],
   });
+
   let extras = [];
   let totalPriceFinal;
   let cutlery;
@@ -102,11 +105,11 @@ exports.getOrders = async (req, res, next) => {
     for (let i = 0; i < orders.length; i++) {
       const resultWithAll = [];
       let variants = orders[i].OrderItems;
-
       for (let j = 0; j < variants.length; j++) {
         extras = variants[j].OrderItemExtras;
 
         for (let k = 0; k < extras.length; k++) {
+          console.log(variants[j].Variant.ProductFinals);
           let totalProductPrice = 0;
           let totalExtraPrice = 0;
 
@@ -136,7 +139,7 @@ exports.getOrders = async (req, res, next) => {
           resultWithAll.push(items);
         }
       }
-
+      console.log(resultWithAll);
       const merged = resultWithAll.reduce(
         (
           r,
