@@ -111,11 +111,23 @@ exports.getOrders = async (req, res, next) => {
 
         let prodFin = orderItems[j].Variant.ProductFinals;
         for (let h = 0; h < prodFin.length; h++) {
-          console.log(
-            "prodFin.length",
-            prodFin[h].Product.ProductTranslations[0].title
-          );
-          if (false) {
+          console.log(extras[j]);
+          if (extras[j] == undefined) {
+            let totalProductPrice = 0;
+
+            totalProductPrice +=
+              parseFloat(orderItems[j].variantPrice) *
+              parseInt(orderItems[j].quantity);
+            const items = {
+              product_id: prodFin[h].productId,
+              product_quantity: orderItems[j].quantity,
+              message: orderItems[j].message,
+              product_price: orderItems[j].variantPrice,
+              product_name: prodFin[h].Product.ProductTranslations[0].title,
+              total_product_price: totalProductPrice,
+            };
+
+            resultWithAll.push(items);
           } else {
             for (let k = 0; k < extras.length; k++) {
               extrasArray.push(extras[k]);
@@ -138,6 +150,7 @@ exports.getOrders = async (req, res, next) => {
                 extra_name: extras[k].Extra.ExtraTranslations[0].name,
                 total_product_price: totalProductPrice,
                 total_extra_price: totalExtraPrice,
+                message: orderItems[j].message,
               };
 
               resultWithAll.push(items);
@@ -155,18 +168,18 @@ exports.getOrders = async (req, res, next) => {
             product_price,
             product_name,
             total_product_price,
-
+            message,
             ...rest
           }
         ) => {
-          const key = `${product_id}-${product_quantity}-${product_price}-${product_name}-${total_product_price}`;
+          const key = `${product_id}-${product_quantity}-${product_price}-${product_name}-${total_product_price}-${message}`;
           r[key] = r[key] || {
             product_id,
             product_quantity,
             product_price,
             product_name,
             total_product_price,
-
+            message,
             extras: [],
           };
           r[key]["extras"].push(rest);

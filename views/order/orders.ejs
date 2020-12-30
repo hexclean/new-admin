@@ -138,7 +138,9 @@
                               <th class="text-left">Product Name</th>
                               <th>qty</th>
                               <th>Termek ar</th>
+                             
                               <th>total</th>
+                             
                            </tr>
                         </thead>
                         <tbody>
@@ -148,7 +150,9 @@
                               <td><%= orders[i].products[j].product_quantity %></td>
                               <td><%= orders[i].products[j].product_price %></td>
                               <td><%= orders[i].products[j].total_product_price %></td>
+                             
                            </tr>
+                         
                            <% for (let k = 0; k < orders[i].products[j].extras.length; ++k) { %>
                            <tr>
                               <td class="text-center"><%=  orders[i].products[j].extras[k].extra_id%></td>
@@ -157,15 +161,20 @@
                               <td>$<%=  orders[i].products[j].extras[k].extra_price%></td>
                               <td><%=  orders[i].products[j].extras[k].total_extra_price%></td>
                            </tr>
+                         
                            <% } %>        
                         </tbody>
                         <tfoot>
                            <tr>
                               <td colspan="4">Total Cost:</td>
                               <td>$<%= orders[i].products[j].total_cost_produce_extra %></td>
+                             
                            </tr>
                         </tfoot>
+                        <p style="color: green; font-size: 17px" class="text-left"> <%= orders[i].products[j].message %></p style="color: green font-size: 19px">
                      </table>
+                     
+                   
                   </div>
                  
                   <% } %>
