@@ -49,6 +49,12 @@ exports.getOrders = async (req, res, next) => {
         include: [
           {
             model: OrderItemExtra,
+            include: [
+              {
+                model: Extra,
+                include: [{ model: ExtraTranslation }],
+              },
+            ],
           },
           {
             model: Variant,
@@ -61,13 +67,6 @@ exports.getOrders = async (req, res, next) => {
                     model: Product,
                     include: [{ model: ProductTranslation }],
                   },
-                ],
-              },
-              {
-                model: ProductVariantsExtras,
-                where: { active: 1 },
-                include: [
-                  { model: Extra, include: [{ model: ExtraTranslation }] },
                 ],
               },
             ],
@@ -101,45 +100,52 @@ exports.getOrders = async (req, res, next) => {
   let orderPhoneNumber;
   let orderCreated;
   let orderIds;
+  let extrasArray = [];
   if (orders.length != 0) {
     for (let i = 0; i < orders.length; i++) {
       const resultWithAll = [];
-      let variants = orders[i].OrderItems;
-      for (let j = 0; j < variants.length; j++) {
-        extras = variants[j].OrderItemExtras;
+      let orderItems = orders[i].OrderItems;
 
-        for (let k = 0; k < extras.length; k++) {
-          console.log(variants[j].Variant.ProductFinals);
-          let totalProductPrice = 0;
-          let totalExtraPrice = 0;
+      for (let j = 0; j < orderItems.length; j++) {
+        extras = orderItems[j].OrderItemExtras;
 
-          totalProductPrice +=
-            parseFloat(variants[j].variantPrice) *
-            parseInt(variants[j].quantity);
-          totalExtraPrice +=
-            parseFloat(extras[k].extraPrice) * parseInt(extras[k].quantity);
+        let prodFin = orderItems[j].Variant.ProductFinals;
+        for (let h = 0; h < prodFin.length; h++) {
+          console.log(
+            "prodFin.length",
+            prodFin[h].Product.ProductTranslations[0].title
+          );
+          if (false) {
+          } else {
+            for (let k = 0; k < extras.length; k++) {
+              extrasArray.push(extras[k]);
+              let totalProductPrice = 0;
+              let totalExtraPrice = 0;
 
-          const items = {
-            product_id: variants[j].Variant.ProductFinals[j].productId,
-            product_quantity: variants[j].quantity,
-            product_price: variants[j].variantPrice,
-            product_name:
-              variants[j].Variant.ProductFinals[j].Product
-                .ProductTranslations[0].title,
-            extra_id: extras[k].extraId,
-            extra_quantity: extras[k].quantity,
-            extra_price: extras[k].extraPrice,
-            extra_name:
-              variants[j].Variant.ProductVariantsExtras[k].Extra
-                .ExtraTranslations[0].name,
-            total_product_price: totalProductPrice,
-            total_extra_price: totalExtraPrice,
-          };
+              totalProductPrice +=
+                parseFloat(orderItems[j].variantPrice) *
+                parseInt(orderItems[j].quantity);
+              totalExtraPrice +=
+                parseFloat(extras[k].extraPrice) * parseInt(extras[k].quantity);
+              const items = {
+                product_id: prodFin[h].productId,
+                product_quantity: orderItems[j].quantity,
+                product_price: orderItems[j].variantPrice,
+                product_name: prodFin[h].Product.ProductTranslations[0].title,
+                extra_id: extras[k].extraId,
+                extra_quantity: extras[k].quantity,
+                extra_price: extras[k].extraPrice,
+                extra_name: extras[k].Extra.ExtraTranslations[0].name,
+                total_product_price: totalProductPrice,
+                total_extra_price: totalExtraPrice,
+              };
 
-          resultWithAll.push(items);
+              resultWithAll.push(items);
+            }
+          }
         }
       }
-      console.log(resultWithAll);
+
       const merged = resultWithAll.reduce(
         (
           r,
@@ -172,7 +178,6 @@ exports.getOrders = async (req, res, next) => {
       const result = Object.values(merged);
       orders[i].products = result;
     }
-
     totalPriceFinal = orders[0].totalPrice;
     cutlery = orders[0].cutlery;
     take = orders[0].take;
