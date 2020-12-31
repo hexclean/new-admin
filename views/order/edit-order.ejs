@@ -40,6 +40,11 @@
                                  <h5>
                                  Ajtó: <%= orderDoorNumber %> 
                                  <h5>
+                                <p><%=orderCity%></p>
+                                <% if(status == 3 ){ %>
+                                 <h3><%= deletedMessage %></h3>
+                          
+                              <% } %>
                                 
                               </div>
                            </div>
@@ -56,7 +61,6 @@
                            <div class="col-md-6 text-md-right">
                               <ul class="invoice-date">
                                  <li>Invoice Date : <%= orderCreated %></li>
-                                 <li> <button class="btn btn-success has-icon" id="createVariant" type="submit">Adatok modositasa</button></li>
                               </ul>
                            </div>
                           
@@ -107,12 +111,16 @@
                         </div>
                         <% } %>
                         <!-- end -->
-                        <div class="invoice-buttons text-right">
-                           <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal">
-                           Elfogadas
-                           </button>
-                           <a href="#" class="btn btn-primary">Elutasitas</a>
-                        </div>
+                        <% if(status == 1 ){ %>
+                           <div class="invoice-buttons text-right">
+                              <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal">
+                              Elfogadas
+                              </button>
+                              <a href="#" class="btn btn-primary">Elutasitas</a>
+                           </div>
+                    
+                        <% } %>
+                      
                         <!-- Button trigger modal -->
                         <!-- Modal -->
                         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
