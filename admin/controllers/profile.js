@@ -241,17 +241,17 @@ exports.postEditProfile = async (req, res, next) => {
         );
 
         await RestaurantInfo.update(
-          { shortCompanyDesc: roShortCompanyDesc, adress: roAdress },
+          { shortCompanyDesc: roShortCompanyDesc, address: roAdress },
           { where: { restaurantId: req.admin.id, languageId: 1 } }
         );
 
         await RestaurantInfo.update(
-          { shortCompanyDesc: huShortCompanyDesc, adress: huAdress },
+          { shortCompanyDesc: huShortCompanyDesc, address: huAdress },
           { where: { restaurantId: req.admin.id, languageId: 2 } }
         );
 
         await RestaurantInfo.update(
-          { shortCompanyDesc: enShortCompanyDesc, adress: enAdress },
+          { shortCompanyDesc: enShortCompanyDesc, address: enAdress },
           { where: { restaurantId: req.admin.id, languageId: 3 } }
         );
       }

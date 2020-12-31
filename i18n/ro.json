@@ -1,4 +1,8 @@
 {
+  "box_price": "Preț cutie",
+  "box_name_ro": "Box romanian name",
+  "box_name_hu": "Box hungarian name",
+  "box_name_en": "Box english name",
   "navigation": {
     "ro": "Română",
     "en": "Engleză",

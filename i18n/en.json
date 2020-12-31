@@ -1,4 +1,9 @@
 {
+  "box_price": "Box price",
+  "box_name_ro": "Box romanian name",
+  "box_name_hu": "Box hungarian name",
+  "box_name_en": "Box english name",
+
   "navigation": {
     "ro": "Română",
     "en": "English",
@@ -16,10 +21,7 @@
   "box_name_ro_validation": "Romanian name is required",
   "box_name_hu_validation": "Hungarian name is required",
   "box_name_en_validation": "English name is required",
-  "box_name_ro": "Box romanian name",
-  "box_name_hu": "Box hungarian name",
-  "box_name_en": "Box english name",
-  "box_price": "Box price",
+
   "create_product_price": "Price",
   "create_product_description1": "Description RO",
   "create_product_description2": "Description HU",

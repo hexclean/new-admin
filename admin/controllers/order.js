@@ -112,7 +112,8 @@ exports.getOrders = async (req, res, next) => {
 
         let prodFin = orderItems[j].Variant.ProductFinals;
         for (let h = 0; h < prodFin.length; h++) {
-          if (extras[j] == undefined) {
+          console.log("extras[j]", extras);
+          if (extras.length == 0) {
             let totalProductPrice = 0;
 
             totalProductPrice +=
