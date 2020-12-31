@@ -14,6 +14,7 @@ const deletedItemsController = require("../controllers/deleted-items");
 const comboController = require("../controllers/combo");
 const liveSearchController = require("../controllers/live-search");
 const ordersController = require("../controllers/order");
+const reckoningController = require("../controllers/reckoning");
 const isAuth = require("../../middleware/is-auth");
 const router = express.Router();
 
@@ -204,4 +205,9 @@ router.get("/edit-order/:orderId", isAuth, ordersController.getEditOrder);
 router.post("/edit-order", isAuth, ordersController.postEditOrder);
 router.post("/filter-order", isAuth, ordersController.getFilterOrders);
 router.post("/download", isAuth, ordersController.download);
+
+// Reckoning
+router.get("/reckoning", isAuth, reckoningController.getIndex);
+router.post("/reckoning", isAuth, reckoningController.postExport);
+
 module.exports = router;

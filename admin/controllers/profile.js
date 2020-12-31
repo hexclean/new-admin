@@ -4,7 +4,6 @@ const fileHelper = require("../../util/file");
 const Hours = require("../../models/Hours.js");
 const OpeningHours = require("../../models/OpeningHours");
 const OpeningHoursTranslation = require("../../models/OpeningHoursTranslation");
-const fs = require("fs");
 exports.getEditProfile = async (req, res, next) => {
   restaurantId = req.admin.id;
   adminIdParams = req.params.restaurantId;
@@ -72,6 +71,7 @@ exports.getEditOpeningHours = async (req, res, next) => {
     ],
   })
     .then((admin) => {
+      console.log(admin);
       res.render("profile/edit-opening-hours", {
         pageTitle: "Edit Product",
         path: "/admin/edit-product",

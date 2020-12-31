@@ -40,9 +40,7 @@
                                  <h5>
                                  Ajtó: <%= orderDoorNumber %> 
                                  <h5>
-                                  <h5>
-                                    E-mail: <%= userEmail %> 
-                                    <h5>
+                                
                               </div>
                            </div>
                            <input
@@ -61,85 +59,11 @@
                                  <li> <button class="btn btn-success has-icon" id="createVariant" type="submit">Adatok modositasa</button></li>
                               </ul>
                            </div>
-                           <div class="col-md-6 mb-3">
-                              <label for="sku">Nev</label>
-                              <div class="input-group">
-                                 <input
-                                    class="form-control"
-                                    type="text"
-                                    autocomplete="off"
-                                    name="sku"
-                                    disabled
-                                    id="sku"
-                                    value="<% if (editing) { %><%= userName %><% } %>">
-                              </div>
-                              <span class="error_form" id="sku_error_message"></span>
-                           </div>
-                           <div class="col-md-6 mb-3">
-                              <label for="sku">Telefonszám</label>
-                              <div class="input-group">
-                                 <input
-                                    class="form-control"
-                                    type="text"
-                                    autocomplete="off"
-                                    name="sku"
-                                    id="sku"
-                                    value="<% if (editing) { %><%= orderPhoneNumber %><% } %>">
-                              </div>
-                              <span class="error_form" id="sku_error_message"></span>
-                           </div>
-                           <div class="col-md-6 mb-3">
-                              <label for="sku">Utca</label>
-                              <div class="input-group">
-                                 <input
-                                    class="form-control"
-                                    type="text"
-                                    autocomplete="off"
-                                    name="sku"
-                                    id="sku"
-                                    value="<% if (editing) { %><%= orderStreet %><% } %>">
-                              </div>
-                              <span class="error_form" id="sku_error_message"></span>
-                           </div>
-                           <div class="col-md-6 mb-3">
-                              <label for="sku">Házszám</label>
-                              <div class="input-group">
-                                 <input
-                                    class="form-control"
-                                    type="text"
-                                    autocomplete="off"
-                                    name="sku"
-                                    id="sku"
-                                    value="<% if (editing) { %><%= orderHouseNumber %><% } %>">
-                              </div>
-                              <span class="error_form" id="sku_error_message"></span>
-                           </div>
-                           <div class="col-md-6 mb-3">
-                              <label for="sku">Emelet</label>
-                              <div class="input-group">
-                                 <input
-                                    class="form-control"
-                                    type="text"
-                                    autocomplete="off"
-                                    name="sku"
-                                    id="sku"
-                                    value="<% if (editing) { %><%= orderFloor %><% } %>">
-                              </div>
-                              <span class="error_form" id="sku_error_message"></span>
-                           </div>
-                           <div class="col-md-6 mb-3">
-                              <label for="sku">Ajtó</label>
-                              <div class="input-group">
-                                 <input
-                                    class="form-control"
-                                    type="text"
-                                    autocomplete="off"
-                                    name="sku"
-                                    id="sku"
-                                    value="<% if (editing) { %><%= orderDoorNumber %><% } %>">
-                              </div>
-                              <span class="error_form" id="sku_error_message"></span>
-                           </div>
+                          
+                          
+                          
+                       
+
                         </div>
                         <!-- Invoice Table -->
                         <% for (let i =0; i < result.length; i++) { %>
@@ -178,6 +102,7 @@
                                     <td>$<%= result[i].total_cost_produce_extra %></td>
                                  </tr>
                               </tfoot>
+
                            </table>
                         </div>
                         <% } %>

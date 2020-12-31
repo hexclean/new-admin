@@ -81,6 +81,7 @@ exports.getOrders = async (req, res, next) => {
         include: [
           {
             model: LocationNameTranslation,
+            where: { languageId: 2 },
           },
         ],
       },
@@ -111,7 +112,6 @@ exports.getOrders = async (req, res, next) => {
 
         let prodFin = orderItems[j].Variant.ProductFinals;
         for (let h = 0; h < prodFin.length; h++) {
-          console.log(extras[j]);
           if (extras[j] == undefined) {
             let totalProductPrice = 0;
 
