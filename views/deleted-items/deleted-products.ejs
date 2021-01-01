@@ -41,7 +41,7 @@
                               <thead>
                                  <tr>
                                     <th scope="col">ID</th>
-                                    <th scope="col">SKU</th>
+                                    <th scope="col">nev</th>
                                     
                                     <th scope="col">STATUS</th>
                                     <th scope="col" class="buttons-text-variants">Visszaallitas</th>
@@ -53,7 +53,7 @@
                               <tbody>
                                  <tr>
                                     <th scope="row"><%= prod[i].id %></th>
-                                    <td><%= prod[i].id %></td>
+                                    <td><%= prod[i].ProductTranslations[0].title  %></td>
                                     <td><span class="badge badge-danger">DELETED</span></td>
                                     <td>
                                        <form action="/admin/restore-product" method="POST" >

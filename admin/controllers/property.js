@@ -122,6 +122,15 @@ exports.postAddProperty = async (req, res, next) => {
 exports.getEditProperty = async (req, res, next) => {
   const editMode = req.query.edit;
   const propertyId = req.params.propertyId;
+  let languageCode;
+
+  if (req.cookies.language == "ro") {
+    languageCode = 1;
+  } else if (req.cookies.language == "hu") {
+    languageCode = 2;
+  } else {
+    languageCode = 3;
+  }
   let items = [];
   if (!editMode) {
     return res.redirect("/");
@@ -140,6 +149,7 @@ exports.getEditProperty = async (req, res, next) => {
     include: [
       {
         model: PropertyTranslation,
+        where: { languageId: languageCode },
       },
     ],
     include: [
@@ -149,6 +159,7 @@ exports.getEditProperty = async (req, res, next) => {
         include: [
           {
             model: PropertyValueTranslation,
+            where: { languageId: languageCode },
           },
         ],
       },
@@ -157,7 +168,6 @@ exports.getEditProperty = async (req, res, next) => {
   let arrayLength = [];
   for (let i = 0; i < propValue.length; i++) {
     arrayLength = propValue[i].PropertyValues;
-    // [i].PropertyValueTranslations;
     console.log(arrayLength.length);
     for (let j = 0; j <= arrayLength.length - 1; j++) {
       const item = {
@@ -178,6 +188,7 @@ exports.getEditProperty = async (req, res, next) => {
     include: [
       {
         model: PropertyTranslation,
+        where: { languageId: languageCode },
       },
     ],
   })

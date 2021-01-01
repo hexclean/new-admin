@@ -23,16 +23,14 @@ exports.getIndex = async (req, res, next) => {
 };
 
 exports.getAddVariant = async (req, res, next) => {
-  let currentExtraName = [];
-  let currentCategoryName = [];
-  var currentLanguage = req.cookies.language;
+  let languageCode;
 
-  if (currentLanguage == "ro") {
-    currentCategoryName = 0;
-  } else if (currentLanguage == "hu") {
-    currentCategoryName = 1;
+  if (req.cookies.language == "ro") {
+    languageCode = 1;
+  } else if (req.cookies.language == "hu") {
+    languageCode = 2;
   } else {
-    currentCategoryName = 2;
+    languageCode = 3;
   }
 
   const ext = await Extras.findAll({
@@ -40,6 +38,7 @@ exports.getAddVariant = async (req, res, next) => {
     include: [
       {
         model: ExtraTranslations,
+        where: { languageId: languageCode },
       },
     ],
   });
@@ -53,11 +52,11 @@ exports.getAddVariant = async (req, res, next) => {
   });
 
   if (checkExtraLength.length === 0) {
-    return res.redirect("/admin/vr-index");
+    return res.redirect("/admin/variant-index");
   }
 
-  if (checkCategoryLength.length === 0) {
-    return res.redirect("/admin/vr-index");
+  if (checkCategoryLength.length < 2) {
+    return res.redirect("/admin/variant-index");
   }
 
   const cat = await Category.findAll({
@@ -67,28 +66,16 @@ exports.getAddVariant = async (req, res, next) => {
     include: [
       {
         model: CategoryTranslation,
+        where: { languageId: languageCode },
       },
     ],
   });
-
-  for (let i = 0; i < ext.length; i++) {
-    var currentLanguage = req.cookies.language;
-    if (currentLanguage == "ro") {
-      currentExtraName[i] = ext[i].ExtraTranslations[0].name;
-    } else if (currentLanguage == "hu") {
-      currentExtraName[i] = ext[i].ExtraTranslations[1].name;
-    } else {
-      currentExtraName[i] = ext[i].ExtraTranslations[2].name;
-    }
-  }
 
   res.render("variant/edit-variant", {
     pageTitle: "Add Product",
     path: "/admin/add-product",
     editing: false,
     ext: ext,
-    currentExtraName: currentExtraName,
-    currentLanguage: currentCategoryName,
     cat: cat,
   });
 };
@@ -432,15 +419,14 @@ exports.postEditVariant = async (req, res, next) => {
 
 exports.getFilteredProperty = async (req, res, next) => {
   var categoryId = req.params.categoryId;
-  var languageId;
-  var currentLanguage = req.cookies.language;
-  console.log("-==-=--=-=-=-==-=-=-=-=-=-");
-  if (currentLanguage == "ro") {
-    languageId = 1;
-  } else if (currentLanguage == "hu") {
-    languageId = 2;
+  let languageCode;
+
+  if (req.cookies.language == "ro") {
+    languageCode = 1;
+  } else if (req.cookies.language == "hu") {
+    languageCode = 2;
   } else {
-    languageId = 3;
+    languageCode = 3;
   }
   const result = await CategoryProperty.findAll({
     where: { restaurantId: req.admin.id, categoryId: categoryId, active: 1 },
@@ -450,21 +436,26 @@ exports.getFilteredProperty = async (req, res, next) => {
         include: [
           {
             model: PropertyTranslation,
+            where: { languageId: languageCode },
           },
           {
             model: PropertyValue,
-            include: [{ model: PropertyValueTranslation }],
+            include: [
+              {
+                model: PropertyValueTranslation,
+                where: { languageId: languageCode },
+              },
+            ],
           },
         ],
       },
     ],
   });
-  // console.log(result);
+
   try {
     res.render("variant/current-property", {
       result: result,
       editing: false,
-      languageId: languageId,
     });
   } catch (error) {
     console.log(error);

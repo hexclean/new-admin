@@ -13,27 +13,14 @@ exports.getIndex = async (req, res, next) => {
 exports.getProducts = async (req, res, next) => {
   const page = +req.query.page || 1;
   let totalItems;
-  let currentProductName = [];
+  let languageCode;
 
-  const products = await Products.findAll({
-    where: { restaurantId: req.admin.id, active: 0 },
-    include: [
-      {
-        model: ProductsTranslation,
-      },
-    ],
-  });
-
-  for (let i = 0; i < products.length; i++) {
-    var currentLanguage = req.cookies.language;
-
-    if (currentLanguage == "ro") {
-      currentProductName[i] = products[i].productTranslations[0].title;
-    } else if (currentLanguage == "hu") {
-      currentProductName[i] = products[i].productTranslations[1].title;
-    } else {
-      currentProductName[i] = products[i].productTranslations[2].title;
-    }
+  if (req.cookies.language == "ro") {
+    languageCode = 1;
+  } else if (req.cookies.language == "hu") {
+    languageCode = 2;
+  } else {
+    languageCode = 3;
   }
 
   await Products.findAll({
@@ -44,6 +31,7 @@ exports.getProducts = async (req, res, next) => {
     include: [
       {
         model: ProductsTranslation,
+        where: { languageId: languageCode },
       },
     ],
   })
@@ -57,6 +45,7 @@ exports.getProducts = async (req, res, next) => {
         include: [
           {
             model: ProductsTranslation,
+            where: { languageId: languageCode },
           },
         ],
         offset: (page - 1) * ITEMS_PER_PAGE,
@@ -64,6 +53,7 @@ exports.getProducts = async (req, res, next) => {
       });
     })
     .then((products) => {
+      console.log(products);
       res.render("deleted-items/deleted-products", {
         pageTitle: "Admin Products",
         path: "/admin/products",
@@ -73,7 +63,6 @@ exports.getProducts = async (req, res, next) => {
         nextPage: page + 1,
         previousPage: page - 1,
         lastPage: Math.ceil(totalItems.length / ITEMS_PER_PAGE),
-        currentProductName: currentProductName,
         prod: products,
       });
     })

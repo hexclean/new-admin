@@ -17,7 +17,16 @@ const RestaurantRole = require("../../models/RestaurantRole");
 const ITEMS_PER_PAGE = 30;
 
 exports.getAddProduct = async (req, res, next) => {
-  let currentCategoryName = [];
+  let languageCode;
+
+  if (req.cookies.language == "ro") {
+    languageCode = 1;
+  } else if (req.cookies.language == "hu") {
+    languageCode = 2;
+  } else {
+    languageCode = 3;
+  }
+
   try {
     const allergen = await Allergen.findAll({
       where: {
@@ -26,6 +35,7 @@ exports.getAddProduct = async (req, res, next) => {
       include: [
         {
           model: AllergenTranslation,
+          where: { languageId: languageCode },
         },
       ],
     });
@@ -36,6 +46,7 @@ exports.getAddProduct = async (req, res, next) => {
       include: [
         {
           model: BoxTranslation,
+          where: { languageId: languageCode },
         },
       ],
     });
@@ -46,6 +57,7 @@ exports.getAddProduct = async (req, res, next) => {
       include: [
         {
           model: CategoryTranslation,
+          where: { languageId: languageCode },
         },
       ],
     });
@@ -63,24 +75,12 @@ exports.getAddProduct = async (req, res, next) => {
       where: { restaurantId: req.admin.id },
     });
 
-    if (checkVariantLength.length === 0) {
+    if (checkVariantLength.length < 2) {
       return res.redirect("/admin/products");
     }
 
-    if (checkBoxLength.length === 0) {
+    if (checkBoxLength.length < 1) {
       return res.redirect("/admin/products");
-    }
-
-    for (let i = 0; i < cat.length; i++) {
-      var currentLanguage = req.cookies.language;
-
-      if (currentLanguage == "ro") {
-        currentCategoryName = 0;
-      } else if (currentLanguage == "hu") {
-        currentCategoryName = 1;
-      } else {
-        currentCategoryName = 2;
-      }
     }
 
     res.render("admin/edit-product", {
@@ -93,7 +93,6 @@ exports.getAddProduct = async (req, res, next) => {
       checkBoxLength: checkBoxLength,
       checkVariantLength: checkVariantLength,
       allergenArray: allergen,
-      currentLanguage: currentCategoryName,
     });
   } catch (err) {
     const error = new Error(err);
