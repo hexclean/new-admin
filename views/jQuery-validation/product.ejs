@@ -258,7 +258,7 @@
     // });if
     if (true) {
       $(document).ready(function () {
-        $("#categoryId").click(function () {
+        $("#categoryId").on("change", function () {
           const categoryId = $("#categoryId").val();
           $(".category-all").hide();
           $(".category-" + categoryId).show();
@@ -272,6 +272,7 @@
   $(document).ready(function () {
     $("#categoryId").on("change", function () {
       const categoryId = $("#categoryId").val();
+
       $(".category-all").hide();
       $(".category-" + categoryId).show();
     });
