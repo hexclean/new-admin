@@ -1,4 +1,6 @@
 const ProductVariants = require("../../models/Variant");
+const Property = require("../../models/Property");
+const PropertyTranslation = require("../../models/PropertyTranslation");
 const Category = require("../../models/Category");
 const CategoryTranslation = require("../../models/CategoryTranslation");
 const Extras = require("../../models/Extra");
@@ -529,6 +531,79 @@ exports.getFilteredAllergen = async (req, res, next) => {
       });
     })
     .catch((err) => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
+};
+
+exports.getPropertyIndex = async (req, res, next) => {
+  // await AdminLogs.create({
+  //   restaurant_id: req.admin.id,
+  //   operation_type: "GET",
+  //   description: "Opened list of all extra",
+  //   route: "getBoxIndex",
+  // });
+
+  const page = +req.query.page || 1;
+  let totalItems;
+  let currentPropertyName = [];
+
+  await Property.findAll({
+    where: {
+      restaurantId: req.admin.id,
+    },
+    include: [
+      {
+        model: PropertyTranslation,
+      },
+    ],
+  })
+    .then((numExtra) => {
+      totalItems = numExtra;
+      return Property.findAll({
+        where: {
+          restaurantId: req.admin.id,
+        },
+        include: [
+          {
+            model: PropertyTranslation,
+          },
+        ],
+
+        offset: (page - 1) * ITEMS_PER_PAGE,
+        limit: ITEMS_PER_PAGE,
+      });
+    })
+    .then((property) => {
+      for (let i = 0; i < property.length; i++) {
+        var currentLanguage = req.cookies.language;
+
+        if (currentLanguage == "ro") {
+          currentPropertyName[i] = property[i].PropertyTranslations[0].name;
+        } else if (currentLanguage == "hu") {
+          currentPropertyName[i] = property[i].PropertyTranslations[1].name;
+        } else {
+          currentPropertyName[i] = property[i].PropertyTranslations[2].name;
+        }
+      }
+
+      res.render("combo/property-index", {
+        pageTitle: "Admin Products",
+        path: "/admin/products",
+        currentPage: page,
+
+        hasNextPage: ITEMS_PER_PAGE * page < totalItems.length,
+        hasPreviousPage: page > 1,
+        nextPage: page + 1,
+        previousPage: page - 1,
+        currentPropertyName: currentPropertyName,
+        lastPage: Math.ceil(totalItems.length / ITEMS_PER_PAGE),
+        property: property,
+      });
+    })
+    .catch((err) => {
+      console.log(err);
       const error = new Error(err);
       error.httpStatusCode = 500;
       return next(error);

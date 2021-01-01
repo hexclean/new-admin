@@ -1,1 +1,27 @@
-<h1>dasdas</h1>
+<thead>
+  <tr>
+    <th scope="col">ID</th>
+    <th scope="col">name</th>
+    <th scope="col">STATUS</th>
+    <th scope="col">EDIT</th>
+  </tr>
+</thead>
+<% if (property.length > 0) { %> <% for (let i=0; i < property.length; i++ ) {
+%>
+<tbody>
+  <tr>
+    <th scope="row"><%= property[i].id %></th>
+    <td><%= property[i].PropertyTranslations[0].name %></td>
+    <td><span class="badge badge-success">AKTIV</span></td>
+    <td>
+      <a
+        href="/admin/edit-property/<%= property[i].id %>?edit=true"
+        class="btn grid-btn mt-0 btn-sm btn-secondary"
+        ><%= lingua.product_action_edit %></a
+      >
+    </td>
+  </tr>
+</tbody>
+<% } %> <% } else { %>
+<h1>No Products Found!</h1>
+<% } %>

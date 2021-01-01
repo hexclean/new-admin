@@ -11,6 +11,9 @@ const Box = require("../../models/Box");
 const BoxTranslation = require("../../models/BoxTranslation");
 const Products = require("../../models/Product");
 const ProductTranslation = require("../../models/ProductTranslation");
+const Property = require("../../models/Property");
+const PropertyValueTranslation = require("../../models/PropertyValueTranslation");
+const PropertyTranslation = require("../../models/PropertyTranslation");
 
 exports.getFilteredExtra = async (req, res, next) => {
   var categoryName = req.params.extraId;
@@ -295,6 +298,52 @@ exports.getFilteredProduct = async (req, res, next) => {
     .then((prods) => {
       res.render("live-search/search-product", {
         prods: prods,
+        editing: false,
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
+};
+
+exports.getFilteredProperty = async (req, res, next) => {
+  var productName = req.params.propertyId;
+  var currentPropertyName;
+  var currentLanguage = req.cookies.language;
+
+  if (productName.length == 1) {
+    productName = [];
+  }
+
+  if (currentLanguage == "ro") {
+    currentPropertyName = 1;
+  } else if (currentLanguage == "hu") {
+    currentPropertyName = 2;
+  } else {
+    currentPropertyName = 3;
+  }
+
+  await Property.findAll({
+    where: {
+      restaurantId: req.admin.id,
+    },
+    include: [
+      {
+        model: PropertyTranslation,
+        where: {
+          name: { [Op.like]: "%" + productName + "%" },
+          languageId: currentPropertyName,
+        },
+      },
+    ],
+  })
+
+    .then((property) => {
+      res.render("live-search/search-property", {
+        property: property,
         editing: false,
       });
     })
