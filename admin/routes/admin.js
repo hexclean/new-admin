@@ -55,6 +55,11 @@ router.get(
   isAuth,
   liveSearchController.getFilteredVariant
 );
+router.get(
+  "/get-filtered-product/:productId",
+  isAuth,
+  liveSearchController.getFilteredProduct
+);
 // COMBO
 router.get("/variant-index", isAuth, comboController.getVariantIndex);
 router.get("/extra-index", isAuth, comboController.getExtraIndex);

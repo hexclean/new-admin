@@ -1,4 +1,27 @@
 <%- include('../includes/head.ejs') %>
+<script>
+
+
+   $(document).ready(function() {
+
+      $('#searchProduct').keyup(function() {
+         const productId = $('#searchProduct').val();
+         console.log(productId)
+         $.get( "get-filtered-product/"+ productId )
+       
+      .done(function( data ) {
+
+         $("#searchedProduct").html(data);
+         
+      });
+   });
+
+  
+ 
+   })
+
+
+</script>
 </head>
 <body class="ms-body ms-aside-left-open ms-primary-theme ms-has-quickbar">
    <%- include('../includes/navigation.ejs') %>
@@ -46,12 +69,12 @@
                      </div>
                      <div class="ms-panel-body">
                         <div class="table-responsive">
-                           <table id="searchedVariant" class="table table-hover thead-primary">
+                           <table id="searchedProduct"  class="table table-hover thead-primary">
                               <thead>
                                  <tr>
                                     <th scope="col">Id</th>
                                     <th scope="col">Név</th>
-                                    <th scope="col">Ár</th>
+                                  
                                     <th scope="col">Státusz</th>
                                     <th scope="col" class="buttons-text-variants">Törlés</th>
                                     <th scope="col" >Szerkesztés</th>
@@ -61,35 +84,14 @@
                                  <input type="text" name="searchProduct" id="searchProduct" placeholder="Termek keresés" class="form-control extra-search" />
                               </div>
                               <hr>
-                              <script>
-                                 $(document).ready(function () {
-                                   $("#searchProduct").keyup(function () {
-                                     // Retrieve the input field text and reset the count to zero
-                                     var filter = $(this).val(),
-                                       count = 0;
-                               
-                                     // Loop through the comment list
-                                     $(".product-all").each(function () {
-                                       // If the list item does not contain the text phrase fade it out
-                                       if ($(this).text().search(new RegExp(filter, "i")) < 0) {
-                                         $(this).fadeOut();
-                               
-                                         // Show the list item if the phrase matches and increase the count by 1
-                                       } else {
-                                         $(this).show();
-                                         count++;
-                                       }
-                                     });
-                                   });
-                                 });
-                               </script>
+                            
                               <% if (prods.length > 0) { %>
                               <% for (let i =0; i < prods.length; i++) { %>
-                              <tbody class="product-all product-<%= currentProductName[i] %>">
+                              <tbody class="product-all" >
                                  <tr>
                                     <th scope="row"><%= prods[i].id %></th>
                                     <td><%= currentProductName[i] %></td>
-                                    <td>14,55</td>
+                               
                                     <td><span class="badge badge-success">AKTIV</span></td>
                                     <td>
                                        <form action="/admin/delete-product" method="POST">
@@ -108,6 +110,7 @@
                               <% } %>
                            </table>
                         </div>
+                        <%- include('../includes/pagination.ejs', {currentPage: currentPage, nextPage: nextPage, previousPage: previousPage, lastPage: lastPage, hasNextPage: hasNextPage, hasPreviousPage: hasPreviousPage}) %>
                      </div>
                   </div>
                </div>

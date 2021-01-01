@@ -391,7 +391,7 @@ exports.getAcceptedOrders = async (req, res, next) => {
     userName = orders[0].User.fullName;
     orderIds = orders[0].id;
   }
-  res.render("order/orders", {
+  res.render("order/accepted-orders", {
     pageTitle: "Add Product",
     path: "/admin/add-product",
     editing: false,
@@ -407,6 +407,7 @@ exports.getAcceptedOrders = async (req, res, next) => {
     take: take,
     orderIds: orderIds,
     extras: extras,
+    status: orders[0].orderStatusId,
   });
 };
 exports.getEditOrder = async (req, res, next) => {
@@ -781,7 +782,7 @@ exports.getDeletedOrders = async (req, res, next) => {
     userName = orders[0].User.fullName;
     orderIds = orders[0].id;
   }
-  res.render("order/orders", {
+  res.render("order/deleted-orders", {
     pageTitle: "Add Product",
     path: "/admin/add-product",
     editing: false,
@@ -797,6 +798,7 @@ exports.getDeletedOrders = async (req, res, next) => {
     take: take,
     orderIds: orderIds,
     extras: extras,
+    status: orders[0].orderStatusId,
   });
 };
 

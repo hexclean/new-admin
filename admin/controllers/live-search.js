@@ -9,6 +9,8 @@ const Allergen = require("../../models/Allergen");
 const AllergenTranslation = require("../../models/AllergenTranslation");
 const Box = require("../../models/Box");
 const BoxTranslation = require("../../models/BoxTranslation");
+const Products = require("../../models/Product");
+const ProductTranslation = require("../../models/ProductTranslation");
 
 exports.getFilteredExtra = async (req, res, next) => {
   var categoryName = req.params.extraId;
@@ -252,6 +254,52 @@ exports.getFilteredOrders = async (req, res, next) => {
       });
     })
     .catch((err) => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
+};
+
+exports.getFilteredProduct = async (req, res, next) => {
+  var productName = req.params.productId;
+  var currentProductName;
+  var currentLanguage = req.cookies.language;
+
+  if (productName.length == 1) {
+    productName = [];
+  }
+
+  if (currentLanguage == "ro") {
+    currentProductName = 1;
+  } else if (currentLanguage == "hu") {
+    currentProductName = 2;
+  } else {
+    currentProductName = 3;
+  }
+
+  await Products.findAll({
+    where: {
+      restaurantId: req.admin.id,
+    },
+    include: [
+      {
+        model: ProductTranslation,
+        where: {
+          title: { [Op.like]: "%" + productName + "%" },
+          languageId: currentProductName,
+        },
+      },
+    ],
+  })
+
+    .then((prods) => {
+      res.render("live-search/search-product", {
+        prods: prods,
+        editing: false,
+      });
+    })
+    .catch((err) => {
+      console.log(err);
       const error = new Error(err);
       error.httpStatusCode = 500;
       return next(error);
