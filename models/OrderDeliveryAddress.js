@@ -8,7 +8,6 @@ const OrderDeliveryAddress = sequelize.define("OrderDeliveryAddress", {
     allowNull: false,
     primaryKey: true,
   },
-
   street: {
     type: Sequelize.STRING,
     allowNull: false,
@@ -20,6 +19,7 @@ const OrderDeliveryAddress = sequelize.define("OrderDeliveryAddress", {
   floor: Sequelize.STRING,
   doorNumber: Sequelize.STRING,
   phoneNumber: Sequelize.STRING,
+  userName: Sequelize.STRING,
 });
 
 module.exports = OrderDeliveryAddress;

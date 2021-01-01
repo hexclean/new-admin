@@ -40,7 +40,7 @@ exports.getProductsReview = async (req, res, next) => {
         sum += review[i].rating;
       }
       var avg = sum / review.length;
-      res.render("reviews/product", {
+      res.render("reviews/product-notex", {
         pageTitle: "Admin Products",
         path: "/admin/products",
         review: review,

@@ -19,9 +19,9 @@
     $("select#categoryId").val(
       "<% if (editing) { %><%=  variant[0].ProductVariantsExtras[0].Variant.categoryId %><% } %>"
     );
-    $("select#propertyValueId").val(
-      "<% if (editing) { %><%=  testing3 %><% } %>"
-    );
+    // $("select#propertyValueId").val(
+    //   "<% if (editing) { %><%=  testing3 %><% } %>"
+    // );
   });
 </script>
 <script>
@@ -224,10 +224,25 @@
     });
   });
 </script>
-
+<% if(editing){ %>
 <script>
   $(document).ready(function () {
     $("#categoryId").on("change", function () {
+      console.log("edit");
+
+      const categoryId = $("#categoryId").val();
+      console.log("categoryId", categoryId);
+      $.get("search-variant-category/" + categoryId).done(function (data) {
+        $("#propByCatEdit").html(data);
+      });
+    });
+  });
+</script>
+<% } else{ %>
+<script>
+  $(document).ready(function () {
+    $("#categoryId").on("change", function () {
+      console.log("create");
       const categoryId = $("#categoryId").val();
       $.get("search-variant-category/" + categoryId).done(function (data) {
         $("#propByCat").html(data);
@@ -235,9 +250,8 @@
     });
   });
 </script>
-
-<% if (editing) { %> <% for (let i = 0; i < variant.length; i++) { %> <% if
-(variant[i].ProductVariantsExtras[0].active ==1) { %>
+<% } %> <% if (editing) { %> <% for (let i = 0; i < variant.length; i++) { %> <%
+if (variant[i].ProductVariantsExtras[0].active ==1) { %>
 <script>
   $(document).ready(function () {
     var activeCheckbox = "<%= variant[i].ProductVariantsExtras[0].extraId %>";

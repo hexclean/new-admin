@@ -6,7 +6,7 @@
       <form
          id="createBox_form"
          class="ms-content-wrapper"
-         action="/admin/<% if (editing) { %>edit-order<% } else { %>add-box<% } %>"
+         action="/admin/<% if (editing) { %>edit-order<% } else { %>edit-order<% } %>"
          method="POST">
          <div class="ms-content-wrapper">
             <div class="row">
@@ -71,6 +71,7 @@
                         </div>
                         <!-- Invoice Table -->
                         <% for (let i =0; i < result.length; i++) { %>
+
                         <div class="ms-invoice-table table-responsive mt-5">
                            <table class="table table-hover text-right thead-light">
                               <thead>
@@ -111,19 +112,26 @@
                         </div>
                         <% } %>
                         <!-- end -->
+                        <input
+                        type="hidden"
+                        value="<%= orderIds %>"
+                        name="orderId"
+                        />
                         <% if(status == 1 ){ %>
                            <div class="invoice-buttons text-right">
-                              <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal">
+                              <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal<%= orderIds %>">
                               Elfogadas
                               </button>
-                              <a href="#" class="btn btn-primary">Elutasitas</a>
+                              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalFailed<%= orderIds %>">
+                                 Elutasitas
+                                 </button>
                            </div>
                     
                         <% } %>
                       
                         <!-- Button trigger modal -->
                         <!-- Modal -->
-                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal fade" id="exampleModal<%= orderIds %>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                            <div class="modal-dialog" role="document">
                               <div class="modal-content">
                                  <div class="modal-header">
@@ -170,6 +178,34 @@
                                  <div class="modal-footer">
                                     <button type="submit" class="btn btn-success">Rendelés befejezése</button>
                                     <button type="button"  data-dismiss="modal" class="btn btn-secondary">Bezárás</button>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                        <!-- Modal Failed-->
+                     
+                        <div class="modal fade" id="exampleModalFailed<%= orderIds %>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                           <div class="modal-dialog" role="document">
+                              <div class="modal-content">
+                                 <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">FAILED</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                    </button>
+                                 </div>
+                                 <div class="modal-body">
+                                  <div class="container">
+                                    <div class="row">
+                                     
+                                          <label for="failedDescription">Example textarea</label>
+                                          <textarea class="form-control delval<%= orderIds %>" name="failedDescription"id="failedDescription<%= orderIds %>" rows="5"></textarea>
+                                        
+                                    </div>
+                                  </div>
+                                 </div>
+                                 <div class="modal-footer">
+                                    <button type="submit" class="btn btn-primary">Rendelés befejezése</button>
+                                    <button type="button" id="dbtnvaldelval<%= orderIds %>"  data-dismiss="modal" class="btn btn-secondary dbtnvaldelval<%= orderIds %>">Bezárás</button>
                                  </div>
                               </div>
                            </div>

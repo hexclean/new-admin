@@ -60,7 +60,7 @@
             <tbody>
               <tr>
                 <th scope="row">#<%= orders[i].id %></th>
-                <td><%= orders[i].User.fullName %></td>
+                <td><%= orders[i].OrderDeliveryAddress.userName %></td>
                 <td><%= orders[i].LocationName.LocationNameTranslations[0].name %></td>
                 <td>145,66</td>
                 <td>Uj</td>
@@ -98,7 +98,7 @@
                   <div class="row align-items-center border-orders-userinf">
                      <div class="col-md-6 info-orders-top">
                         <div class="invoice-address">
-                           <h5>Név: <%= orders[i].User.fullName %></h5>
+                           <h5>Név: <%= orders[i].OrderDeliveryAddress.userName %></h5>
                            <h5>
                            Telefonszám: <%= orders[i].OrderDeliveryAddress.phoneNumber %> 
                            <h5>

@@ -86,7 +86,6 @@ exports.getAddVariant = async (req, res, next) => {
     pageTitle: "Add Product",
     path: "/admin/add-product",
     editing: false,
-    hasError: false,
     ext: ext,
     currentExtraName: currentExtraName,
     currentLanguage: currentCategoryName,
@@ -203,7 +202,6 @@ exports.getEditVariant = async (req, res, next) => {
   let categoryId;
   await Variant.findByPk(varId).then((variant) => {
     categoryId = variant.categoryId;
-    // console.log(variant);
     if (!variant) {
       return res.redirect("/");
     }
@@ -249,7 +247,6 @@ exports.getEditVariant = async (req, res, next) => {
       },
     ],
   });
-  // console.log();
 
   const cat = await Category.findAll({
     where: { restaurantId: req.admin.id },
@@ -271,6 +268,23 @@ exports.getEditVariant = async (req, res, next) => {
       currentCategoryName = 3;
     }
   }
+  const resultProp = await CategoryProperty.findAll({
+    where: { restaurantId: req.admin.id, categoryId: categoryId, active: 1 },
+    include: [
+      {
+        model: Property,
+        include: [
+          {
+            model: PropertyTranslation,
+          },
+          {
+            model: PropertyValue,
+            include: [{ model: PropertyValueTranslation }],
+          },
+        ],
+      },
+    ],
+  });
 
   await Extras.findAll({
     where: { restaurantId: req.admin.id },
@@ -306,6 +320,7 @@ exports.getEditVariant = async (req, res, next) => {
         variantIdByParams: varId,
         ext: ext,
         cat: cat,
+        resultProp: resultProp,
         result: result,
         currentLanguage: 1,
         productVarToExt: productVarToExt,
@@ -415,24 +430,11 @@ exports.postEditVariant = async (req, res, next) => {
     });
 };
 
-// exports.postDeleteVariant = (req, res, next) => {
-//   const prodId = req.body.variantId;
-//   Variant.findByPk(prodId)
-//     .then((product) => {
-//       product.active = 0;
-//       return product.save();
-//     })
-//     .then((result) => {
-//       res.redirect("/admin/vr-index");
-//     })
-//     .catch((err) => console.log(err));
-// };
-
 exports.getFilteredProperty = async (req, res, next) => {
   var categoryId = req.params.categoryId;
   var languageId;
   var currentLanguage = req.cookies.language;
-
+  console.log("-==-=--=-=-=-==-=-=-=-=-=-");
   if (currentLanguage == "ro") {
     languageId = 1;
   } else if (currentLanguage == "hu") {
@@ -457,7 +459,7 @@ exports.getFilteredProperty = async (req, res, next) => {
       },
     ],
   });
-
+  // console.log(result);
   try {
     res.render("variant/current-property", {
       result: result,

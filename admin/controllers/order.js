@@ -112,7 +112,6 @@ exports.getOrders = async (req, res, next) => {
 
         let prodFin = orderItems[j].Variant.ProductFinals;
         for (let h = 0; h < prodFin.length; h++) {
-          console.log("extras[j]", extras);
           if (extras.length == 0) {
             let totalProductPrice = 0;
 
@@ -202,7 +201,7 @@ exports.getOrders = async (req, res, next) => {
     orderDoorNumber = orders[0].OrderDeliveryAddress.doorNumber;
     orderPhoneNumber = orders[0].OrderDeliveryAddress.phoneNumber;
     orderCreated = orders[0].createdAt;
-    userName = orders[0].User.fullName;
+    userName = orders[0].OrderDeliveryAddress.userName;
     orderIds = orders[0].id;
   }
   res.render("order/orders", {
@@ -298,7 +297,6 @@ exports.getAcceptedOrders = async (req, res, next) => {
 
         let prodFin = orderItems[j].Variant.ProductFinals;
         for (let h = 0; h < prodFin.length; h++) {
-          console.log("extras[j]", extras);
           if (extras.length == 0) {
             let totalProductPrice = 0;
 
@@ -490,7 +488,6 @@ exports.getEditOrder = async (req, res, next) => {
 
           let prodFin = orderItems[j].Variant.ProductFinals;
           for (let h = 0; h < prodFin.length; h++) {
-            console.log("extras[j]", extras);
             if (extras.length == 0) {
               let totalProductPrice = 0;
 
@@ -585,7 +582,7 @@ exports.getEditOrder = async (req, res, next) => {
       userName = orders[0].User.fullName;
       orderIds = orders[0].id;
     }
-    console.log(orders[0].status);
+
     res.render("order/edit-order", {
       pageTitle: "Add Product",
       path: "/admin/add-product",
@@ -689,7 +686,6 @@ exports.getDeletedOrders = async (req, res, next) => {
 
         let prodFin = orderItems[j].Variant.ProductFinals;
         for (let h = 0; h < prodFin.length; h++) {
-          console.log("extras[j]", extras);
           if (extras.length == 0) {
             let totalProductPrice = 0;
 
@@ -926,7 +922,7 @@ exports.getFilterOrders = async (req, res, next) => {
   let email = req.body.email;
   var newchar = "-";
   datepicker.split("/").join("\\");
-  console.log("datPIKCKER", datepicker);
+
   const orders = await Order.findAll({
     order: [["createdAt", "DESC"]],
     where: {
