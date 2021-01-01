@@ -1,9 +1,17 @@
+<thead>
+  <tr>
+    <th scope="col">ID</th>
+    <th scope="col">name</th>
+    <th scope="col">STATUS</th>
+    <th scope="col">EDIT</th>
+  </tr>
+</thead>
 <% if (extra.length > 0) { %> <% for (let i=0; i < extra.length; i++ ) { %>
 <tbody>
   <tr>
     <th scope="row"><%= extra[i].id %></th>
 
-    <td><%= extra[i].extraTranslations[0].name %></td>
+    <td><%= extra[i].ExtraTranslations[0].name %></td>
     <td><span class="badge badge-success">AKTIV</span></td>
     <td>
       <a

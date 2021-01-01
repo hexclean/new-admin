@@ -1,8 +1,16 @@
+<thead>
+  <tr>
+    <th scope="col">ID</th>
+    <th scope="col">Name</th>
+    <th scope="col">STATUS</th>
+    <th scope="col">EDIT</th>
+  </tr>
+</thead>
 <% if (allergen.length > 0) { %> <% for (let i = 0; i < allergen.length; i++) {
 %>
 <tbody>
   <th scope="row"><%= allergen[i].id %></th>
-  <td><%= allergen[i].allergenTranslations[0].name %></td>
+  <td><%= allergen[i].AllergenTranslations[0].name %></td>
 
   <td><span class="badge badge-success">AKTIV</span></td>
 

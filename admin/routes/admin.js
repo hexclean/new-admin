@@ -91,7 +91,7 @@ router.get(
   variantsController.getFilteredProperty
 );
 router.post("/edit-variant", isAuth, variantsController.postEditVariant);
-router.post("/delete-variant", isAuth, variantsController.postDeleteVariant);
+// router.post("/delete-variant", isAuth, variantsController.postDeleteVariant);
 
 // CATEGORY
 router.get("/add-category", isAuth, categoryController.getAddCategory);

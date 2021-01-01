@@ -8,7 +8,7 @@ const Allergen = require("../../models/Allergen");
 const AllergenTranslation = require("../../models/AllergenTranslation");
 const Box = require("../../models/Box");
 const BoxTranslation = require("../../models/BoxTranslation");
-const ITEMS_PER_PAGE = 10;
+const ITEMS_PER_PAGE = 2;
 const Op = Sequelize.Op;
 const AdminLogs = require("../../models/AdminLogs");
 

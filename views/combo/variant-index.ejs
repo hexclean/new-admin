@@ -106,7 +106,7 @@
                                     <th scope="col">SKU</th>
                                     
                                     <th scope="col">STATUS</th>
-                                    <th scope="col" class="buttons-text-variants">DELETE</th>
+                                    <!-- <th scope="col" class="buttons-text-variants">DELETE</th> -->
                                     <th scope="col" >EDIT</th>
                                  </tr>
                               </thead>
@@ -122,13 +122,13 @@
                                     <td><%= variant.sku %></td>
                                     
                                     <td><span class="badge badge-success">AKTIV</span></td>
-                                    <td>
+                                    <!-- <td>
                                        <form action="/admin/delete-variant" method="POST" >
 
                                           <input type="hidden" value="<%= variant.id %>" name="variantId">
                                           <button class="btn grid-btn mt-0 btn-sm btn-primary"  type="submit" class="btn btn-primary shadow-none">Törlés</button>
                                        </form>
-                                    </td>
+                                    </td> -->
                                     <td>                              <a href="/admin/edit-variant/<%= variant.id %>?edit=true"class="btn grid-btn mt-0 btn-sm btn-secondary" ><%= lingua.product_action_edit %></a>
                                     </td>
                                  </tr>

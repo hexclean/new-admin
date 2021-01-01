@@ -1,7 +1,16 @@
+<thead>
+  <tr>
+    <th scope="col">ID</th>
+    <th scope="col">Name</th>
+
+    <th scope="col">STATUS</th>
+    <th scope="col">EDIT</th>
+  </tr>
+</thead>
 <% if (box.length > 0) { %> <% for (let i = 0; i < box.length; i++) { %>
 <tbody>
   <th scope="row"><%= box[i].id %></th>
-  <td><%= box[i].boxTranslations[0].name %></td>
+  <td><%= box[i].BoxTranslations[0].name %></td>
 
   <td><span class="badge badge-success">AKTIV</span></td>
 

@@ -1,13 +1,22 @@
+<thead>
+  <tr>
+    <th scope="col">ID</th>
+    <th scope="col">SKU</th>
+
+    <th scope="col">STATUS</th>
+    <th scope="col">EDIT</th>
+  </tr>
+</thead>
 <% if (variant.length > 0) { %> <% for (let i=0; i< variant.length; i++) { %>
 <tbody>
   <tr>
-    <th scope="row"><%= variant.id %></th>
+    <th scope="row"><%= variant[i].id %></th>
     <td><%= variant[i].sku %></td>
 
     <td><span class="badge badge-success">AKTIV</span></td>
-    <td>
-      <form action="/admin/delete-variant" method="POST">
-        <input type="hidden" value="<%= variant.id %>" name="variantId" />
+    <!-- <td>
+    <form action="/admin/delete-variant" method="POST">
+        <input type="hidden" value="<%= variant[i].id %>" name="variantId" />
         <button
           class="btn grid-btn mt-0 btn-sm btn-primary"
           type="submit"
@@ -15,11 +24,11 @@
         >
           Törlés
         </button>
-      </form>
-    </td>
+      </form> 
+    </td>-->
     <td>
       <a
-        href="/admin/edit-variant/<%= variant.id %>?edit=true"
+        href="/admin/edit-variant/<%= variant[i].id %>?edit=true"
         class="btn grid-btn mt-0 btn-sm btn-secondary"
         ><%= lingua.product_action_edit %></a
       >

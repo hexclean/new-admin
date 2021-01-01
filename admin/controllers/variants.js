@@ -415,18 +415,18 @@ exports.postEditVariant = async (req, res, next) => {
     });
 };
 
-exports.postDeleteVariant = (req, res, next) => {
-  const prodId = req.body.variantId;
-  Variant.findByPk(prodId)
-    .then((product) => {
-      product.active = 0;
-      return product.save();
-    })
-    .then((result) => {
-      res.redirect("/admin/vr-index");
-    })
-    .catch((err) => console.log(err));
-};
+// exports.postDeleteVariant = (req, res, next) => {
+//   const prodId = req.body.variantId;
+//   Variant.findByPk(prodId)
+//     .then((product) => {
+//       product.active = 0;
+//       return product.save();
+//     })
+//     .then((result) => {
+//       res.redirect("/admin/vr-index");
+//     })
+//     .catch((err) => console.log(err));
+// };
 
 exports.getFilteredProperty = async (req, res, next) => {
   var categoryId = req.params.categoryId;
