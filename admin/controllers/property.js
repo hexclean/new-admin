@@ -154,13 +154,16 @@ exports.getEditProperty = async (req, res, next) => {
       },
     ],
   });
+  let arrayLength = [];
   for (let i = 0; i < propValue.length; i++) {
-    let arrayLength = propValue[i].PropertyValues[i].PropertyValueTranslations;
+    arrayLength = propValue[i].PropertyValues;
+    // [i].PropertyValueTranslations;
+    console.log(arrayLength.length);
     for (let j = 0; j <= arrayLength.length - 1; j++) {
       const item = {
-        id: arrayLength[j].id,
-        name: arrayLength[j].name,
-        propertyValueId: arrayLength[j].propertyValueId,
+        id: propValue[i].id,
+        name: arrayLength[j].PropertyValueTranslations.name,
+        propertyValueId: arrayLength[j].id,
         languageId: arrayLength[j].languageId,
       };
       items.push(item);
@@ -182,7 +185,7 @@ exports.getEditProperty = async (req, res, next) => {
       if (property[0].restaurantId !== req.admin.id) {
         return res.redirect("/");
       }
-
+      console.log(items);
       res.render("property/edit-property", {
         pageTitle: "Edit Product",
         items: items,

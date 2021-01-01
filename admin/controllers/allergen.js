@@ -6,7 +6,7 @@ const ExtraHasAllergen = require("../../models/ExtraHasAllergen");
 const Product = require("../../models/Product");
 const ProductHasAllergen = require("../../models/ProductHasAllergen");
 const Op = Sequelize.Op;
-const ITEMS_PER_PAGE = 20;
+const ITEMS_PER_PAGE = 30;
 
 exports.getAddAllergen = async (req, res, next) => {
   res.render("allergen/edit-allergen", {

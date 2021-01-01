@@ -10,6 +10,16 @@ const CategoryProperty = require("../../models/CategoryProperty");
 
 const Op = Sequelize.Op;
 exports.getAddCategory = async (req, res, next) => {
+  let languageCode;
+
+  if (req.cookies.language == "ro") {
+    languageCode = 1;
+  } else if (req.cookies.language == "hu") {
+    languageCode = 2;
+  } else {
+    languageCode = 3;
+  }
+
   const checkAllergenLength = await Allergen.findAll({
     where: {
       restaurantId: req.admin.id,
@@ -23,41 +33,16 @@ exports.getAddCategory = async (req, res, next) => {
       {
         model: PropertyTranslation,
         where: {
-          languageId: 1,
+          languageId: languageCode,
         },
       },
     ],
   });
-
-  const property77 = await Property.findAll({
-    where: {
-      restaurantId: req.admin.id,
-    },
-    include: [
-      {
-        model: PropertyTranslation,
-        where: {
-          languageId: 1,
-        },
-      },
-    ],
-    include: [
-      {
-        model: PropertyValue,
-        where: { propertyId: 1 },
-        include: [
-          {
-            model: PropertyValueTranslation,
-            where: { languageId: 1 },
-          },
-        ],
-      },
-    ],
-  });
-
-  console.log(property77);
 
   if (checkAllergenLength.length === 0) {
+    return res.redirect("/admin/category-index");
+  }
+  if (property.length < 2) {
     return res.redirect("/admin/category-index");
   }
   res.render("category/edit-category", {
@@ -197,8 +182,8 @@ exports.postAddCategory = async (req, res, next) => {
   const huName = req.body.huName;
   const enName = req.body.enName;
   const filteredStatus = req.body.status.filter(Boolean);
-  const propertyId = req.body.propertyId;
 
+  const propertyId = req.body.propertyId;
   if (roName == "" || huName == "" || enName == "") {
     return res.redirect("/admin/category-index");
   }

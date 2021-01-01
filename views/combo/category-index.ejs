@@ -28,7 +28,7 @@
             <ul class="ms-profile-navigation nav nav-tabs tabs-bordered" role="tablist">
                <li role="presentation"><a href="#" aria-controls="tab1" class="active show" role="tab" data-toggle="tab"> Összes Extra </a></li>
                <li role="presentation"><a class="add-variant" href="/admin/add-category">Add Category </a></li>
-               <li role="presentation"><a class="add-variant" href="/admin/order-category">Kategoria Sorrend</a></li>
+               <!-- <li role="presentation"><a class="add-variant" href="/admin/order-category">Kategoria Sorrend</a></li> -->
             </ul>
             <div class="tab-content">
                <div class="tab-pane" id="tab1">
@@ -58,6 +58,14 @@
          <i class="flaticon-alert-1"></i> <strong class="alert-message-popup">Oh snap! eloszor Allergen kell az extrahoz</strong >
       </div>
       <% } %>
+      <% if ( property.length < 2) { %>
+         <script>
+            $('.add-extra').click(function () {return false;});
+         </script>
+         <div class="alert alert-danger" role="alert">
+            <i class="flaticon-alert-1"></i> <strong class="alert-message-popup">Oh snap! legalabb 2 property kell</strong >
+         </div>
+         <% } %>
       <div class="ms-content-wrapper">
          <div class="row">
             <div class="col-12">
@@ -84,7 +92,7 @@
                            <% for (let i = 0; i < category.length; i++) { %>
                            <tbody>
                               <th scope="row"><%= category[i].id %></th>
-                              <td><%= currentCategoryName[i] %></td>
+                              <td><%= category[i].CategoryTranslations[0].name %></td>
                               <td><span class="badge badge-success">AKTIV</span></td>
                               <td>
                                  <a href="/admin/edit-category/<%= category[i].id %>?edit=true"class="btn grid-btn mt-0 btn-sm btn-secondary" ><%= lingua.product_action_edit %></a>

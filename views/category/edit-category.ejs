@@ -108,7 +108,7 @@
                                   /> 
                                <li>
                                   <label class="ms-checkbox-wrap ms-checkbox-success" data-extra="<%= property[i].id %>">
-                                     <input type="hidden" value="off" class="status-<%= property[i].id %>" name="status[<%= property[i].id %>]" value="" >
+                                     <input type="hidden" value="off" class="status-<%= property[i].id %>" name="status[<%= property[i].id %>]" value="<%= property[i].id %>" >
                                     <input data-propertyId="<%= property[i].id %>" class="status-checkbox status-checkbox-<%= property[i].id %>" type="checkbox" value="<%= property[i].id %>"> <i class="ms-checkbox-check"></i>
                                   </label> <span> <%= property[i].PropertyTranslations[0].name %> </span>
                                 </li>

@@ -24,7 +24,7 @@
     function check_roName() {
       var roName_length = $("#roName").val().length;
 
-      if (roName_length < 2 || roName_length > 15) {
+      if (roName_length < 1 || roName_length > 50) {
         $("#roName_error_message").html(`<%= lingua.extra_ro_name_required %>`);
         $("#roName_error_message").show();
         error_roName = true;
@@ -36,7 +36,7 @@
     function check_huName() {
       var huName_length = $("#huName").val().length;
 
-      if (huName_length < 2 || huName_length > 15) {
+      if (huName_length < 1 || huName_length > 50) {
         $("#huName_error_message").html(`<%= lingua.extra_hu_name_required %>`);
         $("#huName_error_message").show();
         error_huName = true;
@@ -48,7 +48,7 @@
     function check_enName() {
       var enName_length = $("#enName").val().length;
 
-      if (enName_length < 2 || enName_length > 15) {
+      if (enName_length < 1 || enName_length > 50) {
         $("#enName_error_message").html(`<%= lingua.extra_en_name_required %>`);
         $("#enName_error_message").show();
         error_enName = true;
@@ -87,10 +87,11 @@
 <script>
   $(document).ready(function () {
     $(function () {
-      $("#createAllergen").one("click", function () {
-        $("#createAllergen").prop("disabled", true);
-        $("#createAllergen_form").submit();
-      });
+      $("#createAllergen").onclick = function () {
+        this.disabled = true;
+        // $("#createAllergen").prop("disabled", true);
+        // $("#createAllergen_form").submit();
+      };
     });
   });
 </script>

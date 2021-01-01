@@ -10,7 +10,7 @@ const Allergen = require("../../models/Allergen");
 const AllergenTranslation = require("../../models/AllergenTranslation");
 const Box = require("../../models/Box");
 const BoxTranslation = require("../../models/BoxTranslation");
-const ITEMS_PER_PAGE = 2;
+const ITEMS_PER_PAGE = 30;
 const Op = Sequelize.Op;
 const AdminLogs = require("../../models/AdminLogs");
 
@@ -78,19 +78,23 @@ exports.getExtraIndex = async (req, res, next) => {
     description: "Opened list of all extra",
     route: "getBoxIndex",
   });
+  let languageCode;
+
+  if (req.cookies.language == "ro") {
+    languageCode = 1;
+  } else if (req.cookies.language == "hu") {
+    languageCode = 2;
+  } else {
+    languageCode = 3;
+  }
 
   const page = +req.query.page || 1;
   let totalItems;
-  let currentExtraName = [];
 
   const checkAllergenLength = await Allergen.findAll({
     where: {
       restaurantId: req.admin.id,
     },
-  });
-
-  const checkCategoryLength = await Category.findAll({
-    where: { restaurantId: req.admin.id },
   });
 
   await Extras.findAll({
@@ -100,6 +104,7 @@ exports.getExtraIndex = async (req, res, next) => {
     include: [
       {
         model: ExtraTranslations,
+        where: { languageId: languageCode },
       },
     ],
   })
@@ -112,6 +117,7 @@ exports.getExtraIndex = async (req, res, next) => {
         include: [
           {
             model: ExtraTranslations,
+            where: { languageId: languageCode },
           },
         ],
 
@@ -120,28 +126,14 @@ exports.getExtraIndex = async (req, res, next) => {
       });
     })
     .then((extra) => {
-      for (let i = 0; i < extra.length; i++) {
-        var currentLanguage = req.cookies.language;
-
-        if (currentLanguage == "ro") {
-          currentExtraName[i] = extra[i].ExtraTranslations[0].name;
-        } else if (currentLanguage == "hu") {
-          currentExtraName[i] = extra[i].ExtraTranslations[1].name;
-        } else {
-          currentExtraName[i] = extra[i].ExtraTranslations[2].name;
-        }
-      }
-
       res.render("combo/extra-index", {
         pageTitle: "Admin Products",
         path: "/admin/products",
         currentPage: page,
         checkAllergenLength: checkAllergenLength,
-        checkCategoryLength: checkCategoryLength,
         hasNextPage: ITEMS_PER_PAGE * page < totalItems.length,
         hasPreviousPage: page > 1,
         nextPage: page + 1,
-        currentExtraName: currentExtraName,
         previousPage: page - 1,
         lastPage: Math.ceil(totalItems.length / ITEMS_PER_PAGE),
         extra: extra,
@@ -157,14 +149,25 @@ exports.getExtraIndex = async (req, res, next) => {
 exports.getCategoryIndex = async (req, res, next) => {
   const page = +req.query.page || 1;
   let totalItems;
-  let currentCategoryName = [];
+  let languageCode;
 
+  if (req.cookies.language == "ro") {
+    languageCode = 1;
+  } else if (req.cookies.language == "hu") {
+    languageCode = 2;
+  } else {
+    languageCode = 3;
+  }
   const checkAllergenLength = await Allergen.findAll({
     where: {
       restaurantId: req.admin.id,
     },
   });
 
+  const property = await Property.findAll({
+    where: { restaurantId: req.admin.id },
+  });
+  console.log(property.length);
   await Category.findAll({
     where: {
       restaurantId: req.admin.id,
@@ -172,6 +175,7 @@ exports.getCategoryIndex = async (req, res, next) => {
     include: [
       {
         model: CategoryTranslation,
+        where: { languageId: languageCode },
       },
     ],
   })
@@ -184,6 +188,7 @@ exports.getCategoryIndex = async (req, res, next) => {
         include: [
           {
             model: CategoryTranslation,
+            where: { languageId: languageCode },
           },
         ],
 
@@ -192,17 +197,6 @@ exports.getCategoryIndex = async (req, res, next) => {
       });
     })
     .then((category) => {
-      for (let i = 0; i < category.length; i++) {
-        var currentLanguage = req.cookies.language;
-        if (currentLanguage == "ro") {
-          currentCategoryName[i] = category[i].CategoryTranslations[0].name;
-        } else if (currentLanguage == "hu") {
-          currentCategoryName[i] = category[i].CategoryTranslations[1].name;
-        } else {
-          currentCategoryName[i] = category[i].CategoryTranslations[2].name;
-        }
-      }
-
       res.render("combo/category-index", {
         pageTitle: "Admin Products",
         path: "/admin/products",
@@ -211,13 +205,14 @@ exports.getCategoryIndex = async (req, res, next) => {
         hasNextPage: ITEMS_PER_PAGE * page < totalItems.length,
         hasPreviousPage: page > 1,
         nextPage: page + 1,
-        currentCategoryName: currentCategoryName,
+        property: property,
         previousPage: page - 1,
         lastPage: Math.ceil(totalItems.length / ITEMS_PER_PAGE),
         category: category,
       });
     })
     .catch((err) => {
+      console.log(err);
       const error = new Error(err);
       error.httpStatusCode = 500;
       return next(error);
@@ -227,8 +222,16 @@ exports.getCategoryIndex = async (req, res, next) => {
 exports.getAllergenIndex = async (req, res, next) => {
   const page = +req.query.page || 1;
   let totalItems;
-  let currentAllergenName = [];
 
+  let languageCode;
+
+  if (req.cookies.language == "ro") {
+    languageCode = 1;
+  } else if (req.cookies.language == "hu") {
+    languageCode = 2;
+  } else {
+    languageCode = 3;
+  }
   await Allergen.findAll({
     where: {
       restaurantId: req.admin.id,
@@ -236,6 +239,7 @@ exports.getAllergenIndex = async (req, res, next) => {
     include: [
       {
         model: AllergenTranslation,
+        where: { languageId: languageCode },
       },
     ],
   })
@@ -248,6 +252,7 @@ exports.getAllergenIndex = async (req, res, next) => {
         include: [
           {
             model: AllergenTranslation,
+            where: { languageId: languageCode },
           },
         ],
 
@@ -256,18 +261,6 @@ exports.getAllergenIndex = async (req, res, next) => {
       });
     })
     .then((allergen) => {
-      for (let i = 0; i < allergen.length; i++) {
-        var currentLanguage = req.cookies.language;
-
-        if (currentLanguage == "ro") {
-          currentAllergenName[i] = allergen[i].AllergenTranslations[0].name;
-        } else if (currentLanguage == "hu") {
-          currentAllergenName[i] = allergen[i].AllergenTranslations[1].name;
-        } else {
-          currentAllergenName[i] = allergen[i].AllergenTranslations[2].name;
-        }
-      }
-
       res.render("combo/allergen-index", {
         pageTitle: "Admin Products",
         path: "/admin/products",
@@ -275,7 +268,6 @@ exports.getAllergenIndex = async (req, res, next) => {
         hasNextPage: ITEMS_PER_PAGE * page < totalItems.length,
         hasPreviousPage: page > 1,
         nextPage: page + 1,
-        currentAllergenName: currentAllergenName,
         previousPage: page - 1,
         lastPage: Math.ceil(totalItems.length / ITEMS_PER_PAGE),
         allergen: allergen,

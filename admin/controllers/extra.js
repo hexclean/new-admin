@@ -8,6 +8,7 @@ const ExtraHasAllergen = require("../../models/ExtraHasAllergen");
 const Sequelize = require("sequelize");
 const Op = Sequelize.Op;
 const AdminLogs = require("../../models/AdminLogs");
+const Category = require("../../models/Category");
 
 // Show create extra page
 exports.getAddExtra = async (req, res, next) => {
@@ -17,6 +18,15 @@ exports.getAddExtra = async (req, res, next) => {
     description: "Opened the extra creation page",
     route: "getAddExtra",
   });
+  let languageCode;
+
+  if (req.cookies.language == "ro") {
+    languageCode = 1;
+  } else if (req.cookies.language == "hu") {
+    languageCode = 2;
+  } else {
+    languageCode = 3;
+  }
   try {
     // Get all restaurant ellergen
     const allergen = await Allergen.findAll({
@@ -26,13 +36,14 @@ exports.getAddExtra = async (req, res, next) => {
       include: [
         {
           model: AllergenTranslation,
+          where: { languageId: languageCode },
         },
       ],
     });
 
     // Check if allergen length don't will be 0
-    if (allergen.length === 0) {
-      return res.redirect("/admin/vr-index");
+    if (allergen.length < 3) {
+      return res.redirect("/admin/extra-index");
     }
 
     // Add dates to edit-extra EJS file
@@ -184,7 +195,15 @@ exports.getEditExtra = async (req, res, next) => {
   const editMode = req.query.edit;
   const extraId = req.params.extraId;
   const extraIdArray = [extraId];
+  let languageCode;
 
+  if (req.cookies.language == "ro") {
+    languageCode = 1;
+  } else if (req.cookies.language == "hu") {
+    languageCode = 2;
+  } else {
+    languageCode = 3;
+  }
   await Extra.findByPk(extraId).then((extra) => {
     if (!extra) {
       return res.redirect("/");
@@ -203,6 +222,7 @@ exports.getEditExtra = async (req, res, next) => {
       include: [
         {
           model: AllergenTranslation,
+          where: { languageId: languageCode },
         },
         { model: ExtraHasAllergen },
       ],
@@ -215,6 +235,7 @@ exports.getEditExtra = async (req, res, next) => {
       include: [
         {
           model: AllergenTranslation,
+          where: { languageId: languageCode },
         },
         {
           model: ExtraHasAllergen,
