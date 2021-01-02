@@ -31,7 +31,7 @@
             <div class="col-xl-6 col-md-12">
                <div class="ms-panel ms-panel-fh">
                   <div class="ms-panel-header">
-                     <h6>Add Product Form</h6>
+                     <h6><% if (editing) { %>"<%= boxName[0].BoxTranslations[0].name %>" <%= lingua.box_edit_title %><% } else { %> <%= lingua.create_box %> <% } %></h6>
                   </div>
                   <div class="ms-panel-body">
                      <div class="form-row">

@@ -67,7 +67,7 @@ exports.postAddBox = async (req, res, next) => {
 exports.getEditBox = async (req, res, next) => {
   const editMode = req.query.edit;
   const boxId = req.params.boxId;
-
+  let languageCode;
   if (!editMode) {
     return res.redirect("/");
   }
@@ -76,6 +76,24 @@ exports.getEditBox = async (req, res, next) => {
     if (!box) {
       return res.redirect("/");
     }
+  });
+
+  if (req.cookies.language == "ro") {
+    languageCode = 1;
+  } else if (req.cookies.language == "hu") {
+    languageCode = 2;
+  } else {
+    languageCode = 3;
+  }
+
+  const boxName = await Box.findAll({
+    where: { restaurantId: req.admin.id, id: boxId },
+    include: [
+      {
+        model: BoxTranslation,
+        where: { languageId: languageCode },
+      },
+    ],
   });
 
   await Box.findAll({
@@ -107,6 +125,7 @@ exports.getEditBox = async (req, res, next) => {
         cat: box,
         boxId: boxId,
         boxTranslations: box[0].BoxTranslations,
+        boxName: boxName,
       });
     })
     .catch((err) => {

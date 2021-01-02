@@ -21,6 +21,11 @@
   "box_ro_name": "The Romanian name of the box",
   "box_hu_name": "Hungarian name of the box",
   "box_en_name": "The English name of the box",
+  "box_edit_title": "box editing",
+  "no_boxes": "There are no boxes",
+  "back": "Back",
+  "box": "Box",
+
   "navigation": {
     "ro": "Română",
     "en": "English",
