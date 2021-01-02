@@ -74,10 +74,11 @@
                                  <tr>
                                     <th scope="col">Id</th>
                                     <th scope="col">Név</th>
-                                  
+                                    <th scope="col">Varians</th>
                                     <th scope="col">Státusz</th>
                                     <th scope="col" class="buttons-text-variants">Törlés</th>
                                     <th scope="col" >Szerkesztés</th>
+                                    
                                  </tr>
                               </thead>
                               <div class="col-6">
@@ -90,18 +91,23 @@
                               <tbody class="product-all" >
                                  <tr>
                                     <th scope="row"><%= prods[i].id %></th>
-                                    <td><%= currentProductName[i] %></td>
+                                    <td><%= prods[i].ProductTranslations[0].title %></td>
+                                    <td><%= prods[i].ProductFinals[0].Variant.sku %></td>
+                               
                                
                                     <td><span class="badge badge-success">AKTIV</span></td>
+                                    
                                     <td>
                                        <form action="/admin/delete-product" method="POST">
                                           <input type="hidden" value="<%= prods[i].id %>" name="productId">
-                                          <button class="btn grid-btn mt-0 btn-sm btn-primary" type="submit"><%= lingua.product_action_delete %></button>
+                                          <button class="btn grid-btn mt-0 btn-sm btn-primary" type="submit">Inaktivitas</button>
                                        </form>
                                     </td>
+                                  
                                     <td>        
                                        <a href="/admin/edit-product/<%= prods[i].id %>?edit=true" class="btn grid-btn mt-0 btn-sm btn-secondary" ><%= lingua.product_action_edit %></a>
                                     </td>
+                                  
                                  </tr>
                               </tbody>
                               <% } %>

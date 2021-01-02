@@ -181,12 +181,12 @@ exports.postAddProduct = async (req, res, next) => {
     const product = await req.admin.createProduct({
       productImagePath: imageUrl,
       active: 1,
+      isDailyMenu: 0,
     });
     productId = product.id;
   }
 
   async function productTranslation() {
-    console.log("productIdproductId", productId);
     await ProductTranslation.create({
       title: roTitle,
       languageId: 1,
@@ -342,18 +342,6 @@ exports.getEditProduct = async (req, res, next) => {
     },
   });
 
-  for (let i = 0; i < cat.length; i++) {
-    var currentLanguage = req.cookies.language;
-
-    if (currentLanguage == "ro") {
-      currentCategoryName = 0;
-    } else if (currentLanguage == "hu") {
-      currentCategoryName = 1;
-    } else {
-      currentCategoryName = 2;
-    }
-  }
-
   const test78 = await Product.findAll({
     where: {
       id: prodId,
@@ -401,31 +389,26 @@ exports.getEditProduct = async (req, res, next) => {
         const endDate = product[0].endTime;
 
         startDateFin =
+          ("00" + startDate.getHours()).slice(-2) +
+          ":" +
+          ("00" + startDate.getMinutes()).slice(-2) +
+          " " +
           ("00" + (startDate.getMonth() + 1)).slice(-2) +
           "/" +
           ("00" + startDate.getDate()).slice(-2) +
           "/" +
-          startDate.getFullYear() +
-          " " +
-          ("00" + startDate.getHours()).slice(-2) +
-          ":" +
-          ("00" + startDate.getMinutes()).slice(-2) +
-          ":" +
-          ("00" + startDate.getSeconds()).slice(-2);
+          startDate.getFullYear();
         endDateFin =
+          ("00" + endDate.getHours()).slice(-2) +
+          ":" +
+          ("00" + endDate.getMinutes()).slice(-2) +
+          " " +
           ("00" + (endDate.getMonth() + 1)).slice(-2) +
           "/" +
           ("00" + endDate.getDate()).slice(-2) +
           "/" +
-          endDate.getFullYear() +
-          " " +
-          ("00" + endDate.getHours()).slice(-2) +
-          ":" +
-          ("00" + endDate.getMinutes()).slice(-2) +
-          ":" +
-          ("00" + endDate.getSeconds()).slice(-2);
+          endDate.getFullYear();
       }
-
       let productVariantTest = [];
       for (let i = 0; i < product.length; i++) {
         productVariantTest = product[i].ProductFinals;
@@ -439,9 +422,6 @@ exports.getEditProduct = async (req, res, next) => {
         allergenArray: allergen,
         product: product,
         variantIdByParams: prodId,
-        hasError: false,
-        currentExtraName: currentExtraName,
-        currentLanguage: currentCategoryName,
         cat: cat,
         productIds: prodId,
         productId: prodId,
@@ -529,14 +509,39 @@ exports.postEditProduct = async (req, res, next) => {
     .then((result) => {
       async function msg() {
         await Product.findByPk(prodId).then((product) => {
-          if (product.restaurantId.toString() !== req.admin.id.toString()) {
-            return res.redirect("/");
+          // if (product.restaurantId.toString() !== req.admin.id.toString()) {
+          //   return res.redirect("/");
+          // }
+          if (req.body.isDailyMenu == 1) {
+            // fileHelper.deleteFile(product.productImagePath);
+            Product.update(
+              {
+                // productImagePath: image.path,
+                active: 1,
+                isDailyMenu: 1,
+                soldOut: 0,
+                startTime: req.body.startDate,
+                endTime: req.body.endDate,
+              },
+              { where: { id: prodId } }
+            );
+          } else {
+            // fileHelper.deleteFile(product.productImagePath);
+            Product.update(
+              {
+                // productImagePath: image.path,
+                active: 1,
+                isDailyMenu: 0,
+              },
+              { where: { id: prodId } }
+            );
           }
-          if (image) {
-            fileHelper.deleteFile(product.productImagePath);
-            product.productImagePath = image.path;
-          }
-          return product.save();
+
+          // if (image) {
+          //   fileHelper.deleteFile(product.productImagePath);
+          //   product.productImagePath = image.path;
+          // }
+          // return product.save();
         });
         await ProductTranslation.update(
           {
@@ -593,6 +598,7 @@ exports.postEditProduct = async (req, res, next) => {
               },
             }
           ).catch((err) => {
+            console.log(err);
             const error = new Error(err);
             error.httpStatusCode = 500;
             return next(error);
@@ -652,8 +658,15 @@ exports.postEditProduct = async (req, res, next) => {
 exports.getProducts = async (req, res, next) => {
   const page = +req.query.page || 1;
   let totalItems;
-  let currentProductName = [];
-  let currentProductDescription = [];
+  let languageCode;
+
+  if (req.cookies.language == "ro") {
+    languageCode = 1;
+  } else if (req.cookies.language == "hu") {
+    languageCode = 2;
+  } else {
+    languageCode = 3;
+  }
   const checkVariantLength = await ProductVariants.findAll({
     where: { restaurantId: req.admin.id },
   });
@@ -667,6 +680,7 @@ exports.getProducts = async (req, res, next) => {
     include: [
       {
         model: ProductTranslation,
+        where: { languageId: languageCode },
       },
       { model: ProductFinal, where: { active: 1 } },
     ],
@@ -681,31 +695,20 @@ exports.getProducts = async (req, res, next) => {
         include: [
           {
             model: ProductTranslation,
+            where: { languageId: languageCode },
           },
-          { model: ProductFinal, where: { active: 1 } },
+          {
+            model: ProductFinal,
+            where: { active: 1 },
+            include: [{ model: Variant }],
+          },
         ],
         offset: (page - 1) * ITEMS_PER_PAGE,
         limit: ITEMS_PER_PAGE,
       });
     })
     .then((product) => {
-      for (let i = 0; i < product.length; i++) {
-        var currentLanguage = req.cookies.language;
-
-        if (currentLanguage == "ro") {
-          currentProductName[i] = product[i].ProductTranslations[0].title;
-          currentProductDescription[i] =
-            product[i].ProductTranslations[0].description;
-        } else if (currentLanguage == "hu") {
-          currentProductName[i] = product[i].ProductTranslations[1].title;
-          currentProductDescription[i] =
-            product[i].ProductTranslations[1].description;
-        } else {
-          currentProductName[i] = product[i].ProductTranslations[2].title;
-          currentProductDescription[i] =
-            product[i].ProductTranslations[2].description;
-        }
-      }
+      console.log(product[0].ProductFinals[0].Variant.sku);
       res.render("admin/products", {
         pageTitle: "Admin Products",
         path: "/admin/products",
@@ -717,9 +720,6 @@ exports.getProducts = async (req, res, next) => {
         lastPage: Math.ceil(totalItems.length / ITEMS_PER_PAGE),
         prods: product,
         checkVariantLength: checkVariantLength,
-        currentLanguage: currentLanguage,
-        currentProductName: currentProductName,
-        currentProductDescription: currentProductDescription,
         checkBoxLength: checkBoxLength,
       });
     })
@@ -740,81 +740,6 @@ exports.postDeleteProduct = (req, res, next) => {
       product.active = 0;
       return product.save().then((result) => {
         res.redirect("/admin/products");
-      });
-    })
-    .catch((err) => {
-      const error = new Error(err);
-      error.httpStatusCode = 500;
-      return next(error);
-    });
-};
-
-exports.getTest = async (req, res, next) => {
-  let currentProductName = [];
-  let currentProductDescription = [];
-
-  const checkVariantLength = await ProductVariants.findAll({
-    where: { restaurantId: req.admin.id },
-  });
-  const checkBoxLength = await Box.findAll({
-    where: { restaurantId: req.admin.id },
-  });
-
-  const restaurantRole = await Restaurant.findAll({
-    where: { id: req.admin.id },
-    include: [
-      {
-        model: RestaurantRole,
-      },
-    ],
-  });
-
-  await Product.findAll({
-    where: { restaurantId: restaurantRole[0].RestaurantRoles[0].id, active: 1 },
-    include: [
-      {
-        model: ProductTranslation,
-      },
-      { model: ProductFinal },
-    ],
-  })
-
-    .then((product) => {
-      for (let i = 0; i < product.length; i++) {
-        var currentLanguage = req.cookies.language;
-
-        if (currentLanguage == "ro") {
-          currentProductName[i] = product[i].productTranslations[0].title;
-        } else if (currentLanguage == "hu") {
-          currentProductName[i] = product[i].productTranslations[1].title;
-        } else {
-          currentProductName[i] = product[i].productTranslations[2].title;
-        }
-      }
-
-      for (let i = 0; i < product.length; i++) {
-        var currentLanguage = req.cookies.language;
-
-        if (currentLanguage == "ro") {
-          currentProductDescription[i] =
-            product[i].productTranslations[0].description;
-        } else if (currentLanguage == "hu") {
-          currentProductDescription[i] =
-            product[i].productTranslations[1].description;
-        } else {
-          currentProductDescription[i] =
-            product[i].productTranslations[2].description;
-        }
-      }
-      res.render("test/index", {
-        prods: product,
-        checkVariantLength: checkVariantLength,
-        currentLanguage: currentLanguage,
-        currentProductName: currentProductName,
-        currentProductDescription: currentProductDescription,
-        checkBoxLength: checkBoxLength,
-        pageTitle: "Admin Products",
-        path: "/admin/products",
       });
     })
     .catch((err) => {

@@ -59,22 +59,22 @@
                   <div class="ms-panel-body">
                      <div class="form-row">
                         <div class="col-md-12 mb-3">
-                           <label for="roTitle"><%= lingua.create_product_name1 %></label>
+                           <label for="roTitle">start</label>
                            <div class="input-group">
                               <input
                                  class="form-control"
                                  type="text"
-                                 id="endDate"   value="<% if (editing) { %><%= endDateFin %><% } %>"   name="endDate"/>
+                                 id="startDate"   value="<% if (editing) { %><%= startDateFin %><% } %>"   name="startDate"/>
                            </div>
                            <span class="error_form" id="roName_error_message"></span>
                         </div>
                         <div class="col-md-12 mb-3">
-                           <label for="huTitle"><%= lingua.create_product_name2 %></label>
+                           <label for="huTitle">end</label>
                            <div class="input-group">
                               <input
                                  class="form-control"
                                  type="text"
-                                 id="startDate" value="<% if (editing) { %><%= startDateFin %><% } %>" name="startDate"/>
+                                 id="endDate" value="<% if (editing) { %><%=  endDateFin%><% } %>" name="endDate"/>
                            </div>
                            <span class="error_form" id="huName_error_message"></span>
                         </div>
