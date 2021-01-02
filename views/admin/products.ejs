@@ -1,27 +1,17 @@
+
+
 <%- include('../includes/head.ejs') %>
 <script>
-
-
    $(document).ready(function() {
-
       $('#searchProduct').keyup(function() {
          const productId = $('#searchProduct').val();
          console.log(productId)
-         $.get( "get-filtered-product/"+ productId )
-       
-      .done(function( data ) {
-
-         $("#searchedProduct").html(data);
-         
+         $.get("get-filtered-product/" + productId).done(function(data) {
+            $("#searchedProduct").html(data);
+         });
       });
-   });
-
-  
- 
    })
-
-
-</script>
+   </script>
 </head>
 <body class="ms-body ms-aside-left-open ms-primary-theme ms-has-quickbar">
    <%- include('../includes/navigation.ejs') %>
@@ -78,14 +68,12 @@
                                     <th scope="col">Státusz</th>
                                     <th scope="col" class="buttons-text-variants">Törlés</th>
                                     <th scope="col" >Szerkesztés</th>
-                                    
                                  </tr>
                               </thead>
                               <div class="col-6">
                                  <input type="text" name="searchProduct" id="searchProduct" placeholder="Termek keresés" class="form-control extra-search" />
                               </div>
                               <hr>
-                            
                               <% if (prods.length > 0) { %>
                               <% for (let i =0; i < prods.length; i++) { %>
                               <tbody class="product-all" >
@@ -93,21 +81,16 @@
                                     <th scope="row"><%= prods[i].id %></th>
                                     <td><%= prods[i].ProductTranslations[0].title %></td>
                                     <td><%= prods[i].ProductFinals[0].Variant.sku %></td>
-                               
-                               
                                     <td><span class="badge badge-success">AKTIV</span></td>
-                                    
                                     <td>
                                        <form action="/admin/delete-product" method="POST">
                                           <input type="hidden" value="<%= prods[i].id %>" name="productId">
                                           <button class="btn grid-btn mt-0 btn-sm btn-primary" type="submit">Inaktivitas</button>
                                        </form>
                                     </td>
-                                  
                                     <td>        
                                        <a href="/admin/edit-product/<%= prods[i].id %>?edit=true" class="btn grid-btn mt-0 btn-sm btn-secondary" ><%= lingua.product_action_edit %></a>
                                     </td>
-                                  
                                  </tr>
                               </tbody>
                               <% } %>
@@ -128,3 +111,4 @@
    <%- include('../includes/end.ejs')
       %>
 </body>
+

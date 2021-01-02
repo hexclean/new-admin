@@ -1,3 +1,5 @@
+
+
 <%- include('../includes/head.ejs') %>
 <%- include('../jQuery-validation/product.ejs') %>
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
@@ -8,7 +10,6 @@
    <%- include('../includes/navigation.ejs') %>
    <main class="body-content">
       <%- include('../includes/navigation-bar.ejs') %>
-      
       <form
          name="myForm"
          class="ms-content-wrapper"
@@ -16,40 +17,28 @@
          method="POST"
          enctype="multipart/form-data"
          id="product-form">
-       
-           
-        
-            <div class="ms-content-wrapper">
-               <div class="row">
-            <div class="col-xl-6 col-md-12">
-               <div class="ms-panel ms-panel-header">
-               
-                 <div class="ms-panel-body">
-                  
-                    
-                     <div class="row">
-                       <div class="col-md-6">
-                         <ul class="ms-list ms-list-display">
-                          
-                           <li>
-                             <label class="ms-checkbox-wrap ms-checkbox-success">
-                               <input class="isDailyMenu" type="checkbox" name="isDailyMenu" value="1"> <i class="ms-checkbox-check"></i>
-                             </label> <span> Napi menu </span>
-                           </li>
-                          
-                         </ul>
-                       </div>
-                     
-                       </div>
+         <div class="ms-content-wrapper">
+            <div class="row">
+               <div class="col-xl-6 col-md-12">
+                  <div class="ms-panel ms-panel-header">
+                     <div class="ms-panel-body">
+                        <div class="row">
+                           <div class="col-md-6">
+                              <ul class="ms-list ms-list-display">
+                                 <li>
+                                    <label class="ms-checkbox-wrap ms-checkbox-success">
+                                    <input class="isDailyMenu" type="checkbox" name="isDailyMenu" value="1"> <i class="ms-checkbox-check"></i>
+                                    </label> <span> Napi menu </span>
+                                 </li>
+                              </ul>
+                           </div>
+                        </div>
                      </div>
-                  
-                 </div>
+                  </div>
                </div>
-             </div>
-             </div>
-             </div>
-             
-             
+            </div>
+         </div>
+         </div>
          <div class="row answer">
             <div class="col-xl-6 col-md-12">
                <div class="ms-panel ms-panel-fh">
@@ -113,8 +102,6 @@
             });
              
          </script>
-       
-     
          <div class="row">
             <div class="col-xl-6 col-md-12">
                <div class="ms-panel ms-panel-fh">
@@ -358,7 +345,6 @@
                                  as
                                  <span class="extra_error_message error_form" id="price_error_message_<%= productVariant[i].extraId %>"></span>
                               </div>
-                             
                            </div>
                         </div>
                      </div>
@@ -437,3 +423,4 @@
    </main>
    <%- include('../includes/end.ejs') %>
 </body>
+
