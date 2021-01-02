@@ -61,6 +61,11 @@ router.get(
   liveSearchController.getFilteredProduct
 );
 router.get(
+  "/get-filtered-deleted-product/:productId",
+  isAuth,
+  liveSearchController.getFilteredDeletedProduct
+);
+router.get(
   "/get-filtered-property/:propertyId",
   isAuth,
   liveSearchController.getFilteredProperty

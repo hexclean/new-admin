@@ -1,4 +1,15 @@
 <%- include('../includes/head.ejs') %>
+<script>
+   $(document).ready(function() {
+      $('#searchDeletedProduct').keyup(function() {
+         const productId = $('#searchDeletedProduct').val();
+         console.log(productId)
+         $.get("get-filtered-deleted-product/" + productId).done(function(data) {
+            $("#searchDelP").html(data);
+         });
+      });
+   })
+   </script>
 </head>
 <body class="ms-body ms-aside-left-open ms-primary-theme ms-has-quickbar">
    <%- include('../includes/navigation.ejs') %> 
@@ -23,7 +34,7 @@
          </div>
       </div>
     
-       
+    
  
        
       <div class="ms-content-wrapper">
@@ -37,16 +48,20 @@
                      </div>
                      <div class="ms-panel-body">
                         <div class="table-responsive">
-                           <table class="table table-hover thead-primary">
+                           <table    id="searchDelP" class="table table-hover thead-primary">
                               <thead>
                                  <tr>
                                     <th scope="col">ID</th>
                                     <th scope="col">nev</th>
-                                    
+                                    <th scope="col">varians</th>
                                     <th scope="col">STATUS</th>
                                     <th scope="col" class="buttons-text-variants">Visszaallitas</th>
                                  </tr>
                               </thead>
+                              <div class="col-6">
+                                 <input type="text" name="searchDeletedProduct" id="searchDeletedProduct" placeholder="Termek keresés" class="form-control extra-search" />
+                              </div>
+                              <hr>
                               <% if (prod.length > 0) { %>
                               <% for (let i=0; i< prod.length; i++ ) { %>
 
@@ -54,6 +69,7 @@
                                  <tr>
                                     <th scope="row"><%= prod[i].id %></th>
                                     <td><%= prod[i].ProductTranslations[0].title  %></td>
+                                    <td><%= prod[i].ProductFinals[0].Variant.sku %></td>
                                     <td><span class="badge badge-danger">DELETED</span></td>
                                     <td>
                                        <form action="/admin/restore-product" method="POST" >

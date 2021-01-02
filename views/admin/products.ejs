@@ -2,16 +2,16 @@
 
 <%- include('../includes/head.ejs') %>
 <script>
-   $(document).ready(function() {
-      $('#searchProduct').keyup(function() {
-         const productId = $('#searchProduct').val();
-         console.log(productId)
-         $.get("get-filtered-product/" + productId).done(function(data) {
-            $("#searchedProduct").html(data);
-         });
-      });
-   })
-   </script>
+$(document).ready(function() {
+	$('#searchProduct').keyup(function() {
+		const productId = $('#searchProduct').val();
+		console.log(productId)
+		$.get("get-filtered-product/" + productId).done(function(data) {
+			$("#searchedProduct").html(data);
+		});
+	});
+})
+</script>
 </head>
 <body class="ms-body ms-aside-left-open ms-primary-theme ms-has-quickbar">
    <%- include('../includes/navigation.ejs') %>

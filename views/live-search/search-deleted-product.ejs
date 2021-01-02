@@ -1,8 +1,9 @@
+<
 <thead>
   <tr>
     <th scope="col">Id</th>
     <th scope="col">Név</th>
-    <th scope="col">VARIANS</th>
+
     <th scope="col">Státusz</th>
     <th scope="col" class="buttons-text-variants">Törlés</th>
     <th scope="col">Szerkesztés</th>
@@ -12,7 +13,7 @@
 <tr>
   <th scope="row"><%= prods[i].id %></th>
   <td><%= prods[i].ProductTranslations[0].title %></td>
-  <td><%= prods[i].ProductFinals[0].Variant.sku %></td>
+
   <td><span class="badge badge-success">AKTIV</span></td>
   <td>
     <form action="/admin/delete-product" method="POST">
@@ -32,4 +33,4 @@
 </tr>
 <% } %> <% } else { %>
 <h1>No Products Found!</h1>
-<% } %>
+<% } %> >

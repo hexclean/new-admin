@@ -1,7 +1,8 @@
 const Products = require("../../models/Product");
 const ProductsTranslation = require("../../models/ProductTranslation");
 const ITEMS_PER_PAGE = 30;
-
+const ProductFinal = require("../../models/ProductFinal");
+const Variant = require("../../models/Variant");
 exports.getIndex = async (req, res, next) => {
   res.render("deleted-items/index", {
     pageTitle: "Add Product",
@@ -46,6 +47,11 @@ exports.getProducts = async (req, res, next) => {
           {
             model: ProductsTranslation,
             where: { languageId: languageCode },
+          },
+          {
+            model: ProductFinal,
+            where: { active: 1 },
+            include: [{ model: Variant }],
           },
         ],
         offset: (page - 1) * ITEMS_PER_PAGE,

@@ -14,6 +14,8 @@ const ProductTranslation = require("../../models/ProductTranslation");
 const Property = require("../../models/Property");
 const PropertyValueTranslation = require("../../models/PropertyValueTranslation");
 const PropertyTranslation = require("../../models/PropertyTranslation");
+const ProductFinal = require("../../models/ProductFinal");
+const Variant = require("../../models/Variant");
 
 exports.getFilteredExtra = async (req, res, next) => {
   var categoryName = req.params.extraId;
@@ -283,6 +285,7 @@ exports.getFilteredProduct = async (req, res, next) => {
   await Products.findAll({
     where: {
       restaurantId: req.admin.id,
+      active: 1,
     },
     include: [
       {
@@ -291,6 +294,11 @@ exports.getFilteredProduct = async (req, res, next) => {
           title: { [Op.like]: "%" + productName + "%" },
           languageId: currentProductName,
         },
+      },
+      {
+        model: ProductFinal,
+        where: { active: 1 },
+        include: [{ model: Variant }],
       },
     ],
   })
@@ -344,6 +352,57 @@ exports.getFilteredProperty = async (req, res, next) => {
     .then((property) => {
       res.render("live-search/search-property", {
         property: property,
+        editing: false,
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
+};
+
+exports.getFilteredDeletedProduct = async (req, res, next) => {
+  var productName = req.params.productId;
+  let languageCode;
+
+  if (req.cookies.language == "ro") {
+    languageCode = 1;
+  } else if (req.cookies.language == "hu") {
+    languageCode = 2;
+  } else {
+    languageCode = 3;
+  }
+  if (productName.length == 1) {
+    productName = [];
+  }
+
+  await Products.findAll({
+    where: {
+      restaurantId: req.admin.id,
+      active: 0,
+    },
+    include: [
+      {
+        model: ProductTranslation,
+
+        where: {
+          title: { [Op.like]: "%" + productName + "%" },
+          languageId: languageCode,
+        },
+      },
+      {
+        model: ProductFinal,
+        where: { active: 1 },
+        include: [{ model: Variant }],
+      },
+    ],
+  })
+
+    .then((prods) => {
+      res.render("live-search/search-deleted-product", {
+        prods: prods,
         editing: false,
       });
     })

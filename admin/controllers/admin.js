@@ -12,8 +12,6 @@ const Category = require("../../models/Category");
 const CategoryTranslation = require("../../models/CategoryTranslation");
 const Box = require("../../models/Box");
 const BoxTranslation = require("../../models/BoxTranslation");
-const Restaurant = require("../../models/Restaurant");
-const RestaurantRole = require("../../models/RestaurantRole");
 const ITEMS_PER_PAGE = 30;
 
 exports.getAddProduct = async (req, res, next) => {
@@ -260,8 +258,6 @@ exports.getEditProduct = async (req, res, next) => {
   const editMode = req.query.edit;
   const prodId = req.params.productId;
   const productId = [prodId];
-  let currentExtraName = [];
-  let currentCategoryName = [];
   const Op = Sequelize.Op;
 
   if (!editMode) {
