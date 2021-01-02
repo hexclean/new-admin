@@ -21,7 +21,6 @@ exports.postAddBox = async (req, res, next) => {
   const huName = req.body.huName;
   const enName = req.body.enName;
   const price = req.body.price;
-  console.log(req.body);
   const box = await Box.create({
     restaurantId: req.admin.id,
     price: price,

@@ -708,7 +708,6 @@ exports.getProducts = async (req, res, next) => {
       });
     })
     .then((product) => {
-      console.log(product[0].ProductFinals[0].Variant.sku);
       res.render("admin/products", {
         pageTitle: "Admin Products",
         path: "/admin/products",

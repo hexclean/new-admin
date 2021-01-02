@@ -224,6 +224,15 @@ exports.getOrders = async (req, res, next) => {
 };
 
 exports.getAcceptedOrders = async (req, res, next) => {
+  let languageCode;
+
+  if (req.cookies.language == "ro") {
+    languageCode = 1;
+  } else if (req.cookies.language == "hu") {
+    languageCode = 2;
+  } else {
+    languageCode = 3;
+  }
   const orders = await Order.findAll({
     order: [["createdAt", "DESC"]],
     where: { orderStatusId: 2, restaurantId: req.admin.id },
@@ -237,7 +246,12 @@ exports.getAcceptedOrders = async (req, res, next) => {
             include: [
               {
                 model: Extra,
-                include: [{ model: ExtraTranslation }],
+                include: [
+                  {
+                    model: ExtraTranslation,
+                    where: { languageId: languageCode },
+                  },
+                ],
               },
             ],
           },
@@ -250,7 +264,12 @@ exports.getAcceptedOrders = async (req, res, next) => {
                 include: [
                   {
                     model: Product,
-                    include: [{ model: ProductTranslation }],
+                    include: [
+                      {
+                        model: ProductTranslation,
+                        where: { languageId: languageCode },
+                      },
+                    ],
                   },
                 ],
               },
@@ -266,7 +285,7 @@ exports.getAcceptedOrders = async (req, res, next) => {
         include: [
           {
             model: LocationNameTranslation,
-            where: { languageId: 2 },
+            where: { languageId: languageCode },
           },
         ],
       },
@@ -286,6 +305,7 @@ exports.getAcceptedOrders = async (req, res, next) => {
   let orderPhoneNumber;
   let orderCreated;
   let orderIds;
+  let status;
   let extrasArray = [];
   if (orders.length != 0) {
     for (let i = 0; i < orders.length; i++) {
@@ -388,6 +408,7 @@ exports.getAcceptedOrders = async (req, res, next) => {
     orderCreated = orders[0].createdAt;
     userName = orders[0].User.fullName;
     orderIds = orders[0].id;
+    status = orders[0].orderStatusId;
   }
   res.render("order/accepted-orders", {
     pageTitle: "Add Product",
@@ -405,7 +426,7 @@ exports.getAcceptedOrders = async (req, res, next) => {
     take: take,
     orderIds: orderIds,
     extras: extras,
-    status: orders[0].orderStatusId,
+    status: status,
   });
 };
 exports.getEditOrder = async (req, res, next) => {
@@ -667,7 +688,7 @@ exports.getDeletedOrders = async (req, res, next) => {
   let cutlery;
   let take;
   let userName;
-  let orderCity;
+  let status;
   let orderStreet;
   let orderHouseNumber;
   let orderFloor;
@@ -777,6 +798,7 @@ exports.getDeletedOrders = async (req, res, next) => {
     orderCreated = orders[0].createdAt;
     userName = orders[0].User.fullName;
     orderIds = orders[0].id;
+    status = orders[0].orderStatusId;
   }
   res.render("order/deleted-orders", {
     pageTitle: "Add Product",
@@ -794,7 +816,7 @@ exports.getDeletedOrders = async (req, res, next) => {
     take: take,
     orderIds: orderIds,
     extras: extras,
-    status: orders[0].orderStatusId,
+    status: status,
   });
 };
 
