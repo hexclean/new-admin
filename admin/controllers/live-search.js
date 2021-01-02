@@ -19,19 +19,18 @@ const Variant = require("../../models/Variant");
 
 exports.getFilteredExtra = async (req, res, next) => {
   var categoryName = req.params.extraId;
-  var currentCategoryName;
-  var currentLanguage = req.cookies.language;
+  let languageCode;
+
+  if (req.cookies.language == "ro") {
+    languageCode = 1;
+  } else if (req.cookies.language == "hu") {
+    languageCode = 2;
+  } else {
+    languageCode = 3;
+  }
 
   if (categoryName.length == 1) {
     categoryName = [];
-  }
-
-  if (currentLanguage == "ro") {
-    currentCategoryName = 1;
-  } else if (currentLanguage == "hu") {
-    currentCategoryName = 2;
-  } else {
-    currentCategoryName = 3;
   }
 
   await Extras.findAll({
@@ -43,7 +42,7 @@ exports.getFilteredExtra = async (req, res, next) => {
         model: ExtraTranslations,
         where: {
           name: { [Op.like]: "%" + categoryName + "%" },
-          languageId: currentCategoryName,
+          languageId: languageCode,
         },
       },
     ],
@@ -155,7 +154,15 @@ exports.getFilteredAllergen = async (req, res, next) => {
 
 exports.getFilteredBox = async (req, res, next) => {
   var boxName = req.params.boxId;
-  var currentLanguage = req.cookies.language;
+  let languageCode;
+
+  if (req.cookies.language == "ro") {
+    languageCode = 1;
+  } else if (req.cookies.language == "hu") {
+    languageCode = 2;
+  } else {
+    languageCode = 3;
+  }
 
   if (boxName.length == 1) {
     boxName = [];
@@ -170,7 +177,7 @@ exports.getFilteredBox = async (req, res, next) => {
         model: BoxTranslation,
         where: {
           name: { [Op.like]: "%" + boxName + "%" },
-          languageId: currentBoxName,
+          languageId: languageCode,
         },
       },
     ],
@@ -179,7 +186,6 @@ exports.getFilteredBox = async (req, res, next) => {
     .then((box) => {
       res.render("live-search/search-box", {
         box: box,
-
         editing: false,
       });
     })
