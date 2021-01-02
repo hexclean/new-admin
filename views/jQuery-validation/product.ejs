@@ -326,9 +326,15 @@
     }
   }
 </script>
-
-<% if (editing) { %> <% for (let i = 0; i < isActiveVariant.length; i++) { %> <%
-if (isActiveVariant[i].active ==1) { %>
+<% if(editing){ %> <% if(product[0].isDailyMenu ==1){ %>
+<script>
+  $(document).ready(function () {
+    $(".isDailyMenu").prop("checked", true);
+    $(".answer").show();
+  });
+</script>
+<% } %> <% } %> <% if (editing) { %> <% for (let i = 0; i <
+isActiveVariant.length; i++) { %> <% if (isActiveVariant[i].active ==1) { %>
 <script>
   $(document).ready(function () {
     var activeCheckbox = "<%= isActiveVariant[i].variantId %>";

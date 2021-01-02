@@ -4,12 +4,11 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 <script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>
 <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
-
 <body class="ms-body ms-aside-left-open ms-primary-theme ms-has-quickbar" >
    <%- include('../includes/navigation.ejs') %>
    <main class="body-content">
       <%- include('../includes/navigation-bar.ejs') %>
-
+      
       <form
          name="myForm"
          class="ms-content-wrapper"
@@ -17,50 +16,105 @@
          method="POST"
          enctype="multipart/form-data"
          id="product-form">
-         <fieldset class="question">
-            <label for="isDailyMenu">Do you have a coupon?</label>
-            <input class="isDailyMenu" type="checkbox" name="isDailyMenu" value="1" />
-            <span class="item-text">Yes</span>
-        </fieldset>
-     
-        <fieldset class="answer">
-         <input id="startDate"   value="<% if (editing) { %><%= startDateFin %><% } %>"  name="startDate"/>
-         <input id="endDate"   value="<% if (editing) { %><%= endDateFin %><% } %>"   name="endDate"/>
-        </fieldset>
-        <script>
-           $(".answer").hide();
-            $(".isDailyMenu").click(function() {
-               if($(this).is(":checked")) {
-                  $(".answer").show();
-               } else {
-                  $(".answer").hide();
-               }
+       
+           
+        
+            <div class="ms-content-wrapper">
+               <div class="row">
+            <div class="col-xl-6 col-md-12">
+               <div class="ms-panel ms-panel-header">
+               
+                 <div class="ms-panel-body">
+                  
+                    
+                     <div class="row">
+                       <div class="col-md-6">
+                         <ul class="ms-list ms-list-display">
+                          
+                           <li>
+                             <label class="ms-checkbox-wrap ms-checkbox-success">
+                               <input class="isDailyMenu" type="checkbox" name="isDailyMenu" value="1"> <i class="ms-checkbox-check"></i>
+                             </label> <span> Napi menu </span>
+                           </li>
+                          
+                         </ul>
+                       </div>
+                     
+                       </div>
+                     </div>
+                  
+                 </div>
+               </div>
+             </div>
+             </div>
+             </div>
+             
+             
+         <div class="row answer">
+            <div class="col-xl-6 col-md-12">
+               <div class="ms-panel ms-panel-fh">
+                  <div class="ms-panel-header">
+                     <h6>Napi Menu</h6>
+                  </div>
+                  <div class="ms-panel-body">
+                     <div class="form-row">
+                        <div class="col-md-12 mb-3">
+                           <label for="roTitle"><%= lingua.create_product_name1 %></label>
+                           <div class="input-group">
+                              <input
+                                 class="form-control"
+                                 type="text"
+                                 id="endDate"   value="<% if (editing) { %><%= endDateFin %><% } %>"   name="endDate"/>
+                           </div>
+                           <span class="error_form" id="roName_error_message"></span>
+                        </div>
+                        <div class="col-md-12 mb-3">
+                           <label for="huTitle"><%= lingua.create_product_name2 %></label>
+                           <div class="input-group">
+                              <input
+                                 class="form-control"
+                                 type="text"
+                                 id="startDate" value="<% if (editing) { %><%= startDateFin %><% } %>" name="startDate"/>
+                           </div>
+                           <span class="error_form" id="huName_error_message"></span>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <script>
+            $(".answer").hide();
+             $(".isDailyMenu").click(function() {
+                if($(this).is(":checked")) {
+                   $(".answer").show();
+                } else {
+                   $(".answer").hide();
+                }
+             });
+         </script>
+         <script type="text/javascript">
+            $(function () {
+             $('#startDate').datetimepicker({
+             uiLibrary: 'bootstrap4',
+             modal: true,
+             footer: true, 
             });
-        </script>
-        
+            });
+             
+         </script>
+         <script type="text/javascript">
+            $(function () {
+             $('#endDate').datetimepicker({
+             uiLibrary: 'bootstrap4',
+             modal: true,
+             footer: true, 
+            });
+            });
+             
+         </script>
        
-       
-            <script type="text/javascript">
-           $(function () {
-            $('#startDate').datetimepicker({
-            uiLibrary: 'bootstrap4',
-            modal: true,
-            footer: true, 
-        });
-});
-            </script>
      
-     <script type="text/javascript">
-      $(function () {
-       $('#endDate').datetimepicker({
-       uiLibrary: 'bootstrap4',
-       modal: true,
-       footer: true, 
-   });
-});
-       </script>
-        
-
          <div class="row">
             <div class="col-xl-6 col-md-12">
                <div class="ms-panel ms-panel-fh">
@@ -164,12 +218,12 @@
                            </div>
                         </div>
                         <% if (editing) { %>
-                           <script>
-                              $(document).ready(function () {
-                               
-                                $("select#categoryId").val("<% if (editing) { %><%=  currentCat %><% } %>");
-                              });
-                            </script> 
+                        <script>
+                           $(document).ready(function () {
+                           
+                           $("select#categoryId").val("<% if (editing) { %><%=  currentCat %><% } %>");
+                           });
+                        </script> 
                         <input
                            type="hidden"
                            value="<%= productIds %>"
@@ -182,7 +236,6 @@
                         </button>
                      </div>
                   </div>
-               
                   <div class="col-xl-12 col-md-12">
                      <div class="ms-panel ms-panel-fh">
                         <div class="ms-panel-header">
@@ -203,7 +256,7 @@
                                     <li>
                                        <label class="ms-switch" data-extra="<%= boxArray[i].id %>">
                                        <input type="hidden" value="off" class="statusBox-<%= boxArray[i].id %>" name="statusBox[<%= boxArray[i].id %>]" > 
-                                       <input data-boxId="<%= boxArray[i].id %>"  class="statusBox-checkbox statusBox-checkbox-<%= boxArray[i].id %>" type="checkbox"> <span class="ms-switch-slider ms-switch-success round"></span>
+                                       <input data-boxId="<%= boxArray[i].id %>" class="statusBox-checkbox statusBox-checkbox-<%= boxArray[i].id %>" type="checkbox"> <span class="ms-switch-slider ms-switch-success round"></span>
                                        </label> <span> <%= boxArray[i].BoxTranslations[0].name %> </span> <b>:</b> <span> <%= boxArray[i].price %> </span>lei
                                     </li>
                                     <% } %>
@@ -213,7 +266,6 @@
                         </div>
                      </div>
                   </div>
-
                   <div class="col-xl-12 col-md-12">
                      <div class="ms-panel ms-panel-fh">
                         <div class="ms-panel-header">
@@ -248,23 +300,18 @@
             </div>
          </div>
          </div>
-        
          <div class="col-md-6 mb-3">
             <label for="validationCustom22">RO</label>
             <div class="input-group">
-
                <select class="form-control" for="categoryId" id="categoryId" name="categoryId">
                   <option value="" selected disabled hidden>Kategoria Valasztas</option>
                   <% for(let i = 0; i < cat.length; i++) { %>
-
                   <option id="categoryId" name="categoryId" value='<%= cat[i].id %>'><%= cat[i].CategoryTranslations[0].name %></option>
                   <% } %>
                </select>
             </div>
             <span class="error_form" id="category_error_message"></span>
          </div>
-       
-        
          <div class="ms-panel ms-btn-display">
             <div class="ms-panel-header">
                <h6>A  <% if (editing) { %>  <%= product[0].ProductTranslations[0].title %>  <% } %> hozzárendelhető extrái:</h6>
@@ -311,20 +358,7 @@
                                  as
                                  <span class="extra_error_message error_form" id="price_error_message_<%= productVariant[i].extraId %>"></span>
                               </div>
-                              <div class="col-md-12 mb-3">
-                                 <label for="discountedPrice"
-                                    >Discounted Price</label
-                                    >
-                                 <div class="input-group">
-                                    <input disabled
-                                       class="form-control"
-                                       type="text"
-                                       name="discountedPrice"
-                                       id="discountedPrice"
-                                       value="<% if (editing) { %><%= netest[i].discountedPrice %><% } %>"
-                                       />
-                                 </div>
-                              </div>
+                             
                            </div>
                         </div>
                      </div>
@@ -336,12 +370,10 @@
          <% } else { %>
          <% } %><% } else { %>
          <% if (ext.length > 0) { %>
-         
          <div class="ms-content-wrapper">
             <div class="row">
                <div class="col-md-12">
                   <div id="selectedVariantsCategory" class="row">
-                    
                      <% for (let extra of ext) { %>
                      <input
                         type="hidden"
@@ -349,11 +381,6 @@
                         name="extraId"
                         id="extraIdJq"
                         />          
-
-                     
-
-                        
-
                      <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 extra_box category-<%= extra.categoryId %> category-all" data-extra="<%= extra.id %>">
                         <div class="ms-card">
                            <div class="d-flex justify-content-center extra-margin-top">

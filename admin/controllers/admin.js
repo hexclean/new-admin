@@ -394,34 +394,38 @@ exports.getEditProduct = async (req, res, next) => {
     ],
   })
     .then((product) => {
-      const startDate = product[0].startTime;
-      const endDate = product[0].endTime;
       let startDateFin;
       let endDateFin;
-      startDateFin =
-        ("00" + (startDate.getMonth() + 1)).slice(-2) +
-        "/" +
-        ("00" + startDate.getDate()).slice(-2) +
-        "/" +
-        startDate.getFullYear() +
-        " " +
-        ("00" + startDate.getHours()).slice(-2) +
-        ":" +
-        ("00" + startDate.getMinutes()).slice(-2) +
-        ":" +
-        ("00" + startDate.getSeconds()).slice(-2);
-      endDateFin =
-        ("00" + (endDate.getMonth() + 1)).slice(-2) +
-        "/" +
-        ("00" + endDate.getDate()).slice(-2) +
-        "/" +
-        endDate.getFullYear() +
-        " " +
-        ("00" + endDate.getHours()).slice(-2) +
-        ":" +
-        ("00" + endDate.getMinutes()).slice(-2) +
-        ":" +
-        ("00" + endDate.getSeconds()).slice(-2);
+      if (product[0].isDailyMenu == 1) {
+        const startDate = product[0].startTime;
+        const endDate = product[0].endTime;
+
+        startDateFin =
+          ("00" + (startDate.getMonth() + 1)).slice(-2) +
+          "/" +
+          ("00" + startDate.getDate()).slice(-2) +
+          "/" +
+          startDate.getFullYear() +
+          " " +
+          ("00" + startDate.getHours()).slice(-2) +
+          ":" +
+          ("00" + startDate.getMinutes()).slice(-2) +
+          ":" +
+          ("00" + startDate.getSeconds()).slice(-2);
+        endDateFin =
+          ("00" + (endDate.getMonth() + 1)).slice(-2) +
+          "/" +
+          ("00" + endDate.getDate()).slice(-2) +
+          "/" +
+          endDate.getFullYear() +
+          " " +
+          ("00" + endDate.getHours()).slice(-2) +
+          ":" +
+          ("00" + endDate.getMinutes()).slice(-2) +
+          ":" +
+          ("00" + endDate.getSeconds()).slice(-2);
+      }
+
       let productVariantTest = [];
       for (let i = 0; i < product.length; i++) {
         productVariantTest = product[i].ProductFinals;
