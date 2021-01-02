@@ -112,12 +112,31 @@ exports.postAddProduct = async (req, res, next) => {
   const roDescription = req.body.roDescription;
   const huDescription = req.body.huDescription;
   const enDescription = req.body.enDescription;
-  const image = req.file;
-  const imageUrl = image.path;
   const extId = req.body.extraId;
   const filteredStatusAllergen = req.body.statusAllergen.filter(Boolean);
   const filteredStatusBox = req.body.statusBox.filter(Boolean);
 
+  if (!req.file || !req.file.path) {
+    return res.redirect("/admin/products");
+  }
+  const image = req.file;
+  const imageUrl = image.path;
+  if (
+    roTitle.length == 0 ||
+    allergenId.length == 0 ||
+    filteredStatus.length == 0 ||
+    huTitle.length == 0 ||
+    enTitle.length == 0 ||
+    price.length == 0 ||
+    roDescription.length == 0 ||
+    huDescription.length == 0 ||
+    enDescription.length == 0 ||
+    extId.length == 0 ||
+    filteredStatusAllergen.length == 0 ||
+    filteredStatusBox.length == 0
+  ) {
+    return res.redirect("/admin/products");
+  }
   const box = await Box.findAll({
     where: {
       restaurantId: req.admin.id,
@@ -145,30 +164,47 @@ exports.postAddProduct = async (req, res, next) => {
     },
   });
 
-  const product = await req.admin.createProduct({
-    productImagePath: imageUrl,
-    active: 1,
-  });
+  let productId;
+
+  if (req.body.isDailyMenu == 1) {
+    console.log(req.body);
+    const product = await req.admin.createProduct({
+      productImagePath: imageUrl,
+      active: 1,
+      isDailyMenu: 1,
+      soldOut: 0,
+      startTime: req.body.startDate,
+      endTime: req.body.endDate,
+    });
+    productId = product.id;
+  } else {
+    const product = await req.admin.createProduct({
+      productImagePath: imageUrl,
+      active: 1,
+    });
+    productId = product.id;
+  }
 
   async function productTranslation() {
+    console.log("productIdproductId", productId);
     await ProductTranslation.create({
       title: roTitle,
       languageId: 1,
       description: roDescription,
-      productId: product.id,
+      productId: productId,
     });
     await ProductTranslation.create({
       title: huTitle,
       languageId: 2,
       description: huDescription,
-      productId: product.id,
+      productId: productId,
     });
 
     await ProductTranslation.create({
       title: enTitle,
       languageId: 3,
       description: enDescription,
-      productId: product.id,
+      productId: productId,
     });
   }
 
@@ -183,7 +219,7 @@ exports.postAddProduct = async (req, res, next) => {
     for (let i = 0; i <= ext.length - 1; i++) {
       await ProductFinal.create({
         price: price[i] || 0,
-        productId: product.id,
+        productId: productId,
         variantId: extId[i],
         discountedPrice: 0,
         active: filteredStatus[i] == "on" ? 1 : 0,
@@ -196,7 +232,7 @@ exports.postAddProduct = async (req, res, next) => {
     if (Array.isArray(allergen)) {
       for (let i = 0; i <= allergen.length - 1; i++) {
         await ProductHasAllergen.create({
-          productId: product.id,
+          productId: productId,
           allergenId: allergenId[i],
           active: filteredStatusAllergen[i] == "on" ? 1 : 0,
           restaurantId: req.admin.id,
@@ -204,7 +240,7 @@ exports.postAddProduct = async (req, res, next) => {
       }
     }
   }
-  console.log(req.body);
+
   productTranslation()
     .then((result) => {
       createVariant();
@@ -338,7 +374,6 @@ exports.getEditProduct = async (req, res, next) => {
       },
     ],
   });
-  console.log(test78[0].ProductFinals[0].Variant.categoryId);
   Product.findAll({
     where: {
       id: prodId,
@@ -359,6 +394,34 @@ exports.getEditProduct = async (req, res, next) => {
     ],
   })
     .then((product) => {
+      const startDate = product[0].startTime;
+      const endDate = product[0].endTime;
+      let startDateFin;
+      let endDateFin;
+      startDateFin =
+        ("00" + (startDate.getMonth() + 1)).slice(-2) +
+        "/" +
+        ("00" + startDate.getDate()).slice(-2) +
+        "/" +
+        startDate.getFullYear() +
+        " " +
+        ("00" + startDate.getHours()).slice(-2) +
+        ":" +
+        ("00" + startDate.getMinutes()).slice(-2) +
+        ":" +
+        ("00" + startDate.getSeconds()).slice(-2);
+      endDateFin =
+        ("00" + (endDate.getMonth() + 1)).slice(-2) +
+        "/" +
+        ("00" + endDate.getDate()).slice(-2) +
+        "/" +
+        endDate.getFullYear() +
+        " " +
+        ("00" + endDate.getHours()).slice(-2) +
+        ":" +
+        ("00" + endDate.getMinutes()).slice(-2) +
+        ":" +
+        ("00" + endDate.getSeconds()).slice(-2);
       let productVariantTest = [];
       for (let i = 0; i < product.length; i++) {
         productVariantTest = product[i].ProductFinals;
@@ -388,9 +451,12 @@ exports.getEditProduct = async (req, res, next) => {
         extTranslations: product[0].productTranslations,
         isActive: product[0].allergen,
         isActiveVariant: productFinal,
+        startDateFin: startDateFin,
+        endDateFin: endDateFin,
       });
     })
     .catch((err) => {
+      console.log(err);
       const error = new Error(err);
       error.httpStatusCode = 500;
       return next(error);
