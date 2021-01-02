@@ -155,19 +155,10 @@ exports.getFilteredAllergen = async (req, res, next) => {
 
 exports.getFilteredBox = async (req, res, next) => {
   var boxName = req.params.boxId;
-  var currentBoxName;
   var currentLanguage = req.cookies.language;
 
   if (boxName.length == 1) {
     boxName = [];
-  }
-
-  if (currentLanguage == "ro") {
-    currentBoxName = 1;
-  } else if (currentLanguage == "hu") {
-    currentBoxName = 2;
-  } else {
-    currentBoxName = 3;
   }
 
   await Box.findAll({
@@ -186,11 +177,9 @@ exports.getFilteredBox = async (req, res, next) => {
   })
 
     .then((box) => {
-      // console.log(box);
-      console.log("currentBoxName-----", currentBoxName);
       res.render("live-search/search-box", {
         box: box,
-        currentLanguage: currentBoxName,
+
         editing: false,
       });
     })

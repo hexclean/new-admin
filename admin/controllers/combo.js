@@ -283,7 +283,16 @@ exports.getAllergenIndex = async (req, res, next) => {
 exports.getBoxIndex = async (req, res, next) => {
   const page = +req.query.page || 1;
   let totalItems;
-  let currentBoxName = [];
+  let languageCode;
+
+  if (req.cookies.language == "ro") {
+    languageCode = 1;
+  } else if (req.cookies.language == "hu") {
+    languageCode = 2;
+  } else {
+    languageCode = 3;
+  }
+
   await AdminLogs.create({
     restaurant_id: req.admin.id,
     operation_type: "GET",
@@ -297,6 +306,7 @@ exports.getBoxIndex = async (req, res, next) => {
     include: [
       {
         model: BoxTranslation,
+        where: { languageId: languageCode },
       },
     ],
   })
@@ -309,6 +319,7 @@ exports.getBoxIndex = async (req, res, next) => {
         include: [
           {
             model: BoxTranslation,
+            where: { languageId: languageCode },
           },
         ],
 
@@ -317,18 +328,6 @@ exports.getBoxIndex = async (req, res, next) => {
       });
     })
     .then((box) => {
-      for (let i = 0; i < box.length; i++) {
-        var currentLanguage = req.cookies.language;
-
-        if (currentLanguage == "ro") {
-          currentBoxName[i] = box[i].BoxTranslations[0].name;
-        } else if (currentLanguage == "hu") {
-          currentBoxName[i] = box[i].BoxTranslations[1].name;
-        } else {
-          currentBoxName[i] = box[i].BoxTranslations[2].name;
-        }
-      }
-
       res.render("combo/box-index", {
         pageTitle: "Admin Products",
         path: "/admin/products",
@@ -336,7 +335,6 @@ exports.getBoxIndex = async (req, res, next) => {
         hasNextPage: ITEMS_PER_PAGE * page < totalItems.length,
         hasPreviousPage: page > 1,
         nextPage: page + 1,
-        currentBoxName: currentBoxName,
         previousPage: page - 1,
         lastPage: Math.ceil(totalItems.length / ITEMS_PER_PAGE),
         box: box,

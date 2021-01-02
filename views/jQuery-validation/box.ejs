@@ -3,12 +3,10 @@
     $("#roName_error_message").hide();
     $("#huName_error_message").hide();
     $("#enName_error_message").hide();
-    $("#price_error_message").hide();
 
     var error_roName = false;
     var error_huName = false;
     var error_enName = false;
-    var error_price = false;
 
     $("#roName").focusout(function () {
       check_roName();
@@ -21,15 +19,12 @@
     $("#enName").focusout(function () {
       check_enName();
     });
-    $("#price").focusout(function () {
-      check_price();
-    });
 
     function check_roName() {
       var roName_length = $("#roName").val().length;
 
       if (roName_length < 1 || roName_length > 50) {
-        $("#roName_error_message").html("<%= lingua.box_name_ro_validation %>");
+        $("#roName_error_message").html("<%= lingua.box_ro_name_validation %>");
         $("#roName_error_message").show();
         error_roName = true;
       } else {
@@ -41,7 +36,7 @@
       var huName_length = $("#huName").val().length;
 
       if (huName_length < 1 || huName_length > 50) {
-        $("#huName_error_message").html("<%= lingua.box_name_hu_validation %>");
+        $("#huName_error_message").html("<%= lingua.box_hu_name_validation %>");
         $("#huName_error_message").show();
         error_huName = true;
       } else {
@@ -53,7 +48,7 @@
       var enName_length = $("#enName").val().length;
 
       if (enName_length < 1 || enName_length > 50) {
-        $("#enName_error_message").html("<%= lingua.box_name_en_validation %>");
+        $("#enName_error_message").html("<%= lingua.box_en_name_validation %>");
         $("#enName_error_message").show();
         error_enName = true;
       } else {
@@ -61,38 +56,19 @@
       }
     }
 
-    function check_price() {
-      var price_length = $("#price").val().length;
-
-      if (
-        price_length < 1 ||
-        price_length > 50 ||
-        /^[0-9.]*$/.test(price_length) == false
-      ) {
-        $("#price_error_message").html("<%= lingua.box_price_validation %>");
-        $("#price_error_message").show();
-        error_price = true;
-      } else {
-        $("#price_error_message").hide();
-      }
-    }
-
     $("#createBox_form").submit(function () {
       error_roName = false;
       error_huName = false;
       error_enName = false;
-      error_price = false;
 
       check_roName();
       check_huName();
       check_enName();
-      check_price();
 
       if (
         error_roName == false &&
         error_huName == false &&
-        error_enName == false &&
-        error_price == false
+        error_enName == false
       ) {
         return true;
       } else {
@@ -106,14 +82,3 @@
     border-color: red;
   }
 </style>
-
-<!-- <script>
-  $(document).ready(function () {
-    $(function () {
-      $("#createBox").one("click", function () {
-        $("#createBox").prop("disabled", true);
-        $("#createBox_form").submit();
-      });
-    });
-  });
-</script> -->

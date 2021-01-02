@@ -1,13 +1,26 @@
+
+
 <%- include('../includes/head.ejs') %>
 <%- include('../jQuery-validation/box.ejs') %>
-
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 </head>
 <body class="ms-body ms-aside-left-open ms-primary-theme ms-has-quickbar">
    <%- include('../includes/navigation.ejs') %>
    <main class="body-content">
       <%- include('../includes/navigation-bar.ejs') %>
-     
+
+      <script>
+         $(document).ready(function () {
+             const regex = /[^\d.]|\.(?=.*\.)/g;
+             const subst = ``;
+             $("#price").keyup(function () {
+               const str = this.value;
+               const result = str.replace(regex, subst);
+               this.value = result;
+             });
+           });
+      </script>
+      
       <form 
          id="createBox_form"
          class="ms-content-wrapper" 
@@ -22,23 +35,22 @@
                   </div>
                   <div class="ms-panel-body">
                      <div class="form-row">
-                       
                         <div class="col-md-12 mb-3">
-                            <label for="price"><%= lingua.box_price %></label>
-                            <div class="input-group">
-                               <input
-                                  class="form-control"
-                                  type="text"
-                                  name="price"
-                                  autocomplete="off"
-                                  id="price"
-                                  value="<% if (editing) { %><%= cat[0].price %><% } %>">
-                            </div>
-                            <span class="error_form" id="price_error_message"></span>
-                         </div>
-
+                           <label for="price"><%= lingua.box_price %></label>
+                           <div class="input-group">
+                              <input
+                                 class="form-control"
+                                 type="text"
+                                 name="price"
+                                 autocomplete="off"
+                                 id="price"
+                                 placeholder="<%= lingua.box_placeholder %>"
+                                 value="<% if (editing) { %><%= cat[0].price %><% } %>">
+                           </div>
+                           <span class="info-box-price" id="price_error_message"><%= lingua.box_price_info %></span>
+                        </div>
                         <div class="col-md-12 mb-3">
-                           <label for="roName"><%= lingua.box_name_ro %></label>
+                           <label for="roName"><%= lingua.box_ro_name %></label>
                            <div class="input-group">
                               <input
                                  class="form-control"
@@ -51,7 +63,7 @@
                            <span class="error_form" id="roName_error_message"></span>
                         </div>
                         <div class="col-md-12 mb-3">
-                           <label for="huName"><%= lingua.box_name_hu %></label>
+                           <label for="huName"><%= lingua.box_hu_name %></label>
                            <div class="input-group">
                               <input
                                  class="form-control"
@@ -64,7 +76,7 @@
                            <span class="error_form" id="huName_error_message"></span>
                         </div>
                         <div class="col-md-12 mb-3">
-                           <label for="enName"><%= lingua.box_name_en %></label>
+                           <label for="enName"><%= lingua.box_en_name %></label>
                            <div class="input-group">
                               <input
                                  class="form-control"
@@ -76,27 +88,20 @@
                            </div>
                            <span class="error_form" id="enName_error_message"></span>
                         </div>
+                        <div class="col-md-12 mb-3">
+                           <button type="submit" id="createBox" class="btn btn-success has-icon" ><% if (editing) { %>Update Product<% } else { %><%= lingua.create_box %><% } %></button>
+                           <span class="error_form" id="enName_error_message"></span>
+                        </div>
                      </div>
                   </div>
                </div>
             </div>
-            <div class="col-xl-6 col-md-12">
-               <div class="row">
-                  <div class="col-md-12">
-                     <div class="ms-panel">
-                        <div class="ms-panel-header">
-                           <h6>Product</h6>
-                        </div>
-                        <% if (editing) { %>
-                        <input type="hidden" value="<%= boxId %>" name="boxId">
-                        <%for (let i = 0; i < boxTranslations.length; i++){%>
-                        <input type="hidden" value="<%= boxTranslations[i].id %>" name="boxTranslationsId">
-                        <%}%>
-                        <% } %>
-                        <button type="submit" id="createBox" class="btn btn-success has-icon" ><% if (editing) { %>Update Product<% } else { %>Add Product<% } %></button>
-                     </div>
-                  </div>
-               </div>
+            <% if (editing) { %>
+               <input type="hidden" value="<%= boxId %>" name="boxId">
+               <%for (let i = 0; i < boxTranslations.length; i++){%>
+               <input type="hidden" value="<%= boxTranslations[i].id %>" name="boxTranslationsId">
+               <%}%>
+               <% } %>
             </div>
          </div>
          </div>
@@ -104,3 +109,4 @@
    </main>
    <%- include('../includes/end.ejs') %>
 </body>
+

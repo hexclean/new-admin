@@ -547,6 +547,11 @@ Version: 1.0.0
 .bg-facebook {
   background-color: #3b5997;
 }
+.info-box-price {
+  font-size: 14px;
+  font-family: Arial;
+  color: #09a561;
+}
 .bg-twitter {
   background-color: #3da4f1;
 }

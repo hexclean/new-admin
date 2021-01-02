@@ -34,8 +34,8 @@
       <div class="ms-content-wrapper">
          <div class="ms-profile-overview no-img-var">
             <ul class="ms-profile-navigation nav nav-tabs tabs-bordered" role="tablist">
-               <li role="presentation"><a href="#" aria-controls="tab1" class="active show" role="tab" data-toggle="tab"> Összes Doboz </a></li>
-               <li role="presentation"><a class="add-variant" href="/admin/add-box">Add Box </a></li>
+               <li role="presentation"><a href="#" aria-controls="tab1" class="active show" role="tab" data-toggle="tab"><%= lingua.all_boxes %></a></li>
+               <li role="presentation"><a class="add-variant" href="/admin/add-box"><%= lingua.create_box %></a></li>
               
             </ul>
             <div class="tab-content">
@@ -69,22 +69,22 @@
             <div class="col-12">
                 <div class="ms-panel">
                    <div class="ms-panel-header">
-                      <h6> Box List</h6>
+                      <h6> <%= lingua.all_boxes %></h6>
                    </div>
                    <div class="ms-panel-body">
                       <div  class="table-responsive">
                          <table id="searchedBox" class="table table-hover thead-primary">
                             <thead>
                                <tr>
-                                  <th scope="col">ID</th>
-                                  <th scope="col">Name</th>
-                                  <th scope="col">Ar</th>
-                                  <th scope="col">STATUS</th>
-                                  <th scope="col" >EDIT</th>
+                                  <th scope="col">Id</th>
+                                  <th scope="col"><%= lingua.box_list_name %></th>
+                                  <th scope="col"><%= lingua.box_list_price %></th>
+                                  <th scope="col"><%= lingua.box_list_status %></th>
+                                  <th scope="col" ><%= lingua.box_list_operation %></th>
                                </tr>
                             </thead>
                             <div class="col-6">
-                            <input type="text" name="search" id="search" placeholder="Search allergen" class="extra-search form-control" />
+                            <input type="text" name="search" id="search" placeholder="<%= lingua.search_box %>" class="extra-search form-control" />
                            </div>
                            <hr>
                             <% if (box.length > 0) { %>
@@ -92,13 +92,13 @@
                             <tbody>
                               
                                   <th scope="row"><%= box[i].id %></th>
-                                  <td><%= currentBoxName[i] %></td>
+                                  <td><%= box[i].BoxTranslations[0].name %></td>
                                   <td><%= box[i].price %></td>
                                   
-                                  <td><span class="badge badge-success">AKTIV</span></td>
+                                  <td><span style="font-size: 14px !important" class="badge badge-success"><%= lingua.status_active %></span></td>
                                 
-                                  <td>
-                                     <a href="/admin/edit-box/<%= box[i].id %>?edit=true"class="btn grid-btn mt-0 btn-sm btn-secondary" ><%= lingua.product_action_edit %></a>
+                                  <td style="font-size: 14px !important">
+                                     <a style="font-size: 14px !important" href="/admin/edit-box/<%= box[i].id %>?edit=true"class="btn grid-btn mt-0 btn-sm btn-secondary" ><%= lingua.button_edit %></a>
                                   </td>
                            
                             </tbody>
