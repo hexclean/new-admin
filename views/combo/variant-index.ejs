@@ -1,135 +1,115 @@
+
+
 <%- include('../includes/head.ejs') %>
-
 <script>
-
-
    $(document).ready(function() {
-
+   
       $('#searchVariant').keyup(function() {
          const variantId = $('#searchVariant').val();
          $.get( "get-filtered-variant/"+ variantId )
-
+   
       .done(function( data ) {
-
+   
          $("#searchedVariant").html(data);
          
       });
    });
-
-  
- 
+   
+   
+   
    })
-
-
+   
+   
 </script>
-
 </head>
-
 <body class="ms-body ms-aside-left-open ms-primary-theme ms-has-quickbar">
    <%- include('../includes/navigation.ejs') %> 
    <main class="body-content">
-       
       <%- include('../includes/navigation-bar.ejs') %>
-      
-    
       <div class="ms-content-wrapper">
          <div class="ms-profile-overview no-img-var">
             <ul class="ms-profile-navigation nav nav-tabs tabs-bordered" role="tablist">
-               <li role="presentation"><a href="#" aria-controls="tab1" class="active show" role="tab" data-toggle="tab"> Összes variáns </a></li>
-               <li role="presentation"><a class="add-variant" href="/admin/add-variant">Add Variant </a></li>
-              
+               <li role="presentation"><a href="#" aria-controls="tab1" class="active show" role="tab" data-toggle="tab"><%= lingua.all_variants %></a></li>
+               <li role="presentation"><a class="add-variant" href="/admin/add-variant"><%= lingua.create_variant %></a></li>
             </ul>
-            <div class="tab-content">
-               <div class="tab-pane" id="tab1">
-               </div>
-               <div class="tab-pane" id="tab2">
-               </div>
-               <div class="tab-pane" id="tab3">
-               </div>
-            </div>
          </div>
       </div>
-    
       <div class="col-md-6">
-        <nav aria-label="breadcrumb">
-          <ol class="breadcrumb breadcrumb-arrow first-rounded has-shadow">
-            <li class="breadcrumb-item"><a href="/admin/vr-index">
-                 Vissza</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Variansok</li>
-          
-          </ol>
-        </nav>
+         <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+               <li class="breadcrumb-item">
+                  <a a href="/admin/vr-index"
+                     ><i class="material-icons"></i><%= lingua.back %></a
+                     >
+               </li>
+               <li class="breadcrumb-item active" aria-current="page">
+                  <%= lingua.all_variants %>
+               </li>
+            </ol>
+         </nav>
       </div>
-      
       <% if ( checkExtraLength.length <2) { %>
-         <script>
-            $('.add-variant').click(function () {return false;});
-         </script>
-    <div class="alert alert-danger" role="alert">
-      <i class="flaticon-alert-1 alert-message-popup"></i> <strong class="alert-message-popup">Oh snap! eloszor extrat letre kell hoznod majd azutan tudsz varianst letrehozni</strong>
-    </div>
-   <% } %>
-
-   <% if ( checkCategoryLength.length <2 ) { %>
       <script>
          $('.add-variant').click(function () {return false;});
       </script>
- <div class="alert alert-danger" role="alert">
-   <i class="flaticon-alert-1"></i> <strong class="alert-message-popup">Oh snap! eloszor KATEGORIAT letre kell hoznod majd azutan tudsz varianst letrehozni</strong >
- </div>
-<% } %>
-
-<% if ( checkAllergenLength.length <2 ) { %>
-   <script>
-      $('.add-extra').click(function () {return false;});
-   </script>
-<div class="alert alert-danger" role="alert">
-<i class="flaticon-alert-1"></i> <strong class="alert-message-popup">Oh snap! eloszor Allergen kell az extrahoz</strong >
-</div>
-<% } %>
-       
+      <div class="alert alert-danger" role="alert">
+         <i class="flaticon-alert-1 alert-message-popup"></i> <strong class="alert-message-popup">Oh snap! eloszor extrat letre kell hoznod majd azutan tudsz varianst letrehozni</strong>
+      </div>
+      <% } %>
+      <% if ( checkCategoryLength.length <2 ) { %>
+      <script>
+         $('.add-variant').click(function () {return false;});
+      </script>
+      <div class="alert alert-danger" role="alert">
+         <i class="flaticon-alert-1"></i> <strong class="alert-message-popup">Oh snap! eloszor KATEGORIAT letre kell hoznod majd azutan tudsz varianst letrehozni</strong >
+      </div>
+      <% } %>
+      <% if ( checkAllergenLength.length <2 ) { %>
+      <script>
+         $('.add-extra').click(function () {return false;});
+      </script>
+      <div class="alert alert-danger" role="alert">
+         <i class="flaticon-alert-1"></i> <strong class="alert-message-popup">Oh snap! eloszor Allergen kell az extrahoz</strong >
+      </div>
+      <% } %>
       <div class="ms-content-wrapper">
          <div class="row">
             <div class="col-md-12">
-              
                <div class="col-12">
                   <div class="ms-panel">
                      <div class="ms-panel-header">
-                        <h6> Variant List</h6>
+                        <h6><%= lingua.variants %></h6>
                      </div>
                      <div class="ms-panel-body">
                         <div class="table-responsive">
                            <table id="searchedVariant" class="table table-hover thead-primary">
+                              <% if (vr.length > 0) { %>
                               <thead>
                                  <tr>
-                                    <th scope="col">ID</th>
-                                    <th scope="col">SKU</th>
-                                    
-                                    <th scope="col">STATUS</th>
-                                    <!-- <th scope="col" class="buttons-text-variants">DELETE</th> -->
-                                    <th scope="col" >EDIT</th>
+                                    <th scope="col">Id</th>
+                                    <th scope="col">Sku</th>
+                                    <th scope="col"><%= lingua.variant_list_status %></th>
+                                    <th scope="col" ><%= lingua.variant_list_operation %></th>
                                  </tr>
                               </thead>
                               <div class="col-6">
-                                 <input type="text" name="searchVariant" id="searchVariant" placeholder="Extra keresés" class="form-control extra-search" />
+                                 <input type="text" name="searchVariant" id="searchVariant" placeholder="<%= lingua.search_variant %>" class="form-control extra-search" />
                               </div>
                               <hr>
-                              <% if (vr.length > 0) { %>
                               <% for (let variant of vr) { %>
                               <tbody>
                                  <tr>
                                     <th scope="row"><%= variant.id %></th>
                                     <td><%= variant.sku %></td>
-                                    
                                     <td><span class="badge badge-success">AKTIV</span></td>
-                      
-                                    <td>                              <a href="/admin/edit-variant/<%= variant.id %>?edit=true"class="btn grid-btn mt-0 btn-sm btn-secondary" ><%= lingua.product_action_edit %></a>
+                                    <td>
+                                       <a href="/admin/edit-variant/<%= variant.id %>?edit=true"class="btn grid-btn mt-0 btn-sm btn-secondary" ><%= lingua.product_action_edit %></a>
                                     </td>
                                  </tr>
                               </tbody>
                               <% } %>
                               <% } else { %>
-                              <h1>No Products Found!</h1>
+                              <h4><%= lingua.no_variants %></h4>
                               <% } %>
                            </table>
                         </div>
@@ -143,3 +123,4 @@
    </main>
    <%- include('../includes/end.ejs') %>
 </body>
+

@@ -78,6 +78,20 @@
   "extra_allergen_message": "Az extra létrehozásához legalább 2 allergénnel kell rendelkeznie!",
   "no_extras": "Nincsenek extrák",
 
+  "variant_list_status": "Státusz",
+  "variant_list_operation": "Müvelet",
+  "no_variants": "Nincsenek variánsok",
+  "all_variants": "Összes variáns",
+  "variants": "Variánsok",
+  "create_variant": "Variáns létrehozása",
+  "search_variant": "Variáns keresés",
+  "optional_extra": "Opcionális extra",
+  "required_extra": "Kötelező extra",
+  "assignable_extras": "Hozzárendelhető extrák",
+  "variant_category": "Kategória választás",
+  "variant_property_title": "Tulajdonság hozzárendelése a variánshoz",
+  "variant_property_subtitle": "A termék a kiválasztott tulajdonságon belül jelenik meg!",
+
   "navigation": {
     "ro": "Română",
     "en": "English",

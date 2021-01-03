@@ -82,6 +82,20 @@
   "extra_allergen_message": "Trebuie să aveți minimum 2 alergeni pentru a crea suplimentul!",
   "no_extras": "Nu există extra",
 
+  "variant_list_status": "Stare",
+  "variant_list_operation": "Operațiune",
+  "no_variants": "Nu există variant",
+  "all_variants": "Toate variants",
+  "variants": "Variants",
+  "create_variant": "Crearea unei variant",
+  "search_variant": "Căutare variant",
+  "optional_extra": "Opțional extra",
+  "required_extra": "Necesar extra",
+  "assignable_extras": "Extra atribuibile",
+  "variant_category": "Selectarea categoriei",
+  "variant_property_title": "Atribuiți o proprietate variantei",
+  "variant_property_subtitle": "Produsul va apărea în proprietatea selectată!",
+
   "navigation": {
     "ro": "Română",
     "en": "Engleză",

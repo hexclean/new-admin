@@ -1,3 +1,5 @@
+
+
 <%- include('../includes/head.ejs') %>
 <%- include('../jQuery-validation/variant.ejs') %>
 </head>
@@ -15,7 +17,7 @@
             <div class="col-xl-6 col-md-12">
                <div class="ms-panel ms-panel-fh">
                   <div class="ms-panel-header">
-                     <h6>Add Product Form</h6>
+                     <h6><%= lingua.create_variant %></h6>
                   </div>
                   <div class="ms-panel-body">
                      <div class="form-row">
@@ -33,23 +35,23 @@
                            <span class="error_form" id="sku_error_message"></span>
                         </div>
                         <% if (editing) { %>
-                           <div class="col-md-6 mb-3">
-                              <label for="validationCustom22">ROyugyugyu</label>
-                              <div class="input-group">
-                                 <select class="form-control" for="categoryId" id="categoryId" name="categoryId">
-                                    <option value="" selected disabled hidden>Kategoria Valasztas</option>
-                                    <% for(let i = 0; i < cat.length; i++) { %>
-                                    <option id="categoryId" name="categoryId" value='<%= cat[i].id %>'><%= cat[i].CategoryTranslations[0].name %></option>
-                                    <% } %>
-                                 </select>
-                              </div>
-                           </div>
-                        <% } else { %>
                         <div class="col-md-6 mb-3">
-                           <label for="validationCustom22">ROyugyugyu</label>
+                           <label for="validationCustom22"><%= lingua.variant_category %></label>
                            <div class="input-group">
                               <select class="form-control" for="categoryId" id="categoryId" name="categoryId">
-                                 <option value="" selected disabled hidden>Kategoria Valasztas</option>
+                                 <option value="" selected disabled hidden><%= lingua.variant_category %></option>
+                                 <% for(let i = 0; i < cat.length; i++) { %>
+                                 <option id="categoryId" name="categoryId" value='<%= cat[i].id %>'><%= cat[i].CategoryTranslations[0].name %></option>
+                                 <% } %>
+                              </select>
+                           </div>
+                        </div>
+                        <% } else { %>
+                        <div class="col-md-6 mb-3">
+                           <label for="validationCustom22"><%= lingua.variant_category %></label>
+                           <div class="input-group">
+                              <select class="form-control" for="categoryId" id="categoryId" name="categoryId">
+                                 <option value="" selected disabled hidden><%= lingua.variant_category %></option>
                                  <% for(let i = 0; i < cat.length; i++) { %>
                                  <option id="categoryId" name="categoryId" value='<%= cat[i].id %>'><%= cat[i].CategoryTranslations[0].name %></option>
                                  <% } %>
@@ -60,10 +62,9 @@
                         <div>
                            <div>
                               <div class="form-group">
-                                 <label for="maxOption">Example select</label>
+                                 <label for="maxOption"><%= lingua.required_extra %></label>
                                  <select class="form-control" name="maxOption" id="maxOption">
-                                    <option value="" selected disabled hidden>Kotelezo extra</option>
-                                    <option value="0">0</option>
+                                    <option value="0" selected>0</option>
                                     <option value="1">1</option>
                                     <option value="2">2</option>
                                     <option value="3">3</option>
@@ -75,83 +76,83 @@
                            <% if (editing) { %>
                            <input type="hidden" value="<%= variantIdByParams %>" name="variantId">
                            <% } %>
-                           <button class="btn btn-success has-icon" id="createVariant" type="submit">
-                           <% if (editing) { %>Update Product<% } else { %>Add
-                           Product<% } %>
-                           </button>
+                          
+                        </div>
+                        
+                     </div>
+                     <button class="btn btn-success has-icon" id="createVariant" type="submit">
+                        <% if (editing) { %>Update Product<% } else { %>Add
+                        Product<% } %>
+                        </button>
+                  </div>
+               </div>
+            </div>
+            <% if(editing){ %>
+            <div class="col-xl-6 col-md-12">
+               <div class="ms-panel">
+                  <div class="ms-panel-header">
+                     <h6><%= lingua.variant_property_title %></h6>
+                  </div>
+                  <div class="ms-panel-body">
+                     <p class="ms-directions"><code><%= lingua.variant_property_subtitle %></code>
+                     </p>
+                     <div id="propByCatEdit" class="row">
+                        <div class="col-md-6">
+                           <div class="container">
+                              <div class="row">
+                                 <div class="col-sm">
+                                    <select
+                                       class="form-control"
+                                       for="propertyId"
+                                       id="propertyId"
+                                       name="propertyId"
+                                       >
+                                       <% for(let i = 0; i < resultProp.length; i++) { %>
+                                       <option
+                                          id="propertyId"
+                                          name="propertyId"
+                                          value="<%= resultProp[i].Property.id %>"
+                                          ><%= resultProp[i].Property.PropertyTranslations[0].name %></option
+                                          >
+                                    </select>
+                                 </div>
+                                 <div class="col-sm">
+                                    <select
+                                       class="form-control"
+                                       for="propertyValueId"
+                                       id="propertyValueId"
+                                       name="propertyValueId"
+                                       >
+                                       <option value="" selected disabled hidden>Choose here</option>
+                                       <% for(let j = 0; j < resultProp[i].Property.PropertyValues.length; j++) {
+                                          %>
+                                       <option
+                                          id="propertyValueId"
+                                          name="propertyValueId"
+                                          value="<%= resultProp[i].Property.PropertyValues[j].id %>"
+                                          ><%=
+                                          resultProp[i].Property.PropertyValues[j].PropertyValueTranslations[0].name
+                                          %>
+                                       </option>
+                                       <% } %>
+                                    </select>
+                                 </div>
+                              </div>
+                              <% } %>
+                           </div>
                         </div>
                      </div>
                   </div>
                </div>
             </div>
-            <% if(editing){ %>
-               <div class="col-xl-6 col-md-12">
-                  <div class="ms-panel">
-                     <div class="ms-panel-header">
-                        <h6>Checkboxes</h6>
-                     </div>
-                     <div class="ms-panel-body">
-                        <p class="ms-directions">Use <code>.ms-checkbox-{state}</code> in <code>.ms-checkbox-wrap</code>
-                        </p>
-                        <div id="propByCatEdit" class="row">
-                           <div class="col-md-6">
-                              <div class="container">
-                                 <div class="row">
-                                   <div class="col-sm">
-                                     <select
-                                       class="form-control"
-                                       for="propertyId"
-                                       id="propertyId"
-                                       name="propertyId"
-                                     >
-                                       <% for(let i = 0; i < resultProp.length; i++) { %>
-                                       <option
-                                         id="propertyId"
-                                         name="propertyId"
-                                         value="<%= resultProp[i].Property.id %>"
-                                         ><%= resultProp[i].Property.PropertyTranslations[0].name %></option
-                                       >
-                                     </select>
-                                   </div>
-                                   <div class="col-sm">
-                                     <select
-                                       class="form-control"
-                                       for="propertyValueId"
-                                       id="propertyValueId"
-                                       name="propertyValueId"
-                                     >
-                                       <option value="" selected disabled hidden>Choose here</option>
-                                       <% for(let j = 0; j < resultProp[i].Property.PropertyValues.length; j++) {
-                                       %>
-                                       <option
-                                         id="propertyValueId"
-                                         name="propertyValueId"
-                                         value="<%= resultProp[i].Property.PropertyValues[j].id %>"
-                                         ><%=
-                                         resultProp[i].Property.PropertyValues[j].PropertyValueTranslations[0].name
-                                         %>
-                                       </option>
-                                       <% } %>
-                                     </select>
-                                   </div>
-                                 </div>
-                                 <% } %>
-                               </div>
-                           </div>
-                        </div>
-                      
-                     </div>
-                  </div>
-               </div>
-                 
             <% } else{ %>  
             <div class="col-xl-6 col-md-12">
                <div class="ms-panel">
                   <div class="ms-panel-header">
-                     <h6>Checkboxes</h6>
+                     <h6><%= lingua.variant_property_title %></h6>
                   </div>
                   <div class="ms-panel-body">
-                     <p class="ms-directions">Use <code>.ms-checkbox-{state}</code> in <code>.ms-checkbox-wrap</code>
+                     <p class="ms-directions"><code><%= lingua.variant_property_subtitle %></code>
                      </p>
                      <div id="propByCat" class="row">
                         <div class="col-md-6">
@@ -161,16 +162,14 @@
                </div>
             </div>
             <% } %>
-            
-         </div>
-         </div>
          </div>
          
-         <input type="text" name="search" id="search" autocomplete="off" placeholder="Search extra" class="form-control"
-            />
+       
          <div class="ms-panel ms-btn-display">
             <div class="ms-panel-header">
-               <h6>A  hozzárendelhető extrái:</h6>
+               <h6 style="padding-bottom: 10px;"><%= lingua.assignable_extras %></h6>
+               <input type="text" name="search" id="search" autocomplete="off" placeholder="<%= lingua.search_extra %>" class="form-control"
+               />
             </div>
          </div>
          <% if (editing) { %>  <% if (productVarToExt.length > 0) { %>
@@ -205,17 +204,18 @@
                               <label class="ms-checkbox-wrap ms-checkbox-success">
                               <input type="hidden" value="off" class="statusOption<%= variant[i].id %>" name="statusOption[<%= variant[i].id %>]" >    
                               <input data-optionId="<%= variant[i].id %>" class="status-checkbox-option status-checkbox-option-<%= variant[i].id %>" type="checkbox"  > <i class="ms-checkbox-check"></i>
-                              </label> <span> Opció lehetőség </span>
+                              </label> <span style="margin-top: 4px;"><%= lingua.optional_extra %></span>
                            </div>
                            <div class="ms-card-body">
                               <div class="new d-flex justify-content-center extra-name">
                                  <h6 class="mb-0"><b><%=  variant[i].ExtraTranslations[0].name %></b> </h6>
                               </div>
+                              
                               <div class="col-md-12 mb-3">
                                  <label for="price">Price</label>
                                  <div class="input-group">
                                     <input
-                                       class="price_<%= variant[i].ProductVariantsExtras[0].extraId %> extra_price_input"
+                                       class="form-control price_<%= variant[i].ProductVariantsExtras[0].extraId %> extra_price_input"
                                        type="text"
                                        name="price"
                                        id="price"
@@ -231,7 +231,7 @@
                                     >
                                  <div class="input-group">
                                     <input
-                                       class="qtMin_<%= variant[i].ProductVariantsExtras[0].extraId %> extra_qtMin_input"
+                                       class="form-control qtMin_<%= variant[i].ProductVariantsExtras[0].extraId %> extra_qtMin_input"
                                        type="number" 
                                        name="quantityMin"
                                        id="quantityMin"
@@ -248,7 +248,7 @@
                                     >
                                  <div class="input-group">
                                     <input
-                                       class="qtMax_<%= variant[i].ProductVariantsExtras[0].extraId %> extra_qtMax_input"
+                                       class="form-control qtMax_<%= variant[i].ProductVariantsExtras[0].extraId %> extra_qtMax_input"
                                        type="text"
                                        name="quantityMax"
                                        id="quantityMax"
@@ -269,7 +269,6 @@
          <% } else { %>
          <% } %><% } else { %>
          <% if (ext.length > 0) { %>
-            //extra kezdet//
          <div class="ms-content-wrapper">
             <div class="row">
                <div class="col-md-12">
@@ -288,7 +287,7 @@
                                  <input type="hidden" value="off" class="status-<%= ext[i].id %>" name="status[<%= ext[i].id %>]" >          
                                  <input data-extraId="<%= ext[i].id %>" class="status-checkbox status-checkbox-<%= ext[i].id %>" type="checkbox"> <span class="ms-switch-slider ms-switch-success round"></span>
                                  </label> 
-                                 <div>Extra feltétel lehetőség</div>
+                                 <div style="margin-top: 6px;"><%= lingua.required_extra %></div>
                               </div>
                            </div>
                            <hr>
@@ -296,7 +295,7 @@
                               <label class="ms-checkbox-wrap ms-checkbox-success">
                               <input type="hidden" value="off" class="statusOption<%= ext[i].id %>" name="statusOption[<%= ext[i].id %>]" >    
                               <input data-optionId="<%= ext[i].id %>"  class="status-checkbox-option status-checkbox-option-<%= ext[i].id %>" type="checkbox"  > <i class="ms-checkbox-check"></i>
-                              </label> <span> Opció lehetőség </span>
+                              </label> <span style="margin-top: 4px;"><%= lingua.optional_extra %> </span>
                            </div>
                            <div class="ms-card-body">
                               <div class="new d-flex justify-content-center extra-name">
@@ -306,7 +305,7 @@
                                  <label for="price">Price</label>
                                  <div class="input-group">
                                     <input
-                                       class="price_<%= ext[i].id %> extra_price_input"
+                                       class="form-control price_<%= ext[i].id %> extra_price_input"
                                        type="text"
                                        name="price"
                                        autocomplete="off"
@@ -322,7 +321,7 @@
                                     >
                                  <div class="input-group">
                                     <input
-                                       class="qtMin_<%= ext[i].id %> extra_qtMin_input"
+                                       class="form-control qtMin_<%= ext[i].id %> extra_qtMin_input"
                                        type="number"
                                        name="quantityMin"
                                        id="quantityMin"
@@ -339,7 +338,7 @@
                                     >
                                  <div class="input-group">
                                     <input
-                                       class="qtMax_<%= ext[i].id %> extra_qtMax_input"
+                                       class="form-control qtMax_<%= ext[i].id %> extra_qtMax_input"
                                        type="text"
                                        name="quantityMax"
                                        id="quantityMax"
@@ -357,7 +356,6 @@
                </div>
             </div>
          </div>
-         //extra kezdet//
          <% } else { %>
          <% } %>
          <% } %> 
@@ -365,3 +363,4 @@
    </main>
    <%- include('../includes/end.ejs') %>
 </body>
+

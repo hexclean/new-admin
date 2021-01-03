@@ -80,6 +80,20 @@
   "extra_allergen_message": "You must have a minimum of 2 allergens to create the extra!",
   "no_extras": "There are no extras",
 
+  "variant_list_status": "Status",
+  "variant_list_operation": "Operation",
+  "no_variants": "There are no variants",
+  "all_variants": "All variants",
+  "variants": "Variants",
+  "create_variant": "Creating a variant",
+  "search_variant": "Variant search",
+  "optional_extra": "Optional extra",
+  "required_extra": "Required extra",
+  "assignable_extras": "Assignable extras",
+  "variant_category": "Category selection",
+  "variant_property_title": "Assign a property to the variant",
+  "variant_property_subtitle": "The product will appear within the selected property!",
+
   "navigation": {
     "ro": "Română",
     "en": "English",
