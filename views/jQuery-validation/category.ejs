@@ -23,42 +23,48 @@
     function check_roName() {
       var roName_length = $("#roName").val().length;
 
-      if (roName_length < 2 || roName_length > 15) {
+      if (roName_length < 1 || roName_length > 30) {
         $("#roName_error_message").html(
           "<%= lingua.category_ro_name_validation %>"
         );
         $("#roName_error_message").show();
         error_roName = true;
+        $("#createCategory").disabled = true;
       } else {
         $("#roName_error_message").hide();
+        $("#createCategory").removeAttr("disabled");
       }
     }
 
     function check_huName() {
       var huName_length = $("#huName").val().length;
 
-      if (huName_length < 2 || huName_length > 15) {
+      if (huName_length < 1 || huName_length > 30) {
         $("#huName_error_message").html(
           "<%= lingua.category_hu_name_validation %>"
         );
         $("#huName_error_message").show();
         error_huName = true;
+        $("#createCategory").disabled = true;
       } else {
         $("#huName_error_message").hide();
+        $("#createCategory").removeAttr("disabled");
       }
     }
 
     function check_enName() {
       var enName_length = $("#enName").val().length;
 
-      if (enName_length < 2 || enName_length > 15) {
+      if (enName_length < 1 || enName_length > 30) {
         $("#enName_error_message").html(
           "<%= lingua.category_en_name_validation %>"
         );
         $("#enName_error_message").show();
         error_enName = true;
+        $("#createCategory").disabled = true;
       } else {
         $("#enName_error_message").hide();
+        $("#createCategory").removeAttr("disabled");
       }
     }
 

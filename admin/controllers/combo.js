@@ -167,7 +167,6 @@ exports.getCategoryIndex = async (req, res, next) => {
   const property = await Property.findAll({
     where: { restaurantId: req.admin.id },
   });
-  console.log(property.length);
   await Category.findAll({
     where: {
       restaurantId: req.admin.id,

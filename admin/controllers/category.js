@@ -297,7 +297,6 @@ exports.getEditCategory = async (req, res, next) => {
 
 exports.postEditCategory = async (req, res, next) => {
   const categoryId = req.body.categoryId;
-  console.log("categoryId", categoryId);
   const updatedRoName = req.body.roName;
   const updatedHuName = req.body.huName;
   const updatedEnName = req.body.enName;
