@@ -55,6 +55,13 @@
         var price_len = $(".price_" + extraId).val().length;
         var qtMin_len = $(".qtMin_" + extraId).val().length;
         var qtMax_len = $(".qtMax_" + extraId).val().length;
+        const regex = /[^\d.]|\.(?=.*\.)/g;
+        const subst = ``;
+        $(".price_" + extraId).keyup(function () {
+          const str = this.value;
+          const result = str.replace(regex, subst);
+          this.value = result;
+        });
         if (
           $(this).find("input:checkbox").is(":checked") &&
           (price_len < 0 || qtMin_len < 0 || qtMax_len < 0)
@@ -65,17 +72,18 @@
           if (price_len < 1) {
             $("#price_error_message_" + extraId)
               .show()
-              .html("Mezo kitoltese kotelezo");
+              .html("<%= lingua.variant_validation %>");
             error_price = true;
           } else {
             $("#price_error_message_" + extraId)
               .hide()
               .html("");
           }
+
           if (qtMin_len < 1) {
             $("#qtMin_error_message_" + extraId)
               .show()
-              .html("Mezo kitoltese kotelezo");
+              .html("<%= lingua.variant_validation %>");
             error_qtMin = true;
           } else {
             $("#qtMin_error_message_" + extraId)
@@ -85,7 +93,7 @@
           if (qtMax_len < 1) {
             $("#qtMax_error_message_" + extraId).show();
             $("#qtMax_error_message_" + extraId).html(
-              "Mezo kitoltese kotelezo"
+              "<%= lingua.variant_validation %>"
             );
             error_qtMax = true;
           } else {
@@ -105,7 +113,7 @@
       if (len < 1) {
         $("#price_error_message_" + extraId)
           .show()
-          .html("Mezo kitoltese kotelezo");
+          .html("<%= lingua.variant_validation %>");
       } else {
         $("#price_error_message_" + extraId)
           .hide()
@@ -119,7 +127,7 @@
       if (len < 1) {
         $("#qtMin_error_message_" + extraId)
           .show()
-          .html("Mezo kitoltese kotelezo");
+          .html("<%= lingua.variant_validation %>");
       } else {
         $("#qtMin_error_message_" + extraId)
           .hide()
@@ -132,7 +140,7 @@
       if (len < 1) {
         $("#qtMax_error_message_" + extraId)
           .show()
-          .html("Mezo kitoltese kotelezo");
+          .html("<%= lingua.variant_validation %>");
       } else {
         $("#qtMax_error_message_" + extraId)
           .hide()
@@ -170,7 +178,7 @@
       var sku_length = $("#sku").val().length;
 
       if (sku_length < 2 || sku_length > 40) {
-        $("#sku_error_message").html(`<%= lingua.extra_hu_name_required %>`);
+        $("#sku_error_message").html(`<%= lingua.variant_validation %>`);
         $("#sku_error_message").show();
         error_sku = true;
       } else {

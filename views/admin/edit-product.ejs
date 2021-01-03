@@ -106,12 +106,13 @@
             <div class="col-xl-6 col-md-12">
                <div class="ms-panel ms-panel-fh">
                   <div class="ms-panel-header">
-                     <h6>Add Product Form</h6>
+                     <h6><% if (editing) { %>"<%= product[0].ProductTranslations[0].title %>" <%= lingua.product_edit_title %><% } else { %> <%= lingua.create_product %> <% } %></h6>
+
                   </div>
                   <div class="ms-panel-body">
                      <div class="form-row">
                         <div class="col-md-12 mb-3">
-                           <label for="roTitle"><%= lingua.create_product_name1 %></label>
+                           <label for="roTitle"><%= lingua.product_ro_name %></label>
                            <div class="input-group">
                               <input
                                  class="form-control"
@@ -123,7 +124,7 @@
                            <span class="error_form" id="roName_error_message"></span>
                         </div>
                         <div class="col-md-12 mb-3">
-                           <label for="huTitle"><%= lingua.create_product_name2 %></label>
+                           <label for="huTitle"><%= lingua.product_hu_name %></label>
                            <div class="input-group">
                               <input
                                  class="form-control"
@@ -135,7 +136,7 @@
                            <span class="error_form" id="huName_error_message"></span>
                         </div>
                         <div class="col-md-12 mb-3">
-                           <label for="enTitle"><%= lingua.create_product_name3 %></label>
+                           <label for="enTitle"><%= lingua.product_en_name %></label>
                            <div class="input-group">
                               <input
                                  class="form-control"

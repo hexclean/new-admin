@@ -220,9 +220,11 @@
                                        name="price"
                                        id="price"
                                        autocomplete="off"
+                                       placeholder="<%= lingua.price_placeholder %>"
                                        value="<% if (editing) { %><%= variant[i].ProductVariantsExtras[0].price %><% } %>"
                                        />
                                  </div>
+                                 <span class="info-box-price" id="price_error_message"><%= lingua.price_info %></span>
                                  <span class="extra_error_message error_form" id="price_error_message_<%= variant[i].ProductVariantsExtras[0].extraId %>"></span>
                               </div>
                               <div class="col-md-12 mb-3">
@@ -309,10 +311,12 @@
                                        type="text"
                                        name="price"
                                        autocomplete="off"
+                                       placeholder="<%= lingua.price_placeholder %>"
                                        id="price"
                                        value="<% if (editing) { %><%= ext[i].price %><% } %>"
                                        />
                                  </div>
+                                 <span class="info-box-price" id="price_error_message"><%= lingua.price_info %></span>
                                  <span class="extra_error_message error_form" id="price_error_message_<%= ext[i].id %>"></span>
                               </div>
                               <div class="col-md-12 mb-3">

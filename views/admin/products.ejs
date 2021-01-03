@@ -20,17 +20,9 @@ $(document).ready(function() {
       <div class="ms-content-wrapper">
          <div class="ms-profile-overview no-img-var">
             <ul class="ms-profile-navigation nav nav-tabs tabs-bordered" role="tablist">
-               <li role="presentation"><a href="#" aria-controls="tab1" class="active show" role="tab" data-toggle="tab"> Index </a></li>
-               <li role="presentation"><a class="add-product" href="/admin/add-product">Add Product </a></li>
+               <li role="presentation"><a href="#" aria-controls="tab1" class="active show" role="tab" data-toggle="tab"><%= lingua.all_products %></a></li>
+               <li role="presentation"><a class="add-product" href="/admin/add-product"><%= lingua.create_product %></a></li>
             </ul>
-            <div class="tab-content">
-               <div class="tab-pane" id="tab1">
-               </div>
-               <div class="tab-pane" id="tab2">
-               </div>
-               <div class="tab-pane" id="tab3">
-               </div>
-            </div>
          </div>
       </div>
       <% if ( checkVariantLength.length <2) { %>
@@ -38,7 +30,7 @@ $(document).ready(function() {
          $('.add-product').click(function () {return false;});
       </script>
       <div class="alert alert-danger" role="alert">
-         <i class="flaticon-alert-1"></i> <strong class="alert-message-popup">Oh snap! eloszor varians kell legyen addig nem lehet termeket feltolteni</strong>
+         <i class="flaticon-alert-1"></i> <strong class="alert-message-popup"><%= lingua.product_box_message %></strong>
       </div>
       <% } %>
       <% if ( checkBoxLength.length === 0) { %>
@@ -46,7 +38,7 @@ $(document).ready(function() {
          $('.add-product').click(function () {return false;});
       </script>
       <div class="alert alert-danger" role="alert">
-         <i class="flaticon-alert-1"></i> <strong class="alert-message-popup">Oh snap! eloszor box kell legyen addig nem lehet termeket feltolteni</strong>
+         <i class="flaticon-alert-1"></i> <strong class="alert-message-popup"><%= lingua.product_variant_message %></strong>
       </div>
       <% } %>
       <div class="ms-content-wrapper">
@@ -55,47 +47,48 @@ $(document).ready(function() {
                <div class="col-12">
                   <div class="ms-panel">
                      <div class="ms-panel-header">
-                        <h6> Termek Lista</h6>
+                        <h6><%= lingua.products %></h6>
                      </div>
                      <div class="ms-panel-body">
                         <div class="table-responsive">
                            <table id="searchedProduct" class="table table-hover thead-primary">
+                              <% if (prods.length > 0) { %>
                               <thead>
                                  <tr>
                                     <th scope="col">Id</th>
-                                    <th scope="col">Név</th>
+                                    <th scope="col"><%= lingua.product_list_name %></th>
                                     <th scope="col">Varians</th>
-                                    <th scope="col">Státusz</th>
-                                    <th scope="col" class="buttons-text-variants">Törlés</th>
-                                    <th scope="col" >Szerkesztés</th>
+                                    <th scope="col"><%= lingua.product_list_status %></th>
+                                    <th scope="col" class="buttons-text-variants"><%= lingua.product_list_operation %></th>
+                                    <th scope="col" ><%= lingua.product_list_operation %></th>
                                  </tr>
                               </thead>
                               <div class="col-6">
-                                 <input type="text" name="searchProduct" id="searchProduct" placeholder="Termek keresés" class="form-control extra-search" />
+                                 <input type="text" name="searchProduct" id="searchProduct" placeholder="<%= lingua.search_product %>" class="form-control extra-search" />
                               </div>
                               <hr>
-                              <% if (prods.length > 0) { %>
+                             
                               <% for (let i =0; i < prods.length; i++) { %>
                               <tbody class="product-all" >
                                  <tr>
                                     <th scope="row"><%= prods[i].id %></th>
                                     <td><%= prods[i].ProductTranslations[0].title %></td>
                                     <td><%= prods[i].ProductFinals[0].Variant.sku %></td>
-                                    <td><span class="badge badge-success">AKTIV</span></td>
+                                    <td><span class="badge badge-success"><%= lingua.status_active %></span></td>
                                     <td>
                                        <form action="/admin/delete-product" method="POST">
                                           <input type="hidden" value="<%= prods[i].id %>" name="productId">
-                                          <button class="btn grid-btn mt-0 btn-sm btn-primary" type="submit">Inaktivitas</button>
+                                          <button class="btn grid-btn mt-0 btn-sm btn-primary" type="submit"><%= lingua.sold_out %></button>
                                        </form>
                                     </td>
                                     <td>        
-                                       <a href="/admin/edit-product/<%= prods[i].id %>?edit=true" class="btn grid-btn mt-0 btn-sm btn-secondary" ><%= lingua.product_action_edit %></a>
+                                       <a href="/admin/edit-product/<%= prods[i].id %>?edit=true" class="btn grid-btn mt-0 btn-sm btn-secondary" ><%= lingua.button_edit %></a>
                                     </td>
                                  </tr>
                               </tbody>
                               <% } %>
                               <% } else { %>
-                              <h1>No Products Found!</h1>
+                              <h4><%= lingua.no_products %></h4>
                               <% } %>
                            </table>
                         </div>

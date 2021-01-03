@@ -87,7 +87,11 @@ exports.postAddAllergen = async (req, res, next) => {
     .then((result) => {
       extraMenuAllergen();
       productMenuAllergen();
+
       res.redirect("/admin/allergen-index");
+      // res.write(
+      //   '<script>window.alert("dasd");window.location="/admin/allergen-index"</script>'
+      // );
     })
     .catch((err) => {
       const error = new Error(err);
