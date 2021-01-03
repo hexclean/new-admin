@@ -1,13 +1,12 @@
+
+
 <%- include('../includes/head.ejs') %>
 <%- include('../jQuery-validation/extra.ejs') %>
-
-
 </head>
 <body class="ms-body ms-aside-left-open ms-primary-theme ms-has-quickbar">
    <%- include('../includes/navigation.ejs') %>
    <main class="body-content">
       <%- include('../includes/navigation-bar.ejs') %>
-     
       <form 
          id="createExtra_form"
          class="ms-content-wrapper" 
@@ -20,11 +19,10 @@
                   <div class="ms-panel-header">
                      <h6>Add Product Form</h6>
                   </div>
-                  
                   <div class="ms-panel-body">
                      <div class="form-row">
                         <div class="col-md-12 mb-3">
-                           <label for="roName"><%= lingua.create_product_name1 %></label>
+                           <label for="roName"><%= lingua.extra_ro_name %></label>
                            <div class="input-group">
                               <input
                                  class="form-control"
@@ -37,7 +35,7 @@
                            <span class="error_form" id="roName_error_message"></span>
                         </div>
                         <div class="col-md-12 mb-3">
-                           <label for="huName"><%= lingua.create_product_name2 %></label>
+                           <label for="huName"><%= lingua.extra_hu_name %></label>
                            <div class="input-group">
                               <input
                                  class="form-control"
@@ -50,7 +48,7 @@
                            <span class="error_form" id="huName_error_message"></span>
                         </div>
                         <div class="col-md-12 mb-3">
-                           <label for="enName"><%= lingua.create_product_name3 %></label>
+                           <label for="enName"><%= lingua.extra_en_name %></label>
                            <div class="input-group">
                               <input
                                  class="form-control"
@@ -62,87 +60,75 @@
                            </div>
                            <span class="error_form" id="enName_error_message"></span>
                         </div>
+                        <div class="col-md-12 mb-3">
+                           <button type="submit" id="createBox" class="btn btn-success has-icon" ><% if (editing) { %><%=lingua.button_editing %><% } else { %><%= lingua.create_allergen %><% } %></button>
+                           <span class="error_form" id="enName_error_message"></span>
+                        </div>
                      </div>
                   </div>
-                     <div class="d-flex justify-content-center">
-                        <% if (editing) { %>
-                        <input type="hidden" value="<%= extra.id %>" name="extraId">
-                        <%for (let i = 0; i < extraTranslation.length; i++){%>
-                        <input type="hidden" value="<%= extraTranslation[i].id %>" name="extTranId">
-                        <%}%>
-                        <% } %>
-                        <button type="submit" id="createExtra" class="btn btn-success has-icon" ><% if (editing) { %>Update Product<% } else { %>Add Product<% } %></button>
-                     </div>
-               </div>
-               
-            </div>
-
-
-
-                <% if (editing) { %>
-                  <input
-                  type="hidden"
-                  value="<%= extraIdEditing %>"
-                  name="extraIdEditing"
-                  />  
-
-                  <% } %>
-        
-
                   <% if (editing) { %>
-                     <% for (let i = 0; i < isActive.length; i++) { %>
-                        <% if (isActive[i].ExtraHasAllergens[0].active == 1) { %>
-                           
-                           <script>
-                               $(document).ready(function() {
-                               var activeCheckbox ="<%= isActive[i].ExtraHasAllergens[0].allergenId %>";
-                               $('.status-checkbox-'+activeCheckbox).prop('checked', true);
-                               $('.status-'+activeCheckbox).val('on');
-                               });
-                           </script>
-                              
-                           <% } 
-                        %>
-                     <% } %>
-                     <% } %>
-                     
-
-
-
+                  <input type="hidden" value="<%= extra.id %>" name="extraId">
+                  <%for (let i = 0; i < extraTranslation.length; i++){%>
+                  <input type="hidden" value="<%= extraTranslation[i].id %>" name="extTranId">
+                  <%}%>
+                  <% } %>
+               </div>
+            </div>
+            <% if (editing) { %>
+            <input
+               type="hidden"
+               value="<%= extraIdEditing %>"
+               name="extraIdEditing"
+               />  
+            <% } %>
+            <% if (editing) { %>
+            <% for (let i = 0; i < isActive.length; i++) { %>
+            <% if (isActive[i].ExtraHasAllergens[0].active == 1) { %>
+            <script>
+               $(document).ready(function() {
+               var activeCheckbox ="<%= isActive[i].ExtraHasAllergens[0].allergenId %>";
+               $('.status-checkbox-'+activeCheckbox).prop('checked', true);
+               $('.status-'+activeCheckbox).val('on');
+               });
+            </script>
+            <% } 
+               %>
+            <% } %>
+            <% } %>
             <div class="col-xl-6 col-md-12">
                <div class="ms-panel ms-panel-fh">
-                 <div class="ms-panel-header">
-                   <h6>Allergén hozzárendelése extrához</h6>
-                 </div>
-                 <div class="ms-panel-body">
-                   <p class="ms-directions"><code>Nem elfelejteni bejelölni az extrához hozzátartozó allergéneket</code>
-                   </p>
+                  <div class="ms-panel-header">
+                     <h6><%= lingua.extra_allergen_title %></h6>
+                  </div>
+                  <div class="ms-panel-body">
+                     <p class="ms-directions"><code><%= lingua.extra_allergen_subtitle %></code>
+                     </p>
                      <div class="row">
-                       <div class="col-md-12">
-                         <ul class="ms-list ms-list-display">
-                           <%  for (let i = 0; i < allergenArray.length; i++) { %>
+                        <div class="col-md-12">
+                           <ul class="ms-list ms-list-display">
+                              <%  for (let i = 0; i < allergenArray.length; i++) { %>
                               <input
-                              type="hidden"
-                              value="<%= allergenArray[i].id %>"
-                              name="allergenId"
-                              /> 
-                           <li>
-                             <label class="ms-switch" data-extra="<%= allergenArray[i].id %>">
-                              <input type="hidden" value="off" class="status-<%= allergenArray[i].id %>" name="status[<%= allergenArray[i].id %>]" > 
-                               <input data-extraId="<%= allergenArray[i].id %>"  class="status-checkbox status-checkbox-<%= allergenArray[i].id %>" type="checkbox"> <span class="ms-switch-slider ms-switch-success round"></span>
-                             </label> <span> <%= allergenArray[i].AllergenTranslations[0].name %> </span>
-                           </li>
-                           <% } %>
-                         </ul>
-                       </div>
+                                 type="hidden"
+                                 value="<%= allergenArray[i].id %>"
+                                 name="allergenId"
+                                 /> 
+                              <li>
+                                 <label class="ms-switch" data-extra="<%= allergenArray[i].id %>">
+                                 <input type="hidden" value="off" class="status-<%= allergenArray[i].id %>" name="status[<%= allergenArray[i].id %>]" > 
+                                 <input data-extraId="<%= allergenArray[i].id %>"  class="status-checkbox status-checkbox-<%= allergenArray[i].id %>" type="checkbox"> <span class="ms-switch-slider ms-switch-success round"></span>
+                                 </label> <span> <%= allergenArray[i].AllergenTranslations[0].name %> </span>
+                              </li>
+                              <% } %>
+                           </ul>
+                        </div>
                      </div>
-                 </div>
+                  </div>
                </div>
-             </div>
-           
+            </div>
          </div>
          </div>
       </form>
    </main>
    <%- include('../includes/end.ejs') %>
 </body>
+

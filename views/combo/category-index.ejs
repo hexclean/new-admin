@@ -45,7 +45,7 @@ $(document).ready(function() {
          $('.add-extra').click(function () {return false;});
       </script>
       <div class="alert alert-danger" role="alert">
-         <i class="flaticon-alert-1"></i> <strong class="alert-message-popup">Oh snap! eloszor Allergen kell az extrahoz</strong >
+         <i class="flaticon-alert-1"></i> <strong class="alert-message-popup"><%= lingua.category_allergen_message %></strong >
       </div>
       <% } %>
       <% if ( property.length < 2) { %>
@@ -53,7 +53,7 @@ $(document).ready(function() {
          $('.add-extra').click(function () {return false;});
       </script>
       <div class="alert alert-danger" role="alert">
-         <i class="flaticon-alert-1"></i> <strong class="alert-message-popup">Oh snap! legalabb 2 property kell</strong >
+         <i class="flaticon-alert-1"></i> <strong class="alert-message-popup"><%= lingua.category_property_message %></strong >
       </div>
       <% } %>
       <div class="ms-content-wrapper">
@@ -65,6 +65,7 @@ $(document).ready(function() {
                   </div>
                   <div class="ms-panel-body">
                      <div  class="table-responsive">
+                        <% if (category.length > 0) { %>
                         <table id="searchedCategory" class="table table-hover thead-primary">
                            <thead>
                               <tr>
@@ -78,7 +79,6 @@ $(document).ready(function() {
                               <input type="text" name="search" id="search" placeholder="<%= lingua.search_category %>" class="category-search form-control" />
                               <hr>
                            </div>
-                           <% if (category.length > 0) { %>
                            <% for (let i = 0; i < category.length; i++) { %>
                            <tbody>
                               <th scope="row"><%= category[i].id %></th>
@@ -90,7 +90,7 @@ $(document).ready(function() {
                            </tbody>
                            <% } %>
                            <% } else { %>
-                           <h1>No Products Found!</h1>
+                           <h4><%= lingua.no_categories %></h4>
                            <% } %>
                         </table>
                      </div>

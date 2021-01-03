@@ -49,6 +49,7 @@ $(document).ready(function() {
                   <div class="ms-panel-body">
                      <div  class="table-responsive">
                         <table id="searchedAllergen" class="table table-hover thead-primary">
+                           <% if (allergen.length > 0) { %>
                            <thead>
                               <tr>
                                  <th scope="col">Id</th>
@@ -61,7 +62,6 @@ $(document).ready(function() {
                               <input type="text" name="search" id="search" placeholder="<%= lingua.search_allergen %>" class="category-search form-control" />
                               <hr>
                            </div>
-                           <% if (allergen.length > 0) { %>
                            <% for (let i = 0; i < allergen.length; i++) { %>
                            <tbody>
                               <th scope="row"><%= allergen[i].id %></th>
@@ -73,7 +73,7 @@ $(document).ready(function() {
                            </tbody>
                            <% } %>
                            <% } else { %>
-                           <h1>No Products Found!</h1>
+                           <h4><%= lingua.no_allergens %></h4>
                            <% } %>
                         </table>
                      </div>

@@ -1,7 +1,6 @@
 
 
 <%- include('../includes/head.ejs') %>
-
 <script>
    $(document).ready(function() {
    $('#searchExtra').keyup(function() {
@@ -13,8 +12,6 @@
    });
    })
 </script>
-
-
 </head>
 <body class="ms-body ms-aside-left-open ms-primary-theme ms-has-quickbar">
    <%- include('../includes/navigation.ejs') %> 
@@ -23,36 +20,31 @@
       <div class="ms-content-wrapper">
          <div class="ms-profile-overview no-img-var">
             <ul class="ms-profile-navigation nav nav-tabs tabs-bordered" role="tablist">
-               <li role="presentation"><a href="#" aria-controls="tab1" class="active show" role="tab" data-toggle="tab"> Összes Extra </a></li>
-               <li role="presentation"><a class="add-variant" href="/admin/add-extra">Add Extra </a></li>
+               <li role="presentation"><a href="#" aria-controls="tab1" class="active show" role="tab" data-toggle="tab"><%= lingua.all_extras %></a></li>
+               <li role="presentation"><a class="add-variant" href="/admin/add-extra"><%= lingua.create_extra %></a></li>
             </ul>
-            <div class="tab-content">
-               <div class="tab-pane" id="tab1">
-               </div>
-               <div class="tab-pane" id="tab2">
-               </div>
-               <div class="tab-pane" id="tab3">
-               </div>
-            </div>
          </div>
       </div>
       <div class="col-md-6">
          <nav aria-label="breadcrumb">
-            <ol class="breadcrumb breadcrumb-arrow first-rounded has-shadow">
-               <li class="breadcrumb-item"><a href="/admin/vr-index">
-                  Vissza</a>
+            <ol class="breadcrumb">
+               <li class="breadcrumb-item">
+                  <a a href="/admin/vr-index"
+                     ><i class="material-icons"></i><%= lingua.back %></a
+                     >
                </li>
-               <li class="breadcrumb-item active" aria-current="page">Extrak</li>
+               <li class="breadcrumb-item active" aria-current="page">
+                  <%= lingua.extras %>
+               </li>
             </ol>
          </nav>
       </div>
-   
       <% if ( checkAllergenLength.length < 3) { %>
       <script>
          $('.add-extra').click(function () {return false;});
       </script>
       <div class="alert alert-danger" role="alert">
-         <i class="flaticon-alert-1"></i> <strong class="alert-message-popup">Oh snap! eloszor min 2  Allergen kell az extrahoz</strong >
+         <i class="flaticon-alert-1"></i> <strong class="alert-message-popup"><%= lingua.extra_allergen_message %></strong >
       </div>
       <% } %>
       <div class="ms-content-wrapper">
@@ -60,30 +52,30 @@
             <div class="col-12">
                <div class="ms-panel">
                   <div class="ms-panel-header">
-                     <h6> Extra List</h6>
+                     <h6><%= lingua.all_extras %></h6>
                   </div>
                   <div class="ms-panel-body">
                      <div class="table-responsive">
                         <table id="searchedExtra" class="table table-hover thead-primary">
+                           <% if (extra.length > 0) { %>
                            <thead>
                               <tr>
-                                 <th scope="col">ID</th>
-                                 <th scope="col"> name </th>
-                                 <th scope="col">STATUS</th>
-                                 <th scope="col" >EDIT</th>
+                                 <th scope="col">Id</th>
+                                 <th scope="col"><%= lingua.extra_list_name %></th>
+                                 <th scope="col"><%= lingua.extra_list_status %></th>
+                                 <th scope="col"><%= lingua.extra_list_operation %></th>
                               </tr>
                            </thead>
                            <div class="col-6">
-                              <input type="text" name="searchExtra" id="searchExtra" placeholder="Extra keresés" class="form-control extra-search" />
+                              <input type="text" name="searchExtra" id="searchExtra" placeholder="<%= lingua.search_extra %>" class="form-control extra-search" />
                            </div>
                            <hr>
-                           <% if (extra.length > 0) { %>
                            <% for (let i=0; i < extra.length; i++ ) { %>
                            <tbody>
                               <tr>
                                  <th scope="row"><%= extra[i].id %></th>
                                  <td><%= extra[i].ExtraTranslations[0].name %></td>
-                                 <td><span class="badge badge-success">AKTIV</span></td>
+                                 <td><span class="badge badge-success"><%= lingua.status_active %></span></td>
                                  <td>
                                     <a href="/admin/edit-extra/<%= extra[i].id %>?edit=true"class="btn grid-btn mt-0 btn-sm btn-secondary" ><%= lingua.product_action_edit %></a>
                                  </td>
@@ -91,7 +83,7 @@
                            </tbody>
                            <% } %>
                            <% } else { %>
-                           <h1>No Products Found!</h1>
+                           <h4><%= lingua.no_extras %></h4>
                            <% } %>
                         </table>
                      </div>
