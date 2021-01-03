@@ -89,14 +89,14 @@
                            <span class="error_form" id="enName_error_message"></span>
                         </div>
                         <div class="col-md-12 mb-3">
-                           <button type="submit" id="createBox" class="btn btn-success has-icon" ><% if (editing) { %>Update Product<% } else { %><%= lingua.create_box %><% } %></button>
+                           <button type="submit" id="createBox" class="btn btn-success has-icon" ><% if (editing) { %><%=lingua.button_editing %><% } else { %><%= lingua.create_box %><% } %></button>
                            <span class="error_form" id="enName_error_message"></span>
                         </div>
                      </div>
                   </div>
                </div>
             </div>
-            <% if (editing) { %>
+                <% if (editing) { %>
                <input type="hidden" value="<%= boxId %>" name="boxId">
                <%for (let i = 0; i < boxTranslations.length; i++){%>
                <input type="hidden" value="<%= boxTranslations[i].id %>" name="boxTranslationsId">

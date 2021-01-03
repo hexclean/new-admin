@@ -25,49 +25,49 @@
       <div class="ms-content-wrapper">
          <div class="ms-profile-overview no-img-var">
             <ul class="ms-profile-navigation nav nav-tabs tabs-bordered" role="tablist">
-               <li role="presentation"><a href="#" aria-controls="tab1" class="active show" role="tab" data-toggle="tab"> Összes Extra </a></li>
-               <li role="presentation"><a class="add-variant" href="/admin/add-allergen">Add allergen </a></li>
+               <li role="presentation"><a href="#" aria-controls="tab1" class="active show" role="tab" data-toggle="tab"><%= lingua.all_allergens %></a></li>
+               <li role="presentation"><a class="add-variant" href="/admin/add-allergen"><%= lingua.create_allergen %></a></li>
             </ul>
-            <div class="tab-content">
-               <div class="tab-pane" id="tab1">
-               </div>
-               <div class="tab-pane" id="tab2">
-               </div>
-               <div class="tab-pane" id="tab3">
-               </div>
-            </div>
+         
          </div>
       </div>
       <div class="col-md-6">
          <nav aria-label="breadcrumb">
-            <ol class="breadcrumb breadcrumb-arrow first-rounded has-shadow">
-               <li class="breadcrumb-item"><a href="/admin/vr-index">
-                  Vissza</a>
-               </li>
-               <li class="breadcrumb-item active" aria-current="page">Allergenek</li>
-            </ol>
+           <ol class="breadcrumb">
+             <li class="breadcrumb-item">
+               <a a href="/admin/vr-index"
+                 ><i class="material-icons"></i><%= lingua.back %></a
+               >
+             </li>
+             <li class="breadcrumb-item active" aria-current="page">
+               <%= lingua.allergens %>
+             </li>
+           </ol>
          </nav>
-      </div>
+       </div>
       <div class="ms-content-wrapper">
          <div class="row">
             <div class="col-12">
                <div class="ms-panel">
                   <div class="ms-panel-header">
-                     <h6> Category List</h6>
+                     <h6><%= lingua.all_allergens %></h6>
                   </div>
                   <div class="ms-panel-body">
                      <div  class="table-responsive">
                         <table id="searchedAllergen" class="table table-hover thead-primary">
                            <thead>
                               <tr>
-                                 <th scope="col">ID</th>
-                                 <th scope="col">Name</th>
-                                 <th scope="col">STATUS</th>
-                                 <th scope="col" >EDIT</th>
+                                 <th scope="col">Id</th>
+                                 <th scope="col"><%= lingua.allergen_list_name %></th>
+                                 <th scope="col"><%= lingua.allergen_list_status %></th>
+                                 <th scope="col" ><%= lingua.allergen_list_operation %></th>
+                                
+                                 <th scope="col"><%= lingua.allergen_list_createdAt %></th>
+                                 <th scope="col"><%= lingua.allergen_list_updatedAt %></th>
                               </tr>
                            </thead>
                            <div class="col-6">
-                              <input type="text" name="search" id="search" placeholder="Search allergen" class="category-search form-control" />
+                              <input type="text" name="search" id="search" placeholder="<%= lingua.search_allergen %>" class="category-search form-control" />
                               <hr>
                            </div>
                            <% if (allergen.length > 0) { %>
@@ -75,10 +75,13 @@
                            <tbody>
                               <th scope="row"><%= allergen[i].id %></th>
                               <td><%= allergen[i].AllergenTranslations[0].name %></td>
-                              <td><span class="badge badge-success">AKTIV</span></td>
+                              <td><span class="badge badge-success"><%= lingua.status_active %></span></td>
+            
                               <td>
-                                 <a href="/admin/edit-allergen/<%= allergen[i].id %>?edit=true"class="btn grid-btn mt-0 btn-sm btn-secondary" ><%= lingua.product_action_edit %></a>
+                                 <a href="/admin/edit-allergen/<%= allergen[i].id %>?edit=true"class="btn grid-btn mt-0 btn-sm btn-secondary" ><%= lingua.button_edit %></a>
                               </td>
+                              <td><%= allergen[i].createdAt.toLocaleString('en-US', { timeZone: 'Europe/Helsinki' }); %></td>
+                              <td><%= allergen[i].updatedAt.toLocaleString('en-US', { timeZone: 'Europe/Helsinki' }); %></td>
                            </tbody>
                            <% } %>
                            <% } else { %>

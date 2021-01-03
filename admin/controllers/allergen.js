@@ -13,9 +13,6 @@ exports.getAddAllergen = async (req, res, next) => {
     pageTitle: "Add Product",
     path: "/admin/add-product",
     editing: false,
-    hasError: false,
-    errorMessage: null,
-    validationErrors: [],
   });
 };
 
@@ -99,33 +96,15 @@ exports.postAddAllergen = async (req, res, next) => {
     });
 };
 
-exports.getExtras = (req, res, next) => {
-  Extra.findAll({ where: { restaurantId: req.admin.id } })
-    .then((extra) => {
-      var currentLanguage = req.cookies.language;
-      res.render("extra/extras", {
-        ext: extra,
-        currentLanguage: currentLanguage,
-        pageTitle: "Admin Products",
-        path: "/admin/products",
-      });
-    })
-    .catch((err) => {
-      const error = new Error(err);
-      error.httpStatusCode = 500;
-      return next(error);
-    });
-};
-
 exports.getEditAllergen = async (req, res, next) => {
   const editMode = req.query.edit;
-  const allegenId = req.params.allergenId;
+  const allergenId = req.params.allergenId;
 
   if (!editMode) {
     return res.redirect("/");
   }
 
-  await Allergen.findByPk(allegenId).then((allergen) => {
+  await Allergen.findByPk(allergenId).then((allergen) => {
     if (!allergen) {
       return res.redirect("/");
     }
@@ -133,7 +112,7 @@ exports.getEditAllergen = async (req, res, next) => {
 
   await Allergen.findAll({
     where: {
-      id: allegenId,
+      id: allergenId,
     },
     include: [
       {
@@ -141,8 +120,8 @@ exports.getEditAllergen = async (req, res, next) => {
       },
     ],
   })
-    .then((extra) => {
-      if (extra[0].restaurantId !== req.admin.id) {
+    .then((allergen) => {
+      if (allergen[0].restaurantId !== req.admin.id) {
         return res.redirect("/");
       }
 
@@ -150,11 +129,9 @@ exports.getEditAllergen = async (req, res, next) => {
         pageTitle: "Edit Product",
         path: "/admin/edit-product",
         editing: editMode,
-        extra: extra,
-        hasError: false,
-        errorMessage: null,
-        validationErrors: [],
-        extTranslations: extra[0].AllergenTranslations,
+        allergen: allergen,
+        allergenId: allergenId,
+        extTranslations: allergen[0].AllergenTranslations,
       });
     })
     .catch((err) => {
@@ -177,8 +154,13 @@ exports.postEditAllergen = async (req, res, next) => {
       },
     ],
   })
-    .then((extra) => {
+    .then((allergen) => {
       async function msg() {
+        // await Allergen.update(
+        //   { updatedAt: new Date() },
+        //   { where: { id: req.body.allergenId } }
+        // );
+
         await AllergensTranslation.update(
           { name: updatedRoName },
           { where: { id: extTranId[0], languageId: 1 } }

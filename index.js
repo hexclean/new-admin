@@ -58,6 +58,18 @@ app.use((req, res, next) => {
     })
     .catch((err) => console.log(err));
 });
+// app.use((req, res, next) => {
+//   let languageCode;
+
+//   if (req.cookies.language == "ro") {
+//     languageCode = 1;
+//   } else if (req.cookies.language == "hu") {
+//     languageCode = 2;
+//   } else {
+//     languageCode = 3;
+//   }
+
+// });
 
 sessionStore.sync();
 
