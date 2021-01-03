@@ -70,60 +70,63 @@
             <div class="ms-panel">
                <div class="ms-panel-header header-mini">
                   <div class="d-flex justify-content-between">
-                     <h6>Szamla</h6>
                      <h6>#<%= orders[i].id %></h6>
                   </div>
                </div>
                <div class="ms-panel-body">
                   <!-- Invoice To -->
-                  <h4>Kliens adatai: </h4>
+                  <h4 style="border-bottom: 1px solid green;">Kliens adatai</h4>
                   <div class="row align-items-center border-orders-userinf">
-                     <div class="col-md-6 info-orders-top">
+                     <div class="col-md-6 info-orders-top" style="padding-top: 15px;">
                         <div class="invoice-address">
-                           <h5><%= lingua.order_detail_name %>: <%= orders[i].OrderDeliveryAddress.userName %></h5>
+                           <h5><%= lingua.order_detail_name %>: <b><%= orders[i].OrderDeliveryAddress.userName %></b></h5>
                            <h5>
-                           <%= lingua.order_detail_phone %>: <%= orders[i].OrderDeliveryAddress.phoneNumber %> 
-                           <h5>
-                           <h5>
-                              <%= lingua.order_detail_street %>: <%= orders[i].OrderDeliveryAddress.street %> 
+                           <%= lingua.order_detail_phone %>:  <b><%= orders[i].OrderDeliveryAddress.phoneNumber %></b> 
                            <h5>
                            <h5>
-                              <%= lingua.order_detail_house_number %>: <%= orders[i].OrderDeliveryAddress.houseNumber %> 
+                              <%= lingua.order_detail_street %>:  <b><%= orders[i].OrderDeliveryAddress.street %></b> 
                            <h5>
                            <h5>
-                              <%= lingua.order_detail_floor %>: <%= orders[i].OrderDeliveryAddress.floor %> 
+                              <%= lingua.order_detail_house_number %>:  <b><%= orders[i].OrderDeliveryAddress.houseNumber %></b> 
                            <h5>
                            <h5>
-                              <%= lingua.order_detail_door_number %>: <%= orders[i].OrderDeliveryAddress.doorNumber %> 
+                              <%= lingua.order_detail_floor %>:  <b><%= orders[i].OrderDeliveryAddress.floor %></b> 
+                           <h5>
+                           <h5>
+                              <%= lingua.order_detail_door_number %>: <b><%= orders[i].OrderDeliveryAddress.doorNumber %></b> 
+                           <h5>
+                           <h5>
+                              <%= lingua.order_detail_created %>: <b><%= orders[i].createdAt.toLocaleString("en-GB", {
+                                 timeZone: "Europe/Helsinki"
+                               }); %></b>
                            <h5>
                              
                         </div>
                      </div>
                      <div class="col-md-6 text-md-right">
                         <ul class="invoice-date">
-                           <li><%= lingua.order_detail_created %>: <%= orderCreated %></li>
+                           <li>das</li>
                         </ul>
                      </div>
-                
                     
                    
                   </div>
                   <!-- Invoice Table -->
                   <% for (let j =0; j < orders[i].products.length; j++) { %>
+                    
                   <div class="ms-invoice-table table-responsive mt-5">
                      <table class="table table-hover text-right thead-light">
                         <thead>
-                           <tr class="text-capitalize">
-                              <th class="text-center w-5">id</th>
-                              <th class="text-left">Product Name</th>
-                              <th>qty</th>
-                              <th>Termek ar</th>
-                             
-                              <th>total</th>
+                           <tr class="text-capitalize" style="font-size: 16px;">
+                              <th class="text-center w-5">Id</th>
+                              <th class="text-left"><%= lingua.order_detail_product_name %></th>
+                              <th><%= lingua.order_detail_quantity %></th>
+                              <th><%= lingua.order_detail_product_price %></th>
+                              <th><%= lingua.order_detail_total %></th>
                              
                            </tr>
                         </thead>
-                        <tbody>
+                        <tbody style="font-size: 16px;">
                            <tr>
                               <td class="text-center"><%= orders[i].products[j].product_id %></td>
                               <td class="text-left"><%= orders[i].products[j].product_name %></td>
@@ -132,31 +135,35 @@
                               <td><%= orders[i].products[j].total_product_price %></td>
                              
                            </tr>
+                           
                          
-                           <% for (let k = 0; k < orders[i].products[j].extras.length; ++k) { %>
-                           <tr>
-                              <td class="text-center"><%=  orders[i].products[j].extras[k].extra_id%></td>
-                              <td class="text-left"><%=  orders[i].products[j].extras[k].extra_name%></td>
-                              <td><%=  orders[i].products[j].extras[k].extra_quantity%></td>
-                              <td>$<%=  orders[i].products[j].extras[k].extra_price%></td>
-                              <td><%=  orders[i].products[j].extras[k].total_extra_price%></td>
-                           </tr>
+                              <% for (let k = 0; k < orders[i].products[j].extras.length; ++k) { %>
+                                 <tr>
+                                    <td class="text-center"><%=  orders[i].products[j].extras[k].extra_id %></td>
+                                    <td class="text-left"><%=  orders[i].products[j].extras[k].extra_name %></td>
+                                    <td><%= orders[i].products[j].extras[k].extra_quantity %></td>
+                                    <td><%= orders[i].products[j].extras[k].extra_price %></td>
+                                    <td><%= orders[i].products[j].extras[k].total_extra_price %></td>
+                                 </tr>
+                               
+                             
+                           <% } %>
                          
-                           <% } %>        
+                                
                         </tbody>
                         <tfoot>
                            <tr>
-                              <td colspan="4">Total Cost:</td>
-                              <td>$<%= orders[i].products[j].total_cost_produce_extra %></td>
+                              <td colspan="4"><%= lingua.order_detail_total_final %>:</td>
+                              <td><%= orders[i].products[j].total_cost_produce_extra %>44.77 <%= lingua.currency %></td>
                              
                            </tr>
                         </tfoot>
-                        <p style="color: green; font-size: 17px" class="text-left"> <%= orders[i].products[j].message %></p style="color: green font-size: 19px">
                      </table>
                      
-                   
+                     <p style="color: green; font-size: 17px" class="text-left">Uzenet: <%= orders[i].products[j].message %></p style="color: green font-size: 19px">
+
                   </div>
-                 
+
                   <% } %>
                   <input
                   type="hidden"

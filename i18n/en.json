@@ -137,5 +137,11 @@
   "order_detail_house_number": "House number",
   "order_detail_floor": "Floor",
   "order_detail_door_number": "Door number",
-  "order_detail_created": "Date"
+  "order_detail_created": "Date",
+  "order_detail_product_name": "Product",
+  "order_detail_quantity": "Quantity",
+  "order_detail_product_price": "Price",
+  "order_detail_total": "Total",
+  "order_detail_total_final": "Grand total",
+  "currency": "lei"
 }

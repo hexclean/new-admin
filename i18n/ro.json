@@ -141,5 +141,11 @@
   "order_detail_house_number": "Numărul casei",
   "order_detail_floor": "Etaj",
   "order_detail_door_number": "Numărul ușii",
-  "order_detail_created": "Data"
+  "order_detail_created": "Data",
+  "order_detail_product_name": "Produs",
+  "order_detail_quantity": "Cantitate",
+  "order_detail_product_price": "Preț",
+  "order_detail_total": "Total",
+  "order_detail_total_final": "Total general",
+  "currency": "lei"
 }
