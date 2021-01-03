@@ -41,6 +41,23 @@
   "allergen_hu_name": "The Hungarian name of the allergen",
   "allergen_en_name": "The English name of the allergen",
 
+  "category_list_name": "Name",
+  "category_list_status": "Status",
+  "category_list_operation": "Operation",
+  "search_category": "Category search",
+  "all_categories": "All categories",
+  "categories": "Categories",
+  "create_category": "Creating a category",
+  "category_property_title": "Assign a property to the category",
+  "category_property_subtitle": "It is mandatory to select 1 property!",
+  "category_edit_title": "category editing",
+  "category_en_name_validation": "Required field!",
+  "category_hu_name_validation": "Required field!",
+  "category_ro_name_validation": "Required field!",
+  "category_ro_name": "The Romanian name of the category",
+  "category_hu_name": "The Hungarian name of the category",
+  "category_en_name": "The English name of the category",
+
   "navigation": {
     "ro": "Română",
     "en": "English",

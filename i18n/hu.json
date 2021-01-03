@@ -39,6 +39,23 @@
   "allergen_hu_name": "Az allergnén magyar neve",
   "allergen_en_name": "Az allergnén angol neve",
 
+  "category_list_name": "Név",
+  "category_list_status": "Státusz",
+  "category_list_operation": "Müvelet",
+  "search_category": "Kategória keresés",
+  "all_categories": "Összes kategória",
+  "categories": "Kategóriák",
+  "create_category": "Kategória létrehozása",
+  "category_property_title": "Tulajdonság hozzárendelése a kategóriához",
+  "category_property_subtitle": "1 tulajdonság kiválasztása kötelező!",
+  "category_edit_title": "kategória szerkesztése",
+  "category_hu_name_validation": "Kötelezően kitöltendő mező!",
+  "category_ro_name_validation": "Kötelezően kitöltendő mező!",
+  "category_en_name_validation": "Kötelezően kitöltendő mező!",
+  "category_ro_name": "A kategória román neve",
+  "category_hu_name": "A kategória magyar neve",
+  "category_en_name": "A kategória angol neve",
+
   "navigation": {
     "ro": "Română",
     "en": "English",

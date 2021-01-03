@@ -24,7 +24,9 @@
       var roName_length = $("#roName").val().length;
 
       if (roName_length < 2 || roName_length > 15) {
-        $("#roName_error_message").html("roname");
+        $("#roName_error_message").html(
+          "<%= lingua.category_ro_name_validation %>"
+        );
         $("#roName_error_message").show();
         error_roName = true;
       } else {
@@ -36,7 +38,9 @@
       var huName_length = $("#huName").val().length;
 
       if (huName_length < 2 || huName_length > 15) {
-        $("#huName_error_message").html("huname");
+        $("#huName_error_message").html(
+          "<%= lingua.category_hu_name_validation %>"
+        );
         $("#huName_error_message").show();
         error_huName = true;
       } else {
@@ -48,7 +52,9 @@
       var enName_length = $("#enName").val().length;
 
       if (enName_length < 2 || enName_length > 15) {
-        $("#enName_error_message").html("enname");
+        $("#enName_error_message").html(
+          "<%= lingua.category_en_name_validation %>"
+        );
         $("#enName_error_message").show();
         error_enName = true;
       } else {

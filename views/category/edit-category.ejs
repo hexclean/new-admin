@@ -1,12 +1,12 @@
+
+
 <%- include('../includes/head.ejs') %>
 <%- include('../jQuery-validation/category.ejs') %>
-
 </head>
 <body class="ms-body ms-aside-left-open ms-primary-theme ms-has-quickbar">
    <%- include('../includes/navigation.ejs') %>
    <main class="body-content">
       <%- include('../includes/navigation-bar.ejs') %>
-     
       <form 
          id="createCategory_form"
          class="ms-content-wrapper" 
@@ -17,13 +17,12 @@
             <div class="col-xl-6 col-md-12">
                <div class="ms-panel ms-panel-fh">
                   <div class="ms-panel-header">
-                     <h6>Add Product Form</h6>
+                     <h6><% if (editing) { %>"<%= category[0].CategoryTranslations[0].name %>" <%= lingua.category_edit_title %><% } else { %> <%= lingua.create_category %> <% } %></h6>
                   </div>
                   <div class="ms-panel-body">
                      <div class="form-row">
-                       
                         <div class="col-md-12 mb-3">
-                           <label for="roName"><%= lingua.create_product_name1 %></label>
+                           <label for="roName"><%= lingua.category_ro_name %></label>
                            <div class="input-group">
                               <input
                                  class="form-control"
@@ -36,7 +35,7 @@
                            <span class="error_form" id="roName_error_message"></span>
                         </div>
                         <div class="col-md-12 mb-3">
-                           <label for="huName"><%= lingua.create_product_name2 %></label>
+                           <label for="huName"><%= lingua.category_hu_name %></label>
                            <div class="input-group">
                               <input
                                  class="form-control"
@@ -49,7 +48,7 @@
                            <span class="error_form" id="huName_error_message"></span>
                         </div>
                         <div class="col-md-12 mb-3">
-                           <label for="enName"><%= lingua.create_product_name3 %></label>
+                           <label for="enName"><%= lingua.category_en_name %></label>
                            <div class="input-group">
                               <input
                                  class="form-control"
@@ -61,83 +60,66 @@
                            </div>
                            <span class="error_form" id="enName_error_message"></span>
                         </div>
+                        <div class="col-md-12 mb-3">
+                           <button type="submit" id="createBox" class="btn btn-success has-icon" ><% if (editing) { %><%=lingua.button_editing %><% } else { %><%= lingua.create_category %><% } %></button>
+                           <span class="error_form" id="enName_error_message"></span>
+                        </div>
                      </div>
                   </div>
                </div>
             </div>
             <div class="col-xl-6 col-md-12">
-               <div class="row">
-                  <div class="col-xl-6 col-md-12">
-                     <div class="ms-panel">
-                       <div class="ms-panel-header">
-                         <h6>Checkboxes</h6>
-                       </div>
-                       <div class="ms-panel-body">
-                         <p class="ms-directions">Use <code>.ms-checkbox-{state}</code> in <code>.ms-checkbox-wrap</code>
-                         </p>
-                        
-
-
-                         <% if(editing){ %>
-                           <% for (let i = 0; i < isActiveProperty.length; i++) { %>
-                              <% if (isActiveProperty[i].active == 1 ) { %>
-                                 
-                                 <script>
-                                     $(document).ready(function() {
-                                     var activeCheckbox ="<%= isActiveProperty[i].propertyId %>";
-                                     $('.status-checkbox-'+activeCheckbox).prop('checked', true);
-                                     $('.status-'+activeCheckbox).val('on');
-                                     });
-                                 </script>
-                                    
-                                    <% } 
-                                    %>
-                                 <% } %>
-                                 <% } %>
-                                 
-
-                        
-                        <div class="row">
-                           <div class="col-md-6">
-                             <ul class="ms-list ms-list-display">
-                               <% for (let i=0; i < property.length; i++ ) { %>
-                                  <input
-                                  type="hidden"
-                                  value="<%= property[i].id %>"
-                                  name="propertyId"
-                                  /> 
-                               <li>
-                                  <label class="ms-checkbox-wrap ms-checkbox-success" data-extra="<%= property[i].id %>">
-                                     <input type="hidden" value="off" class="status-<%= property[i].id %>" name="status[<%= property[i].id %>]" value="<%= property[i].id %>" >
-                                    <input data-propertyId="<%= property[i].id %>" class="status-checkbox status-checkbox-<%= property[i].id %>" type="checkbox" value="<%= property[i].id %>"> <i class="ms-checkbox-check"></i>
-                                  </label> <span> <%= property[i].PropertyTranslations[0].name %> </span>
-                                </li>
-                                <% } %>
-                             </ul>
-                           </div>
-                         </div>
-                       </div>
-                     </div>
-                   </div>
-                  <div class="col-md-12">
-                     <div class="ms-panel">
-                        <div class="ms-panel-header">
-                           <h6>Product</h6>
+               <div class="ms-panel ms-panel-fh">
+                  <div class="ms-panel-header">
+                     <h6><%= lingua.category_property_title %></h6>
+                  </div>
+                  <div class="ms-panel-body">
+                     <p class="ms-directions"><code><%= lingua.category_property_subtitle %></code>
+                     </p>
+                     <% if(editing){ %>
+                     <% for (let i = 0; i < isActiveProperty.length; i++) { %>
+                     <% if (isActiveProperty[i].active == 1 ) { %>
+                     <script>
+                        $(document).ready(function() {
+                        var activeCheckbox ="<%= isActiveProperty[i].propertyId %>";
+                        $('.status-checkbox-'+activeCheckbox).prop('checked', true);
+                        $('.status-'+activeCheckbox).val('on');
+                        });
+                     </script>
+                     <% } 
+                        %>
+                     <% } %>
+                     <% } %>
+                     <div class="row">
+                        <div class="col-md-6">
+                           <ul class="ms-list ms-list-display">
+                              <% for (let i=0; i < property.length; i++ ) { %>
+                              <input
+                                 type="hidden"
+                                 value="<%= property[i].id %>"
+                                 name="propertyId"
+                                 /> 
+                              <li>
+                                 <label class="ms-checkbox-wrap ms-checkbox-success" data-extra="<%= property[i].id %>">
+                                 <input type="hidden" value="off" class="status-<%= property[i].id %>" name="status[<%= property[i].id %>]" value="<%= property[i].id %>" >
+                                 <input data-propertyId="<%= property[i].id %>" class="status-checkbox status-checkbox-<%= property[i].id %>" type="checkbox" value="<%= property[i].id %>"> <i class="ms-checkbox-check"></i>
+                                 </label> <span> <%= property[i].PropertyTranslations[0].name %> </span>
+                              </li>
+                              <% } %>
+                           </ul>
                         </div>
-                        <% if (editing) { %>
-                        <input type="hidden" value="<%= categoryId %>" name="categoryId">
-                        <%for (let i = 0; i < extTranslations.length; i++){%>
-                        <input type="hidden" value="<%= extTranslations[i].id %>" name="categoryTranslationId">
-                        <%}%>
-                        <% } %>
-                        <button type="submit" id="createCategory" class="btn btn-success has-icon" ><% if (editing) { %>Update Product<% } else { %>Add Product<% } %></button>
                      </div>
                   </div>
                </div>
             </div>
-         </div>
+            <% if (editing) { %>
+            <input type="hidden" value="<%= categoryId %>" name="categoryId">
+            <%for (let i = 0; i < extTranslations.length; i++){%>
+            <input type="hidden" value="<%= extTranslations[i].id %>" name="categoryTranslationId">
+            <%}%>
+            <% } %>
          </div>
       </form>
    </main>
    <%- include('../includes/end.ejs') %>
-</body>
+

@@ -43,6 +43,23 @@
   "allergen_hu_name": "Numele maghiar al allergen",
   "allergen_en_name": "Numele engleză al allergen",
 
+  "category_list_name": "Nume",
+  "category_list_status": "Stare",
+  "category_list_operation": "Operațiune",
+  "search_category": "Căutare categorie",
+  "all_categories": "Toate categoriile",
+  "categories": "Categoriile",
+  "create_category": "Crearea unei categorie",
+  "category_property_title": "Atribuiți o proprietate categoriei",
+  "category_property_subtitle": "Este obligatoriu să selectați 1 proprietate!",
+  "category_edit_title": "editare categorie",
+  "category_ro_name_validation": "Câmp necesar!",
+  "category_hu_name_validation": "Câmp necesar!",
+  "category_en_name_validation": "Câmp necesar!",
+  "category_ro_name": "Numele românesc al categorie",
+  "category_hu_name": "Numele maghiar al categorie",
+  "category_en_name": "Numele engleză al categorie",
+
   "navigation": {
     "ro": "Română",
     "en": "Engleză",

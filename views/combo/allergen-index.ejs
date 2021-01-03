@@ -2,21 +2,16 @@
 
 <%- include('../includes/head.ejs') %>
 <script>
-   $(document).ready(function() {
-   
-      $('#search').keyup(function() {
-         const allergenId = $('#search').val();
-         $.get( "get-filtered-allergen/"+ allergenId )
-   
-      .done(function( data ) {
-   
-         $("#searchedAllergen").html(data);
-         
-      });
-   });
-   })
-   
+$(document).ready(function() {
+	$('#search').keyup(function() {
+		const allergenId = $('#search').val();
+		$.get("get-filtered-allergen/" + allergenId).done(function(data) {
+			$("#searchedAllergen").html(data);
+		});
+	});
+})
 </script>
+
 </head>
 <body class="ms-body ms-aside-left-open ms-primary-theme ms-has-quickbar">
    <%- include('../includes/navigation.ejs') %> 
@@ -28,23 +23,22 @@
                <li role="presentation"><a href="#" aria-controls="tab1" class="active show" role="tab" data-toggle="tab"><%= lingua.all_allergens %></a></li>
                <li role="presentation"><a class="add-variant" href="/admin/add-allergen"><%= lingua.create_allergen %></a></li>
             </ul>
-         
          </div>
       </div>
       <div class="col-md-6">
          <nav aria-label="breadcrumb">
-           <ol class="breadcrumb">
-             <li class="breadcrumb-item">
-               <a a href="/admin/vr-index"
-                 ><i class="material-icons"></i><%= lingua.back %></a
-               >
-             </li>
-             <li class="breadcrumb-item active" aria-current="page">
-               <%= lingua.allergens %>
-             </li>
-           </ol>
+            <ol class="breadcrumb">
+               <li class="breadcrumb-item">
+                  <a a href="/admin/vr-index"
+                     ><i class="material-icons"></i><%= lingua.back %></a
+                     >
+               </li>
+               <li class="breadcrumb-item active" aria-current="page">
+                  <%= lingua.allergens %>
+               </li>
+            </ol>
          </nav>
-       </div>
+      </div>
       <div class="ms-content-wrapper">
          <div class="row">
             <div class="col-12">
@@ -61,9 +55,6 @@
                                  <th scope="col"><%= lingua.allergen_list_name %></th>
                                  <th scope="col"><%= lingua.allergen_list_status %></th>
                                  <th scope="col" ><%= lingua.allergen_list_operation %></th>
-                                
-                                 <th scope="col"><%= lingua.allergen_list_createdAt %></th>
-                                 <th scope="col"><%= lingua.allergen_list_updatedAt %></th>
                               </tr>
                            </thead>
                            <div class="col-6">
@@ -76,12 +67,9 @@
                               <th scope="row"><%= allergen[i].id %></th>
                               <td><%= allergen[i].AllergenTranslations[0].name %></td>
                               <td><span class="badge badge-success"><%= lingua.status_active %></span></td>
-            
                               <td>
                                  <a href="/admin/edit-allergen/<%= allergen[i].id %>?edit=true"class="btn grid-btn mt-0 btn-sm btn-secondary" ><%= lingua.button_edit %></a>
                               </td>
-                              <td><%= allergen[i].createdAt.toLocaleString('en-US', { timeZone: 'Europe/Helsinki' }); %></td>
-                              <td><%= allergen[i].updatedAt.toLocaleString('en-US', { timeZone: 'Europe/Helsinki' }); %></td>
                            </tbody>
                            <% } %>
                            <% } else { %>
