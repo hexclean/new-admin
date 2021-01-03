@@ -19,7 +19,7 @@
          id="product-form">
          <div class="ms-content-wrapper">
             <div class="row">
-               <div class="col-xl-6 col-md-12">
+               <div class="col-xl-6 col-md-12" >
                   <div class="ms-panel ms-panel-header">
                      <div class="ms-panel-body">
                         <div class="row">
@@ -38,7 +38,7 @@
                </div>
             </div>
          </div>
-         </div>
+        
          <div class="row answer">
             <div class="col-xl-6 col-md-12">
                <div class="ms-panel ms-panel-fh">
@@ -103,11 +103,10 @@
              
          </script>
          <div class="row">
-            <div class="col-xl-6 col-md-12">
+            <div class="col-xl-6 col-md-12" style="height: 1235px;">
                <div class="ms-panel ms-panel-fh">
                   <div class="ms-panel-header">
                      <h6><% if (editing) { %>"<%= product[0].ProductTranslations[0].title %>" <%= lingua.product_edit_title %><% } else { %> <%= lingua.create_product %> <% } %></h6>
-
                   </div>
                   <div class="ms-panel-body">
                      <div class="form-row">
@@ -148,7 +147,7 @@
                            <span class="error_form" id="enName_error_message"></span>
                         </div>
                         <div class="col-md-12 mb-3">
-                           <label for="roDescription"><%= lingua.create_product_description2 %></label>
+                           <label for="roDescription"><%= lingua.product_ro_description %></label>
                            <div class="input-group">
                               <textarea
                                  class="form-control"
@@ -159,7 +158,7 @@
                            <span class="error_form" id="roDescription_error_message"></span>
                         </div>
                         <div class="col-md-12 mb-3">
-                           <label for="huDescription"><%= lingua.create_product_description2 %></label>
+                           <label for="huDescription"><%= lingua.product_hu_description %></label>
                            <div class="input-group">
                               <textarea
                                  class="form-control"
@@ -170,7 +169,7 @@
                            <span class="error_form" id="huDescription_error_message"></span>
                         </div>
                         <div class="col-md-12 mb-3">
-                           <label for="enDescription"><%= lingua.create_product_description2 %></label>
+                           <label for="enDescription"><%= lingua.product_en_description %></label>
                            <div class="input-group">
                               <textarea
                                  class="form-control"
@@ -187,6 +186,9 @@
                            </div>
                            <span class="error_form" id="file_error_message"></span>
                         </div>
+                        <button  id="createProduct" name="createProduct" class="btn btn-success has-icon" type="submit">
+                           <% if (editing) { %><%= lingua.button_editing %><% } else { %> <%= lingua.create_product %><% } %>
+                           </button>
                      </div>
                   </div>
                </div>
@@ -196,15 +198,16 @@
                   <div class="col-md-12">
                      <div class="ms-panel">
                         <div class="ms-panel-header">
-                           <h6>Product</h6>
-                        </div>
-                        <div class="ms-panel-body">
-                           <div class="carousel-inner">
-                              <div class="carousel-item active">
-                                 <% if (editing) { %><img src="/<%= product[0].productImagePath %>" alt="<%= product[0].id %>"><% }  %>
+                           <div class="ms-panel-body">
+                              <div class="carousel-inner">
+                                 <div class="carousel-item active">
+                                    <% if (editing) { %><img src="/<%= product[0].productImagePath %>" alt="<%= product[0].id %>"><% }  %>
+                                 </div>
                               </div>
                            </div>
                         </div>
+                        
+                       
                         <% if (editing) { %>
                         <script>
                            $(document).ready(function () {
@@ -218,19 +221,16 @@
                            name="productId"
                            />
                         <% } %>
-                        <button  id="createProduct" name="createProduct" class="btn btn-success has-icon" type="submit">
-                        <% if (editing) { %>Update Product<% } else { %>Add
-                        Product<% } %>
-                        </button>
+                      
                      </div>
                   </div>
                   <div class="col-xl-12 col-md-12">
                      <div class="ms-panel ms-panel-fh">
                         <div class="ms-panel-header">
-                           <h6>Doboz ar lehetoseg beallitasa</h6>
+                           <h6><%= lingua.product_box_title %></h6>
                         </div>
                         <div class="ms-panel-body">
-                           <p class="ms-directions"><code>A termekhez nem kotlezo dobozt beirni, csak ha a doboznak ara van</code>
+                           <p class="ms-directions"><code style="font-size: 13px;"><%= lingua.product_box_subtitle %></code>
                            </p>
                            <div class="row">
                               <div class="col-md-12">
@@ -257,10 +257,10 @@
                   <div class="col-xl-12 col-md-12">
                      <div class="ms-panel ms-panel-fh">
                         <div class="ms-panel-header">
-                           <h6>Doboz ar lehetoseg beallitasa</h6>
+                           <h6><%= lingua.product_allergen_title %></h6>
                         </div>
                         <div class="ms-panel-body">
-                           <p class="ms-directions"><code>Nem elfelejteni bejelölni a termekhez hozzátartozó allergéneket</code>
+                           <p class="ms-directions"><code style="font-size: 13px;"><%= lingua.product_allergen_subtitle %></code>
                            </p>
                            <div class="row">
                               <div class="col-md-12">
@@ -287,12 +287,13 @@
                </div>
             </div>
          </div>
-         </div>
-         <div class="col-md-6 mb-3">
-            <label for="validationCustom22">RO</label>
+      
+         <div class="row">
+         <div class="col-xl-6 col-md-12">
+            <label for="validationCustom22"><%= lingua.product_select_category %></label>
             <div class="input-group">
                <select class="form-control" for="categoryId" id="categoryId" name="categoryId">
-                  <option value="" selected disabled hidden>Kategoria Valasztas</option>
+                  <option value="" selected disabled hidden><%= lingua.product_select_category %></option>
                   <% for(let i = 0; i < cat.length; i++) { %>
                   <option id="categoryId" name="categoryId" value='<%= cat[i].id %>'><%= cat[i].CategoryTranslations[0].name %></option>
                   <% } %>
@@ -300,9 +301,11 @@
             </div>
             <span class="error_form" id="category_error_message"></span>
          </div>
+      </div>
+     
          <div class="ms-panel ms-btn-display">
             <div class="ms-panel-header">
-               <h6>A  <% if (editing) { %>  <%= product[0].ProductTranslations[0].title %>  <% } %> hozzárendelhető extrái:</h6>
+               <h6><%= lingua.product_variant_title %></h6>
             </div>
          </div>
          <% if (editing) { %>  <% if (productVariant.length > 0) { %>
@@ -332,7 +335,7 @@
                                  <h6 class="mb-0"><b><%= productVariant[i].sku %></b> </h6>
                               </div>
                               <div class="col-md-12 mb-3">
-                                 <label for="price">Price</label>
+                                 <label for="price"><%= lingua.create_product_price %></label>
                                  <div class="input-group">
                                     <input
                                        class="price_<%= productVariant[i].id %> extra_price_input"
@@ -343,7 +346,6 @@
                                        value="<% if (editing) { %><%= netest[i].price %><% } %>"
                                        />
                                  </div>
-                                 as
                                  <span class="extra_error_message error_form" id="price_error_message_<%= productVariant[i].extraId %>"></span>
                               </div>
                            </div>
@@ -383,32 +385,21 @@
                                  <h6 class="mb-0"><b><%= extra.sku %></b> </h6>
                               </div>
                               <div class="col-md-12 mb-3">
-                                 <label for="price">Price</label>
+                                 <label for="price"><%= lingua.create_product_price %></label>
                                  <div class="input-group">
                                     <input
-                                       class="price_<%= extra.id %> extra_price_input"
+                                       class="form-control price_<%= extra.id %> extra_price_input"
                                        type="text"
                                        name="price"
                                        id="price"
                                        value="<% if (editing) { %><%= extra.price %><% } %>"
                                        />
                                  </div>
+                                 <span class="info-box-price" id="price_error_message"><%= lingua.price_info %></span>
+                                 <br>
                                  <span class="extra_error_message error_form" id="price_error_message_<%= extra.id %>"></span>
                               </div>
-                              <div class="col-md-12 mb-3">
-                                 <label for="discountedPrice"
-                                    >Discounted Price</label
-                                    >
-                                 <div class="input-group">
-                                    <input disabled
-                                       class="form-control"
-                                       type="text"
-                                       name="discountedPrice"
-                                       id="discountedPrice"
-                                       value="<% if (editing) { %><%= extra.discountedPrice %><% } %>"
-                                       />
-                                 </div>
-                              </div>
+                            
                            </div>
                         </div>
                      </div>
@@ -423,5 +414,4 @@
       </form>
    </main>
    <%- include('../includes/end.ejs') %>
-</body>
 

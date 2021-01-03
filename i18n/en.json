@@ -114,6 +114,12 @@
   "product_ro_description": "The Romanian description of the product",
   "product_hu_description": "The Hungarian description of the product",
   "product_en_description": "The English description of the product",
+  "product_select_category": "Category selection",
+  "product_variant_title": "Assign a variant to the product",
+  "product_box_title": "Box assignment option",
+  "product_box_subtitle": "It is not necessary to assign the box to the product",
+  "product_allergen_title": "Assign an allergen to the product",
+  "product_allergen_subtitle": "It is mandatory to assign at least one allergen to the product!",
 
   "navigation": {
     "ro": "Română",

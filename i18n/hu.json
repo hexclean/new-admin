@@ -101,7 +101,7 @@
   "product_list_status": "Státusz",
   "product_list_operation": "Müvelet",
   "all_products": "Összes termék",
-  "create_product": "Termék a létrehozása",
+  "create_product": "Termék létrehozása",
   "products": "Termékek",
   "product_box_message": "A termék létrehozásához legalább 2 dobozzal kell rendelkeznie!",
   "product_variant_message": "Az termék létrehozásához legalább 2 variánssal kell rendelkeznie!",
@@ -114,6 +114,12 @@
   "product_ro_description": "A termék román leírása",
   "product_hu_description": "A termék magyar leírása",
   "product_en_description": "A termék angol leírása",
+  "product_select_category": "Kategória választás",
+  "product_variant_title": "Rendeljen hozzá variánst a termékhez",
+  "product_box_title": "Doboz hozzárendelési lehetőség",
+  "product_box_subtitle": "Nem kötelező hozzárendelni a dobozt a termékhez",
+  "product_allergen_title": "Allergén hozzárendelése a termékhez",
+  "product_allergen_subtitle": "Kötelező legalább egy allergént rendelni a termékhez!",
 
   "navigation": {
     "ro": "Română",

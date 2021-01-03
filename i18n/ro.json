@@ -115,6 +115,15 @@
   "product_ro_name": "Numele românesc al product",
   "product_hu_name": "Numele maghiar al product",
   "product_en_name": "Numele engleză al product",
+  "product_ro_description": "Descrierea românesc al product",
+  "product_hu_description": "Descrierea maghiar al product",
+  "product_en_description": "Descrierea engleză al product",
+  "product_select_category": "Selectarea categoriei",
+  "product_variant_title": "Atribuiți o variantă produsului",
+  "product_box_title": "Opțiune de alocare a cutiei",
+  "product_box_subtitle": "Nu este necesar să alocați cutia produsului",
+  "product_allergen_title": "Alocați un alergen la produs",
+  "product_allergen_subtitle": "Este obligatoriu să se aloce cel puțin un alergen la produs!",
 
   "navigation": {
     "ro": "Română",
