@@ -91,6 +91,9 @@
   "variant_category": "Kategória választás",
   "variant_property_title": "Tulajdonság hozzárendelése a variánshoz",
   "variant_property_subtitle": "A termék a kiválasztott tulajdonságon belül jelenik meg!",
+  "variant_price": "Ár",
+  "variant_quantityMin": "Minimum rendelési darabszám",
+  "variant_quantityMax": "Maximum rendelési darabszám",
 
   "navigation": {
     "ro": "Română",

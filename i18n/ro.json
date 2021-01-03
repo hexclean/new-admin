@@ -95,6 +95,9 @@
   "variant_category": "Selectarea categoriei",
   "variant_property_title": "Atribuiți o proprietate variantei",
   "variant_property_subtitle": "Produsul va apărea în proprietatea selectată!",
+  "variant_price": "Preți",
+  "variant_quantityMin": "Cantitatea minima pentru comanda",
+  "variant_quantityMax": "Cantitatea maximă a comenzii",
 
   "navigation": {
     "ro": "Română",
