@@ -134,5 +134,12 @@
   "order_list_status": "Stare",
   "order_list_operation": "Operațiune",
   "order_list_new_status": "Nou",
-  "order_list_detail": "Vedere"
+  "order_list_detail": "Vedere",
+  "order_detail_name": "Nume",
+  "order_detail_phone": "Număr de telefon",
+  "order_detail_street": "Strada",
+  "order_detail_house_number": "Numărul casei",
+  "order_detail_floor": "Etaj",
+  "order_detail_door_number": "Numărul ușii",
+  "order_detail_created": "Data"
 }

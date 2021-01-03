@@ -112,7 +112,6 @@ exports.getOrders = async (req, res, next) => {
   let cutlery;
   let take;
   let userName;
-  let orderCity;
   let orderStreet;
   let orderHouseNumber;
   let orderFloor;
@@ -219,7 +218,7 @@ exports.getOrders = async (req, res, next) => {
     orderFloor = orders[0].OrderDeliveryAddress.floor;
     orderDoorNumber = orders[0].OrderDeliveryAddress.doorNumber;
     orderPhoneNumber = orders[0].OrderDeliveryAddress.phoneNumber;
-    orderCreated = orders[0].createdAt.toLocaleString("en-US", {
+    orderCreated = orders[0].createdAt.toLocaleString("en-GB", {
       timeZone: "Europe/Helsinki",
     });
 

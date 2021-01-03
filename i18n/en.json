@@ -130,5 +130,12 @@
   "order_list_status": "Status",
   "order_list_operation": "Operation",
   "order_list_new_status": "New",
-  "order_list_detail": "Open"
+  "order_list_detail": "Open",
+  "order_detail_name": "Name",
+  "order_detail_phone": "Phone number",
+  "order_detail_street": "Street",
+  "order_detail_house_number": "House number",
+  "order_detail_floor": "Floor",
+  "order_detail_door_number": "Door number",
+  "order_detail_created": "Date"
 }

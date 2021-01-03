@@ -80,28 +80,28 @@
                   <div class="row align-items-center border-orders-userinf">
                      <div class="col-md-6 info-orders-top">
                         <div class="invoice-address">
-                           <h5>Név: <%= orders[i].OrderDeliveryAddress.userName %></h5>
+                           <h5><%= lingua.order_detail_name %>: <%= orders[i].OrderDeliveryAddress.userName %></h5>
                            <h5>
-                           Telefonszám: <%= orders[i].OrderDeliveryAddress.phoneNumber %> 
-                           <h5>
-                           <h5>
-                           Utca: <%= orders[i].OrderDeliveryAddress.street %> 
+                           <%= lingua.order_detail_phone %>: <%= orders[i].OrderDeliveryAddress.phoneNumber %> 
                            <h5>
                            <h5>
-                           Házszám: <%= orders[i].OrderDeliveryAddress.houseNumber %> 
+                              <%= lingua.order_detail_street %>: <%= orders[i].OrderDeliveryAddress.street %> 
                            <h5>
                            <h5>
-                           Emelet: <%= orders[i].OrderDeliveryAddress.floor %> 
+                              <%= lingua.order_detail_house_number %>: <%= orders[i].OrderDeliveryAddress.houseNumber %> 
                            <h5>
                            <h5>
-                           Ajtó: <%= orders[i].OrderDeliveryAddress.doorNumber %> 
+                              <%= lingua.order_detail_floor %>: <%= orders[i].OrderDeliveryAddress.floor %> 
+                           <h5>
+                           <h5>
+                              <%= lingua.order_detail_door_number %>: <%= orders[i].OrderDeliveryAddress.doorNumber %> 
                            <h5>
                              
                         </div>
                      </div>
                      <div class="col-md-6 text-md-right">
                         <ul class="invoice-date">
-                           <li>Invoice Date : <%= orderCreated %></li>
+                           <li><%= lingua.order_detail_created %>: <%= orderCreated %></li>
                         </ul>
                      </div>
                 

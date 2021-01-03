@@ -130,5 +130,12 @@
   "order_list_status": "Státusz",
   "order_list_operation": "Müvelet",
   "order_list_new_status": "Új",
-  "order_list_detail": "Megtekintés"
+  "order_list_detail": "Megtekintés",
+  "order_detail_name": "Név",
+  "order_detail_phone": "Telefonszám",
+  "order_detail_street": "Utca",
+  "order_detail_house_number": "Házszám",
+  "order_detail_floor": "Emelet",
+  "order_detail_door_number": "Ajtó szám",
+  "order_detail_created": "Dátum"
 }
