@@ -121,6 +121,8 @@
   "product_allergen_title": "Allergén hozzárendelése a termékhez",
   "product_allergen_subtitle": "Kötelező legalább egy allergént rendelni a termékhez!",
   "product_daily_menu": "Napi menü",
+  "product_daily_start": "Kezdő dátum",
+  "product_daily_end": "Befejezés dátuma",
 
   "navigation": {
     "ro": "Română",

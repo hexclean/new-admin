@@ -121,6 +121,8 @@
   "product_allergen_title": "Assign an allergen to the product",
   "product_allergen_subtitle": "It is mandatory to assign at least one allergen to the product!",
   "product_daily_menu": "Daily menu",
+  "product_daily_start": "Starting date",
+  "product_daily_end": "End date",
 
   "navigation": {
     "ro": "Română",

@@ -125,6 +125,8 @@
   "product_allergen_title": "Alocați un alergen la produs",
   "product_allergen_subtitle": "Este obligatoriu să se aloce cel puțin un alergen la produs!",
   "product_daily_menu": "Meniul zilei",
+  "product_daily_start": "Data de inceput",
+  "product_daily_end": "Data de încheiere",
 
   "navigation": {
     "ro": "Română",
