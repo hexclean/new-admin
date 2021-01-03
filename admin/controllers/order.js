@@ -39,6 +39,15 @@ const nexmo = new Nexmo(
   { debug: true }
 );
 exports.getOrders = async (req, res, next) => {
+  let languageCode;
+
+  if (req.cookies.language == "ro") {
+    languageCode = 1;
+  } else if (req.cookies.language == "hu") {
+    languageCode = 2;
+  } else {
+    languageCode = 3;
+  }
   const orders = await Order.findAll({
     order: [["createdAt", "DESC"]],
     where: { orderStatusId: 1, restaurantId: req.admin.id },
@@ -52,7 +61,12 @@ exports.getOrders = async (req, res, next) => {
             include: [
               {
                 model: Extra,
-                include: [{ model: ExtraTranslation }],
+                include: [
+                  {
+                    model: ExtraTranslation,
+                    where: { languageId: languageCode },
+                  },
+                ],
               },
             ],
           },
@@ -65,7 +79,12 @@ exports.getOrders = async (req, res, next) => {
                 include: [
                   {
                     model: Product,
-                    include: [{ model: ProductTranslation }],
+                    include: [
+                      {
+                        model: ProductTranslation,
+                        where: { languageId: languageCode },
+                      },
+                    ],
                   },
                 ],
               },
@@ -81,7 +100,7 @@ exports.getOrders = async (req, res, next) => {
         include: [
           {
             model: LocationNameTranslation,
-            where: { languageId: 2 },
+            where: { languageId: languageCode },
           },
         ],
       },
@@ -200,7 +219,11 @@ exports.getOrders = async (req, res, next) => {
     orderFloor = orders[0].OrderDeliveryAddress.floor;
     orderDoorNumber = orders[0].OrderDeliveryAddress.doorNumber;
     orderPhoneNumber = orders[0].OrderDeliveryAddress.phoneNumber;
-    orderCreated = orders[0].createdAt;
+    orderCreated = orders[0].createdAt.toLocaleString("en-US", {
+      timeZone: "Europe/Helsinki",
+    });
+
+    console.log(orderCreated);
     userName = orders[0].OrderDeliveryAddress.userName;
     orderIds = orders[0].id;
   }
