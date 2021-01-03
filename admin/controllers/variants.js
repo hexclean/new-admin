@@ -181,10 +181,19 @@ exports.postAddVariant = async (req, res, next) => {
 
 exports.getEditVariant = async (req, res, next) => {
   const editMode = req.query.edit;
+
   if (!editMode) {
     return res.redirect("/");
   }
-  let currentExtraName = [];
+  let languageCode;
+
+  if (req.cookies.language == "ro") {
+    languageCode = 1;
+  } else if (req.cookies.language == "hu") {
+    languageCode = 2;
+  } else {
+    languageCode = 3;
+  }
   const varId = req.params.variantId;
   let categoryId;
   await Variant.findByPk(varId).then((variant) => {
@@ -202,6 +211,7 @@ exports.getEditVariant = async (req, res, next) => {
     include: [
       {
         model: ExtraTranslations,
+        where: { languageId: languageCode },
       },
 
       { model: ProductVariantsExtras },
@@ -213,6 +223,7 @@ exports.getEditVariant = async (req, res, next) => {
     include: [
       {
         model: ExtraTranslations,
+        where: { languageId: languageCode },
       },
     ],
   });
@@ -225,6 +236,7 @@ exports.getEditVariant = async (req, res, next) => {
         include: [
           {
             model: PropertyTranslation,
+            where: { languageId: languageCode },
           },
           {
             model: PropertyValue,
@@ -240,21 +252,11 @@ exports.getEditVariant = async (req, res, next) => {
     include: [
       {
         model: CategoryTranslation,
+        where: { languageId: languageCode },
       },
     ],
   });
 
-  for (let i = 0; i < productVarToExt.length; i++) {
-    var currentLanguage = req.cookies.language;
-
-    if (currentLanguage == "ro") {
-      currentCategoryName = 1;
-    } else if (currentLanguage == "hu") {
-      currentCategoryName = 2;
-    } else {
-      currentCategoryName = 3;
-    }
-  }
   const resultProp = await CategoryProperty.findAll({
     where: { restaurantId: req.admin.id, categoryId: categoryId, active: 1 },
     include: [
@@ -263,10 +265,16 @@ exports.getEditVariant = async (req, res, next) => {
         include: [
           {
             model: PropertyTranslation,
+            where: { languageId: languageCode },
           },
           {
             model: PropertyValue,
-            include: [{ model: PropertyValueTranslation }],
+            include: [
+              {
+                model: PropertyValueTranslation,
+                where: { languageId: languageCode },
+              },
+            ],
           },
         ],
       },
@@ -278,6 +286,7 @@ exports.getEditVariant = async (req, res, next) => {
     include: [
       {
         model: ExtraTranslations,
+        where: { languageId: languageCode },
       },
 
       {
@@ -312,7 +321,6 @@ exports.getEditVariant = async (req, res, next) => {
         currentLanguage: 1,
         productVarToExt: productVarToExt,
         isActive: variant[0].ProductVariantsExtras,
-        currentExtraName: currentExtraName,
         testing3: test3[0].VariantPropertyValues[0].propertyValueId,
       });
     })

@@ -348,15 +348,14 @@ exports.getBoxIndex = async (req, res, next) => {
 
 exports.getFilteredExtra = async (req, res, next) => {
   var extraName = req.params.extraName;
-  var currentExtraName;
-  var currentLanguage = req.cookies.language;
+  let languageCode;
 
-  if (currentLanguage == "ro") {
-    currentExtraName = 1;
-  } else if (currentLanguage == "hu") {
-    currentExtraName = 2;
+  if (req.cookies.language == "ro") {
+    languageCode = 1;
+  } else if (req.cookies.language == "hu") {
+    languageCode = 2;
   } else {
-    currentExtraName = 3;
+    languageCode = 3;
   }
 
   await Extras.findAll({
@@ -368,7 +367,7 @@ exports.getFilteredExtra = async (req, res, next) => {
         model: ExtraTranslations,
         where: {
           name: { [Op.like]: "%" + extraName + "%" },
-          languageId: currentExtraName,
+          languageId: languageCode,
         },
       },
     ],
@@ -378,7 +377,6 @@ exports.getFilteredExtra = async (req, res, next) => {
       res.render("variant/searchedExtra", {
         ext: ext,
         editing: false,
-        currentExtraName: extraName,
       });
     })
     .catch((err) => {
