@@ -38,7 +38,17 @@
                </div>
             </div>
          </div>
-        
+         <script>
+            $(document).ready(function () {
+                const regex = /[^\d.]|\.(?=.*\.)/g;
+                const subst = ``;
+                $(".product_price_input").keyup(function () {
+                  const str = this.value;
+                  const result = str.replace(regex, subst);
+                  this.value = result;
+                });
+              });
+         </script>
          <div class="row answer">
             <div class="col-xl-6 col-md-12" style="height: 320px;">
                <div class="ms-panel ms-panel-fh">
@@ -103,7 +113,7 @@
              
          </script>
          <div class="row">
-            <div class="col-xl-6 col-md-12" style="height: 1235px;">
+            <div class="col-xl-6 col-md-12" style="height: 1271px;">
                <div class="ms-panel ms-panel-fh">
                   <div class="ms-panel-header">
                      <h6><% if (editing) { %>"<%= product[0].ProductTranslations[0].title %>" <%= lingua.product_edit_title %><% } else { %> <%= lingua.create_product %> <% } %></h6>
@@ -276,12 +286,13 @@
                                        /> 
                                     <li>
                                        <label class="ms-switch" data-extra="<%= allergenArray[i].id %>">
-                                       <input type="hidden" value="off" class="statusAllergen-<%= allergenArray[i].id %>" name="statusAllergen[<%= allergenArray[i].id %>]" > 
+                                       <input type="hidden" value="off" class="statusAllergen-<%= allergenArray[i].id %>  status-hidden" name="statusAllergen[<%= allergenArray[i].id %>]" > 
                                        <input data-allergenId="<%= allergenArray[i].id %>"  class="statusAllergen-checkbox statusAllergen-checkbox-<%= allergenArray[i].id %>" type="checkbox"> <span class="ms-switch-slider ms-switch-success round"></span>
                                        </label> <span> <%= allergenArray[i].AllergenTranslations[0].name %> </span>
                                     </li>
                                     <% } %>
                                  </ul>
+                                 <span class="error_form" id="allergen_error_message"></span>
                               </div>
                            </div>
                         </div>
@@ -341,11 +352,11 @@
                                  <label for="price"><%= lingua.create_product_price %></label>
                                  <div class="input-group">
                                     <input
-                                       class="price_<%= productVariant[i].id %> extra_price_input"
+                                       class="price_<%= productVariant[i].id %> product_price_input"
                                        type="text"
                                        name="price"
                                        id="price"
-                                       step="0.01"
+                                      
                                        value="<% if (editing) { %><%= netest[i].price %><% } %>"
                                        />
                                  </div>
@@ -391,7 +402,7 @@
                                  <label for="price"><%= lingua.create_product_price %></label>
                                  <div class="input-group">
                                     <input
-                                       class="form-control price_<%= extra.id %> extra_price_input"
+                                       class="form-control price_<%= extra.id %> product_price_input"
                                        type="text"
                                        name="price"
                                        id="price"

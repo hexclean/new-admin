@@ -12,18 +12,6 @@
 </script>
 
 <script>
-  $("#createProduct").submit(function (e) {
-    e.preventDefault();
-    var ck_box = $('input[type="checkbox"]:checked').length;
-    console.log(ck_box);
-
-    if (ck_box > 0) {
-      alert(ck_box);
-    }
-  });
-</script>
-
-<script>
   $(document).ready(function () {
     $(".statusAllergen-checkbox").click(function () {
       var extraId = $(this).attr("data-allergenId");
@@ -57,17 +45,22 @@
 
       var error_price = false;
     });
+
     function check_variantInputs() {
       var extraId = $(this).attr("data-extraId");
       $(".extra_box").each(function () {
         var extraId = $(this).data("extra");
         var price_len = $(".price_" + extraId).val().length;
+        var checkedSw = $(".status-" + extraId).val();
 
         if ($(this).find("input:checkbox").is(":checked") && price_len < 1) {
+          $(".product_price_input").on("mouseup keyup", function () {
+            $(this).val(Math.min(20, Math.max(1, $(this).val())));
+          });
           if (price_len < 1) {
             $("#price_error_message_" + extraId)
               .show()
-              .html("Mezo kitoltese kotelezo");
+              .html("<%= lingua.variant_validation %>");
             error_price = true;
           } else {
             $("#price_error_message_" + extraId)
@@ -79,19 +72,23 @@
         }
       });
     }
-    $(".extra_price_input").focusout(function () {
+
+    $(".product_price_input").focusout(function () {
       var len = $(this).val().length;
       var extraId = $(this).closest(".extra_box").data("extra");
-      if (len < 1) {
+      var checkedSw = $(".status-" + extraId).val();
+
+      if (len < 1 && checkedSw == "on") {
         $("#price_error_message_" + extraId)
           .show()
-          .html("Mezo kitoltese kotelezo");
+          .html("<%= lingua.variant_validation %>");
       } else {
         $("#price_error_message_" + extraId)
           .hide()
           .html("");
       }
     });
+
     $("#product-form").submit(function () {
       error_price = false;
 
@@ -104,6 +101,7 @@
     });
   });
 </script>
+
 <script>
   $(function () {
     $("#roName_error_message").hide();
@@ -113,10 +111,14 @@
     $("#roDescription_error_message").hide();
     $("#huDescription_error_message").hide();
     $("#enDescription_error_message").hide();
+    $("#category_error_message").hide();
+    $("#allergen_error_message").hide();
 
     var error_roName = false;
     var error_huName = false;
     var error_enName = false;
+    var error_category = false;
+    var error_allergen = false;
 
     var error_roDescription = false;
     var error_huDescription = false;
@@ -142,6 +144,14 @@
     });
     $("#enDescription").focusout(function () {
       check_enDescription();
+    });
+
+    $("#categoryId").change(function () {
+      check_category();
+    });
+
+    $(".statusAllergen-checkbox").change(function () {
+      check_allergen();
     });
 
     function check_roName() {
@@ -213,11 +223,35 @@
         $("#enDescription_error_message").hide();
       }
     }
+    function check_allergen() {
+      if ($(".status-hidden[value='on']").length < 1) {
+        $("#allergen_error_message").html("csak 1 et lehet megadni");
+        $("#allergen_error_message").show();
+        error_allergen = true;
+        $("#createBox").disabled = true;
+      } else {
+        $("#allergen_error_message").hide();
+        $("#createBox").removeAttr("disabled");
+      }
+    }
+    function check_category() {
+      var category = $("#categoryId").val();
+
+      if (category > 0) {
+        $("#category_error_message").hide();
+      } else {
+        $("#category_error_message").html(`<%= lingua.variant_validation %>`);
+        $("#category_error_message").show();
+        error_category = true;
+      }
+    }
 
     $("#product-form").submit(function () {
       error_roName = false;
       error_huName = false;
       error_enName = false;
+      error_category = false;
+      error_allergen = false;
 
       error_roDescription = false;
       error_huDescription = false;
@@ -226,10 +260,11 @@
       check_roName();
       check_huName();
       check_enName();
-
+      check_category();
       check_roDescription();
       check_huDescription();
       check_enDescription();
+      check_allergen();
 
       if (
         error_roName == false &&
@@ -237,7 +272,9 @@
         error_enName == false &&
         error_roDescription == false &&
         error_huDescription == false &&
-        error_enDescription == false
+        error_enDescription == false &&
+        error_category == false &&
+        error_allergen == false
       ) {
         return true;
       } else {
@@ -250,7 +287,6 @@
 <script>
   $(document).ready(function () {
     // $("#categoryId").click(function () {
-    console.log("adasd", "");
 
     const categoryId = $("#categoryId").val();
     $(".category-all").hide();
@@ -272,7 +308,6 @@
   $(document).ready(function () {
     $("#categoryId").on("change", function () {
       const categoryId = $("#categoryId").val();
-
       $(".category-all").hide();
       $(".category-" + categoryId).show();
     });
@@ -289,17 +324,6 @@
       } else {
         $(".statusOption" + optionId).val("off");
       }
-    });
-  });
-</script>
-
-<script>
-  $(document).ready(function () {
-    $(function () {
-      $("#createProduct").one("click", function () {
-        $("#createProduct").prop("disabled", true);
-        $("#product-form").submit();
-      });
     });
   });
 </script>
