@@ -101,17 +101,21 @@
                                  /> 
                               <li>
                                  <label class="ms-checkbox-wrap ms-checkbox-success" data-extra="<%= property[i].id %>">
-                                 <input type="hidden" value="off" class="status-<%= property[i].id %>" name="status[<%= property[i].id %>]" value="<%= property[i].id %>" >
+                                 <input type="hidden" value="off" class="status-<%= property[i].id %> status-hidden" name="status[<%= property[i].id %>]" value="<%= property[i].id %>" >
                                  <input data-propertyId="<%= property[i].id %>" class="status-checkbox status-checkbox-<%= property[i].id %>" type="checkbox" value="<%= property[i].id %>"> <i class="ms-checkbox-check"></i>
                                  </label> <span> <%= property[i].PropertyTranslations[0].name %> </span>
                               </li>
                               <% } %>
                            </ul>
+                           <span class="error_form" id="property_error_message"></span>
                         </div>
                      </div>
                   </div>
                </div>
             </div>
+          
+
+           
             <% if (editing) { %>
             <input type="hidden" value="<%= categoryId %>" name="categoryId">
             <%for (let i = 0; i < extTranslations.length; i++){%>

@@ -19,9 +19,6 @@
     $("select#categoryId").val(
       "<% if (editing) { %><%=  variant[0].ProductVariantsExtras[0].Variant.categoryId %><% } %>"
     );
-    // $("select#propertyValueId").val(
-    //   "<% if (editing) { %><%=  testing3 %><% } %>"
-    // );
   });
 </script>
 <script>
@@ -165,13 +162,44 @@
   });
 </script>
 <script>
+  var error_property = false;
+  function check_property() {
+    var property = $("#propertyValueId").val();
+    console.log("property", property);
+    if (property > 0) {
+      $("#property_error_message").hide();
+    } else {
+      $("#property_error_message").html(`<%= lingua.variant_validation %>`);
+      $("#property_error_message").show();
+      error_property = true;
+    }
+  }
   $(function () {
     $("#sku_error_message").hide();
+    $("#category_error_message").hide();
+    $("#property_error_message").hide();
+    $("#required_error_message").hide();
 
     var error_sku = false;
+    var error_category = false;
+    var error_required = false;
 
     $("#sku").focusout(function () {
       check_sku();
+    });
+
+    $("#categoryId").change(function () {
+      check_category();
+    });
+
+    $("#propertyValueId").change(function () {
+      check_property();
+    });
+    $("#maxOption").change(function () {
+      check_required();
+    });
+    $(".status-checkbox-option").change(function () {
+      check_required();
     });
 
     function check_sku() {
@@ -186,12 +214,48 @@
       }
     }
 
+    function check_category() {
+      var category = $("#categoryId").val();
+
+      if (category > 0) {
+        $("#category_error_message").hide();
+      } else {
+        $("#category_error_message").html(`<%= lingua.variant_validation %>`);
+        $("#category_error_message").show();
+        error_category = true;
+      }
+    }
+
+    function check_required() {
+      if ($(".status-option[value='on']").length != $("#maxOption").val()) {
+        $("#required_error_message").html("egyenlo kell legyen");
+        $("#required_error_message").show();
+        error_required = true;
+        $("#createVariant").disabled = true;
+      } else {
+        $("#required_error_message").hide();
+        $("#createVariant").removeAttr("disabled");
+      }
+    }
+
     $("#variant_form").submit(function () {
       error_sku = false;
+      error_category = false;
+      error_property = false;
+      error_required = false;
 
       check_sku();
+      check_category();
+      check_property();
+      check_required();
 
-      if (error_sku == false) {
+      if (
+        error_sku == false &&
+        error_category == false &&
+        error_property == false &&
+        error_required == false
+      ) {
+        $("#createVariant").prop("disabled", true);
         return true;
       } else {
         return false;
@@ -203,7 +267,6 @@
   $(document).ready(function () {
     $(function () {
       $("#createVariant").one("click", function () {
-        $("#createVariant").prop("disabled", true);
         $("#variant_form").submit();
       });
     });
@@ -254,6 +317,9 @@
       const categoryId = $("#categoryId").val();
       $.get("search-variant-category/" + categoryId).done(function (data) {
         $("#propByCat").html(data);
+        $("#propertyValueId").change(function () {
+          check_property();
+        });
       });
     });
   });

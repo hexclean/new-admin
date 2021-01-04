@@ -3,10 +3,12 @@
     $("#roName_error_message").hide();
     $("#huName_error_message").hide();
     $("#enName_error_message").hide();
+    $("#property_error_message").hide();
 
     var error_roName = false;
     var error_huName = false;
     var error_enName = false;
+    var error_property = false;
 
     $("#roName").focusout(function () {
       check_roName();
@@ -18,6 +20,10 @@
 
     $("#enName").focusout(function () {
       check_enName();
+    });
+
+    $(".status-checkbox").change(function () {
+      check_property();
     });
 
     function check_roName() {
@@ -68,20 +74,37 @@
       }
     }
 
+    function check_property() {
+      if ($(".status-hidden[value='on']").length != 1) {
+        $("#property_error_message").html("csak 1 et lehet megadni");
+        $("#property_error_message").show();
+        error_property = true;
+        $("#createCategory").disabled = true;
+      } else {
+        $("#property_error_message").hide();
+        $("#createCategory").removeAttr("disabled");
+      }
+    }
+
     $("#createCategory_form").submit(function () {
       error_roName = false;
       error_huName = false;
       error_enName = false;
+      error_property = false;
 
       check_roName();
       check_huName();
       check_enName();
+      check_property();
 
       if (
         error_roName == false &&
         error_huName == false &&
-        error_enName == false
+        error_enName == false &&
+        error_property == false
       ) {
+        $("#createCategory").prop("disabled", true);
+
         return true;
       } else {
         return false;
@@ -100,7 +123,6 @@
   $(document).ready(function () {
     $(function () {
       $("#createCategory").one("click", function () {
-        $("#createCategory").prop("disabled", true);
         $("#createCategory_form").submit();
       });
     });

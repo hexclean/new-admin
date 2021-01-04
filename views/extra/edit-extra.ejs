@@ -114,12 +114,15 @@
                                  /> 
                               <li>
                                  <label class="ms-switch" data-extra="<%= allergenArray[i].id %>">
-                                 <input type="hidden" value="off" class="status-<%= allergenArray[i].id %>" name="status[<%= allergenArray[i].id %>]" > 
+                                 <input type="hidden" value="off" class="status-<%= allergenArray[i].id %> status-hidden" name="status[<%= allergenArray[i].id %>]" > 
                                  <input data-extraId="<%= allergenArray[i].id %>"  class="status-checkbox status-checkbox-<%= allergenArray[i].id %>" type="checkbox"> <span class="ms-switch-slider ms-switch-success round"></span>
                                  </label> <span> <%= allergenArray[i].AllergenTranslations[0].name %> </span>
                               </li>
                               <% } %>
                            </ul>
+                           <span class="error_form" id="allergen_error_message"></span>
+
+                           
                         </div>
                      </div>
                   </div>
