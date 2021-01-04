@@ -7,6 +7,18 @@
    <%- include('../includes/navigation.ejs') %>
    <main class="body-content">
       <%- include('../includes/navigation-bar.ejs') %>
+       <script>
+         $(document).ready(function () {
+             const regex = /[^\d.]|\.(?=.*\.)/g;
+             const subst = ``;
+             $(".extra_price_input").keyup(function () {
+               const str = this.value;
+               const result = str.replace(regex, subst);
+               this.value = result;
+             });
+           });
+      </script>
+      
       <form
          class="ms-content-wrapper" name="myForm"
          action="/admin/<% if (editing) { %>edit-variant<% } else { %>add-variant<% } %>"

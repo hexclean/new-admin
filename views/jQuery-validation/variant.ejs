@@ -52,17 +52,14 @@
         var price_len = $(".price_" + extraId).val().length;
         var qtMin_len = $(".qtMin_" + extraId).val().length;
         var qtMax_len = $(".qtMax_" + extraId).val().length;
-        const regex = /[^\d.]|\.(?=.*\.)/g;
-        const subst = ``;
-        $(".price_" + extraId).keyup(function () {
-          const str = this.value;
-          const result = str.replace(regex, subst);
-          this.value = result;
-        });
+        var checkedSw = $(".status-" + extraId).val();
+        console.log(checkedSw);
+        console.log("price_len", price_len);
         if (
           $(this).find("input:checkbox").is(":checked") &&
-          (price_len < 0 || qtMin_len < 0 || qtMax_len < 0)
+          (price_len < 1 || qtMin_len < 1 || qtMax_len < 1)
         ) {
+          console.log("log");
           $("#quantityMin").on("mouseup keyup", function () {
             $(this).val(Math.min(20, Math.max(1, $(this).val())));
           });
@@ -107,7 +104,9 @@
     $(".extra_price_input").focusout(function () {
       var len = $(this).val().length;
       var extraId = $(this).closest(".extra_box").data("extra");
-      if (len < 1) {
+      var checkedSw = $(".status-" + extraId).val();
+
+      if (len < 1 && checkedSw == "on") {
         $("#price_error_message_" + extraId)
           .show()
           .html("<%= lingua.variant_validation %>");
@@ -121,7 +120,8 @@
     $(".extra_qtMin_input").focusout(function () {
       var len = $(this).val().length;
       var extraId = $(this).closest(".extra_box").data("extra");
-      if (len < 1) {
+      var checkedSw = $(".status-" + extraId).val();
+      if (len < 1 && checkedSw == "on") {
         $("#qtMin_error_message_" + extraId)
           .show()
           .html("<%= lingua.variant_validation %>");
@@ -134,7 +134,9 @@
     $(".extra_qtMax_input").focusout(function () {
       var len = $(this).val().length;
       var extraId = $(this).closest(".extra_box").data("extra");
-      if (len < 1) {
+      var checkedSw = $(".status-" + extraId).val();
+
+      if (len < 1 && checkedSw == "on") {
         $("#qtMax_error_message_" + extraId)
           .show()
           .html("<%= lingua.variant_validation %>");
