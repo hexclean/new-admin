@@ -309,11 +309,22 @@
     $("#categoryId").on("change", function () {
       const categoryId = $("#categoryId").val();
       $(".category-all").hide();
+      $(".variants").prop("disabled", false);
       $(".category-" + categoryId).show();
     });
   });
 </script>
 <% } %>
+
+<script>
+  $(document).ready(function () {
+    const categoryId = $("#categoryId").val();
+    if (categoryId < 1) {
+      console.log(categoryId);
+      $(".variants").prop("disabled", true);
+    }
+  });
+</script>
 
 <script>
   $(document).ready(function () {
