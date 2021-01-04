@@ -103,18 +103,29 @@
                              
                         </div>
                      </div>
-                     <div class="col-md-6 text-md-right">
-                        <ul class="invoice-date">
-                           <li>das</li>
-                        </ul>
+                     <div class="col-md-6 info-orders-top" style="border-style: double;padding-top: 10px; padding-left: 10px;border-color: coral; ">
+                        <div class="invoice-address">
+                           <h5><u><%=lingua.product_comment_courier %></u>: <% if(true){ %>
+                              Sok extrát vettem remélem egy nyaklevest kap a szakács ezért!!! 
+                            <% } else{ %>  
+                              -
+                           <% } %></h5>
+                          
+                             
+                        </div>
                      </div>
+                     
+                      
+                          
+                       
+                    
                     
                    
                   </div>
                   <!-- Invoice Table -->
                   <% for (let j =0; j < orders[i].products.length; j++) { %>
                     
-                  <div class="ms-invoice-table table-responsive mt-5">
+                  <div class="ms-invoice-table table-responsive mt-5" style="border-style: double;">
                      <table class="table table-hover text-right thead-light">
                         <thead>
                            <tr class="text-capitalize" style="font-size: 16px;">
@@ -135,32 +146,40 @@
                               <td><%= orders[i].products[j].total_product_price %></td>
                              
                            </tr>
-                           
-                         
-                              <% for (let k = 0; k < orders[i].products[j].extras.length; ++k) { %>
-                                 <tr>
-                                    <td class="text-center"><%=  orders[i].products[j].extras[k].extra_id %></td>
-                                    <td class="text-left"><%=  orders[i].products[j].extras[k].extra_name %></td>
-                                    <td><%= orders[i].products[j].extras[k].extra_quantity %></td>
-                                    <td><%= orders[i].products[j].extras[k].extra_price %></td>
-                                    <td><%= orders[i].products[j].extras[k].total_extra_price %></td>
-                                 </tr>
-                               
+                           <% console.log('heheeh', JSON.stringify(orders[i].products[j].extra_length, null, '\t')) %>
+                          
+                           <% for (let k = 0; k < orders[i].products[j].extras.length; ++k) { %>
+                           <% if(orders[i].products[j].extra_length != 0){ %>
                              
+                              <tr>
+                                 <td class="text-center"><%=  orders[i].products[j].extras[k].extra_id %></td>
+                                 <td class="text-left"><%=  orders[i].products[j].extras[k].extra_name %></td>
+                                 <td><%= orders[i].products[j].extras[k].extra_quantity %></td>
+                                 <td><%= orders[i].products[j].extras[k].extra_price %></td>
+                                 <td><%= orders[i].products[j].extras[k].total_extra_price %></td>
+                              </tr>
+                           
+                           <% } %>
                            <% } %>
                          
-                                
+ 
                         </tbody>
+
                         <tfoot>
-                           <tr>
+                           <tr style="font-size: 16px;" >
                               <td colspan="4"><%= lingua.order_detail_total_final %>:</td>
                               <td><%= orders[i].products[j].total_cost_produce_extra %>44.77 <%= lingua.currency %></td>
                              
                            </tr>
                         </tfoot>
+                        
                      </table>
                      
-                     <p style="color: green; font-size: 17px" class="text-left">Uzenet: <%= orders[i].products[j].message %></p style="color: green font-size: 19px">
+                     <p style=" font-size: 17px; margin-left: 20px;" class="text-left"><u><%=lingua.product_comment %></u>: <% if(orders[i].products[j].message.length !=0){ %>
+                        <%= orders[i].products[j].message %>
+                      <% } else{ %>  
+                        -
+                     <% } %></p>
 
                   </div>
 

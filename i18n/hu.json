@@ -143,5 +143,7 @@
   "order_detail_product_price": "Ár",
   "order_detail_total": "Összeg",
   "order_detail_total_final": "Végösszeg",
-  "currency": "lej"
+  "currency": "lej",
+  "product_comment": "Megjegyzés",
+  "product_comment_courier": "Megjegyzés a futárnak"
 }

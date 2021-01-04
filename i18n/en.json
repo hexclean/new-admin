@@ -143,5 +143,7 @@
   "order_detail_product_price": "Price",
   "order_detail_total": "Total",
   "order_detail_total_final": "Grand total",
-  "currency": "lei"
+  "currency": "lei",
+  "product_comment": "Comment",
+  "product_comment_courier": "Comment to the courier"
 }

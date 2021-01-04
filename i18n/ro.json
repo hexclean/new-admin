@@ -147,5 +147,7 @@
   "order_detail_product_price": "Preț",
   "order_detail_total": "Total",
   "order_detail_total_final": "Total general",
-  "currency": "lei"
+  "currency": "lei",
+  "product_comment": "Cometariu",
+  "product_comment_courier": "Notă către curier"
 }

@@ -130,14 +130,16 @@ exports.getOrders = async (req, res, next) => {
 
         let prodFin = orderItems[j].Variant.ProductFinals;
         for (let h = 0; h < prodFin.length; h++) {
-          // console.log(orders[i].products[j].extras);
+          // console.log();
           if (extras.length == 0) {
+            console.log(extras.length);
             let totalProductPrice = 0;
 
             totalProductPrice +=
               parseFloat(orderItems[j].variantPrice) *
               parseInt(orderItems[j].quantity);
             const items = {
+              extra_length: extras.length,
               product_id: prodFin[h].productId,
               product_quantity: orderItems[j].quantity,
               message: orderItems[j].message,
@@ -149,6 +151,7 @@ exports.getOrders = async (req, res, next) => {
             resultWithAll.push(items);
           } else {
             for (let k = 0; k < extras.length; k++) {
+              console.log(extras.length);
               extrasArray.push(extras[k]);
               let totalProductPrice = 0;
               let totalExtraPrice = 0;
@@ -159,6 +162,7 @@ exports.getOrders = async (req, res, next) => {
               totalExtraPrice +=
                 parseFloat(extras[k].extraPrice) * parseInt(extras[k].quantity);
               const items = {
+                extra_length: extras.length,
                 product_id: prodFin[h].productId,
                 product_quantity: orderItems[j].quantity,
                 product_price: orderItems[j].variantPrice,
@@ -188,10 +192,11 @@ exports.getOrders = async (req, res, next) => {
             product_name,
             total_product_price,
             message,
+            extra_length,
             ...rest
           }
         ) => {
-          const key = `${product_id}-${product_quantity}-${product_price}-${product_name}-${total_product_price}-${message}`;
+          const key = `${product_id}-${product_quantity}-${product_price}-${product_name}-${total_product_price}-${message}-${extra_length}`;
           r[key] = r[key] || {
             product_id,
             product_quantity,
@@ -199,6 +204,7 @@ exports.getOrders = async (req, res, next) => {
             product_name,
             total_product_price,
             message,
+            extra_length,
             extras: [],
           };
           r[key]["extras"].push(rest);
@@ -223,7 +229,6 @@ exports.getOrders = async (req, res, next) => {
       timeZone: "Europe/Helsinki",
     });
 
-    console.log(orderCreated);
     userName = orders[0].OrderDeliveryAddress.userName;
     orderIds = orders[0].id;
   }
