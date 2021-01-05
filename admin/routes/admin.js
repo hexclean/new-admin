@@ -94,7 +94,7 @@ router.get(
 router.get(
   "/edit-variant/search-variant-category/:categoryId",
   isAuth,
-  variantsController.getTest
+  variantsController.getFilteredProperty
 );
 router.get(
   "/search-variant-category/:categoryId",

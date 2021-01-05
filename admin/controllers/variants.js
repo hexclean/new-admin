@@ -351,7 +351,7 @@ exports.postEditVariant = async (req, res, next) => {
   } else {
     adminCommission / 10;
   }
-
+  console.log(req.body);
   const updatedSku = req.body.sku;
   const varId = req.body.variantId;
   const updatedExtraPrice = req.body.price;
@@ -379,10 +379,22 @@ exports.postEditVariant = async (req, res, next) => {
     },
     {
       where: {
-        variantId: dasd,
+        variantId: req.body.varId,
       },
     }
   );
+
+  // await VariantPropertyValue.update(
+  //   {
+  //     propertyValueId: req.body.propertyValueId,
+  //     propertyId: req.body.propertyId,
+  //   },
+  //   {
+  //     where: {
+  //       variantId: req.body.varId,
+  //     },
+  //   }
+  // );
 
   Variant.findAll()
     .then((variant) => {
