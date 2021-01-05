@@ -16,6 +16,7 @@ const Order = sequelize.define("Order", {
   take: Sequelize.INTEGER,
   orderType: Sequelize.INTEGER,
   deletedMessage: Sequelize.STRING,
+  messageCourier: Sequelize.STRING,
 });
 
 module.exports = Order;

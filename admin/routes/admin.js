@@ -219,8 +219,6 @@ router.get("/accepted-orders", isAuth, ordersController.getAcceptedOrders);
 router.get("/deleted-orders", isAuth, ordersController.getDeletedOrders);
 router.get("/edit-order/:orderId", isAuth, ordersController.getEditOrder);
 router.post("/edit-order", isAuth, ordersController.postEditOrder);
-router.post("/filter-order", isAuth, ordersController.getFilterOrders);
-router.post("/download", isAuth, ordersController.download);
 
 // Reckoning
 router.get("/reckoning", isAuth, reckoningController.getIndex);

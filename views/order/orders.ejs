@@ -15,11 +15,7 @@
       </div>
    </div>
 
-   <form
-   id="createBox_form"
-   class="ms-content-wrapper"
-   action="/admin/<% if (editing) { %>filter-order<% } else { %>filter-order<% } %>"
-   method="POST">
+
  
    <% if (orders.length ==0) { %>
       <h2>Order not found</h2>
@@ -105,10 +101,22 @@
                      </div>
                      <div class="col-md-6 info-orders-top" style="border-style: double;padding-top: 10px; padding-left: 10px;border-color: coral; ">
                         <div class="invoice-address">
-                           <h5><u><%=lingua.product_comment_courier %></u>: <% if(true){ %>
-                              Sok extrát vettem remélem egy nyaklevest kap a szakács ezért!!! 
-                            <% } else{ %>  
+                           <h5><u><%=lingua.product_comment_courier %></u>: <% if(orders[i].messageCourier == null){ %>
                               -
+                            <% } else{ %>  
+                              <%= orders[i].messageCourier %> 
+                           <% } %></h5>
+
+                           <h5><u>Muanyag eszkoz</u>: <% if(orders[i].cutlery == 1){ %>
+                              Igen
+                            <% } else{ %>  
+                              Nem
+                           <% } %></h5>
+
+                           <h5><u>Elvitelre</u>: <% if(orders[i].take == 1){ %>
+                              Igen
+                            <% } else{ %>  
+                              Nem
                            <% } %></h5>
                           
                              
@@ -146,7 +154,6 @@
                               <td><%= orders[i].products[j].total_product_price %></td>
                              
                            </tr>
-                           <% console.log('heheeh', JSON.stringify(orders[i].products[j].extra_length, null, '\t')) %>
                           
                            <% for (let k = 0; k < orders[i].products[j].extras.length; ++k) { %>
                            <% if(orders[i].products[j].extra_length != 0){ %>

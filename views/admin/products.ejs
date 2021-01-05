@@ -30,7 +30,7 @@ $(document).ready(function() {
          $('.add-product').click(function () {return false;});
       </script>
       <div class="alert alert-danger" role="alert">
-         <i class="flaticon-alert-1"></i> <strong class="alert-message-popup"><%= lingua.product_box_message %></strong>
+         <i class="flaticon-alert-1"></i> <strong class="alert-message-popup"></strong><%= lingua.product_variant_message %>
       </div>
       <% } %>
       <% if ( checkBoxLength.length === 0) { %>
@@ -38,7 +38,8 @@ $(document).ready(function() {
          $('.add-product').click(function () {return false;});
       </script>
       <div class="alert alert-danger" role="alert">
-         <i class="flaticon-alert-1"></i> <strong class="alert-message-popup"><%= lingua.product_variant_message %></strong>
+         <i class="flaticon-alert-1"></i> <strong class="alert-message-popup">
+            <%= lingua.product_box_message %></strong>
       </div>
       <% } %>
       <div class="ms-content-wrapper">
