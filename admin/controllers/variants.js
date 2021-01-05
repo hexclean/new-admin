@@ -195,6 +195,16 @@ exports.getEditVariant = async (req, res, next) => {
     languageCode = 3;
   }
   const varId = req.params.variantId;
+  const propertyValTransId = await VariantPropertyValue.findAll({
+    where: { variantId: varId },
+    include: [
+      {
+        model: PropertyValue,
+      },
+    ],
+  });
+  console.log(propertyValTransId[0].propertyValueId);
+
   let categoryId;
   await Variant.findByPk(varId).then((variant) => {
     categoryId = variant.categoryId;
@@ -322,6 +332,7 @@ exports.getEditVariant = async (req, res, next) => {
         productVarToExt: productVarToExt,
         isActive: variant[0].ProductVariantsExtras,
         testing3: test3[0].VariantPropertyValues[0].propertyValueId,
+        testActiveOk: propertyValTransId[0].propertyValueId,
       });
     })
     .catch((err) => {

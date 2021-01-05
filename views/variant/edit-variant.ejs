@@ -135,6 +135,13 @@
                                           >
                                     </select>
                                  </div>
+                                 <script>
+                                    $(document).ready(function () {
+                                      var id = "<%= testActiveOk %>";
+                                      $("#propertyValueId").val(id);
+
+                                    });
+                                  </script>
                                  <div class="col-sm">
                                     <select
                                        class="form-control"
@@ -192,6 +199,7 @@
             </div>
          </div>
          <% if (editing) { %>  <% if (productVarToExt.length > 0) { %>
+           
          <div class="ms-content-wrapper">
             <div class="row">
                <div class="col-md-12">
