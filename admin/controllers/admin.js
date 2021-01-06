@@ -516,32 +516,36 @@ exports.postEditProduct = async (req, res, next) => {
     .then((result) => {
       async function msg() {
         await Product.findByPk(prodId).then((product) => {
-          // if (product.restaurantId.toString() !== req.admin.id.toString()) {
-          //   return res.redirect("/");
-          // }
+          if (product.restaurantId.toString() !== req.admin.id.toString()) {
+            return res.redirect("/");
+          }
           if (req.body.isDailyMenu == 1) {
-            // fileHelper.deleteFile(product.productImagePath);
-            Product.update(
-              {
-                // productImagePath: image.path,
-                active: 1,
-                isDailyMenu: 1,
-                soldOut: 0,
-                startTime: req.body.startDate,
-                endTime: req.body.endDate,
-              },
-              { where: { id: prodId } }
-            );
+            if (image) {
+              fileHelper.deleteFile(product.productImagePath);
+              Product.update(
+                {
+                  productImagePath: image.path,
+                  active: 1,
+                  isDailyMenu: 1,
+                  soldOut: 0,
+                  startTime: req.body.startDate,
+                  endTime: req.body.endDate,
+                },
+                { where: { id: prodId } }
+              );
+            }
           } else {
-            // fileHelper.deleteFile(product.productImagePath);
-            Product.update(
-              {
-                // productImagePath: image.path,
-                active: 1,
-                isDailyMenu: 0,
-              },
-              { where: { id: prodId } }
-            );
+            if (image) {
+              fileHelper.deleteFile(product.productImagePath);
+              Product.update(
+                {
+                  productImagePath: image.path,
+                  active: 1,
+                  isDailyMenu: 0,
+                },
+                { where: { id: prodId } }
+              );
+            }
           }
 
           // if (image) {
