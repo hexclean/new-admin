@@ -192,6 +192,7 @@ exports.postAddCategory = async (req, res, next) => {
     async function createExtraTranslation() {
       const category = await Category.create({
         restaurantId: req.admin.id,
+        active: 0,
       });
 
       await CategoryTranslation.create({

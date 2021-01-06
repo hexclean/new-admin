@@ -113,7 +113,7 @@ exports.postAddProduct = async (req, res, next) => {
   const extId = req.body.extraId;
   const filteredStatusAllergen = req.body.statusAllergen.filter(Boolean);
   const filteredStatusBox = req.body.statusBox.filter(Boolean);
-
+  console.log(req.body);
   if (!req.file || !req.file.path) {
     return res.redirect("/admin/products");
   }
@@ -237,6 +237,17 @@ exports.postAddProduct = async (req, res, next) => {
         });
       }
     }
+
+    await Category.update(
+      {
+        active: 1,
+      },
+      {
+        where: {
+          id: req.body.categoryId,
+        },
+      }
+    );
   }
 
   productTranslation()
@@ -561,6 +572,16 @@ exports.postEditProduct = async (req, res, next) => {
             description: updatedEnDesc,
           },
           { where: { productId: prodId, languageId: 3 } }
+        );
+        await Category.update(
+          {
+            active: 1,
+          },
+          {
+            where: {
+              id: req.body.categoryId,
+            },
+          }
         );
       }
 
