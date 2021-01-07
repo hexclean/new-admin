@@ -21,7 +21,6 @@
     }
   });
 </script>
-
 <script>
   $(document).ready(function () {
     $(".statusAllergen-checkbox").click(function () {
@@ -108,12 +107,14 @@
     $("#roDescription_error_message").hide();
     $("#huDescription_error_message").hide();
     $("#enDescription_error_message").hide();
+    $("#variant_error_message").hide();
     var error_roName = false;
     var error_huName = false;
     var error_enName = false;
     var error_roDescription = false;
     var error_huDescription = false;
     var error_enDescription = false;
+    var error_variants = false;
     $("#roTitle").focusout(function () {
       check_roName();
     });
@@ -131,6 +132,9 @@
     });
     $("#enDescription").focusout(function () {
       check_enDescription();
+    });
+    $(".status-checkbox").change(function () {
+      check_variant();
     });
     function check_roName() {
       var roName_length = $("#roTitle").val().length;
@@ -192,6 +196,17 @@
         $("#enDescription_error_message").hide();
       }
     }
+    function check_variant() {
+      if ($(".status-hidden[value='on']").length != 1) {
+        $("#variant_error_message").html("ygtyt67576575r6f5f");
+        $("#variant_error_message").show();
+        error_variants = true;
+        $("#createCategory").disabled = true;
+      } else {
+        $("#variant_error_message").hide();
+        $("#createCategory").removeAttr("disabled");
+      }
+    }
     $("#product-form").submit(function () {
       error_roName = false;
       error_huName = false;
@@ -199,19 +214,22 @@
       error_roDescription = false;
       error_huDescription = false;
       error_enDescription = false;
+      error_variants = false;
       check_roName();
       check_huName();
       check_enName();
       check_roDescription();
       check_huDescription();
       check_enDescription();
+      check_variant();
       if (
         error_roName == false &&
         error_huName == false &&
         error_enName == false &&
         error_roDescription == false &&
         error_huDescription == false &&
-        error_enDescription == false
+        error_enDescription == false &&
+        error_variants == false
       ) {
         return true;
       } else {
@@ -247,6 +265,8 @@
       const categoryId = $("#categoryId").val();
       $(".category-all").hide();
       $(".category-" + categoryId).show();
+      $(".status-checkbox").prop("checked", false);
+      $(".status-hidden").val("off");
     });
   });
 </script>

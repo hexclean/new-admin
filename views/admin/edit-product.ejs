@@ -10,7 +10,6 @@
    <%- include('../includes/navigation.ejs') %>
    <main class="body-content">
       <%- include('../includes/navigation-bar.ejs') %>
-      <h1>dsa</h1>
       <form
          name="myForm"
          class="ms-content-wrapper"
@@ -322,6 +321,7 @@
             <div class="ms-panel-header">
                <h6><%= lingua.product_variant_title %></h6>
             </div>
+            <span class="error_form" id="variant_error_message"></span>     
          </div>
          <% if (editing) { %>  <% if (productVariant.length > 0) { %>
          <div class="ms-content-wrapper">
@@ -339,11 +339,13 @@
                            <div class="d-flex justify-content-center extra-margin-top">
                               <div class="row"> 
                                  <label  class="ms-switch" >                 
-                                 <input type="hidden" value="off" class="status-<%= productVariant[i].id %>" name="status[<%= productVariant[i].id %>]" >          
+                                 <input type="hidden" value="off" class="status-<%= productVariant[i].id %> status-hidden" name="status[<%= productVariant[i].id %>]" >          
                                  <input data-extraId="<%= productVariant[i].id %>"  class="status-checkbox status-checkbox-<%= productVariant[i].id %>" type="checkbox">
                                  <span class="ms-switch-slider ms-switch-success round"></span>
                                  </label> 
                               </div>
+                              <span class="error_form" id="variant_error_message"></span>
+
                            </div>
                            <div class="ms-card-body">
                               <div class="new d-flex justify-content-center extra-name">
@@ -391,10 +393,10 @@
                            <div class="d-flex justify-content-center extra-margin-top">
                               <div class="row"> 
                                  <label  class="ms-switch" >                 
-                                 <input id="variantNumber_<%= extra.id %>" type="hidden" value="off" class="status-<%= extra.id %>" name="status[<%= extra.id %>]" >          
+                                 <input id="variantNumber_<%= extra.id %>" type="hidden" value="off" class="status-<%= extra.id %> status-hidden" name="status[<%= extra.id %>]" >          
                                  <input   data-extraId="<%= extra.id %>"  class="status-checkbox variants status-checkbox-<%= extra.id %>" type="checkbox"> <span class="ms-switch-slider ms-switch-success round"></span>
                                  </label> 
-                              </div>
+                              </div> 
                            </div>
                            <div class="ms-card-body">
                               <div class="new d-flex justify-content-center extra-name">

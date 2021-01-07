@@ -8,6 +8,7 @@ const PropertyValue = sequelize.define("PropertyValue", {
     allowNull: false,
     primaryKey: true,
   },
+  ordered: Sequelize.INTEGER,
 });
 
 module.exports = PropertyValue;
