@@ -191,10 +191,10 @@
                         </div>
                         <div class="col-md-12 mb-3">
                            <label for="validationCustom12"><%= lingua.create_product_image %></label>
-                           <div class="custom-file" id="image">
-                              <input  accept="image/png, image/jpeg,image/jpeg" type="file" name="image" id="image" />
+                           <div class="custom-file" >
+                              <input accept="image/png, image/jpeg,image/jpeg" type="file" name="image" id="image" />
                            </div>
-                           <span class="error_form" id="file_error_message"></span>
+                           <span class="error_form" id="image_error_message"></span>
                         </div>
                         <button  id="createProduct" name="createProduct" class="btn btn-success has-icon" type="submit">
                            <% if (editing) { %><%= lingua.button_editing %><% } else { %> <%= lingua.create_product %><% } %>
@@ -256,12 +256,14 @@
                                        /> 
                                     <li>
                                        <label class="ms-switch" data-extra="<%= boxArray[i].id %>">
-                                       <input type="hidden" value="off" class="statusBox-<%= boxArray[i].id %>" name="statusBox[<%= boxArray[i].id %>]" > 
+                                       <input type="hidden" value="off" class="statusBox-<%= boxArray[i].id %> status-hidden-box" name="statusBox[<%= boxArray[i].id %>]" > 
                                        <input data-boxId="<%= boxArray[i].id %>" class="statusBox-checkbox statusBox-checkbox-<%= boxArray[i].id %>" type="checkbox"> <span class="ms-switch-slider ms-switch-success round"></span>
                                        </label> <span> <%= boxArray[i].BoxTranslations[0].name %> </span> <b>:</b> <span> <%= boxArray[i].price %> </span>lei
                                     </li>
                                     <% } %>
                                  </ul>
+                                 <span class="error_form" id="box_error_message"></span>
+
                               </div>
                            </div>
                         </div>
@@ -286,7 +288,7 @@
                                        /> 
                                     <li>
                                        <label class="ms-switch" data-extra="<%= allergenArray[i].id %>">
-                                       <input type="hidden" value="off" class="statusAllergen-<%= allergenArray[i].id %>  status-hidden" name="statusAllergen[<%= allergenArray[i].id %>]" > 
+                                       <input type="hidden" value="off" class="statusAllergen-<%= allergenArray[i].id %>  status-hidden-allergen" name="statusAllergen[<%= allergenArray[i].id %>]" > 
                                        <input data-allergenId="<%= allergenArray[i].id %>"  class="statusAllergen-checkbox statusAllergen-checkbox-<%= allergenArray[i].id %>" type="checkbox"> <span class="ms-switch-slider ms-switch-success round"></span>
                                        </label> <span> <%= allergenArray[i].AllergenTranslations[0].name %> </span>
                                     </li>
@@ -334,10 +336,12 @@
                         value="<%= productVariant[i].id %>"
                         name="variantIdUp"
                         />          
+                  
                      <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 extra_box category-<%= productVariant[i].categoryId %> category-all" data-extra="<%= productVariant[i].id %>">
                         <div class="ms-card">
                            <div class="d-flex justify-content-center extra-margin-top">
-                              <div class="row"> 
+                              <div class="row">       
+                                 
                                  <label  class="ms-switch" >                 
                                  <input type="hidden" value="off" class="status-<%= productVariant[i].id %> status-hidden" name="status[<%= productVariant[i].id %>]" >          
                                  <input data-extraId="<%= productVariant[i].id %>"  class="status-checkbox status-checkbox-<%= productVariant[i].id %>" type="checkbox">
@@ -392,6 +396,7 @@
                         <div class="ms-card">
                            <div class="d-flex justify-content-center extra-margin-top">
                               <div class="row"> 
+                                 
                                  <label  class="ms-switch" >                 
                                  <input id="variantNumber_<%= extra.id %>" type="hidden" value="off" class="status-<%= extra.id %> status-hidden" name="status[<%= extra.id %>]" >          
                                  <input   data-extraId="<%= extra.id %>"  class="status-checkbox variants status-checkbox-<%= extra.id %>" type="checkbox"> <span class="ms-switch-slider ms-switch-success round"></span>
