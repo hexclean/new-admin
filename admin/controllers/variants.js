@@ -124,7 +124,7 @@ exports.postAddVariant = async (req, res, next) => {
       },
     ],
   });
-  console.log(req.body);
+
   const variant = await Variant.create({
     sku: sku,
     restaurantId: req.admin.id,

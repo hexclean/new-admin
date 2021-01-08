@@ -854,20 +854,16 @@ exports.postEditOrder = async (req, res, next) => {
   const minutes = req.body.minutes;
   const email = req.body.email;
   const phoneNumber = req.body.phoneNumber;
-  // console.log("hours:", hours);
-  // console.log("minutes:", minutes);
   const failedDescription = req.body.failedDescription;
-  // console.log("email", failedDescription.length);
   const orderId = req.body.orderId;
   const datepicker = req.body.datepicker;
-  // console.log("datepicker", datepicker);
-  // console.log(req.body);
-  // api key: d5443b6c
-  //   Api secret: 1BwKJBVaAkNDSG9W
-  const from = "Vonage APIs";
-  //   const to = "40753541070"; -> helyes
-  const to = phoneNumber;
-  // console.log("failedDescription", failedDescription.length);
+
+  var sms = {
+    to: phoneNumber,
+    sender: "4",
+    body: "helló vietnám",
+  };
+
   try {
     if (hours == "0" && failedDescription.length == 0) {
       await Order.update({ orderStatusId: 2 }, { where: { id: orderId } });
