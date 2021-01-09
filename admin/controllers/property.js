@@ -122,15 +122,6 @@ exports.postAddProperty = async (req, res, next) => {
 exports.getEditProperty = async (req, res, next) => {
   const editMode = req.query.edit;
   const propertyId = req.params.propertyId;
-  let languageCode;
-
-  if (req.cookies.language == "ro") {
-    languageCode = 1;
-  } else if (req.cookies.language == "hu") {
-    languageCode = 2;
-  } else {
-    languageCode = 3;
-  }
   let items = [];
   if (!editMode) {
     return res.redirect("/");
@@ -149,7 +140,6 @@ exports.getEditProperty = async (req, res, next) => {
     include: [
       {
         model: PropertyTranslation,
-        where: { languageId: languageCode },
       },
     ],
     include: [
@@ -159,27 +149,30 @@ exports.getEditProperty = async (req, res, next) => {
         include: [
           {
             model: PropertyValueTranslation,
-            where: { languageId: languageCode },
           },
         ],
       },
     ],
   });
-  let arrayLength = [];
   for (let i = 0; i < propValue.length; i++) {
-    arrayLength = propValue[i].PropertyValues;
-    console.log(arrayLength.length);
-    for (let j = 0; j <= arrayLength.length - 1; j++) {
-      const item = {
-        id: propValue[i].id,
-        name: arrayLength[j].PropertyValueTranslations.name,
-        propertyValueId: arrayLength[j].id,
-        languageId: arrayLength[j].languageId,
-      };
-      items.push(item);
+    let arrayLength = propValue[i].PropertyValues;
+    // console.log(arrayLength);
+    for (let s = 0; s < arrayLength.length; s++) {
+      let arrayLengthNew = arrayLength[s].PropertyValueTranslations;
+
+      for (let y = 0; y < arrayLengthNew.length; y++) {
+        // console.log();
+        const item = {
+          id: arrayLengthNew[y].id,
+          name: arrayLengthNew[y].name,
+          propertyValueId: arrayLengthNew[y].propertyValueId,
+          languageId: arrayLengthNew[y].languageId,
+        };
+        items.push(item);
+      }
     }
   }
-
+  // console.log(items);
   await Property.findAll({
     where: {
       id: propertyId,
@@ -188,7 +181,6 @@ exports.getEditProperty = async (req, res, next) => {
     include: [
       {
         model: PropertyTranslation,
-        where: { languageId: languageCode },
       },
     ],
   })
@@ -196,7 +188,7 @@ exports.getEditProperty = async (req, res, next) => {
       if (property[0].restaurantId !== req.admin.id) {
         return res.redirect("/");
       }
-      console.log(items);
+
       res.render("property/edit-property", {
         pageTitle: "Edit Product",
         items: items,
