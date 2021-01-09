@@ -103,6 +103,7 @@
   "all_products": "Összes termék",
   "create_product": "Termék létrehozása",
   "products": "Termékek",
+  "deleted_products": "Törölt termékek",
   "product_box_message": "A termék létrehozásához legalább 2 dobozzal kell rendelkeznie!",
   "product_variant_message": "Az termék létrehozásához legalább 2 variánssal kell rendelkeznie!",
   "no_products": "Nincsenek termékek",

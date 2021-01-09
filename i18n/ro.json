@@ -107,6 +107,7 @@
   "all_products": "Toate produse",
   "create_product": "Crearea unei product",
   "products": "Produsele",
+  "deleted_products": "Produse anulate",
   "product_box_message": "Trebuie să aveți minimum 2 cutie pentru a crea produs!",
   "product_variant_message": "Trebuie să aveți minimum 2 variant pentru a crea produs!",
   "no_products": "Nu există produs",

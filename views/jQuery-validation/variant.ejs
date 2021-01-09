@@ -11,11 +11,19 @@
   });
 </script>
 
+<% if(editing){ %>
 <script>
   $(document).ready(function () {
     $("select#maxOption").val(
       "<% if (editing) { %><%=  variant[0].ProductVariantsExtras[0].Variant.maxOption %><% } %>"
     );
+  });
+</script>
+
+<% } %>
+
+<script>
+  $(document).ready(function () {
     $("select#categoryId").val(
       "<% if (editing) { %><%=  variant[0].ProductVariantsExtras[0].Variant.categoryId %><% } %>"
     );

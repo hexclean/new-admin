@@ -103,6 +103,7 @@
   "all_products": "All products",
   "create_product": "Creating a product",
   "products": "Products",
+  "deleted_products": "Deleted products",
   "product_box_message": "You must have a minimum of 2 box to create the product!",
   "product_variant_message": "You must have a minimum of 2 variant to create the product!",
   "no_products": "There are no products",

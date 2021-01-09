@@ -51,11 +51,7 @@ exports.getAddVariant = async (req, res, next) => {
     where: { restaurantId: req.admin.id },
   });
 
-  if (checkExtraLength.length === 0) {
-    return res.redirect("/admin/variant-index");
-  }
-
-  if (checkCategoryLength.length < 2) {
+  if (checkExtraLength.length === 0 || checkCategoryLength.length < 2) {
     return res.redirect("/admin/variant-index");
   }
 
@@ -93,7 +89,9 @@ exports.postAddVariant = async (req, res, next) => {
   const maxOption = req.body.maxOption;
   const filteredStatus = req.body.status.filter(Boolean);
   const filteredOptions = req.body.statusOption.filter(Boolean);
-
+  if (extId.length == 0 || sku.length == 0) {
+    return res.redirect("/admin/variant-index");
+  }
   const ext = await Extras.findAll({
     where: { restaurantId: req.admin.id },
     include: [
@@ -181,10 +179,13 @@ exports.postAddVariant = async (req, res, next) => {
 
 exports.getEditVariant = async (req, res, next) => {
   const editMode = req.query.edit;
+  const varId = req.params.variantId;
+  await Variant.findByPk(varId).then((variant) => {
+    if (!variant || !editMode) {
+      return res.redirect("/");
+    }
+  });
 
-  if (!editMode) {
-    return res.redirect("/");
-  }
   let languageCode;
 
   if (req.cookies.language == "ro") {
@@ -194,7 +195,7 @@ exports.getEditVariant = async (req, res, next) => {
   } else {
     languageCode = 3;
   }
-  const varId = req.params.variantId;
+
   const propertyValTransId = await VariantPropertyValue.findAll({
     where: { variantId: varId },
     include: [
@@ -203,7 +204,6 @@ exports.getEditVariant = async (req, res, next) => {
       },
     ],
   });
-  console.log(propertyValTransId[0].propertyValueId);
 
   let categoryId;
   await Variant.findByPk(varId).then((variant) => {
@@ -345,13 +345,6 @@ exports.getEditVariant = async (req, res, next) => {
 
 exports.postEditVariant = async (req, res, next) => {
   const extId = req.body.extraId;
-  let adminCommission = req.admin.commission;
-  if (req.admin.commission >= 10) {
-    adminCommission / 100;
-  } else {
-    adminCommission / 10;
-  }
-  console.log(req.body);
   const updatedSku = req.body.sku;
   const varId = req.body.variantId;
   const updatedExtraPrice = req.body.price;
@@ -364,7 +357,9 @@ exports.postEditVariant = async (req, res, next) => {
   const Op = Sequelize.Op;
   const dasd = req.body.varId;
   let variantId = [dasd];
-  console.log(req.body);
+  if (extId.length == 0 || updatedSku.length == 0) {
+    return res.redirect("/admin/variant-index");
+  }
   const productVarToExt = await ProductVariantsExtras.findAll({
     where: {
       variantId: {
@@ -383,18 +378,6 @@ exports.postEditVariant = async (req, res, next) => {
       },
     }
   );
-
-  // await VariantPropertyValue.update(
-  //   {
-  //     propertyValueId: req.body.propertyValueId,
-  //     propertyId: req.body.propertyId,
-  //   },
-  //   {
-  //     where: {
-  //       variantId: req.body.varId,
-  //     },
-  //   }
-  // );
 
   Variant.findAll()
     .then((variant) => {
@@ -437,7 +420,7 @@ exports.postEditVariant = async (req, res, next) => {
       }
 
       msg();
-      console.log(req.body);
+
       res.redirect("/admin/variant-index");
     })
     .catch((err) => {
