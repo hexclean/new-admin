@@ -58,7 +58,7 @@
   "category_hu_name": "The Hungarian name of the category",
   "category_en_name": "The English name of the category",
   "category_property_message": "You must have a minimum of 2 property to create the extra!",
-  "category_allergen_message": "You must have a minimum of 2 allergens to create the extra!",
+  "category_allergen_message": "You must have a minimum of 3 allergens to create the extra!",
   "no_categories": "There are no categories",
 
   "extra_list_name": "Name",

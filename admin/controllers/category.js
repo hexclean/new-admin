@@ -7,7 +7,6 @@ const PropertyTranslation = require("../../models/PropertyTranslation");
 const PropertyValueTranslation = require("../../models/PropertyValueTranslation");
 const Sequelize = require("sequelize");
 const CategoryProperty = require("../../models/CategoryProperty");
-
 const Op = Sequelize.Op;
 exports.getAddCategory = async (req, res, next) => {
   let languageCode;
@@ -182,9 +181,14 @@ exports.postAddCategory = async (req, res, next) => {
   const huName = req.body.huName;
   const enName = req.body.enName;
   const filteredStatus = req.body.status.filter(Boolean);
-
   const propertyId = req.body.propertyId;
-  if (roName == "" || huName == "" || enName == "") {
+
+  if (
+    roName.length == 0 ||
+    huName.length == 0 ||
+    enName.length == 0 ||
+    filteredStatus.length == 0
+  ) {
     return res.redirect("/admin/category-index");
   }
 
@@ -238,13 +242,8 @@ exports.postAddCategory = async (req, res, next) => {
 exports.getEditCategory = async (req, res, next) => {
   const editMode = req.query.edit;
   const categoryId = req.params.categoryId;
-
-  if (!editMode) {
-    return res.redirect("/");
-  }
-
   await Category.findByPk(categoryId).then((category) => {
-    if (!category || category.restaurantId != req.admin.id) {
+    if (!category || !editMode) {
       return res.redirect("/");
     }
   });
@@ -306,10 +305,11 @@ exports.postEditCategory = async (req, res, next) => {
   const propertyId = req.body.propertyId;
 
   if (
-    updatedRoName == "" ||
-    updatedHuName == "" ||
-    updatedEnName == "" ||
-    categoryTranslationId == ""
+    updatedRoName.length == 0 ||
+    updatedHuName.length == 0 ||
+    updatedEnName.length == 0 ||
+    categoryTranslationId.length == 0 ||
+    categoryId.length.length == 0
   ) {
     return res.redirect("/admin/category-index");
   }

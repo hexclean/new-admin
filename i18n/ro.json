@@ -62,7 +62,7 @@
   "category_hu_name": "Numele maghiar al categorie",
   "category_en_name": "Numele engleză al categorie",
   "category_property_message": "Trebuie să aveți minimum 2 property pentru a crea extra!",
-  "category_allergen_message": "Trebuie să aveți minimum 2 alergeni pentru a crea extra!",
+  "category_allergen_message": "Trebuie să aveți minimum 3 alergeni pentru a crea extra!",
   "no_categories": "Nu există categorii",
 
   "extra_list_name": "Nume",

@@ -20,7 +20,9 @@ exports.postAddAllergen = async (req, res, next) => {
   const roName = req.body.roName;
   const huName = req.body.huName;
   const enName = req.body.enName;
-
+  if (roName.length == 0 || huName.length == 0 || enName.length == 0) {
+    return res.redirect("/admin/allergen-index");
+  }
   const allergen = await Allergen.create({
     restaurantId: req.admin.id,
   });
@@ -103,13 +105,8 @@ exports.postAddAllergen = async (req, res, next) => {
 exports.getEditAllergen = async (req, res, next) => {
   const editMode = req.query.edit;
   const allergenId = req.params.allergenId;
-
-  if (!editMode) {
-    return res.redirect("/");
-  }
-
   await Allergen.findByPk(allergenId).then((allergen) => {
-    if (!allergen) {
+    if (!allergen || !editMode) {
       return res.redirect("/");
     }
   });
@@ -125,10 +122,6 @@ exports.getEditAllergen = async (req, res, next) => {
     ],
   })
     .then((allergen) => {
-      if (allergen[0].restaurantId !== req.admin.id) {
-        return res.redirect("/");
-      }
-
       res.render("allergen/edit-allergen", {
         pageTitle: "Edit Product",
         path: "/admin/edit-product",
@@ -149,8 +142,15 @@ exports.postEditAllergen = async (req, res, next) => {
   const updatedRoName = req.body.roName;
   const updatedHuName = req.body.huName;
   const updatedEnName = req.body.enName;
-  const extTranId = req.body.extTranId;
+  const allergenTranId = req.body.allergenTranId;
 
+  if (
+    updatedRoName.length == 0 ||
+    updatedHuName.length == 0 ||
+    updatedEnName.length == 0
+  ) {
+    return res.redirect("/admin/allergen-index");
+  }
   Allergen.findAll({
     include: [
       {
@@ -160,102 +160,25 @@ exports.postEditAllergen = async (req, res, next) => {
   })
     .then((allergen) => {
       async function msg() {
-        // await Allergen.update(
-        //   { updatedAt: new Date() },
-        //   { where: { id: req.body.allergenId } }
-        // );
-
         await AllergensTranslation.update(
           { name: updatedRoName },
-          { where: { id: extTranId[0], languageId: 1 } }
+          { where: { id: allergenTranId[0], languageId: 1 } }
         );
 
         await AllergensTranslation.update(
           { name: updatedHuName },
-          { where: { id: extTranId[1], languageId: 2 } }
+          { where: { id: allergenTranId[1], languageId: 2 } }
         );
 
         await AllergensTranslation.update(
           { name: updatedEnName },
-          { where: { id: extTranId[2], languageId: 3 } }
+          { where: { id: allergenTranId[2], languageId: 3 } }
         );
       }
 
       msg();
 
       res.redirect("/admin/allergen-index");
-    })
-    .catch((err) => {
-      const error = new Error(err);
-      error.httpStatusCode = 500;
-      return next(error);
-    });
-};
-
-exports.getIndex = async (req, res, next) => {
-  const page = +req.query.page || 1;
-  let totalItems;
-  let currentAllergenName = [];
-
-  const allergens = await Allergen.findAll({
-    where: { restaurantId: req.admin.id },
-    include: [
-      {
-        model: AllergensTranslation,
-      },
-    ],
-  });
-
-  for (let i = 0; i < allergens.length; i++) {
-    var currentLanguage = req.cookies.language;
-
-    if (currentLanguage == "ro") {
-      currentAllergenName[i] = allergens[i].allergenTranslations[0].name;
-    } else if (currentLanguage == "hu") {
-      currentAllergenName[i] = allergens[i].allergenTranslations[1].name;
-    } else {
-      currentAllergenName[i] = allergens[i].allergenTranslations[2].name;
-    }
-  }
-
-  await Allergen.findAll({
-    where: {
-      restaurantId: req.admin.id,
-    },
-    include: [
-      {
-        model: AllergensTranslation,
-      },
-    ],
-  })
-    .then((numAllergen) => {
-      totalItems = numAllergen;
-      return Allergen.findAll({
-        where: {
-          restaurantId: req.admin.id,
-        },
-        include: [
-          {
-            model: AllergensTranslation,
-          },
-        ],
-        offset: (page - 1) * ITEMS_PER_PAGE,
-        limit: ITEMS_PER_PAGE,
-      });
-    })
-    .then((allergen) => {
-      res.render("allergen/index", {
-        pageTitle: "Admin Products",
-        path: "/admin/products",
-        currentPage: page,
-        hasNextPage: ITEMS_PER_PAGE * page < totalItems.length,
-        hasPreviousPage: page > 1,
-        nextPage: page + 1,
-        previousPage: page - 1,
-        lastPage: Math.ceil(totalItems.length / ITEMS_PER_PAGE),
-        ag: allergen,
-        currentAllergenName: currentAllergenName,
-      });
     })
     .catch((err) => {
       const error = new Error(err);
@@ -297,5 +220,3 @@ exports.getSearch = async (req, res, next) => {
     })
     .catch((err) => console.log(err));
 };
-
-// ("/admin/allergen-index");

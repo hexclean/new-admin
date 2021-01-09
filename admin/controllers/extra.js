@@ -68,11 +68,11 @@ exports.postAddExtra = async (req, res, next) => {
   const filteredStatus = req.body.status.filter(Boolean);
 
   if (
-    roName == "" ||
-    huName == "" ||
-    enName == "" ||
-    allergenId == "" ||
-    filteredStatus == ""
+    roName.length == 0 ||
+    huName.length == 0 ||
+    enName.length == 0 ||
+    allergenId.length == 0 ||
+    filteredStatus.length == 0
   ) {
     return res.redirect("/admin/extra-index");
   }
@@ -195,6 +195,11 @@ exports.getEditExtra = async (req, res, next) => {
   const editMode = req.query.edit;
   const extraId = req.params.extraId;
   const extraIdArray = [extraId];
+  await Extra.findByPk(extraId).then((extra) => {
+    if (!extra || !editMode) {
+      return res.redirect("/");
+    }
+  });
   let languageCode;
 
   if (req.cookies.language == "ro") {
@@ -203,15 +208,6 @@ exports.getEditExtra = async (req, res, next) => {
     languageCode = 2;
   } else {
     languageCode = 3;
-  }
-  await Extra.findByPk(extraId).then((extra) => {
-    if (!extra) {
-      return res.redirect("/");
-    }
-  });
-
-  if (!editMode) {
-    return res.redirect("/");
   }
 
   try {
@@ -285,19 +281,19 @@ exports.postEditExtra = async (req, res, next) => {
   const extTranId = req.body.extTranId;
   const filteredStatus = req.body.status.filter(Boolean);
   const extraArray = [extraIdEditing];
-  //
+
   if (
-    extraIdEditing == "" ||
-    updatedRoName == "" ||
-    updatedHuName == "" ||
-    allergenId == "" ||
-    updatedEnName == "" ||
-    extTranId == "" ||
-    extraArray == "" ||
-    filteredStatus == ""
+    allergenId.length == 0 ||
+    extraIdEditing.length == 0 ||
+    updatedRoName.length == 0 ||
+    updatedHuName.length == 0 ||
+    updatedEnName.length == 0 ||
+    extTranId.length == 0 ||
+    filteredStatus.length == 0
   ) {
     return res.redirect("/admin/extra-index");
   }
+
   const extrasHasAllergen = await ExtraHasAllergen.findAll({
     where: {
       extraId: {
@@ -359,10 +355,7 @@ exports.postEditExtra = async (req, res, next) => {
       updateExtraTranslation();
       updateExtraHasAllergen();
 
-      res.redirect("/admin/extra-index"),
-        {
-          allergenArray: 1,
-        };
+      res.redirect("/admin/extra-index");
     });
   } catch (err) {
     const error = new Error(err);

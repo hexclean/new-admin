@@ -21,6 +21,15 @@ exports.postAddBox = async (req, res, next) => {
   const huName = req.body.huName;
   const enName = req.body.enName;
   const price = req.body.price;
+  if (
+    roName.length == 0 ||
+    huName.length == 0 ||
+    enName.length == 0 ||
+    price.length == 0
+  ) {
+    return res.redirect("/admin/box-index");
+  }
+
   const box = await Box.create({
     restaurantId: req.admin.id,
     price: price,
@@ -68,12 +77,8 @@ exports.getEditBox = async (req, res, next) => {
   const editMode = req.query.edit;
   const boxId = req.params.boxId;
   let languageCode;
-  if (!editMode) {
-    return res.redirect("/");
-  }
-
   await Box.findByPk(boxId).then((box) => {
-    if (!box) {
+    if (!box || !editMode) {
       return res.redirect("/");
     }
   });
@@ -114,9 +119,6 @@ exports.getEditBox = async (req, res, next) => {
         description: `Opened edit box with ${boxId} id`,
         route: "getEditBox",
       });
-      if (box[0].restaurantId !== req.admin.id) {
-        return res.redirect("/");
-      }
 
       res.render("box/edit-box", {
         pageTitle: "Edit Product",
@@ -142,6 +144,16 @@ exports.postEditBox = async (req, res, next) => {
   const price = req.body.price;
   const boxId = req.body.boxId;
   const boxTranslationsId = req.body.boxTranslationsId;
+  if (
+    updatedRoName.length == 0 ||
+    updatedHuName.length == 0 ||
+    updatedEnName.length == 0 ||
+    price.length == 0 ||
+    boxId.length == 0 ||
+    boxTranslationsId.length == 0
+  ) {
+    return res.redirect("/admin/box-index");
+  }
 
   Box.findAll({
     where: { restaurantId: req.admin.id },
@@ -151,7 +163,7 @@ exports.postEditBox = async (req, res, next) => {
       },
     ],
   })
-    .then((category) => {
+    .then((result) => {
       async function updateBox() {
         await Box.update({ price: price }, { where: { id: boxId } });
         await BoxTranslation.update(

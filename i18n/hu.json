@@ -58,7 +58,7 @@
   "category_hu_name": "A kategória magyar neve",
   "category_en_name": "A kategória angol neve",
   "category_property_message": "Az extra létrehozásához legalább 2 tulajdonsággal kell rendelkeznie!",
-  "category_allergen_message": "Az extra létrehozásához legalább 2 allergénnel kell rendelkeznie!",
+  "category_allergen_message": "Az extra létrehozásához legalább 3 allergénnel kell rendelkeznie!",
   "no_categories": "Nincsenek kategóriák",
 
   "extra_list_name": "Név",
