@@ -9,7 +9,7 @@
     <th scope="col">Szerkesztés</th>
   </tr>
 </thead>
-<% if (prods.length > 0) { %> <% for (let i =0; i < prods.length; i++) { %>
+<% for (let i =0; i < prods.length; i++) { %>
 <tr>
   <th scope="row"><%= prods[i].id %></th>
   <td><%= prods[i].ProductTranslations[0].title %></td>
@@ -31,6 +31,4 @@
     >
   </td>
 </tr>
-<% } %> <% } else { %>
-<h1>No Products Found!</h1>
-<% } %> >
+<% } %>

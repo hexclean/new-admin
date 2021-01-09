@@ -52,7 +52,7 @@
                                  <input type="text" name="searchDeletedProduct" id="searchDeletedProduct" placeholder="<%= lingua.search_product %>" class="form-control extra-search" />
                               </div>
                               <hr>
-                              <% if (prod.length > 0) { %>
+                         
                               <% for (let i=0; i< prod.length; i++ ) { %>
 
                               <tbody>
@@ -75,9 +75,7 @@
                                  </tr>
                               </tbody>
                               <% } %>
-                              <% } else { %>
-                              <h1>No Products Found!</h1>
-                              <% } %>
+                              
                            </table>
                         </div>
                         <%- include('../includes/pagination.ejs', {currentPage: currentPage, nextPage: nextPage, previousPage: previousPage, lastPage: lastPage, hasNextPage: hasNextPage, hasPreviousPage: hasPreviousPage}) %>

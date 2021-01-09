@@ -51,7 +51,7 @@
                                    
                                  </tr>
                               </thead>
-                              <% if (ag.length > 0) { %>
+                            
                               <% for (let i = 0; i < ag.length; i++) { %>
                               <tbody>
                                  <tr>
@@ -67,9 +67,7 @@
                                  </tr>
                               </tbody>
                               <% } %>
-                              <% } else { %>
-                              <h1>No Products Found!</h1>
-                              <% } %>
+                             
                            </table>
                         </div>
                         <%- include('../includes/pagination.ejs', {currentPage: currentPage, nextPage: nextPage, previousPage: previousPage, lastPage: lastPage, hasNextPage: hasNextPage, hasPreviousPage: hasPreviousPage}) %>
