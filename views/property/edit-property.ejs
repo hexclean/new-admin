@@ -74,7 +74,8 @@
          method="POST"
          enctype="multipart/form-data">
          <div class="row">
-            <div class="col-xl-6 col-md-12">
+            <div class="col-xl-6 col-md-12" style="
+            height: 533px;">
                <div class="ms-panel ms-panel-fh">
                   <div class="ms-panel-header">
                      <h6>Add Product Form</h6>
@@ -120,6 +121,9 @@
                            </div>
                            <span class="error_form" id="enName_error_message"></span>
                         </div>
+                        <div class="col-md-12 mb-3">
+                           <button type="submit" name="createProperty" id="createProperty" class="btn btn-success has-icon" ><% if (editing) { %><%=lingua.button_editing %><% } else { %><%= lingua.create_category %><% } %></button>
+                        </div>
                      </div>
                   </div>
                   <% if (editing) { %>
@@ -128,13 +132,13 @@
                      <input type="hidden" value="<%= propTrans[i].id %>" name="propTransId">
                      <%}%>
                   <% } %>
-                  <button type="submit" id="createProperty" class="btn btn-success has-icon" ><% if (editing) { %>Update Product<% } else { %>Add Product<% } %></button>
                </div>
             </div>
 
             <% if(editing){ %>
                
-            <div class="col-xl-6 col-md-12">
+            <div class="col-xl-6 col-md-12" style="
+            height: 533px;">
                <div class="row">
                   <div class="col-md-12">
                      <div class="ms-panel">
