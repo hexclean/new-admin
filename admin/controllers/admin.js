@@ -270,10 +270,11 @@ exports.getEditProduct = async (req, res, next) => {
   const prodId = req.params.productId;
   const productId = [prodId];
   const Op = Sequelize.Op;
-
-  if (!editMode) {
-    return res.redirect("/");
-  }
+  await Product.findByPk(prodId).then((product) => {
+    if (!product || !editMode) {
+      return res.redirect("/");
+    }
+  });
 
   const cat = await Category.findAll({
     where: {
@@ -286,11 +287,6 @@ exports.getEditProduct = async (req, res, next) => {
     ],
   });
 
-  await Product.findByPk(prodId).then((product) => {
-    if (!product) {
-      return res.redirect("/");
-    }
-  });
   const box = await Box.findAll({
     where: {
       restaurantId: req.admin.id,

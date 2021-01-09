@@ -72,6 +72,8 @@
   "all_extras": "Toate extra",
   "extras": "Extras",
   "create_extra": "Crearea unei extra",
+  "update_extra": "Editare extra",
+
   "extra_ro_name": "Numele românesc al extra",
   "extra_hu_name": "Numele maghiar al extra",
   "extra_en_name": "Numele engleză al extra",
@@ -84,6 +86,8 @@
   "no_extras": "Nu există extra",
 
   "variant_list_status": "Stare",
+  "variant": "Variant",
+
   "variant_list_operation": "Operațiune",
   "no_variants": "Nu există variant",
   "all_variants": "Toate variants",
@@ -128,6 +132,8 @@
   "product_daily_menu": "Meniul zilei",
   "product_daily_start": "Data de inceput",
   "product_daily_end": "Data de încheiere",
+  "product_inactive": "Inaktiv",
+  "product_reactivate": "Disponibil din nou",
 
   "order_list_name": "Nume",
   "order_list_city": "Locul de livrare",

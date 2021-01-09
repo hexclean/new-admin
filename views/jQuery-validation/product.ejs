@@ -112,6 +112,8 @@
     $("#allergen_error_message").hide();
     $("#image_error_message").hide();
     $("#box_error_message").hide();
+    $("#start_error_message").hide();
+    $("#end_error_message").hide();
 
     var error_roName = false;
     var error_huName = false;
@@ -123,6 +125,8 @@
     var error_allergens = false;
     var error_image = false;
     var error_box = false;
+    var error_start = false;
+    var error_end = false;
 
     $("#roTitle").focusout(function () {
       check_roName();
@@ -153,6 +157,22 @@
     $(".status-hidden-box").change(function () {
       check_box();
     });
+
+    $(".isDailyMenu").change(function () {
+      check_dailyMenu();
+    });
+
+    function check_dailyMenu() {
+      // if ($(".isDailyMenu[value='on']").length != 1) {
+      //   $("#property_error_message").html("csak 1 et lehet megadni");
+      //   $("#property_error_message").show();
+      //   error_property = true;
+      //   $("#createCategory").disabled = true;
+      // } else {
+      //   $("#property_error_message").hide();
+      //   $("#createCategory").removeAttr("disabled");
+      // }
+    }
 
     function check_roName() {
       var roName_length = $("#roTitle").val().length;
@@ -211,10 +231,10 @@
         $("#box_error_message").html("csak 1 et lehet megadni");
         $("#box_error_message").show();
         error_box = true;
-        $("#createCategory").disabled = true;
+        $("#createProduct").disabled = true;
       } else {
         $("#box_error_message").hide();
-        $("#createCategory").removeAttr("disabled");
+        $("#createProduct").removeAttr("disabled");
       }
     }
 
@@ -233,10 +253,10 @@
         $("#variant_error_message").html("Csak 1 kijelolese engedelyezett");
         $("#variant_error_message").show();
         error_variants = true;
-        $("#createCategory").disabled = true;
+        $("#createProduct").disabled = true;
       } else {
         $("#variant_error_message").hide();
-        $("#createCategory").removeAttr("disabled");
+        $("#createProduct").removeAttr("disabled");
       }
     }
 
@@ -294,12 +314,11 @@
 <% if(editing){ %>
 <script>
   $(document).ready(function () {
-    // $("#categoryId").click(function () {
     console.log("adasd", "");
     const categoryId = $("#categoryId").val();
     $(".category-all").hide();
     $(".category-<%= currentCat %>").show();
-    // });if
+
     if (true) {
       $(document).ready(function () {
         $("#categoryId").on("change", function () {

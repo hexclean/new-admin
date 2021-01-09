@@ -41,16 +41,15 @@
                         <div class="table-responsive">
                            <table    id="searchDelP" class="table table-hover thead-primary">
                               <thead>
-                                 <tr>
-                                    <th scope="col">ID</th>
-                                    <th scope="col">nev</th>
-                                    <th scope="col">varians</th>
-                                    <th scope="col">STATUS</th>
-                                    <th scope="col" class="buttons-text-variants">Visszaallitas</th>
-                                 </tr>
+                                 <th scope="col">Id</th>
+                                 <th scope="col"><%= lingua.product_list_name %></th>
+                                 <th scope="col"><%= lingua.variant %></th>
+                                 <th scope="col"><%= lingua.product_list_status %></th>
+                                 <th scope="col" class="buttons-text-variants"><%= lingua.product_list_operation %></th>
+                                 <th scope="col" ><%= lingua.product_list_operation %></th>
                               </thead>
                               <div class="col-6">
-                                 <input type="text" name="searchDeletedProduct" id="searchDeletedProduct" placeholder="Termek keresés" class="form-control extra-search" />
+                                 <input type="text" name="searchDeletedProduct" id="searchDeletedProduct" placeholder="<%= lingua.search_product %>" class="form-control extra-search" />
                               </div>
                               <hr>
                               <% if (prod.length > 0) { %>
@@ -61,15 +60,18 @@
                                     <th scope="row"><%= prod[i].id %></th>
                                     <td><%= prod[i].ProductTranslations[0].title  %></td>
                                     <td><%= prod[i].ProductFinals[0].Variant.sku %></td>
-                                    <td><span class="badge badge-danger">DELETED</span></td>
+                                    <td><span class="badge badge-danger"><%= lingua.product_inactive %></span></td>
                                     <td>
                                        <form action="/admin/restore-product" method="POST" >
                                         <input type="hidden" value="<%= prod[i].id %>" name="productId">
 
                                           <input type="hidden" value="<%= prod[i].id %>" name="prod[i]Id">
-                                          <button class="btn grid-btn mt-0 btn-sm btn-success"  type="submit" class="btn btn-primary shadow-none">Visszaallitas</button>
+                                          <button class="btn grid-btn mt-0 btn-sm btn-success"  type="submit" class="btn btn-primary shadow-none"><%= lingua.product_reactivate %></button>
                                        </form>
-                                    </td> 
+                                    </td>
+                                    <td>        
+                                       <a href="/admin/edit-product/<%= prod[i].id %>?edit=true" class="btn grid-btn mt-0 btn-sm btn-secondary" ><%= lingua.button_edit %></a>
+                                    </td>
                                  </tr>
                               </tbody>
                               <% } %>

@@ -17,7 +17,7 @@
             <div class="col-xl-6 col-md-12" style="height: 504px !important;">
                <div class="ms-panel ms-panel-fh">
                   <div class="ms-panel-header">
-                     <h6>Add Product Form</h6>
+                     <h6><% if (editing) { %><%= lingua.update_extra %><% } else { %> <%= lingua.create_extra %> <% } %></h6>
                   </div>
                   <div class="ms-panel-body">
                      <div class="form-row">
@@ -61,7 +61,7 @@
                            <span class="error_form" id="enName_error_message"></span>
                         </div>
                         <div class="col-md-12 mb-3">
-                           <button type="submit" id="createBox" class="btn btn-success has-icon" ><% if (editing) { %><%=lingua.button_editing %><% } else { %><%= lingua.create_allergen %><% } %></button>
+                           <button type="submit" id="createBox" class="btn btn-success has-icon" ><% if (editing) { %><%=lingua.button_editing %><% } else { %><%= lingua.create_extra %><% } %></button>
                            <span class="error_form" id="enName_error_message"></span>
                         </div>
                      </div>

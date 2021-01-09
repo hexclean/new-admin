@@ -68,6 +68,8 @@
   "all_extras": "Összes extra",
   "extras": "Extrák",
   "create_extra": "Extra létrehozása",
+  "update_extra": "Extra szerkesztése",
+
   "extra_ro_name": "Az extra román neve",
   "extra_hu_name": "Az extra magyar neve",
   "extra_en_name": "Az extra angol neve",
@@ -80,6 +82,8 @@
   "no_extras": "Nincsenek extrák",
 
   "variant_list_status": "Státusz",
+  "variant": "Variáns",
+
   "variant_list_operation": "Müvelet",
   "no_variants": "Nincsenek variánsok",
   "all_variants": "Összes variáns",
@@ -124,6 +128,8 @@
   "product_daily_menu": "Napi menü",
   "product_daily_start": "Kezdő dátum",
   "product_daily_end": "Befejezés dátuma",
+  "product_inactive": "Inaktív",
+  "product_reactivate": "Újra elérhető",
 
   "order_list_name": "Név",
   "order_list_city": "Szállítási hely",

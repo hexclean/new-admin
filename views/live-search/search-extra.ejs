@@ -1,27 +1,27 @@
 <thead>
   <tr>
-    <th scope="col">ID</th>
-    <th scope="col">name</th>
-    <th scope="col">STATUS</th>
-    <th scope="col">EDIT</th>
+    <th scope="col">Id</th>
+    <th scope="col"><%= lingua.extra_list_name %></th>
+    <th scope="col"><%= lingua.extra_list_status %></th>
+    <th scope="col"><%= lingua.extra_list_operation %></th>
   </tr>
 </thead>
-<% if (extra.length > 0) { %> <% for (let i=0; i < extra.length; i++ ) { %>
+<% for (let i=0; i < extra.length; i++ ) { %>
 <tbody>
   <tr>
     <th scope="row"><%= extra[i].id %></th>
 
     <td><%= extra[i].ExtraTranslations[0].name %></td>
-    <td><span class="badge badge-success">AKTIV</span></td>
+    <td>
+      <span class="badge badge-success"><%= lingua.status_active %></span>
+    </td>
     <td>
       <a
         href="/admin/edit-extra/<%= extra[i].id %>?edit=true"
         class="btn grid-btn mt-0 btn-sm btn-secondary"
-        ><%= lingua.product_action_edit %></a
+        ><%= lingua.button_edit %></a
       >
     </td>
   </tr>
 </tbody>
-<% } %> <% } else { %>
-<h1>No Products Found!</h1>
 <% } %>

@@ -55,14 +55,12 @@ $(document).ready(function() {
                            <table id="searchedProduct" class="table table-hover thead-primary">
                               <% if (prods.length > 0) { %>
                               <thead>
-                                 <tr>
-                                    <th scope="col">Id</th>
-                                    <th scope="col"><%= lingua.product_list_name %></th>
-                                    <th scope="col">Varians</th>
-                                    <th scope="col"><%= lingua.product_list_status %></th>
-                                    <th scope="col" class="buttons-text-variants"><%= lingua.product_list_operation %></th>
-                                    <th scope="col" ><%= lingua.product_list_operation %></th>
-                                 </tr>
+                                 <th scope="col">Id</th>
+                                 <th scope="col"><%= lingua.product_list_name %></th>
+                                 <th scope="col"><%= lingua.variant %></th>
+                                 <th scope="col"><%= lingua.product_list_status %></th>
+                                 <th scope="col" class="buttons-text-variants"><%= lingua.product_list_operation %></th>
+                                 <th scope="col" ><%= lingua.product_list_operation %></th>
                               </thead>
                               <div class="col-6">
                                  <input type="text" name="searchProduct" id="searchProduct" placeholder="<%= lingua.search_product %>" class="form-control extra-search" />

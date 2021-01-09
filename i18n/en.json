@@ -68,6 +68,7 @@
   "all_extras": "All extras",
   "extras": "Extras",
   "create_extra": "Creating an extra",
+  "update_extra": "Updating extra",
   "extra_ro_name": "The Romanian name of the extra",
   "extra_hu_name": "The Hungarian name of the extra",
   "extra_en_name": "The English name of the extra",
@@ -80,6 +81,7 @@
   "no_extras": "There are no extras",
 
   "variant_list_status": "Status",
+  "variant": "Variant",
   "variant_list_operation": "Operation",
   "no_variants": "There are no variants",
   "all_variants": "All variants",
@@ -124,6 +126,8 @@
   "product_daily_menu": "Daily menu",
   "product_daily_start": "Starting date",
   "product_daily_end": "End date",
+  "product_inactive": "Inactive",
+  "product_reactivate": "Available again",
 
   "order_list_name": "Name",
   "order_list_city": "Delivery location",
