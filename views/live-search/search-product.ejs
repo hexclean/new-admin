@@ -1,14 +1,16 @@
 <thead>
   <tr>
     <th scope="col">Id</th>
-    <th scope="col">Név</th>
-    <th scope="col">VARIANS</th>
-    <th scope="col">Státusz</th>
-    <th scope="col" class="buttons-text-variants">Törlés</th>
-    <th scope="col">Szerkesztés</th>
+    <th scope="col"><%= lingua.product_list_name %></th>
+    <th scope="col"><%= lingua.variant %></th>
+    <th scope="col"><%= lingua.product_list_status %></th>
+    <th scope="col" class="buttons-text-variants">
+      <%= lingua.product_list_operation %>
+    </th>
+    <th scope="col"><%= lingua.product_list_operation %></th>
   </tr>
 </thead>
-<% if (prods.length > 0) { %> <% for (let i =0; i < prods.length; i++) { %>
+<% for (let i =0; i < prods.length; i++) { %>
 <tr>
   <th scope="row"><%= prods[i].id %></th>
   <td><%= prods[i].ProductTranslations[0].title %></td>
@@ -18,7 +20,7 @@
     <form action="/admin/delete-product" method="POST">
       <input type="hidden" value="<%= prods[i].id %>" name="productId" />
       <button class="btn grid-btn mt-0 btn-sm btn-primary" type="submit">
-        <%= lingua.product_action_delete %>
+        <%= lingua.sold_out %>
       </button>
     </form>
   </td>
@@ -26,10 +28,8 @@
     <a
       href="/admin/edit-product/<%= prods[i].id %>?edit=true"
       class="btn grid-btn mt-0 btn-sm btn-secondary"
-      ><%= lingua.product_action_edit %></a
+      ><%= lingua.button_edit %></a
     >
   </td>
 </tr>
-<% } %> <% } else { %>
-<h1>No Products Found!</h1>
 <% } %>
