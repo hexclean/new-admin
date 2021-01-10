@@ -224,6 +224,7 @@
                                  <input data-extraId="<%= variant[i].ProductVariantsExtras[0].extraId %>" class="status-checkbox status-checkbox-<%= variant[i].ProductVariantsExtras[0].extraId %>" type="checkbox">
                                  <span class="ms-switch-slider ms-switch-success round"></span>
                                  </label> 
+                                 <div style="margin-top: 6px;"><%= lingua.optional_extra %></div>
                               </div>
                            </div>
                            <hr>
@@ -231,7 +232,7 @@
                               <label class="ms-checkbox-wrap ms-checkbox-success">
                               <input type="hidden" value="off" class="statusOption<%= variant[i].id %> status-option" name="statusOption[<%= variant[i].id %>]" >    
                               <input data-optionId="<%= variant[i].id %>" class="status-checkbox-option status-checkbox-option-<%= variant[i].id %>" type="checkbox"  > <i class="ms-checkbox-check"></i>
-                              </label> <span style="margin-top: 4px;"><%= lingua.optional_extra %></span>
+                              </label> <span style="margin-top: 4px;"><%= lingua.required_extra %></span>
                            </div>
                            <div class="ms-card-body">
                               <div class="new d-flex justify-content-center extra-name">
@@ -317,7 +318,7 @@
                                  <input type="hidden" value="off" class="status-<%= ext[i].id %>" name="status[<%= ext[i].id %>]" >          
                                  <input data-extraId="<%= ext[i].id %>" class="status-checkbox status-checkbox-<%= ext[i].id %>" type="checkbox"> <span class="ms-switch-slider ms-switch-success round"></span>
                                  </label> 
-                                 <div style="margin-top: 6px;"><%= lingua.required_extra %></div>
+                                 <div style="margin-top: 6px;"><%= lingua.optional_extra %></div>
                               </div>
                            </div>
                            <hr>
@@ -325,7 +326,7 @@
                               <label class="ms-checkbox-wrap ms-checkbox-success">
                               <input type="hidden" value="off" class="statusOption<%= ext[i].id %>  status-option" name="statusOption[<%= ext[i].id %>]" >    
                               <input data-optionId="<%= ext[i].id %>"  class="status-checkbox-option status-checkbox-option-<%= ext[i].id %>" type="checkbox"  > <i class="ms-checkbox-check"></i>
-                              </label> <span style="margin-top: 4px;"><%= lingua.optional_extra %> </span>
+                              </label> <span style="margin-top: 4px;"><%= lingua.required_extra  %> </span>
                            </div>
                            <div class="ms-card-body">
                               <div class="new d-flex justify-content-center extra-name">
