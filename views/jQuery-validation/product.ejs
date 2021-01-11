@@ -113,7 +113,8 @@
     $("#box_error_message").hide();
     $("#start_error_message").hide();
     $("#end_error_message").hide();
-
+    $("#file_error_message").hide();
+    $("#category_error_message").hide();
     var error_roName = false;
     var error_huName = false;
     var error_enName = false;
@@ -126,6 +127,8 @@
     var error_box = false;
     var error_start = false;
     var error_end = false;
+    var error_file = false;
+    var error_category = false;
 
     $("#roTitle").focusout(function () {
       check_roName();
@@ -161,6 +164,18 @@
       check_dailyMenu();
     });
 
+    $("#image").change(function () {
+      check_file();
+    });
+
+    $("#categoryId").change(function () {
+      check_category();
+    });
+
+    // $(".status-hidden-box").change(function () {
+    //   check_box();
+    // });
+
     function check_dailyMenu() {
       // if ($(".isDailyMenu[value='on']").length != 1) {
       //   $("#property_error_message").html("csak 1 et lehet megadni");
@@ -171,6 +186,28 @@
       //   $("#property_error_message").hide();
       //   $("#createCategory").removeAttr("disabled");
       // }
+    }
+
+    function check_category() {
+      var categoryId = $("#categoryId").val();
+      if (categoryId === null) {
+        $("#category_error_message").html("kategoria kivalasztasa kotelzeo");
+        $("#category_error_message").show();
+        error_category = true;
+      } else {
+        $("#category_error_message").hide();
+      }
+    }
+
+    function check_file() {
+      var vidFileLength = $("#image")[0].files.length;
+      if (vidFileLength === 0) {
+        $("#file_error_message").html("nincs fajl kivalasztva");
+        $("#file_error_message").show();
+        error_file = true;
+      } else {
+        $("#file_error_message").hide();
+      }
     }
 
     function check_roName() {
@@ -225,8 +262,7 @@
     }
 
     function check_box() {
-      console.log("okko");
-      if ($(".status-hidden-box[value='on']").length != 1) {
+      if ($(".status-hidden-box[value='on']").length > 1) {
         $("#box_error_message").html("csak 1 et lehet megadni");
         $("#box_error_message").show();
         error_box = true;
@@ -270,6 +306,7 @@
         $("#createProduct").removeAttr("disabled");
       }
     }
+
     $("#product-form").submit(function () {
       error_roName = false;
       error_huName = false;
@@ -279,9 +316,9 @@
       error_enDescription = false;
       error_variants = false;
       error_allergens = false;
-
+      error_file == false;
       error_box = false;
-
+      error_category == false;
       check_roName();
       check_huName();
       check_enName();
@@ -290,8 +327,9 @@
       check_enDescription();
       check_variant();
       check_allergen();
-
+      check_file();
       check_box();
+      check_category();
       if (
         error_roName == false &&
         error_huName == false &&
@@ -301,7 +339,9 @@
         error_enDescription == false &&
         error_variants == false &&
         error_allergens == false &&
-        error_box == false
+        error_box == false &&
+        error_file == false &&
+        error_category == false
       ) {
         return true;
       } else {

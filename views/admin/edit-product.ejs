@@ -118,7 +118,7 @@
              
          </script>
          <div class="row">
-            <div class="col-xl-6 col-md-12" style="height: 1271px;">
+            <div class="col-xl-6 col-md-12" style="height: 1364px;">
                <div class="ms-panel ms-panel-fh">
                   <div class="ms-panel-header">
                      <h6><% if (editing) { %>"<%= product[0].ProductTranslations[0].title %>" <%= lingua.product_edit_title %><% } else { %> <%= lingua.create_product %> <% } %></h6>
@@ -201,6 +201,8 @@
                            </div>
                            <span class="error_form" id="image_error_message"></span>
                         </div>
+                        <span class="error_form" id="file_error_message"></span>
+
                         <button  id="createProduct" name="createProduct" class="btn btn-success has-icon" type="submit">
                            <% if (editing) { %><%= lingua.button_editing %><% } else { %> <%= lingua.create_product %><% } %>
                            </button>
