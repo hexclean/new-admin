@@ -1,0 +1,178 @@
+<script>
+  $(function () {
+    $("#name_error_message").hide();
+    $("#roAddress_error_message").hide();
+    $("#huAddress_error_message").hide();
+    $("#enAddress_error_message").hide();
+    $("#roShortCompanyDesc_error_message").hide();
+    $("#huShortCompanyDesc_error_message").hide();
+    $("#enShortCompanyDesc_error_message").hide();
+
+    var error_name = false;
+    var error_roAddress = false;
+    var error_huAddress = false;
+    var error_enAddress = false;
+    var error_roShortCompanyDesc = false;
+    var error_huShortCompanyDesc = false;
+    var error_enShortCompanyDesc = false;
+
+    $("#fullName").focusout(function () {
+      check_fullName();
+    });
+
+    $("#roAdress").focusout(function () {
+      check_roAdress();
+    });
+
+    $("#huAdress").focusout(function () {
+      check_huAdress();
+    });
+
+    $("#enAdress").focusout(function () {
+      check_enAdress();
+    });
+
+    $("#roShortCompanyDesc").focusout(function () {
+      check_roShortCompanyDesc();
+    });
+
+    $("#huShortCompanyDesc").focusout(function () {
+      check_huShortCompanyDesc();
+    });
+    $("#enShortCompanyDesc").focusout(function () {
+      check_enShortCompanyDesc();
+    });
+
+    function check_fullName() {
+      var fullName = $("#fullName").val().length;
+      if (fullName < 1 || fullName > 50) {
+        $("#name_error_message").html("<%= lingua.box_ro_name_validation %>");
+        $("#name_error_message").show();
+        error_name = true;
+      } else {
+        $("#name_error_message").hide();
+      }
+    }
+
+    function check_roAdress() {
+      var roAdress = $("#roAdress").val().length;
+
+      if (roAdress < 1 || roAdress > 50) {
+        $("#roAddress_error_message").html(
+          "<%= lingua.box_ro_name_validation %>"
+        );
+        $("#roAddress_error_message").show();
+        error_roAddress = true;
+      } else {
+        $("#roAddress_error_message").hide();
+      }
+    }
+
+    function check_huAdress() {
+      var huAdress = $("#huAdress").val().length;
+
+      if (huAdress < 1 || huAdress > 50) {
+        $("#huAddress_error_message").html(
+          "<%= lingua.box_ro_name_validation %>"
+        );
+        $("#huAddress_error_message").show();
+        error_huAddress = true;
+      } else {
+        $("#huAddress_error_message").hide();
+      }
+    }
+
+    function check_enAdress() {
+      var enAdress = $("#enAdress").val().length;
+
+      if (enAdress < 1 || enAdress > 50) {
+        $("#enAddress_error_message").html(
+          "<%= lingua.box_ro_name_validation %>"
+        );
+        $("#enAddress_error_message").show();
+        error_enAddress = true;
+      } else {
+        $("#enAddress_error_message").hide();
+      }
+    }
+
+    function check_roShortCompanyDesc() {
+      var roShortCompanyDesc = $("#roShortCompanyDesc").val().length;
+
+      if (roShortCompanyDesc < 1 || roShortCompanyDesc > 50) {
+        $("#roShortCompanyDesc_error_message").html(
+          "<%= lingua.box_ro_name_validation %>"
+        );
+        $("#roShortCompanyDesc_error_message").show();
+        error_roShortCompanyDesc = true;
+      } else {
+        $("#roShortCompanyDesc_error_message").hide();
+      }
+    }
+
+    function check_huShortCompanyDesc() {
+      var huShortCompanyDesc = $("#huShortCompanyDesc").val().length;
+
+      if (huShortCompanyDesc < 1 || huShortCompanyDesc > 50) {
+        $("#huShortCompanyDesc_error_message").html(
+          "<%= lingua.box_hu_name_validation %>"
+        );
+        $("#huShortCompanyDesc_error_message").show();
+        error_huShortCompanyDesc = true;
+      } else {
+        $("#huShortCompanyDesc_error_message").hide();
+      }
+    }
+
+    function check_enShortCompanyDesc() {
+      var enShortCompanyDesc = $("#enShortCompanyDesc").val().length;
+
+      if (enShortCompanyDesc < 1 || enShortCompanyDesc > 50) {
+        $("#enShortCompanyDesc_error_message").html(
+          "<%= lingua.box_en_name_validation %>"
+        );
+        $("#enShortCompanyDesc_error_message").show();
+        error_enShortCompanyDesc = true;
+      } else {
+        $("#enShortCompanyDesc_error_message").hide();
+      }
+    }
+
+    $("#update_profile").submit(function () {
+      error_name = false;
+      error_roAddress = false;
+      error_huAddress = false;
+      error_enAddress = false;
+      error_roShortCompanyDesc = false;
+      error_huShortCompanyDesc = false;
+      error_enShortCompanyDesc = false;
+      check_fullName();
+      check_roAdress();
+      check_huAdress();
+      check_enAdress();
+      check_roShortCompanyDesc();
+      check_huShortCompanyDesc();
+      check_enShortCompanyDesc();
+      if (
+        error_name == false &&
+        error_roAddress == false &&
+        error_huAddress == false &&
+        error_enAddress == false &&
+        error_roShortCompanyDesc == false &&
+        error_huShortCompanyDesc == false &&
+        error_enShortCompanyDesc == false
+      ) {
+        $("#profileButton").prop("disabled", true);
+
+        return true;
+      } else {
+        return false;
+      }
+    });
+  });
+</script>
+<style>
+  .intro {
+    border-color: red;
+  }
+</style>

@@ -543,7 +543,6 @@ exports.getPropertyIndex = async (req, res, next) => {
 
   const page = +req.query.page || 1;
   let totalItems;
-  let currentPropertyName = [];
 
   await Property.findAll({
     where: {

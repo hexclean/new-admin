@@ -1,4 +1,6 @@
 <%- include('../includes/head.ejs') %>
+<%- include('../jQuery-validation/profile.ejs') %>
+
 </head>
 <body class="ms-body ms-aside-left-open ms-primary-theme ms-has-quickbar">
 <%- include('../includes/navigation.ejs') %> 
@@ -17,15 +19,7 @@
             <h3 class="ms-profile-username text-white"><%= admin.fullName %></h3>           
           </div>        
         </div>
-     
-        <div class="tab-content">
-          <div class="tab-pane" id="tab1">
-          </div>
-          <div class="tab-pane" id="tab2">
-          </div>
-          <div class="tab-pane" id="tab3">
-          </div>
-        </div>
+   
       </div>
       <div class="row">
         <div class="col-md-6">
@@ -39,6 +33,7 @@
               action="/admin/<% if (editing) { %>edit-profile<% } else { %>add-profile<% } %>"
               method="POST"
               enctype="multipart/form-data"
+              id="update_profile"
               >
                 <div class="form-group">
                   <label for="email">Email address</label>
@@ -52,6 +47,7 @@
                         value="<% if (editing) { %><%= admin[0].id %><% } %>"
                       />
                 </div>
+                <span class="error_form" id="email_error_message"></span>
                 <div class="form-group">
                   <label for="fullName">Full Name</label>
                   <input
@@ -63,6 +59,8 @@
                   value="<% if (editing) { %><%= admin[0].fullName %><% } %>"
                 />
                 </div>
+                <span class="error_form" id="name_error_message"></span>
+
                 <div class="form-group">
                   <label for="phoneNumber">Tel Numb.</label>
                   <input
@@ -70,11 +68,13 @@
                   type="text"
                   autocomplete="off"
                   name="phoneNumber"
+                  disabled
                   id="phoneNumber"
                   value="<% if (editing) { %><%= admin[0].phoneNumber %><% } %>"
                 />
                 </div>
-                
+                <span class="error_form" id="phone_error_message"></span>
+
                
 
                 <div class="form-group">
@@ -89,7 +89,7 @@
                   value="<%= admin[0].commission %>"
                 />
                 </div>
-
+                
                 <div class="form-group">
                   <label for="date">Csatlakozas</label>
                   <input
@@ -126,6 +126,7 @@
                   value="<% if (editing ) { %><%= admin[0].RestaurantInfos[0].address %><% } %>"
                 />
                 </div>
+                <span class="error_form" id="roAddress_error_message"></span>
                 <div class="form-group">
                   <label for="huAdress">HU ADRESS</label>
                   <input
@@ -137,7 +138,7 @@
                         value="<% if (editing) { %><%= admin[0].RestaurantInfos[1].address %><% } %>"
                       />
                 </div>
-
+                <span class="error_form" id="huAddress_error_message"></span>
                 <div class="form-group">
                   <label for="enAdress">EN ADRESS</label>
                   <input
@@ -149,7 +150,8 @@
                         value="<% if (editing) { %><%= admin[0].RestaurantInfos[2].address %><% } %>"
                       />
                 </div>
-                
+                <span class="error_form" id="enAddress_error_message"></span>
+
                
               
             
@@ -164,7 +166,7 @@
             />
             <% } %>
   
-            <button class="btn btn-success" type="submit">
+            <button id="profileButton" class="btn btn-success" type="submit">
               <% if (editing) { %><%= lingua.update_profile %><% } else { %>Add
               Product<% } %>
             </button>
@@ -191,6 +193,8 @@
                         value="<% if (editing) { %><%= admin[0].RestaurantInfos[0].shortCompanyDesc %><% } %>"
                       />
                 </div>
+                <span class="error_form" id="roShortCompanyDesc_error_message"></span>
+
                 <div class="form-group">
                   <label for="huShortCompanyDesc">huShortCompanyDesce</label>
                   <input
@@ -202,6 +206,8 @@
                         value="<% if (editing) { %><%= admin[0].RestaurantInfos[1].shortCompanyDesc %><% } %>"
                       />
                 </div>
+                <span class="error_form" id="huShortCompanyDesc_error_message"></span>
+
                 <div class="form-group">
                   <label for="enShortCompanyDesc">enShortCompanyDesce</label>
                   <input
@@ -213,7 +219,8 @@
                   value="<% if (editing) { %><%= admin[0].RestaurantInfos[2].shortCompanyDesc %><% } %>"
                 />
                 </div>
-               
+                <span class="error_form" id="enShortCompanyDesc_error_message"></span>
+
             </div>
           </div>
          
