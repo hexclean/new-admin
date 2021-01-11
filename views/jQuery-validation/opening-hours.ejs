@@ -1,169 +1,338 @@
 <script>
   $(function () {
-    $("#roName_error_message").hide();
-    $("#huName_error_message").hide();
-    $("#enName_error_message").hide();
-    $("#propValRo_error_message").hide();
-    $("#propValHu_error_message").hide();
-    $("#propValEn_error_message").hide();
-    $("#counter_error_message").hide();
+    $("#mondayOpen_error_message").hide();
+    $("#mondayClose_error_message").hide();
 
-    var error_roName = false;
-    var error_huName = false;
-    var error_enName = false;
-    var error_propValRo = false;
-    var error_propValHu = false;
-    var error_propValEn = false;
-    var error_counter = false;
+    $("#tuesdayOpen_error_message").hide();
+    $("#tuesdayClose_error_message").hide();
 
-    $("#roName").focusout(function () {
-      check_roName();
+    $("#wednesdayOpen_error_message").hide();
+    $("#wednesdayClose_error_message").hide();
+
+    $("#thursdayOpen_error_message").hide();
+    $("#thursdayClose_error_message").hide();
+
+    $("#fridayOpen_error_message").hide();
+    $("#fridayClose_error_message").hide();
+
+    $("#saturdayOpen_error_message").hide();
+    $("#saturdayClose_error_message").hide();
+
+    $("#sundayOpen_error_message").hide();
+    $("#sundayClose_error_message").hide();
+
+    var error_mondayOpen = false;
+    var error_mondayClose = false;
+
+    var error_tuesdayOpen = false;
+    var error_tuesdayClose = false;
+
+    var error_wednesdayOpen = false;
+    var error_wednesdayClose = false;
+
+    var error_thursdayOpen = false;
+    var error_thursdayClose = false;
+
+    var error_fridayOpen = false;
+    var error_fridayClose = false;
+
+    var error_saturdayOpen = false;
+    var error_saturdayClose = false;
+
+    var error_sundayOpen = false;
+    var error_sundayClose = false;
+
+    $("#mondayOpen").focusout(function () {
+      check_mondayOpen();
     });
 
-    $("#huName").focusout(function () {
-      check_huName();
+    $("#mondayClose").focusout(function () {
+      check_mondayClose();
     });
 
-    $("#enName").focusout(function () {
-      check_enName();
+    $("#tuesdayOpen").focusout(function () {
+      check_tuesdayOpen();
     });
 
-    $(".propValRo").focusout(function () {
-      propValRo();
+    $("#tuesdayClose").focusout(function () {
+      check_tuesdayClose();
     });
 
-    $(".propValHu").focusout(function () {
-      propValHu();
+    $("#wednesdayOpen").focusout(function () {
+      check_wednesdayOpen();
     });
 
-    $(".propValEn").focusout(function () {
-      propValEn();
+    $("#wednesdayClose").focusout(function () {
+      check_wednesdayClose();
     });
 
-    var nameValue = $("#counter").val();
-
-    $("#counter").change(function () {
-      console.log(nameValue);
-      counter();
-      nameValue = $(this).val();
+    $("#thursdayOpen").focusout(function () {
+      check_thursdayOpen();
     });
 
-    function counter() {
-      if ($("#counter").val() == undefined) {
-        $("#counter_error_message").html(
-          "<%= lingua.box_ro_name_validation %>"
+    $("#thursdayClose").focusout(function () {
+      check_thursdayClose();
+    });
+
+    $("#fridayOpen").focusout(function () {
+      check_fridayOpen();
+    });
+
+    $("#fridayClose").focusout(function () {
+      check_fridayClose();
+    });
+
+    $("#saturdayOpen").focusout(function () {
+      check_saturdayOpen();
+    });
+
+    $("#saturdayClose").focusout(function () {
+      check_saturdayClose();
+    });
+
+    $("#sundayOpen").focusout(function () {
+      check_sundayOpen();
+    });
+
+    $("#sundayClose").focusout(function () {
+      check_sundayClose();
+    });
+
+    function check_mondayOpen() {
+      var mondayOpen = $("#mondayOpen").val().length;
+      if (mondayOpen != 5) {
+        $("#mondayOpen_error_message").html("<%= lingua.opening_hour_val %>");
+        $("#mondayOpen_error_message").show();
+        error_mondayOpen = true;
+      } else {
+        $("#mondayOpen_error_message").hide();
+      }
+    }
+
+    function check_mondayClose() {
+      var mondayClose = $("#mondayClose").val().length;
+
+      if (mondayClose != 5) {
+        $("#mondayClose_error_message").html("<%= lingua.opening_hour_val %>");
+        $("#mondayClose_error_message").show();
+        error_mondayClose = true;
+      } else {
+        $("#mondayClose_error_message").hide();
+      }
+    }
+
+    function check_tuesdayOpen() {
+      var tuesdayOpen = $("#tuesdayOpen").val().length;
+
+      if (tuesdayOpen != 5) {
+        $("#tuesdayOpen_error_message").html("<%= lingua.opening_hour_val %>");
+        $("#tuesdayOpen_error_message").show();
+        error_tuesdayOpen = true;
+      } else {
+        $("#tuesdayOpen_error_message").hide();
+      }
+    }
+
+    function check_tuesdayClose() {
+      var tuesdayClose = $("#tuesdayClose").val().length;
+
+      if (tuesdayClose != 5) {
+        $("#tuesdayClose_error_message").html("<%= lingua.opening_hour_val %>");
+        $("#tuesdayClose_error_message").show();
+        error_tuesdayClose = true;
+      } else {
+        $("#tuesdayClose_error_message").hide();
+      }
+    }
+
+    function check_wednesdayOpen() {
+      var wednesdayOpen = $("#wednesdayOpen").val().length;
+
+      if (wednesdayOpen != 5) {
+        $("#wednesdayOpen_error_message").html(
+          "<%= lingua.opening_hour_val %>"
         );
-        $("#counter_error_message").show();
-        error_counter = true;
+        $("#wednesdayOpen_error_message").show();
+        error_wednesdayOpen = true;
       } else {
-        $("#counter_error_message").hide();
+        $("#wednesdayOpen_error_message").hide();
       }
     }
 
-    function propValRo() {
-      var propValRo = $(".propValRo").val().length;
+    function check_wednesdayClose() {
+      var wednesdayClose = $("#wednesdayClose").val().length;
 
-      if (propValRo < 1 || propValRo > 50) {
-        $("#propValRo_error_message").html(
-          "<%= lingua.box_ro_name_validation %>"
+      if (wednesdayClose != 5) {
+        $("#wednesdayClose_error_message").html(
+          "<%= lingua.opening_hour_val %>"
         );
-        $("#propValRo_error_message").show();
-        error_propValRo = true;
+        $("#wednesdayClose_error_message").show();
+        error_wednesdayClose = true;
       } else {
-        $("#propValRo_error_message").hide();
+        $("#wednesdayClose_error_message").hide();
       }
     }
 
-    function propValHu() {
-      var propValHu = $(".propValHu").val().length;
+    function check_thursdayOpen() {
+      var thursdayOpen = $("#thursdayOpen").val().length;
 
-      if (propValHu < 1 || propValHu > 50) {
-        $("#propValHu_error_message").html(
-          "<%= lingua.box_ro_name_validation %>"
+      if (thursdayOpen != 5) {
+        $("#thursdayOpen_error_message").html("<%= lingua.opening_hour_val %>");
+        $("#thursdayOpen_error_message").show();
+        error_thursdayOpen = true;
+      } else {
+        $("#thursdayOpen_error_message").hide();
+      }
+    }
+
+    function check_thursdayClose() {
+      var thursdayClose = $("#thursdayClose").val().length;
+
+      if (thursdayClose != 5) {
+        $("#thursdayClose_error_message").html(
+          "<%= lingua.opening_hour_val %>"
         );
-        $("#propValHu_error_message").show();
-        error_propValHu = true;
+        $("#thursdayClose_error_message").show();
+        error_thursdayClose = true;
       } else {
-        $("#propValHu_error_message").hide();
+        $("#thursdayClose_error_message").hide();
       }
     }
 
-    function propValEn() {
-      var propValEn = $(".propValEn").val().length;
+    function check_fridayOpen() {
+      var fridayOpen = $("#fridayOpen").val().length;
 
-      if (propValEn < 1 || propValEn > 50) {
-        $("#propValEn_error_message").html(
-          "<%= lingua.box_ro_name_validation %>"
+      if (fridayOpen != 5) {
+        $("#fridayOpen_error_message").html("<%= lingua.opening_hour_val %>");
+        $("#fridayOpen_error_message").show();
+        error_fridayOpen = true;
+      } else {
+        $("#fridayOpen_error_message").hide();
+      }
+    }
+
+    function check_fridayClose() {
+      var fridayClose = $("#fridayClose").val().length;
+
+      if (fridayClose != 5) {
+        $("#fridayClose_error_message").html("<%= lingua.opening_hour_val %>");
+        $("#fridayClose_error_message").show();
+        error_fridayClose = true;
+      } else {
+        $("#fridayClose_error_message").hide();
+      }
+    }
+
+    function check_saturdayOpen() {
+      var saturdayOpen = $("#saturdayOpen").val().length;
+
+      if (saturdayOpen != 5) {
+        $("#saturdayOpen_error_message").html("<%= lingua.opening_hour_val %>");
+        $("#saturdayOpen_error_message").show();
+        error_saturdayOpen = true;
+      } else {
+        $("#saturdayOpen_error_message").hide();
+      }
+    }
+
+    function check_saturdayClose() {
+      var saturdayClose = $("#saturdayClose").val().length;
+
+      if (saturdayClose != 5) {
+        $("#saturdayClose_error_message").html(
+          "<%= lingua.opening_hour_val %>"
         );
-        $("#propValEn_error_message").show();
-        error_propValEn = true;
+        $("#saturdayClose_error_message").show();
+        error_saturdayClose = true;
       } else {
-        $("#propValEn_error_message").hide();
+        $("#saturdayClose_error_message").hide();
       }
     }
 
-    function check_roName() {
-      var roName_length = $("#roName").val().length;
+    function check_sundayOpen() {
+      var sundayOpen = $("#sundayOpen").val().length;
 
-      if (roName_length < 1 || roName_length > 50) {
-        $("#roName_error_message").html("<%= lingua.box_ro_name_validation %>");
-        $("#roName_error_message").show();
-        error_roName = true;
+      if (sundayOpen != 5) {
+        $("#sundayOpen_error_message").html("<%= lingua.opening_hour_val %>");
+        $("#sundayOpen_error_message").show();
+        error_sundayOpen = true;
       } else {
-        $("#roName_error_message").hide();
+        $("#sundayOpen_error_message").hide();
       }
     }
 
-    function check_huName() {
-      var huName_length = $("#huName").val().length;
+    function check_sundayClose() {
+      var sundayClose = $("#sundayClose").val().length;
 
-      if (huName_length < 1 || huName_length > 50) {
-        $("#huName_error_message").html("<%= lingua.box_hu_name_validation %>");
-        $("#huName_error_message").show();
-        error_huName = true;
+      if (sundayClose != 5) {
+        $("#sundayClose_error_message").html("<%= lingua.opening_hour_val %>");
+        $("#sundayClose_error_message").show();
+        error_sundayClose = true;
       } else {
-        $("#huName_error_message").hide();
+        $("#sundayClose_error_message").hide();
       }
     }
 
-    function check_enName() {
-      var enName_length = $("#enName").val().length;
+    $("#updateOpening").submit(function () {
+      error_mondayOpen = false;
+      error_mondayClose == false;
 
-      if (enName_length < 1 || enName_length > 50) {
-        $("#enName_error_message").html("<%= lingua.box_en_name_validation %>");
-        $("#enName_error_message").show();
-        error_enName = true;
-      } else {
-        $("#enName_error_message").hide();
-      }
-    }
+      error_tuesdayOpen == false;
+      error_tuesdayClose == false;
 
-    $("#createProperty_form").submit(function () {
-      error_roName = false;
-      error_huName = false;
-      error_enName = false;
-      error_propValRo = false;
-      error_propValHu = false;
-      error_propValEn = false;
-      error_counter = false;
-      check_roName();
-      check_huName();
-      check_enName();
-      propValRo();
-      propValHu();
-      propValEn();
-      counter();
+      error_wednesdayOpen == false;
+      error_wednesdayClose == false;
+
+      error_thursdayOpen == false;
+      error_thursdayClose == false;
+
+      error_fridayOpen == false;
+      error_fridayClose == false;
+
+      error_saturdayOpen == false;
+      error_saturdayClose == false;
+
+      error_sundayOpen == false;
+      error_sundayClose == false;
+
+      check_mondayOpen();
+      check_mondayClose();
+
+      check_tuesdayOpen();
+      check_tuesdayClose();
+
+      check_wednesdayOpen();
+      check_wednesdayClose();
+
+      check_thursdayOpen();
+      check_thursdayClose();
+
+      check_fridayOpen();
+      check_fridayClose();
+
+      check_saturdayOpen();
+      check_saturdayClose();
+
+      check_sundayOpen();
+      check_sundayClose();
 
       if (
-        error_roName == false &&
-        error_huName == false &&
-        error_enName == false &&
-        error_propValRo == false &&
-        error_propValHu == false &&
-        error_propValEn == false &&
-        error_counter == false
+        error_mondayOpen == false &&
+        error_mondayClose == false &&
+        error_tuesdayOpen == false &&
+        error_tuesdayClose == false &&
+        error_wednesdayOpen == false &&
+        error_wednesdayClose == false &&
+        error_thursdayOpen == false &&
+        error_thursdayClose == false &&
+        error_fridayOpen == false &&
+        error_fridayClose == false &&
+        error_saturdayOpen == false &&
+        error_saturdayClose == false &&
+        error_sundayOpen == false &&
+        error_sundayClose == false
       ) {
-        $("#createProperty").prop("disabled", true);
+        $("#updateOpeningHrBtn").prop("disabled", true);
 
         return true;
       } else {

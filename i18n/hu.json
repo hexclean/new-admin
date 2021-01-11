@@ -152,5 +152,6 @@
   "order_detail_total_final": "Végösszeg",
   "currency": "lej",
   "product_comment": "Megjegyzés",
-  "product_comment_courier": "Megjegyzés a futárnak"
+  "product_comment_courier": "Megjegyzés a futárnak",
+  "opening_hour_val": "dsad"
 }

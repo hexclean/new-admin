@@ -150,5 +150,7 @@
   "order_detail_total_final": "Grand total",
   "currency": "lei",
   "product_comment": "Comment",
-  "product_comment_courier": "Comment to the courier"
+  "product_comment_courier": "Comment to the courier",
+
+  "opening_hour_val": "dsad"
 }

@@ -1,4 +1,6 @@
 <%- include('../includes/head.ejs') %>
+<%- include('../jQuery-validation/opening-hours.ejs') %>
+
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 <script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>
@@ -31,6 +33,7 @@
                action="/admin/<% if (editing) { %>edit-opening-Hours<% } %>"
                method="POST"
                enctype="multipart/form-data"
+               id="updateOpening"
                >
               
              
@@ -78,6 +81,8 @@
                                  value="<% if (editing ) { %><%= admin[0].Hours[0].OpeningHour.open %><% } %>"
                                  />
                            </div>
+                           <span class="error_form" id="mondayOpen_error_message"></span>
+
                            <div class="form-group">
                               <label for="huAdress">zaras</label>
                               <input
@@ -88,7 +93,8 @@
                                  value="<% if (editing) { %><%= admin[0].Hours[0].OpeningHour.close %><% } %>"
                                  />
                            </div>
-                          
+                           <span class="error_form" id="mondayClose_error_message"></span>
+
                         </div>
                      </div>
 
@@ -135,6 +141,8 @@
                                  value="<% if (editing ) { %><%= admin[0].Hours[1].OpeningHour.open %><% } %>"
                                  />
                            </div>
+                           <span class="error_form" id="tuesdayOpen_error_message"></span>
+
                            <div class="form-group">
                               <label for="huAdress">zaras</label>
                               <input
@@ -145,7 +153,8 @@
                                  value="<% if (editing) { %><%= admin[0].Hours[1].OpeningHour.close %><% } %>"
                                  />
                            </div>
-                          
+                           <span class="error_form" id="tuesdayClose_error_message"></span>
+
                         </div>
                      </div>
                   </div>
@@ -187,6 +196,8 @@
                                 value="<% if (editing ) { %><%= admin[0].Hours[2].OpeningHour.open %><% } %>"
                                 />
                           </div>
+                          <span class="error_form" id="wednesdayOpen_error_message"></span>
+
                           <div class="form-group">
                              <label for="wednesdayClose">zaras</label>
                              <input
@@ -197,7 +208,8 @@
                                 value="<% if (editing) { %><%= admin[0].Hours[2].OpeningHour.close %><% } %>"
                                 />
                           </div>
-                          
+                          <span class="error_form" id="wednesdayClose_error_message"></span>
+
                        </div>
                     </div>
                  </div>
@@ -238,6 +250,8 @@
                                 value="<% if (editing ) { %><%= admin[0].Hours[3].OpeningHour.open %><% } %>"
                                 />
                           </div>
+                          <span class="error_form" id="thursdayOpen_error_message"></span>
+
                           <div class="form-group">
                              <label for="thursdayClose">zaras</label>
                              <input
@@ -248,7 +262,8 @@
                                 value="<% if (editing) { %><%= admin[0].Hours[3].OpeningHour.close %><% } %>"
                                 />
                           </div>
-                          
+                          <span class="error_form" id="thursdayClose_error_message"></span>
+
                        </div>
                     </div>
                  </div>
@@ -289,6 +304,8 @@
                                 value="<% if (editing ) { %><%= admin[0].Hours[4].OpeningHour.open %><% } %>"
                                 />
                           </div>
+                          <span class="error_form" id="fridayOpen_error_message"></span>
+
                           <div class="form-group">
                              <label for="fridayClose">zaras</label>
                              <input
@@ -299,7 +316,8 @@
                                 value="<% if (editing) { %><%= admin[0].Hours[4].OpeningHour.close %><% } %>"
                                 />
                           </div>
-                          
+                          <span class="error_form" id="fridayClose_error_message"></span>
+
                        </div>
                     </div>
                  </div>
@@ -340,6 +358,8 @@
                                 value="<% if (editing ) { %><%= admin[0].Hours[5].OpeningHour.open %><% } %>"
                                 />
                           </div>
+                          <span class="error_form" id="saturdayOpen_error_message"></span>
+
                           <div class="form-group">
                              <label for="saturdayClose">zaras</label>
                              <input
@@ -350,7 +370,8 @@
                                 value="<% if (editing) { %><%= admin[0].Hours[5].OpeningHour.close %><% } %>"
                                 />
                           </div>
-                          
+                          <span class="error_form" id="saturdayClose_error_message"></span>
+
                        </div>
                     </div>
                  </div>
@@ -393,6 +414,8 @@
                                 value="<% if (editing ) { %><%= admin[0].Hours[6].OpeningHour.open %><% } %>"
                                 />
                           </div>
+                          <span class="error_form" id="sundayOpen_error_message"></span>
+
                           <div class="form-group">
                              <label for="sundayClose">zaras</label>
                              <input
@@ -403,7 +426,8 @@
                                 value="<% if (editing) { %><%= admin[0].Hours[6].OpeningHour.close %><% } %>"
                                 />
                           </div>
-                          
+                          <span class="error_form" id="sundayClose_error_message"></span>
+
                        </div>
                     </div>
                     <% } %>
@@ -414,7 +438,7 @@
                         name="restaurantId"
                         />
                      <% } %>
-                     <button class="btn btn-success" type="submit">
+                     <button class="btn btn-success" type="submit" id="updateOpeningHrBtn">
                      <% if (editing) { %><%= lingua.update_profile %><% } else { %>Add
                      Product<% } %>
                      </button>
