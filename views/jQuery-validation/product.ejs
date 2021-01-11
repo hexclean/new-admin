@@ -101,6 +101,13 @@
 </script>
 <script>
   $(function () {
+    var categoryId = $("#categoryId").val();
+    if (categoryId === null) {
+      console.log("null123456");
+      $(".test1234").attr("disabled", true);
+    } else {
+      $(".test1234").attr("disabled", false);
+    }
     $("#roName_error_message").hide();
     $("#huName_error_message").hide();
     $("#enName_error_message").hide();
@@ -353,7 +360,6 @@
 <% if(editing){ %>
 <script>
   $(document).ready(function () {
-    console.log("adasd", "");
     const categoryId = $("#categoryId").val();
     $(".category-all").hide();
     $(".category-<%= currentCat %>").show();
