@@ -61,16 +61,21 @@
     }
 
     function propValRo() {
-      var propValRo = $(".propValRo").val().length;
-
-      if (propValRo < 1 || propValRo > 50) {
-        $("#propValRo_error_message").html(
-          "<%= lingua.box_ro_name_validation %>"
-        );
-        $("#propValRo_error_message").show();
-        error_propValRo = true;
-      } else {
-        $("#propValRo_error_message").hide();
+      var propValRo = $(".propValRo");
+      for (let i = 0; i < propValRo.length; i++) {
+        var propValRoItem = $(propValRo[i]);
+        // console.log(propValRoItem.val());
+        var counter = propValRoItem.closest(".cnt").find("#counter");
+        var counterIndex = $(counter[0]).val();
+        if (propValRoItem.val().length < 1 || propValRoItem.val().length > 50) {
+          $("#propValRo_error_message" + counterIndex).html(
+            "<%= lingua.box_ro_name_validation %>"
+          );
+          $("#propValRo_error_message" + counterIndex).show();
+          error_propValRo = true;
+        } else {
+          $("#propValRo_error_message" + counterIndex).hide();
+        }
       }
     }
 

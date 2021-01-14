@@ -12,16 +12,6 @@
 </script>
 
 <script>
-  $("#createProduct").submit(function (e) {
-    e.preventDefault();
-    var ck_box = $('input[type="checkbox"]:checked').length;
-    console.log(ck_box);
-    if (ck_box > 0) {
-      alert(ck_box);
-    }
-  });
-</script>
-<script>
   $(document).ready(function () {
     $(".statusAllergen-checkbox").click(function () {
       var extraId = $(this).attr("data-allergenId");
@@ -49,10 +39,11 @@
 
 <script>
   $(document).ready(function () {
+    var error_price = false;
     $(".status-checkbox").click(function () {
       var extraId = $(this).data("extraId");
       $("#price_error_message_" + extraId).hide();
-      var error_price = false;
+      error_price = false;
     });
     function check_variantInputs() {
       var extraId = $(this).attr("data-extraId");
@@ -88,26 +79,9 @@
           .html("");
       }
     });
-    $("#product-form").submit(function () {
-      error_price = false;
-      check_variantInputs();
-      if (error_price == false) {
-        return true;
-      } else {
-        return false;
-      }
-    });
-  });
-</script>
-<script>
-  $(function () {
+
     var categoryId = $("#categoryId").val();
-    if (categoryId === null) {
-      console.log("null123456");
-      $(".test1234").attr("disabled", true);
-    } else {
-      $(".test1234").attr("disabled", false);
-    }
+
     $("#roName_error_message").hide();
     $("#huName_error_message").hide();
     $("#enName_error_message").hide();
@@ -136,6 +110,7 @@
     var error_end = false;
     var error_file = false;
     var error_category = false;
+    var error_start = false;
 
     $("#roTitle").focusout(function () {
       check_roName();
@@ -193,7 +168,27 @@
       //   $("#property_error_message").hide();
       //   $("#createCategory").removeAttr("disabled");
       // }
+
+      if ($("#isDailyMenu").is(":checked")) {
+        var startDate = $("#startDate").val();
+        if (startDate == 0) {
+          $("#start_error_message").html("start_error_message");
+          $("#start_error_message").show();
+          error_start = true;
+        } else {
+          $("#start_error_message").hide();
+        }
+      }
     }
+
+    // $("#createProduct").submit(function (e) {
+    //   e.preventDefault();
+    //   var ck_box = $('input[type="checkbox"]:checked').length;
+    //   console.log(ck_box);
+    //   if (ck_box > 0) {
+    //     alert(ck_box);
+    //   }
+    // });
 
     function check_category() {
       var categoryId = $("#categoryId").val();
@@ -231,6 +226,7 @@
       var huName_length = $("#huTitle").val().length;
       if (huName_length < 2 || huName_length > 55) {
         $("#huName_error_message").html("hu");
+
         $("#huName_error_message").show();
         error_huName = true;
       } else {
@@ -307,7 +303,6 @@
         $("#allergen_error_message").html("minimum 1 et megkell adni");
         $("#allergen_error_message").show();
         error_allergens = true;
-        $("#createProduct").disabled = true;
       } else {
         $("#allergen_error_message").hide();
         $("#createProduct").removeAttr("disabled");
@@ -326,6 +321,8 @@
       error_file == false;
       error_box = false;
       error_category == false;
+      error_price = false;
+      error_start = false;
       check_roName();
       check_huName();
       check_enName();
@@ -337,6 +334,9 @@
       check_file();
       check_box();
       check_category();
+      check_variantInputs();
+      check_dailyMenu();
+
       if (
         error_roName == false &&
         error_huName == false &&
@@ -348,7 +348,9 @@
         error_allergens == false &&
         error_box == false &&
         error_file == false &&
-        error_category == false
+        error_category == false &&
+        error_price == false &&
+        error_start == false
       ) {
         return true;
       } else {
@@ -398,16 +400,6 @@
       } else {
         $(".statusOption" + optionId).val("off");
       }
-    });
-  });
-</script>
-
-<script>
-  $(document).ready(function () {
-    $(function () {
-      $("#createProduct").one("click", function () {
-        $("#product-form").submit();
-      });
     });
   });
 </script>

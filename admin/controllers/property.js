@@ -205,6 +205,7 @@ exports.postEditProperty = async (req, res, next) => {
   const propertyId = req.body.propertyId;
   const propTransId = req.body.propTransId;
   let prodVarTransId = [];
+  console.log(req.body);
   prodVarTransId = req.body.prodVarTransId;
 
   Property.findAll({
