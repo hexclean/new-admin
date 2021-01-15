@@ -52,7 +52,7 @@
       <script>
          $('.add-variant').click(function () {return false;});
       </script>
-      <div class="alert alert-danger" role="alert">
+      <div class="alert alert-warning" role="alert">
          <i class="flaticon-alert-1 alert-message-popup"></i> <strong class="alert-message-popup">Oh snap! eloszor extrat letre kell hoznod majd azutan tudsz varianst letrehozni</strong>
       </div>
       <% } %>
@@ -60,7 +60,7 @@
       <script>
          $('.add-variant').click(function () {return false;});
       </script>
-      <div class="alert alert-danger" role="alert">
+      <div class="alert alert-warning" role="alert">
          <i class="flaticon-alert-1"></i> <strong class="alert-message-popup">Oh snap! eloszor KATEGORIAT letre kell hoznod majd azutan tudsz varianst letrehozni</strong >
       </div>
       <% } %>
@@ -68,14 +68,14 @@
       <script>
          $('.add-extra').click(function () {return false;});
       </script>
-      <div class="alert alert-danger" role="alert">
+      <div class="alert alert-warning" role="alert">
          <i class="flaticon-alert-1"></i> <strong class="alert-message-popup">Oh snap! eloszor Allergen kell az extrahoz</strong >
       </div>
       <% } %>
       <div class="ms-content-wrapper">
          <div class="row">
             <div class="col-md-12">
-               <div class="col-12">
+              
                   <div class="ms-panel">
                      <div class="ms-panel-header">
                         <h6><%= lingua.variants %></h6>
@@ -113,10 +113,12 @@
                               <% } %>
                            </table>
                         </div>
+                        <% if (vr.length > 0) { %>
                         <%- include('../includes/pagination.ejs', {currentPage: currentPage, nextPage: nextPage, previousPage: previousPage, lastPage: lastPage, hasNextPage: hasNextPage, hasPreviousPage: hasPreviousPage}) %>
+                        <% } %>
                      </div>
                   </div>
-               </div>
+            
             </div>
          </div>
       </div>

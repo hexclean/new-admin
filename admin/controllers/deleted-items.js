@@ -3,6 +3,7 @@ const ProductsTranslation = require("../../models/ProductTranslation");
 const ITEMS_PER_PAGE = 30;
 const ProductFinal = require("../../models/ProductFinal");
 const Variant = require("../../models/Variant");
+
 exports.getIndex = async (req, res, next) => {
   res.render("deleted-items/index", {
     pageTitle: "Add Product",
@@ -61,7 +62,7 @@ exports.getProducts = async (req, res, next) => {
     .then((products) => {
       res.render("deleted-items/deleted-products", {
         pageTitle: "Admin Products",
-        path: "/admin/products",
+        path: "/admin/deleted-products",
         currentPage: page,
         hasNextPage: ITEMS_PER_PAGE * page < totalItems.length,
         hasPreviousPage: page > 1,

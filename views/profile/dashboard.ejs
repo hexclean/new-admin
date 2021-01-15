@@ -119,7 +119,9 @@
                   </tr>
                   <tr>
                     <th scope="row"><%= lingua.dashboard_profile_connect %></th>
-                    <td><%= admin.createdAt %></td>
+                    <td><%= admin.createdAt.toLocaleString("en-GB", {
+                      timeZone: "Europe/Helsinki",
+                    }); %></td>
                   </tr>
                 </tbody>
               </table>

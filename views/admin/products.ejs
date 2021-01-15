@@ -29,15 +29,15 @@ $(document).ready(function() {
       <script>
          $('.add-product').click(function () {return false;});
       </script>
-      <div class="alert alert-danger" role="alert">
-         <i class="flaticon-alert-1"></i> <strong class="alert-message-popup"></strong><%= lingua.product_variant_message %>
+      <div class="alert alert alert-warning" role="alert">
+         <i class="flaticon-alert-1"></i> <strong class="alert-message-popup"><%= lingua.product_variant_message %></strong>
       </div>
       <% } %>
       <% if ( checkBoxLength.length === 0) { %>
       <script>
          $('.add-product').click(function () {return false;});
       </script>
-      <div class="alert alert-danger" role="alert">
+      <div class="alert alert alert-warning" role="alert">
          <i class="flaticon-alert-1"></i> <strong class="alert-message-popup">
             <%= lingua.product_box_message %></strong>
       </div>
@@ -45,7 +45,7 @@ $(document).ready(function() {
       <div class="ms-content-wrapper">
          <div class="row">
             <div class="col-md-12">
-               <div class="col-12">
+               
                   <div class="ms-panel">
                      <div class="ms-panel-header">
                         <h6><%= lingua.products %></h6>
@@ -91,13 +91,15 @@ $(document).ready(function() {
                               <% } %>
                            </table>
                         </div>
+                        <% if (prods.length > 0) { %>
                         <%- include('../includes/pagination.ejs', {currentPage: currentPage, nextPage: nextPage, previousPage: previousPage, lastPage: lastPage, hasNextPage: hasNextPage, hasPreviousPage: hasPreviousPage}) %>
+                        <% } %>
                      </div>
                   </div>
                </div>
-            </div>
+            
          </div>
-      </div>
+       </div>
       </div>
    </main>
    <%- include('../includes/end.ejs')

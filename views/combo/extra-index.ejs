@@ -43,7 +43,7 @@
       <script>
          $('.add-extra').click(function () {return false;});
       </script>
-      <div class="alert alert-danger" role="alert">
+      <div class="alert alert-warning" role="alert">
          <i class="flaticon-alert-1"></i> <strong class="alert-message-popup"><%= lingua.extra_allergen_message %></strong >
       </div>
       <% } %>
@@ -87,7 +87,9 @@
                            <% } %>
                         </table>
                      </div>
+                     <% if (extra.length > 0) { %>
                      <%- include('../includes/pagination.ejs', {currentPage: currentPage, nextPage: nextPage, previousPage: previousPage, lastPage: lastPage, hasNextPage: hasNextPage, hasPreviousPage: hasPreviousPage}) %>
+                     <% } %>
                   </div>
                </div>
             </div>

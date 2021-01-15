@@ -525,12 +525,6 @@ exports.getFilteredAllergen = async (req, res, next) => {
 };
 
 exports.getPropertyIndex = async (req, res, next) => {
-  // await AdminLogs.create({
-  //   restaurant_id: req.admin.id,
-  //   operation_type: "GET",
-  //   description: "Opened list of all extra",
-  //   route: "getBoxIndex",
-  // });
   let languageCode;
 
   if (req.cookies.language == "ro") {

@@ -26,26 +26,23 @@
                <li role="presentation"><a href="#" aria-controls="tab1" class="active show" role="tab" data-toggle="tab"> Összes Prop </a></li>
                <li role="presentation"><a class="add-variant" href="/admin/add-property">Add Proeprty </a></li>
             </ul>
-            <div class="tab-content">
-               <div class="tab-pane" id="tab1">
-               </div>
-               <div class="tab-pane" id="tab2">
-               </div>
-               <div class="tab-pane" id="tab3">
-               </div>
-            </div>
+          
          </div>
       </div>
       <div class="col-md-6">
          <nav aria-label="breadcrumb">
-            <ol class="breadcrumb breadcrumb-arrow first-rounded has-shadow">
-               <li class="breadcrumb-item"><a href="/admin/vr-index">
-                  Vissza</a>
-               </li>
-               <li class="breadcrumb-item active" aria-current="page">Extrak</li>
-            </ol>
+           <ol class="breadcrumb">
+             <li class="breadcrumb-item">
+               <a a href="/admin/vr-index"
+                 ><i class="material-icons"></i><%= lingua.back %></a
+               >
+             </li>
+             <li class="breadcrumb-item active" aria-current="page">
+               <%= lingua.box %>
+             </li>
+           </ol>
          </nav>
-      </div>
+       </div>
    
       <div class="ms-content-wrapper">
          <div class="row">
@@ -57,6 +54,7 @@
                   <div class="ms-panel-body">
                      <div class="table-responsive">
                         <table id="searchedExtra" class="table table-hover thead-primary">
+                           <% if (property.length > 0) { %>
                            <thead>
                               <tr>
                                  <th scope="col">ID</th>
@@ -77,15 +75,22 @@
                                  <td><%= property[i].PropertyTranslations[0].name %></td>
                                  <td><span class="badge badge-success">AKTIV</span></td>
                                  <td>
-                                    <a href="/admin/edit-property/<%= property[i].id %>?edit=true"class="btn grid-btn mt-0 btn-sm btn-secondary" ><%= lingua.product_action_edit %></a>
+                                    <a href="/admin/edit-property/<%= property[i].id %>?edit=true"class="btn grid-btn mt-0 btn-sm btn-secondary" ><%= lingua.button_edit %></a>
                                  </td>
                               </tr>
                            </tbody>
                            <% } %>
+                           <% } else { %>
+                           <h4>nincs property</h4>
+                           <% } %>
                            
                         </table>
                      </div>
+                     <% if (property.length > 0) { %>
+
                      <%- include('../includes/pagination.ejs', {currentPage: currentPage, nextPage: nextPage, previousPage: previousPage, lastPage: lastPage, hasNextPage: hasNextPage, hasPreviousPage: hasPreviousPage}) %>
+                     <% } %>
+
                   </div>
                </div>
             </div>

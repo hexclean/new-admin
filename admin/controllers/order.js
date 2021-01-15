@@ -10,34 +10,9 @@ const Variant = require("../../models/Variant");
 const ProductFinal = require("../../models/ProductFinal");
 const Product = require("../../models/Product");
 const ProductTranslation = require("../../models/ProductTranslation");
-const ProductVariantsExtras = require("../../models/ProductVariantsExtras");
 const Extra = require("../../models/Extra");
 const ExtraTranslation = require("../../models/ExtraTranslation");
-const OrderStatus = require("../../models/OrderStatus");
-const nodemailer = require("nodemailer");
-const sendgridTransport = require("nodemailer-sendgrid-transport");
-const fastcsv = require("fast-csv");
-const fileSystem = require("fs");
-const Op = Sequelize.Op;
-const Nexmo = require("nexmo");
-// const socketio = require("socket.io");
-const { type } = require("os");
-const ITEMS_PER_PAGE = 20;
-const transporter = nodemailer.createTransport(
-  sendgridTransport({
-    auth: {
-      api_key:
-        "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",
-    },
-  })
-);
-const nexmo = new Nexmo(
-  {
-    apiKey: "d5443b6c",
-    apiSecret: "1BwKJBVaAkNDSG9W",
-  },
-  { debug: true }
-);
+
 exports.getOrders = async (req, res, next) => {
   let languageCode;
 

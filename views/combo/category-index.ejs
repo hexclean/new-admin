@@ -44,7 +44,7 @@ $(document).ready(function() {
       <script>
          $('.add-extra').click(function () {return false;});
       </script>
-      <div class="alert alert-danger" role="alert">
+      <div class="alert alert-warning" role="alert">
          <i class="flaticon-alert-1"></i> <strong class="alert-message-popup"><%= lingua.category_allergen_message %></strong >
       </div>
       <% } %>
@@ -52,7 +52,7 @@ $(document).ready(function() {
       <script>
          $('.add-extra').click(function () {return false;});
       </script>
-      <div class="alert alert-danger" role="alert">
+      <div class="alert alert-warning" role="alert">
          <i class="flaticon-alert-1"></i> <strong class="alert-message-popup"><%= lingua.category_property_message %></strong >
       </div>
       <% } %>
@@ -94,7 +94,9 @@ $(document).ready(function() {
                            <% } %>
                         </table>
                      </div>
+                     <% if (category.length > 0) { %>
                      <%- include('../includes/pagination.ejs', {currentPage: currentPage, nextPage: nextPage, previousPage: previousPage, lastPage: lastPage, hasNextPage: hasNextPage, hasPreviousPage: hasPreviousPage}) %>
+                     <% } %>
                   </div>
                </div>
             </div>
