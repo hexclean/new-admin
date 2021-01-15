@@ -5,16 +5,14 @@
     $("#enName_error_message").hide();
     $("#propValRo_error_message").hide();
     $("#propValHu_error_message").hide();
-    $("#propValEn_error_message").hide();
-    $("#counter_error_message").hide();
+    // $("#propValEn_error_message").hide();
 
     var error_roName = false;
     var error_huName = false;
     var error_enName = false;
     var error_propValRo = false;
     var error_propValHu = false;
-    var error_propValEn = false;
-    var error_counter = false;
+    // var error_propValEn = false;
 
     $("#roName").focusout(function () {
       check_roName();
@@ -36,35 +34,14 @@
       propValHu();
     });
 
-    $(".propValEn").focusout(function () {
-      propValEn();
-    });
-
-    var nameValue = $("#counter").val();
-
-    $("#counter").change(function () {
-      console.log(nameValue);
-      counter();
-      nameValue = $(this).val();
-    });
-
-    function counter() {
-      if ($("#counter").val() == undefined) {
-        $("#counter_error_message").html(
-          "<%= lingua.box_ro_name_validation %>"
-        );
-        $("#counter_error_message").show();
-        error_counter = true;
-      } else {
-        $("#counter_error_message").hide();
-      }
-    }
+    // $(".propValEn").focusout(function () {
+    //   propValEn();
+    // });
 
     function propValRo() {
       var propValRo = $(".propValRo");
       for (let i = 0; i < propValRo.length; i++) {
         var propValRoItem = $(propValRo[i]);
-        // console.log(propValRoItem.val());
         var counter = propValRoItem.closest(".cnt").find("#counter");
         var counterIndex = $(counter[0]).val();
         if (propValRoItem.val().length < 1 || propValRoItem.val().length > 50) {
@@ -80,30 +57,20 @@
     }
 
     function propValHu() {
-      var propValHu = $(".propValHu").val().length;
-
-      if (propValHu < 1 || propValHu > 50) {
-        $("#propValHu_error_message").html(
-          "<%= lingua.box_ro_name_validation %>"
-        );
-        $("#propValHu_error_message").show();
-        error_propValHu = true;
-      } else {
-        $("#propValHu_error_message").hide();
-      }
-    }
-
-    function propValEn() {
-      var propValEn = $(".propValEn").val().length;
-
-      if (propValEn < 1 || propValEn > 50) {
-        $("#propValEn_error_message").html(
-          "<%= lingua.box_ro_name_validation %>"
-        );
-        $("#propValEn_error_message").show();
-        error_propValEn = true;
-      } else {
-        $("#propValEn_error_message").hide();
+      var propValHu = $(".propValHu");
+      for (let i = 0; i < propValRo.length; i++) {
+        var propValHuItem = $(propValRo[i]);
+        var counter = propValHuItem.closest(".cnt").find("#counter");
+        var counterIndex = $(counter[0]).val();
+        if (propValHuItem.val().length < 1 || propValHuItem.val().length > 50) {
+          $("#propValHu_error_message" + counterIndex).html(
+            "<%= lingua.box_ro_name_validation %>"
+          );
+          $("#propValHu_error_message" + counterIndex).show();
+          error_propValRo = true;
+        } else {
+          $("#propValHu_error_message" + counterIndex).hide();
+        }
       }
     }
 
@@ -149,24 +116,24 @@
       error_enName = false;
       error_propValRo = false;
       error_propValHu = false;
-      error_propValEn = false;
-      error_counter = false;
+      // error_propValEn = false;
+
       check_roName();
       check_huName();
       check_enName();
       propValRo();
       propValHu();
-      propValEn();
-      counter();
+      // propValEn();
 
       if (
         error_roName == false &&
         error_huName == false &&
         error_enName == false &&
         error_propValRo == false &&
-        error_propValHu == false &&
-        error_propValEn == false &&
-        error_counter == false
+        error_propValHu == false
+        // &&
+        // error_propValEn == false &&
+        // error_counter == false
       ) {
         $("#createProperty").prop("disabled", true);
 

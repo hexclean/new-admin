@@ -113,7 +113,7 @@ exports.postAddProduct = async (req, res, next) => {
   const extId = req.body.extraId;
   const filteredStatusAllergen = req.body.statusAllergen.filter(Boolean);
   const filteredStatusBox = req.body.statusBox.filter(Boolean);
-  console.log(req.body);
+
   if (!req.file || !req.file.path) {
     return res.redirect("/admin/products");
   }

@@ -96,26 +96,29 @@
                 }
              });
          </script>
-         <script type="text/javascript">
-            $(function () {
-             $('#startDate').datetimepicker({
-             uiLibrary: 'bootstrap4',
-             modal: true,
-             footer: true, 
-            });
-            });
-             
-         </script>
-         <script type="text/javascript">
-            $(function () {
-             $('#endDate').datetimepicker({
-             uiLibrary: 'bootstrap4',
-             modal: true,
-             footer: true, 
-            });
-            });
-             
-         </script>
+     
+
+<script>
+   $(function() {
+    $('#startDate').timepicker({
+    'minTime': '05:00am',
+    'maxTime': '11:30pm',
+    'showDuration': true,
+    "show2400": true
+    });
+ });
+ </script>
+ <script>
+   $(function() {
+    $('#endDate').timepicker({
+    'minTime': '05:00am',
+    'maxTime': '11:30pm',
+    'showDuration': true,
+    "show2400": true
+    });
+ });
+ </script>
+        
          <div class="row">
             <div class="col-xl-6 col-md-12" style="height: 1364px;">
                <div class="ms-panel ms-panel-fh">
@@ -315,7 +318,7 @@
             <label for="validationCustom22"><%= lingua.product_select_category %></label>
             <div class="input-group">
                <select class="form-control category_select categoryId" for="categoryId" id="categoryId" name="categoryId">
-                  <option value="0" selected disabled hidden><%= lingua.product_select_category %></option>
+                
                   <% for(let i = 0; i < cat.length; i++) { %>
                   <option id="categoryId" name="categoryId" value='<%= cat[i].id %>'><%= cat[i].CategoryTranslations[0].name %></option>
                   <% } %>
