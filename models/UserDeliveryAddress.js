@@ -8,10 +8,7 @@ const UserDeliveryAddress = sequelize.define("UserDeliveryAddress", {
     allowNull: false,
     primaryKey: true,
   },
-  city: {
-    type: Sequelize.STRING,
-    allowNull: false,
-  },
+
   street: {
     type: Sequelize.STRING,
     allowNull: false,

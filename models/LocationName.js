@@ -8,7 +8,7 @@ const LocationName = sequelize.define("LocationName", {
     allowNull: false,
     primaryKey: true,
   },
-  // active: Sequelize.INTEGER
+  active: Sequelize.INTEGER,
 });
 
 module.exports = LocationName;
