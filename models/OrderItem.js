@@ -10,7 +10,7 @@ const OrderItem = sequelize.define("OrderItem", {
   },
   quantity: Sequelize.INTEGER,
   message: Sequelize.STRING,
-  variantPrice: Sequelize.INTEGER,
+  variantPrice: Sequelize.FLOAT,
 });
 
 module.exports = OrderItem;

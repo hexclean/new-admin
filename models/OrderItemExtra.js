@@ -11,7 +11,7 @@ const OrderItemExtra = sequelize.define("OrderItemExtra", {
   quantity: {
     type: Sequelize.INTEGER,
   },
-  extraPrice: Sequelize.INTEGER,
+  extraPrice: Sequelize.FLOAT,
 });
 
 module.exports = OrderItemExtra;
