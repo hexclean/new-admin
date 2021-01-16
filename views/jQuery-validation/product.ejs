@@ -92,6 +92,7 @@
     $("#box_error_message").hide();
     $("#start_error_message").hide();
     $("#end_error_message").hide();
+    $("#end_error_message").hide();
     $("#file_error_message").hide();
     var error_roName = false;
     var error_huName = false;
@@ -106,8 +107,9 @@
     var error_start = false;
     var error_end = false;
     var error_file = false;
-
+    var error_end = false;
     var error_start = false;
+
     $("#roTitle").focusout(function () {
       check_roName();
     });
@@ -145,14 +147,19 @@
     function check_dailyMenu() {
       if ($("#isDailyMenu").is(":checked")) {
         var startDate = $("#startDate").val().length;
-        if (startDate != 5) {
-          console.log("--", startDate);
+        var endDate = $("#endDate").val().length;
+        if (startDate != 5 && endDate !=5 ) {
+
           $("#start_error_message").html("start_error_message");
           $("#start_error_message").show();
+
+          $("#end_error_message").html("end_error_message");
+          $("#end_error_message").show();
           error_start = true;
+          error_end = true;
         } else {
-          console.log("--", startDate);
           $("#start_error_message").hide();
+          $("#end_error_message").hide();
         }
       }
     }
@@ -278,6 +285,7 @@
       error_box = false;
       error_price = false;
       error_start = false;
+      error_end = false;
       check_roName();
       check_huName();
       check_enName();
@@ -306,7 +314,8 @@
         error_file == false &&
         <% } %>
         error_price == false &&
-        error_start == false
+        error_start == false &&
+        error_end == false
       ) {
         console.log("error_roName", error_roName);
         console.log("error_huName", error_huName);
