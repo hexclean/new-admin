@@ -158,8 +158,7 @@ exports.postAddExtra = async (req, res, next) => {
           active: 0,
           restaurantId: req.admin.id,
           extraId: extraId,
-          quantityMax: 0,
-          quantityMin: 0,
+
           discountedPrice: 0,
           price: 0,
           variantId: variantId,
