@@ -102,7 +102,7 @@ exports.getOrders = async (req, res, next) => {
 
       for (let j = 0; j < orderItems.length; j++) {
         extras = orderItems[j].OrderItemExtras;
-
+        //
         let prodFin = orderItems[j].Variant.ProductFinals;
         for (let h = 0; h < prodFin.length; h++) {
           if (extras.length == 0) {
@@ -112,6 +112,7 @@ exports.getOrders = async (req, res, next) => {
               parseFloat(orderItems[j].variantPrice) *
               parseInt(orderItems[j].quantity);
             const items = {
+              variant_sku: orderItems[j].Variant.sku,
               extra_length: extras.length,
               product_id: prodFin[h].productId,
               product_quantity: orderItems[j].quantity,
@@ -134,6 +135,8 @@ exports.getOrders = async (req, res, next) => {
               totalExtraPrice +=
                 parseFloat(extras[k].extraPrice) * parseInt(extras[k].quantity);
               const items = {
+                variant_sku: orderItems[j].Variant.sku,
+
                 extra_length: extras.length,
                 product_id: prodFin[h].productId,
                 product_quantity: orderItems[j].quantity,
@@ -165,10 +168,11 @@ exports.getOrders = async (req, res, next) => {
             total_product_price,
             message,
             extra_length,
+            variant_sku,
             ...rest
           }
         ) => {
-          const key = `${product_id}-${product_quantity}-${product_price}-${product_name}-${total_product_price}-${message}-${extra_length}`;
+          const key = `${product_id}-${product_quantity}-${product_price}-${product_name}-${total_product_price}-${message}-${extra_length}-${variant_sku}`;
           r[key] = r[key] || {
             product_id,
             product_quantity,
@@ -177,6 +181,7 @@ exports.getOrders = async (req, res, next) => {
             total_product_price,
             message,
             extra_length,
+            variant_sku,
             extras: [],
           };
           r[key]["extras"].push(rest);
@@ -202,7 +207,7 @@ exports.getOrders = async (req, res, next) => {
     });
 
     userName = orders[0].OrderDeliveryAddress.userName;
-    orderIds = orders[0].id;
+    orderIds = orders[0].encodedKey;
   }
   res.render("order/orders", {
     pageTitle: "Add Product",
@@ -435,7 +440,7 @@ exports.getEditOrder = async (req, res, next) => {
     let result2 = [];
     const orders = await Order.findAll({
       where: {
-        id: orderId,
+        encodedKey: orderId,
         restaurantId: req.admin.id,
       },
 
@@ -508,6 +513,7 @@ exports.getEditOrder = async (req, res, next) => {
           extras = orderItems[j].OrderItemExtras;
 
           let prodFin = orderItems[j].Variant.ProductFinals;
+
           for (let h = 0; h < prodFin.length; h++) {
             if (extras.length == 0) {
               let totalProductPrice = 0;
@@ -621,10 +627,10 @@ exports.getEditOrder = async (req, res, next) => {
       orderIds: orderIds,
       extras: extras,
       result: result2,
-      userEmail: orders[0].User.email,
+      userEmail: "orders[0].User.email",
       orderCity: orderCity,
-      status: orders[0].orderStatusId,
-      deletedMessage: orders[0].deletedMessage,
+      status: "orders[0].orderStatusId",
+      deletedMessage: "orders[0].deletedMessage",
     });
   } catch (error) {
     console.log(error);

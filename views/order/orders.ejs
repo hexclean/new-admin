@@ -22,7 +22,7 @@
     <% } %>
     <% for (let i =0; i < orders.length; i++) { %>
       <p>
-      <div class="ms-content-wrapper" data-toggle="collapse" name="orders" value="#orders<%= orders[i].id %>" href="#orders<%= orders[i].id %>" aria-expanded="false" aria-controls="orders<%= orders[i].id %>">
+      <div class="ms-content-wrapper" data-toggle="collapse" name="orders" value="#orders<%= orders[i].encodedKey %>" href="#orders<%= orders[i].encodedKey %>" aria-expanded="false" aria-controls="orders<%= orders[i].encodedKey %>">
         <div class="table-responsive">
           <table class="table table-hover thead-primary">
             <thead>
@@ -37,14 +37,14 @@
             </thead>
             <tbody>
               <tr>
-                <th scope="row">#<%= orders[i].id %></th>
+                <th scope="row">#<%= orders[i].encodedKey %></th>
                 <td><%= orders[i].OrderDeliveryAddress.userName %></td>
                 <td><%= orders[i].LocationName.LocationNameTranslations[0].name %></td>
-                <td>145,66</td>
+                <td><%= orders[i].totalPrice %></td>
                 <td><%= lingua.order_list_new_status %></td>
                 <td>
                   <div>
-                  <a href="/admin/edit-order/<%= orders[i].id %>?edit=true"class="btn grid-btn mt-0 btn-sm btn-secondary"><%= lingua.order_list_detail %></a>
+                  <a href="/admin/edit-order/<%= orders[i].encodedKey %>?edit=true"class="btn grid-btn mt-0 btn-sm btn-secondary"><%= lingua.order_list_detail %></a>
                   </div>
                 </td>
               
@@ -54,7 +54,7 @@
         </div>
       </div>
     </p>
-    <div class="collapse" name="orders"  value="#orders<%= orders[i].id %>" id="orders<%= orders[i].id %>">
+    <div class="collapse" name="orders"  value="#orders<%= orders[i].encodedKey %>" id="orders<%= orders[i].encodedKey %>">
     <form
     id="createBox_form"
     class="ms-content-wrapper"
@@ -66,7 +66,7 @@
             <div class="ms-panel">
                <div class="ms-panel-header header-mini">
                   <div class="d-flex justify-content-between">
-                     <h6>#<%= orders[i].id %></h6>
+                     <h6>#<%= orders[i].encodedKey %></h6>
                   </div>
                </div>
                <div class="ms-panel-body">
@@ -139,6 +139,7 @@
                            <tr class="text-capitalize" style="font-size: 16px;">
                               <th class="text-center w-5">Id</th>
                               <th class="text-left"><%= lingua.order_detail_product_name %></th>
+                              <th>kategoria</th>
                               <th><%= lingua.order_detail_quantity %></th>
                               <th><%= lingua.order_detail_product_price %></th>
                               <th><%= lingua.order_detail_total %></th>
@@ -149,6 +150,8 @@
                            <tr>
                               <td class="text-center"><%= orders[i].products[j].product_id %></td>
                               <td class="text-left"><%= orders[i].products[j].product_name %></td>
+                              <td ><%= orders[i].products[j].variant_sku %></td>
+
                               <td><%= orders[i].products[j].product_quantity %></td>
                               <td><%= orders[i].products[j].product_price %></td>
                               <td><%= orders[i].products[j].total_product_price %></td>
@@ -160,8 +163,10 @@
                              
                               <tr>
                                  <td class="text-center"><%=  orders[i].products[j].extras[k].extra_id %></td>
-                                 <td class="text-left"><%=  orders[i].products[j].extras[k].extra_name %></td>
-                                 <td><%= orders[i].products[j].extras[k].extra_quantity %></td>
+                                 <td class="text-left"><%=  orders[i].products[j].extras[k].extra_name %> (extra)</td>
+
+                                 <td></td>   
+                                  <td><%= orders[i].products[j].extras[k].extra_quantity %></td>
                                  <td><%= orders[i].products[j].extras[k].extra_price %></td>
                                  <td><%= orders[i].products[j].extras[k].total_extra_price %></td>
                               </tr>
@@ -174,8 +179,9 @@
 
                         <tfoot>
                            <tr style="font-size: 16px;" >
+                              <td></td>
                               <td colspan="4"><%= lingua.order_detail_total_final %>:</td>
-                              <td><%= orders[i].products[j].total_cost_produce_extra %>44.77 <%= lingua.currency %></td>
+                              <td><%= orders[i].products[j].total_cost_produce_extra %><u><%= orders[i].totalPrice %> <%= lingua.currency %></u></td>
                              
                            </tr>
                         </tfoot>
@@ -193,21 +199,22 @@
                   <% } %>
                   <input
                   type="hidden"
-                  value="<%= orders[i].id %>"
+                  value="<%= orders[i].encodedKey %>"
                   name="orderId"
+                  
                   />
                   <!-- end -->
                   <div class="invoice-buttons text-right">
-                     <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal<%= orders[i].id %>">
+                     <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal<%= orders[i].encodedKey %>">
                      Elfogadas
                      </button>
-                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalFailed<%= orders[i].id %>">
+                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalFailed<%= orders[i].encodedKey %>">
                         Elutasitas
                         </button>
                   </div>
                   <!-- Button trigger modal -->
                   <!-- Modal Success-->
-                  <div class="modal fade" id="exampleModal<%= orders[i].id %>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal fade" id="exampleModal<%= orders[i].encodedKey %>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                      <div class="modal-dialog" role="document">
                         <div class="modal-content">
                            <div class="modal-header">
@@ -260,7 +267,7 @@
                   </div>
                   <!-- Modal Failed-->
                
-                  <div class="modal fade" id="exampleModalFailed<%= orders[i].id %>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal fade" id="exampleModalFailed<%= orders[i].encodedKey %>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                      <div class="modal-dialog" role="document">
                         <div class="modal-content">
                            <div class="modal-header">
@@ -274,14 +281,14 @@
                               <div class="row">
                                
                                     <label for="failedDescription">Example textarea</label>
-                                    <textarea class="form-control delval<%= orders[i].id %>" name="failedDescription"id="failedDescription<%= orders[i].id %>" rows="5"></textarea>
+                                    <textarea class="form-control delval<%= orders[i].encodedKey %>" name="failedDescription"id="failedDescription<%= orders[i].encodedKey %>" rows="5"></textarea>
                                   
                               </div>
                             </div>
                            </div>
                            <div class="modal-footer">
                               <button type="submit" class="btn btn-primary">Rendelés befejezése</button>
-                              <button type="button" id="dbtnvaldelval<%= orders[i].id %>"  data-dismiss="modal" class="btn btn-secondary dbtnvaldelval<%= orders[i].id %>">Bezárás</button>
+                              <button type="button" id="dbtnvaldelval<%= orders[i].encodedKey %>"  data-dismiss="modal" class="btn btn-secondary dbtnvaldelval<%= orders[i].encodedKey %>">Bezárás</button>
                            </div>
                         </div>
                      </div>
