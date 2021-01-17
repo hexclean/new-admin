@@ -29,7 +29,7 @@
     function check_roName() {
       var roName_length = $("#roName").val().length;
 
-      if (roName_length < 1 || roName_length > 30) {
+      if (roName_length < 1 || roName_length > 60) {
         $("#roName_error_message").html(
           "<%= lingua.category_ro_name_validation %>"
         );
@@ -45,7 +45,7 @@
     function check_huName() {
       var huName_length = $("#huName").val().length;
 
-      if (huName_length < 1 || huName_length > 30) {
+      if (huName_length < 1 || huName_length > 60) {
         $("#huName_error_message").html(
           "<%= lingua.category_hu_name_validation %>"
         );
@@ -61,7 +61,7 @@
     function check_enName() {
       var enName_length = $("#enName").val().length;
 
-      if (enName_length < 1 || enName_length > 30) {
+      if (enName_length < 1 || enName_length > 60) {
         $("#enName_error_message").html(
           "<%= lingua.category_en_name_validation %>"
         );
