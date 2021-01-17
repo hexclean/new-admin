@@ -256,39 +256,8 @@
                                  <br>
                                  <span class="extra_error_message error_form" id="price_error_message_<%= variant[i].ProductVariantsExtras[0].extraId %>"></span>
                               </div>
-                              <div class="col-md-12 mb-3">
-                                 <label for="quantityMin"
-                                    ><%= lingua.variant_quantityMin %></label
-                                    >
-                                 <div class="input-group">
-                                    <input
-                                       class="form-control qtMin_<%= variant[i].ProductVariantsExtras[0].extraId %> extra_qtMin_input"
-                                       type="number" 
-                                       name="quantityMin"
-                                       id="quantityMin"
-                                       autocomplete="off"
-                                       onKeyDown="if(this.value.length==18) return false;"
-                                       value="<% if (editing) { %><%= variant[i].ProductVariantsExtras[0].quantityMin %><% } %>"
-                                       />
-                                 </div>
-                                 <span class="extra_error_message error_form" id="qtMin_error_message_<%= variant[i].ProductVariantsExtras[0].extraId %>"></span>
-                              </div>
-                              <div class="col-md-12 mb-3">
-                                 <label for="quantityMax"
-                                    ><%= lingua.variant_quantityMax %></label
-                                    >
-                                 <div class="input-group">
-                                    <input
-                                       class="form-control qtMax_<%= variant[i].ProductVariantsExtras[0].extraId %> extra_qtMax_input"
-                                       type="text"
-                                       name="quantityMax"
-                                       id="quantityMax"
-                                       autocomplete="off"
-                                       value="<% if (editing) { %><%= variant[i].ProductVariantsExtras[0].quantityMax %><% } %>"
-                                       />
-                                 </div>
-                                 <span class="extra_error_message error_form" id="qtMax_error_message_<%= variant[i].ProductVariantsExtras[0].extraId %>"></span>
-                              </div>
+                              
+                             
                            </div>
                         </div>
                      </div>
@@ -349,39 +318,8 @@
                                  <br>
                                  <span class="extra_error_message error_form" id="price_error_message_<%= ext[i].id %>"></span>
                               </div>
-                              <div class="col-md-12 mb-3">
-                                 <label for="quantityMin"
-                                    ><%= lingua.variant_quantityMin %></label
-                                    >
-                                 <div class="input-group">
-                                    <input
-                                       class="form-control qtMin_<%= ext[i].id %> extra_qtMin_input"
-                                       type="number"
-                                       name="quantityMin"
-                                       id="quantityMin"
-                                       autocomplete="off"
-                                       onKeyDown="if(this.value.length==18) return false;"
-                                       value="<% if (editing) { %><%= ext[i].quantityMin %><% } %>"
-                                       />
-                                 </div>
-                                 <span class="extra_error_message error_form" id="qtMin_error_message_<%= ext[i].id %>"></span>
-                              </div>
-                              <div class="col-md-12 mb-3">
-                                 <label for="quantityMax"
-                                    ><%= lingua.variant_quantityMax %></label
-                                    >
-                                 <div class="input-group">
-                                    <input
-                                       class="form-control qtMax_<%= ext[i].id %> extra_qtMax_input"
-                                       type="text"
-                                       name="quantityMax"
-                                       id="quantityMax"
-                                       autocomplete="off"
-                                       value="<% if (editing) { %><%= ext[i].quantityMax %><% } %>"
-                                       />
-                                 </div>
-                                 <span class="extra_error_message error_form" id="qtMax_error_message_<%= ext[i].id %>"></span>
-                              </div>
+                           
+                        
                            </div>
                         </div>
                      </div>

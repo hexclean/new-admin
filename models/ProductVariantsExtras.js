@@ -16,14 +16,6 @@ const ProductVariantsExtras = sequelize.define("ProductVariantsExtras", {
     type: Sequelize.FLOAT,
     allowNull: false,
   },
-  quantityMin: {
-    type: Sequelize.INTEGER,
-    allowNull: false,
-  },
-  quantityMax: {
-    type: Sequelize.INTEGER,
-    allowNull: false,
-  },
   active: {
     type: Sequelize.INTEGER,
     allowNull: false,

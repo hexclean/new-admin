@@ -83,8 +83,7 @@ exports.postAddVariant = async (req, res, next) => {
 
   const sku = req.body.sku;
   const updatedExtraPrice = req.body.price;
-  const updatedExtraQuantityMin = req.body.quantityMin;
-  const updatedExtraQuantityMax = req.body.quantityMax;
+
   const categoryId = req.body.categoryId;
   const maxOption = req.body.maxOption;
   const filteredStatus = req.body.status.filter(Boolean);
@@ -146,8 +145,6 @@ exports.postAddVariant = async (req, res, next) => {
       await ProductVariantsExtras.create({
         price: updatedExtraPrice[i] || 0,
         discountedPrice: 1,
-        quantityMin: updatedExtraQuantityMin[i] || 0,
-        quantityMax: updatedExtraQuantityMax[i] || 0,
         variantId: variant.id,
         extraId: extId[i],
         active: filteredStatus[i] == "on" ? 1 : 0,
@@ -348,8 +345,6 @@ exports.postEditVariant = async (req, res, next) => {
   const updatedSku = req.body.sku;
   const varId = req.body.variantId;
   const updatedExtraPrice = req.body.price;
-  const updatedExtraQuantityMin = req.body.quantityMin;
-  const updatedExtraQuantityMax = req.body.quantityMax;
   const filteredStatus = req.body.status.filter(Boolean);
   const filteredOptions = req.body.statusOption.filter(Boolean);
   const maxOption = req.body.maxOption;
@@ -398,8 +393,7 @@ exports.postEditVariant = async (req, res, next) => {
             await ProductVariantsExtras.update(
               {
                 price: updatedExtraPrice[i] || 0,
-                quantityMin: updatedExtraQuantityMin[i] || 0,
-                quantityMax: updatedExtraQuantityMax[i] || 0,
+
                 discountedPrice: 1,
                 active: filteredStatus[i] == "on" ? 1 : 0,
                 requiredExtra: filteredOptions[i] == "on" ? 1 : 0,
