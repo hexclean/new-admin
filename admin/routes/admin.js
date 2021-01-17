@@ -203,7 +203,7 @@ router.post(
 
 // Deleted Items
 router.get("/deleted-items", isAuth, deletedItemsController.getIndex);
-router.get("/deleted-products", isAuth, deletedItemsController.getProducts);
+router.get("/deleted-pr", isAuth, deletedItemsController.getProducts);
 router.post(
   "/restore-product",
   isAuth,

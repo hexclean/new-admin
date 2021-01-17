@@ -11,7 +11,6 @@ const AllergenTranslation = require("../../models/AllergenTranslation");
 const Category = require("../../models/Category");
 const CategoryTranslation = require("../../models/CategoryTranslation");
 const Box = require("../../models/Box");
-const BoxTranslation = require("../../models/BoxTranslation");
 const ITEMS_PER_PAGE = 30;
 
 exports.getAddProduct = async (req, res, next) => {
@@ -41,12 +40,6 @@ exports.getAddProduct = async (req, res, next) => {
       where: {
         restaurantId: req.admin.id,
       },
-      include: [
-        {
-          model: BoxTranslation,
-          where: { languageId: languageCode },
-        },
-      ],
     });
     const cat = await Category.findAll({
       where: {
@@ -139,11 +132,6 @@ exports.postAddProduct = async (req, res, next) => {
     where: {
       restaurantId: req.admin.id,
     },
-    include: [
-      {
-        model: BoxTranslation,
-      },
-    ],
   });
   const allergen = await Allergen.findAll({
     where: {
@@ -163,7 +151,7 @@ exports.postAddProduct = async (req, res, next) => {
   });
 
   let productId;
-
+  console.log("req.bodyno if", req.body);
   if (req.body.isDailyMenu == 1) {
     console.log(req.body);
     const product = await req.admin.createProduct({
@@ -291,11 +279,6 @@ exports.getEditProduct = async (req, res, next) => {
     where: {
       restaurantId: req.admin.id,
     },
-    include: [
-      {
-        model: BoxTranslation,
-      },
-    ],
   });
   const allergen = await Allergen.findAll({
     where: {
@@ -456,11 +439,6 @@ exports.postEditProduct = async (req, res, next) => {
     where: {
       restaurantId: req.admin.id,
     },
-    include: [
-      {
-        model: BoxTranslation,
-      },
-    ],
   });
   const productHasAllergen = await ProductHasAllergen.findAll({
     where: {

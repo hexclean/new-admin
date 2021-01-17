@@ -12,6 +12,7 @@ const Box = sequelize.define("Box", {
     type: Sequelize.FLOAT,
     allowNull: false,
   },
+  sku: Sequelize.STRING,
 });
 
 module.exports = Box;

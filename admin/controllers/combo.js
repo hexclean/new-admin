@@ -9,7 +9,6 @@ const Sequelize = require("sequelize");
 const Allergen = require("../../models/Allergen");
 const AllergenTranslation = require("../../models/AllergenTranslation");
 const Box = require("../../models/Box");
-const BoxTranslation = require("../../models/BoxTranslation");
 const ITEMS_PER_PAGE = 30;
 const Op = Sequelize.Op;
 const AdminLogs = require("../../models/AdminLogs");
@@ -302,12 +301,6 @@ exports.getBoxIndex = async (req, res, next) => {
     where: {
       restaurantId: req.admin.id,
     },
-    include: [
-      {
-        model: BoxTranslation,
-        where: { languageId: languageCode },
-      },
-    ],
   })
     .then((numBox) => {
       totalItems = numBox;
@@ -315,12 +308,6 @@ exports.getBoxIndex = async (req, res, next) => {
         where: {
           restaurantId: req.admin.id,
         },
-        include: [
-          {
-            model: BoxTranslation,
-            where: { languageId: languageCode },
-          },
-        ],
 
         offset: (page - 1) * ITEMS_PER_PAGE,
         limit: ITEMS_PER_PAGE,

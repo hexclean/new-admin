@@ -8,7 +8,6 @@ const ExtraTranslations = require("../../models/ExtraTranslation");
 const Allergen = require("../../models/Allergen");
 const AllergenTranslation = require("../../models/AllergenTranslation");
 const Box = require("../../models/Box");
-const BoxTranslation = require("../../models/BoxTranslation");
 const Products = require("../../models/Product");
 const ProductTranslation = require("../../models/ProductTranslation");
 const Property = require("../../models/Property");
@@ -171,16 +170,8 @@ exports.getFilteredBox = async (req, res, next) => {
   await Box.findAll({
     where: {
       restaurantId: req.admin.id,
+      name: { [Op.like]: "%" + boxName + "%" },
     },
-    include: [
-      {
-        model: BoxTranslation,
-        where: {
-          name: { [Op.like]: "%" + boxName + "%" },
-          languageId: languageCode,
-        },
-      },
-    ],
   })
 
     .then((box) => {

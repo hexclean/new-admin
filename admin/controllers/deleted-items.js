@@ -7,7 +7,7 @@ const Variant = require("../../models/Variant");
 exports.getIndex = async (req, res, next) => {
   res.render("deleted-items/index", {
     pageTitle: "Add Product",
-    path: "/admin/deleted-products",
+    path: "/admin/deleted-pr",
     editing: false,
   });
 };
@@ -62,7 +62,7 @@ exports.getProducts = async (req, res, next) => {
     .then((products) => {
       res.render("deleted-items/deleted-products", {
         pageTitle: "Admin Products",
-        path: "/admin/deleted-products",
+        path: "/admin/deleted-pr",
         currentPage: page,
         hasNextPage: ITEMS_PER_PAGE * page < totalItems.length,
         hasPreviousPage: page > 1,
@@ -88,7 +88,7 @@ exports.postRestoreProduct = (req, res, next) => {
       }
       product.active = 1;
       return product.save().then((result) => {
-        res.redirect("/admin/deleted-products");
+        res.redirect("/admin/deleted-pr");
       });
     })
     .catch((err) => {

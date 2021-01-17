@@ -27,7 +27,7 @@
                               <ul class="ms-list ms-list-display">
                                  <li>
                                     <label class="ms-checkbox-wrap ms-checkbox-success">
-                                    <input id="isDailyMenu" class="isDailyMenu" type="checkbox" name="isDailyMenu" value="189"> <i class="ms-checkbox-check"></i>
+                                    <input id="isDailyMenu" class="isDailyMenu" type="checkbox" name="isDailyMenu" value="1"> <i class="ms-checkbox-check"></i>
                                     </label> <span><%= lingua.product_daily_menu %></span>
                                  </li>
                               </ul>
@@ -267,7 +267,7 @@
                                        <label class="ms-switch" data-extra="<%= boxArray[i].id %>">
                                        <input type="hidden" value="off" class="statusBox-<%= boxArray[i].id %> status-hidden-box" name="statusBox[<%= boxArray[i].id %>]" > 
                                        <input data-boxId="<%= boxArray[i].id %>" class="statusBox-checkbox statusBox-checkbox-<%= boxArray[i].id %>" type="checkbox"> <span class="ms-switch-slider ms-switch-success round"></span>
-                                       </label> <span> <%= boxArray[i].BoxTranslations[0].name %> </span> <b>:</b> <span> <%= boxArray[i].price %> </span>lei
+                                       </label> <span> <%= boxArray[i].sku %> </span> <b>:</b> <span> <%= boxArray[i].price %> </span>lei
                                     </li>
                                     <% } %>
                                  </ul>

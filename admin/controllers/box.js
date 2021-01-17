@@ -1,14 +1,7 @@
 const Box = require("../../models/Box");
-const BoxTranslation = require("../../models/BoxTranslation");
 const AdminLogs = require("../../models/AdminLogs");
 
 exports.getAddBox = async (req, res, next) => {
-  await AdminLogs.create({
-    restaurant_id: req.admin.id,
-    operation_type: "GET",
-    description: "Opened the box creation page",
-    route: "getAddBox",
-  });
   res.render("box/edit-box", {
     pageTitle: "Add Product",
     path: "/admin/add-product",
@@ -17,52 +10,18 @@ exports.getAddBox = async (req, res, next) => {
 };
 
 exports.postAddBox = async (req, res, next) => {
-  const roName = req.body.roName;
-  const huName = req.body.huName;
-  const enName = req.body.enName;
+  const sku = req.body.sku;
   const price = req.body.price;
-  if (
-    roName.length == 0 ||
-    huName.length == 0 ||
-    enName.length == 0 ||
-    price.length == 0
-  ) {
+  if (sku.length == 0 || price.length == 0) {
     return res.redirect("/admin/box-index");
   }
 
-  const box = await Box.create({
+  await Box.create({
     restaurantId: req.admin.id,
     price: price,
-  });
+    sku: sku,
+  })
 
-  async function createBox() {
-    await BoxTranslation.create({
-      name: roName,
-      languageId: 1,
-      boxId: box.id,
-    });
-    await BoxTranslation.create({
-      name: huName,
-      languageId: 2,
-      boxId: box.id,
-    });
-
-    await BoxTranslation.create({
-      name: enName,
-      languageId: 3,
-      boxId: box.id,
-    });
-  }
-  await AdminLogs.create({
-    restaurant_id: req.admin.id,
-    operation_type: "POST",
-    description: `Box created with ${box.id} id.
-    Box Translations: ro: ${roName}, hu: ${huName}, en: ${enName}, price: ${price}
-    `,
-    route: "postAddBox",
-  });
-
-  createBox()
     .then((result) => {
       res.redirect("/admin/box-index");
     })
@@ -76,29 +35,11 @@ exports.postAddBox = async (req, res, next) => {
 exports.getEditBox = async (req, res, next) => {
   const editMode = req.query.edit;
   const boxId = req.params.boxId;
-  let languageCode;
+
   await Box.findByPk(boxId).then((box) => {
     if (!box || !editMode) {
       return res.redirect("/");
     }
-  });
-
-  if (req.cookies.language == "ro") {
-    languageCode = 1;
-  } else if (req.cookies.language == "hu") {
-    languageCode = 2;
-  } else {
-    languageCode = 3;
-  }
-
-  const boxName = await Box.findAll({
-    where: { restaurantId: req.admin.id, id: boxId },
-    include: [
-      {
-        model: BoxTranslation,
-        where: { languageId: languageCode },
-      },
-    ],
   });
 
   await Box.findAll({
@@ -106,28 +47,14 @@ exports.getEditBox = async (req, res, next) => {
       id: boxId,
       restaurantId: req.admin.id,
     },
-    include: [
-      {
-        model: BoxTranslation,
-      },
-    ],
   })
     .then(async (box) => {
-      await AdminLogs.create({
-        restaurant_id: req.admin.id,
-        operation_type: "GET",
-        description: `Opened edit box with ${boxId} id`,
-        route: "getEditBox",
-      });
-
       res.render("box/edit-box", {
         pageTitle: "Edit Product",
         path: "/admin/edit-product",
         editing: editMode,
-        cat: box,
+        box: box,
         boxId: boxId,
-        boxTranslations: box[0].BoxTranslations,
-        boxName: boxName,
       });
     })
     .catch((err) => {
@@ -138,60 +65,19 @@ exports.getEditBox = async (req, res, next) => {
 };
 
 exports.postEditBox = async (req, res, next) => {
-  const updatedRoName = req.body.roName;
-  const updatedHuName = req.body.huName;
-  const updatedEnName = req.body.enName;
+  const sku = req.body.sku;
   const price = req.body.price;
   const boxId = req.body.boxId;
-  const boxTranslationsId = req.body.boxTranslationsId;
-  if (
-    updatedRoName.length == 0 ||
-    updatedHuName.length == 0 ||
-    updatedEnName.length == 0 ||
-    price.length == 0 ||
-    boxId.length == 0 ||
-    boxTranslationsId.length == 0
-  ) {
+  if (price.length == 0 || boxId.length == 0 || sku.length == 0) {
     return res.redirect("/admin/box-index");
   }
 
   Box.findAll({
     where: { restaurantId: req.admin.id },
-    include: [
-      {
-        model: BoxTranslation,
-      },
-    ],
   })
-    .then((result) => {
-      async function updateBox() {
-        await Box.update({ price: price }, { where: { id: boxId } });
-        await BoxTranslation.update(
-          { name: updatedRoName },
-          { where: { id: boxTranslationsId[0], languageId: 1 } }
-        );
+    .then(async (result) => {
+      await Box.update({ price: price, sku: sku }, { where: { id: boxId } });
 
-        await BoxTranslation.update(
-          { name: updatedHuName },
-          { where: { id: boxTranslationsId[1], languageId: 2 } }
-        );
-
-        await BoxTranslation.update(
-          { name: updatedEnName },
-          { where: { id: boxTranslationsId[2], languageId: 3 } }
-        );
-
-        await AdminLogs.create({
-          restaurant_id: req.admin.id,
-          operation_type: "POST",
-          description: `Box updated with ${boxId} id.
-          Box Translations: ro: ${updatedRoName}, hu: ${updatedHuName}, en: ${updatedEnName}, price: ${updatedEnName}
-          `,
-          route: "postEditBox",
-        });
-      }
-
-      updateBox();
       res.redirect("/admin/box-index");
     })
     .catch((err) => {
