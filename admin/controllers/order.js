@@ -411,8 +411,9 @@ exports.getAcceptedOrders = async (req, res, next) => {
     orderDoorNumber = orders[0].OrderDeliveryAddress.doorNumber;
     orderPhoneNumber = orders[0].OrderDeliveryAddress.phoneNumber;
     orderCreated = orders[0].createdAt;
-    userName = orders[0].User.fullName;
-    orderIds = orders[0].id;
+    userName = orders[0].OrderDeliveryAddress.userName;
+    orderIds = orders[0].encodedKey;
+
     status = orders[0].orderStatusId;
   }
   res.render("order/accepted-orders", {
@@ -596,6 +597,18 @@ exports.getEditOrder = async (req, res, next) => {
         result2 = result;
         orders[i].products = result;
       }
+
+      // orderStreet = orders[0].OrderDeliveryAddress.street;
+      // orderHouseNumber = orders[0].OrderDeliveryAddress.houseNumber;
+      // orderFloor = orders[0].OrderDeliveryAddress.floor;
+      // orderDoorNumber = orders[0].OrderDeliveryAddress.doorNumber;
+      // orderPhoneNumber = orders[0].OrderDeliveryAddress.phoneNumber;
+      // orderCreated = orders[0].createdAt.toLocaleString("en-GB", {
+      //   timeZone: "Europe/Helsinki",
+      // });
+
+      orderIds = orders[0].encodedKey;
+      ////
       totalPriceFinal = orders[0].totalPrice;
       cutlery = orders[0].cutlery;
       take = orders[0].take;
@@ -606,7 +619,7 @@ exports.getEditOrder = async (req, res, next) => {
       orderDoorNumber = orders[0].OrderDeliveryAddress.doorNumber;
       orderPhoneNumber = orders[0].OrderDeliveryAddress.phoneNumber;
       orderCreated = orders[0].createdAt;
-      userName = orders[0].User.fullName;
+      userName = orders[0].OrderDeliveryAddress.userName;
       orderIds = orders[0].id;
     }
 
@@ -847,7 +860,10 @@ exports.postEditOrder = async (req, res, next) => {
 
   try {
     if (hours == "0" && failedDescription.length == 0) {
-      await Order.update({ orderStatusId: 2 }, { where: { id: orderId } });
+      await Order.update(
+        { orderStatusId: 2 },
+        { where: { encodedKey: orderId } }
+      );
       // console.log("x perc mulva erkezik");
       // console.log("orderId", orderId);
     } else if (failedDescription.length !== 0) {
@@ -917,22 +933,6 @@ exports.postEditOrder = async (req, res, next) => {
     // }
 
     res.redirect("/admin/orders");
-    async function msg() {
-      await AllergensTranslation.update(
-        { name: updatedRoName },
-        { where: { id: extTranId[0], languageId: 1 } }
-      );
-
-      await AllergensTranslation.update(
-        { name: updatedHuName },
-        { where: { id: extTranId[1], languageId: 2 } }
-      );
-
-      await AllergensTranslation.update(
-        { name: updatedEnName },
-        { where: { id: extTranId[2], languageId: 3 } }
-      );
-    }
   } catch (error) {
     console.log(error);
 

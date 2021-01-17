@@ -151,9 +151,8 @@ exports.postAddProduct = async (req, res, next) => {
   });
 
   let productId;
-  console.log("req.bodyno if", req.body);
+
   if (req.body.isDailyMenu == 1) {
-    console.log(req.body);
     const product = await req.admin.createProduct({
       productImagePath: imageUrl,
       active: 1,
@@ -611,7 +610,6 @@ exports.postEditProduct = async (req, res, next) => {
       }
       msg()
         .then((result) => {
-          console.log(req.body);
           variantsFn();
           productHasAllergenFn();
           res.redirect("/admin/products");
