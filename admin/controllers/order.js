@@ -1,6 +1,6 @@
 const Sequelize = require("sequelize");
 var request = require("request");
-
+const Box = require("../../models/Box");
 const Order = require("../../models/Order");
 const OrderDeliveryAddress = require("../../models/OrderDeliveryAddress");
 const LocationName = require("../../models/LocationName");
@@ -55,6 +55,7 @@ exports.getOrders = async (req, res, next) => {
               },
             ],
           },
+
           {
             model: Variant,
             include: [
@@ -93,7 +94,6 @@ exports.getOrders = async (req, res, next) => {
   });
 
   let extras = [];
-  let totalPriceFinal;
   let cutlery;
   let take;
   let userName;
@@ -112,7 +112,7 @@ exports.getOrders = async (req, res, next) => {
 
       for (let j = 0; j < orderItems.length; j++) {
         extras = orderItems[j].OrderItemExtras;
-        //
+
         let prodFin = orderItems[j].Variant.ProductFinals;
         for (let h = 0; h < prodFin.length; h++) {
           if (extras.length == 0) {
@@ -122,6 +122,7 @@ exports.getOrders = async (req, res, next) => {
               parseFloat(orderItems[j].variantPrice) *
               parseInt(orderItems[j].quantity);
             const items = {
+              boxPrice: orderItems[j].boxPrice,
               variant_sku: orderItems[j].Variant.sku,
               extra_length: extras.length,
               product_id: prodFin[h].productId,
@@ -146,7 +147,7 @@ exports.getOrders = async (req, res, next) => {
                 parseFloat(extras[k].extraPrice) * parseInt(extras[k].quantity);
               const items = {
                 variant_sku: orderItems[j].Variant.sku,
-
+                boxPrice: orderItems[j].boxPrice,
                 extra_length: extras.length,
                 product_id: prodFin[h].productId,
                 product_quantity: orderItems[j].quantity,
@@ -172,6 +173,7 @@ exports.getOrders = async (req, res, next) => {
           r,
           {
             product_id,
+            boxPrice,
             product_quantity,
             product_price,
             product_name,
@@ -182,7 +184,7 @@ exports.getOrders = async (req, res, next) => {
             ...rest
           }
         ) => {
-          const key = `${product_id}-${product_quantity}-${product_price}-${product_name}-${total_product_price}-${message}-${extra_length}-${variant_sku}`;
+          const key = `${product_id}-${product_quantity}-${product_price}-${product_name}-${total_product_price}-${message}-${extra_length}-${variant_sku}-${boxPrice}`;
           r[key] = r[key] || {
             product_id,
             product_quantity,
@@ -192,6 +194,7 @@ exports.getOrders = async (req, res, next) => {
             message,
             extra_length,
             variant_sku,
+            boxPrice,
             extras: [],
           };
           r[key]["extras"].push(rest);
@@ -202,6 +205,7 @@ exports.getOrders = async (req, res, next) => {
 
       const result = Object.values(merged);
       orders[i].products = result;
+      console.log(result);
     }
     totalPriceFinal = orders[0].totalPrice;
     cutlery = orders[0].cutlery;
@@ -861,7 +865,7 @@ exports.postEditOrder = async (req, res, next) => {
   const failedDescription = req.body.failedDescription;
   const orderId = req.body.orderId;
   const datepicker = req.body.datepicker;
-  console.log(minutes);
+
   const rest = await Restaurant.findByPk(req.admin.id);
   const ordered = await Order.findOne({
     where: { encodedKey: orderId },
@@ -870,7 +874,6 @@ exports.postEditOrder = async (req, res, next) => {
   const user = ordered.OrderDeliveryAddress.userName;
   let restaurantName = rest.fullName;
   let restaurantPhone = rest.phoneNumber;
-  console.log("-=-=-=-=-=-=-=", restaurantPhone);
 
   try {
     if (hours == "0" && failedDescription.length == 0) {

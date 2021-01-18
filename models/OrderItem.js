@@ -11,6 +11,7 @@ const OrderItem = sequelize.define("OrderItem", {
   quantity: Sequelize.INTEGER,
   message: Sequelize.STRING,
   variantPrice: Sequelize.FLOAT,
+  boxPrice: Sequelize.FLOAT,
 });
 
 module.exports = OrderItem;
