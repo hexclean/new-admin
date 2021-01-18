@@ -116,8 +116,6 @@ exports.getOrders = async (req, res, next) => {
         let prodFin = orderItems[j].Variant.ProductFinals;
         for (let h = 0; h < prodFin.length; h++) {
           if (extras.length == 0) {
-            let totalProductPrice = 0;
-
             totalProductPrice +=
               parseFloat(orderItems[j].variantPrice) *
               parseInt(orderItems[j].quantity);
