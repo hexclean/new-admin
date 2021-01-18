@@ -116,6 +116,7 @@ exports.getOrders = async (req, res, next) => {
         let prodFin = orderItems[j].Variant.ProductFinals;
         for (let h = 0; h < prodFin.length; h++) {
           if (extras.length == 0) {
+            console.log("az");
             let totalProductPrice = 0;
             let totalBoxPrice = 0;
             totalProductPrice +=
@@ -139,12 +140,17 @@ exports.getOrders = async (req, res, next) => {
 
             resultWithAll.push(items);
           } else {
+            console.log("ex");
             for (let k = 0; k < extras.length; k++) {
               let totalExtraPrice = 0;
               let totalProductPrice = 0;
               let totalBoxPrice = 0;
               let totalSection = 0;
               let totalSectionNoBox = 0;
+              // console.log(
+              //   "orderItems[j].boxPrice",
+              //   orderItems[j].boxPrice.length
+              // );
               totalExtraPrice +=
                 parseFloat(extras[k].extraPrice) * parseInt(extras[k].quantity);
 
@@ -163,17 +169,9 @@ exports.getOrders = async (req, res, next) => {
 
               totalSectionNoBox +=
                 parseFloat(totalExtraPrice) + parseFloat(totalProductPrice);
-              // (
-              //   orders[i].products[j].extras[k].extra_quantity *
-              //   orders[i].products[j].extras[k].extra_price
-              // ).toFixed(2) +
-              //   orders[i].products[j].total_product_price +
-              //   orders[i].products[j].totalBoxPrice;
-              //   extras.map(async (ext) => {
-
-              // });
 
               const items = {
+                orderItemId: orderItems[j].id,
                 variant_sku: orderItems[j].Variant.sku,
                 totalBoxPrice: totalBoxPrice.toFixed(2),
                 boxPrice: orderItems[j].boxPrice,
@@ -194,15 +192,17 @@ exports.getOrders = async (req, res, next) => {
               };
 
               resultWithAll.push(items);
+              console.log(resultWithAll);
             }
           }
         }
       }
-
+      // console.log(resultWithAll);
       const merged = resultWithAll.reduce(
         (
           r,
           {
+            orderItemId,
             product_id,
             boxPrice,
             product_quantity,
@@ -219,8 +219,9 @@ exports.getOrders = async (req, res, next) => {
             ...rest
           }
         ) => {
-          const key = `${product_id}-${totalSectionNoBox}-${totalSection}-${product_quantity}-${product_price}-${product_name}-${total_product_price}-${message}-${extra_length}-${variant_sku}-${boxPrice}-${totalBoxPrice}-${total_extra_price}`;
+          const key = `${orderItemId}-${product_id}-${totalSectionNoBox}-${totalSection}-${product_quantity}-${product_price}-${product_name}-${total_product_price}-${message}-${extra_length}-${variant_sku}-${boxPrice}-${totalBoxPrice}-${total_extra_price}`;
           r[key] = r[key] || {
+            orderItemId,
             product_id,
             product_quantity,
             product_price,
@@ -244,6 +245,7 @@ exports.getOrders = async (req, res, next) => {
 
       const result = Object.values(merged);
       orders[i].products = result;
+      // console.log(result);
     }
 
     totalPriceFinal = orders[0].totalPrice;
