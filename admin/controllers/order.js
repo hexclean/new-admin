@@ -126,6 +126,7 @@ exports.getOrders = async (req, res, next) => {
               parseFloat(orderItems[j].boxPrice) *
               parseInt(orderItems[j].quantity);
             const items = {
+              orderItemId: orderItems[j].id,
               boxPrice: orderItems[j].boxPrice,
               totalBoxPrice: totalBoxPrice.toFixed(2),
               variant_sku: orderItems[j].Variant.sku,
@@ -147,10 +148,7 @@ exports.getOrders = async (req, res, next) => {
               let totalBoxPrice = 0;
               let totalSection = 0;
               let totalSectionNoBox = 0;
-              // console.log(
-              //   "orderItems[j].boxPrice",
-              //   orderItems[j].boxPrice.length
-              // );
+
               totalExtraPrice +=
                 parseFloat(extras[k].extraPrice) * parseInt(extras[k].quantity);
 
@@ -192,59 +190,96 @@ exports.getOrders = async (req, res, next) => {
               };
 
               resultWithAll.push(items);
-              console.log(resultWithAll);
             }
           }
         }
       }
-      // console.log(resultWithAll);
-      const merged = resultWithAll.reduce(
-        (
-          r,
-          {
-            orderItemId,
-            product_id,
-            boxPrice,
-            product_quantity,
-            totalBoxPrice,
-            totalSection,
-            product_price,
-            product_name,
-            total_extra_price,
-            totalSectionNoBox,
-            total_product_price,
-            message,
-            extra_length,
-            variant_sku,
-            ...rest
-          }
-        ) => {
-          const key = `${orderItemId}-${product_id}-${totalSectionNoBox}-${totalSection}-${product_quantity}-${product_price}-${product_name}-${total_product_price}-${message}-${extra_length}-${variant_sku}-${boxPrice}-${totalBoxPrice}-${total_extra_price}`;
-          r[key] = r[key] || {
-            orderItemId,
-            product_id,
-            product_quantity,
-            product_price,
-            product_name,
-            total_product_price,
-            totalSection,
-            message,
-            totalSectionNoBox,
-            extra_length,
-            total_extra_price,
-            variant_sku,
-            boxPrice,
-            totalBoxPrice,
-            extras: [],
-          };
-          r[key]["extras"].push(rest);
-          return r;
-        },
-        {}
-      );
 
-      const result = Object.values(merged);
-      orders[i].products = result;
+      const reduced = resultWithAll.reduce((acc, val) => {
+        const {
+          extra_id,
+          extra_quantity,
+          extra_price,
+          extra_name,
+          ...otherFields
+        } = val;
+
+        const existing = acc.find(
+          (item) => item.orderItemId === val.orderItemId
+        );
+        if (!existing) {
+          acc.push({
+            ...otherFields,
+            extras: [
+              {
+                extra_id,
+                extra_quantity,
+                extra_price,
+                extra_name,
+              },
+            ],
+          });
+          return acc;
+        }
+
+        existing.extras.push({
+          extra_id,
+          extra_quantity,
+          extra_price,
+          extra_name,
+        });
+        return acc;
+      }, []);
+
+      console.log(reduced);
+
+      // const merged = resultWithAll.reduce(
+      //   (
+      //     r,
+      //     {
+      //       orderItemId,
+      //       product_id,
+      //       product_quantity,
+      //       product_price,
+      //       product_name,
+      //       total_product_price,
+      //       totalSection,
+      //       message,
+      //       totalSectionNoBox,
+      //       extra_length,
+      //       total_extra_price,
+      //       variant_sku,
+      //       boxPrice,
+      //       totalBoxPrice,
+      //       ...rest
+      //     }
+      //   ) => {
+      //     const key = `${orderItemId}-${product_id}-${product_quantity}-${product_price}-${product_name}-${total_product_price}-${totalSection}-${message}-${totalSectionNoBox}-${extra_length}-${total_extra_price}-${variant_sku}-${boxPrice}-${totalBoxPrice}`;
+      //     r[key] = r[key] || {
+      //       orderItemId,
+      //       product_id,
+      //       product_quantity,
+      //       product_price,
+      //       product_name,
+      //       total_product_price,
+      //       totalSection,
+      //       message,
+      //       totalSectionNoBox,
+      //       extra_length,
+      //       total_extra_price,
+      //       variant_sku,
+      //       boxPrice,
+      //       totalBoxPrice,
+      //       extras: [],
+      //     };
+      //     r[key]["extras"].push(rest);
+      //     return r;
+      //   },
+      //   {}
+      // );
+
+      // const result = Object.values(merged);
+      orders[i].products = reduced;
       // console.log(result);
     }
 
@@ -691,6 +726,7 @@ exports.getEditOrder = async (req, res, next) => {
         const result = Object.values(merged);
         result2 = result;
         orders[i].products = result;
+        console.log(result);
       }
 
       // orderStreet = orders[0].OrderDeliveryAddress.street;
