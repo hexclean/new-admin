@@ -1,43 +1,6 @@
-<%- include('../includes/head.ejs') %>
-</head>
-<body class="ms-body ms-aside-left-open ms-primary-theme ms-has-quickbar">
-<%- include('../includes/navigation.ejs') %>
-
-  <main class="body-content">
-    <%- include('../includes/navigation-bar.ejs') %>
-    <div class="ms-content-wrapper">
-      <div class="ms-profile-overview no-img-var">
-         <ul class="ms-profile-navigation nav nav-tabs tabs-bordered" role="tablist">
-            <li role="presentation"><a href="#" aria-controls="tab1" class="active show" role="tab" data-toggle="tab">Új rendelések</a></li>
-            <li role="presentation"><a class="add-variant" href="/admin/accepted-orders">Elfogadott rendelések </a></li>
-            <li role="presentation"><a class="add-extra" href="/admin/deleted-orders">Törölt rendelések </a></li>
-         </ul>  
-      </div>
-   </div>
-
-   <div class="col-6">
-      <input type="text" name="searchOrder" id="searchOrder" placeholder="<%= lingua.search_allergen %>" class="category-search form-control" />
-      <hr>
-   </div>
-      <script>
-      $(document).ready(function() {
-         $('#searchOrder').keyup(function() {
-            const order = $('#searchOrder').val();
-            console.log(order)
-            $.get("get-filtered-order/" + order).done(function(data) {
-               $("#searchedOrder").html(data);
-            });
-         });
-      })
-      </script>
-<div id="searchedOrder">
-
-   <% if (orders.length ==0) { %>
-      <h2>Order not found</h2>
-    <% } %>
-    <% for (let i =0; i < orders.length; i++) { %>
+ <% for (let i =0; i < orders.length; i++) { %>
       <p>
-      <div class="ms-content-wrapper" data-toggle="collapse" name="orders" value="#orders<%= orders[i].encodedKey %>" href="#orders<%= orders[i].encodedKey %>" aria-expanded="false" aria-controls="orders<%= orders[i].encodedKey %>">
+      <div  class="ms-content-wrapper" data-toggle="collapse" name="orders" value="#orders<%= orders[i].encodedKey %>" href="#orders<%= orders[i].encodedKey %>" aria-expanded="false" aria-controls="orders<%= orders[i].encodedKey %>">
         <div class="table-responsive">
           <table  class="table table-hover thead-primary">
             <thead>
@@ -318,7 +281,3 @@
      </div>
     
     <% } %>
-</div>
-  </main>
- 
-</body>

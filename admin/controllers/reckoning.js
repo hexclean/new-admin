@@ -20,8 +20,6 @@ const Op = Sequelize.Op;
 const ITEMS_PER_PAGE = 20;
 var fs = require("fs");
 
-const xl = require("excel4node");
-
 exports.getIndex = async (req, res, next) => {
   const orders = await Orders.findAll({
     where: { restaurantId: req.admin.id },

@@ -30,6 +30,12 @@ router.post("/edit-property", isAuth, propertyController.postEditProperty);
 
 // LIVE SEARCH
 router.get(
+  "/get-filtered-order/:orderId",
+  isAuth,
+  liveSearchController.getFilteredOrders
+);
+
+router.get(
   "/get-filtered-category/:categoryId",
   isAuth,
   liveSearchController.getFilteredCategory

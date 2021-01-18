@@ -9,6 +9,7 @@ const Sequelize = require("sequelize");
 const Allergen = require("../../models/Allergen");
 const AllergenTranslation = require("../../models/AllergenTranslation");
 const Box = require("../../models/Box");
+
 const ITEMS_PER_PAGE = 30;
 const Op = Sequelize.Op;
 const AdminLogs = require("../../models/AdminLogs");
@@ -281,15 +282,6 @@ exports.getAllergenIndex = async (req, res, next) => {
 exports.getBoxIndex = async (req, res, next) => {
   const page = +req.query.page || 1;
   let totalItems;
-  let languageCode;
-
-  if (req.cookies.language == "ro") {
-    languageCode = 1;
-  } else if (req.cookies.language == "hu") {
-    languageCode = 2;
-  } else {
-    languageCode = 3;
-  }
 
   await AdminLogs.create({
     restaurant_id: req.admin.id,
