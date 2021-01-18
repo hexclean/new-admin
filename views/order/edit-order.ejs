@@ -103,7 +103,7 @@
                                        <td></td>
                                        <td><%= result[i].extras[k].extra_quantity %></td>
                                        <td><%= result[i].extras[k].extra_price %></td>
-                                       <td><%= result[i].extras[k].total_extra_price %></td>
+                                       <td><%= (result[i].extras[k].extra_quantity *  result[i].extras[k].extra_price).toFixed(2) %></td>
                                     </tr>
                                     <% } %>
                                     <% } %>
