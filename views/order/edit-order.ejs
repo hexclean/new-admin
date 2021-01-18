@@ -124,7 +124,33 @@
                                  <tr style="font-size: 16px;" >
                                     <td></td>
                                     <td colspan="4"><%= lingua.order_detail_total_final %>:</td>
-                                    <td><%= result[i].total_cost_produce_extra %><u><%= result[i].totalPrice %> <%= lingua.currency %></u></td>
+                                    <td><%= result[i].total_cost_produce_extra %><u>
+                                       
+                                       <% if( result[i].boxPrice !=null &&  result[i].extra_length == 0){ %>
+                                       <%= (parseInt( result[i].product_quantity) * parseFloat( result[i].boxPrice))
+                                       +
+                                       (parseInt( result[i].product_quantity) * parseFloat( result[i].product_price)) %>
+                                     
+                                    <% } %>
+
+                                    <% if( result[i].boxPrice == null &&  result[i].extra_length == 0){ %>
+                                     
+                                       <%=  result[i].total_product_price %>
+
+                                    <% } %>
+
+
+                                    <% if( result[i].boxPrice == null &&  result[i].extra_length != 0){ %>
+                                     
+                                       <%=  result[i].totalSectionNoBox %>
+                                       
+                                    <% } %>
+
+                                    <% if( result[i].boxPrice != null &&  result[i].extra_length != 0){ %>
+                                     
+                                       <%=  result[i].totalSection  %>
+                                       
+                                    <% } %> <%= lingua.currency %></u></td>
                                  </tr>
                               </tfoot>
                            </table>
