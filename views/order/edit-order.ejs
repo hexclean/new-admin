@@ -115,7 +115,7 @@
                                           <td></td>
                                           <td><%= result[i].product_quantity %></td>
                                           <td><%= result[i].boxPrice %></td>
-                                          <td><%= parseInt(result[i].product_quantity) * parseFloat(result[i].boxPrice) %></td>
+                                          <td><%= parseInt(result[i].product_quantity) * parseFloat(result[i].boxPrice).toFixed(2) %></td>
                                        </tr>
                                        <% } %>
 

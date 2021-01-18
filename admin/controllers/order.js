@@ -104,7 +104,8 @@ exports.getOrders = async (req, res, next) => {
   let orderPhoneNumber;
   let orderCreated;
   let orderIds;
-  let extrasArray = [];
+
+  var sumExtra = 0;
   if (orders.length != 0) {
     for (let i = 0; i < orders.length; i++) {
       const resultWithAll = [];
@@ -117,12 +118,16 @@ exports.getOrders = async (req, res, next) => {
         for (let h = 0; h < prodFin.length; h++) {
           if (extras.length == 0) {
             let totalProductPrice = 0;
-
+            let totalBoxPrice = 0;
             totalProductPrice +=
               parseFloat(orderItems[j].variantPrice) *
               parseInt(orderItems[j].quantity);
+            totalBoxPrice +=
+              parseFloat(orderItems[j].boxPrice) *
+              parseInt(orderItems[j].quantity);
             const items = {
               boxPrice: orderItems[j].boxPrice,
+              totalBoxPrice: totalBoxPrice.toFixed(2),
               variant_sku: orderItems[j].Variant.sku,
               extra_length: extras.length,
               product_id: prodFin[h].productId,
@@ -136,18 +141,45 @@ exports.getOrders = async (req, res, next) => {
             resultWithAll.push(items);
           } else {
             for (let k = 0; k < extras.length; k++) {
-              extrasArray.push(extras[k]);
-              let totalProductPrice = 0;
               let totalExtraPrice = 0;
+              let totalProductPrice = 0;
+              let totalBoxPrice = 0;
+              let totalSection = 0;
+              let totalSectionNoBox = 0;
+              totalExtraPrice +=
+                parseFloat(extras[k].extraPrice) * parseInt(extras[k].quantity);
 
               totalProductPrice +=
                 parseFloat(orderItems[j].variantPrice) *
                 parseInt(orderItems[j].quantity);
-              totalExtraPrice +=
-                parseFloat(extras[k].extraPrice) * parseInt(extras[k].quantity);
+
+              totalBoxPrice +=
+                parseFloat(orderItems[j].boxPrice) *
+                parseInt(orderItems[j].quantity);
+
+              totalSection +=
+                parseFloat(totalBoxPrice) +
+                parseFloat(totalExtraPrice) +
+                parseFloat(totalProductPrice);
+
+              totalSectionNoBox +=
+                parseFloat(totalExtraPrice) + parseFloat(totalProductPrice);
+              // (
+              //   orders[i].products[j].extras[k].extra_quantity *
+              //   orders[i].products[j].extras[k].extra_price
+              // ).toFixed(2) +
+              //   orders[i].products[j].total_product_price +
+              //   orders[i].products[j].totalBoxPrice;
+              //   extras.map(async (ext) => {
+
+              // });
+
               const items = {
                 variant_sku: orderItems[j].Variant.sku,
+                totalBoxPrice: totalBoxPrice.toFixed(2),
                 boxPrice: orderItems[j].boxPrice,
+                totalSection: totalSection,
+                totalSectionNoBox: totalSectionNoBox,
                 extra_length: extras.length,
                 product_id: prodFin[h].productId,
                 product_quantity: orderItems[j].quantity,
@@ -175,8 +207,12 @@ exports.getOrders = async (req, res, next) => {
             product_id,
             boxPrice,
             product_quantity,
+            totalBoxPrice,
+            totalSection,
             product_price,
             product_name,
+            total_extra_price,
+            totalSectionNoBox,
             total_product_price,
             message,
             extra_length,
@@ -184,17 +220,21 @@ exports.getOrders = async (req, res, next) => {
             ...rest
           }
         ) => {
-          const key = `${product_id}-${product_quantity}-${product_price}-${product_name}-${total_product_price}-${message}-${extra_length}-${variant_sku}-${boxPrice}`;
+          const key = `${product_id}-${totalSectionNoBox}-${totalSection}-${product_quantity}-${product_price}-${product_name}-${total_product_price}-${message}-${extra_length}-${variant_sku}-${boxPrice}-${totalBoxPrice}-${total_extra_price}`;
           r[key] = r[key] || {
             product_id,
             product_quantity,
             product_price,
             product_name,
             total_product_price,
+            totalSection,
             message,
+            totalSectionNoBox,
             extra_length,
+            total_extra_price,
             variant_sku,
             boxPrice,
+            totalBoxPrice,
             extras: [],
           };
           r[key]["extras"].push(rest);
@@ -206,6 +246,7 @@ exports.getOrders = async (req, res, next) => {
       const result = Object.values(merged);
       orders[i].products = result;
     }
+
     totalPriceFinal = orders[0].totalPrice;
     cutlery = orders[0].cutlery;
     take = orders[0].take;
@@ -324,7 +365,7 @@ exports.getAcceptedOrders = async (req, res, next) => {
   let orderCreated;
   let orderIds;
   let status;
-  let extrasArray = [];
+
   if (orders.length != 0) {
     for (let i = 0; i < orders.length; i++) {
       const resultWithAll = [];
@@ -353,15 +394,16 @@ exports.getAcceptedOrders = async (req, res, next) => {
             resultWithAll.push(items);
           } else {
             for (let k = 0; k < extras.length; k++) {
-              extrasArray.push(extras[k]);
               let totalProductPrice = 0;
               let totalExtraPrice = 0;
 
               totalProductPrice +=
                 parseFloat(orderItems[j].variantPrice) *
                 parseInt(orderItems[j].quantity);
+
               totalExtraPrice +=
                 parseFloat(extras[k].extraPrice) * parseInt(extras[k].quantity);
+
               const items = {
                 product_id: prodFin[h].productId,
                 product_quantity: orderItems[j].quantity,
@@ -517,7 +559,7 @@ exports.getEditOrder = async (req, res, next) => {
     let orderPhoneNumber;
     let orderCreated;
     let orderIds;
-    let extrasArray = [];
+
     if (orders.length != 0) {
       for (let i = 0; i < orders.length; i++) {
         const resultWithAll = [];
@@ -550,7 +592,6 @@ exports.getEditOrder = async (req, res, next) => {
               resultWithAll.push(items);
             } else {
               for (let k = 0; k < extras.length; k++) {
-                extrasArray.push(extras[k]);
                 let totalProductPrice = 0;
                 let totalExtraPrice = 0;
 
@@ -740,7 +781,7 @@ exports.getDeletedOrders = async (req, res, next) => {
   let orderPhoneNumber;
   let orderCreated;
   let orderIds;
-  let extrasArray = [];
+
   if (orders.length != 0) {
     for (let i = 0; i < orders.length; i++) {
       const resultWithAll = [];
@@ -769,7 +810,6 @@ exports.getDeletedOrders = async (req, res, next) => {
             resultWithAll.push(items);
           } else {
             for (let k = 0; k < extras.length; k++) {
-              extrasArray.push(extras[k]);
               let totalProductPrice = 0;
               let totalExtraPrice = 0;
 
