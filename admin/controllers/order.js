@@ -536,6 +536,9 @@ exports.getEditOrder = async (req, res, next) => {
                 parseFloat(orderItems[j].variantPrice) *
                 parseInt(orderItems[j].quantity);
               const items = {
+                boxPrice: orderItems[j].boxPrice,
+                variant_sku: orderItems[j].Variant.sku,
+                extra_length: extras.length,
                 product_id: prodFin[h].productId,
                 product_quantity: orderItems[j].quantity,
                 message: orderItems[j].message,
@@ -558,6 +561,9 @@ exports.getEditOrder = async (req, res, next) => {
                   parseFloat(extras[k].extraPrice) *
                   parseInt(extras[k].quantity);
                 const items = {
+                  variant_sku: orderItems[j].Variant.sku,
+                  boxPrice: orderItems[j].boxPrice,
+                  extra_length: extras.length,
                   product_id: prodFin[h].productId,
                   product_quantity: orderItems[j].quantity,
                   product_price: orderItems[j].variantPrice,
@@ -582,15 +588,18 @@ exports.getEditOrder = async (req, res, next) => {
             r,
             {
               product_id,
+              boxPrice,
               product_quantity,
               product_price,
               product_name,
               total_product_price,
               message,
+              extra_length,
+              variant_sku,
               ...rest
             }
           ) => {
-            const key = `${product_id}-${product_quantity}-${product_price}-${product_name}-${total_product_price}-${message}`;
+            const key = `${product_id}-${product_quantity}-${product_price}-${product_name}-${total_product_price}-${message}-${extra_length}-${variant_sku}-${boxPrice}`;
             r[key] = r[key] || {
               product_id,
               product_quantity,
@@ -598,6 +607,9 @@ exports.getEditOrder = async (req, res, next) => {
               product_name,
               total_product_price,
               message,
+              extra_length,
+              variant_sku,
+              boxPrice,
               extras: [],
             };
             r[key]["extras"].push(rest);

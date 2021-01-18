@@ -72,43 +72,68 @@
                         <!-- Invoice Table -->
                         <% for (let i =0; i < result.length; i++) { %>
 
-                        <div class="ms-invoice-table table-responsive mt-5">
-                           <table class="table table-hover text-right thead-light">
-                              <thead>
-                                 <tr class="text-capitalize">
-                                    <th class="text-center w-5">id</th>
-                                    <th class="text-left">Product Name</th>
-                                    <th>qty</th>
-                                    <th>Termek ar</th>
-                                    <th>total</th>
-                                 </tr>
-                              </thead>
-                              <tbody>
-                                 <tr>
-                                    <td class="text-center"><%= result[i].product_id %></td>
-                                    <td class="text-left"><%= result[i].product_name %></td>
-                                    <td><%= result[i].product_quantity %></td>
-                                    <td><%= result[i].product_price %></td>
-                                    <td><%= result[i].total_product_price %></td>
-                                 </tr>
+                           <div class="ms-invoice-table table-responsive mt-5" style="border-style: double;">
+                              <table class="table table-hover text-right thead-light">
+                                 <thead>
+                                    <tr class="text-capitalize" style="font-size: 16px;">
+                                       <th class="text-center w-5">Id</th>
+                                       <th class="text-left"><%= lingua.order_detail_product_name %></th>
+                                       <th>kategoria</th>
+                                       <th><%= lingua.order_detail_quantity %></th>
+                                       <th><%= lingua.order_detail_product_price %></th>
+                                       <th><%= lingua.order_detail_total %></th>
+                                    </tr>
+                                 </thead>
+                                 <tbody style="font-size: 16px;">
+                                    <tr>
+                                       <td class="text-center"><%= result[i].product_id %></td>
+                                       <td class="text-left"><%= result[i].product_name %></td>
+                                       <td ><%= result[i].variant_sku %></td>
+                                       <td><%= result[i].product_quantity %></td>
+                                       <td><%= result[i].product_price %></td>
+                                       <td><%= result[i].total_product_price %></td>
+                                    </tr>
+                              
+                                 
                                  <% for (let k = 0; k < result[i].extras.length; ++k) { %>
-                                 <tr>
-                                    <td class="text-center"><%=  result[i].extras[k].extra_id%></td>
-                                    <td class="text-left"><%=  result[i].extras[k].extra_name%></td>
-                                    <td><%=  result[i].extras[k].extra_quantity%></td>
-                                    <td>$<%=  result[i].extras[k].extra_price%></td>
-                                    <td><%=  result[i].extras[k].total_extra_price%></td>
-                                 </tr>
-                                 <% } %>        
+                                    <% if(result[i].extra_length != 0){ %>
+                                    <tr>
+                                       <td class="text-center"><%=  result[i].extras[k].extra_id %></td>
+                                       <td class="text-left"><%=  result[i].extras[k].extra_name %> (extra)</td>
+                                       <td></td>
+                                       <td><%= result[i].extras[k].extra_quantity %></td>
+                                       <td><%= result[i].extras[k].extra_price %></td>
+                                       <td><%= result[i].extras[k].total_extra_price %></td>
+                                    </tr>
+                                    <% } %>
+                                    <% } %>
+
+                                    <% if(result[i].boxPrice !=null){ %>
+                                       <tr style="border-style: dotted;">
+                                          <td class="text-center"></td>
+                                          <td class="text-left">Csomagolas</td>
+                                          <td></td>
+                                          <td><%= result[i].product_quantity %></td>
+                                          <td><%= result[i].boxPrice %></td>
+                                          <td><%= parseInt(result[i].product_quantity) * parseFloat(result[i].boxPrice) %></td>
+                                       </tr>
+                                       <% } %>
+
                               </tbody>
                               <tfoot>
-                                 <tr>
-                                    <td colspan="4">Total Cost:</td>
-                                    <td>$<%= result[i].total_cost_produce_extra %></td>
+                                 <tr style="font-size: 16px;" >
+                                    <td></td>
+                                    <td colspan="4"><%= lingua.order_detail_total_final %>:</td>
+                                    <td><%= result[i].total_cost_produce_extra %><u><%= result[i].totalPrice %> <%= lingua.currency %></u></td>
                                  </tr>
                               </tfoot>
-
                            </table>
+                           <p style=" font-size: 17px; margin-left: 20px;" class="text-left"><u><%=lingua.product_comment %></u>: <% if(result[i].message.length !=0){ %>
+                              <%= result[i].message %>
+                              <% } else{ %>  
+                              -
+                              <% } %>
+                           </p>
                         </div>
                         <% } %>
                         <!-- end -->
