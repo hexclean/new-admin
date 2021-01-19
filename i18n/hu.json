@@ -153,5 +153,20 @@
   "currency": "lej",
   "product_comment": "Megjegyzés",
   "product_comment_courier": "Megjegyzés a futárnak",
-  "opening_hour_val": "dsad"
+  "opening_hour_val": "dsad",
+  "orders": "Rendelések",
+  "new_orders": "Új rendelések",
+  "accepted_orders": "Elfogadott rendelések",
+  "deleted_orders": "Visszautasított rendelések",
+  "search_order": "Rendelés keresés",
+  "dashboard": "Porfil",
+  "properties": "Tulajdonságok",
+  "no_new_order": "Nem található rendelés",
+  "user_detail": "Kliens adatok",
+  "cutlery": "Evőeszköz",
+  "take_away": "Elvitelre",
+  "yes": "Igen",
+  "no": "Nem",
+  "category": "Kategória",
+  "order_deleted_message": "Elutasítás oka"
 }

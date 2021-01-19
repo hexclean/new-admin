@@ -7,14 +7,14 @@
       <div class="ms-content-wrapper">
          <div class="ms-profile-overview no-img-var">
             <ul class="ms-profile-navigation nav nav-tabs tabs-bordered" role="tablist">
-               <li role="presentation"><a class="add-variant" href="/admin/orders">Új rendelések</a></li>
-               <li role="presentation"><a href="#" aria-controls="tab1" class="active show" role="tab" data-toggle="tab">Elfogadott rendelések </a></li>
-               <li role="presentation"><a class="add-extra" href="/admin/deleted-orders">Törölt rendelések </a></li>
+               <li role="presentation"><a class="add-variant" href="/admin/orders"><%= lingua.new_orders %></a></li>
+               <li role="presentation"><a href="#" aria-controls="tab1" class="active show" role="tab" data-toggle="tab"><%= lingua.accepted_orders %></a></li>
+               <li role="presentation"><a class="add-extra" href="/admin/deleted-orders"><%= lingua.deleted_orders %></a></li>
             </ul>
          </div>
       </div>
       <div class="col-6">
-         <input type="text" name="searchOrder" id="searchOrder" placeholder="<%= lingua.search_allergen %>" class="category-search form-control" />
+         <input type="text" name="searchOrder" id="searchOrder" placeholder="<%= lingua.search_order %>" class="category-search form-control" />
          <hr>
       </div>
       <script>
@@ -30,7 +30,7 @@
       </script>
       <div id="searchedOrder">
          <% if (orders.length ==0) { %>
-         <h2>Order not found</h2>
+         <h2><%= lingua.no_new_order %></h2>
          <% } %>
          <% for (let i =0; i < orders.length; i++) { %>
          <p>
@@ -78,7 +78,7 @@
                            </div>
                            <div class="ms-panel-body">
                               <!-- Invoice To -->
-                              <h4 style="border-bottom: 1px solid green;">Kliens adatai</h4>
+                              <h4 style="border-bottom: 1px solid green;"><%= lingua.user_detail %></h4>
                               <div class="row align-items-center border-orders-userinf">
                                  <div class="col-md-6 info-orders-top" style="padding-top: 15px;">
                                     <div class="invoice-address">
@@ -113,16 +113,16 @@
                                           <%= orders[i].messageCourier %> 
                                           <% } %>
                                        </h5>
-                                       <h5><u>Muanyag eszkoz</u>: <% if(orders[i].cutlery == 1){ %>
+                                       <h5><u><%= lingua.cutlery %></u>: <% if(orders[i].cutlery == 1){ %>
                                           Igen
                                           <% } else{ %>  
                                           Nem
                                           <% } %>
                                        </h5>
-                                       <h5><u>Elvitelre</u>: <% if(orders[i].take == 1){ %>
-                                          Igen
+                                       <h5><u><%= lingua.take_away %></u>: <% if(orders[i].take == 1){ %>
+                                          <%=lingua.yes %>
                                           <% } else{ %>  
-                                          Nem
+                                             <%=lingua.no %>
                                           <% } %>
                                        </h5>
                                     </div>
@@ -136,7 +136,7 @@
                                        <tr class="text-capitalize" style="font-size: 16px;">
                                           <th class="text-center w-5">Id</th>
                                           <th class="text-left"><%= lingua.order_detail_product_name %></th>
-                                          <th>kategoria</th>
+                                          <th><%= lingua.category %></th>
                                           <th><%= lingua.order_detail_quantity %></th>
                                           <th><%= lingua.order_detail_product_price %></th>
                                           <th><%= lingua.order_detail_total %></th>
@@ -167,7 +167,7 @@
                                        <% if(orders[i].products[j].boxPrice !=null){ %>
                                           <tr style="border-style: dotted;">
                                              <td class="text-center"></td>
-                                             <td class="text-left">Csomagolas</td>
+                                             <td class="text-left"><%= lingua.box %></td>
                                              <td></td>
                                              <td><%= orders[i].products[j].product_quantity %></td>
                                              <td><%= orders[i].products[j].boxPrice %></td>

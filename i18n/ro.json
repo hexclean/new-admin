@@ -157,5 +157,20 @@
   "currency": "lei",
   "product_comment": "Cometariu",
   "product_comment_courier": "Notă către curier",
-  "opening_hour_val": "dsad"
+  "opening_hour_val": "dsad",
+  "orders": "Comenzi",
+  "new_orders": "Comenzi noi",
+  "accepted_orders": "Comenzi acceptate",
+  "deleted_orders": "Comenzi anulate",
+  "dashboard": "Porfil",
+  "properties": "Caracteristică",
+  "search_order": "Căutare comanda",
+  "no_new_order": "Nu este comandă",
+  "user_detail": "Detalii client",
+  "cutlery": "Tacâmuri",
+  "take_away": "Elvitelre ro",
+  "yes": "Da",
+  "no": "Nu",
+  "category": "Categoria",
+  "order_deleted_message": "Motivul respingerii"
 }

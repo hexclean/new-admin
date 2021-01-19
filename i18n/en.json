@@ -151,6 +151,20 @@
   "currency": "lei",
   "product_comment": "Comment",
   "product_comment_courier": "Comment to the courier",
-
-  "opening_hour_val": "dsad"
+  "orders": "Orders",
+  "opening_hour_val": "dsad",
+  "dashboard": "Dashboard",
+  "new_orders": "New orders",
+  "accepted_orders": "Accepted orders",
+  "deleted_orders": "Refused orders",
+  "properties": "Properties",
+  "search_order": "Search for order",
+  "no_new_order": "No order",
+  "user_detail": "User details",
+  "cutlery": "Cutlery",
+  "take_away": "Take-away",
+  "yes": "Yes",
+  "no": "No",
+  "category": "Category",
+  "order_deleted_message": "Reason for rejection"
 }

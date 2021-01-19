@@ -9,6 +9,7 @@ const LocationName = sequelize.define("LocationName", {
     primaryKey: true,
   },
   active: Sequelize.INTEGER,
+  type: Sequelize.INTEGER,
 });
 
 module.exports = LocationName;
