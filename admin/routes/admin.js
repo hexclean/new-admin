@@ -98,7 +98,6 @@ router.get("/property-index", isAuth, comboController.getPropertyIndex);
 
 // FAQ
 router.get("/faq-index", isAuth, faqController.getIndex);
-router.get("/vr-index", isAuth, variantsController.getIndex);
 
 // VARIANT
 router.get("/add-variant", isAuth, variantsController.getAddVariant);

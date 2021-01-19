@@ -15,13 +15,6 @@ const PropertyValueTranslation = require("../../models/PropertyValueTranslation"
 const VariantPropertyValue = require("../../models/VariantPropertyValue");
 const Op = Sequelize.Op;
 
-exports.getIndex = async (req, res, next) => {
-  res.render("variant/index", {
-    pageTitle: "Admin Products",
-    path: "/admin/products",
-  });
-};
-
 exports.getAddVariant = async (req, res, next) => {
   let languageCode;
 
