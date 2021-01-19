@@ -166,5 +166,13 @@
   "yes": "Yes",
   "no": "No",
   "category": "Category",
-  "order_deleted_message": "Reason for rejection"
+  "order_deleted_message": "Reason for rejection",
+  "accept_order": "Accepting an order",
+  "delete_order": "Order rejection",
+  "expected_delivery": "Expected delivery",
+  "hour": "Hour",
+  "minute": "Minute",
+  "quit": "Exit",
+  "reason": "Reason",
+  "required": "required"
 }

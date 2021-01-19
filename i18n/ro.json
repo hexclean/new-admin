@@ -172,5 +172,13 @@
   "yes": "Da",
   "no": "Nu",
   "category": "Categoria",
-  "order_deleted_message": "Motivul respingerii"
+  "order_deleted_message": "Motivul respingerii",
+  "accept_order": "Acceptați comanda",
+  "delete_order": "Respingerea comenzii",
+  "expected_delivery": "Livrare așteptată",
+  "hour": "Oră",
+  "minute": "Minute",
+  "quit": "Ieșire",
+  "reason": "Motiv",
+  "required": "obligatoriu"
 }

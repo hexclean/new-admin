@@ -168,5 +168,13 @@
   "yes": "Igen",
   "no": "Nem",
   "category": "Kategória",
-  "order_deleted_message": "Elutasítás oka"
+  "order_deleted_message": "Elutasítás oka",
+  "accept_order": "Rendelés elfogadása",
+  "delete_order": "Rendelés elutasítása",
+  "expected_delivery": "Várható kiszállítás",
+  "hour": "Óra",
+  "minute": "Perc",
+  "quit": "Kilépés",
+  "reason": "Indoklás",
+  "required": "kötelező"
 }
