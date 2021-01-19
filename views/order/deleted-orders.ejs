@@ -22,7 +22,7 @@
             $('#searchOrder').keyup(function() {
                const order = $('#searchOrder').val();
                console.log(order)
-               $.get("get-filtered-order/" + order).done(function(data) {
+               $.get("get-filtered-del-order/" + order).done(function(data) {
                   $("#searchedOrder").html(data);
                });
             });
@@ -227,99 +227,16 @@
                                  value="<%= orders[i].encodedKey %>"
                                  name="orderId"
                                  />
-                              <!-- end -->
-                              <div class="invoice-buttons text-right">
-                                 <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal<%= orders[i].encodedKey %>">
-                                 Elfogadas
-                                 </button>
-                                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalFailed<%= orders[i].encodedKey %>">
-                                 Elutasitas
-                                 </button>
-                              </div>
-                              <!-- Button trigger modal -->
-                              <!-- Modal Success-->
-                              <div class="modal fade" id="exampleModal<%= orders[i].encodedKey %>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                 <div class="modal-dialog" role="document">
-                                    <div class="modal-content">
-                                       <div class="modal-header">
-                                          <h5 class="modal-title" id="exampleModalLabel">Kb kiszallitasi ido megadas</h5>
-                                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                          <span aria-hidden="true">&times;</span>
-                                          </button>
-                                       </div>
-                                       <div class="modal-body">
-                                          <div class="container">
-                                             <div class="row">
-                                                <div class="col-sm">
-                                                   <label for="hours">Óra:</label>
-                                                   <select class="form-control"  name="hours" id="hours">
-                                                      <option selected="selected" value="0">0</option>
-                                                      <option value="1">1</option>
-                                                      <option value="2">2</option>
-                                                      <option value="3">3</option>
-                                                      <option value="4">4</option>
-                                                      <option value="5">5</option>
-                                                   </select>
-                                                </div>
-                                                <div class="col-sm">
-                                                   <label for="minutes">Perc:</label>
-                                                   <select class="form-control minute-css"  name="minutes" id="minutes">
-                                                      <option value="0">0</option>
-                                                      <option value="5">5</option>
-                                                      <option value="10">10</option>
-                                                      <option value="15">15</option>
-                                                      <option value="20">20</option>
-                                                      <option value="25">25</option>
-                                                      <option value="30">30</option>
-                                                      <option value="35">35</option>
-                                                      <option value="40">40</option>
-                                                      <option value="45">45</option>
-                                                      <option selected="selected"  value="50">50</option>
-                                                      <option value="55">55</option>
-                                                   </select>
-                                                </div>
-                                             </div>
-                                          </div>
-                                       </div>
-                                       <div class="modal-footer">
-                                          <button type="submit" class="btn btn-success">Rendelés befejezése</button>
-                                          <button type="button"  data-dismiss="modal" class="btn btn-secondary">Bezárás</button>
-                                       </div>
-                                    </div>
-                                 </div>
-                              </div>
-                              <!-- Modal Failed-->
-                              <div class="modal fade" id="exampleModalFailed<%= orders[i].encodedKey %>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                 <div class="modal-dialog" role="document">
-                                    <div class="modal-content">
-                                       <div class="modal-header">
-                                          <h5 class="modal-title" id="exampleModalLabel">FAILED</h5>
-                                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                          <span aria-hidden="true">&times;</span>
-                                          </button>
-                                       </div>
-                                       <div class="modal-body">
-                                          <div class="container">
-                                             <div class="row">
-                                                <label for="failedDescription">Example textarea</label>
-                                                <textarea class="form-control delval<%= orders[i].encodedKey %>" name="failedDescription"id="failedDescription<%= orders[i].encodedKey %>" rows="5"></textarea>
-                                             </div>
-                                          </div>
-                                       </div>
-                                       <div class="modal-footer">
-                                          <button type="submit" class="btn btn-primary">Rendelés befejezése</button>
-                                          <button type="button" id="dbtnvaldelval<%= orders[i].encodedKey %>"  data-dismiss="modal" class="btn btn-secondary dbtnvaldelval<%= orders[i].encodedKey %>">Bezárás</button>
-                                       </div>
-                                    </div>
-                                 </div>
-                              </div>
+                             
+                             
+                           
                            </div>
                         </div>
                      </div>
                   </div>
                </div>
             </form>
-            <!-- End -->
+     
          </div>
          <% } %>
       </div>

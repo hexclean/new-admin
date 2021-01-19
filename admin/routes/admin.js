@@ -42,6 +42,12 @@ router.get(
 );
 
 router.get(
+  "/get-filtered-del-order/:orderId",
+  isAuth,
+  liveSearchController.getFilteredDeletedOrders
+);
+
+router.get(
   "/get-filtered-category/:categoryId",
   isAuth,
   liveSearchController.getFilteredCategory
