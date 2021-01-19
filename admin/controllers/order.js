@@ -116,7 +116,6 @@ exports.getOrders = async (req, res, next) => {
         let prodFin = orderItems[j].Variant.ProductFinals;
         for (let h = 0; h < prodFin.length; h++) {
           if (extras.length == 0) {
-            console.log("az");
             let totalProductPrice = 0;
             let totalBoxPrice = 0;
             totalProductPrice +=
@@ -141,7 +140,6 @@ exports.getOrders = async (req, res, next) => {
 
             resultWithAll.push(items);
           } else {
-            console.log("ex");
             for (let k = 0; k < extras.length; k++) {
               let totalExtraPrice = 0;
               let totalProductPrice = 0;
@@ -361,7 +359,6 @@ exports.getAcceptedOrders = async (req, res, next) => {
         let prodFin = orderItems[j].Variant.ProductFinals;
         for (let h = 0; h < prodFin.length; h++) {
           if (extras.length == 0) {
-            console.log("az");
             let totalProductPrice = 0;
             let totalBoxPrice = 0;
             totalProductPrice +=
@@ -1024,7 +1021,7 @@ exports.postEditOrder = async (req, res, next) => {
         sender: "4",
         body: `Kedves ${user}! A(z) ${restaurantName} sikeresen elfogadta a rendelésed, melynek rendelési száma: ${orderId}. A rendelésed várhatóan ${minutes} perc múlva érkezik. További információkért az étterem telefonszámán érdeklődhetsz: ${restaurantPhone}.\nJó étvágyat kíván a Foodnet csapata!`,
       };
-
+      console.log("nincs ora es nincs elutasitas");
       async function sendSms() {
         request.post(
           {
@@ -1299,86 +1296,42 @@ exports.postEditOrder = async (req, res, next) => {
         </html>`,
         // "h:X-Mailgun-Variables": { test: "test" },
       };
-      await mg.messages().send(data, function (error, body) {
-        if (error) {
-          console.log(error);
-        }
+      // await mg.messages().send(data, function (error, body) {
+      //   if (error) {
+      //     console.log(error);
+      //   }
 
-        console.log(body);
-      });
       // sendSms();
       await Order.update(
-        { orderStatusId: 1 },
+        { orderStatusId: 2 },
         { where: { encodedKey: orderId } }
       );
 
-      // console.log("x perc mulva erkezik");
+      console.log(1111, "x perc mulva erkezik");
       // console.log("orderId", orderId);
     } else if (failedDescription.length !== 0) {
+      console.log(33333333, "elutasitas");
       await Order.update(
         { orderStatusId: 3, deletedMessage: failedDescription },
-        { where: { id: orderId } }
+        { where: { encodedKey: orderId } }
       );
-      // console.log("ELUTASITVA!!");
-      // console.log("orderId", orderId);
     } else if ((hours !== "0") & (minutes !== "0")) {
-      await Order.update({ orderStatusId: 2 }, { where: { id: orderId } });
+      console.log(22222, "x ora x perx");
+      await Order.update(
+        { orderStatusId: 2 },
+        { where: { encodedKey: orderId } }
+      );
       // console.log("van ora es perc is");
       // console.log("orderId", orderId);
     } else {
+      console.log(423432423432432432423, "csak ora van megadva");
       // console.log("orderId", orderId);
-      await Order.update({ orderStatusId: 2 }, { where: { id: orderId } });
+      await Order.update(
+        { orderStatusId: 2 },
+        { where: { encodedKey: orderId } }
+      );
       // console.log("ennyi ora mulva jon a kaja nincs perc");
     }
-
-    // nexmo.message.sendSms(from, to, text),
-    //   {
-    //     type: "unicode",
-    //   },
-    //   (err, responseData) => {
-    //     if (err) {
-    //       console.log(err);
-    //     } else {
-    //       console.dir(responseData);
-    //     }
-    //   };
-    // transporter.sendMail({
-    //   to: email,
-    //   from: "order@foodnet.ro",
-    //   subject: "Delivery Time",
-    //   html: `
-    //     <p>A rendelesed korulbelul ${minutes} perc mulva erkezik</p>
-    //     <p></p>
-    //   `,
-    // });
-    // if (hours == "0" && failedDescription.length == 0) {
-    //   console.log("igaz mert nem azt csinaltam");
-    //   const text = `A rendelesed korulbelul ${minutes} perc mulva erkezik`;
-
-    // } else {
-    // console.log("-0-=-=-=-=-=---=-==-=---=-=-=-=-=-=");
-    //   const text = `A rendelesed korulbelul ${hours} óra és ${minutes} perc mulva erkezik`;
-    //   nexmo.message.sendSms(from, to, text),
-    //     {
-    //       type: "unicode",
-    //     },
-    //     (err, responseData) => {
-    //       if (err) {
-    //         console.log(err);
-    //       } else {
-    //         console.dir(responseData);
-    //       }
-    //     };
-    //   transporter.sendMail({
-    //     to: email,
-    //     from: "order@foodnet.ro",
-    //     subject: "Delivery Time",
-    //     html: `
-    //         <p>>A rendelesed korulbelul ${hours} óra és ${minutes} perc mulva erkezik</p>
-    //         <p></p>
-    //       `,
-    //   });
-    // }
 
     res.redirect("/admin/orders");
   } catch (error) {

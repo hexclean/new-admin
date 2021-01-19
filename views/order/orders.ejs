@@ -227,7 +227,20 @@
                                  value="<%= orders[i].encodedKey %>"
                                  name="orderId"
                                  />
-                              <!-- end -->
+                                 <script>
+                                    $(document).ready(function() {
+                                       console.log($('#failedDescription<%= orders[i].encodedKey %>').val());
+                                       $('#dbtnvaldelval<%= orders[i].encodedKey %>').on('click',
+                                          function(){
+                                             console.log("ok")
+                                             $('#failedDescription<%= orders[i].encodedKey %>').val('');
+                                             
+                                          }
+                                    );
+                                    });
+                                </script>
+
+                                 
                               <div class="invoice-buttons text-right">
                                  <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal<%= orders[i].encodedKey %>">
                                  Elfogadas
@@ -302,7 +315,7 @@
                                           <div class="container">
                                              <div class="row">
                                                 <label for="failedDescription">Example textarea</label>
-                                                <textarea class="form-control delval<%= orders[i].encodedKey %>" name="failedDescription"id="failedDescription<%= orders[i].encodedKey %>" rows="5"></textarea>
+                                                <textarea class="form-control delval<%= orders[i].encodedKey %>" name="failedDescription" id="failedDescription<%= orders[i].encodedKey %>" rows="5"></textarea>
                                              </div>
                                           </div>
                                        </div>

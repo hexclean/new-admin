@@ -418,6 +418,9 @@ Version: 1.0.0
 .ms-text-danger:focus {
   color: #d9534f;
 }
+.modal {
+  pointer-events: none;
+}
 
 .allergen-name {
   font-size: 20px;
