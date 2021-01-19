@@ -210,5 +210,12 @@
 
   "primary_data": "Date principale",
   "primary_data_edit": "Editarea datelor principale",
-  "opening_hours": "Program"
+  "opening_hours": "Program",
+  "profile_image": "Poză de profil",
+  "cover_image": "Imagine de cupertă",
+  "logout": "Ieșire",
+
+  "ro": "Română",
+  "hu": "Maghiară",
+  "en": "Engleză"
 }

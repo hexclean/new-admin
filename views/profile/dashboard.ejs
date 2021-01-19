@@ -23,42 +23,23 @@
           <li role="presentation"><a href="#tab1" aria-controls="tab1" class="active show" role="tab" data-toggle="tab"> <%= lingua.primary_data %> </a></li>
           <li role="presentation"><a href="/admin/edit-profile/<%= admin.id %>?edit=true"><%= lingua.primary_data_edit %></a></li>
           <li role="presentation"><a href="/admin/edit-opening-hours/<%= admin.id %>?edit=true"><%= lingua.opening_hours %></a></li>
-          <li role="presentation"><a href="/admin/edit-profile-image/<%= admin.id %>?edit=true"> Profilkep</a></li>
-          <li role="presentation"><a href="/admin/edit-cover-image/<%= admin.id %>?edit=true"> Boritokep</a></li>
+          <li role="presentation"><a href="/admin/edit-profile-image/<%= admin.id %>?edit=true"><%= lingua.profile_image %></a></li>
+          <li role="presentation"><a href="/admin/edit-cover-image/<%= admin.id %>?edit=true"><%= lingua.cover_image %></a></li>
 
         </ul>
   
-        <div class="tab-content">
-          <div class="tab-pane" id="tab1">
-    
-          </div>
-          <div class="tab-pane" id="tab2">
-    
-          </div>
-          <div class="tab-pane" id="tab3">
-    
-          </div>
-        </div>
+      
       </div>
       
-      <div class="container">
-        <div class="row">
-          <div class="col-sm">
-           <a href="?language=hu">
-            <img src="/images/hu.png" width="100" height="100">
-            </a>       
-          </div>
-          <div class="col-sm">
-           <a href="?language=ro">
-            <img src="/images/ro.png" width="100" height="100">
-            </a>      
-          </div>
-          <div class="col-sm">
-           <a href="?language=en">
-            <img src="/images/en.png" width="100" height="100">
-            </a>   
-          </div>
-        </div>
+      <select name="forma" onchange="location = this.value;">
+        <option value="?language=ro"><%= lingua.ro %></option>
+        <option value="?language=hu"><%= lingua.hu %></option>
+        <option value="?language=en"><%= lingua.en %></option>
+       </select>
+       
+
+
+ 
       </div>
       <div class="row">
       
@@ -91,11 +72,16 @@
               </table>
             </div>
           </div>
+          
         </div>
+        
       </div>
+      
     </div>
     <form action="/logout" method="POST">
-      <button class="menu-item" type="submit">Logout</button>
+      <button class="btn btn-primary" type="submit" id="updateOpeningHrBtn">
+                    <%= lingua.logout %>
+                     </button>
     </form>
   </main>
 <%- include('../includes/end.ejs')

@@ -204,5 +204,12 @@
 
   "primary_data": "Basic data",
   "primary_data_edit": "Editing basic data",
-  "opening_hours": "Opening hours"
+  "opening_hours": "Opening hours",
+  "profile_image": "Profile image",
+  "cover_image": "Cover image",
+  "logout": "Log out",
+
+  "ro": "Romanian",
+  "hu": "Hungarian",
+  "en": "English"
 }

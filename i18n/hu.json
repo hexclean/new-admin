@@ -206,5 +206,12 @@
 
   "primary_data": "Alapadatok",
   "primary_data_edit": "Alapadatok szerkesztése",
-  "opening_hours": "Nyitvatartás"
+  "opening_hours": "Nyitvatartás",
+  "profile_image": "Profilkép",
+  "cover_image": "Borítókép",
+  "logout": "Kijelentkezés",
+
+  "ro": "Román",
+  "hu": "Magyar",
+  "en": "Angol"
 }
