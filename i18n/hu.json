@@ -176,5 +176,35 @@
   "minute": "Perc",
   "quit": "Kilépés",
   "reason": "Indoklás",
-  "required": "kötelező"
+  "required": "kötelező",
+  "restaurant_name": "Étterem neve",
+  "restaurant_email": "Étterem e-mail címe",
+  "restaurant_phone": "Étterem telefonszáma",
+  "restaurant_joined": "Étterem csatlakozása",
+
+  "restaurant_roAddress": "Étterem címe románul",
+  "restaurant_huAddress": "Étterem címe magyarul",
+  "restaurant_enAddress": "Étterem címe angolul",
+
+  "restaurant_roDescription": "Étterem leírása románul",
+  "restaurant_huDescription": "Étterem leírása magyarul",
+  "restaurant_enDescription": "Étterem leírása angolul",
+
+  "transport_city": "Szállítási ár városra",
+  "transport_village": "Szállítási ár falura",
+
+  "open": "Nyitás",
+  "close": "Zárás",
+
+  "monday": "Hétfő",
+  "tuesday": "Kedd",
+  "wednesday": "Szerda",
+  "thursday": "Csütörtök",
+  "friday": "Péntek",
+  "saturday": "Szombat",
+  "sunday": "Vasárnap",
+
+  "primary_data": "Alapadatok",
+  "primary_data_edit": "Alapadatok szerkesztése",
+  "opening_hours": "Nyitvatartás"
 }

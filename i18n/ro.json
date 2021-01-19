@@ -180,5 +180,35 @@
   "minute": "Minute",
   "quit": "Ieșire",
   "reason": "Motiv",
-  "required": "obligatoriu"
+  "required": "obligatoriu",
+  "restaurant_name": "Numele restaurantului",
+  "restaurant_email": "Adresa e-mail restaurantului",
+  "restaurant_phone": "Numerul de telefon a restaurantului",
+  "restaurant_joined": "Aleturarea restaurantului",
+
+  "restaurant_roAddress": "Adresa restaurantului în limba română",
+  "restaurant_huAddress": "Adresa restaurantului în limba maghiară",
+  "restaurant_enAddress": "Adresa restaurantului în limba engleză",
+
+  "restaurant_roDescription": "Descrierea restaurantului în limba română",
+  "restaurant_huDescription": "Descrierea restaurantului în limba maghiară",
+  "restaurant_enDescription": "Descrierea restaurantului în limba engleză",
+
+  "transport_city": "Livrare la oraș",
+  "transport_village": "Livrare la sat",
+
+  "open": "Deschidere",
+  "close": "Închidere",
+
+  "monday": "Luni",
+  "tuesday": "Marți",
+  "wednesday": "Miercuri",
+  "thursday": "Joi",
+  "friday": "Vineri",
+  "saturday": "Sâmbătă",
+  "sunday": "Duminică",
+
+  "primary_data": "Date principale",
+  "primary_data_edit": "Editarea datelor principale",
+  "opening_hours": "Program"
 }

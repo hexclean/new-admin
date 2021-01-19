@@ -13,10 +13,10 @@
     <div class="ms-content-wrapper editprofiledown">
       <div class="ms-profile-overview">
         <div class="ms-profile-cover">
-       <img class="ms-profile-img" src="/<%= admin.profileImage %>" alt="<%= admin.fullName %>">
+       <img class="ms-profile-img" src="/<%= admin[0].profileImage %>" alt="<%= admin[0].fullName %>">
           
           <div class="ms-profile-user-info">
-            <h3 class="ms-profile-username text-white"><%= admin.fullName %></h3>           
+            <h3 class="ms-profile-username text-white"><%= admin[0].fullName %></h3>           
           </div>        
         </div>
    
@@ -36,7 +36,7 @@
               id="update_profile"
               >
                 <div class="form-group">
-                  <label for="email">Email address</label>
+                  <label for="email"><%= lingua.restaurant_email %></label>
                   <input
                         class="form-control"
                         type="text"
@@ -44,12 +44,12 @@
                         autocomplete="off"
                         disabled
                         id="email"
-                        value="<% if (editing) { %><%= admin[0].id %><% } %>"
+                        value="<% if (editing) { %><%= admin[0].email %><% } %>"
                       />
                 </div>
                 <span class="error_form" id="email_error_message"></span>
                 <div class="form-group">
-                  <label for="fullName">Full Name</label>
+                  <label for="fullName"><%= lingua.restaurant_name %></label>
                   <input
                   class="form-control"
                   type="text"
@@ -62,7 +62,7 @@
                 <span class="error_form" id="name_error_message"></span>
 
                 <div class="form-group">
-                  <label for="phoneNumber">Tel Numb.</label>
+                  <label for="phoneNumber"><%= lingua.restaurant_phone%></label>
                   <input
                   class="form-control"
                   type="text"
@@ -75,33 +75,9 @@
                 </div>
                 <span class="error_form" id="phone_error_message"></span>
 
-               
-
-                <div class="form-group">
-                  <label for="commission">commission</label>
-                  <input
-                  class="form-control"
-                  type="text"
-                  autocomplete="off"
-                  name="commission"
-                  id="commission"
-                  disabled
-                  value="<%= admin[0].commission %>"
-                />
-                </div>
+             
                 
-                <div class="form-group">
-                  <label for="date">Csatlakozas</label>
-                  <input
-                  class="form-control"
-                  type="text"
-                  autocomplete="off"
-                  name="date"
-                  id="date"
-                  disabled
-                  value="<%= admin[0].createdAt %>"
-                />
-                </div>
+              
             </div>
           </div>
         </div>
@@ -116,7 +92,7 @@
             <div class="ms-panel-body">
               
                 <div class="form-group">
-                  <label for="roAdress">RO ADRESS</label>
+                  <label for="roAdress"><%= lingua.restaurant_roAddress %></label>
                   <input
                   class="form-control"
                   type="text"
@@ -128,7 +104,7 @@
                 </div>
                 <span class="error_form" id="roAddress_error_message"></span>
                 <div class="form-group">
-                  <label for="huAdress">HU ADRESS</label>
+                  <label for="huAdress"><%= lingua.restaurant_huAddress %></label>
                   <input
                         class="form-control"
                         type="text"
@@ -140,7 +116,7 @@
                 </div>
                 <span class="error_form" id="huAddress_error_message"></span>
                 <div class="form-group">
-                  <label for="enAdress">EN ADRESS</label>
+                  <label for="enAdress"><%= lingua.restaurant_enAddress %></label>
                   <input
                         class="form-control"
                         type="text"
@@ -166,10 +142,7 @@
             />
             <% } %>
   
-            <button id="profileButton" class="btn btn-success" type="submit">
-              <% if (editing) { %><%= lingua.update_profile %><% } else { %>Add
-              Product<% } %>
-            </button>
+        
          
         </div>
 
@@ -183,7 +156,7 @@
             <div class="ms-panel-body">
              
                 <div class="form-group">
-                  <label for="roShortCompanyDesc">roShortCompanyDesce</label>
+                  <label for="roShortCompanyDesc"><%= lingua.restaurant_roDescription %></label>
                   <input
                         class="form-control"
                         type="text"
@@ -196,7 +169,7 @@
                 <span class="error_form" id="roShortCompanyDesc_error_message"></span>
 
                 <div class="form-group">
-                  <label for="huShortCompanyDesc">huShortCompanyDesce</label>
+                  <label for="huShortCompanyDesc"><%= lingua.restaurant_huDescription %></label>
                   <input
                         class="form-control"
                         type="text"
@@ -209,7 +182,7 @@
                 <span class="error_form" id="huShortCompanyDesc_error_message"></span>
 
                 <div class="form-group">
-                  <label for="enShortCompanyDesc">enShortCompanyDesce</label>
+                  <label for="enShortCompanyDesc"><%= lingua.restaurant_enDescription %></label>
                   <input
                   class="form-control"
                   type="text"
@@ -228,12 +201,60 @@
           
           
         </div>
+        <div class="col-md-6">
+          <div class="ms-panel">
+            <div class="ms-panel-header">
+              <h6>Basic Form Elements</h6>
+            </div>
+            <div class="ms-panel-body">
+             
+                <div class="form-group">
+                  <label for="city"><%= lingua.transport_city %></label>
+                  <input
+                        class="form-control"
+                        type="text"
+                        autocomplete="off"
+                        name="city"
+                        id="city"
+                        value="<% if (editing) { %><%= admin[0].deliveryPriceCity %><% } %>"
+                      />
+                </div>
+                <span class="error_form" id="city_error_message"></span>
+
+                <div class="form-group">
+                  <label for="village"><%= lingua.transport_village %></label>
+                  <input
+                        class="form-control"
+                        type="text"
+                        autocomplete="off"
+                        name="village"
+                        id="village"
+                        value="<% if (editing) { %><%= admin[0].deliveryPriceVillage %><% } %>"
+                      />
+                </div>
+                <span class="error_form" id="village_error_message"></span>
+
+               
+
+            </div>
+          </div>
+         
+           
+          
+          
+        </div>
        
+       
+
        
 
 
 
       </div>
+      <button id="profileButton" class="btn btn-success" type="submit">
+        <% if (editing) { %><%= lingua.button_edit %><% } else { %>Add
+        Product<% } %>
+      </button>
       </div>
     </div>
            

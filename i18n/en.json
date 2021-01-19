@@ -174,5 +174,35 @@
   "minute": "Minute",
   "quit": "Exit",
   "reason": "Reason",
-  "required": "required"
+  "required": "required",
+  "restaurant_name": "Restaurant's name",
+  "restaurant_email": "Restaurant's e-mail address",
+  "restaurant_phone": "Restaurant's phone number",
+  "restaurant_joined": "Join restaurant",
+
+  "restaurant_roAddress": "Restaurant's address in Romanian",
+  "restaurant_huAddress": "Restaurant's address in hungarian",
+  "restaurant_enAddress": "Restaurant's address in English",
+
+  "restaurant_roDescription": "Restaurant's description in Romanian",
+  "restaurant_huDescription": "Restaurant's description in hungarian",
+  "restaurant_enDescription": "Restaurant's description in English",
+
+  "transport_city": "Price for shipping to city",
+  "transport_village": "Price for shipping to village",
+
+  "open": "Opening",
+  "close": "Closing",
+
+  "monday": "Monday",
+  "tuesday": "Tuesday",
+  "wednesday": "Wednesday",
+  "thursday": "Thursday",
+  "friday": "Friday",
+  "saturday": "Saturday",
+  "sunday": "Sunday",
+
+  "primary_data": "Basic data",
+  "primary_data_edit": "Editing basic data",
+  "opening_hours": "Opening hours"
 }
