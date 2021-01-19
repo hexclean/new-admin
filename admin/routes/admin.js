@@ -36,6 +36,12 @@ router.get(
 );
 
 router.get(
+  "/get-filtered-acc-order/:orderId",
+  isAuth,
+  liveSearchController.getFilteredAcceptedOrders
+);
+
+router.get(
   "/get-filtered-category/:categoryId",
   isAuth,
   liveSearchController.getFilteredCategory

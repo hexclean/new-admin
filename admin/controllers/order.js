@@ -231,62 +231,12 @@ exports.getOrders = async (req, res, next) => {
         return acc;
       }, []);
 
-      console.log(reduced);
-
-      // const merged = resultWithAll.reduce(
-      //   (
-      //     r,
-      //     {
-      //       orderItemId,
-      //       product_id,
-      //       product_quantity,
-      //       product_price,
-      //       product_name,
-      //       total_product_price,
-      //       totalSection,
-      //       message,
-      //       totalSectionNoBox,
-      //       extra_length,
-      //       total_extra_price,
-      //       variant_sku,
-      //       boxPrice,
-      //       totalBoxPrice,
-      //       ...rest
-      //     }
-      //   ) => {
-      //     const key = `${orderItemId}-${product_id}-${product_quantity}-${product_price}-${product_name}-${total_product_price}-${totalSection}-${message}-${totalSectionNoBox}-${extra_length}-${total_extra_price}-${variant_sku}-${boxPrice}-${totalBoxPrice}`;
-      //     r[key] = r[key] || {
-      //       orderItemId,
-      //       product_id,
-      //       product_quantity,
-      //       product_price,
-      //       product_name,
-      //       total_product_price,
-      //       totalSection,
-      //       message,
-      //       totalSectionNoBox,
-      //       extra_length,
-      //       total_extra_price,
-      //       variant_sku,
-      //       boxPrice,
-      //       totalBoxPrice,
-      //       extras: [],
-      //     };
-      //     r[key]["extras"].push(rest);
-      //     return r;
-      //   },
-      //   {}
-      // );
-
-      // const result = Object.values(merged);
       orders[i].products = reduced;
-      // console.log(result);
     }
 
     totalPriceFinal = orders[0].totalPrice;
     cutlery = orders[0].cutlery;
     take = orders[0].take;
-    //   orderCity = orders[0].OrderDeliveryAddress;
     orderStreet = orders[0].OrderDeliveryAddress.street;
     orderHouseNumber = orders[0].OrderDeliveryAddress.houseNumber;
     orderFloor = orders[0].OrderDeliveryAddress.floor;
@@ -350,6 +300,7 @@ exports.getAcceptedOrders = async (req, res, next) => {
               },
             ],
           },
+
           {
             model: Variant,
             include: [
@@ -388,11 +339,9 @@ exports.getAcceptedOrders = async (req, res, next) => {
   });
 
   let extras = [];
-  let totalPriceFinal;
   let cutlery;
   let take;
   let userName;
-  let orderCity;
   let orderStreet;
   let orderHouseNumber;
   let orderFloor;
@@ -400,7 +349,6 @@ exports.getAcceptedOrders = async (req, res, next) => {
   let orderPhoneNumber;
   let orderCreated;
   let orderIds;
-  let status;
 
   if (orders.length != 0) {
     for (let i = 0; i < orders.length; i++) {
@@ -413,12 +361,21 @@ exports.getAcceptedOrders = async (req, res, next) => {
         let prodFin = orderItems[j].Variant.ProductFinals;
         for (let h = 0; h < prodFin.length; h++) {
           if (extras.length == 0) {
+            console.log("az");
             let totalProductPrice = 0;
-
+            let totalBoxPrice = 0;
             totalProductPrice +=
               parseFloat(orderItems[j].variantPrice) *
               parseInt(orderItems[j].quantity);
+            totalBoxPrice +=
+              parseFloat(orderItems[j].boxPrice) *
+              parseInt(orderItems[j].quantity);
             const items = {
+              orderItemId: orderItems[j].id,
+              boxPrice: orderItems[j].boxPrice,
+              totalBoxPrice: totalBoxPrice.toFixed(2),
+              variant_sku: orderItems[j].Variant.sku,
+              extra_length: extras.length,
               product_id: prodFin[h].productId,
               product_quantity: orderItems[j].quantity,
               message: orderItems[j].message,
@@ -430,17 +387,39 @@ exports.getAcceptedOrders = async (req, res, next) => {
             resultWithAll.push(items);
           } else {
             for (let k = 0; k < extras.length; k++) {
-              let totalProductPrice = 0;
               let totalExtraPrice = 0;
+              let totalProductPrice = 0;
+              let totalBoxPrice = 0;
+              let totalSection = 0;
+              let totalSectionNoBox = 0;
+
+              totalExtraPrice +=
+                parseFloat(extras[k].extraPrice) * parseInt(extras[k].quantity);
 
               totalProductPrice +=
                 parseFloat(orderItems[j].variantPrice) *
                 parseInt(orderItems[j].quantity);
 
-              totalExtraPrice +=
-                parseFloat(extras[k].extraPrice) * parseInt(extras[k].quantity);
+              totalBoxPrice +=
+                parseFloat(orderItems[j].boxPrice) *
+                parseInt(orderItems[j].quantity);
+
+              totalSection +=
+                parseFloat(totalBoxPrice) +
+                parseFloat(totalExtraPrice) +
+                parseFloat(totalProductPrice);
+
+              totalSectionNoBox +=
+                parseFloat(totalExtraPrice) + parseFloat(totalProductPrice);
 
               const items = {
+                orderItemId: orderItems[j].id,
+                variant_sku: orderItems[j].Variant.sku,
+                totalBoxPrice: totalBoxPrice.toFixed(2),
+                boxPrice: orderItems[j].boxPrice,
+                totalSection: totalSection,
+                totalSectionNoBox: totalSectionNoBox,
+                extra_length: extras.length,
                 product_id: prodFin[h].productId,
                 product_quantity: orderItems[j].quantity,
                 product_price: orderItems[j].variantPrice,
@@ -460,52 +439,59 @@ exports.getAcceptedOrders = async (req, res, next) => {
         }
       }
 
-      const merged = resultWithAll.reduce(
-        (
-          r,
-          {
-            product_id,
-            product_quantity,
-            product_price,
-            product_name,
-            total_product_price,
-            message,
-            ...rest
-          }
-        ) => {
-          const key = `${product_id}-${product_quantity}-${product_price}-${product_name}-${total_product_price}-${message}`;
-          r[key] = r[key] || {
-            product_id,
-            product_quantity,
-            product_price,
-            product_name,
-            total_product_price,
-            message,
-            extras: [],
-          };
-          r[key]["extras"].push(rest);
-          return r;
-        },
-        {}
-      );
+      const reduced = resultWithAll.reduce((acc, val) => {
+        const {
+          extra_id,
+          extra_quantity,
+          extra_price,
+          extra_name,
+          ...otherFields
+        } = val;
 
-      const result = Object.values(merged);
-      orders[i].products = result;
+        const existing = acc.find(
+          (item) => item.orderItemId === val.orderItemId
+        );
+        if (!existing) {
+          acc.push({
+            ...otherFields,
+            extras: [
+              {
+                extra_id,
+                extra_quantity,
+                extra_price,
+                extra_name,
+              },
+            ],
+          });
+          return acc;
+        }
+
+        existing.extras.push({
+          extra_id,
+          extra_quantity,
+          extra_price,
+          extra_name,
+        });
+        return acc;
+      }, []);
+
+      orders[i].products = reduced;
     }
+
     totalPriceFinal = orders[0].totalPrice;
     cutlery = orders[0].cutlery;
     take = orders[0].take;
-    //   orderCity = orders[0].OrderDeliveryAddress;
     orderStreet = orders[0].OrderDeliveryAddress.street;
     orderHouseNumber = orders[0].OrderDeliveryAddress.houseNumber;
     orderFloor = orders[0].OrderDeliveryAddress.floor;
     orderDoorNumber = orders[0].OrderDeliveryAddress.doorNumber;
     orderPhoneNumber = orders[0].OrderDeliveryAddress.phoneNumber;
-    orderCreated = orders[0].createdAt;
+    orderCreated = orders[0].createdAt.toLocaleString("en-GB", {
+      timeZone: "Europe/Helsinki",
+    });
+
     userName = orders[0].OrderDeliveryAddress.userName;
     orderIds = orders[0].encodedKey;
-
-    status = orders[0].orderStatusId;
   }
   res.render("order/accepted-orders", {
     pageTitle: "Add Product",
@@ -523,7 +509,6 @@ exports.getAcceptedOrders = async (req, res, next) => {
     take: take,
     orderIds: orderIds,
     extras: extras,
-    status: status,
   });
 };
 exports.getEditOrder = async (req, res, next) => {
@@ -681,65 +666,48 @@ exports.getEditOrder = async (req, res, next) => {
           }
         }
 
-        const merged = resultWithAll.reduce(
-          (
-            r,
-            {
-              product_id,
-              boxPrice,
-              product_quantity,
-              totalBoxPrice,
-              totalSection,
-              product_price,
-              product_name,
-              total_extra_price,
-              totalSectionNoBox,
-              total_product_price,
-              message,
-              extra_length,
-              variant_sku,
-              ...rest
-            }
-          ) => {
-            const key = `${product_id}-${totalSectionNoBox}-${totalSection}-${product_quantity}-${product_price}-${product_name}-${total_product_price}-${message}-${extra_length}-${variant_sku}-${boxPrice}-${totalBoxPrice}-${total_extra_price}`;
-            r[key] = r[key] || {
-              product_id,
-              product_quantity,
-              product_price,
-              product_name,
-              total_product_price,
-              totalSection,
-              message,
-              totalSectionNoBox,
-              extra_length,
-              total_extra_price,
-              variant_sku,
-              boxPrice,
-              totalBoxPrice,
-              extras: [],
-            };
-            r[key]["extras"].push(rest);
-            return r;
-          },
-          {}
-        );
-        const result = Object.values(merged);
-        result2 = result;
-        orders[i].products = result;
-        console.log(result);
+        const reduced = resultWithAll.reduce((acc, val) => {
+          const {
+            extra_id,
+            extra_quantity,
+            extra_price,
+            extra_name,
+            ...otherFields
+          } = val;
+
+          const existing = acc.find(
+            (item) => item.orderItemId === val.orderItemId
+          );
+          if (!existing) {
+            acc.push({
+              ...otherFields,
+              extras: [
+                {
+                  extra_id,
+                  extra_quantity,
+                  extra_price,
+                  extra_name,
+                },
+              ],
+            });
+            return acc;
+          }
+
+          existing.extras.push({
+            extra_id,
+            extra_quantity,
+            extra_price,
+            extra_name,
+          });
+          return acc;
+        }, []);
+
+        result2 = reduced;
+        orders[i].products = reduced;
       }
 
-      // orderStreet = orders[0].OrderDeliveryAddress.street;
-      // orderHouseNumber = orders[0].OrderDeliveryAddress.houseNumber;
-      // orderFloor = orders[0].OrderDeliveryAddress.floor;
-      // orderDoorNumber = orders[0].OrderDeliveryAddress.doorNumber;
-      // orderPhoneNumber = orders[0].OrderDeliveryAddress.phoneNumber;
-      // orderCreated = orders[0].createdAt.toLocaleString("en-GB", {
-      //   timeZone: "Europe/Helsinki",
-      // });
-
       orderIds = orders[0].encodedKey;
-      ////
+
       totalPriceFinal = orders[0].totalPrice;
       cutlery = orders[0].cutlery;
       take = orders[0].take;
@@ -752,6 +720,7 @@ exports.getEditOrder = async (req, res, next) => {
       orderCreated = orders[0].createdAt;
       userName = orders[0].OrderDeliveryAddress.userName;
       orderIds = orders[0].id;
+      console.log("=-=-=-----=-=-=-=-", orders[0].status);
     }
 
     res.render("order/edit-order", {
@@ -773,8 +742,8 @@ exports.getEditOrder = async (req, res, next) => {
       result: result2,
       userEmail: "orders[0].User.email",
       orderCity: orderCity,
-      status: "orders[0].orderStatusId",
-      deletedMessage: "orders[0].deletedMessage",
+      status: orders[0].orderStatusId,
+      deletedMessage: orders[0].deletedMessage,
     });
   } catch (error) {
     console.log(error);
@@ -784,6 +753,15 @@ exports.getEditOrder = async (req, res, next) => {
 };
 
 exports.getDeletedOrders = async (req, res, next) => {
+  let languageCode;
+
+  if (req.cookies.language == "ro") {
+    languageCode = 1;
+  } else if (req.cookies.language == "hu") {
+    languageCode = 2;
+  } else {
+    languageCode = 3;
+  }
   const orders = await Order.findAll({
     order: [["createdAt", "DESC"]],
     where: { orderStatusId: 3, restaurantId: req.admin.id },
@@ -797,10 +775,16 @@ exports.getDeletedOrders = async (req, res, next) => {
             include: [
               {
                 model: Extra,
-                include: [{ model: ExtraTranslation }],
+                include: [
+                  {
+                    model: ExtraTranslation,
+                    where: { languageId: languageCode },
+                  },
+                ],
               },
             ],
           },
+
           {
             model: Variant,
             include: [
@@ -810,7 +794,12 @@ exports.getDeletedOrders = async (req, res, next) => {
                 include: [
                   {
                     model: Product,
-                    include: [{ model: ProductTranslation }],
+                    include: [
+                      {
+                        model: ProductTranslation,
+                        where: { languageId: languageCode },
+                      },
+                    ],
                   },
                 ],
               },
@@ -826,7 +815,7 @@ exports.getDeletedOrders = async (req, res, next) => {
         include: [
           {
             model: LocationNameTranslation,
-            where: { languageId: 2 },
+            where: { languageId: languageCode },
           },
         ],
       },
@@ -834,11 +823,9 @@ exports.getDeletedOrders = async (req, res, next) => {
   });
 
   let extras = [];
-  let totalPriceFinal;
   let cutlery;
   let take;
   let userName;
-  let status;
   let orderStreet;
   let orderHouseNumber;
   let orderFloor;
@@ -859,11 +846,19 @@ exports.getDeletedOrders = async (req, res, next) => {
         for (let h = 0; h < prodFin.length; h++) {
           if (extras.length == 0) {
             let totalProductPrice = 0;
-
+            let totalBoxPrice = 0;
             totalProductPrice +=
               parseFloat(orderItems[j].variantPrice) *
               parseInt(orderItems[j].quantity);
+            totalBoxPrice +=
+              parseFloat(orderItems[j].boxPrice) *
+              parseInt(orderItems[j].quantity);
             const items = {
+              orderItemId: orderItems[j].id,
+              boxPrice: orderItems[j].boxPrice,
+              totalBoxPrice: totalBoxPrice.toFixed(2),
+              variant_sku: orderItems[j].Variant.sku,
+              extra_length: extras.length,
               product_id: prodFin[h].productId,
               product_quantity: orderItems[j].quantity,
               message: orderItems[j].message,
@@ -875,15 +870,39 @@ exports.getDeletedOrders = async (req, res, next) => {
             resultWithAll.push(items);
           } else {
             for (let k = 0; k < extras.length; k++) {
-              let totalProductPrice = 0;
               let totalExtraPrice = 0;
+              let totalProductPrice = 0;
+              let totalBoxPrice = 0;
+              let totalSection = 0;
+              let totalSectionNoBox = 0;
+
+              totalExtraPrice +=
+                parseFloat(extras[k].extraPrice) * parseInt(extras[k].quantity);
 
               totalProductPrice +=
                 parseFloat(orderItems[j].variantPrice) *
                 parseInt(orderItems[j].quantity);
-              totalExtraPrice +=
-                parseFloat(extras[k].extraPrice) * parseInt(extras[k].quantity);
+
+              totalBoxPrice +=
+                parseFloat(orderItems[j].boxPrice) *
+                parseInt(orderItems[j].quantity);
+
+              totalSection +=
+                parseFloat(totalBoxPrice) +
+                parseFloat(totalExtraPrice) +
+                parseFloat(totalProductPrice);
+
+              totalSectionNoBox +=
+                parseFloat(totalExtraPrice) + parseFloat(totalProductPrice);
+
               const items = {
+                orderItemId: orderItems[j].id,
+                variant_sku: orderItems[j].Variant.sku,
+                totalBoxPrice: totalBoxPrice.toFixed(2),
+                boxPrice: orderItems[j].boxPrice,
+                totalSection: totalSection,
+                totalSectionNoBox: totalSectionNoBox,
+                extra_length: extras.length,
                 product_id: prodFin[h].productId,
                 product_quantity: orderItems[j].quantity,
                 product_price: orderItems[j].variantPrice,
@@ -903,51 +922,59 @@ exports.getDeletedOrders = async (req, res, next) => {
         }
       }
 
-      const merged = resultWithAll.reduce(
-        (
-          r,
-          {
-            product_id,
-            product_quantity,
-            product_price,
-            product_name,
-            total_product_price,
-            message,
-            ...rest
-          }
-        ) => {
-          const key = `${product_id}-${product_quantity}-${product_price}-${product_name}-${total_product_price}-${message}`;
-          r[key] = r[key] || {
-            product_id,
-            product_quantity,
-            product_price,
-            product_name,
-            total_product_price,
-            message,
-            extras: [],
-          };
-          r[key]["extras"].push(rest);
-          return r;
-        },
-        {}
-      );
+      const reduced = resultWithAll.reduce((acc, val) => {
+        const {
+          extra_id,
+          extra_quantity,
+          extra_price,
+          extra_name,
+          ...otherFields
+        } = val;
 
-      const result = Object.values(merged);
-      orders[i].products = result;
+        const existing = acc.find(
+          (item) => item.orderItemId === val.orderItemId
+        );
+        if (!existing) {
+          acc.push({
+            ...otherFields,
+            extras: [
+              {
+                extra_id,
+                extra_quantity,
+                extra_price,
+                extra_name,
+              },
+            ],
+          });
+          return acc;
+        }
+
+        existing.extras.push({
+          extra_id,
+          extra_quantity,
+          extra_price,
+          extra_name,
+        });
+        return acc;
+      }, []);
+
+      orders[i].products = reduced;
     }
+
     totalPriceFinal = orders[0].totalPrice;
     cutlery = orders[0].cutlery;
     take = orders[0].take;
-    //   orderCity = orders[0].OrderDeliveryAddress;
     orderStreet = orders[0].OrderDeliveryAddress.street;
     orderHouseNumber = orders[0].OrderDeliveryAddress.houseNumber;
     orderFloor = orders[0].OrderDeliveryAddress.floor;
     orderDoorNumber = orders[0].OrderDeliveryAddress.doorNumber;
     orderPhoneNumber = orders[0].OrderDeliveryAddress.phoneNumber;
-    orderCreated = orders[0].createdAt;
-    userName = orders[0].User.fullName;
-    orderIds = orders[0].id;
-    status = orders[0].orderStatusId;
+    orderCreated = orders[0].createdAt.toLocaleString("en-GB", {
+      timeZone: "Europe/Helsinki",
+    });
+
+    userName = orders[0].OrderDeliveryAddress.userName;
+    orderIds = orders[0].encodedKey;
   }
   res.render("order/deleted-orders", {
     pageTitle: "Add Product",
@@ -965,7 +992,6 @@ exports.getDeletedOrders = async (req, res, next) => {
     take: take,
     orderIds: orderIds,
     extras: extras,
-    status: status,
   });
 };
 

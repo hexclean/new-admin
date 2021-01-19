@@ -10,7 +10,7 @@
                 <th scope="col"><%= lingua.order_list_city %></th>
                 <th scope="col"><%= lingua.order_list_total %></th>
                 <th scope="col"><%= lingua.order_list_status %></th>
-                <th scope="col"><%= lingua.order_list_operation %></th>
+               
               </tr>
             </thead>
             <tbody>
@@ -20,11 +20,7 @@
                 <td><%= orders[i].LocationName.LocationNameTranslations[0].name %></td>
                 <td><%= orders[i].totalPrice %></td>
                 <td><%= lingua.order_list_new_status %></td>
-                <td>
-                  <div>
-                  <a href="/admin/edit-order/<%= orders[i].encodedKey %>?edit=true"class="btn grid-btn mt-0 btn-sm btn-secondary"><%= lingua.order_list_detail %></a>
-                  </div>
-                </td>
+               
               
               </tr>
             </tbody>

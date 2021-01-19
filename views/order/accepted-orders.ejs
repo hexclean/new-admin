@@ -1,169 +1,243 @@
 <%- include('../includes/head.ejs') %>
 </head>
 <body class="ms-body ms-aside-left-open ms-primary-theme ms-has-quickbar">
-<%- include('../includes/navigation.ejs') %>
-
-  <main class="body-content">
-    <%- include('../includes/navigation-bar.ejs') %>
-    <div class="ms-content-wrapper">
-      <div class="ms-profile-overview no-img-var">
-         <ul class="ms-profile-navigation nav nav-tabs tabs-bordered" role="tablist">
-            <li role="presentation"><a class="add-variant" href="/admin/orders">Új rendelések</a></li>
-            <li role="presentation"><a href="#" aria-controls="tab1" class="active show" role="tab" data-toggle="tab">Elfogadott rendelések </a></li>
-            <li role="presentation"><a class="add-extra" href="/admin/deleted-orders">Törölt rendelések </a></li>
-         </ul>
-        
-      </div>
-   </div>
-   <% if (orders.length ==0) { %>
-      <h2>Order not found</h2>
-    <% } %>
-    <% for (let i =0; i < orders.length; i++) { %>
-      <p>
-      <div class="ms-content-wrapper" data-toggle="collapse" name="orders" value="#orders<%= orders[i].id %>" href="#orders<%= orders[i].id %>" aria-expanded="false" aria-controls="orders<%= orders[i].id %>">
-        <div class="table-responsive ">
-          <table class="table table-hover thead-primary ">
-            <thead class="accepted-order-list">
-              <tr>
-                <th scope="col">Rendelési szám</th>
-                <th scope="col">Név</th>
-                <th scope="col">Hova</th>
-                <th scope="col">Végösszeg</th>
-                <th scope="col">Statusz</th>
-                <th scope="col">Megtekintés</th>
-              
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <th scope="row">#<%= orders[i].id %></th>
-                <td><%= orders[i].OrderDeliveryAddress.userName %></td>
-                <td>Székelyudvarhely</td>
-                <td>145,66</td>
-                <td>Elfogadott</td>
-                <td>
-                  <div>
-                  <a href="/admin/edit-order/<%= orders[i].id %>?edit=true"class="btn grid-btn mt-0 btn-sm btn-secondary" >Megtekintés</a>
-                  </div>
-                </td>
-             
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </p>
-    <div class="collapse" name="orders"  value="#orders<%= orders[i].id %>" id="orders<%= orders[i].id %>">
-    <form
-    id="createBox_form"
-    class="ms-content-wrapper"
-    action="/admin/<% if (editing) { %>edit-order<% } else { %>edit-order<% } %>"
-    method="POST">
-    <div class="ms-content-wrapper">
-      <div class="row">
-         <div class="col-md-12">
-            <div class="ms-panel">
-               <div class="ms-panel-header header-mini">
-                  <div class="d-flex justify-content-between">
-                     <h6>Szamla</h6>
-                     <h6>#<%= orders[i].id %></h6>
-                  </div>
-               </div>
-               <div class="ms-panel-body">
-                  <!-- Invoice To -->
-                  <h4>Kliens adatai: </h4>
-                  <div class="row align-items-center border-orders-userinf">
-                     <div class="col-md-6 info-orders-top">
-                        <div class="invoice-address">
-                           <h5>Név: <%= orders[i].OrderDeliveryAddress.userName %></h5>
-                           <h5>
-                           Telefonszám: <%= orderPhoneNumber %> 
-                           <h5>
-                           <h5>
-                           Utca: <%= orders[i].OrderDeliveryAddress.street %> 
-                           <h5>
-                           <h5>
-                           Házszám: <%= orderHouseNumber %> 
-                           <h5>
-                           <h5>
-                           Emelet: <%= orderFloor %> 
-                           <h5>
-                           <h5>
-                           Ajtó: <%= orderDoorNumber %> 
-                           <h5>
-                            
-                        </div>
-                     </div>
-                     <div class="col-md-6 text-md-right">
-                        <ul class="invoice-date">
-                           <li>Invoice Date : <%= orderCreated %></li>
-                        </ul>
-                     </div>
-                
-                    
-                   
-                  </div>
-                  <!-- Invoice Table -->
-                  <% for (let j =0; j < orders[i].products.length; j++) { %>
-                  <div class="ms-invoice-table table-responsive mt-5">
-                     <table class="table table-hover text-right thead-light">
-                        <thead>
-                           <tr class="text-capitalize">
-                              <th class="text-center w-5">id</th>
-                              <th class="text-left">Product Name</th>
-                              <th>qty</th>
-                              <th>Termek ar</th>
-                              <th>total</th>
-                           </tr>
-                        </thead>
-                        <tbody>
-                           <tr>
-                              <td class="text-center"><%= orders[i].products[j].product_id %></td>
-                              <td class="text-left"><%= orders[i].products[j].product_name %></td>
-                              <td><%= orders[i].products[j].product_quantity %></td>
-                              <td><%= orders[i].products[j].product_price %></td>
-                              <td><%= orders[i].products[j].total_product_price %></td>
-                           </tr>
-                           <% for (let k = 0; k < orders[i].products[j].extras.length; ++k) { %>
-                           <tr>
-                              <td class="text-center"><%=  orders[i].products[j].extras[k].extra_id%></td>
-                              <td class="text-left"><%=  orders[i].products[j].extras[k].extra_name%></td>
-                              <td><%=  orders[i].products[j].extras[k].extra_quantity%></td>
-                              <td>$<%=  orders[i].products[j].extras[k].extra_price%></td>
-                              <td><%=  orders[i].products[j].extras[k].total_extra_price%></td>
-                           </tr>
-                           <% } %>        
-                        </tbody>
-                        <tfoot>
-                           <tr>
-                              <td colspan="4">Total Cost:</td>
-                              <td>$<%= orders[i].products[j].total_cost_produce_extra %></td>
-                           </tr>
-                        </tfoot>
-                     </table>
-                  </div>
-                 
-                  <% } %>
-                  <input
-                  type="hidden"
-                  value="<%= orders[i].encodedKey %>"
-                  name="orderId"
-                  />
-               
-               
-               </div>
-            </div>
+   <%- include('../includes/navigation.ejs') %>
+   <main class="body-content">
+      <%- include('../includes/navigation-bar.ejs') %>
+      <div class="ms-content-wrapper">
+         <div class="ms-profile-overview no-img-var">
+            <ul class="ms-profile-navigation nav nav-tabs tabs-bordered" role="tablist">
+               <li role="presentation"><a class="add-variant" href="/admin/orders">Új rendelések</a></li>
+               <li role="presentation"><a href="#" aria-controls="tab1" class="active show" role="tab" data-toggle="tab">Elfogadott rendelések </a></li>
+               <li role="presentation"><a class="add-extra" href="/admin/deleted-orders">Törölt rendelések </a></li>
+            </ul>
          </div>
       </div>
+      <div class="col-6">
+         <input type="text" name="searchOrder" id="searchOrder" placeholder="<%= lingua.search_allergen %>" class="category-search form-control" />
+         <hr>
       </div>
-     </form>
-     <!-- End -->
-     </div>
-    
-    <% } %>
+      <script>
+         $(document).ready(function() {
+            $('#searchOrder').keyup(function() {
+               const order = $('#searchOrder').val();
+               console.log(order)
+               $.get("get-filtered-acc-order/" + order).done(function(data) {
+                  $("#searchedOrder").html(data);
+               });
+            });
+         })
+      </script>
+      <div id="searchedOrder">
+         <% if (orders.length ==0) { %>
+         <h2>Order not found</h2>
+         <% } %>
+         <% for (let i =0; i < orders.length; i++) { %>
+         <p>
+         <div class="ms-content-wrapper" data-toggle="collapse" name="orders" value="#orders<%= orders[i].encodedKey %>" href="#orders<%= orders[i].encodedKey %>" aria-expanded="false" aria-controls="orders<%= orders[i].encodedKey %>">
+            <div class="table-responsive">
+               <table  class="table table-hover thead-primary">
+                  <thead class="accepted-order-list">
+                     <tr>
+                        <th scope="col">Id</th>
+                        <th scope="col"><%= lingua.order_list_name %></th>
+                        <th scope="col"><%= lingua.order_list_city %></th>
+                        <th scope="col"><%= lingua.order_list_total %></th>
+                        <th scope="col"><%= lingua.order_list_status %></th>
+                       
+                     </tr>
+                  </thead>
+                  <tbody>
+                     <tr>
+                        <th scope="row">#<%= orders[i].encodedKey %></th>
+                        <td><%= orders[i].OrderDeliveryAddress.userName %></td>
+                        <td><%= orders[i].LocationName.LocationNameTranslations[0].name %></td>
+                        <td><%= orders[i].totalPrice %></td>
+                        <td><%= lingua.order_list_new_status %></td>
+                        
+                     </tr>
+                  </tbody>
+               </table>
+            </div>
+         </div>
+         </p>
+         <div class="collapse" name="orders"  value="#orders<%= orders[i].encodedKey %>" id="orders<%= orders[i].encodedKey %>">
+            <form
+               id="createBox_form"
+               class="ms-content-wrapper"
+               action="/admin/<% if (editing) { %>edit-order<% } else { %>edit-order<% } %>"
+               method="POST">
+               <div class="ms-content-wrapper">
+                  <div class="row">
+                     <div class="col-md-12">
+                        <div class="ms-panel">
+                           <div class="ms-panel-header header-mini">
+                              <div class="d-flex justify-content-between">
+                                 <h6>#<%= orders[i].encodedKey %></h6>
+                              </div>
+                           </div>
+                           <div class="ms-panel-body">
+                              <!-- Invoice To -->
+                              <h4 style="border-bottom: 1px solid green;">Kliens adatai</h4>
+                              <div class="row align-items-center border-orders-userinf">
+                                 <div class="col-md-6 info-orders-top" style="padding-top: 15px;">
+                                    <div class="invoice-address">
+                                       <h5><%= lingua.order_detail_name %>: <b><%= orders[i].OrderDeliveryAddress.userName %></b></h5>
+                                       <h5>
+                                       <%= lingua.order_detail_phone %>:  <b><%= orders[i].OrderDeliveryAddress.phoneNumber %></b> 
+                                       <h5>
+                                       <h5>
+                                       <%= lingua.order_detail_street %>:  <b><%= orders[i].OrderDeliveryAddress.street %></b> 
+                                       <h5>
+                                       <h5>
+                                       <%= lingua.order_detail_house_number %>:  <b><%= orders[i].OrderDeliveryAddress.houseNumber %></b> 
+                                       <h5>
+                                       <h5>
+                                       <%= lingua.order_detail_floor %>:  <b><%= orders[i].OrderDeliveryAddress.floor %></b> 
+                                       <h5>
+                                       <h5>
+                                       <%= lingua.order_detail_door_number %>: <b><%= orders[i].OrderDeliveryAddress.doorNumber %></b> 
+                                       <h5>
+                                       <h5>
+                                       <%= lingua.order_detail_created %>: <b><%= orders[i].createdAt.toLocaleString("en-GB", {
+                                          timeZone: "Europe/Helsinki"
+                                          }); %></b>
+                                       <h5>
+                                    </div>
+                                 </div>
+                                 <div class="col-md-6 info-orders-top" style="border-style: double;padding-top: 10px; padding-left: 10px;border-color: coral; ">
+                                    <div class="invoice-address">
+                                       <h5><u><%=lingua.product_comment_courier %></u>: <% if(orders[i].messageCourier == null){ %>
+                                          -
+                                          <% } else{ %>  
+                                          <%= orders[i].messageCourier %> 
+                                          <% } %>
+                                       </h5>
+                                       <h5><u>Muanyag eszkoz</u>: <% if(orders[i].cutlery == 1){ %>
+                                          Igen
+                                          <% } else{ %>  
+                                          Nem
+                                          <% } %>
+                                       </h5>
+                                       <h5><u>Elvitelre</u>: <% if(orders[i].take == 1){ %>
+                                          Igen
+                                          <% } else{ %>  
+                                          Nem
+                                          <% } %>
+                                       </h5>
+                                    </div>
+                                 </div>
+                              </div>
+                              <!-- Invoice Table -->
+                              <% for (let j =0; j < orders[i].products.length; j++) { %>
+                              <div class="ms-invoice-table table-responsive mt-5" style="border-style: double;">
+                                 <table class="table table-hover text-right thead-light">
+                                    <thead>
+                                       <tr class="text-capitalize" style="font-size: 16px;">
+                                          <th class="text-center w-5">Id</th>
+                                          <th class="text-left"><%= lingua.order_detail_product_name %></th>
+                                          <th>kategoria</th>
+                                          <th><%= lingua.order_detail_quantity %></th>
+                                          <th><%= lingua.order_detail_product_price %></th>
+                                          <th><%= lingua.order_detail_total %></th>
+                                       </tr>
+                                    </thead>
+                                    <tbody style="font-size: 16px;">
+                                       <tr>
+                                          <td class="text-center"><%= orders[i].products[j].product_id %></td>
+                                          <td class="text-left"><%= orders[i].products[j].product_name %></td>
+                                          <td ><%= orders[i].products[j].variant_sku %></td>
+                                          <td><%= orders[i].products[j].product_quantity %></td>
+                                          <td><%= orders[i].products[j].product_price %></td>
+                                          <td><%= orders[i].products[j].total_product_price %></td>
+                                       </tr>
+                                       <% for (let k = 0; k < orders[i].products[j].extras.length; ++k) { %>
+                                       <% if(orders[i].products[j].extra_length != 0){ %>
+                                       <tr>
+                                          <td class="text-center"><%=  orders[i].products[j].extras[k].extra_id %></td>
+                                          <td class="text-left"><%=  orders[i].products[j].extras[k].extra_name %> (extra)</td>
+                                          <td></td>
+                                          <td><%= orders[i].products[j].extras[k].extra_quantity %></td>
+                                          <td><%= orders[i].products[j].extras[k].extra_price %></td>
+                                          <td><%= (orders[i].products[j].extras[k].extra_quantity *  orders[i].products[j].extras[k].extra_price).toFixed(2) %></td>
+                                       </tr>
+                                       <% } %>
+                                       <% } %>
+                                       
+                                       <% if(orders[i].products[j].boxPrice !=null){ %>
+                                          <tr style="border-style: dotted;">
+                                             <td class="text-center"></td>
+                                             <td class="text-left">Csomagolas</td>
+                                             <td></td>
+                                             <td><%= orders[i].products[j].product_quantity %></td>
+                                             <td><%= orders[i].products[j].boxPrice %></td>
+                                             <td><%= orders[i].products[j].totalBoxPrice %></td>
+                                          </tr>
+                                          <% } %>
+                                     
+                                    </tbody>
+                                    <tfoot>
+                                       <tr style="font-size: 16px;" >
+                                          <td></td>
+                                          <td colspan="4"><%= lingua.order_detail_total_final %>:</td>
+                                          <td><%= orders[i].products[j].total_cost_produce_extra %><u>
+                                             
+                                             <% if(orders[i].products[j].boxPrice !=null && orders[i].products[j].extra_length == 0){ %>
+                                                <%= (parseInt(orders[i].products[j].product_quantity) * parseFloat(orders[i].products[j].boxPrice))
+                                                +
+                                                (parseInt(orders[i].products[j].product_quantity) * parseFloat(orders[i].products[j].product_price)) %>
+                                              
+                                             <% } %>
 
-  </main>
- 
-<%- include('../includes/end.ejs')
-  %>
+                                             <% if(orders[i].products[j].boxPrice == null && orders[i].products[j].extra_length == 0){ %>
+                                              
+                                                <%= orders[i].products[j].total_product_price %>
+
+                                             <% } %>
+
+
+                                             <% if(orders[i].products[j].boxPrice == null && orders[i].products[j].extra_length != 0){ %>
+                                              
+                                                <%= orders[i].products[j].total_product_price +  orders[i].products[j].total_extra_price %>
+                                                
+                                             <% } %>
+
+                                             <% if(orders[i].products[j].boxPrice != null && orders[i].products[j].extra_length != 0){ %>
+                                              
+                                                <%= orders[i].products[j].totalSection  %>
+                                                
+                                             <% } %>
+                                          
+                                          </u>
+
+                                       </td>
+                                       </tr>
+                                    </tfoot>
+                                 </table>
+                                 <p style=" font-size: 17px; margin-left: 20px;" class="text-left"><u><%=lingua.product_comment %></u>: <% if(orders[i].products[j].message.length !=0){ %>
+                                    <%= orders[i].products[j].message %>
+                                    <% } else{ %>  
+                                    -
+                                    <% } %>
+                                 </p>
+                              </div>
+                              <% } %>
+                              <input
+                                 type="hidden"
+                                 value="<%= orders[i].encodedKey %>"
+                                 name="orderId"
+                                 />
+                    
+                            
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </form>
+
+         </div>
+         <% } %>
+      </div>
+   </main>
 </body>
