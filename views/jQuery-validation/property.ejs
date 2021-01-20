@@ -5,14 +5,14 @@
     $("#enName_error_message").hide();
     $("#propValRo_error_message").hide();
     $("#propValHu_error_message").hide();
-    // $("#propValEn_error_message").hide();
+    $("#propValEn_error_message").hide();
 
     var error_roName = false;
     var error_huName = false;
     var error_enName = false;
     var error_propValRo = false;
     var error_propValHu = false;
-    // var error_propValEn = false;
+    var error_propValEn = false;
 
     $("#roName").focusout(function () {
       check_roName();
@@ -34,9 +34,9 @@
       propValHu();
     });
 
-    // $(".propValEn").focusout(function () {
-    //   propValEn();
-    // });
+    $(".propValEn").focusout(function () {
+      propValEn();
+    });
 
     function propValRo() {
       var propValRo = $(".propValRo");
@@ -58,8 +58,8 @@
 
     function propValHu() {
       var propValHu = $(".propValHu");
-      for (let i = 0; i < propValRo.length; i++) {
-        var propValHuItem = $(propValRo[i]);
+      for (let i = 0; i < propValHu.length; i++) {
+        var propValHuItem = $(propValHu[i]);
         var counter = propValHuItem.closest(".cnt").find("#counter");
         var counterIndex = $(counter[0]).val();
         if (propValHuItem.val().length < 1 || propValHuItem.val().length > 50) {
@@ -70,6 +70,24 @@
           error_propValRo = true;
         } else {
           $("#propValHu_error_message" + counterIndex).hide();
+        }
+      }
+    }
+
+    function propValEn() {
+      var propValEn = $(".propValEn");
+      for (let i = 0; i < propValEn.length; i++) {
+        var propValEnItem = $(propValEn[i]);
+        var counter = propValEnItem.closest(".cnt").find("#counter");
+        var counterIndex = $(counter[0]).val();
+        if (propValEnItem.val().length < 1 || propValEnItem.val().length > 50) {
+          $("#propValEn_error_message" + counterIndex).html(
+            "<%= lingua.box_ro_name_validation %>"
+          );
+          $("#propValEn_error_message" + counterIndex).show();
+          error_propValRo = true;
+        } else {
+          $("#propValEn_error_message" + counterIndex).hide();
         }
       }
     }
@@ -116,23 +134,23 @@
       error_enName = false;
       error_propValRo = false;
       error_propValHu = false;
-      // error_propValEn = false;
+      error_propValEn = false;
 
       check_roName();
       check_huName();
       check_enName();
       propValRo();
       propValHu();
-      // propValEn();
+      propValEn();
 
       if (
         error_roName == false &&
         error_huName == false &&
         error_enName == false &&
         error_propValRo == false &&
-        error_propValHu == false
-        // &&
-        // error_propValEn == false &&
+        error_propValHu == false &&
+        error_propValEn == false
+
         // error_counter == false
       ) {
         $("#createProperty").prop("disabled", true);

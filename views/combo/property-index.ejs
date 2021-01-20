@@ -23,8 +23,8 @@
       <div class="ms-content-wrapper">
          <div class="ms-profile-overview no-img-var">
             <ul class="ms-profile-navigation nav nav-tabs tabs-bordered" role="tablist">
-               <li role="presentation"><a href="#" aria-controls="tab1" class="active show" role="tab" data-toggle="tab"> Összes Prop </a></li>
-               <li role="presentation"><a class="add-variant" href="/admin/add-property">Add Proeprty </a></li>
+               <li role="presentation"><a href="#" aria-controls="tab1" class="active show" role="tab" data-toggle="tab"><%= lingua.all_property %></a></li>
+               <li role="presentation"><a class="add-variant" href="/admin/add-property"><%= lingua.create_property %></a></li>
             </ul>
           
          </div>
@@ -36,7 +36,7 @@
             <div class="col-12">
                <div class="ms-panel">
                   <div class="ms-panel-header">
-                     <h6> Extra List</h6>
+                     <h6><%= lingua.properties %></h6>
                   </div>
                   <div class="ms-panel-body">
                      <div class="table-responsive">
@@ -44,14 +44,14 @@
                            <% if (property.length > 0) { %>
                            <thead>
                               <tr>
-                                 <th scope="col">ID</th>
-                                 <th scope="col"> name </th>
-                                 <th scope="col">STATUS</th>
-                                 <th scope="col" >EDIT</th>
+                                 <th scope="col">Id</th>
+                                 <th scope="col"><%= lingua.extra_list_name %></th>
+                                 <th scope="col"><%= lingua.extra_list_status %></th>
+                                 <th scope="col"><%= lingua.extra_list_operation %></th>
                               </tr>
                            </thead>
                            <div class="col-6">
-                              <input type="text" name="searchProperty" id="searchProperty" placeholder="Extra keresés" class="form-control extra-search" />
+                              <input type="text" name="searchProperty" id="searchProperty" placeholder="<%= lingua.search_property %>" class="form-control extra-search" />
                            </div>
                            <hr>
                       

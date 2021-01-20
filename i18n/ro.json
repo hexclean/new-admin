@@ -217,5 +217,12 @@
 
   "ro": "Română",
   "hu": "Maghiară",
-  "en": "Engleză"
+  "en": "Engleză",
+  "all_property": "Toate caracteristicile",
+  "create_property": "Creați o proprietate",
+  "search_property": "Căutare proprietate",
+
+  "property_ro_name": "Numele românesc a proprietatei",
+  "property_hu_name": "Numele maghiar a proprietatei",
+  "property_en_name": "Numele engleză a proprietatei"
 }

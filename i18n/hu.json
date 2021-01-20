@@ -213,5 +213,12 @@
 
   "ro": "Román",
   "hu": "Magyar",
-  "en": "Angol"
+  "en": "Angol",
+  "all_property": "Összes tulajdonság",
+  "create_property": "Tulajdonság létrehozása",
+  "search_property": "Tulajdonság keresés",
+
+  "property_ro_name": "A tulajdonság román neve",
+  "property_hu_name": "A tulajdonság magyar neve",
+  "property_en_name": "A tulajdonság angol neve"
 }

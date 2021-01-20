@@ -211,5 +211,11 @@
 
   "ro": "Romanian",
   "hu": "Hungarian",
-  "en": "English"
+  "en": "English",
+  "all_property": "All properties",
+  "create_property": "Create a property",
+  "search_property": "Search property",
+  "property_ro_name": "The Romanian name of the property",
+  "property_hu_name": "The Hungarian name of the property",
+  "property_en_name": "The English name of the property"
 }

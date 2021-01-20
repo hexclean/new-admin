@@ -88,14 +88,14 @@
             height: 581px;">
                <div class="ms-panel ms-panel-fh">
                   <div class="ms-panel-header">
-                     <h6>Add Product Form</h6>
+                     <h6><%= lingua.create_property %></h6>
                   </div>
                   <div class="ms-panel-body">
                      <p class="ms-directions"><code><%= lingua.extra_allergen_subtitle %></code>
                      </p>
                      <div class="form-row">
                         <div class="col-md-12 mb-3">
-                           <label for="roName"><%= lingua.box_name_ro %></label>
+                           <label for="roName"><%= lingua.property_ro_name %></label>
                            <div class="input-group">
                               <input
                                  class="form-control"
@@ -108,7 +108,7 @@
                            <span class="error_form" id="roName_error_message"></span>
                         </div>
                         <div class="col-md-12 mb-3">
-                           <label for="huName"><%= lingua.box_name_hu %></label>
+                           <label for="huName"><%= lingua.property_hu_name %></label>
                            <div class="input-group">
                               <input
                                  class="form-control"
@@ -121,7 +121,7 @@
                            <span class="error_form" id="huName_error_message"></span>
                         </div>
                         <div class="col-md-12 mb-3">
-                           <label for="enName"><%= lingua.box_name_en %></label>
+                           <label for="enName"><%= lingua.property_en_name %></label>
                            <div class="input-group">
                               <input
                                  class="form-control"
@@ -134,7 +134,7 @@
                            <span class="error_form" id="enName_error_message"></span>
                         </div>
                         <div class="col-md-12 mb-3">
-                           <button type="submit" name="createProperty" id="createProperty" class="btn btn-success has-icon" ><% if (editing) { %><%=lingua.button_editing %><% } else { %><%= lingua.create_category %><% } %></button>
+                           <button type="submit" name="createProperty" id="createProperty" class="btn btn-success has-icon" ><% if (editing) { %><%=lingua.button_edit %><% } else { %><%= lingua.create_property %><% } %></button>
                         </div>
                      </div>
                   </div>
