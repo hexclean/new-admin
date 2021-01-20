@@ -1123,11 +1123,11 @@ exports.postEditOrder = async (req, res, next) => {
         </html>`,
         // "h:X-Mailgun-Variables": { test: "test" },
       };
-      await mg.messages().send(data, function (error, body) {
-        if (error) {
-          console.log(error);
-        }
-      });
+      // await mg.messages().send(data, function (error, body) {
+      //   if (error) {
+      //     console.log(error);
+      //   }
+      // });
       // sendSms();
       await Order.update(
         { orderStatusId: 2 },

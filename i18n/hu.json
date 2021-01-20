@@ -220,5 +220,6 @@
 
   "property_ro_name": "A tulajdonság román neve",
   "property_hu_name": "A tulajdonság magyar neve",
-  "property_en_name": "A tulajdonság angol neve"
+  "property_en_name": "A tulajdonság angol neve",
+  "delivery_price": "Szállítási költség"
 }

@@ -52,7 +52,7 @@
                         <th scope="row">#<%= orders[i].encodedKey %></th>
                         <td><%= orders[i].OrderDeliveryAddress.userName %></td>
                         <td><%= orders[i].LocationName.LocationNameTranslations[0].name %></td>
-                        <td><%= orders[i].totalPrice %></td>
+                        <td><%= orders[i].totalPrice %> <%= lingua.currency %></td>
                         <td><%= lingua.order_list_new_status %></td>
                         
                      </tr>
@@ -103,11 +103,17 @@
                                           timeZone: "Europe/Helsinki"
                                           }); %></b>
                                        <h5>
+                                          <h5><u><%= lingua.delivery_price %></u>: <% if(orders[i].deliveryPrice == 0){ %>
+                                             -
+                                              <% } else{ %>  
+                                                 <%= orders[i].deliveryPrice %> <%= lingua.currency %>
+                                              <% } %>
+                                           </h5>
                                     </div>
                                  </div>
                                  <div class="col-md-6 info-orders-top" style="border-style: double;padding-top: 10px; padding-left: 10px;border-color: coral; ">
                                     <div class="invoice-address">
-                                       <h5><u><%=lingua.product_comment_courier %></u>: <% if(orders[i].messageCourier == null){ %>
+                                       <h5><u><%=lingua.product_comment_courier %></u>: <% if(orders[i].messageCourier.length == 0){ %>
                                           -
                                           <% } else{ %>  
                                           <%= orders[i].messageCourier %> 

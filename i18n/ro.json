@@ -224,5 +224,6 @@
 
   "property_ro_name": "Numele românesc a proprietatei",
   "property_hu_name": "Numele maghiar a proprietatei",
-  "property_en_name": "Numele engleză a proprietatei"
+  "property_en_name": "Numele engleză a proprietatei",
+  "delivery_price": "Cost de livrare"
 }
