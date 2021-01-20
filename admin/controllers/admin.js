@@ -473,19 +473,16 @@ exports.postEditProduct = async (req, res, next) => {
           }
           console.log(req.body);
           if (req.body.isDailyMenu == 1) {
-            if (!image) {
-              Product.update(
-                {
-                  productImagePath: image.path,
-                  active: 1,
-                  isDailyMenu: 1,
-                  soldOut: 0,
-                  startTime: req.body.startDate,
-                  endTime: req.body.endDate,
-                },
-                { where: { id: prodId } }
-              );
-            }
+            Product.update(
+              {
+                active: 1,
+                isDailyMenu: 1,
+                soldOut: 0,
+                startTime: req.body.startDate,
+                endTime: req.body.endDate,
+              },
+              { where: { id: prodId } }
+            );
           } else {
             if (image) {
               fileHelper.deleteFile(product.productImagePath);
