@@ -102,9 +102,6 @@ exports.postEditOpeningHours = async (req, res, next) => {
   const sundayOpen = req.body.sundayOpen;
   const sundayClose = req.body.sundayClose;
 
-  // if (extra.restaurantId != req.admin.id) {
-  //   return res.redirect("/");
-  // }
   async function updateOpeningHours() {
     await OpeningHours.update(
       {
@@ -217,6 +214,8 @@ exports.postEditProfile = async (req, res, next) => {
   const roShortCompanyDesc = req.body.roShortCompanyDesc;
   const huShortCompanyDesc = req.body.huShortCompanyDesc;
   const enShortCompanyDesc = req.body.enShortCompanyDesc;
+  const city = req.body.city;
+  const village = req.body.village;
 
   Admin.findAll({
     include: [
@@ -227,14 +226,12 @@ exports.postEditProfile = async (req, res, next) => {
     ],
   })
     .then((admin) => {
-      // if (extra.restaurantId != req.admin.id) {
-      //   return res.redirect("/");
-      // }
       async function msg() {
         await Admin.update(
           {
             phoneNumber: phoneNumber,
-
+            deliveryPriceVillage: village,
+            deliveryPriceCity: city,
             fullName: fullName,
           },
           { where: { id: req.admin.id } }
