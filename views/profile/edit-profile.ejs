@@ -13,7 +13,7 @@
     <div class="ms-content-wrapper editprofiledown">
       <div class="ms-profile-overview">
         <div class="ms-profile-cover">
-       <img class="ms-profile-img" src="/<%= admin[0].profileImage %>" alt="<%= admin[0].fullName %>">
+       <img class="ms-profile-img" src="/<%= admin.profileImage %>" alt="<%= admin[0].fullName %>">
           
           <div class="ms-profile-user-info">
             <h3 class="ms-profile-username text-white"><%= admin[0].fullName %></h3>           
@@ -157,40 +157,43 @@
              
                 <div class="form-group">
                   <label for="roShortCompanyDesc"><%= lingua.restaurant_roDescription %></label>
-                  <input
+                  <textarea
+                  rows="5" cols="80"
                         class="form-control"
                         type="text"
                         autocomplete="off"
                         name="roShortCompanyDesc"
                         id="roShortCompanyDesc"
-                        value="<% if (editing) { %><%= admin[0].RestaurantInfos[0].shortCompanyDesc %><% } %>"
-                      />
+                        value="<% if (editing) { %><%= admin[0].RestaurantInfos[0].shortCompanyDesc %><% } %>">
+                </textarea>
                 </div>
                 <span class="error_form" id="roShortCompanyDesc_error_message"></span>
 
                 <div class="form-group">
                   <label for="huShortCompanyDesc"><%= lingua.restaurant_huDescription %></label>
-                  <input
+                  <textarea
+                  rows="5" cols="80"
                         class="form-control"
                         type="text"
                         autocomplete="off"
                         name="huShortCompanyDesc"
                         id="huShortCompanyDesc"
-                        value="<% if (editing) { %><%= admin[0].RestaurantInfos[1].shortCompanyDesc %><% } %>"
-                      />
+                        value="<% if (editing) { %><%= admin[0].RestaurantInfos[1].shortCompanyDesc %><% } %>">
+                      </textarea>
                 </div>
                 <span class="error_form" id="huShortCompanyDesc_error_message"></span>
 
                 <div class="form-group">
                   <label for="enShortCompanyDesc"><%= lingua.restaurant_enDescription %></label>
-                  <input
+                  <textarea
+                  rows="5" cols="80"
                   class="form-control"
                   type="text"
                   name="enShortCompanyDesc"
                   id="enShortCompanyDesc"
                   autocomplete="off"
-                  value="<% if (editing) { %><%= admin[0].RestaurantInfos[2].shortCompanyDesc %><% } %>"
-                />
+                  value="<% if (editing) { %><%= admin[0].RestaurantInfos[2].shortCompanyDesc %><% } %>">
+                </textarea>
                 </div>
                 <span class="error_form" id="enShortCompanyDesc_error_message"></span>
 
@@ -219,6 +222,8 @@
                         value="<% if (editing) { %><%= admin[0].deliveryPriceCity %><% } %>"
                       />
                 </div>
+                <span class="info-box-price" id="price_error_message"><%= lingua.price_info %></span>
+
                 <span class="error_form" id="city_error_message"></span>
 
                 <div class="form-group">
@@ -232,6 +237,8 @@
                         value="<% if (editing) { %><%= admin[0].deliveryPriceVillage %><% } %>"
                       />
                 </div>
+                <span class="info-box-price" id="price_error_message"><%= lingua.price_info %></span>
+
                 <span class="error_form" id="village_error_message"></span>
 
                

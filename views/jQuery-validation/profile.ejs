@@ -7,6 +7,8 @@
     $("#roShortCompanyDesc_error_message").hide();
     $("#huShortCompanyDesc_error_message").hide();
     $("#enShortCompanyDesc_error_message").hide();
+    $("#city_error_message").hide();
+    $("#village_error_message").hide();
 
     var error_name = false;
     var error_roAddress = false;
@@ -15,6 +17,8 @@
     var error_roShortCompanyDesc = false;
     var error_huShortCompanyDesc = false;
     var error_enShortCompanyDesc = false;
+    var error_city = false;
+    var error_village = false;
 
     $("#fullName").focusout(function () {
       check_fullName();
@@ -42,11 +46,17 @@
     $("#enShortCompanyDesc").focusout(function () {
       check_enShortCompanyDesc();
     });
+    $("#city").focusout(function () {
+      check_city();
+    });
+    $("#village").focusout(function () {
+      check_village();
+    });
 
     function check_fullName() {
       var fullName = $("#fullName").val().length;
       if (fullName < 1 || fullName > 50) {
-        $("#name_error_message").html("<%= lingua.box_ro_name_validation %>");
+        $("#name_error_message").html("<%= lingua.extra_en_name_validation %>");
         $("#name_error_message").show();
         error_name = true;
       } else {
@@ -59,7 +69,7 @@
 
       if (roAdress < 1 || roAdress > 50) {
         $("#roAddress_error_message").html(
-          "<%= lingua.box_ro_name_validation %>"
+          "<%= lingua.extra_en_name_validation %>"
         );
         $("#roAddress_error_message").show();
         error_roAddress = true;
@@ -73,7 +83,7 @@
 
       if (huAdress < 1 || huAdress > 50) {
         $("#huAddress_error_message").html(
-          "<%= lingua.box_ro_name_validation %>"
+          "<%= lingua.extra_en_name_validation %>"
         );
         $("#huAddress_error_message").show();
         error_huAddress = true;
@@ -87,7 +97,7 @@
 
       if (enAdress < 1 || enAdress > 50) {
         $("#enAddress_error_message").html(
-          "<%= lingua.box_ro_name_validation %>"
+          "<%= lingua.extra_en_name_validation %>"
         );
         $("#enAddress_error_message").show();
         error_enAddress = true;
@@ -101,7 +111,7 @@
 
       if (roShortCompanyDesc < 1 || roShortCompanyDesc > 50) {
         $("#roShortCompanyDesc_error_message").html(
-          "<%= lingua.box_ro_name_validation %>"
+          "<%= lingua.extra_en_name_validation %>"
         );
         $("#roShortCompanyDesc_error_message").show();
         error_roShortCompanyDesc = true;
@@ -138,6 +148,29 @@
       }
     }
 
+    function check_city() {
+      var city = $("#city").val().length;
+      if (city < 1 || city > 50) {
+        $("#city_error_message").html("<%= lingua.extra_en_name_validation %>");
+        $("#city_error_message").show();
+        error_city = true;
+      } else {
+        $("#city_error_message").hide();
+      }
+    }
+    function check_village() {
+      var village = $("#village").val().length;
+      if (village < 1 || village > 50) {
+        $("#village_error_message").html(
+          "<%= lingua.extra_en_name_validation %>"
+        );
+        $("#village_error_message").show();
+        error_village = true;
+      } else {
+        $("#village_error_message").hide();
+      }
+    }
+
     $("#update_profile").submit(function () {
       error_name = false;
       error_roAddress = false;
@@ -146,6 +179,8 @@
       error_roShortCompanyDesc = false;
       error_huShortCompanyDesc = false;
       error_enShortCompanyDesc = false;
+      error_city = false;
+      error_village = false;
       check_fullName();
       check_roAdress();
       check_huAdress();
@@ -153,6 +188,8 @@
       check_roShortCompanyDesc();
       check_huShortCompanyDesc();
       check_enShortCompanyDesc();
+      check_city();
+      check_village();
       if (
         error_name == false &&
         error_roAddress == false &&
@@ -160,7 +197,9 @@
         error_enAddress == false &&
         error_roShortCompanyDesc == false &&
         error_huShortCompanyDesc == false &&
-        error_enShortCompanyDesc == false
+        error_enShortCompanyDesc == false &&
+        error_village == false &&
+        error_city == false
       ) {
         $("#profileButton").prop("disabled", true);
 
@@ -176,3 +215,26 @@
     border-color: red;
   }
 </style>
+<script>
+  $(document).ready(function () {
+    const regex = /[^\d.]|\.(?=.*\.)/g;
+    const subst = ``;
+    $("#village").keyup(function () {
+      const str = this.value;
+      const result = str.replace(regex, subst);
+      this.value = result;
+    });
+  });
+</script>
+
+<script>
+  $(document).ready(function () {
+    const regex = /[^\d.]|\.(?=.*\.)/g;
+    const subst = ``;
+    $("#city").keyup(function () {
+      const str = this.value;
+      const result = str.replace(regex, subst);
+      this.value = result;
+    });
+  });
+</script>
