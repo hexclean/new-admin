@@ -471,9 +471,9 @@ exports.postEditProduct = async (req, res, next) => {
           if (product.restaurantId.toString() !== req.admin.id.toString()) {
             return res.redirect("/");
           }
+          console.log(req.body);
           if (req.body.isDailyMenu == 1) {
-            if (image) {
-              fileHelper.deleteFile(product.productImagePath);
+            if (!image) {
               Product.update(
                 {
                   productImagePath: image.path,
