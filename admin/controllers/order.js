@@ -146,9 +146,10 @@ exports.getOrders = async (req, res, next) => {
               let totalBoxPrice = 0;
               let totalSection = 0;
               let totalSectionNoBox = 0;
-
+              let extraPlusProduct = 0;
               totalExtraPrice +=
                 parseFloat(extras[k].extraPrice) * parseInt(extras[k].quantity);
+              // console.log("totalExtraPrice");
 
               totalProductPrice +=
                 parseFloat(orderItems[j].variantPrice) *
@@ -163,7 +164,7 @@ exports.getOrders = async (req, res, next) => {
                 parseFloat(totalExtraPrice) +
                 parseFloat(totalProductPrice);
 
-              console.log("totalSection", totalSection);
+              // console.log("totalSection", totalSection);
 
               totalSectionNoBox +=
                 parseFloat(totalExtraPrice) + parseFloat(totalProductPrice);
@@ -232,6 +233,8 @@ exports.getOrders = async (req, res, next) => {
       }, []);
 
       orders[i].products = reduced;
+      // console.log(reduced[0].extras);
+      console.log(reduced);
     }
 
     totalPriceFinal = orders[0].totalPrice;
