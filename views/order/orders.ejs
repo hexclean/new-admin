@@ -196,25 +196,26 @@
                                                 <%= (parseInt(orders[i].products[j].product_quantity) * parseFloat(orders[i].products[j].boxPrice))
                                                 +
                                                 (parseInt(orders[i].products[j].product_quantity) * parseFloat(orders[i].products[j].product_price)) %>
-                                              
+                                              a1
                                              <% } %>
 
                                              <% if(orders[i].products[j].boxPrice == null && orders[i].products[j].extra_length == 0){ %>
                                               
                                                 <%= orders[i].products[j].total_product_price %>
-
+                                                a2
                                              <% } %>
 
 
                                              <% if(orders[i].products[j].boxPrice == null && orders[i].products[j].extra_length != 0){ %>
                                               
                                                 <%= orders[i].products[j].total_product_price +  orders[i].products[j].total_extra_price %>
-                                                
+                                                a3
                                              <% } %>
 
                                              <% if(orders[i].products[j].boxPrice != null && orders[i].products[j].extra_length != 0){ %>
                                               
                                                 <%= orders[i].products[j].totalSection  %>
+                                                a4
                                                 
                                              <% } %>
                                           

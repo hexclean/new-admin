@@ -163,6 +163,8 @@ exports.getOrders = async (req, res, next) => {
                 parseFloat(totalExtraPrice) +
                 parseFloat(totalProductPrice);
 
+              console.log("totalSection", totalSection);
+
               totalSectionNoBox +=
                 parseFloat(totalExtraPrice) + parseFloat(totalProductPrice);
 
