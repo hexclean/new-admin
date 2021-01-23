@@ -170,7 +170,7 @@
                                        <% } %>
                                        <% } %>
                                        
-                                       <% if(orders[i].products[j].boxPrice !=null){ %>
+                                       <% if(orders[i].products[j].boxPrice !=0){ %>
                                           <tr style="border-style: dotted;">
                                              <td class="text-center"></td>
                                              <td class="text-left"><%= lingua.box %></td>
@@ -182,43 +182,7 @@
                                           <% } %>
                                      
                                     </tbody>
-                                    <tfoot>
-                                       <tr style="font-size: 16px;" >
-                                          <td></td>
-                                          <td colspan="4"><%= lingua.order_detail_total_final %>:</td>
-                                          <td><%= orders[i].products[j].total_cost_produce_extra %><u>
-                                             
-                                             <% if(orders[i].products[j].boxPrice !=null && orders[i].products[j].extra_length == 0){ %>
-                                                <%= (parseInt(orders[i].products[j].product_quantity) * parseFloat(orders[i].products[j].boxPrice))
-                                                +
-                                                (parseInt(orders[i].products[j].product_quantity) * parseFloat(orders[i].products[j].product_price)) %>
-                                              
-                                             <% } %>
-
-                                             <% if(orders[i].products[j].boxPrice == null && orders[i].products[j].extra_length == 0){ %>
-                                              
-                                                <%= orders[i].products[j].total_product_price %>
-
-                                             <% } %>
-
-
-                                             <% if(orders[i].products[j].boxPrice == null && orders[i].products[j].extra_length != 0){ %>
-                                              
-                                                <%= orders[i].products[j].total_product_price +  orders[i].products[j].total_extra_price %>
-                                                
-                                             <% } %>
-
-                                             <% if(orders[i].products[j].boxPrice != null && orders[i].products[j].extra_length != 0){ %>
-                                              
-                                                <%= orders[i].products[j].totalSection  %>
-                                                
-                                             <% } %>
-                                          
-                                          </u>
-
-                                       </td>
-                                       </tr>
-                                    </tfoot>
+                                   
                                  </table>
                                  <p style=" font-size: 17px; margin-left: 20px;" class="text-left"><u><%=lingua.product_comment %></u>: <% if(orders[i].products[j].message.length !=0){ %>
                                     <%= orders[i].products[j].message %>

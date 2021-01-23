@@ -13,7 +13,7 @@ const Order = sequelize.define("Order", {
     allowNull: false,
   },
   cutlery: Sequelize.INTEGER,
-  lang: Sequelize.INTEGER,
+  lang: Sequelize.STRING,
   take: Sequelize.INTEGER,
   orderType: Sequelize.INTEGER,
   deletedMessage: Sequelize.STRING,

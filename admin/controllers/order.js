@@ -93,6 +93,21 @@ exports.getOrders = async (req, res, next) => {
     ],
   });
 
+  const data = {
+    from: "info@foodnet.ro",
+    to: "erdosjozsef20@gmail.com",
+    subject: "Kiszállítási idő",
+    html: `
+   <h1> hello</h1>
+    `,
+    // "h:X-Mailgun-Variables": { test: "test" },
+  };
+  await mg.messages().send(data, function (error, body) {
+    if (error) {
+      console.log(error);
+    }
+  });
+
   let extras = [];
   let cutlery;
   let take;
@@ -1046,93 +1061,415 @@ exports.postEditOrder = async (req, res, next) => {
         to: "erdosjozsef20@gmail.com",
         subject: "Kiszállítási idő",
         html: `<!DOCTYPE html>
-        <html  style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
-        <head>
-        <meta name="viewport" content="width=device-width" />
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <title>Alerts e.g. approaching your limit</title>
-        <style type="text/css">
-        img {
-        max-width: 100%;
-        }
-        body {
-        -webkit-font-smoothing: antialiased; -webkit-text-size-adjust: none; width: 100% !important; height: 100%; line-height: 1.6em;
-        }
-        body {
-        background-color: #f6f6f6;
-        }
-        @media only screen and (max-width: 640px) {
-          body {
-            padding: 0 !important;
-          }
-          h1 {
-            font-weight: 800 !important; margin: 20px 0 5px !important;
-          }
-          h2 {
-            font-weight: 800 !important; margin: 20px 0 5px !important;
-          }
-          h3 {
-            font-weight: 800 !important; margin: 20px 0 5px !important;
-          }
-          h4 {
-            font-weight: 800 !important; margin: 20px 0 5px !important;
-          }
-          h1 {
-            font-size: 22px !important;
-          }
-          h2 {
-            font-size: 18px !important;
-          }
-          h3 {
-            font-size: 16px !important;
-          }
-          .container {
-            padding: 0 !important; width: 100% !important;
-          }
-          .content {
-            padding: 0 !important;
-          }
-          .content-wrap {
-            padding: 10px !important;
-          }
-          .invoice {
-            width: 100% !important;
-          }
-        }
-        </style>
-        </head>
+        <html lang="en">
+          <head>
+            <title>Food Net</title>
+            <meta charset="utf-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1" />
+          </head>
+          <body>
+            <!-- Full Bleed Background Section : BEGIN -->
+            <table
+              bgcolor="#efefef"
+              cellspacing="0"
+              cellpadding="0"
+              border="0"
+              align="center"
+              width="100%"
+              style="font-family: arial"
+            >
+              <tr>
+                <td valign="top">
+                  <div style="max-width: 600px; margin: auto; background: #fff">
+                    <!--[if mso]>
+        <table cellspacing="0" cellpadding="0" border="0" width="600" align="center">
+        <tr>
+        <td>
+        <![endif]-->
+                    <table cellspacing="0" cellpadding="0" border="0" width="100%">
+                      <tr>
+                        <td style="text-align: center">
+                          <div style="padding: 25px 0px; background: #fff">
+                            <a href="#">
+                              <img
+                                src="http://techodi.com/foodnet-emailtemplate/images/foodnet-logo1.png"
+                                style="display: block; margin: auto"
+                            /></a>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <div style="padding: 0px 15px">
+                            <h4>Dear Erdős József,</h4>
         
-        <body itemscope itemtype="http://schema.org/EmailMessage" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; -webkit-font-smoothing: antialiased; -webkit-text-size-adjust: none; width: 100% !important; height: 100%; line-height: 1.6em; background-color: #f6f6f6; margin: 0;" bgcolor="#f6f6f6">
+                            <p>
+                              Thank you for your order! We will notify you shortly of
+                              your order processing.
+                            </p>
+                            <p>You can also view your order under your profile.</p>
+                            <h4>
+                              Order id (AS3FGU87)<br /><br />Order created at: xxxx
+                            </h4>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <table
+                            border="0"
+                            cellpadding="0"
+                            cellspacing="0"
+                            align="center"
+                            width="100%"
+                            style="max-width: 100%"
+                          >
+                            <tr>
+                              <td align="center" valign="top">
+                                <!--[if mso]>
+        <table border="0" cellspacing="0" cellpadding="0" align="center" width="600">
+        <tr>
+        <td align="left" valign="top" width="200">
+        <![endif]-->
         
-        <table class="body-wrap" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; width: 100%; background-color: #f6f6f6; margin: 0;" bgcolor="#f6f6f6"><tr style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;"><td style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0;" valign="top"></td>
-            <td class="container" width="600" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; display: block !important; max-width: 600px !important; clear: both !important; margin: 0 auto;" valign="top">
-              <div class="content" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; max-width: 600px; display: block; margin: 0 auto; padding: 20px;">
-                <table class="main" width="100%" cellpadding="0" cellspacing="0" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; border-radius: 3px; background-color: #fff; margin: 0; border: 1px solid #e9e9e9;" bgcolor="#fff"><tr style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;"><td class="alert alert-warning" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 16px; vertical-align: top; color: #fff; font-weight: 500; text-align: center; border-radius: 3px 3px 0 0; background-color: #4ACC4F; margin: 0; padding: 20px;" align="center" bgcolor="#4ACC4F" valign="top">
-                      Elfogadott rendelés.
-                    </td>
-                  </tr><tr style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;"><td class="content-wrap" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 20px;" valign="top">
-                      <table width="100%" cellpadding="0" cellspacing="0" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;"><tr style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;"><td class="content-block" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;" valign="top">
-                            Kedves <strong style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">Erdős József</strong>!
-                          </td>
-                        </tr><tr style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;"><td class="content-block" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;" valign="top">
-                            A(z) ${restaurantName} sikeresen elfogadta a rendelésed, melynek rendelési száma: <strong>${orderId}</strong>.<br> A rendelésed várhatóan ${minutes} perc múlva érkezik. További információkért az étterem telefonszámán érdeklődhetsz: ${restaurantPhone}.
-                          </td>
-                        </tr><tr style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;"><td class="content-block" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;" valign="top">
-                            Jó étvágyat kíván a Foodnet csapata!
-                          </td>
-                        </tr></table></td>
-                  </tr></table>
-            </td>
-            <td style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0;" valign="top"></td>
-          </tr></table></body>
-        </html>`,
+                                <div
+                                  style="
+                                    display: inline-block;
+                                    margin: 0 -2px;
+                                    max-width: 48%;
+                                    min-width: 160px;
+                                    vertical-align: top;
+                                    width: 100%;
+                                  "
+                                  class="stack-column"
+                                >
+                                  <table
+                                    cellspacing="0"
+                                    cellpadding="0"
+                                    border="0"
+                                    width="100%"
+                                  >
+                                    <tr>
+                                      <td>
+                                        <div style="padding: 0px 15px">
+                                          <h4>Delivery address information</h4>
+        
+                                          <p>Name: Erdős József</p>
+                                          <p>Phone number: 0753541070</p>
+        
+                                          <p>Location: Székelyudvarhely</p>
+                                          <p>Street: Mihálydeák</p>
+                                          <p>House number: 1263</p>
+                                          <p>Floor: 1</p>
+                                          <p>Door number: 2A</p>
+                                        </div>
+                                      </td>
+                                    </tr>
+                                  </table>
+                                </div>
+        
+                                <!--[if mso]>
+        </td>
+        <td align="left" valign="top" width="200">
+        <![endif]-->
+                                <div
+                                  style="
+                                    display: inline-block;
+                                    margin: 0 -2px;
+                                    max-width: 48%;
+                                    min-width: 160px;
+                                    vertical-align: top;
+                                    width: 100%;
+                                  "
+                                  class="stack-column"
+                                >
+                                  <table
+                                    cellspacing="0"
+                                    cellpadding="0"
+                                    border="0"
+                                    width="100%"
+                                  >
+                                    <tr>
+                                      <td>
+                                        <div style="padding: 0px 15px">
+                                          <h4>Payment</h4>
+                                          <p>Payment method: Cash</p>
+                                        </div>
+                                      </td>
+                                    </tr>
+                                  </table>
+                                </div>
+        
+                                <!--[if mso]>
+        </td>                    
+        </tr>
+        </table>
+        <![endif]-->
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <table
+                            border="0"
+                            cellpadding="0"
+                            cellspacing="0"
+                            align="center"
+                            width="100%"
+                            style="max-width: 600px"
+                          >
+                            <tr>
+                              <td align="center" valign="top">
+                                <!--[if mso]>
+        <table border="0" cellspacing="0" cellpadding="0" align="center" width="600">
+        <tr>
+        <td align="left" valign="top" width="200">
+        <![endif]-->
+                                <div
+                                  style="
+                                    display: inline-block;
+                                    margin: 0 -2px;
+                                    max-width: 29%;
+                                    min-width: 130px;
+                                    vertical-align: top;
+                                    width: 100%;
+                                  "
+                                  class="stack-column"
+                                >
+                                  <table
+                                    cellspacing="0"
+                                    cellpadding="0"
+                                    border="0"
+                                    width="100%"
+                                  >
+                                    <tr>
+                                      <td style="padding: 10px 10px">
+                                        <div style="padding: 0px 0px">
+                                          <h4>Product</h4>
+                                          <p>{product_name}</p>
+                                          <p>{product_message}</p>
+                                          <p>{box_price}</p>
+                                        </div>
+                                      </td>
+                                    </tr>
+                                  </table>
+                                </div>
+                                <!--[if mso]>
+        </td>
+        <td align="left" valign="top" width="200">
+        <![endif]-->
+                                <div
+                                  style="
+                                    display: inline-block;
+                                    margin: 0 -2px;
+                                    max-width: 29%;
+                                    min-width: 30px;
+                                    vertical-align: top;
+                                    width: 100%;
+                                  "
+                                  class="stack-column"
+                                >
+                                  <table
+                                    cellspacing="0"
+                                    cellpadding="0"
+                                    border="0"
+                                    width="100%"
+                                  >
+                                    <tr>
+                                      <td style="padding: 10px 10px">
+                                        <div style="padding: 0px 0px">
+                                          <h4>Quantity</h4>
+                                          <p>1</p>
+                                          <p>1</p>
+                                        </div>
+                                      </td>
+                                    </tr>
+                                  </table>
+                                </div>
+                                <!--[if mso]>
+        </td>
+        <td align="left" valign="top" width="200">
+        <![endif]-->
+                                <div
+                                  style="
+                                    display: inline-block;
+                                    margin: 0 -2px;
+                                    max-width: 29%;
+                                    min-width: 20px;
+                                    vertical-align: top;
+                                    width: 100%;
+                                  "
+                                  class="stack-column"
+                                >
+                                  <table
+                                    cellspacing="0"
+                                    cellpadding="0"
+                                    border="0"
+                                    width="100%"
+                                  >
+                                    <tr>
+                                      <td style="padding: 10px 10px">
+                                        <div style="padding: 0px 0px">
+                                          <h4>Price</h4>
+                                          <p>34.50 lei</p>
+                                          <p>13.6 lei</p>
+                                        </div>
+                                      </td>
+                                    </tr>
+                                  </table>
+                                </div>
+        
+                                <!--[if mso]>
+        </td>
+        </tr>
+        </table>
+        <![endif]-->
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <table
+                            border="0"
+                            cellpadding="0"
+                            cellspacing="0"
+                            align="center"
+                            width="100%"
+                            style="max-width: 100%"
+                          >
+                            <tr>
+                              <td align="center" valign="top">
+                                <!--[if mso]>
+        <table border="0" cellspacing="0" cellpadding="0" align="center" width="600">
+        <tr>
+        <td align="left" valign="top" width="200">
+        <![endif]-->
+        
+                                <div
+                                  style="
+                                    display: inline-block;
+                                    margin: 0 -2px;
+                                    max-width: 48%;
+                                    min-width: 160px;
+                                    vertical-align: top;
+                                    width: 100%;
+                                  "
+                                  class="stack-column"
+                                >
+                                  <table
+                                    cellspacing="0"
+                                    cellpadding="0"
+                                    border="0"
+                                    width="100%"
+                                  >
+                                    <tr>
+                                      <td>
+                                        <div style="padding: 0px 15px">
+                                          <h4>Shipping price</h4>
+                                          <h4>Total</h4>
+                                        </div>
+                                      </td>
+                                    </tr>
+                                  </table>
+                                </div>
+        
+                                <!--[if mso]>
+        </td>
+        <td align="left" valign="top" width="200">
+        <![endif]-->
+        
+                                <div
+                                  style="
+                                    display: inline-block;
+                                    margin: 0 -2px;
+                                    max-width: 48%;
+                                    min-width: 160px;
+                                    vertical-align: top;
+                                    width: 100%;
+                                  "
+                                  class="stack-column"
+                                >
+                                  <table
+                                    cellspacing="0"
+                                    cellpadding="0"
+                                    border="0"
+                                    width="100%"
+                                  >
+                                    <tr>
+                                      <td>
+                                        <div style="padding: 0px 15px">
+                                          <h4>1.0 lei</h4>
+                                          <h4>49.1 lei</h4>
+                                        </div>
+                                      </td>
+                                    </tr>
+                                  </table>
+                                </div>
+        
+                                <!--[if mso]>
+        </td>                    
+        </tr>
+        </table>
+        <![endif]-->
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <div style="padding: 0px 15px">
+                            <h4>Best regards:</h4>
+                            <h4>Foodnet team.</h4>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style="text-align: center; background: #000">
+                          <div style="padding: 30px 0px">
+                            <a href="#">
+                              <img
+                                src="http://techodi.com/foodnet-emailtemplate/images/social-icon1.png"
+                                style="margin: 0px 5px"
+                            /></a>
+                            <a href="#">
+                              <img
+                                src="http://techodi.com/foodnet-emailtemplate/images/social-icon2.png"
+                                style="margin: 0px 5px"
+                            /></a>
+                            <a href="#">
+                              <img
+                                src="http://techodi.com/foodnet-emailtemplate/images/socialicon-3.png"
+                                style="margin: 0px 5px"
+                            /></a>
+                          </div>
+                        </td>
+                      </tr>
+                    </table>
+                    <!--[if mso]>
+        </td>
+        </tr>
+        </table>
+        <![endif]-->
+                  </div>
+                </td>
+              </tr>
+            </table>
+            <!-- Full Bleed Background Section : END -->
+          </body>
+        </html>
+        `,
         // "h:X-Mailgun-Variables": { test: "test" },
       };
-      // await mg.messages().send(data, function (error, body) {
-      //   if (error) {
-      //     console.log(error);
-      //   }
-      // });
+      await mg.messages().send(data, function (error, body) {
+        if (error) {
+          console.log(error);
+        }
+      });
       // sendSms();
       await Order.update(
         { orderStatusId: 2 },
