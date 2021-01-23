@@ -93,21 +93,6 @@ exports.getOrders = async (req, res, next) => {
     ],
   });
 
-  const data = {
-    from: "info@foodnet.ro",
-    to: "erdosjozsef20@gmail.com",
-    subject: "Kiszállítási idő",
-    html: `
-   <h1> hello</h1>
-    `,
-    // "h:X-Mailgun-Variables": { test: "test" },
-  };
-  await mg.messages().send(data, function (error, body) {
-    if (error) {
-      console.log(error);
-    }
-  });
-
   let extras = [];
   let cutlery;
   let take;
