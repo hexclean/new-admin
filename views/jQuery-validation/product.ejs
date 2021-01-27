@@ -166,7 +166,7 @@
     function check_roName() {
       var roName_length = $("#roTitle").val().length;
 
-      if (roName_length < 2 || roName_length > 55) {
+      if (roName_length < 2 || roName_length > 200) {
         $("#roName_error_message").html("ro");
         $("#roName_error_message").show();
         error_roName = true;
@@ -189,7 +189,7 @@
     }
     function check_huName() {
       var huName_length = $("#huTitle").val().length;
-      if (huName_length < 2 || huName_length > 55) {
+      if (huName_length < 2 || huName_length > 200) {
         $("#huName_error_message").html("hu");
         $("#huName_error_message").show();
         error_huName = true;
@@ -199,7 +199,7 @@
     }
     function check_enName() {
       var enName_length = $("#enTitle").val().length;
-      if (enName_length < 2 || enName_length > 55) {
+      if (enName_length < 2 || enName_length > 200) {
         $("#enName_error_message").html("en");
         $("#enName_error_message").show();
         error_enName = true;
