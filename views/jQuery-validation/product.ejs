@@ -92,7 +92,7 @@
     $("#box_error_message").hide();
     $("#start_error_message").hide();
     $("#end_error_message").hide();
-    $("#end_error_message").hide();
+ 
     $("#file_error_message").hide();
     var error_roName = false;
     var error_huName = false;
@@ -107,11 +107,17 @@
     var error_start = false;
     var error_end = false;
     var error_file = false;
-    var error_end = false;
-    var error_start = false;
+    
+    
 
     $("#roTitle").focusout(function () {
       check_roName();
+    });
+     $("#startDate").focusout(function () {
+      check_startDate();
+    });
+    $("#endDate").focusout(function () {
+      check_endDate();
     });
     $("#huTitle").focusout(function () {
       check_huName();
@@ -137,32 +143,49 @@
     $(".status-hidden-box").change(function () {
       check_box();
     });
-    $(".isDailyMenu").change(function () {
-      check_dailyMenu();
-    });
+
     $("#image").change(function () {
       check_file();
     });
 
-    function check_dailyMenu() {
-      if ($("#isDailyMenu").is(":checked")) {
-        var startDate = $("#startDate").val().length;
-        var endDate = $("#endDate").val().length;
-        if (startDate != 5 && endDate !=5 ) {
+   
+     
+    
+    
+  
 
-          $("#start_error_message").html("start_error_message");
-          $("#start_error_message").show();
+   ///
+   
+   
+        function check_startDate() {
+      var startDate_length = $("#startDate").val().length;
+     if($("#isDailyMenu").is(":checked")){
+      if (startDate_length <5 ) {
+        $("#start_error_message").html("ro");
+        $("#start_error_message").show();
+        error_start = true;
+      } else {
+        $("#start_error_message").hide();
+      }
+     }
+     
+    }
+  
+        function check_endDate() {
+      var endDate_length = $("#endDate").val().length;
 
-          $("#end_error_message").html("end_error_message");
-          $("#end_error_message").show();
-          error_start = true;
-          error_end = true;
-        } else {
-          $("#start_error_message").hide();
-          $("#end_error_message").hide();
-        }
+      if (endDate_length <5) {
+        $("#end_error_message").html("ro");
+        $("#end_error_message").show();
+        error_end = true;
+      } else {
+        $("#end_error_message").hide();
       }
     }
+      
+    
+    
+    
     function check_roName() {
       var roName_length = $("#roTitle").val().length;
 
@@ -174,6 +197,9 @@
         $("#roName_error_message").hide();
       }
     }
+  
+  
+  
     function check_file() {
       var vidFileLength = $("#image")[0].files.length;
       if (vidFileLength < 1) {
@@ -299,7 +325,9 @@
       <% } %>
       check_box();
       check_variantInputs();
-      check_dailyMenu();
+     
+      check_startDate();
+      check_endDate();
       if (
         error_roName == false &&
         error_huName == false &&
@@ -317,34 +345,10 @@
         error_start == false &&
         error_end == false
       ) {
-        console.log("error_roName", error_roName);
-        console.log("error_huName", error_huName);
-        console.log("error_enName", error_enName);
-        console.log("error_roDescription", error_roDescription);
-        console.log("error_huDescription", error_huDescription);
-        console.log("error_enDescription", error_enDescription);
-        console.log("error_variants", error_variants);
-        console.log("error_allergens", error_allergens);
-        console.log("error_allergens", error_allergens);
-        console.log("error_box", error_box);
-        console.log("error_file", error_file);
-        console.log("error_price", error_price);
-        console.log("error_start", error_start);
+        
         return true;
       } else {
-        console.log("error_roName", error_roName);
-        console.log("error_huName", error_huName);
-        console.log("error_enName", error_enName);
-        console.log("error_roDescription", error_roDescription);
-        console.log("error_huDescription", error_huDescription);
-        console.log("error_enDescription", error_enDescription);
-        console.log("error_variants", error_variants);
-        console.log("error_allergens", error_allergens);
-        console.log("error_allergens", error_allergens);
-        console.log("error_box", error_box);
-        console.log("error_file", error_file);
-        console.log("error_price", error_price);
-        console.log("error_start", error_start);
+       
 
         return false;
       }

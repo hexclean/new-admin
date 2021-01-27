@@ -144,7 +144,7 @@
     function check_sku() {
       var sku_length = $("#sku").val().length;
 
-      if (sku_length < 2 || sku_length > 40) {
+      if (sku_length < 2 || sku_length > 200) {
         $("#sku_error_message").html(`<%= lingua.variant_validation %>`);
         $("#sku_error_message").show();
         error_sku = true;
