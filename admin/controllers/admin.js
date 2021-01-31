@@ -482,6 +482,7 @@ exports.postEditProduct = async (req, res, next) => {
                   soldOut: 0,
                   startTime: req.body.startDate,
                   endTime: req.body.endDate,
+                  productImagePath: image.path,
                 },
                 { where: { id: prodId } }
               );
