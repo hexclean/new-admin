@@ -86,6 +86,7 @@ exports.postRestoreProduct = (req, res, next) => {
       if (!product) {
         return next(new Error("Product not found."));
       }
+      product.soldOut = 1;
       product.active = 1;
       return product.save().then((result) => {
         res.redirect("/admin/deleted-pr");
