@@ -486,6 +486,17 @@ exports.postEditProduct = async (req, res, next) => {
                 },
                 { where: { id: prodId } }
               );
+            } else {
+              Product.update(
+                {
+                  active: 1,
+                  isDailyMenu: 1,
+                  soldOut: 0,
+                  startTime: req.body.startDate,
+                  endTime: req.body.endDate,
+                },
+                { where: { id: prodId } }
+              );
             }
           } else {
             if (image) {
