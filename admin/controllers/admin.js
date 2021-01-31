@@ -720,6 +720,7 @@ exports.postDeleteProduct = (req, res, next) => {
       if (!product) {
         return next(new Error("Product not found."));
       }
+      product.soldOut = 1;
       product.active = 0;
       return product.save().then((result) => {
         res.redirect("/admin/products");
