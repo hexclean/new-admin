@@ -234,7 +234,6 @@ exports.getOrders = async (req, res, next) => {
 
       orders[i].products = reduced;
       // console.log(reduced[0].extras);
-      console.log(reduced);
     }
 
     totalPriceFinal = orders[0].totalPrice;
@@ -722,7 +721,6 @@ exports.getEditOrder = async (req, res, next) => {
       orderCreated = orders[0].createdAt;
       userName = orders[0].OrderDeliveryAddress.userName;
       orderIds = orders[0].id;
-      console.log("=-=-=-----=-=-=-=-", orders[0].status);
     }
 
     res.render("order/edit-order", {
@@ -1003,15 +1001,15 @@ exports.postEditOrder = async (req, res, next) => {
 
   const failedDescription = req.body.failedDescription;
   const orderId = req.body.orderId;
-  const datepicker = req.body.datepicker;
-  console.log("orderId", orderId);
+
   const rest = await Restaurant.findByPk(req.admin.id);
   const ordered = await Order.findOne({
     where: { encodedKey: orderId },
     include: [{ model: OrderDeliveryAddress }],
   });
   const orderedUserName = ordered.OrderDeliveryAddress.userName;
-  const orderedUserPhoneNumber = ordered.OrderDeliveryAddress.phoneNumber;
+  // const orderedUserPhoneNumber = ordered.OrderDeliveryAddress.phoneNumber;
+  const orderedUserPhoneNumber = "+40749558635";
   let restaurantName = rest.fullName;
   let restaurantPhone = rest.phoneNumber;
 
@@ -1022,7 +1020,6 @@ exports.postEditOrder = async (req, res, next) => {
         sender: "4",
         body: `Kedves ${orderedUserName}! A(z) ${restaurantName} sikeresen elfogadta a rendelésed, melynek rendelési száma: ${orderId}. A rendelésed várhatóan ${minutes} perc múlva érkezik. További információkért az étterem telefonszámán érdeklődhetsz: ${restaurantPhone}.\nJó étvágyat kíván a Foodnet csapata!`,
       };
-      console.log(9999999999999999, "nincs ora es nincs elutasitas");
       async function sendSms() {
         request.post(
           {
@@ -1032,12 +1029,12 @@ exports.postEditOrder = async (req, res, next) => {
             url: "https://app.smso.ro/api/v1/send",
             body: jsonDataObj,
             json: true,
+          },
+          function (error, response, body) {
+            console.log(error);
+            console.log(response);
+            console.log(body);
           }
-          // function (error, response, body) {
-          //   console.log(error);
-          //   console.log(response);
-          //   console.log(body);
-          // }
         );
       }
 
@@ -1455,36 +1452,88 @@ exports.postEditOrder = async (req, res, next) => {
       //     console.log(error);
       //   }
       // });
-      // sendSms();
+      // await sendSms();
       await Order.update(
         { orderStatusId: 2 },
         { where: { encodedKey: orderId } }
       );
-
-      console.log(1111, "x perc mulva erkezik");
-      // console.log("orderId", orderId);
     } else if (failedDescription.length !== 0) {
-      console.log(33333333, "elutasitas");
+      var jsonDataObj = {
+        to: orderedUserPhoneNumber,
+        sender: "4",
+        body: `Kedves ${orderedUserName}! A(z) ${restaurantName} elutasította a rendelésed, melynek rendelési száma: ${orderId}. Az elutasítás oka a következő: ${failedDescription}. További információkért az étterem telefonszámán érdeklődhetsz: ${restaurantPhone}.`,
+      };
+      async function sendSms() {
+        request.post({
+          headers: {
+            "X-Authorization": "j1HPv95lUhKKF2JJv66zeuGn7sSNFP6bPeWrSv89",
+          },
+          url: "https://app.smso.ro/api/v1/send",
+          body: jsonDataObj,
+          json: true,
+        });
+      }
+      // await sendSms();
       await Order.update(
         { orderStatusId: 3, deletedMessage: failedDescription },
         { where: { encodedKey: orderId } }
       );
     } else if ((hours !== "0") & (minutes !== "0")) {
-      console.log(22222, "x ora x perx");
+      var jsonDataObj = {
+        to: orderedUserPhoneNumber,
+        sender: "4",
+        body: `Kedves ${orderedUserName}! A(z) ${restaurantName} sikeresen elfogadta a rendelésed, melynek rendelési száma: ${orderId}. A rendelésed várhatóan ${hours} óra és ${minutes} perc múlva érkezik. További információkért az étterem telefonszámán érdeklődhetsz: ${restaurantPhone}.\nJó étvágyat kíván a Foodnet csapata!`,
+      };
+      async function sendSms() {
+        request.post(
+          {
+            headers: {
+              "X-Authorization": "j1HPv95lUhKKF2JJv66zeuGn7sSNFP6bPeWrSv89",
+            },
+            url: "https://app.smso.ro/api/v1/send",
+            body: jsonDataObj,
+            json: true,
+          },
+          function (error, response, body) {
+            console.log(error);
+            console.log(response);
+            console.log(body);
+          }
+        );
+      }
+      // await sendSms();
       await Order.update(
         { orderStatusId: 2 },
         { where: { encodedKey: orderId } }
       );
-      // console.log("van ora es perc is");
-      // console.log("orderId", orderId);
     } else {
-      console.log(423432423432432432423, "csak ora van megadva");
-      // console.log("orderId", orderId);
+      var jsonDataObj = {
+        to: orderedUserPhoneNumber,
+        sender: "4",
+        body: `Kedves ${orderedUserName}! A(z) ${restaurantName} sikeresen elfogadta a rendelésed, melynek rendelési száma: ${orderId}. A rendelésed várhatóan ${hours} óra múlva érkezik. További információkért az étterem telefonszámán érdeklődhetsz: ${restaurantPhone}.\nJó étvágyat kíván a Foodnet csapata!`,
+      };
+      async function sendSms() {
+        request.post(
+          {
+            headers: {
+              "X-Authorization": "j1HPv95lUhKKF2JJv66zeuGn7sSNFP6bPeWrSv89",
+            },
+            url: "https://app.smso.ro/api/v1/send",
+            body: jsonDataObj,
+            json: true,
+          },
+          function (error, response, body) {
+            console.log(error);
+            console.log(response);
+            console.log(body);
+          }
+        );
+      }
+      // await sendSms();
       await Order.update(
         { orderStatusId: 2 },
         { where: { encodedKey: orderId } }
       );
-      // console.log("ennyi ora mulva jon a kaja nincs perc");
     }
 
     res.redirect("/admin/orders");
