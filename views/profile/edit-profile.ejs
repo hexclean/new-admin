@@ -157,43 +157,42 @@
              
                 <div class="form-group">
                   <label for="roShortCompanyDesc"><%= lingua.restaurant_roDescription %></label>
-                  <textarea
-                  rows="5" cols="80"
-                        class="form-control"
-                        type="text"
-                        autocomplete="off"
-                        name="roShortCompanyDesc"
-                        id="roShortCompanyDesc"
-                        value="<% if (editing) { %><%= admin[0].RestaurantInfos[0].shortCompanyDesc %><% } %>">
-                </textarea>
+                  <input
+                  class="form-control"
+                  type="text"
+                  autocomplete="off"
+                  name="roShortCompanyDesc"
+                  
+                  id="roShortCompanyDesc"
+                  value="<% if (editing) { %><%= admin[0].RestaurantInfos[0].shortCompanyDesc %><% } %>"
+                />
                 </div>
                 <span class="error_form" id="roShortCompanyDesc_error_message"></span>
 
                 <div class="form-group">
                   <label for="huShortCompanyDesc"><%= lingua.restaurant_huDescription %></label>
-                  <textarea
-                  rows="5" cols="80"
-                        class="form-control"
-                        type="text"
-                        autocomplete="off"
-                        name="huShortCompanyDesc"
-                        id="huShortCompanyDesc"
-                        value="<% if (editing) { %><%= admin[0].RestaurantInfos[1].shortCompanyDesc %><% } %>">
-                      </textarea>
-                </div>
-                <span class="error_form" id="huShortCompanyDesc_error_message"></span>
-
-                <div class="form-group">
-                  <label for="enShortCompanyDesc"><%= lingua.restaurant_enDescription %></label>
-                  <textarea
-                  rows="5" cols="80"
+                  <input
                   class="form-control"
                   type="text"
-                  name="enShortCompanyDesc"
-                  id="enShortCompanyDesc"
                   autocomplete="off"
-                  value="<% if (editing) { %><%= admin[0].RestaurantInfos[2].shortCompanyDesc %><% } %>">
-                </textarea>
+                  name="huShortCompanyDesc"
+                  
+                  id="huShortCompanyDesc"
+                  value="<% if (editing) { %><%= admin[0].RestaurantInfos[1].shortCompanyDesc %><% } %>"
+                />
+                </div>
+                <span class="error_form" id="huShortCompanyDesc_error_message"></span>
+                <div class="form-group">
+                  <label for="enShortCompanyDesc"><%= lingua.restaurant_enDescription %></label>
+                  <input
+                  class="form-control"
+                  type="text"
+                  autocomplete="off"
+                  name="enShortCompanyDesc"
+                  
+                  id="enShortCompanyDesc"
+                  value="<% if (editing) { %><%= admin[0].RestaurantInfos[2].shortCompanyDesc %><% } %>"
+                />
                 </div>
                 <span class="error_form" id="enShortCompanyDesc_error_message"></span>
 
