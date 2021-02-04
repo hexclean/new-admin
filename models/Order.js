@@ -20,6 +20,8 @@ const Order = sequelize.define("Order", {
   messageCourier: Sequelize.STRING,
   encodedKey: Sequelize.STRING,
   deliveryPrice: Sequelize.FLOAT,
+  mobile: Sequelize.INTEGER,
+  web: Sequelize.INTEGER,
 });
 
 module.exports = Order;
