@@ -4947,11 +4947,11 @@ exports.postEditOrder = async (req, res, next) => {
                                   <h1>Kedves ${orderedUserName}!</h1>
                                    
                                   <p>
-                                  A(z) ${restaurantName} sikeresen elfogadta a rendelésed, melynek rendelési száma: ${orderId}. A rendelésed várhatóan ${hours} óra múlva érkezik. További információkért az étterem telefonszámán érdeklődhetsz: ${restaurantPhone}.\nJó étvágyat kíván a Foodnet csapata!
+                                  A(z) ${restaurantName} sikeresen elfogadta a rendelésed, melynek rendelési száma: ${orderId}. A rendelésed várhatóan ${hours} óra múlva érkezik. További információkért az étterem telefonszámán érdeklődhetsz: ${restaurantPhone}.
                                   </p>
                                  
                                  
-                                  <p>ó étvágyat kíván a Foodnet csapata!</p>
+                                  <p>Jó étvágyat kíván a Foodnet csapata!</p>
                                 </div>
                               </td>
                             </tr>
