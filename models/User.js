@@ -25,6 +25,7 @@ const User = sequelize.define("User", {
     type: Sequelize.STRING,
   },
   resetToken: Sequelize.STRING,
+  resetLang: Sequelize.STRING,
   resetTokenExpiration: Sequelize.DATE,
   role: Sequelize.INTEGER,
   newsletter: Sequelize.INTEGER,
