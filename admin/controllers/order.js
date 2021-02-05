@@ -1521,7 +1521,7 @@ exports.postEditOrder = async (req, res, next) => {
                             <tr>
                               <td class="content-cell">
                                 <div class="f-fallback">
-                                  <h1> Kedves ${orderedUserName}!</h1>
+                                  <h1>Kedves ${orderedUserName}!</h1>
                                   
                                   <p>
                                   A(z) ${restaurantName} sikeresen elfogadta a rendelésed, melynek rendelési száma: ${orderId}. A rendelésed várhatóan ${minutes} perc múlva érkezik. További információkért az étterem telefonszámán érdeklődhetsz: ${restaurantPhone}.
