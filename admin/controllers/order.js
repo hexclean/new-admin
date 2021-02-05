@@ -4990,6 +4990,11 @@ exports.postEditOrder = async (req, res, next) => {
           </html>        
           `,
         };
+        await mg.messages().send(data, function (error, body) {
+          if (error) {
+            console.log(error);
+          }
+        });
         async function sendSms() {
           request.post(
             {
@@ -5007,11 +5012,7 @@ exports.postEditOrder = async (req, res, next) => {
             }
           );
         }
-        await mg.messages().send(data, function (error, body) {
-          if (error) {
-            console.log(error);
-          }
-        });
+
         //  await sendSms();
       } else {
         var jsonDataObj = {
