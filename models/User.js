@@ -31,6 +31,8 @@ const User = sequelize.define("User", {
   newsletter: Sequelize.INTEGER,
   code: Sequelize.INTEGER,
   balance: Sequelize.FLOAT,
+  mobil: Sequelize.INTEGER,
+  web: Sequelize.INTEGER,
 });
 
 module.exports = User;
