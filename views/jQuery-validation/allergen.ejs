@@ -24,7 +24,7 @@
     function check_roName() {
       var roName_length = $("#roName").val().length;
 
-      if (roName_length < 1 || roName_length > 50) {
+      if (roName_length < 1 || roName_length > 350) {
         $("#roName_error_message").html(
           `<%= lingua.allergen_ro_name_validation %>`
         );
@@ -38,7 +38,7 @@
     function check_huName() {
       var huName_length = $("#huName").val().length;
 
-      if (huName_length < 1 || huName_length > 50) {
+      if (huName_length < 1 || huName_length > 350) {
         $("#huName_error_message").html(
           `<%= lingua.allergen_hu_name_validation %>`
         );
@@ -52,7 +52,7 @@
     function check_enName() {
       var enName_length = $("#enName").val().length;
 
-      if (enName_length < 1 || enName_length > 50) {
+      if (enName_length < 1 || enName_length > 350) {
         $("#enName_error_message").html(
           `<%= lingua.allergen_en_name_validation %>`
         );
