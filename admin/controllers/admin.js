@@ -290,7 +290,7 @@ exports.getEditProduct = async (req, res, next) => {
       { model: ProductHasAllergen },
     ],
   });
-
+  console.log(allergen);
   const allergenTest = await Allergen.findAll({
     where: {
       restaurantId: req.admin.id,
@@ -347,7 +347,7 @@ exports.getEditProduct = async (req, res, next) => {
       },
     ],
   });
-  Product.findAll({
+  await Product.findAll({
     where: {
       id: prodId,
       restaurantId: req.admin.id,
