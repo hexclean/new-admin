@@ -1584,7 +1584,7 @@ exports.postEditOrder = async (req, res, next) => {
             }
           );
         }
-        // await sendSms();
+        await sendSms();
         await mg.messages().send(data, function (error, body) {
           if (error) {
             console.log(error);
@@ -2156,7 +2156,7 @@ exports.postEditOrder = async (req, res, next) => {
           </html>        
           `,
         };
-        // await sendSms();
+        await sendSms();
         await mg.messages().send(data, function (error, body) {
           if (error) {
             console.log(error);
@@ -2730,7 +2730,7 @@ exports.postEditOrder = async (req, res, next) => {
             console.log(error);
           }
         });
-        // await sendSms();
+        await sendSms();
       } else {
         var jsonDataObj = {
           to: orderedUserPhoneNumber,
@@ -3291,6 +3291,7 @@ exports.postEditOrder = async (req, res, next) => {
             console.log(error);
           }
         });
+        await sendSms();
       }
     } else if ((hours !== "0") & (minutes !== "0")) {
       await Order.update(
@@ -3866,6 +3867,7 @@ exports.postEditOrder = async (req, res, next) => {
             console.log(error);
           }
         });
+        await sendSms();
       } else {
         var jsonDataObj = {
           to: orderedUserPhoneNumber,
@@ -4435,6 +4437,7 @@ exports.postEditOrder = async (req, res, next) => {
             console.log(error);
           }
         });
+        await sendSms();
       }
 
       // await sendSms();
@@ -5012,8 +5015,7 @@ exports.postEditOrder = async (req, res, next) => {
             }
           );
         }
-
-        //  await sendSms();
+        await sendSms();
       } else {
         var jsonDataObj = {
           to: orderedUserPhoneNumber,
@@ -5584,6 +5586,7 @@ exports.postEditOrder = async (req, res, next) => {
             console.log(error);
           }
         });
+        await sendSms();
       }
     }
 
