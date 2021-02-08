@@ -7,14 +7,6 @@ const OpeningHours = require("../../models/OpeningHours");
 const OpeningHoursTranslation = require("../../models/OpeningHoursTranslation");
 const Hour = require("../../models/Hours");
 const { validationResult } = require("express-validator/check");
-const transporter = nodemailer.createTransport(
-  sendgridTransport({
-    auth: {
-      api_key:
-        "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",
-    },
-  })
-);
 
 exports.getLogin = (req, res, next) => {
   let message = req.flash("error");
@@ -59,7 +51,7 @@ exports.postLogin = (req, res, next) => {
             req.session.admin = admin;
             return req.session.save((err) => {
               console.log(err);
-              res.redirect("/");
+              res.redirect("admin/orders");
             });
           }
           res.redirect("/login");
