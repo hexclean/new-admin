@@ -17,9 +17,9 @@
         .replace(/^\/|\/$/g, "");
       $(".ms-main-aside .menu-item a", $("#ms-side-nav")).each(function () {
         var $this = $(this);
-        if (current === "" || current === "index.html") {
+        if (current === "" || current === "/") {
           //for root url
-          if ($this.attr("href").indexOf("index.html") !== -1) {
+          if ($this.attr("href").indexOf("/") !== -1) {
             $(this).addClass("active");
             $(this).parents(".collapse").prev().addClass("active");
             if ($(this).parents(".collapse").length) {
