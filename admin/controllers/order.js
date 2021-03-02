@@ -17,7 +17,7 @@ const ExtraTranslation = require("../../models/ExtraTranslation");
 const Restaurant = require("../../models/Restaurant");
 const mailgun = require("mailgun-js");
 const DOMAIN = "mg.foodnet.ro";
-const api_key = "7003ff515d7bf9a71de74c7a64d7562c-c50a0e68-93ac4f33";
+const api_key = "key-6469129ca0603f9588c2a57c3b46defe";
 const mg = mailgun({
   apiKey: api_key,
   domain: DOMAIN,
