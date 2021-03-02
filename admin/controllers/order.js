@@ -4440,7 +4440,7 @@ exports.postEditOrder = async (req, res, next) => {
         await sendSms();
       }
 
-      // await sendSms();
+      await sendSms();
     } else {
       await Order.update(
         { orderStatusId: 2 },
