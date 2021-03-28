@@ -7,11 +7,11 @@ sequelize = new Sequelize("defaultdb", "doadmin", "s27c8agot7l7a13z", {
   port: 25060,
 });
 
-// const sequelize = new Sequelize("foodnetfin", "root", "", {
+// sequelize = new Sequelize("defaultdb", "doadmin", "uzg7vmow9hgs0dlw", {
 //   dialect: "mysql",
-//   host: "localhost",
+//   host: "staging-db-do-user-8133521-0.b.db.ondigitalocean.com",
+//   port: 25060,
 // });
-
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 

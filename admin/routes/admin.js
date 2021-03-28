@@ -155,7 +155,7 @@ router.post("/add-extra", isAuth, extraController.postAddExtra);
 // Product
 router.get("/add-product", isAuth, adminController.getAddProduct);
 router.get("/products", isAuth, adminController.getProducts);
-
+router.get("/daily-menu", isAuth, adminController.getDailyMenu);
 router.post("/add-product", adminController.postAddProduct);
 router.get("/edit-product/:productId", isAuth, adminController.getEditProduct);
 router.post("/edit-product", isAuth, adminController.postEditProduct);
@@ -236,7 +236,12 @@ router.get("/accepted-orders", isAuth, ordersController.getAcceptedOrders);
 router.get("/deleted-orders", isAuth, ordersController.getDeletedOrders);
 router.get("/edit-order/:orderId", isAuth, ordersController.getEditOrder);
 router.post("/edit-order", isAuth, ordersController.postEditOrder);
-
+router.get("/in-progress-orders", isAuth, ordersController.getInProgressOrder);
+router.post(
+  "/edit-in-progress-order",
+  isAuth,
+  ordersController.postEditInProgressOrder
+);
 // Reckoning
 router.get("/reckoning", isAuth, reckoningController.getIndex);
 router.post("/reckoning", isAuth, reckoningController.postExport);

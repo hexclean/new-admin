@@ -7,23 +7,23 @@
       <div class="ms-content-wrapper">
          <div class="ms-profile-overview no-img-var">
             <ul class="ms-profile-navigation nav nav-tabs tabs-bordered" role="tablist">
-               <li role="presentation"><a class="add-extra" href="/admin/orders"><%= lingua.new_orders %></a></li>
-               <li role="presentation"><a class="add-variant" href="/admin/in-progress-orders">Felvett rendelések</a></li>
+               <li role="presentation"><a class="add-variant" href="/admin/orders"><%= lingua.new_orders %></a></li>
+               <li role="presentation"><a href="#" aria-controls="tab1" class="active show" role="tab" data-toggle="tab">Felvett rendelések</a></li>
                <li role="presentation"><a class="add-variant" href="/admin/accepted-orders"><%= lingua.accepted_orders %></a></li>
-               <li role="presentation"><a href="#" aria-controls="tab1" class="active show" role="tab" data-toggle="tab"><%= lingua.deleted_orders %></a></li>
+               <li role="presentation"><a class="add-extra" href="/admin/deleted-orders"><%= lingua.deleted_orders %></a></li>
             </ul>
          </div>
       </div>
-      <div class="col-6">
+      <!-- <div class="col-6">
          <input type="text" name="searchOrder" id="searchOrder" placeholder="<%= lingua.search_order %>" class="category-search form-control" />
          <hr>
-      </div>
+      </div> -->
       <script>
          $(document).ready(function() {
             $('#searchOrder').keyup(function() {
                const order = $('#searchOrder').val();
                console.log(order)
-               $.get("get-filtered-del-order/" + order).done(function(data) {
+               $.get("get-filtered-order/" + order).done(function(data) {
                   $("#searchedOrder").html(data);
                });
             });
@@ -54,7 +54,7 @@
                         <td><%= orders[i].OrderDeliveryAddress.userName %></td>
                         <td><%= orders[i].LocationName.LocationNameTranslations[0].name %></td>
                         <td><%= orders[i].totalPrice %> <%= lingua.currency %></td>
-                        <td><%= lingua.order_list_new_status %></td>
+                        <td>Felvett</td>
                         
                      </tr>
                   </tbody>
@@ -66,7 +66,7 @@
             <form
                id="createBox_form"
                class="ms-content-wrapper"
-               action="/admin/<% if (editing) { %>edit-order<% } else { %>edit-order<% } %>"
+               action="/admin/<% if (editing) { %>edit-in-progress-order<% } else { %>edit-in-progress-order<% } %>"
                method="POST">
                <div class="ms-content-wrapper">
                   <div class="row">
@@ -104,19 +104,14 @@
                                           timeZone: "Europe/Helsinki"
                                           }); %></b>
                                        <h5>
-                                          <h5><u><%= lingua.delivery_price %></u>: <% if(orders[i].deliveryPrice == 0){ %>
-                                             -
-                                              <% } else{ %>  
-                                                 <%= orders[i].deliveryPrice %> <%= lingua.currency %>
-                                              <% } %>
-                                           </h5>
+                                          <h5>
+                                             <u><%= lingua.order_list_total %>: <b><%= orders[i].totalPrice %> <%= lingua.currency %></b> </u>
+                                             <h5>
                                     </div>
                                  </div>
                                  <div class="col-md-6 info-orders-top" style="border-style: double;padding-top: 10px; padding-left: 10px;border-color: coral; ">
                                     <div class="invoice-address">
-                                       <h5><u><%=lingua.order_deleted_message %></u>: <%= orders[i].deletedMessage %>
-                                       </h5>
-                                       <h5><u><%=lingua.product_comment_courier %></u>: <% if(orders[i].messageCourier.length == 0){ %>
+                                       <h5><u><%=lingua.product_comment_courier %></u>: <% if(orders[i].messageCourier.length ==0){ %>
                                           -
                                           <% } else{ %>  
                                           <%= orders[i].messageCourier %> 
@@ -134,9 +129,15 @@
                                              <%=lingua.no %>
                                           <% } %>
                                        </h5>
+                                       <h5><u><%= lingua.delivery_price %></u>: <% if(orders[i].deliveryPrice == 0){ %>
+                                         -
+                                          <% } else{ %>  
+                                             <%= orders[i].deliveryPrice %> <%= lingua.currency %>
+                                          <% } %>
+                                       </h5>
+                                       
                                     </div>
                                  </div>
-                                 
                               </div>
                               <!-- Invoice Table -->
                               <% for (let j =0; j < orders[i].products.length; j++) { %>
@@ -186,7 +187,7 @@
                                           <% } %>
                                      
                                     </tbody>
-                                    
+                                   
                                  </table>
                                  <p style=" font-size: 17px; margin-left: 20px;" class="text-left"><u><%=lingua.product_comment %></u>: <% if(orders[i].products[j].message.length !=0){ %>
                                     <%= orders[i].products[j].message %>
@@ -201,16 +202,23 @@
                                  value="<%= orders[i].encodedKey %>"
                                  name="orderId"
                                  />
-                             
-                             
-                           
+                              
+
+                                 
+                              <div class="invoice-buttons text-right">
+                                 <button type="submit" class="btn btn-success">
+                                 Elkészítve
+                                 </button>
+                              
+                              </div>
+                            
                            </div>
                         </div>
                      </div>
                   </div>
                </div>
             </form>
-     
+            <!-- End -->
          </div>
          <% } %>
       </div>
