@@ -8,6 +8,7 @@ const Extra = sequelize.define("Extra", {
     allowNull: false,
     primaryKey: true,
   },
+  extraType: Sequelize.INTEGER,
 });
 
 module.exports = Extra;

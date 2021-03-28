@@ -80,6 +80,13 @@
                value="<%= extraIdEditing %>"
                name="extraIdEditing"
                />  
+               <script>
+                    $(document).ready(function() {
+                  
+                  $("div.id_100 select").val("<%= extraTypeVal %>");
+                  console.log(<%= extraTypeVal %>)
+               });
+               </script>
             <% } %>
             <% if (editing) { %>
             <% for (let i = 0; i < isActive.length; i++) { %>
@@ -128,6 +135,21 @@
                   </div>
                </div>
             </div>
+<!-- /// -->
+
+<div name="extraOpt" class="id_100">
+   <select name="extraOpt">
+     <option value="1">sauce</option>
+     <option value="2">sideDishes</option>
+     
+   </select>
+ </div>
+
+
+
+
+
+            <!-- /// -->
          </div>
          </div>
       </form>
