@@ -13,6 +13,7 @@ const PropertyValue = require("../../models/PropertyValue");
 const PropertyTranslation = require("../../models/PropertyTranslation");
 const PropertyValueTranslation = require("../../models/PropertyValueTranslation");
 const VariantPropertyValue = require("../../models/VariantPropertyValue");
+const Extra = require("../../models/Extra");
 const Op = Sequelize.Op;
 
 exports.getAddVariant = async (req, res, next) => {
@@ -139,6 +140,7 @@ exports.postAddVariant = async (req, res, next) => {
         price: updatedExtraPrice[i] || 0,
         discountedPrice: 1,
         variantId: variant.id,
+        extraType: ext[i].extraType,
         extraId: extId[i],
         active: filteredStatus[i] == "on" ? 1 : 0,
         restaurantId: req.admin.id,
@@ -354,6 +356,7 @@ exports.postEditVariant = async (req, res, next) => {
         [Op.in]: variantId,
       },
     },
+    include: [{ model: Extra }],
   });
   await VariantPropertyValue.update(
     {
@@ -366,6 +369,8 @@ exports.postEditVariant = async (req, res, next) => {
       },
     }
   );
+  console.log(productVarToExt[0].Extra);
+  const testing = await Extras.findAll();
 
   Variant.findAll()
     .then((variant) => {
@@ -386,7 +391,7 @@ exports.postEditVariant = async (req, res, next) => {
             await ProductVariantsExtras.update(
               {
                 price: updatedExtraPrice[i] || 0,
-
+                extraType: productVarToExt[i].Extra.extraType,
                 discountedPrice: 1,
                 active: filteredStatus[i] == "on" ? 1 : 0,
                 requiredExtra: filteredOptions[i] == "on" ? 1 : 0,

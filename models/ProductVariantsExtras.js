@@ -24,6 +24,7 @@ const ProductVariantsExtras = sequelize.define("ProductVariantsExtras", {
     type: Sequelize.INTEGER,
     allowNull: false,
   },
+  extraType: Sequelize.INTEGER,
 });
 
 module.exports = ProductVariantsExtras;

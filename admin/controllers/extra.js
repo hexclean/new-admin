@@ -68,9 +68,9 @@ exports.postAddExtra = async (req, res, next) => {
   const huName = req.body.huName;
   const enName = req.body.enName;
   const filteredStatus = req.body.status.filter(Boolean);
-  console.log(req.body);
+
   let extraType;
-  console.log(req.body);
+
   if (req.body.extraOpt == 1) {
     extraType = 1;
   } else {
@@ -170,9 +170,9 @@ exports.postAddExtra = async (req, res, next) => {
           active: 0,
           restaurantId: req.admin.id,
           extraId: extraId,
-
           discountedPrice: 0,
           price: 0,
+          extraType: extraType,
           variantId: variantId,
           requiredExtra: 0,
         });
@@ -299,7 +299,7 @@ exports.postEditExtra = async (req, res, next) => {
   const extraArray = [extraIdEditing];
   let extraType;
   console.log(req.body);
-  if ((req.body.extraOpt = 1)) {
+  if (req.body.extraOpt == 1) {
     extraType = 1;
   } else {
     extraType = 2;
