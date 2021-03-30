@@ -140,7 +140,7 @@ exports.postAddVariant = async (req, res, next) => {
         price: updatedExtraPrice[i] || 0,
         discountedPrice: 1,
         variantId: variant.id,
-        extraType: ext[i].extraType,
+        // extraType: ext[i].extraType,
         extraId: extId[i],
         active: filteredStatus[i] == "on" ? 1 : 0,
         restaurantId: req.admin.id,
@@ -391,7 +391,7 @@ exports.postEditVariant = async (req, res, next) => {
             await ProductVariantsExtras.update(
               {
                 price: updatedExtraPrice[i] || 0,
-                extraType: productVarToExt[i].Extra.extraType,
+                // extraType: productVarToExt[i].Extra.extraType,
                 discountedPrice: 1,
                 active: filteredStatus[i] == "on" ? 1 : 0,
                 requiredExtra: filteredOptions[i] == "on" ? 1 : 0,
