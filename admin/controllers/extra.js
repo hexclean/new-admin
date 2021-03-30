@@ -69,13 +69,13 @@ exports.postAddExtra = async (req, res, next) => {
   const enName = req.body.enName;
   const filteredStatus = req.body.status.filter(Boolean);
 
-  let extraType;
+  // let extraType;
 
-  if (req.body.extraOpt == 1) {
-    extraType = 1;
-  } else {
-    extraType = 2;
-  }
+  // if (req.body.extraOpt == 1) {
+  //   extraType = 1;
+  // } else {
+  //   extraType = 2;
+  // }
   if (
     roName.length == 0 ||
     huName.length == 0 ||
@@ -99,7 +99,7 @@ exports.postAddExtra = async (req, res, next) => {
 
   try {
     const extra = await Extra.create({
-      extraType: extraType,
+      // extraType: extraType,
       restaurantId: req.admin.id,
     });
 
@@ -172,7 +172,7 @@ exports.postAddExtra = async (req, res, next) => {
           extraId: extraId,
           discountedPrice: 0,
           price: 0,
-          extraType: extraType,
+          // extraType: extraType,
           variantId: variantId,
           requiredExtra: 0,
         });
@@ -265,11 +265,11 @@ exports.getEditExtra = async (req, res, next) => {
         },
       ],
     });
-    extraTypeVal = extra[0].extraType;
-    console.log(
-      "extraTypeValextraTypeValextraTypeValextraTypeVal",
-      extraTypeVal
-    );
+    // extraTypeVal = extra[0].extraType;
+    // console.log(
+    //   "extraTypeValextraTypeValextraTypeValextraTypeVal",
+    //   extraTypeVal
+    // );
     res.render("extra/edit-extra", {
       pageTitle: "Edit Product",
       path: "/admin/edit-product",
@@ -297,13 +297,13 @@ exports.postEditExtra = async (req, res, next) => {
   const extTranId = req.body.extTranId;
   const filteredStatus = req.body.status.filter(Boolean);
   const extraArray = [extraIdEditing];
-  let extraType;
-  console.log(req.body);
-  if (req.body.extraOpt == 1) {
-    extraType = 1;
-  } else {
-    extraType = 2;
-  }
+  // let extraType;
+  // console.log(req.body);
+  // if (req.body.extraOpt == 1) {
+  //   extraType = 1;
+  // } else {
+  //   extraType = 2;
+  // }
 
   if (
     allergenId.length == 0 ||
@@ -334,10 +334,10 @@ exports.postEditExtra = async (req, res, next) => {
       ],
     }).then((extra) => {
       async function updateExtraTranslation() {
-        await Extra.update(
-          { extraType: extraType },
-          { where: { id: req.body.extraIdEditing } }
-        );
+        // await Extra.update(
+        //   { extraType: extraType },
+        //   { where: { id: req.body.extraIdEditing } }
+        // );
         await ExtraTranslation.update(
           { name: updatedRoName },
           { where: { id: extTranId[0], languageId: 1 } }
