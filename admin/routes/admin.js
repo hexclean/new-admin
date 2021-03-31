@@ -15,6 +15,7 @@ const comboController = require("../controllers/combo");
 const liveSearchController = require("../controllers/live-search");
 const ordersController = require("../controllers/order");
 const reckoningController = require("../controllers/reckoning");
+const deliveryPriceController = require("../controllers/delivery-price");
 const isAuth = require("../../middleware/is-auth");
 const router = express.Router();
 
@@ -57,6 +58,10 @@ router.get(
   isAuth,
   liveSearchController.getFilteredExtra
 );
+
+///
+// router.get("/orders", isAuth, ordersController.getNewOrders);
+// router.get("/orders", isAuth, ordersController.getPlacedOrders);
 
 router.get(
   "/get-filtered-allergen/:allergenId",
@@ -245,5 +250,15 @@ router.post(
 // Reckoning
 router.get("/reckoning", isAuth, reckoningController.getIndex);
 router.post("/reckoning", isAuth, reckoningController.postExport);
+
+// DELIVERY PRICES
+router.get(
+  "/edit-delivery-price",
+  isAuth,
+  deliveryPriceController.getEditDeliveryPrice
+);
+// router.post("/add-coupon", isAuth, couponController.postAddCoupon);
+// router.get("/edit-coupon/:couponId", isAuth, couponController.getEditCoupon);
+// router.post("/edit-coupon", isAuth, couponController.postEditCoupon);
 
 module.exports = router;

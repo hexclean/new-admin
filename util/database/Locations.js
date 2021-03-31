@@ -4,6 +4,7 @@ const Location = require("../../models/Location");
 const LocationName = require("../../models/LocationName");
 const LocationNameTranslation = require("../../models/LocationNameTranslation");
 const RestaurantFilter = require("../../models/RestaurantFilters");
+const DeliveryPrice = require("../../models/DeliveryPrice");
 
 function locations() {
   Location.belongsTo(Restaurant, {
@@ -13,6 +14,14 @@ function locations() {
   });
 
   Restaurant.hasMany(Location, { foreignKey: "restaurantId" });
+
+  DeliveryPrice.belongsTo(LocationName, {
+    constrains: true,
+    onDelete: "CASCADE",
+    foreignKey: "locationId",
+  });
+
+  LocationName.hasMany(DeliveryPrice, { foreignKey: "locationId" });
 
   Location.belongsTo(LocationName, {
     constrains: true,
