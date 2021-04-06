@@ -1153,8 +1153,10 @@
                           RON
                         </td>
                         <td>
-                          <%= orderfirst.orders[i].products[j].product_price %>
-                          RON
+                          <%= (orderfirst.orders[i].products[j].product_quantity
+                          *
+                          orderfirst.orders[i].products[j].product_price).toFixed(2)
+                          %> RON
                         </td>
                       </tr>
 
@@ -1443,8 +1445,10 @@
                           RON
                         </td>
                         <td>
-                          <%= ordersecond.orders[i].products[j].product_price %>
-                          RON
+                          <%=
+                          (ordersecond.orders[i].products[j].product_quantity *
+                          ordersecond.orders[i].products[j].product_price).toFixed(2)
+                          %> RON
                         </td>
                       </tr>
 
@@ -1734,8 +1738,10 @@
                           RON
                         </td>
                         <td>
-                          <%= orderthird.orders[i].products[j].product_price %>
-                          RON
+                          <%= (orderthird.orders[i].products[j].product_quantity
+                          *
+                          orderthird.orders[i].products[j].product_price).toFixed(2)
+                          %> %> RON
                         </td>
                       </tr>
 
@@ -2023,8 +2029,10 @@
                           RON
                         </td>
                         <td>
-                          <%= orderfour.orders[i].products[j].product_price %>
-                          RON
+                          <%= (orderfour.orders[i].products[j].product_quantity
+                          *
+                          orderfour.orders[i].products[j].product_price).toFixed(2)
+                          %> %> RON
                         </td>
                       </tr>
 
@@ -2311,8 +2319,10 @@
                           RON
                         </td>
                         <td>
-                          <%= orderfive.orders[i].products[j].product_price %>
-                          RON
+                          <%= (orderfive.orders[i].products[j].product_quantity
+                          *
+                          orderfive.orders[i].products[j].product_price).toFixed(2)
+                          %> RON
                         </td>
                       </tr>
 
