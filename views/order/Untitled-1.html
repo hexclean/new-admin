@@ -1,0 +1,29 @@
+<h2>Move HTML element using jQuery</h2>
+<p>
+  jQuery has a function that allows you to select 1 or more HTML elements and
+  append them to a different HTML element. You identify the element you want to
+  move then use the <strong>.appendTo</strong> method and in the parenthesis you
+  identify the element you want it moved to. This function was created inside of
+  a click event of the button under the two boxes. When you click the button,
+  you will see the "My Target 1 item" move to the rightDiv and append itself to
+  the bottom of the other items already in that area.
+</p>
+<!--add code here-->
+<div style="width: 400px; margin-bottom: 50px;">
+  <div id="leftDiv">
+    <button id="target1">My Target 1 Item</button>
+  </div>
+
+  <div id="rightDiv">
+    <button id="target2">My Target 2 Item</button>
+    <button id="target3">My Target 3 Item</button>
+    <button id="target4">My Target 4 Item</button>
+  </div>
+</div>
+<div style="clear: both;"></div>
+<div style="margin: 25px;">
+  <button id="eventBtn">Click For Event</button>
+</div>
+
+$(document).ready(function() { $("#eventBtn").click(function(){
+$("#target1").appendTo("#rightDiv"); }); });

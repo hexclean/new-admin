@@ -30,6 +30,7 @@ const Restaurant = sequelize.define("Restaurant", {
   hasDailyMenu: Sequelize.INTEGER,
   deliveryPriceVillage: Sequelize.FLOAT,
   deliveryPriceCity: Sequelize.FLOAT,
+  needDelivery: Sequelize.INTEGER,
 });
 
 module.exports = Restaurant;

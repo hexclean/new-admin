@@ -13,6 +13,7 @@ const Product = sequelize.define("Product", {
     type: Sequelize.INTEGER,
   },
   isDailyMenu: Sequelize.INTEGER,
+  upsell: Sequelize.INTEGER,
   soldOut: Sequelize.INTEGER,
   startTime: Sequelize.STRING,
   endTime: Sequelize.STRING,

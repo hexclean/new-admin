@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="ro">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="robots" content="index,follow" />
+    <meta name="googlebot" content="NOODP" />
+    <title></title>
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+    <script
+      type="text/javascript"
+      src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"
+    ></script>
+
+    <script
+      type="text/javascript"
+      src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"
+    ></script>
+
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  </head>
+  <body>
+    <% if(userRole !=1) { %>
+    <style>
+      .sub-column1 .move-order-prev {
+        display: none;
+      }
+      .sub-column2 .move-order-prev {
+        display: none;
+      }
+      .sub-column5 .move-order-next {
+        display: none;
+      }
+      .sub-column3 .move-order-prev {
+        display: none;
+      }
+    </style>
+    <% } %>
+    <style>
+      .move-order-next {
+        float: right !important;
+      }
+      .move-order-prev {
+        float: left !important;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      @font-face {
+        font-family: "poppins";
+        src: url(../font/poppins.ttf) format("truetype");
+      }
+
+      body,
+      html {
+        font-family: "poppins";
+        font-size: 14px;
+        line-height: 20px;
+        font-weight: 400;
+        color: #000;
+        overflow-x: hidden;
+        height: 100%;
+      }
+
+      .main-container {
+        float: left;
+        width: 100%;
+        background: #eee;
+        padding: 10px 0px;
+      }
+
+      .column1 img {
+        cursor: pointer;
+      }
+
+      .container {
+        width: 96%;
+        margin: 0px auto;
+      }
+
+      .column1 {
+        width: 20%;
+        padding-left: 8px;
+        padding-right: 8px;
+        float: left;
+      }
+
+      .column1 h2 {
+        font-family: Poppins;
+        font-size: 20px;
+        font-style: normal;
+        font-weight: 700;
+        letter-spacing: 0em;
+        text-align: center;
+        color: #000;
+        margin-bottom: 20px;
+        margin-top: 10px;
+      }
+
+      .sub-column1 {
+        border-radius: 5px;
+        /* border: 3px solid #CE4141; */
+        background: #ce4141;
+        float: left;
+        width: 100%;
+        padding: 7px;
+        min-height: 200px;
+      }
+
+      .sub-column1 h4 {
+        float: left;
+        width: 100%;
+        background: #763269;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+        padding: 5px;
+        border-bottom: 1px solid #fff;
+      }
+
+      .sub-column1 h4 p {
+        color: #fff;
+        text-align: center;
+        width: 90%;
+        float: left;
+        /* text-align: center; */
+        margin: 3px 0px;
+      }
+
+      .inner-sub-column {
+        float: left;
+        width: 100%;
+      }
+
+      .sub-column2 {
+        border-radius: 5px;
+        /* border: 3px solid #CE4141; */
+        background: #a1ccd6;
+        float: left;
+        width: 100%;
+        padding: 7px;
+        min-height: 200px;
+      }
+
+      .sub-column2 h4 {
+        float: left;
+        width: 100%;
+        background: #5e7bb8;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+        padding: 5px;
+        border-bottom: 1px solid #fff;
+      }
+
+      .sub-column2 h4 p {
+        color: #fff;
+        text-align: center;
+        width: 90%;
+        float: left;
+        /* text-align: center; */
+        margin: 3px 0px;
+      }
+
+      .sub-column1 h4 span {
+        float: right;
+        /* width: 20%; */
+        margin: 3px 0px 0px;
+        text-align: left;
+        padding: 0px 2px;
+        width: 10%;
+      }
+
+      .sub-column1 .details {
+        background: #a68da1;
+        padding: 10px 5px;
+      }
+
+      .details h3 {
+        float: left;
+        font-weight: normal;
+        width: 100%;
+      }
+
+      .details h3 label {
+        float: left;
+        font-size: 13px;
+      }
+
+      .details p {
+        float: left;
+        font-size: 13px;
+        margin-bottom: 2px;
+        width: 100%;
+      }
+
+      .details b {
+        float: left;
+        font-weight: normal;
+        font-size: 13px;
+      }
+
+      .details b {
+        float: left;
+        font-weight: normal;
+        font-size: 13px;
+        margin: 0px 5px;
+        margin-bottom: 2px;
+      }
+
+      .details h5 {
+        background: #f78f1e;
+        float: left;
+        /* width: 80%; */
+        /* clear: both; */
+        padding: 3px;
+        border-radius: 5px;
+        color: #fff;
+        font-size: 13px;
+        font-weight: 500;
+        margin-bottom: 2px;
+      }
+
+      .details h6 {
+        float: left;
+        width: 100%;
+        font-size: 15px;
+        font-weight: 600;
+      }
+
+      .details {
+        margin-bottom: 10px;
+        float: left;
+        width: 100%;
+        border-bottom-left-radius: 5px;
+        border-bottom-right-radius: 5px;
+      }
+
+      .sub-column2 .details {
+        background: #9ea9c0;
+        padding: 10px 5px;
+      }
+
+      .details p span {
+        text-decoration: underline;
+      }
+
+      .sub-column3 {
+        border-radius: 5px;
+
+        background: #efba6a;
+        float: left;
+        width: 100%;
+        padding: 7px;
+        min-height: 200px;
+      }
+
+      .sub-column3 .details {
+        background: #ada4a9;
+        padding: 10px 5px;
+      }
+
+      .sub-column3 h4 {
+        float: left;
+        width: 100%;
+        background: #88727e;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+        padding: 5px;
+        border-bottom: 1px solid #fff;
+      }
+
+      .sub-column3 h4 p {
+        color: #fff;
+        text-align: center;
+        width: 70%;
+        float: left;
+        /* text-align: center; */
+        margin: 3px 0px;
+      }
+
+      .sub-column4 .details {
+        background: #bdb7b0;
+        padding: 10px 5px;
+      }
+
+      .sub-column4 {
+        border-radius: 5px;
+        /* border: 3px solid #CE4141; */
+        background: #7e6b55;
+        float: left;
+        width: 100%;
+        padding: 7px;
+        min-height: 200px;
+      }
+
+      .sub-column4 h4 {
+        float: left;
+        width: 100%;
+        background: #926335;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+        padding: 5px;
+        border-bottom: 1px solid #fff;
+      }
+
+      .sub-column4 h4 p {
+        color: #fff;
+        text-align: center;
+        width: 70%;
+        float: left;
+        /* text-align: center; */
+        margin: 3px 0px;
+      }
+
+      .sub-column5 .details {
+        background: #c0bdaf;
+        padding: 10px 5px;
+      }
+
+      .sub-column5 {
+        border-radius: 5px;
+
+        background: #a2c557;
+        float: left;
+        width: 100%;
+        padding: 7px;
+        min-height: 200px;
+      }
+
+      .sub-column5 h4 {
+        float: left;
+        width: 100%;
+        background: #a69336;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+        padding: 5px;
+        border-bottom: 1px solid #fff;
+      }
+
+      .sub-column5 h4 p {
+        color: #fff;
+        text-align: center;
+        width: 90%;
+        float: right;
+
+        margin: 3px 0px;
+      }
+
+      .height {
+        height: 400px;
+      }
+
+      @media (max-width: 760px) {
+        .sub-column1 h4 span {
+          width: 15%;
+        }
+        .sub-column1 h4 p {
+          width: 85%;
+        }
+        .sub-column2 h4 span {
+          width: 15%;
+        }
+        .sub-column2 h4 p {
+          width: 85%;
+        }
+        .sub-column3 h4 span {
+          width: 15%;
+        }
+        .sub-column3 h4 p {
+          width: 85%;
+        }
+        .sub-column4 h4 span {
+          width: 15%;
+        }
+        .sub-column4 h4 p {
+          width: 85%;
+        }
+        .sub-column5 h4 span {
+          width: 15%;
+        }
+        .sub-column5 h4 p {
+          width: 85%;
+        }
+        .container {
+          width: 99%;
+          margin: 0px auto;
+        }
+        .column1:nth-child(2n + 3) {
+          clear: both;
+        }
+        .details p {
+          float: left;
+          font-size: 11px;
+          margin-bottom: 2px;
+          width: 100%;
+          line-height: 16px;
+        }
+        .details h3 {
+          float: left;
+          font-weight: normal;
+          width: 100%;
+          line-height: 16px;
+        }
+        .column1 {
+          width: 50%;
+          padding-left: 3px;
+          padding-right: 3px;
+          float: left;
+        }
+        .column1 h2 {
+          font-family: Poppins;
+          font-size: 15px;
+          font-style: normal;
+          font-weight: 700;
+          /* line-height: 38px; */
+          letter-spacing: 0em;
+          text-align: center;
+          color: #000;
+          margin-bottom: 5px;
+          margin-top: 10px;
+        }
+        .details h3 label {
+          float: left;
+          font-size: 11px;
+        }
+      }
+
+      @media only screen and (min-width: 761px) and (max-width: 1099px) {
+        .column1 {
+          width: 33.333%;
+          padding-left: 8px;
+          padding-right: 8px;
+          float: left;
+        }
+        .column1:nth-child(3n + 4) {
+          clear: both;
+        }
+      }
+
+      @media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: portrait) and (-webkit-min-device-pixel-ratio: 2) {
+        .column1 {
+          width: 33.33%;
+          padding-left: 8px;
+          padding-right: 8px;
+          float: left;
+        }
+        .column1:nth-child(3n + 4) {
+          clear: both;
+        }
+        .column1 h2 {
+          font-family: Poppins;
+          font-size: 20px;
+          font-style: normal;
+          font-weight: 700;
+          letter-spacing: 0em;
+          text-align: center;
+          color: #000;
+          margin-bottom: 20px;
+          margin-top: 20px;
+        }
+        .sub-column2 h4 p {
+          color: #fff;
+          text-align: center;
+          width: 85%;
+          float: left;
+          /* text-align: center; */
+          margin: 3px 0px;
+        }
+        .sub-column2 h4 span {
+          float: right;
+          width: 15%;
+          margin: 3px 0px 0px;
+          text-align: left;
+          padding: 0px 2px;
+        }
+        .sub-column1 h4 p {
+          color: #fff;
+          text-align: center;
+          width: 85%;
+          float: left;
+          /* text-align: center; */
+          margin: 3px 0px;
+        }
+        .sub-column1 h4 span {
+          float: right;
+          width: 15%;
+          margin: 3px 0px 0px;
+          text-align: left;
+          padding: 0px 2px;
+        }
+        .sub-column3 h4 p {
+          color: #fff;
+          text-align: center;
+          width: 80%;
+          float: left;
+          /* text-align: center; */
+          margin: 3px 0px;
+        }
+        .sub-column3 h4 span {
+          float: left;
+          width: 10%;
+          margin: 3px 0px 0px;
+          text-align: left;
+          padding: 0px 2px;
+        }
+        .sub-column4 h4 p {
+          color: #fff;
+          text-align: center;
+          width: 80%;
+          float: left;
+          /* text-align: center; */
+          margin: 3px 0px;
+        }
+        .sub-column4 h4 span {
+          float: left;
+          width: 10%;
+          margin: 3px 0px 0px;
+          text-align: left;
+          padding: 0px 2px;
+        }
+        .sub-column5 h4 p {
+          color: #fff;
+          text-align: center;
+          width: 85%;
+          float: right !important;
+          /* text-align: center; */
+          margin: 3px 0px;
+        }
+        .sub-column5 h4 span {
+          float: right;
+          width: 15%;
+          margin: 3px 0px 0px;
+          text-align: left;
+          padding: 0px 2px;
+        }
+      }
+    </style>
+
+    <script>
+      const TOTAL_COLUMN = 5;
+      $(document).on("click", ".move-order-next", function () {
+        var id = $(this).attr("data-id");
+        var order = $("#" + id);
+        var currentCol = parseInt($(order).attr("data-current-column"));
+        var nextCol = parseInt(currentCol) + parseInt(1);
+
+        if (nextCol > TOTAL_COLUMN) {
+          nextCol = TOTAL_COLUMN;
+        }
+
+        if (nextCol === 2) {
+          $.ajax({
+            url: "http://localhost:3000/admin/ajax",
+            type: "POST",
+            data: {
+              orderStatusId: 2,
+              orderId: id,
+            },
+            success: function (data) {
+              console.log(data);
+            },
+          });
+          // alert("update status to Felvett rendelések: orderId" + id);
+        }
+
+        if (nextCol === 3) {
+          $.ajax({
+            url: "http://localhost:3000/admin/ajax",
+            type: "POST",
+            data: {
+              orderStatusId: 3,
+              orderId: id,
+            },
+            success: function (data) {
+              console.log(data);
+            },
+          });
+          // alert("update status to Elkészítve: orderId" + id);
+        }
+
+        if (nextCol === 4) {
+          $.ajax({
+            url: "http://localhost:3000/admin/ajax",
+            type: "POST",
+            data: {
+              orderStatusId: 4,
+              orderId: id,
+            },
+            success: function (data) {
+              console.log(data);
+            },
+          });
+          // alert("update status to Odaadva futárnak: orderId" + id);
+        }
+
+        if (nextCol === 5) {
+          $.ajax({
+            url: "http://localhost:3000/admin/ajax",
+            type: "POST",
+            data: {
+              orderStatusId: 5,
+              orderId: id,
+            },
+            success: function (data) {
+              console.log(data);
+            },
+          });
+          // alert("update status to Kiszállítva: orderId" + id);
+        }
+
+        $(order).attr("data-current-column", nextCol);
+        $(order).prependTo("#column-" + nextCol);
+      });
+
+      $(document).on("click", ".move-order-prev", function () {
+        var id = $(this).attr("data-id");
+        var order = $("#" + id);
+        var currentCol = parseInt($(order).attr("data-current-column"));
+        var nextCol = parseInt(currentCol) - parseInt(1);
+
+        if (nextCol < 1) {
+          nextCol = 1;
+        }
+
+        if (nextCol === 2) {
+          $.ajax({
+            url: "http://localhost:3000/admin/ajax",
+            type: "POST",
+            data: {
+              orderStatusId: 2,
+              orderId: id,
+            },
+            success: function (data) {
+              console.log(data);
+            },
+          });
+          // alert("update status to Felvett rendelések: orderId" + id);
+        }
+
+        if (nextCol === 3) {
+          $.ajax({
+            url: "http://localhost:3000/admin/ajax",
+            type: "POST",
+            data: {
+              orderStatusId: 3,
+              orderId: id,
+            },
+            success: function (data) {
+              console.log(data);
+            },
+          });
+          // alert("update status to Elkészítve: orderId" + id);
+        }
+
+        if (nextCol === 4) {
+          $.ajax({
+            url: "http://localhost:3000/admin/ajax",
+            type: "POST",
+            data: {
+              orderStatusId: 4,
+              orderId: id,
+            },
+            success: function (data) {
+              console.log(data);
+            },
+          });
+          // alert("update status to Odaadva futárnak: orderId" + id);
+        }
+
+        if (nextCol === 5) {
+          $.ajax({
+            url: "http://localhost:3000/admin/ajax",
+            type: "POST",
+            data: {
+              orderStatusId: 5,
+              orderId: id,
+            },
+            success: function (data) {
+              console.log(data);
+            },
+          });
+          // alert("update status to Kiszállítva: orderId" + id);
+        }
+
+        $(order).attr("data-current-column", nextCol);
+        $(order).prependTo("#column-" + nextCol);
+      });
+    </script>
+
+    <div class="main-container">
+      <div class="container">
+        <div class="main-column">
+          <div class="column1">
+            <h2>Új rendelések</h2>
+            <div class="sub-column1" id="column-1">
+              <% for (let i =0; i < orderfirst.orders.length; i++) { %>
+              <div
+                id="<%= orderfirst.orders[i].id %>"
+                data-id="<%= orderfirst.orders[i].id %>"
+                data-current-column="1"
+                class="inner-sub-column"
+              >
+                <h4>
+                  <% if(userRole !=1) { %>
+                  <span class="arrow">
+                    <img
+                      src="../img/right-arrow.png"
+                      class="move-order-next"
+                      data-id="<%= orderfirst.orders[i].id %>"
+                    />
+                  </span>
+                  <% } %>
+                  <p><%= orderfirst.orders[i].id %></p>
+                  <span class="arrow">
+                    <img
+                      src="../img/left-arrow.png"
+                      class="move-order-prev"
+                      data-id="<%= orderfirst.orders[i].id %>"
+                    />
+                  </span>
+                </h4>
+                <div class="details">
+                  <h3>
+                    <label>Erdős József</label> <b>|</b
+                    ><label>+40753541070</label>
+                  </h3>
+                  <p>Székelyudvarhely</p>
+                  <p><span>Utca:</span>Körösi Csoma sándor utca</p>
+                  <p><span>Házszám:</span>1263/B</p>
+                  <p><span>Emelet:</span>2</p>
+                  <p><span>Ajtószám:</span>13C</p>
+                  <h5>Nem kér evőeszközt</h5>
+                  <h6>Ár: 25.99 RON</h6>
+                </div>
+              </div>
+              <% } %>
+            </div>
+          </div>
+
+          <div class="column1">
+            <h2>Felvett rendelések</h2>
+            <div id="column-2" class="sub-column2">
+              <% for (let i =0; i < ordersecond.orders.length; i++) { %>
+              <div
+                id="<%= ordersecond.orders[i].id %>"
+                data-id="<%= ordersecond.orders[i].id %>"
+                data-current-column="2"
+                class="inner-sub-column open"
+              >
+                <h4>
+                  <% if(userRole !=1) { %>
+                  <span class="arrow"
+                    ><img
+                      class="move-order-next"
+                      data-id="<%= ordersecond.orders[i].id %>"
+                      src="../img/right-arrow.png"
+                  /></span>
+                  <% } %>
+                  <p><%= ordersecond.orders[i].encodedKey %></p>
+                  <% if(userRole !=1) { %>
+
+                  <span class="arrow"
+                    ><img
+                      class="move-order-prev"
+                      data-id="<%= ordersecond.orders[i].id %>"
+                      src="../img/left-arrow.png"
+                  /></span>
+                  <% } %>
+                </h4>
+                <div class="details">
+                  <h3>
+                    <label
+                      ><%= ordersecond.orders[i].OrderDeliveryAddress.userName
+                      %></label
+                    >
+                    <b>|</b
+                    ><label
+                      ><%=
+                      ordersecond.orders[i].OrderDeliveryAddress.phoneNumber
+                      %></label
+                    >
+                  </h3>
+                  <p>
+                    <%=
+                    ordersecond.orders[i].LocationName.LocationNameTranslations[0].name
+                    %>
+                  </p>
+                  <p>
+                    <span>Utca:</span> <%=
+                    ordersecond.orders[i].OrderDeliveryAddress.street %>
+                  </p>
+                  <p>
+                    <span>Házszám:</span> <%=
+                    ordersecond.orders[i].OrderDeliveryAddress.houseNumber %>
+                  </p>
+                  <% if(ordersecond.orders[i].OrderDeliveryAddress.floor !== ""
+                  ){ %>
+                  <p>
+                    <span>Emelet:</span> <%=
+                    ordersecond.orders[i].OrderDeliveryAddress.floor %>
+                  </p>
+                  <% } %> <%
+                  if(ordersecond.orders[i].OrderDeliveryAddress.doorNumber !==
+                  "" ){ %>
+                  <p>
+                    <span>Ajtószám:</span> <%=
+                    ordersecond.orders[i].OrderDeliveryAddress.doorNumber %>
+                  </p>
+                  <% } %> <% if(ordersecond.orders[i].cutlery !==1){ %>
+                  <h5>Nem kér evőeszközt</h5>
+                  <% } %>
+
+                  <h6>Ár: <%= ordersecond.orders[i].totalPrice %> RON</h6>
+                </div>
+              </div>
+              <% } %>
+            </div>
+          </div>
+
+          <div class="column1">
+            <h2>Elkészítve</h2>
+            <div id="column-3" class="sub-column3">
+              <% for (let i =0; i < orderthird.orders.length; i++) { %>
+              <div
+                class="inner-sub-column"
+                id="<%= orderthird.orders[i].id %>"
+                data-id="<%= orderthird.orders[i].id %>"
+                data-current-column="3"
+              >
+                <h4>
+                  <span class="arrow"
+                    ><img
+                      class="move-order-next"
+                      data-id="<%= orderthird.orders[i].id %>"
+                      src="../img/right-arrow.png"
+                  /></span>
+                  <p><%= orderthird.orders[i].id %></p>
+                  <% if(userRole !=1) { %>
+                  <span class="arrow"
+                    ><img
+                      class="move-order-prev"
+                      data-id="<%= orderthird.orders[i].id %>"
+                      src="../img/left-arrow.png"
+                  /></span>
+                  <% } %>
+                </h4>
+                <div class="details">
+                  <h3>
+                    <label>Erdős József</label> <b>|</b
+                    ><label>+40753541070</label>
+                  </h3>
+                  <p>Székelyudvarhely</p>
+                  <p><span>Utca:</span>Körösi Csoma sándor utca</p>
+                  <p><span>Házszám:</span>1263/B</p>
+                  <p><span>Emelet:</span>2</p>
+                  <p><span>Ajtószám:</span>13C</p>
+                  <h6>Ár: 25.99 RON</h6>
+                </div>
+              </div>
+              <% } %>
+            </div>
+          </div>
+
+          <div class="column1">
+            <h2>Odaadva futárnak</h2>
+            <div id="column-4" class="sub-column4">
+              <% for (let i =0; i < orderfour.orders.length; i++) { %>
+              <div
+                class="inner-sub-column"
+                id="<%= orderfour.orders[i].id %>"
+                data-id="<%= orderfour.orders[i].id %>"
+                data-current-column="4"
+              >
+                <h4>
+                  <span class="arrow"
+                    ><img
+                      class="move-order-next"
+                      data-id="<%= orderfour.orders[i].id %>"
+                      src="../img/right-arrow.png"
+                  /></span>
+                  <p><%= orderfour.orders[i].id %></p>
+                  <span class="arrow"
+                    ><img
+                      class="move-order-prev"
+                      data-id="<%= orderfour.orders[i].id %>"
+                      src="../img/left-arrow.png"
+                  /></span>
+                </h4>
+                <div class="details">
+                  <h3>
+                    <label>Erdős József</label> <b>|</b
+                    ><label>+40753541070</label>
+                  </h3>
+                  <p>Székelyudvarhely</p>
+                  <p><span>Utca:</span>Körösi Csoma sándor utca</p>
+                  <p><span>Házszám:</span>1263/B</p>
+                  <p><span>Emelet:</span>2</p>
+                  <p><span>Ajtószám:</span>13C</p>
+                  <h6>Ár: 25.99 RON</h6>
+                </div>
+              </div>
+              <% } %>
+            </div>
+          </div>
+
+          <div class="column1">
+            <h2>Kiszállítva</h2>
+            <div id="column-5" class="sub-column5">
+              <% for (let i =0; i < orderfive.orders.length; i++) { %>
+              <div
+                class="inner-sub-column"
+                id="<%= orderfive.orders[i].id %>"
+                data-id="<%= orderfive.orders[i].id %>"
+                data-current-column="5"
+              >
+                <h4>
+                  <span class="arrow"
+                    ><img
+                      class="move-order-next"
+                      data-id="<%= orderfive.orders[i].id %>"
+                      src="../img/right-arrow.png"
+                  /></span>
+                  <p><%= orderfive.orders[i].id %></p>
+                  <span class="arrow"
+                    ><img
+                      class="move-order-prev"
+                      data-id="<%= orderfive.orders[i].id %>"
+                      src="../img/left-arrow.png"
+                  /></span>
+                </h4>
+                <div class="details">
+                  <h3>
+                    <label>Erdős József</label> <b>|</b
+                    ><label>+40753541070</label>
+                  </h3>
+                  <p>Székelyudvarhely</p>
+                  <p><span>Utca:</span>Körösi Csoma sándor utca</p>
+                  <p><span>Házszám:</span>1263/B</p>
+                  <p><span>Emelet:</span>2</p>
+                  <p><span>Ajtószám:</span>13C</p>
+                  <h6>Ár: 25.99 RON</h6>
+                </div>
+              </div>
+              <% } %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

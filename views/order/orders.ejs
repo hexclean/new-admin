@@ -1,317 +1,2488 @@
-<%- include('../includes/head.ejs') %>
-</head>
-<body class="ms-body ms-aside-left-open ms-primary-theme ms-has-quickbar">
-   <%- include('../includes/navigation.ejs') %>
-   <main class="body-content">
-      <%- include('../includes/navigation-bar.ejs') %>
-      <div class="ms-content-wrapper">
-         <div class="ms-profile-overview no-img-var">
-            <ul class="ms-profile-navigation nav nav-tabs tabs-bordered" role="tablist">
-               <li role="presentation"><a href="#" aria-controls="tab1" class="active show" role="tab" data-toggle="tab"><%= lingua.new_orders %></a></li>
-               <li role="presentation"><a class="add-variant" href="/admin/in-progress-orders">Felvett rendelések</a></li>
-               <li role="presentation"><a class="add-variant" href="/admin/accepted-orders"><%= lingua.accepted_orders %></a></li>
-               <li role="presentation"><a class="add-extra" href="/admin/deleted-orders"><%= lingua.deleted_orders %></a></li>
-            </ul>
-         </div>
-      </div>
-      <div class="col-6">
-         <input type="text" name="searchOrder" id="searchOrder" placeholder="<%= lingua.search_order %>" class="category-search form-control" />
-         <hr>
-      </div>
-      <script>
-         $(document).ready(function() {
-            $('#searchOrder').keyup(function() {
-               const order = $('#searchOrder').val();
-               console.log(order)
-               $.get("get-filtered-order/" + order).done(function(data) {
-                  $("#searchedOrder").html(data);
-               });
-            });
-         })
-      </script>
-      <div id="searchedOrder">
-         <% if (orders.length ==0) { %>
-            <h2><%= lingua.no_new_order %></h2>
-         <% } %>
-         <% for (let i =0; i < orders.length; i++) { %>
-         <p>
-         <div class="ms-content-wrapper" data-toggle="collapse" name="orders" value="#orders<%= orders[i].encodedKey %>" href="#orders<%= orders[i].encodedKey %>" aria-expanded="false" aria-controls="orders<%= orders[i].encodedKey %>">
-            <div class="table-responsive">
-               <table  class="table table-hover thead-primary">
-                  <thead>
-                     <tr>
-                        <th scope="col">Id</th>
-                        <th scope="col"><%= lingua.order_list_name %></th>
-                        <th scope="col"><%= lingua.order_list_city %></th>
-                        <th scope="col"><%= lingua.order_list_total %></th>
-                        <th scope="col"><%= lingua.order_list_status %></th>
-                       
-                     </tr>
-                  </thead>
-                  <tbody>
-                     <tr>
-                        <th scope="row">#<%= orders[i].encodedKey %></th>
-                        <td><%= orders[i].OrderDeliveryAddress.userName %></td>
-                        <td><%= orders[i].LocationName.LocationNameTranslations[0].name %></td>
-                        <td><%= orders[i].totalPrice %> <%= lingua.currency %></td>
-                        <td><%= lingua.order_list_new_status %></td>
-                        
-                     </tr>
-                  </tbody>
-               </table>
-            </div>
-         </div>
-         </p>
-         <div class="collapse" name="orders"  value="#orders<%= orders[i].encodedKey %>" id="orders<%= orders[i].encodedKey %>">
-            <form
-               id="createBox_form"
-               class="ms-content-wrapper"
-               action="/admin/<% if (editing) { %>edit-order<% } else { %>edit-order<% } %>"
-               method="POST">
-               <div class="ms-content-wrapper">
-                  <div class="row">
-                     <div class="col-md-12">
-                        <div class="ms-panel">
-                           <div class="ms-panel-header header-mini">
-                              <div class="d-flex justify-content-between">
-                                 <h6>#<%= orders[i].encodedKey %></h6>
-                              </div>
-                           </div>
-                           <div class="ms-panel-body">
-                              <!-- Invoice To -->
-                              <h4 style="border-bottom: 1px solid green;"><%= lingua.user_detail %></h4>
-                              <div class="row align-items-center border-orders-userinf">
-                                 <div class="col-md-6 info-orders-top" style="padding-top: 15px;">
-                                    <div class="invoice-address">
-                                       <h5><%= lingua.order_detail_name %>: <b><%= orders[i].OrderDeliveryAddress.userName %></b></h5>
-                                       <h5>
-                                       <%= lingua.order_detail_phone %>:  <b><%= orders[i].OrderDeliveryAddress.phoneNumber %></b> 
-                                       <h5>
-                                       <h5>
-                                       <%= lingua.order_detail_street %>:  <b><%= orders[i].OrderDeliveryAddress.street %></b> 
-                                       <h5>
-                                       <h5>
-                                       <%= lingua.order_detail_house_number %>:  <b><%= orders[i].OrderDeliveryAddress.houseNumber %></b> 
-                                       <h5>
-                                       <h5>
-                                       <%= lingua.order_detail_floor %>:  <b><%= orders[i].OrderDeliveryAddress.floor %></b> 
-                                       <h5>
-                                       <h5>
-                                       <%= lingua.order_detail_door_number %>: <b><%= orders[i].OrderDeliveryAddress.doorNumber %></b> 
-                                       <h5>
-                                       <h5>
-                                       <%= lingua.order_detail_created %>: <b><%= orders[i].createdAt.toLocaleString("en-GB", {
-                                          timeZone: "Europe/Helsinki"
-                                          }); %></b>
-                                       <h5>
-                                          <h5>
-                                             <u><%= lingua.order_list_total %>: <b><%= orders[i].totalPrice %> <%= lingua.currency %></b> </u>
-                                             <h5>
-                                    </div>
-                                 </div>
-                                 <div class="col-md-6 info-orders-top" style="border-style: double;padding-top: 10px; padding-left: 10px;border-color: coral; ">
-                                    <div class="invoice-address">
-                                       <h5><u><%=lingua.product_comment_courier %></u>: <% if(orders[i].messageCourier.length ==0){ %>
-                                          -
-                                          <% } else{ %>  
-                                          <%= orders[i].messageCourier %> 
-                                          <% } %>
-                                       </h5>
-                                       <h5><u><%= lingua.cutlery %></u>: <% if(orders[i].cutlery == 1){ %>
-                                          <%=lingua.yes %>
-                                          <% } else{ %>  
-                                             <%=lingua.no %>
-                                          <% } %>
-                                       </h5>
-                                       <h5><u><%= lingua.take_away %></u>: <% if(orders[i].take == 1){ %>
-                                          <%=lingua.yes %>
-                                          <% } else{ %>  
-                                             <%=lingua.no %>
-                                          <% } %>
-                                       </h5>
-                                       <h5><u><%= lingua.delivery_price %></u>: <% if(orders[i].deliveryPrice == 0){ %>
-                                         -
-                                          <% } else{ %>  
-                                             <%= orders[i].deliveryPrice %> <%= lingua.currency %>
-                                          <% } %>
-                                       </h5>
-                                       
-                                    </div>
-                                 </div>
-                              </div>
-                              <!-- Invoice Table -->
-                              <% for (let j =0; j < orders[i].products.length; j++) { %>
-                              <div class="ms-invoice-table table-responsive mt-5" style="border-style: double;">
-                                 <table class="table table-hover text-right thead-light">
-                                    <thead>
-                                       <tr class="text-capitalize" style="font-size: 16px;">
-                                          <th class="text-center w-5">Id</th>
-                                          <th class="text-left"><%= lingua.order_detail_product_name %></th>
-                                          <th><%= lingua.category %></th>
-                                          <th><%= lingua.order_detail_quantity %></th>
-                                          <th><%= lingua.order_detail_product_price %></th>
-                                          <th><%= lingua.order_detail_total %></th>
-                                       </tr>
-                                    </thead>
-                                    <tbody style="font-size: 16px;">
-                                       <tr>
-                                          <td class="text-center"><%= orders[i].products[j].product_id %></td>
-                                          <td class="text-left"><%= orders[i].products[j].product_name %></td>
-                                          <td ><%= orders[i].products[j].variant_sku %></td>
-                                          <td><%= orders[i].products[j].product_quantity %></td>
-                                          <td><%= orders[i].products[j].product_price %></td>
-                                          <td><%= orders[i].products[j].total_product_price %></td>
-                                       </tr>
-                                       <% for (let k = 0; k < orders[i].products[j].extras.length; ++k) { %>
-                                       <% if(orders[i].products[j].extra_length != 0){ %>
-                                       <tr>
-                                          <td class="text-center"><%=  orders[i].products[j].extras[k].extra_id %></td>
-                                          <td class="text-left"><%=  orders[i].products[j].extras[k].extra_name %> (extra)</td>
-                                          <td></td>
-                                          <td><%= orders[i].products[j].extras[k].extra_quantity %></td>
-                                          <td><%= orders[i].products[j].extras[k].extra_price %></td>
-                                          <td><%= (orders[i].products[j].extras[k].extra_quantity *  orders[i].products[j].extras[k].extra_price).toFixed(2) %></td>
-                                       </tr>
-                                       <% } %>
-                                       <% } %>
-                                       
-                                       <% if(orders[i].products[j].boxPrice !=0){ %>
-                                          <tr style="border-style: dotted;">
-                                             <td class="text-center"></td>
-                                             <td class="text-left"><%= lingua.box %></td>
-                                             <td></td>
-                                             <td><%= orders[i].products[j].product_quantity %></td>
-                                             <td><%= orders[i].products[j].boxPrice %></td>
-                                             <td><%= orders[i].products[j].totalBoxPrice %></td>
-                                          </tr>
-                                          <% } %>
-                                     
-                                    </tbody>
-                                   
-                                 </table>
-                                 <p style=" font-size: 17px; margin-left: 20px;" class="text-left"><u><%=lingua.product_comment %></u>: <% if(orders[i].products[j].message.length !=0){ %>
-                                    <%= orders[i].products[j].message %>
-                                    <% } else{ %>  
-                                    -
-                                    <% } %>
-                                 </p>
-                              </div>
-                              <% } %>
-                              <input
-                                 type="hidden"
-                                 value="<%= orders[i].encodedKey %>"
-                                 name="orderId"
-                                 />
-                                 <script>
-                                    $(document).ready(function() {
-                                       console.log($('#failedDescription<%= orders[i].encodedKey %>').val());
-                                       $('#dbtnvaldelval<%= orders[i].encodedKey %>').on('click',
-                                          function(){
-                                             console.log("ok")
-                                             $('#failedDescription<%= orders[i].encodedKey %>').val('');
-                                             
-                                          }
-                                    );
-                                    });
-                                </script>
+<!DOCTYPE html>
+<html lang="ro">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="robots" content="index,follow" />
+    <meta name="googlebot" content="NOODP" />
+    <!-- CSS only -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+      crossorigin="anonymous"
+    />
+    <!-- JavaScript Bundle with Popper -->
+    <script
+      src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"
+    ></script>
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 
-                                 
-                              <div class="invoice-buttons text-right">
-                                 <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal<%= orders[i].encodedKey %>">
-                                 <%= lingua.accept_order %>
-                                 </button>
-                                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalFailed<%= orders[i].encodedKey %>">
-                                 <%= lingua.delete_order %>
-                                 </button>
-                              </div>
-                              <!-- Button trigger modal -->
-                              <!-- Modal Success-->
-                              <div class="modal fade" id="exampleModal<%= orders[i].encodedKey %>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                 <div class="modal-dialog" role="document">
-                                    <div class="modal-content">
-                                       <div class="modal-header">
-                                          <h5 class="modal-title" id="exampleModalLabel"><%= lingua.expected_delivery %></h5>
-                                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                          <span aria-hidden="true">&times;</span>
-                                          </button>
-                                       </div>
-                                       <div class="modal-body">
-                                          <div class="container">
-                                             <div class="row">
-                                                <div class="col-sm">
-                                                   <label for="hours"><%= lingua.hour%>:</label>
-                                                   <select class="form-control"  name="hours" id="hours">
-                                                      <option selected="selected" value="0">0</option>
-                                                      <option value="1">1</option>
-                                                      <option value="2">2</option>
-                                                      <option value="3">3</option>
-                                                      <option value="4">4</option>
-                                                      <option value="5">5</option>
-                                                   </select>
-                                                </div>
-                                                <div class="col-sm">
-                                                   <label for="minutes"><%= lingua.minute%>:</label>
-                                                   <select class="form-control minute-css"  name="minutes" id="minutes">
-                                                      <option value="0">0</option>
-                                                      <option value="5">5</option>
-                                                      <option value="10">10</option>
-                                                      <option value="15">15</option>
-                                                      <option value="20">20</option>
-                                                      <option value="25">25</option>
-                                                      <option value="30">30</option>
-                                                      <option value="35">35</option>
-                                                      <option value="40">40</option>
-                                                      <option value="45">45</option>
-                                                      <option selected="selected"  value="50">50</option>
-                                                      <option value="55">55</option>
-                                                   </select>
-                                                </div>
-                                             </div>
-                                          </div>
-                                       </div>
-                                       <div class="modal-footer">
-                                          <button type="submit" class="btn btn-success"><%= lingua.accept_order %></button>
-                                          <button type="button"  data-dismiss="modal" class="btn btn-secondary"><%= lingua.quit %></button>
-                                       </div>
-                                    </div>
-                                 </div>
-                              </div>
-                              <!-- Modal Failed-->
-                              <div class="modal fade" id="exampleModalFailed<%= orders[i].encodedKey %>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                 <div class="modal-dialog" role="document">
-                                    <div class="modal-content">
-                                       <div class="modal-header">
-                                          <h5 class="modal-title" id="exampleModalLabel"><%= lingua.delete_order %></h5>
-                                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                          <span aria-hidden="true">&times;</span>
-                                          </button>
-                                       </div>
-                                       <div class="modal-body">
-                                          <div class="container">
-                                             <div class="row">
-                                                <label for="failedDescription"><%= lingua.reason %> (<%= lingua.required %>)</label>
-                                                <textarea class="form-control delval<%= orders[i].encodedKey %>" name="failedDescription" id="failedDescription<%= orders[i].encodedKey %>" rows="5"></textarea>
-                                             </div>
-                                          </div>
-                                       </div>
-                                       <div class="modal-footer">
-                                          <button type="submit" class="btn btn-primary"><%= lingua.delete_order %></button>
-                                          <button type="button" id="dbtnvaldelval<%= orders[i].encodedKey %>"  data-dismiss="modal" class="btn btn-secondary dbtnvaldelval<%= orders[i].encodedKey %>"><%= lingua.quit %></button>
-                                       </div>
-                                    </div>
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-            </form>
-            <!-- End -->
-         </div>
-         <% } %>
+    <script
+      type="text/javascript"
+      src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"
+    ></script>
+
+    <script
+      type="text/javascript"
+      src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"
+    ></script>
+
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  </head>
+  <body>
+    <style>
+      body {
+        background: #eee;
+      }
+
+      .encodedKey {
+        font-size: 18px;
+      }
+      .details {
+        cursor: pointer;
+      }
+
+      .sub-column1 .move-order-prev {
+        display: none;
+      }
+      .sub-column2 .move-order-prev {
+        display: none;
+      }
+      .sub-column5 .move-order-next {
+        display: none;
+      }
+      .move-order-next {
+        float: right !important;
+      }
+      .move-order-prev {
+        float: left !important;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      @font-face {
+        font-family: "poppins";
+        src: url(../font/poppins.ttf) format("truetype");
+      }
+
+      body,
+      html {
+        font-family: "poppins";
+        font-size: 14px;
+        line-height: 20px;
+        font-weight: 400;
+        color: #000;
+        overflow-x: hidden;
+        height: 100%;
+      }
+
+      .main-container {
+        float: left;
+        width: 100%;
+        background: #eee;
+        padding: 10px 0px;
+      }
+
+      .column1 img {
+        cursor: pointer;
+      }
+
+      .container {
+        width: 96%;
+        margin: 0px auto;
+      }
+
+      .column1 {
+        width: 20%;
+        padding-left: 8px;
+        padding-right: 8px;
+        float: left;
+      }
+
+      .column1 h2 {
+        font-family: Poppins;
+        font-size: 20px;
+        font-style: normal;
+        font-weight: 700;
+        letter-spacing: 0em;
+        text-align: center;
+        color: #000;
+        margin-bottom: 20px;
+        margin-top: 10px;
+      }
+
+      .sub-column1 {
+        border-radius: 5px;
+        /* border: 3px solid #CE4141; */
+        background: #ce4141;
+        float: left;
+        width: 100%;
+        padding: 7px;
+        min-height: 200px;
+      }
+
+      .sub-column1 h4 {
+        float: left;
+        width: 100%;
+        background: #763269;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+        padding: 5px;
+        border-bottom: 1px solid #fff;
+      }
+
+      .sub-column1 h4 p {
+        color: #fff;
+        text-align: center;
+        width: 90%;
+        float: left;
+        /* text-align: center; */
+        margin: 3px 0px;
+      }
+
+      .inner-sub-column {
+        float: left;
+        width: 100%;
+      }
+
+      .sub-column2 {
+        border-radius: 5px;
+        /* border: 3px solid #CE4141; */
+        background: #a1ccd6;
+        float: left;
+        width: 100%;
+        padding: 7px;
+        min-height: 200px;
+      }
+
+      .sub-column2 h4 {
+        float: left;
+        width: 100%;
+        background: #5e7bb8;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+        padding: 5px;
+        border-bottom: 1px solid #fff;
+      }
+
+      .sub-column2 h4 p {
+        color: #fff;
+        text-align: center;
+        width: 90%;
+        float: left;
+        /* text-align: center; */
+        margin: 3px 0px;
+      }
+
+      .sub-column1 h4 span {
+        float: right;
+        /* width: 20%; */
+        margin: 3px 0px 0px;
+        text-align: left;
+        padding: 0px 2px;
+        width: 10%;
+      }
+
+      .sub-column1 .details {
+        background: #a68da1;
+        padding: 10px 5px;
+      }
+
+      .details h3 {
+        float: left;
+        font-weight: normal;
+        width: 100%;
+      }
+
+      .details h3 label {
+        float: left;
+        font-size: 15px;
+      }
+
+      .details p {
+        float: left;
+        font-size: 15px;
+        margin-bottom: 2px;
+        width: 100%;
+      }
+
+      .details b {
+        float: left;
+        font-weight: normal;
+        font-size: 13px;
+      }
+
+      .details b {
+        float: left;
+        font-weight: normal;
+        font-size: 13px;
+        margin: 0px 5px;
+        margin-bottom: 2px;
+      }
+
+      .details h5 {
+        background: #f78f1e;
+        float: left;
+        /* width: 80%; */
+        /* clear: both; */
+        padding: 3px;
+        border-radius: 5px;
+        color: #fff;
+        font-size: 13px;
+        font-weight: 500;
+        margin-bottom: 3px;
+        margin-top: 3px;
+      }
+
+      .details h6 {
+        float: left;
+        width: 100%;
+        font-size: 15px;
+        font-weight: 600;
+        margin-top: 5px;
+      }
+
+      .details {
+        margin-bottom: 10px;
+        float: left;
+        width: 100%;
+        border-bottom-left-radius: 5px;
+        border-bottom-right-radius: 5px;
+      }
+
+      .sub-column2 .details {
+        background: #9ea9c0;
+        padding: 10px 5px;
+      }
+
+      .details p span {
+        text-decoration: underline;
+      }
+
+      .sub-column3 {
+        border-radius: 5px;
+        /* border: 3px solid #CE4141; */
+        background: #efba6a;
+        float: left;
+        width: 100%;
+        padding: 7px;
+        min-height: 200px;
+      }
+
+      /* .sub-column2 h4 span {
+        float: right;
+        width: 10%;
+        margin: 3px 0px 0px;
+        text-align: left;
+        padding: 0px 2px;
+      }
+
+      .sub-column3 h4 span {
+        float: left;
+        width: 15%;
+        margin: 3px 0px 0px;
+        padding: 0px 2px;
+        text-align: center;
+      } */
+
+      .sub-column3 .details {
+        background: #ada4a9;
+        padding: 10px 5px;
+      }
+
+      .sub-column3 h4 {
+        float: left;
+        width: 100%;
+        background: #88727e;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+        padding: 5px;
+        border-bottom: 1px solid #fff;
+      }
+
+      .sub-column3 h4 p {
+        color: #fff;
+        text-align: center;
+        width: 70%;
+        float: left;
+        /* text-align: center; */
+        margin: 3px 0px;
+      }
+
+      .sub-column4 .details {
+        background: #bdb7b0;
+        padding: 10px 5px;
+      }
+
+      .sub-column4 {
+        border-radius: 5px;
+        /* border: 3px solid #CE4141; */
+        background: #7e6b55;
+        float: left;
+        width: 100%;
+        padding: 7px;
+        min-height: 200px;
+      }
+
+      .sub-column4 h4 {
+        float: left;
+        width: 100%;
+        background: #926335;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+        padding: 5px;
+        border-bottom: 1px solid #fff;
+      }
+
+      .sub-column4 h4 p {
+        color: #fff;
+        text-align: center;
+        width: 70%;
+        float: left;
+        /* text-align: center; */
+        margin: 3px 0px;
+      }
+
+      /* .sub-column4 h4 span {
+        float: left;
+        width: 15%;
+        margin: 3px 0px 0px;
+        text-align: center;
+        padding: 0px 2px;
+      } */
+
+      .sub-column5 .details {
+        background: #c0bdaf;
+        padding: 10px 5px;
+      }
+
+      .sub-column5 {
+        border-radius: 5px;
+        /* border: 3px solid #CE4141; */
+        background: #a2c557;
+        float: left;
+        width: 100%;
+        padding: 7px;
+        min-height: 200px;
+      }
+
+      .sub-column5 h4 {
+        float: left;
+        width: 100%;
+        background: #a69336;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+        padding: 5px;
+        border-bottom: 1px solid #fff;
+      }
+
+      .sub-column5 h4 p {
+        color: #fff;
+        text-align: center;
+        width: 90%;
+        float: right;
+        /* text-align: center; */
+        margin: 3px 0px;
+      }
+
+      /* .sub-column5 h4 span {
+        float: left;
+        width: 10%;
+        margin: 3px 0px 0px;
+        text-align: left;
+        padding: 0px 2px;
+      } */
+
+      .height {
+        height: 400px;
+      }
+
+      @media (max-width: 760px) {
+        .sub-column1 h4 span {
+          width: 15%;
+        }
+        .sub-column1 h4 p {
+          width: 85%;
+        }
+        .sub-column2 h4 span {
+          width: 15%;
+        }
+        .sub-column2 h4 p {
+          width: 85%;
+        }
+        .sub-column3 h4 span {
+          width: 15%;
+        }
+        .sub-column3 h4 p {
+          width: 85%;
+        }
+        .sub-column4 h4 span {
+          width: 15%;
+        }
+        .sub-column4 h4 p {
+          width: 85%;
+        }
+        .sub-column5 h4 span {
+          width: 15%;
+        }
+        .sub-column5 h4 p {
+          width: 85%;
+        }
+        .container {
+          width: 99%;
+          margin: 0px auto;
+        }
+        .column1:nth-child(2n + 3) {
+          clear: both;
+        }
+        .details p {
+          float: left;
+          font-size: 11px;
+          margin-bottom: 2px;
+          width: 100%;
+          line-height: 16px;
+        }
+        .details h3 {
+          float: left;
+          font-weight: normal;
+          width: 100%;
+          line-height: 16px;
+        }
+        .column1 {
+          width: 50%;
+          padding-left: 3px;
+          padding-right: 3px;
+          float: left;
+        }
+        .column1 h2 {
+          font-family: Poppins;
+          font-size: 15px;
+          font-style: normal;
+          font-weight: 700;
+          /* line-height: 38px; */
+          letter-spacing: 0em;
+          text-align: center;
+          color: #000;
+          margin-bottom: 5px;
+          margin-top: 10px;
+        }
+        .details h3 label {
+          float: left;
+          font-size: 11px;
+        }
+      }
+
+      @media only screen and (min-width: 761px) and (max-width: 1099px) {
+        .column1 {
+          width: 33.333%;
+          padding-left: 8px;
+          padding-right: 8px;
+          float: left;
+        }
+        .column1:nth-child(3n + 4) {
+          clear: both;
+        }
+      }
+
+      @media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: portrait) and (-webkit-min-device-pixel-ratio: 2) {
+        .column1 {
+          width: 33.33%;
+          padding-left: 8px;
+          padding-right: 8px;
+          float: left;
+        }
+        .column1:nth-child(3n + 4) {
+          clear: both;
+        }
+        .column1 h2 {
+          font-family: Poppins;
+          font-size: 20px;
+          font-style: normal;
+          font-weight: 700;
+          letter-spacing: 0em;
+          text-align: center;
+          color: #000;
+          margin-bottom: 20px;
+          margin-top: 20px;
+        }
+        .sub-column2 h4 p {
+          color: #fff;
+          text-align: center;
+          width: 85%;
+          float: left;
+          /* text-align: center; */
+          margin: 3px 0px;
+        }
+        .sub-column2 h4 span {
+          float: right;
+          width: 15%;
+          margin: 3px 0px 0px;
+          text-align: left;
+          padding: 0px 2px;
+        }
+        .sub-column1 h4 p {
+          color: #fff;
+          text-align: center;
+          width: 85%;
+          float: left;
+          /* text-align: center; */
+          margin: 3px 0px;
+        }
+        .sub-column1 h4 span {
+          float: right;
+          width: 15%;
+          margin: 3px 0px 0px;
+          text-align: left;
+          padding: 0px 2px;
+        }
+        .sub-column3 h4 p {
+          color: #fff;
+          text-align: center;
+          width: 80%;
+          float: left;
+          /* text-align: center; */
+          margin: 3px 0px;
+        }
+        .sub-column3 h4 span {
+          float: left;
+          width: 10%;
+          margin: 3px 0px 0px;
+          text-align: left;
+          padding: 0px 2px;
+        }
+        .sub-column4 h4 p {
+          color: #fff;
+          text-align: center;
+          width: 80%;
+          float: left;
+          /* text-align: center; */
+          margin: 3px 0px;
+        }
+        .sub-column4 h4 span {
+          float: left;
+          width: 10%;
+          margin: 3px 0px 0px;
+          text-align: left;
+          padding: 0px 2px;
+        }
+        .sub-column5 h4 p {
+          color: #fff;
+          text-align: center;
+          width: 85%;
+          float: right !important;
+          /* text-align: center; */
+          margin: 3px 0px;
+        }
+        .sub-column5 h4 span {
+          float: right;
+          width: 15%;
+          margin: 3px 0px 0px;
+          text-align: left;
+          padding: 0px 2px;
+        }
+      }
+      /* modal-popup-open */
+      .button {
+        border: none;
+        display: inline-block;
+        vertical-align: middle;
+        overflow: hidden;
+        text-decoration: none;
+        color: inherit;
+        background-color: inherit;
+        text-align: center;
+        cursor: pointer;
+        white-space: nowrap;
+        color: #931414;
+        background: #fff;
+        border-radius: 50%;
+        padding: 5px;
+      }
+
+      .modal-content {
+        margin: auto;
+
+        position: relative;
+        padding: 0;
+        outline: 0;
+        width: 70%;
+      }
+      .modal {
+        z-index: 3;
+        display: none;
+        padding-top: 60px;
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgb(0, 0, 0);
+        background-color: rgba(0, 0, 0, 0.4);
+      }
+      .container {
+        padding: 35px 10px;
+      }
+      .display-topright {
+        position: absolute;
+        right: -7px;
+        top: -14px;
+        font-size: 35px;
+      }
+      .cus-details1 td img {
+        float: left;
+        margin: 2px 4px 0px 0px;
+      }
+      .mains-contain {
+        float: left;
+        width: 100%;
+        background-color: #e5e5e5;
+        padding: 15px;
+      }
+      .mains-contain h4 {
+        background: #931414;
+        color: #fff;
+        padding: 5px 10px;
+        font-weight: 600;
+        border-radius: 5px;
+        float: left;
+        width: 100%;
+      }
+      .tabl1 {
+        float: left;
+        margin: 10px 0px 0px;
+        width: 100%;
+      }
+      .tabl1 td span {
+        color: #cb6262;
+      }
+      .bill-pay {
+        float: left;
+        width: 100%;
+        padding: 10px 0px;
+        text-align: right;
+        font-family: 600;
+      }
+      .bill-pay span {
+        font-weight: 600;
+        font-size: 16px;
+        border-bottom: 2px solid #999;
+      }
+      table.tabl1 {
+        border-collapse: collapse;
+        width: 100%;
+        border: 1px solid #931414;
+      }
+      .tabl1 th {
+        border: 1px solid #931414;
+        text-align: left;
+        padding: 3px 8px;
+      }
+      .tabl1 td {
+        border: 1px solid #931414;
+        text-align: left;
+        padding: 3px 8px;
+      }
+      .customer-details {
+        float: left;
+        width: 100%;
+        margin: 10px 0px;
+      }
+      .cus-details1 {
+        float: left;
+        width: 60%;
+        padding-right: 10px;
+      }
+      .cus-details1 table {
+        border-collapse: collapse;
+        width: 100%;
+        border-left: 1px solid #931414;
+        border-right: 1px solid #931414;
+      }
+      .cus-details1 th {
+        border-top: 1px solid #931414;
+        text-align: left;
+        padding: 3px 8px;
+        border-right: none;
+        border-bottom: 1px solid #931414;
+        font-size: 11px;
+        border-left: none;
+      }
+      .customer-details h4 {
+        border-bottom-left-radius: 0px;
+        border-bottom-right-radius: 0px;
+      }
+      .cus-details1 td {
+        border-top: 1px solid #931414;
+        font-size: 15px;
+        text-align: left;
+        padding: 3px 8px;
+        border-bottom: 1px solid #931414;
+        border-left: none;
+        border-right: navajowhite;
+      }
+      .cus-details2 h5 {
+        color: #931414;
+        float: left;
+        width: 100%;
+        padding: 15px 0px;
+        font-size: 15px;
+        font-weight: 600;
+      }
+      .cus-details2 {
+        float: left;
+        width: 40%;
+      }
+      .rend-close {
+        position: relative;
+        float: left;
+        width: 100%;
+      }
+      .cus-details2 p {
+        font-size: 15px;
+        border-left: 1px solid #931414;
+        border-bottom: 1px solid #931414;
+        border-right: 1px solid #931414;
+        padding: 5px;
+        float: left;
+        width: 100%;
+      }
+      .cus-details2 .display-topright {
+        position: absolute;
+        right: -7px;
+        top: 7px;
+        font-size: 15px;
+      }
+      .cus-details2 .button {
+        border: none;
+        display: inline-block;
+        /* padding: 8px 16px; */
+        vertical-align: middle;
+        overflow: hidden;
+        text-decoration: none;
+        color: inherit;
+        background-color: inherit;
+        text-align: center;
+        cursor: pointer;
+        white-space: nowrap;
+        color: #7178aa;
+        /* background: #fff; */
+        border-radius: 50%;
+        padding: 5px;
+      }
+      /* modal-popup-closed */
+      @media (max-width: 760px) {
+        .modal {
+          padding: 20px;
+        }
+        .modal-content {
+          width: 100%;
+        }
+        .tabl1 th {
+          text-align: left;
+          padding: 3px 3px;
+          font-size: 11px;
+        }
+        .bill-pay span {
+          font-weight: 600;
+          font-size: 13px;
+          border-bottom: 2px solid #999;
+        }
+        .cus-details1 {
+          float: left;
+          width: 100%;
+          padding-right: 10px;
+        }
+        .cus-details1 td {
+          font-size: 11px;
+          text-align: left;
+          padding: 3px 4px;
+          font-size: 12px;
+        }
+        .cus-details2 p {
+          font-size: 12px;
+        }
+        .cus-details1 {
+          float: left;
+          width: 100%;
+          padding-right: 0px;
+        }
+        .cus-details2 {
+          float: left;
+          width: 100%;
+          margin: 10px 0px;
+        }
+        .tabl1 td {
+          text-align: left;
+          padding: 3px 3px;
+
+          font-size: 12px;
+        }
+        .cus-details2 .display-topright {
+          position: absolute;
+          right: -7px;
+          top: 7px;
+          font-size: 20px;
+          bottom: -1px;
+        }
+        .cus-details2 .button {
+          border: none;
+          display: inline-block;
+          vertical-align: middle;
+          overflow: hidden;
+          text-decoration: none;
+          color: inherit;
+          background-color: inherit;
+          text-align: center;
+          cursor: pointer;
+          white-space: nowrap;
+          color: #7178aa;
+          border-radius: 50%;
+          padding: 5px;
+        }
+      }
+    </style>
+
+    <script>
+      const TOTAL_COLUMN = 5;
+      $(document).on("click", ".move-order-next", function () {
+        var id = $(this).attr("data-id");
+        var order = $("#" + id);
+        var currentCol = parseInt($(order).attr("data-current-column"));
+        var nextCol = parseInt(currentCol) + parseInt(1);
+
+        if (nextCol > TOTAL_COLUMN) {
+          nextCol = TOTAL_COLUMN;
+        }
+
+        if (nextCol === 2) {
+          $.ajax({
+            url: "http://localhost:3000/admin/ajax",
+            type: "POST",
+            data: {
+              orderStatusId: 2,
+              orderId: id,
+            },
+            success: function (data) {
+              console.log(data);
+            },
+          });
+          // alert("update status to Felvett rendelések: orderId" + id);
+        }
+
+        if (nextCol === 3) {
+          $.ajax({
+            url: "http://localhost:3000/admin/ajax",
+            type: "POST",
+            data: {
+              orderStatusId: 3,
+              orderId: id,
+            },
+            success: function (data) {
+              console.log(data);
+            },
+          });
+          // alert("update status to Elkészítve: orderId" + id);
+        }
+
+        if (nextCol === 4) {
+          $.ajax({
+            url: "http://localhost:3000/admin/ajax",
+            type: "POST",
+            data: {
+              orderStatusId: 4,
+              orderId: id,
+            },
+            success: function (data) {
+              console.log(data);
+            },
+          });
+          // alert("update status to Odaadva futárnak: orderId" + id);
+        }
+
+        if (nextCol === 5) {
+          $.ajax({
+            url: "http://localhost:3000/admin/ajax",
+            type: "POST",
+            data: {
+              orderStatusId: 5,
+              orderId: id,
+            },
+            success: function (data) {
+              console.log(data);
+            },
+          });
+          // alert("update status to Kiszállítva: orderId" + id);
+        }
+
+        $(order).attr("data-current-column", nextCol);
+        $(order).prependTo("#column-" + nextCol);
+      });
+
+      $(document).on("click", ".move-order-prev", function () {
+        var id = $(this).attr("data-id");
+        var order = $("#" + id);
+        var currentCol = parseInt($(order).attr("data-current-column"));
+        var nextCol = parseInt(currentCol) - parseInt(1);
+
+        if (nextCol < 1) {
+          nextCol = 1;
+        }
+
+        if (nextCol === 2) {
+          $.ajax({
+            url: "http://localhost:3000/admin/ajax",
+            type: "POST",
+            data: {
+              orderStatusId: 2,
+              orderId: id,
+            },
+            success: function (data) {
+              console.log(data);
+            },
+          });
+          // alert("update status to Felvett rendelések: orderId" + id);
+        }
+
+        if (nextCol === 3) {
+          $.ajax({
+            url: "http://localhost:3000/admin/ajax",
+            type: "POST",
+            data: {
+              orderStatusId: 3,
+              orderId: id,
+            },
+            success: function (data) {
+              console.log(data);
+            },
+          });
+          // alert("update status to Elkészítve: orderId" + id);
+        }
+
+        if (nextCol === 4) {
+          $.ajax({
+            url: "http://localhost:3000/admin/ajax",
+            type: "POST",
+            data: {
+              orderStatusId: 4,
+              orderId: id,
+            },
+            success: function (data) {
+              console.log(data);
+            },
+          });
+          // alert("update status to Odaadva futárnak: orderId" + id);
+        }
+
+        if (nextCol === 5) {
+          $.ajax({
+            url: "http://localhost:3000/admin/ajax",
+            type: "POST",
+            data: {
+              orderStatusId: 5,
+              orderId: id,
+            },
+            success: function (data) {
+              console.log(data);
+            },
+          });
+          // alert("update status to Kiszállítva: orderId" + id);
+        }
+
+        $(order).attr("data-current-column", nextCol);
+        $(order).prependTo("#column-" + nextCol);
+      });
+    </script>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand">Foodnet</a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarNavAltMarkup"
+        aria-controls="navbarNavAltMarkup"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+          <a class="nav-item nav-link" href="/admin/products"
+            >Vissza a termékekre</a
+          >
+        </div>
       </div>
-   </main>
-   <%- include('../includes/end.ejs')
-   %>
-</body>
+    </nav>
+    <h1 class="text-center" style="margin-top: 20px;">Rendeléskezelő</h1>
+
+    <div class="main-container">
+      <div class="container">
+        <div class="main-column">
+          <div class="column1">
+            <h2>Új rendelések</h2>
+
+            <div class="sub-column1" id="column-1">
+              <% for (let i =0; i < orderfirst.orders.length; i++) { %>
+              <div
+                id="<%= orderfirst.orders[i].id %>"
+                data-id="<%= orderfirst.orders[i].id %>"
+                data-current-column="1"
+                class="inner-sub-column"
+              >
+                <h4>
+                  <span class="arrow">
+                    <img
+                      src="../img/right-arrow.png"
+                      class="move-order-next"
+                      data-id="<%= orderfirst.orders[i].id %>"
+                    />
+                  </span>
+                  <p class="encodedKey">
+                    <%= orderfirst.orders[i].encodedKey %>
+                  </p>
+                  <span class="arrow">
+                    <img
+                      src="../img/left-arrow.png"
+                      class="move-order-prev"
+                      data-id="<%= orderfirst.orders[i].id %>"
+                    />
+                  </span>
+                </h4>
+                <div
+                  class="details"
+                  onclick="document.getElementById('id<%= orderfirst.orders[i].id %>').style.display='block'"
+                  class="button black"
+                >
+                  <h3>
+                    <label
+                      ><%= orderfirst.orders[i].OrderDeliveryAddress.userName
+                      %></label
+                    >
+                    <b>|</b
+                    ><label
+                      ><%= orderfirst.orders[i].OrderDeliveryAddress.phoneNumber
+                      %></label
+                    >
+                  </h3>
+                  <p>
+                    <%=
+                    orderfirst.orders[i].LocationName.LocationNameTranslations[0].name
+                    %>
+                  </p>
+                  <p>
+                    <span>Utca:</span> <%=
+                    orderfirst.orders[i].OrderDeliveryAddress.street %>
+                  </p>
+                  <p>
+                    <span>Házszám:</span> <%=
+                    orderfirst.orders[i].OrderDeliveryAddress.houseNumber %>
+                  </p>
+                  <% if(orderfirst.orders[i].OrderDeliveryAddress.floor !== ""
+                  ){ %>
+                  <p>
+                    <span>Emelet:</span> <%=
+                    orderfirst.orders[i].OrderDeliveryAddress.floor %>
+                  </p>
+                  <% } %> <%
+                  if(orderfirst.orders[i].OrderDeliveryAddress.doorNumber !== ""
+                  ){ %>
+                  <p>
+                    <span>Ajtószám:</span> <%=
+                    orderfirst.orders[i].OrderDeliveryAddress.doorNumber %>
+                  </p>
+                  <% } %> <% if(orderfirst.orders[i].cutlery == 1){ %>
+                  <h5>Nem kér evőeszközt</h5>
+                  <% } %>
+
+                  <h6>Ár: <%= orderfirst.orders[i].totalPrice %> RON</h6>
+                </div>
+              </div>
+              <div id="id<%= orderfirst.orders[i].id %>" class="modal">
+                <div class="modal-content">
+                  <div class="mains-contain">
+                    <span
+                      onclick="document.getElementById('id<%= orderfirst.orders[i].id %>').style.display='none'"
+                      class="button display-topright"
+                      >&times;</span
+                    >
+                    <h4>Rendelt termékek</h4>
+
+                    <% for (let j =0; j < orderfirst.orders[i].products.length;
+                    j++) { %>
+                    <table class="tabl1">
+                      <tr>
+                        <th>Ételek/extrák</th>
+                        <th>Kategoria</th>
+                        <th>Db</th>
+                        <th>Egységár</th>
+                        <th>Össz ár</th>
+                      </tr>
+
+                      <tr>
+                        <td>
+                          <%= orderfirst.orders[i].products[j].product_name %>
+                        </td>
+                        <td>
+                          <%= orderfirst.orders[i].products[j].variant_sku %>
+                        </td>
+                        <td>
+                          <%= orderfirst.orders[i].products[j].product_quantity
+                          %>
+                        </td>
+                        <td>
+                          <%= orderfirst.orders[i].products[j].product_price %>
+                          RON
+                        </td>
+                        <td>
+                          <%= orderfirst.orders[i].products[j].product_price %>
+                          RON
+                        </td>
+                      </tr>
+
+                      <% for (let k = 0; k <
+                      orderfirst.orders[i].products[j].extras.length; ++k) { %>
+                      <% if(orderfirst.orders[i].products[j].extra_length != 0){
+                      %>
+                      <tr>
+                        <td>
+                          <%=
+                          orderfirst.orders[i].products[j].extras[k].extra_name
+                          %> (extra)
+                        </td>
+                        <td></td>
+                        <td>
+                          <%=
+                          orderfirst.orders[i].products[j].extras[k].extra_quantity
+                          %>
+                        </td>
+                        <td>
+                          <%=
+                          orderfirst.orders[i].products[j].extras[k].extra_price
+                          %> RON
+                        </td>
+                        <td>
+                          <%=
+                          (orderfirst.orders[i].products[j].extras[k].extra_quantity
+                          *
+                          orderfirst.orders[i].products[j].extras[k].extra_price).toFixed(2)
+                          %> RON
+                        </td>
+                      </tr>
+                      <% } %> <% } %> <%
+                      if(orderfirst.orders[i].products[j].boxPrice !=0){ %>
+                      <tr>
+                        <td>Csomagolás</td>
+                        <td></td>
+                        <td>
+                          <%= orderfirst.orders[i].products[j].product_quantity
+                          %>
+                        </td>
+                        <td>
+                          <%= orderfirst.orders[i].products[j].boxPrice %> RON
+                        </td>
+                        <td>
+                          <%= orderfirst.orders[i].products[j].totalBoxPrice %>
+                          RON
+                        </td>
+                      </tr>
+                      <% } %> <%
+                      if(orderfirst.orders[i].products[j].message.length !=0){
+                      %>
+                      <tr>
+                        <td>
+                          Speciális kérés: <%=
+                          orderfirst.orders[i].products[j].message %>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                      <% } %>
+                    </table>
+                    <% } %>
+                    <div class="bill-pay">
+                      <span
+                        >Szállítási ár: <%= orderfirst.orders[i].deliveryPrice
+                        %> RON</span
+                      >
+                    </div>
+                    <div class="bill-pay">
+                      <span
+                        >Teljes összeg: <%= orderfirst.orders[i].totalPrice %>
+                        RON</span
+                      >
+                    </div>
+                    <div class="customer-details">
+                      <div class="cus-details1">
+                        <h4>Rendelés adatai</h4>
+                        <table>
+                          <tr>
+                            <td><img src="../img/c1.png" />Megrendelő neve</td>
+                            <td>
+                              <%=
+                              orderfirst.orders[i].OrderDeliveryAddress.userName
+                              %>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td><img src="../img/c2.png" />Telefonszam</td>
+                            <td>
+                              <%=
+                              orderfirst.orders[i].OrderDeliveryAddress.phoneNumber
+                              %>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <img src="../img/c3.png" />Település, utca,
+                              házszám
+                            </td>
+                            <td>
+                              <%=
+                              orderfirst.orders[i].LocationName.LocationNameTranslations[0].name
+                              %>, <%=
+                              orderfirst.orders[i].OrderDeliveryAddress.street
+                              %>, <%=
+                              orderfirst.orders[i].OrderDeliveryAddress.houseNumber
+                              %>
+                            </td>
+                          </tr>
+                          <% if(orderfirst.orders[i].OrderDeliveryAddress.floor
+                          !== "" ){ %>
+                          <tr>
+                            <td><img src="../img/c4.png" />Emelet</td>
+                            <td>
+                              <%=
+                              orderfirst.orders[i].OrderDeliveryAddress.floor %>
+                            </td>
+                          </tr>
+                          <% } %> <%
+                          if(orderfirst.orders[i].OrderDeliveryAddress.doorNumber
+                          !== "" ){ %>
+                          <tr>
+                            <td><img src="../img/c5.png" />Ajtószám</td>
+                            <td>
+                              <%=
+                              orderfirst.orders[i].OrderDeliveryAddress.doorNumber
+                              %>
+                            </td>
+                          </tr>
+                          <% } %>
+                          <tr>
+                            <td>
+                              <img src="../img/c6.png" /> Megrendelés ideje
+                            </td>
+                            <td>
+                              <%=
+                              orderfirst.orders[i].createdAt.toLocaleString("en-GB",
+                              { timeZone: "Europe/Helsinki" }); %>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td><img src="../img/c7.png" />Fizetesi mod</td>
+                            <td>Keszpenz</td>
+                          </tr>
+                        </table>
+                      </div>
+                      <div class="cus-details2">
+                        <h4>Megjegyzés a futárnak</h4>
+                        <p>
+                          <b>Megjegyzés a futárnak</b>: <%
+                          if(orderfirst.orders[i].messageCourier.length ==0){ %>
+                          - <% } else{ %> <%=
+                          orderfirst.orders[i].messageCourier %> <% } %>
+                        </p>
+                        <div class="rend-close">
+                          <h5>Rendelés törlése</h5>
+
+                          <button
+                            onclick="document.getElementById('id<%= orderfirst.orders[i].id %>').style.display='none'"
+                            class="btn-light"
+                          >
+                            Ablak bezárása
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <% } %>
+            </div>
+          </div>
+
+          <div class="column1">
+            <h2>Felvett rendelések</h2>
+            <div id="column-2" class="sub-column2">
+              <% for (let i =0; i < ordersecond.orders.length; i++) { %>
+              <div
+                id="<%= ordersecond.orders[i].id %>"
+                data-id="<%= ordersecond.orders[i].id %>"
+                data-current-column="2"
+                class="inner-sub-column open"
+              >
+                <h4>
+                  <span class="arrow"
+                    ><img
+                      class="move-order-next"
+                      data-id="<%= ordersecond.orders[i].id %>"
+                      src="../img/right-arrow.png"
+                  /></span>
+                  <p class="encodedKey">
+                    <%= ordersecond.orders[i].encodedKey %>
+                  </p>
+                  <span class="arrow"
+                    ><img
+                      class="move-order-prev"
+                      data-id="<%= ordersecond.orders[i].id %>"
+                      src="../img/left-arrow.png"
+                  /></span>
+                </h4>
+                <div
+                  onclick="document.getElementById('id<%= ordersecond.orders[i].id %>').style.display='block'"
+                  class="details"
+                >
+                  <h3>
+                    <label
+                      ><%= ordersecond.orders[i].OrderDeliveryAddress.userName
+                      %></label
+                    >
+                    <b>|</b
+                    ><label
+                      ><%=
+                      ordersecond.orders[i].OrderDeliveryAddress.phoneNumber
+                      %></label
+                    >
+                  </h3>
+                  <p>
+                    <%=
+                    ordersecond.orders[i].LocationName.LocationNameTranslations[0].name
+                    %>
+                  </p>
+                  <p>
+                    <span>Utca:</span> <%=
+                    ordersecond.orders[i].OrderDeliveryAddress.street %>
+                  </p>
+                  <p>
+                    <span>Házszám:</span> <%=
+                    ordersecond.orders[i].OrderDeliveryAddress.houseNumber %>
+                  </p>
+                  <% if(ordersecond.orders[i].OrderDeliveryAddress.floor !== ""
+                  ){ %>
+                  <p>
+                    <span>Emelet:</span> <%=
+                    ordersecond.orders[i].OrderDeliveryAddress.floor %>
+                  </p>
+                  <% } %> <%
+                  if(ordersecond.orders[i].OrderDeliveryAddress.doorNumber !==
+                  "" ){ %>
+                  <p>
+                    <span>Ajtószám:</span> <%=
+                    ordersecond.orders[i].OrderDeliveryAddress.doorNumber %>
+                  </p>
+                  <% } %> <% if(ordersecond.orders[i].cutlery !==1){ %>
+                  <h5>Nem kér evőeszközt</h5>
+                  <% } %>
+
+                  <h6>Ár: <%= ordersecond.orders[i].totalPrice %> RON</h6>
+                </div>
+              </div>
+              <div id="id<%= ordersecond.orders[i].id %>" class="modal">
+                <div class="modal-content">
+                  <div class="mains-contain">
+                    <span
+                      onclick="document.getElementById('id<%= ordersecond.orders[i].id %>').style.display='none'"
+                      class="button display-topright"
+                      >&times;</span
+                    >
+                    <h4>Rendelt termékek</h4>
+                    <% for (let j =0; j < ordersecond.orders[i].products.length;
+                    j++) { %>
+                    <table class="tabl1">
+                      <tr>
+                        <th>Ételek/extrák</th>
+                        <th>Kategoria</th>
+                        <th>Db</th>
+                        <th>Egységár</th>
+                        <th>Össz ár</th>
+                      </tr>
+
+                      <tr>
+                        <td>
+                          <%= ordersecond.orders[i].products[j].product_name %>
+                        </td>
+                        <td>
+                          <%= ordersecond.orders[i].products[j].variant_sku %>
+                        </td>
+                        <td>
+                          <%= ordersecond.orders[i].products[j].product_quantity
+                          %>
+                        </td>
+                        <td>
+                          <%= ordersecond.orders[i].products[j].product_price %>
+                          RON
+                        </td>
+                        <td>
+                          <%= ordersecond.orders[i].products[j].product_price %>
+                          RON
+                        </td>
+                      </tr>
+
+                      <% for (let k = 0; k <
+                      ordersecond.orders[i].products[j].extras.length; ++k) { %>
+                      <% if(ordersecond.orders[i].products[j].extra_length !=
+                      0){ %>
+                      <tr>
+                        <td>
+                          <%=
+                          ordersecond.orders[i].products[j].extras[k].extra_name
+                          %> (extra)
+                        </td>
+                        <td></td>
+                        <td>
+                          <%=
+                          ordersecond.orders[i].products[j].extras[k].extra_quantity
+                          %>
+                        </td>
+                        <td>
+                          <%=
+                          ordersecond.orders[i].products[j].extras[k].extra_price
+                          %> RON
+                        </td>
+                        <td>
+                          <%=
+                          (ordersecond.orders[i].products[j].extras[k].extra_quantity
+                          *
+                          ordersecond.orders[i].products[j].extras[k].extra_price).toFixed(2)
+                          %> RON
+                        </td>
+                      </tr>
+                      <% } %> <% } %> <%
+                      if(ordersecond.orders[i].products[j].boxPrice !=0){ %>
+                      <tr>
+                        <td>Csomagolás</td>
+                        <td></td>
+                        <td>
+                          <%= ordersecond.orders[i].products[j].product_quantity
+                          %>
+                        </td>
+                        <td>
+                          <%= ordersecond.orders[i].products[j].boxPrice %> RON
+                        </td>
+                        <td>
+                          <%= ordersecond.orders[i].products[j].totalBoxPrice %>
+                          RON
+                        </td>
+                      </tr>
+                      <% } %> <%
+                      if(ordersecond.orders[i].products[j].message.length !=0){
+                      %>
+                      <tr>
+                        <td>
+                          Speciális kérés: <%=
+                          ordersecond.orders[i].products[j].message %>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                      <% } %>
+                    </table>
+                    <% } %>
+
+                    <div class="bill-pay">
+                      <span
+                        >Szállítási ár: <%= ordersecond.orders[i].deliveryPrice
+                        %> RON</span
+                      >
+                    </div>
+                    <div class="bill-pay">
+                      <span
+                        >Teljes összeg: <%= ordersecond.orders[i].totalPrice %>
+                        RON</span
+                      >
+                    </div>
+                    <div class="customer-details">
+                      <div class="cus-details1">
+                        <h4>Rendelés adatai</h4>
+                        <table>
+                          <tr>
+                            <td><img src="../img/c1.png" />Megrendelő neve</td>
+                            <td>
+                              <%=
+                              ordersecond.orders[i].OrderDeliveryAddress.userName
+                              %>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td><img src="../img/c2.png" />Telefonszam</td>
+                            <td>
+                              <%=
+                              ordersecond.orders[i].OrderDeliveryAddress.phoneNumber
+                              %>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <img src="../img/c3.png" />Település, utca,
+                              házszám
+                            </td>
+                            <td>
+                              <%=
+                              ordersecond.orders[i].LocationName.LocationNameTranslations[0].name
+                              %>, <%=
+                              ordersecond.orders[i].OrderDeliveryAddress.street
+                              %>, <%=
+                              ordersecond.orders[i].OrderDeliveryAddress.houseNumber
+                              %>
+                            </td>
+                          </tr>
+                          <% if(ordersecond.orders[i].OrderDeliveryAddress.floor
+                          !== "" ){ %>
+                          <tr>
+                            <td><img src="../img/c4.png" />Emelet</td>
+                            <td>
+                              <%=
+                              ordersecond.orders[i].OrderDeliveryAddress.floor
+                              %>
+                            </td>
+                          </tr>
+                          <% } %> <%
+                          if(ordersecond.orders[i].OrderDeliveryAddress.doorNumber
+                          !== "" ){ %>
+                          <tr>
+                            <td><img src="../img/c5.png" />Ajtószám</td>
+                            <td>
+                              <%=
+                              ordersecond.orders[i].OrderDeliveryAddress.doorNumber
+                              %>
+                            </td>
+                          </tr>
+                          <% } %>
+                          <tr>
+                            <td>
+                              <img src="../img/c6.png" /> Megrendelés ideje
+                            </td>
+                            <td>
+                              <%=
+                              ordersecond.orders[i].createdAt.toLocaleString("en-GB",
+                              { timeZone: "Europe/Helsinki" }); %>
+                            </td>
+                          </tr>
+
+                          <tr>
+                            <td><img src="../img/c7.png" />Fizetesi mod</td>
+                            <td>Keszpenz</td>
+                          </tr>
+                        </table>
+                      </div>
+                      <div class="cus-details2">
+                        <h4>Megjegyzés a futárnak</h4>
+                        <p>
+                          <b>Megjegyzés a futárnak</b>: <%
+                          if(ordersecond.orders[i].messageCourier.length ==0){
+                          %> - <% } else{ %> <%=
+                          ordersecond.orders[i].messageCourier %> <% } %>
+                        </p>
+                        <div class="rend-close">
+                          <h5>Rendelés törlése</h5>
+                          <button
+                            onclick="document.getElementById('id<%= ordersecond.orders[i].id %>').style.display='none'"
+                            class="btn-light"
+                          >
+                            Ablak bezárása
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <% } %>
+            </div>
+          </div>
+
+          <div class="column1">
+            <h2>Elkészítve</h2>
+            <div id="column-3" class="sub-column3">
+              <% for (let i =0; i < orderthird.orders.length; i++) { %>
+              <div
+                class="inner-sub-column"
+                id="<%= orderthird.orders[i].id %>"
+                data-id="<%= orderthird.orders[i].id %>"
+                data-current-column="3"
+              >
+                <h4>
+                  <span class="arrow"
+                    ><img
+                      class="move-order-next"
+                      data-id="<%= orderthird.orders[i].id %>"
+                      src="../img/right-arrow.png"
+                  /></span>
+                  <p class="encodedKey">
+                    <%= orderthird.orders[i].encodedKey %>
+                  </p>
+                  <span class="arrow"
+                    ><img
+                      class="move-order-prev"
+                      data-id="<%= orderthird.orders[i].id %>"
+                      src="../img/left-arrow.png"
+                  /></span>
+                </h4>
+                <div
+                  onclick="document.getElementById('id<%= orderthird.orders[i].id %>').style.display='block'"
+                  class="details"
+                >
+                  <h3>
+                    <label
+                      ><%= orderthird.orders[i].OrderDeliveryAddress.userName
+                      %></label
+                    >
+                    <b>|</b
+                    ><label
+                      ><%= orderthird.orders[i].OrderDeliveryAddress.phoneNumber
+                      %></label
+                    >
+                  </h3>
+                  <p>
+                    <%=
+                    orderthird.orders[i].LocationName.LocationNameTranslations[0].name
+                    %>
+                  </p>
+                  <p>
+                    <span>Utca:</span> <%=
+                    orderthird.orders[i].OrderDeliveryAddress.street %>
+                  </p>
+                  <p>
+                    <span>Házszám:</span> <%=
+                    orderthird.orders[i].OrderDeliveryAddress.houseNumber %>
+                  </p>
+                  <% if(orderthird.orders[i].OrderDeliveryAddress.floor !== ""
+                  ){ %>
+                  <p>
+                    <span>Emelet:</span> <%=
+                    orderthird.orders[i].OrderDeliveryAddress.floor %>
+                  </p>
+                  <% } %> <%
+                  if(orderthird.orders[i].OrderDeliveryAddress.doorNumber !== ""
+                  ){ %>
+                  <p>
+                    <span>Ajtószám:</span> <%=
+                    orderthird.orders[i].OrderDeliveryAddress.doorNumber %>
+                  </p>
+                  <% } %> <% if(orderthird.orders[i].cutlery !==1){ %>
+                  <h5>Nem kér evőeszközt</h5>
+                  <% } %>
+
+                  <h6>Ár: <%= orderthird.orders[i].totalPrice %> RON</h6>
+                </div>
+              </div>
+              <div id="id<%= orderthird.orders[i].id %>" class="modal">
+                <div class="modal-content">
+                  <div class="mains-contain">
+                    <span
+                      onclick="document.getElementById('id<%= orderthird.orders[i].id %>').style.display='none'"
+                      class="button display-topright"
+                      >&times;</span
+                    >
+                    <h4>Rendelt termékek</h4>
+                    <% for (let j =0; j < orderthird.orders[i].products.length;
+                    j++) { %>
+                    <table class="tabl1">
+                      <tr>
+                        <th>Ételek/extrák</th>
+                        <th>Kategoria</th>
+                        <th>Db</th>
+                        <th>Egységár</th>
+                        <th>Össz ár</th>
+                      </tr>
+
+                      <tr>
+                        <td>
+                          <%= orderthird.orders[i].products[j].product_name %>
+                        </td>
+                        <td>
+                          <%= orderthird.orders[i].products[j].variant_sku %>
+                        </td>
+                        <td>
+                          <%= orderthird.orders[i].products[j].product_quantity
+                          %>
+                        </td>
+                        <td>
+                          <%= orderthird.orders[i].products[j].product_price %>
+                          RON
+                        </td>
+                        <td>
+                          <%= orderthird.orders[i].products[j].product_price %>
+                          RON
+                        </td>
+                      </tr>
+
+                      <% for (let k = 0; k <
+                      orderthird.orders[i].products[j].extras.length; ++k) { %>
+                      <% if(orderthird.orders[i].products[j].extra_length != 0){
+                      %>
+                      <tr>
+                        <td>
+                          <%=
+                          orderthird.orders[i].products[j].extras[k].extra_name
+                          %> (extra)
+                        </td>
+                        <td></td>
+                        <td>
+                          <%=
+                          orderthird.orders[i].products[j].extras[k].extra_quantity
+                          %>
+                        </td>
+                        <td>
+                          <%=
+                          orderthird.orders[i].products[j].extras[k].extra_price
+                          %> RON
+                        </td>
+                        <td>
+                          <%=
+                          (orderthird.orders[i].products[j].extras[k].extra_quantity
+                          *
+                          orderthird.orders[i].products[j].extras[k].extra_price).toFixed(2)
+                          %> RON
+                        </td>
+                      </tr>
+                      <% } %> <% } %> <%
+                      if(orderthird.orders[i].products[j].boxPrice !=0){ %>
+                      <tr>
+                        <td>Csomagolás</td>
+                        <td></td>
+                        <td>
+                          <%= orderthird.orders[i].products[j].product_quantity
+                          %>
+                        </td>
+                        <td>
+                          <%= orderthird.orders[i].products[j].boxPrice %> RON
+                        </td>
+                        <td>
+                          <%= orderthird.orders[i].products[j].totalBoxPrice %>
+                          RON
+                        </td>
+                      </tr>
+                      <% } %> <%
+                      if(orderthird.orders[i].products[j].message.length !=0){
+                      %>
+                      <tr>
+                        <td>
+                          Speciális kérés: <%=
+                          orderthird.orders[i].products[j].message %>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                      <% } %>
+                    </table>
+                    <% } %>
+
+                    <div class="bill-pay">
+                      <span
+                        >Szállítási ár: <%= orderthird.orders[i].deliveryPrice
+                        %> RON</span
+                      >
+                    </div>
+                    <div class="bill-pay">
+                      <span
+                        >Teljes összeg: <%= orderthird.orders[i].totalPrice %>
+                        RON</span
+                      >
+                    </div>
+                    <div class="customer-details">
+                      <div class="cus-details1">
+                        <h4>Rendelés adatai</h4>
+                        <table>
+                          <tr>
+                            <td><img src="../img/c1.png" />Megrendelő neve</td>
+                            <td>
+                              <%=
+                              orderthird.orders[i].OrderDeliveryAddress.userName
+                              %>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td><img src="../img/c2.png" />Telefonszam</td>
+                            <td>
+                              <%=
+                              orderthird.orders[i].OrderDeliveryAddress.phoneNumber
+                              %>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <img src="../img/c3.png" />Település, utca,
+                              házszám
+                            </td>
+                            <td>
+                              <%=
+                              orderthird.orders[i].LocationName.LocationNameTranslations[0].name
+                              %>, <%=
+                              orderthird.orders[i].OrderDeliveryAddress.street
+                              %>, <%=
+                              orderthird.orders[i].OrderDeliveryAddress.houseNumber
+                              %>
+                            </td>
+                          </tr>
+                          <% if(orderthird.orders[i].OrderDeliveryAddress.floor
+                          !== "" ){ %>
+                          <tr>
+                            <td><img src="../img/c4.png" />Emelet</td>
+                            <td>
+                              <%=
+                              orderthird.orders[i].OrderDeliveryAddress.floor %>
+                            </td>
+                          </tr>
+                          <% } %> <%
+                          if(orderthird.orders[i].OrderDeliveryAddress.doorNumber
+                          !== "" ){ %>
+                          <tr>
+                            <td><img src="../img/c5.png" />Ajtószám</td>
+                            <td>
+                              <%=
+                              orderthird.orders[i].OrderDeliveryAddress.doorNumber
+                              %>
+                            </td>
+                          </tr>
+                          <% } %>
+                          <tr>
+                            <td>
+                              <img src="../img/c6.png" /> Megrendelés ideje
+                            </td>
+                            <td>
+                              <%=
+                              orderthird.orders[i].createdAt.toLocaleString("en-GB",
+                              { timeZone: "Europe/Helsinki" }); %>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td><img src="../img/c7.png" />Fizetesi mod</td>
+                            <td>Keszpenz</td>
+                          </tr>
+                        </table>
+                      </div>
+                      <div class="cus-details2">
+                        <h4>Megjegyzés a futárnak</h4>
+                        <p>
+                          <b>Megjegyzés a futárnak</b>: <%
+                          if(orderthird.orders[i].messageCourier.length ==0){ %>
+                          - <% } else{ %> <%=
+                          orderthird.orders[i].messageCourier %> <% } %>
+                        </p>
+                        <div class="rend-close">
+                          <h5>Rendelés törlése</h5>
+                          <button
+                            onclick="document.getElementById('id<%= orderthird.orders[i].id %>').style.display='none'"
+                            class="btn-light"
+                          >
+                            Ablak bezárása
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <% } %>
+            </div>
+          </div>
+
+          <div class="column1">
+            <h2>Odaadva futárnak</h2>
+            <div id="column-4" class="sub-column4">
+              <% for (let i =0; i < orderfour.orders.length; i++) { %>
+              <div
+                class="inner-sub-column"
+                id="<%= orderfour.orders[i].id %>"
+                data-id="<%= orderfour.orders[i].id %>"
+                data-current-column="4"
+              >
+                <h4>
+                  <span class="arrow"
+                    ><img
+                      class="move-order-next"
+                      data-id="<%= orderfour.orders[i].id %>"
+                      src="../img/right-arrow.png"
+                  /></span>
+                  <p class="encodedKey">
+                    <%= orderfour.orders[i].encodedKey %>
+                  </p>
+                  <span class="arrow"
+                    ><img
+                      class="move-order-prev"
+                      data-id="<%= orderfour.orders[i].id %>"
+                      src="../img/left-arrow.png"
+                  /></span>
+                </h4>
+                <div class="details">
+                  <h3>
+                    <label
+                      ><%= orderfour.orders[i].OrderDeliveryAddress.userName
+                      %></label
+                    >
+                    <b>|</b
+                    ><label
+                      ><%= orderfour.orders[i].OrderDeliveryAddress.phoneNumber
+                      %></label
+                    >
+                  </h3>
+                  <p>
+                    <%=
+                    orderfour.orders[i].LocationName.LocationNameTranslations[0].name
+                    %>
+                  </p>
+                  <p>
+                    <span>Utca:</span> <%=
+                    orderfour.orders[i].OrderDeliveryAddress.street %>
+                  </p>
+                  <p>
+                    <span>Házszám:</span> <%=
+                    orderfour.orders[i].OrderDeliveryAddress.houseNumber %>
+                  </p>
+                  <% if(orderfour.orders[i].OrderDeliveryAddress.floor !== "" ){
+                  %>
+                  <p>
+                    <span>Emelet:</span> <%=
+                    orderfour.orders[i].OrderDeliveryAddress.floor %>
+                  </p>
+                  <% } %> <%
+                  if(orderfour.orders[i].OrderDeliveryAddress.doorNumber !== ""
+                  ){ %>
+                  <p>
+                    <span>Ajtószám:</span> <%=
+                    orderfour.orders[i].OrderDeliveryAddress.doorNumber %>
+                  </p>
+                  <% } %> <% if(orderfour.orders[i].cutlery !==1){ %>
+                  <h5>Nem kér evőeszközt</h5>
+                  <% } %>
+
+                  <h6>Ár: <%= orderfour.orders[i].totalPrice %> RON</h6>
+                </div>
+              </div>
+              <div id="id<%= orderfour.orders[i].id %>" class="modal">
+                <div class="modal-content">
+                  <div class="mains-contain">
+                    <span
+                      onclick="document.getElementById('id<%= orderfour.orders[i].id %>').style.display='none'"
+                      class="button display-topright"
+                      >&times;</span
+                    >
+                    <h4>Rendelt termékek</h4>
+                    <% for (let j =0; j < orderfour.orders[i].products.length;
+                    j++) { %>
+                    <table class="tabl1">
+                      <tr>
+                        <th>Ételek/extrák</th>
+                        <th>Kategoria</th>
+                        <th>Db</th>
+                        <th>Egységár</th>
+                        <th>Össz ár</th>
+                      </tr>
+
+                      <tr>
+                        <td>
+                          <%= orderfour.orders[i].products[j].product_name %>
+                        </td>
+                        <td>
+                          <%= orderfour.orders[i].products[j].variant_sku %>
+                        </td>
+                        <td>
+                          <%= orderfour.orders[i].products[j].product_quantity
+                          %>
+                        </td>
+                        <td>
+                          <%= orderfour.orders[i].products[j].product_price %>
+                          RON
+                        </td>
+                        <td>
+                          <%= orderfour.orders[i].products[j].product_price %>
+                          RON
+                        </td>
+                      </tr>
+
+                      <% for (let k = 0; k <
+                      orderfour.orders[i].products[j].extras.length; ++k) { %>
+                      <% if(orderfour.orders[i].products[j].extra_length != 0){
+                      %>
+                      <tr>
+                        <td>
+                          <%=
+                          orderfour.orders[i].products[j].extras[k].extra_name
+                          %> (extra)
+                        </td>
+                        <td></td>
+                        <td>
+                          <%=
+                          orderfour.orders[i].products[j].extras[k].extra_quantity
+                          %>
+                        </td>
+                        <td>
+                          <%=
+                          orderfour.orders[i].products[j].extras[k].extra_price
+                          %> RON
+                        </td>
+                        <td>
+                          <%=
+                          (orderfour.orders[i].products[j].extras[k].extra_quantity
+                          *
+                          orderfour.orders[i].products[j].extras[k].extra_price).toFixed(2)
+                          %> RON
+                        </td>
+                      </tr>
+                      <% } %> <% } %> <%
+                      if(orderfour.orders[i].products[j].boxPrice !=0){ %>
+                      <tr>
+                        <td>Csomagolás</td>
+                        <td></td>
+                        <td>
+                          <%= orderfour.orders[i].products[j].product_quantity
+                          %>
+                        </td>
+                        <td>
+                          <%= orderfour.orders[i].products[j].boxPrice %> RON
+                        </td>
+                        <td>
+                          <%= orderfour.orders[i].products[j].totalBoxPrice %>
+                          RON
+                        </td>
+                      </tr>
+                      <% } %> <%
+                      if(orderfour.orders[i].products[j].message.length !=0){ %>
+                      <tr>
+                        <td>
+                          Speciális kérés: <%=
+                          orderfour.orders[i].products[j].message %>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                      <% } %>
+                    </table>
+                    <% } %>
+
+                    <div class="bill-pay">
+                      <span
+                        >Szállítási ár: <%= orderfour.orders[i].deliveryPrice %>
+                        RON</span
+                      >
+                    </div>
+                    <div class="bill-pay">
+                      <span
+                        >Teljes összeg: <%= orderfour.orders[i].totalPrice %>
+                        RON</span
+                      >
+                    </div>
+                    <div class="customer-details">
+                      <div class="cus-details1">
+                        <h4>Rendelés adatai</h4>
+                        <table>
+                          <tr>
+                            <td><img src="../img/c1.png" />Megrendelő neve</td>
+                            <td>
+                              <%=
+                              orderfour.orders[i].OrderDeliveryAddress.userName
+                              %>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td><img src="../img/c2.png" />Telefonszam</td>
+                            <td>
+                              <%=
+                              orderfour.orders[i].OrderDeliveryAddress.phoneNumber
+                              %>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <img src="../img/c3.png" />Település, utca,
+                              házszám
+                            </td>
+                            <td>
+                              <%=
+                              orderfour.orders[i].LocationName.LocationNameTranslations[0].name
+                              %>, <%=
+                              orderfour.orders[i].OrderDeliveryAddress.street
+                              %>, <%=
+                              orderfour.orders[i].OrderDeliveryAddress.houseNumber
+                              %>
+                            </td>
+                          </tr>
+                          <% if(orderfour.orders[i].OrderDeliveryAddress.floor
+                          !== "" ){ %>
+                          <tr>
+                            <td><img src="../img/c4.png" />Emelet</td>
+                            <td>
+                              <%= orderfour.orders[i].OrderDeliveryAddress.floor
+                              %>
+                            </td>
+                          </tr>
+                          <% } %> <%
+                          if(orderfour.orders[i].OrderDeliveryAddress.doorNumber
+                          !== "" ){ %>
+                          <tr>
+                            <td><img src="../img/c5.png" />Ajtószám</td>
+                            <td>
+                              <%=
+                              orderfour.orders[i].OrderDeliveryAddress.doorNumber
+                              %>
+                            </td>
+                          </tr>
+                          <% } %>
+                          <tr>
+                            <td>
+                              <img src="../img/c6.png" /> Megrendelés ideje
+                            </td>
+                            <td>
+                              <%=
+                              orderfour.orders[i].createdAt.toLocaleString("en-GB",
+                              { timeZone: "Europe/Helsinki" }); %>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td><img src="../img/c7.png" />Fizetesi mod</td>
+                            <td>Keszpenz</td>
+                          </tr>
+                        </table>
+                      </div>
+                      <div class="cus-details2">
+                        <h4>Megjegyzés a futárnak</h4>
+                        <p>
+                          <b>Megjegyzés a futárnak</b>: <%
+                          if(orderfour.orders[i].messageCourier.length ==0){ %>
+                          - <% } else{ %> <%= orderfour.orders[i].messageCourier
+                          %> <% } %>
+                        </p>
+                        <div class="rend-close">
+                          <h5>Rendelés törlése</h5>
+                          <button
+                            onclick="document.getElementById('id<%= orderfour.orders[i].id %>').style.display='none'"
+                            class="btn-light"
+                          >
+                            Ablak bezárása
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <% } %>
+            </div>
+          </div>
+
+          <div class="column1">
+            <h2>Kiszállítva</h2>
+            <div id="column-5" class="sub-column5">
+              <% for (let i =0; i < orderfive.orders.length; i++) { %>
+              <div
+                class="inner-sub-column"
+                id="<%= orderfive.orders[i].id %>"
+                data-id="<%= orderfive.orders[i].id %>"
+                data-current-column="5"
+              >
+                <h4>
+                  <span class="arrow"
+                    ><img
+                      class="move-order-next"
+                      data-id="<%= orderfive.orders[i].id %>"
+                      src="../img/right-arrow.png"
+                  /></span>
+                  <p class="encodedKey">
+                    <%= orderfive.orders[i].encodedKey %>
+                  </p>
+                  <span class="arrow"
+                    ><img
+                      class="move-order-prev"
+                      data-id="<%= orderfive.orders[i].id %>"
+                      src="../img/left-arrow.png"
+                  /></span>
+                </h4>
+                <div class="details">
+                  <h3>
+                    <label
+                      ><%= orderfive.orders[i].OrderDeliveryAddress.userName
+                      %></label
+                    >
+                    <b>|</b
+                    ><label
+                      ><%= orderfive.orders[i].OrderDeliveryAddress.phoneNumber
+                      %></label
+                    >
+                  </h3>
+                  <p>
+                    <%=
+                    orderfive.orders[i].LocationName.LocationNameTranslations[0].name
+                    %>
+                  </p>
+                  <p>
+                    <span>Utca:</span> <%=
+                    orderfive.orders[i].OrderDeliveryAddress.street %>
+                  </p>
+                  <p>
+                    <span>Házszám:</span> <%=
+                    orderfive.orders[i].OrderDeliveryAddress.houseNumber %>
+                  </p>
+                  <% if(orderfive.orders[i].OrderDeliveryAddress.floor !== "" ){
+                  %>
+                  <p>
+                    <span>Emelet:</span> <%=
+                    orderfive.orders[i].OrderDeliveryAddress.floor %>
+                  </p>
+                  <% } %> <%
+                  if(orderfive.orders[i].OrderDeliveryAddress.doorNumber !== ""
+                  ){ %>
+                  <p>
+                    <span>Ajtószám:</span> <%=
+                    orderfive.orders[i].OrderDeliveryAddress.doorNumber %>
+                  </p>
+                  <% } %> <% if(orderfive.orders[i].cutlery !==1){ %>
+                  <h5>Nem kér evőeszközt</h5>
+                  <% } %>
+
+                  <h6>Ár: <%= orderfive.orders[i].totalPrice %> RON</h6>
+                </div>
+              </div>
+              <div id="id<%= orderfive.orders[i].id %>" class="modal">
+                <div class="modal-content">
+                  <div class="mains-contain">
+                    <span
+                      onclick="document.getElementById('id<%= orderfive.orders[i].id %>').style.display='none'"
+                      class="button display-topright"
+                      >&times;</span
+                    >
+                    <h4>Rendelt termékek</h4>
+                    <% for (let j =0; j < orderfive.orders[i].products.length;
+                    j++) { %>
+                    <table class="tabl1">
+                      <tr>
+                        <th>Ételek/extrák</th>
+                        <th>Kategoria</th>
+                        <th>Db</th>
+                        <th>Egységár</th>
+                        <th>Össz ár</th>
+                      </tr>
+
+                      <tr>
+                        <td>
+                          <%= orderfive.orders[i].products[j].product_name %>
+                        </td>
+                        <td>
+                          <%= orderfive.orders[i].products[j].variant_sku %>
+                        </td>
+                        <td>
+                          <%= orderfive.orders[i].products[j].product_quantity
+                          %>
+                        </td>
+                        <td>
+                          <%= orderfive.orders[i].products[j].product_price %>
+                          RON
+                        </td>
+                        <td>
+                          <%= orderfive.orders[i].products[j].product_price %>
+                          RON
+                        </td>
+                      </tr>
+
+                      <% for (let k = 0; k <
+                      orderfive.orders[i].products[j].extras.length; ++k) { %>
+                      <% if(orderfive.orders[i].products[j].extra_length != 0){
+                      %>
+                      <tr>
+                        <td>
+                          <%=
+                          orderfive.orders[i].products[j].extras[k].extra_name
+                          %> (extra)
+                        </td>
+                        <td></td>
+                        <td>
+                          <%=
+                          orderfive.orders[i].products[j].extras[k].extra_quantity
+                          %>
+                        </td>
+                        <td>
+                          <%=
+                          orderfive.orders[i].products[j].extras[k].extra_price
+                          %> RON
+                        </td>
+                        <td>
+                          <%=
+                          (orderfive.orders[i].products[j].extras[k].extra_quantity
+                          *
+                          orderfive.orders[i].products[j].extras[k].extra_price).toFixed(2)
+                          %> RON
+                        </td>
+                      </tr>
+                      <% } %> <% } %> <%
+                      if(orderfive.orders[i].products[j].boxPrice !=0){ %>
+                      <tr>
+                        <td>Csomagolás</td>
+                        <td></td>
+                        <td>
+                          <%= orderfive.orders[i].products[j].product_quantity
+                          %>
+                        </td>
+                        <td>
+                          <%= orderfive.orders[i].products[j].boxPrice %> RON
+                        </td>
+                        <td>
+                          <%= orderfive.orders[i].products[j].totalBoxPrice %>
+                          RON
+                        </td>
+                      </tr>
+                      <% } %> <%
+                      if(orderfive.orders[i].products[j].message.length !=0){ %>
+                      <tr>
+                        <td>
+                          Speciális kérés: <%=
+                          orderfive.orders[i].products[j].message %>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                      <% } %>
+                    </table>
+                    <% } %>
+
+                    <div class="bill-pay">
+                      <span
+                        >Szállítási ár: <%= orderfive.orders[i].deliveryPrice %>
+                        RON</span
+                      >
+                    </div>
+                    <div class="bill-pay">
+                      <span
+                        >Teljes összeg: <%= orderfive.orders[i].totalPrice %>
+                        RON</span
+                      >
+                    </div>
+                    <div class="customer-details">
+                      <div class="cus-details1">
+                        <h4>Rendelés adatai</h4>
+                        <table>
+                          <tr>
+                            <td><img src="../img/c1.png" />Megrendelő neve</td>
+                            <td>
+                              <%=
+                              orderfive.orders[i].OrderDeliveryAddress.userName
+                              %>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td><img src="../img/c2.png" />Telefonszam</td>
+                            <td>
+                              <%=
+                              orderfive.orders[i].OrderDeliveryAddress.phoneNumber
+                              %>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <img src="../img/c3.png" />Település, utca,
+                              házszám
+                            </td>
+                            <td>
+                              <%=
+                              orderfive.orders[i].LocationName.LocationNameTranslations[0].name
+                              %>, <%=
+                              orderfive.orders[i].OrderDeliveryAddress.street
+                              %>, <%=
+                              orderfive.orders[i].OrderDeliveryAddress.houseNumber
+                              %>
+                            </td>
+                          </tr>
+                          <% if(orderfive.orders[i].OrderDeliveryAddress.floor
+                          !== "" ){ %>
+                          <tr>
+                            <td><img src="../img/c4.png" />Emelet</td>
+                            <td>
+                              <%= orderfive.orders[i].OrderDeliveryAddress.floor
+                              %>
+                            </td>
+                          </tr>
+                          <% } %> <%
+                          if(orderfive.orders[i].OrderDeliveryAddress.doorNumber
+                          !== "" ){ %>
+                          <tr>
+                            <td><img src="../img/c5.png" />Ajtószám</td>
+                            <td>
+                              <%=
+                              orderfive.orders[i].OrderDeliveryAddress.doorNumber
+                              %>
+                            </td>
+                          </tr>
+                          <% } %>
+                          <tr>
+                            <td>
+                              <img src="../img/c6.png" /> Megrendelés ideje
+                            </td>
+                            <td>
+                              <%=
+                              orderfive.orders[i].createdAt.toLocaleString("en-GB",
+                              { timeZone: "Europe/Helsinki" }); %>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td><img src="../img/c7.png" />Fizetesi mod</td>
+                            <td>Keszpenz</td>
+                          </tr>
+                        </table>
+                      </div>
+                      <div class="cus-details2">
+                        <h4>Megjegyzés a futárnak</h4>
+                        <p>
+                          <b>Megjegyzés a futárnak</b>: <%
+                          if(orderfive.orders[i].messageCourier.length ==0){ %>
+                          - <% } else{ %> <%= orderfive.orders[i].messageCourier
+                          %> <% } %>
+                        </p>
+                        <div class="rend-close">
+                          <h5>Rendelés törlése</h5>
+                          <button
+                            onclick="document.getElementById('id<%= orderfive.orders[i].id %>').style.display='none'"
+                            class="btn-light"
+                          >
+                            Ablak bezárása
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <% } %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

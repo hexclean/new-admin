@@ -257,6 +257,22 @@ router.get(
   isAuth,
   deliveryPriceController.getEditDeliveryPrice
 );
+// UPSELL
+// router.get("/add-product", isAuth, adminController.getUpsell);
+router.get("/upsell", isAuth, adminController.getUpsell);
+router.post("/ajax", isAuth, ordersController.postEditOrderAjax);
+router.get("/courier-orders", isAuth, ordersController.getOrdersByCourier);
+router.post("/send-order", isAuth, ordersController.postAddOrder);
+router.post(
+  "/serch-by-phone",
+  isAuth,
+  ordersController.getDeliveryAddressByPhone
+);
+// router.get("/daily-menu", isAuth, adminController.getDailyMenu);
+// router.post("/add-product", adminController.postAddProduct);
+// router.get("/edit-product/:productId", isAuth, adminController.getEditProduct);
+// router.post("/edit-product", isAuth, adminController.postEditProduct);
+// router.post("/delete-product", isAuth, adminController.postDeleteProduct);
 // router.post("/add-coupon", isAuth, couponController.postAddCoupon);
 // router.get("/edit-coupon/:couponId", isAuth, couponController.getEditCoupon);
 // router.post("/edit-coupon", isAuth, couponController.postEditCoupon);

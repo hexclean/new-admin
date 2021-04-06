@@ -12,6 +12,7 @@ sequelize = new Sequelize("defaultdb", "doadmin", "s27c8agot7l7a13z", {
 //   host: "staging-db-do-user-8133521-0.b.db.ondigitalocean.com",
 //   port: 25060,
 // });
+
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 

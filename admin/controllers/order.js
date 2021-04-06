@@ -15,260 +15,16 @@ const ProductTranslation = require("../../models/ProductTranslation");
 const Extra = require("../../models/Extra");
 const ExtraTranslation = require("../../models/ExtraTranslation");
 const Restaurant = require("../../models/Restaurant");
+const RestaurantRole = require("../../models/RestaurantRole");
 const mailgun = require("mailgun-js");
 const DOMAIN = "mg.foodnet.ro";
 const api_key = "key-6469129ca0603f9588c2a57c3b46defe";
+const Cryptr = require("cryptr");
 const mg = mailgun({
   apiKey: api_key,
   domain: DOMAIN,
   host: "api.eu.mailgun.net",
 });
-exports.getOrders = async (req, res, next) => {
-  let languageCode;
-
-  if (req.cookies.language == "ro") {
-    languageCode = 1;
-  } else if (req.cookies.language == "hu") {
-    languageCode = 2;
-  } else {
-    languageCode = 3;
-  }
-  const orders = await Order.findAll({
-    order: [["createdAt", "DESC"]],
-    where: { orderStatusId: 1, restaurantId: req.admin.id },
-    include: [
-      {
-        model: OrderItem,
-
-        include: [
-          {
-            model: OrderItemExtra,
-            include: [
-              {
-                model: Extra,
-                include: [
-                  {
-                    model: ExtraTranslation,
-                    where: { languageId: languageCode },
-                  },
-                ],
-              },
-            ],
-          },
-
-          {
-            model: Variant,
-            include: [
-              {
-                model: ProductFinal,
-                where: { active: 1 },
-                include: [
-                  {
-                    model: Product,
-                    include: [
-                      {
-                        model: ProductTranslation,
-                        where: { languageId: languageCode },
-                      },
-                    ],
-                  },
-                ],
-              },
-            ],
-          },
-        ],
-      },
-      { model: OrderDeliveryAddress },
-      { model: User },
-
-      {
-        model: LocationName,
-        include: [
-          {
-            model: LocationNameTranslation,
-            where: { languageId: languageCode },
-          },
-        ],
-      },
-    ],
-  });
-
-  let extras = [];
-  let cutlery;
-  let take;
-  let userName;
-  let orderStreet;
-  let orderHouseNumber;
-  let orderFloor;
-  let orderDoorNumber;
-  let orderPhoneNumber;
-  let orderCreated;
-  let orderIds;
-
-  if (orders.length != 0) {
-    for (let i = 0; i < orders.length; i++) {
-      const resultWithAll = [];
-      let orderItems = orders[i].OrderItems;
-
-      for (let j = 0; j < orderItems.length; j++) {
-        extras = orderItems[j].OrderItemExtras;
-
-        let prodFin = orderItems[j].Variant.ProductFinals;
-        for (let h = 0; h < prodFin.length; h++) {
-          if (extras.length == 0) {
-            let totalProductPrice = 0;
-            let totalBoxPrice = 0;
-            totalProductPrice +=
-              parseFloat(orderItems[j].variantPrice) *
-              parseInt(orderItems[j].quantity);
-            totalBoxPrice +=
-              parseFloat(orderItems[j].boxPrice) *
-              parseInt(orderItems[j].quantity);
-            const items = {
-              orderItemId: orderItems[j].id,
-              boxPrice: orderItems[j].boxPrice,
-              totalBoxPrice: totalBoxPrice.toFixed(2),
-              variant_sku: orderItems[j].Variant.sku,
-              extra_length: extras.length,
-              product_id: prodFin[h].productId,
-              product_quantity: orderItems[j].quantity,
-              message: orderItems[j].message,
-              product_price: orderItems[j].variantPrice,
-              product_name: prodFin[h].Product.ProductTranslations[0].title,
-              total_product_price: totalProductPrice,
-            };
-
-            resultWithAll.push(items);
-          } else {
-            for (let k = 0; k < extras.length; k++) {
-              let totalExtraPrice = 0;
-              let totalProductPrice = 0;
-              let totalBoxPrice = 0;
-              let totalSection = 0;
-              let totalSectionNoBox = 0;
-              let extraPlusProduct = 0;
-              totalExtraPrice +=
-                parseFloat(extras[k].extraPrice) * parseInt(extras[k].quantity);
-              // console.log("totalExtraPrice");
-
-              totalProductPrice +=
-                parseFloat(orderItems[j].variantPrice) *
-                parseInt(orderItems[j].quantity);
-
-              totalBoxPrice +=
-                parseFloat(orderItems[j].boxPrice) *
-                parseInt(orderItems[j].quantity);
-
-              totalSection +=
-                parseFloat(totalBoxPrice) +
-                parseFloat(totalExtraPrice) +
-                parseFloat(totalProductPrice);
-
-              // console.log("totalSection", totalSection);
-
-              totalSectionNoBox +=
-                parseFloat(totalExtraPrice) + parseFloat(totalProductPrice);
-
-              const items = {
-                orderItemId: orderItems[j].id,
-                variant_sku: orderItems[j].Variant.sku,
-                totalBoxPrice: totalBoxPrice.toFixed(2),
-                boxPrice: orderItems[j].boxPrice,
-                totalSection: totalSection,
-                totalSectionNoBox: totalSectionNoBox,
-                extra_length: extras.length,
-                product_id: prodFin[h].productId,
-                product_quantity: orderItems[j].quantity,
-                product_price: orderItems[j].variantPrice,
-                product_name: prodFin[h].Product.ProductTranslations[0].title,
-                extra_id: extras[k].extraId,
-                extra_quantity: extras[k].quantity,
-                extra_price: extras[k].extraPrice,
-                extra_name: extras[k].Extra.ExtraTranslations[0].name,
-                total_product_price: totalProductPrice,
-                total_extra_price: totalExtraPrice,
-                message: orderItems[j].message,
-              };
-
-              resultWithAll.push(items);
-            }
-          }
-        }
-      }
-
-      const reduced = resultWithAll.reduce((acc, val) => {
-        const {
-          extra_id,
-          extra_quantity,
-          extra_price,
-          extra_name,
-          ...otherFields
-        } = val;
-
-        const existing = acc.find(
-          (item) => item.orderItemId === val.orderItemId
-        );
-        if (!existing) {
-          acc.push({
-            ...otherFields,
-            extras: [
-              {
-                extra_id,
-                extra_quantity,
-                extra_price,
-                extra_name,
-              },
-            ],
-          });
-          return acc;
-        }
-
-        existing.extras.push({
-          extra_id,
-          extra_quantity,
-          extra_price,
-          extra_name,
-        });
-        return acc;
-      }, []);
-
-      orders[i].products = reduced;
-      // console.log(reduced[0].extras);
-    }
-
-    totalPriceFinal = orders[0].totalPrice;
-    cutlery = orders[0].cutlery;
-    take = orders[0].take;
-    orderStreet = orders[0].OrderDeliveryAddress.street;
-    orderHouseNumber = orders[0].OrderDeliveryAddress.houseNumber;
-    orderFloor = orders[0].OrderDeliveryAddress.floor;
-    orderDoorNumber = orders[0].OrderDeliveryAddress.doorNumber;
-    orderPhoneNumber = orders[0].OrderDeliveryAddress.phoneNumber;
-    orderCreated = orders[0].createdAt.toLocaleString("en-GB", {
-      timeZone: "Europe/Helsinki",
-    });
-
-    userName = orders[0].OrderDeliveryAddress.userName;
-    orderIds = orders[0].encodedKey;
-  }
-  res.render("order/orders", {
-    pageTitle: "Add Product",
-    path: "/admin/add-product",
-    editing: false,
-    orders: orders,
-    orderStreet: orderStreet,
-    orderHouseNumber: orderHouseNumber,
-    orderFloor: orderFloor,
-    orderDoorNumber: orderDoorNumber,
-    orderPhoneNumber: orderPhoneNumber,
-    orderCreated: orderCreated,
-    userName: userName,
-    cutlery: cutlery,
-    take: take,
-    orderIds: orderIds,
-    extras: extras,
-  });
-};
 
 exports.getAcceptedOrders = async (req, res, next) => {
   let languageCode;
@@ -5861,4 +5617,557 @@ exports.postEditInProgressOrder = async (req, res, next) => {
     error.httpStatusCode = 500;
     return next(error);
   }
+};
+
+exports.getOrders = async (req, res, next) => {
+  const userRole = await Restaurant.findOne({
+    where: { id: req.admin.id },
+    include: [{ model: RestaurantRole }],
+  });
+  let userRoleType = userRole.RestaurantRoles[0].role;
+  let languageCode;
+  if (req.cookies.language == "ro") {
+    languageCode = 1;
+  } else if (req.cookies.language == "hu") {
+    languageCode = 2;
+  } else {
+    languageCode = 3;
+  }
+
+  console.log("=--==--=-=-=-=--==-=-", languageCode);
+  let reqAdmin = req.admin.id;
+  const orderfirst = await getOrderByStatus(1, reqAdmin, languageCode);
+  const ordersecond = await getOrderByStatus(2, reqAdmin, languageCode);
+  const orderthird = await getOrderByStatus(3, reqAdmin, languageCode);
+  const orderfour = await getOrderByStatus(4, reqAdmin, languageCode);
+  const orderfive = await getOrderByStatus(5, reqAdmin, languageCode);
+  if (userRoleType != 0) {
+    res.redirect("/admin/courier-orders");
+  }
+  res.render("order/orders", {
+    pageTitle: "Add Product",
+    path: "/admin/add-product",
+    editing: false,
+    orderfirst: orderfirst,
+    ordersecond: ordersecond,
+    orderthird: orderthird,
+    orderfour: orderfour,
+    orderfive: orderfive,
+    userRole: userRoleType,
+  });
+};
+const getOrderByStatus = async (status, reqAdmin, languageCode, req, res) => {
+  const orders = await Order.findAll({
+    order: [["createdAt", "DESC"]],
+    where: { orderStatusId: status, restaurantId: reqAdmin },
+    include: [
+      {
+        model: OrderItem,
+        include: [
+          {
+            model: OrderItemExtra,
+            include: [
+              {
+                model: Extra,
+                include: [
+                  {
+                    model: ExtraTranslation,
+                    where: { languageId: languageCode },
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            model: Variant,
+            include: [
+              {
+                model: ProductFinal,
+                where: { active: 1 },
+                include: [
+                  {
+                    model: Product,
+                    include: [
+                      {
+                        model: ProductTranslation,
+                        where: { languageId: languageCode },
+                      },
+                    ],
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+      { model: OrderDeliveryAddress },
+      { model: User },
+      {
+        model: LocationName,
+        include: [
+          {
+            model: LocationNameTranslation,
+            where: { languageId: languageCode },
+          },
+        ],
+      },
+    ],
+  });
+  // console.log(orders);
+  let extras = [];
+  let test = [];
+  let cutlery;
+  let take;
+  let userName;
+  let orderStreet;
+  let orderHouseNumber;
+  let orderFloor;
+  let orderDoorNumber;
+  let orderPhoneNumber;
+  let orderCreated;
+  let orderIds;
+  if (orders.length != 0) {
+    for (let i = 0; i < orders.length; i++) {
+      const resultWithAll = [];
+      let orderItems = orders[i].OrderItems;
+      for (let j = 0; j < orderItems.length; j++) {
+        extras = orderItems[j].OrderItemExtras;
+        let prodFin = orderItems[j].Variant.ProductFinals;
+        for (let h = 0; h < prodFin.length; h++) {
+          if (extras.length == 0) {
+            let totalProductPrice = 0;
+            let totalBoxPrice = 0;
+            totalProductPrice +=
+              parseFloat(orderItems[j].variantPrice) *
+              parseInt(orderItems[j].quantity);
+            totalBoxPrice +=
+              parseFloat(orderItems[j].boxPrice) *
+              parseInt(orderItems[j].quantity);
+            const items = {
+              orderItemId: orderItems[j].id,
+              boxPrice: orderItems[j].boxPrice,
+              totalBoxPrice: totalBoxPrice.toFixed(2),
+              variant_sku: orderItems[j].Variant.sku,
+              extra_length: extras.length,
+              product_id: prodFin[h].productId,
+              product_quantity: orderItems[j].quantity,
+              message: orderItems[j].message,
+              product_price: orderItems[j].variantPrice,
+              product_name: prodFin[h].Product.ProductTranslations[0].title,
+              total_product_price: totalProductPrice,
+            };
+            resultWithAll.push(items);
+          } else {
+            for (let k = 0; k < extras.length; k++) {
+              let totalExtraPrice = 0;
+              let totalProductPrice = 0;
+              let totalBoxPrice = 0;
+              let totalSection = 0;
+              let totalSectionNoBox = 0;
+              let extraPlusProduct = 0;
+              totalExtraPrice +=
+                parseFloat(extras[k].extraPrice) * parseInt(extras[k].quantity);
+              // console.log("totalExtraPrice");
+              totalProductPrice +=
+                parseFloat(orderItems[j].variantPrice) *
+                parseInt(orderItems[j].quantity);
+              totalBoxPrice +=
+                parseFloat(orderItems[j].boxPrice) *
+                parseInt(orderItems[j].quantity);
+              totalSection +=
+                parseFloat(totalBoxPrice) +
+                parseFloat(totalExtraPrice) +
+                parseFloat(totalProductPrice);
+              // console.log("totalSection", totalSection);
+              totalSectionNoBox +=
+                parseFloat(totalExtraPrice) + parseFloat(totalProductPrice);
+              const items = {
+                orderItemId: orderItems[j].id,
+                variant_sku: orderItems[j].Variant.sku,
+                totalBoxPrice: totalBoxPrice.toFixed(2),
+                boxPrice: orderItems[j].boxPrice,
+                totalSection: totalSection,
+                totalSectionNoBox: totalSectionNoBox,
+                extra_length: extras.length,
+                product_id: prodFin[h].productId,
+                product_quantity: orderItems[j].quantity,
+                product_price: orderItems[j].variantPrice,
+                product_name: prodFin[h].Product.ProductTranslations[0].title,
+                extra_id: extras[k].extraId,
+                extra_quantity: extras[k].quantity,
+                extra_price: extras[k].extraPrice,
+                extra_name: extras[k].Extra.ExtraTranslations[0].name,
+                total_product_price: totalProductPrice,
+                total_extra_price: totalExtraPrice,
+                message: orderItems[j].message,
+              };
+              resultWithAll.push(items);
+            }
+          }
+        }
+      }
+
+      const reduced = resultWithAll.reduce((acc, val) => {
+        const {
+          extra_id,
+          extra_quantity,
+          extra_price,
+          extra_name,
+          ...otherFields
+        } = val;
+        const existing = acc.find(
+          (item) => item.orderItemId === val.orderItemId
+        );
+        if (!existing) {
+          acc.push({
+            ...otherFields,
+            extras: [
+              {
+                extra_id,
+                extra_quantity,
+                extra_price,
+                extra_name,
+              },
+            ],
+          });
+          return acc;
+        }
+        existing.extras.push({
+          extra_id,
+          extra_quantity,
+          extra_price,
+          extra_name,
+        });
+        return acc;
+      }, []);
+      orders[i].products = reduced;
+      test = orders[i].products;
+    }
+    totalPriceFinal = orders[0].totalPrice;
+    cutlery = orders[0].cutlery;
+    take = orders[0].take;
+    orderStreet = orders[0].OrderDeliveryAddress.street;
+    orderHouseNumber = orders[0].OrderDeliveryAddress.houseNumber;
+    orderFloor = orders[0].OrderDeliveryAddress.floor;
+    orderDoorNumber = orders[0].OrderDeliveryAddress.doorNumber;
+    orderPhoneNumber = orders[0].OrderDeliveryAddress.phoneNumber;
+    orderCreated = orders[0].createdAt.toLocaleString("en-GB", {
+      timeZone: "Europe/Helsinki",
+    });
+    userName = orders[0].OrderDeliveryAddress.userName;
+    orderIds = orders[0].encodedKey;
+  }
+  // console.log(test);
+  return { orders: orders };
+};
+
+exports.postEditOrderAjax = async (req, res, next) => {
+  let orderStatusId = req.body.orderStatusId;
+  let orderId = req.body.orderId;
+
+  await Order.update(
+    { orderStatusId: orderStatusId, courierId: req.admin.id },
+    { where: { id: orderId } }
+  );
+};
+
+exports.postAddOrder = async (req, res, next) => {
+  const name = req.body.name;
+  const phoneNumber = req.body.phoneNumber;
+  const deliveryAddress = req.body.deliveryAddress;
+  const totalPrice = req.body.totalPrice;
+  const orderDelAdd = await OrderDeliveryAddress.create({
+    street: "orderStreet",
+    houseNumber: "orderHouseNumber",
+    floor: "orderFloor",
+    doorNumber: "orderDoorNumber",
+    phoneNumber: phoneNumber,
+    // userId: req.user.id,
+    userName: name,
+    email: "userEmail",
+  });
+
+  var digit = ("" + orderDelAdd.id)[1];
+  var digitfirst = ("" + orderDelAdd.id)[0];
+
+  const cryptr = new Cryptr("orderIdSecretKey");
+  let test = [0, 1, 2, 3, 4, 5, 7, 8, 9][Math.floor(Math.random() * 9)];
+
+  const encryptedString = cryptr.encrypt(orderDelAdd.id);
+  orderIdSecretKey =
+    digitfirst + encryptedString.substring(0, 6).slice(0, 6) + digit + test;
+
+  await Order.create({
+    restaurantId: req.admin.id,
+    totalPrice: totalPrice,
+    orderStatusId: 1,
+    orderDeliveryAddressId: orderDelAdd.id,
+    locationNameId: 1,
+    cutlery: 0,
+    lang: "hu",
+    take: 0,
+    orderType: 0,
+    encodedKey: orderIdSecretKey,
+  })
+
+    .then((result) => {
+      res.redirect("/admin/orders");
+    })
+    .catch((err) => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
+};
+/// COURIER
+exports.getOrdersByCourier = async (req, res, next) => {
+  const userRole = await Restaurant.findOne({
+    where: { id: req.admin.id },
+    include: [{ model: RestaurantRole }],
+  });
+  let userRoleType = userRole.RestaurantRoles[0].role;
+  let reqAdmin = req.admin.id;
+  const orderfirst = await getOrderByStatusCourier(1);
+  const ordersecond = await getOrderByStatusCourier(2);
+  const orderthird = await getOrderByStatusCourier(3);
+  const orderfour = await getOrderByStatusCourier(4);
+  const orderfive = await getOrderByStatusCourier(5);
+  if (userRoleType != 1) {
+    res.redirect("/admin/orders");
+  }
+  res.render("order/order-courier", {
+    pageTitle: "Add Product",
+    path: "/admin/add-product",
+    editing: false,
+    orderfirst: orderfirst,
+    ordersecond: ordersecond,
+    orderthird: orderthird,
+    orderfour: orderfour,
+    orderfive: orderfive,
+    userRole: userRoleType,
+  });
+};
+const getOrderByStatusCourier = async (status, req, res) => {
+  let languageCode = 1;
+  // if (req.cookies.language == "ro") {
+  //   languageCode = 1;
+  // } else if (req.cookies.language == "hu") {
+  //   languageCode = 2;
+  // } else {
+  //   languageCode = 3;
+  // }
+  const orders = await Order.findAll({
+    order: [["createdAt", "DESC"]],
+    where: { orderStatusId: status },
+    include: [
+      {
+        model: OrderItem,
+        include: [
+          {
+            model: OrderItemExtra,
+            include: [
+              {
+                model: Extra,
+                include: [
+                  {
+                    model: ExtraTranslation,
+                    where: { languageId: languageCode },
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            model: Variant,
+            include: [
+              {
+                model: ProductFinal,
+                where: { active: languageCode },
+                include: [
+                  {
+                    model: Product,
+                    include: [
+                      {
+                        model: ProductTranslation,
+                        where: { languageId: languageCode },
+                      },
+                    ],
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+      { model: OrderDeliveryAddress },
+      { model: User },
+      // { model: Restaurant, where: { needDelivery: 1 } },
+      {
+        model: LocationName,
+        where: { id: 1 },
+        include: [
+          {
+            model: LocationNameTranslation,
+            where: { languageId: languageCode },
+          },
+        ],
+      },
+    ],
+  });
+  // console.log(orders);
+  let extras = [];
+  let test = [];
+  let cutlery;
+  let take;
+  let userName;
+  let orderStreet;
+  let orderHouseNumber;
+  let orderFloor;
+  let orderDoorNumber;
+  let orderPhoneNumber;
+  let orderCreated;
+  let orderIds;
+  if (orders.length != 0) {
+    for (let i = 0; i < orders.length; i++) {
+      const resultWithAll = [];
+      let orderItems = orders[i].OrderItems;
+      for (let j = 0; j < orderItems.length; j++) {
+        extras = orderItems[j].OrderItemExtras;
+        let prodFin = orderItems[j].Variant.ProductFinals;
+        for (let h = 0; h < prodFin.length; h++) {
+          if (extras.length == 0) {
+            let totalProductPrice = 0;
+            let totalBoxPrice = 0;
+            totalProductPrice +=
+              parseFloat(orderItems[j].variantPrice) *
+              parseInt(orderItems[j].quantity);
+            totalBoxPrice +=
+              parseFloat(orderItems[j].boxPrice) *
+              parseInt(orderItems[j].quantity);
+            const items = {
+              orderItemId: orderItems[j].id,
+              boxPrice: orderItems[j].boxPrice,
+              totalBoxPrice: totalBoxPrice.toFixed(2),
+              variant_sku: orderItems[j].Variant.sku,
+              extra_length: extras.length,
+              product_id: prodFin[h].productId,
+              product_quantity: orderItems[j].quantity,
+              message: orderItems[j].message,
+              product_price: orderItems[j].variantPrice,
+              product_name: prodFin[h].Product.ProductTranslations[0].title,
+              total_product_price: totalProductPrice,
+            };
+            resultWithAll.push(items);
+          } else {
+            for (let k = 0; k < extras.length; k++) {
+              let totalExtraPrice = 0;
+              let totalProductPrice = 0;
+              let totalBoxPrice = 0;
+              let totalSection = 0;
+              let totalSectionNoBox = 0;
+              let extraPlusProduct = 0;
+              totalExtraPrice +=
+                parseFloat(extras[k].extraPrice) * parseInt(extras[k].quantity);
+              // console.log("totalExtraPrice");
+              totalProductPrice +=
+                parseFloat(orderItems[j].variantPrice) *
+                parseInt(orderItems[j].quantity);
+              totalBoxPrice +=
+                parseFloat(orderItems[j].boxPrice) *
+                parseInt(orderItems[j].quantity);
+              totalSection +=
+                parseFloat(totalBoxPrice) +
+                parseFloat(totalExtraPrice) +
+                parseFloat(totalProductPrice);
+              // console.log("totalSection", totalSection);
+              totalSectionNoBox +=
+                parseFloat(totalExtraPrice) + parseFloat(totalProductPrice);
+              const items = {
+                orderItemId: orderItems[j].id,
+                variant_sku: orderItems[j].Variant.sku,
+                totalBoxPrice: totalBoxPrice.toFixed(2),
+                boxPrice: orderItems[j].boxPrice,
+                totalSection: totalSection,
+                totalSectionNoBox: totalSectionNoBox,
+                extra_length: extras.length,
+                product_id: prodFin[h].productId,
+                product_quantity: orderItems[j].quantity,
+                product_price: orderItems[j].variantPrice,
+                product_name: prodFin[h].Product.ProductTranslations[0].title,
+                extra_id: extras[k].extraId,
+                extra_quantity: extras[k].quantity,
+                extra_price: extras[k].extraPrice,
+                extra_name: extras[k].Extra.ExtraTranslations[0].name,
+                total_product_price: totalProductPrice,
+                total_extra_price: totalExtraPrice,
+                message: orderItems[j].message,
+              };
+              resultWithAll.push(items);
+            }
+          }
+        }
+      }
+
+      const reduced = resultWithAll.reduce((acc, val) => {
+        const {
+          extra_id,
+          extra_quantity,
+          extra_price,
+          extra_name,
+          ...otherFields
+        } = val;
+        const existing = acc.find(
+          (item) => item.orderItemId === val.orderItemId
+        );
+        if (!existing) {
+          acc.push({
+            ...otherFields,
+            extras: [
+              {
+                extra_id,
+                extra_quantity,
+                extra_price,
+                extra_name,
+              },
+            ],
+          });
+          return acc;
+        }
+        existing.extras.push({
+          extra_id,
+          extra_quantity,
+          extra_price,
+          extra_name,
+        });
+        return acc;
+      }, []);
+      orders[i].products = reduced;
+      test = orders[i].products;
+    }
+    totalPriceFinal = orders[0].totalPrice;
+    cutlery = orders[0].cutlery;
+    take = orders[0].take;
+    orderStreet = orders[0].OrderDeliveryAddress.street;
+    orderHouseNumber = orders[0].OrderDeliveryAddress.houseNumber;
+    orderFloor = orders[0].OrderDeliveryAddress.floor;
+    orderDoorNumber = orders[0].OrderDeliveryAddress.doorNumber;
+    orderPhoneNumber = orders[0].OrderDeliveryAddress.phoneNumber;
+    orderCreated = orders[0].createdAt.toLocaleString("en-GB", {
+      timeZone: "Europe/Helsinki",
+    });
+    userName = orders[0].OrderDeliveryAddress.userName;
+    orderIds = orders[0].encodedKey;
+  }
+  // console.log(test);
+  return { orders: orders };
+};
+
+exports.getDeliveryAddressByPhone = async (req, res, next) => {
+  let phone = req.body.phoneNumberSearch;
+  console.log("=--=-=-=-=-=-=-=-==-=--=", req.body.phoneNumberSearch);
+  const result = await OrderDeliveryAddress.findAll({
+    where: { phoneNumber: phone },
+  });
+  // console.log("=-=-=-=-=-=-=-==--=-=-==-=-", req.body);
+  console.log(result);
 };

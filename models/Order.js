@@ -22,6 +22,7 @@ const Order = sequelize.define("Order", {
   deliveryPrice: Sequelize.FLOAT,
   mobile: Sequelize.INTEGER,
   web: Sequelize.INTEGER,
+  courierId: Sequelize.INTEGER,
 });
 
 module.exports = Order;
