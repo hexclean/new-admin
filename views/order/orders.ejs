@@ -1400,7 +1400,7 @@
                     <span>Ajtószám:</span> <%=
                     ordersecond.orders[i].OrderDeliveryAddress.doorNumber %>
                   </p>
-                  <% } %> <% if(ordersecond.orders[i].cutlery !==1){ %>
+                  <% } %> <% if(ordersecond.orders[i].cutlery ==1){ %>
                   <h5>Nem kér evőeszközt</h5>
                   <% } %>
 
@@ -1691,7 +1691,7 @@
                     <span>Ajtószám:</span> <%=
                     orderthird.orders[i].OrderDeliveryAddress.doorNumber %>
                   </p>
-                  <% } %> <% if(orderthird.orders[i].cutlery !==1){ %>
+                  <% } %> <% if(orderthird.orders[i].cutlery ==1){ %>
                   <h5>Nem kér evőeszközt</h5>
                   <% } %>
 
@@ -1939,7 +1939,10 @@
                       src="../img/left-arrow.png"
                   /></span>
                 </h4>
-                <div class="details">
+                <div
+                  onclick="document.getElementById('id<%= orderfour.orders[i].id %>').style.display='block'"
+                  class="details"
+                >
                   <h3>
                     <label
                       ><%= orderfour.orders[i].OrderDeliveryAddress.userName
@@ -1977,7 +1980,7 @@
                     <span>Ajtószám:</span> <%=
                     orderfour.orders[i].OrderDeliveryAddress.doorNumber %>
                   </p>
-                  <% } %> <% if(orderfour.orders[i].cutlery !==1){ %>
+                  <% } %> <% if(orderfour.orders[i].cutlery ==1){ %>
                   <h5>Nem kér evőeszközt</h5>
                   <% } %>
 
@@ -2224,7 +2227,10 @@
                       src="../img/left-arrow.png"
                   /></span>
                 </h4>
-                <div class="details">
+                <div
+                  onclick="document.getElementById('id<%= orderfive.orders[i].id %>').style.display='block'"
+                  class="details"
+                >
                   <h3>
                     <label
                       ><%= orderfive.orders[i].OrderDeliveryAddress.userName
@@ -2262,7 +2268,7 @@
                     <span>Ajtószám:</span> <%=
                     orderfive.orders[i].OrderDeliveryAddress.doorNumber %>
                   </p>
-                  <% } %> <% if(orderfive.orders[i].cutlery !==1){ %>
+                  <% } %> <% if(orderfive.orders[i].cutlery ==1){ %>
                   <h5>Nem kér evőeszközt</h5>
                   <% } %>
 
