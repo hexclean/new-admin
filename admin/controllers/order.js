@@ -1,4 +1,3 @@
-const Sequelize = require("sequelize");
 var request = require("request");
 const Box = require("../../models/Box");
 const Order = require("../../models/Order");
@@ -20,6 +19,8 @@ const mailgun = require("mailgun-js");
 const DOMAIN = "mg.foodnet.ro";
 const api_key = "key-6469129ca0603f9588c2a57c3b46defe";
 const Cryptr = require("cryptr");
+const Sequelize = require("sequelize");
+const Op = Sequelize.Op;
 const mg = mailgun({
   apiKey: api_key,
   domain: DOMAIN,
@@ -5634,7 +5635,7 @@ exports.getOrders = async (req, res, next) => {
     languageCode = 3;
   }
 
-  console.log("=--==--=-=-=-=--==-=-", languageCode);
+  console.log("userRole.needDelivery");
   let reqAdmin = req.admin.id;
   const orderfirst = await getOrderByStatus(1, reqAdmin, languageCode);
   const ordersecond = await getOrderByStatus(2, reqAdmin, languageCode);
@@ -5654,6 +5655,7 @@ exports.getOrders = async (req, res, next) => {
     orderfour: orderfour,
     orderfive: orderfive,
     userRole: userRoleType,
+    needDelivery: userRole.needDelivery,
   });
 };
 const getOrderByStatus = async (status, reqAdmin, languageCode, req, res) => {
@@ -5872,19 +5874,76 @@ exports.postEditOrderAjax = async (req, res, next) => {
 };
 
 exports.postAddOrder = async (req, res, next) => {
-  const name = req.body.name;
-  const phoneNumber = req.body.phoneNumber;
-  const deliveryAddress = req.body.deliveryAddress;
-  const totalPrice = req.body.totalPrice;
+  const userNameFill = req.body.userNameFill;
+  const phoneNumberFill = req.body.phoneNumberFill;
+  const streetFill = req.body.streetFill;
+  const houseNumberFill = req.body.houseNumberFill;
+  const floorFill = req.body.floorFill;
+  const doorNumberFill = req.body.doorNumberFill;
+  const totalPriceFill = req.body.totalPriceFill;
+
+  // const findOd = await OrderDeliveryAddress.findAll({
+  //   where: {
+  //     street: streetFill,
+  //     phoneNumber: phoneNumberFill,
+  //     houseNumber: houseNumberFill,
+  //   },
+  //   include: [{ model: Order, where: { locationNameId: 1 } }],
+  // });
+  // if (findOd.length != 0) {
+  //   console.log("NEM KELL MENTENI", 0);
+  //   const orderDelAdd = await OrderDeliveryAddress.create({
+  //     street: streetFill,
+  //     houseNumber: houseNumberFill,
+  //     floor: floorFill,
+  //     doorNumber: doorNumberFill,
+  //     phoneNumber: phoneNumberFill,
+  //     userName: userNameFill,
+  //     email: "erdosjozsef@gmail.com",
+  //   });
+  //   var digit = ("" + orderDelAdd.id)[1];
+  //   var digitfirst = ("" + orderDelAdd.id)[0];
+
+  //   const cryptr = new Cryptr("orderIdSecretKey");
+  //   let test = [0, 1, 2, 3, 4, 5, 7, 8, 9][Math.floor(Math.random() * 9)];
+
+  //   const encryptedString = cryptr.encrypt(orderDelAdd.id);
+
+  //   orderIdSecretKey =
+  //     digitfirst + encryptedString.substring(0, 6).slice(0, 6) + digit + test;
+  //   await Order.create({
+  //     restaurantId: req.admin.id,
+  //     totalPrice: totalPriceFill,
+  //     orderStatusId: 1,
+  //     orderDeliveryAddressId: findOd[0].id,
+  //     locationNameId: 1,
+  //     cutlery: 0,
+  //     lang: "hu",
+  //     take: 0,
+  //     orderType: 0,
+  //     encodedKey: orderIdSecretKey,
+  //     messageCourier: "",
+  //     deliveryPrice: 0,
+  //     mobile: 0,
+  //     web: 0,
+  //   })
+  //     .then((result) => {
+  //       res.redirect("/admin/orders");
+  //     })
+  //     .catch((err) => {
+  //       const error = new Error(err);
+  //       error.httpStatusCode = 500;
+  //       return next(error);
+  //     });
+  // } else {
   const orderDelAdd = await OrderDeliveryAddress.create({
-    street: "orderStreet",
-    houseNumber: "orderHouseNumber",
-    floor: "orderFloor",
-    doorNumber: "orderDoorNumber",
-    phoneNumber: phoneNumber,
-    // userId: req.user.id,
-    userName: name,
-    email: "userEmail",
+    street: streetFill,
+    houseNumber: houseNumberFill,
+    floor: floorFill,
+    doorNumber: doorNumberFill,
+    phoneNumber: phoneNumberFill,
+    userName: userNameFill,
+    email: "erdosjozsef@gmail.com",
   });
 
   var digit = ("" + orderDelAdd.id)[1];
@@ -5894,12 +5953,13 @@ exports.postAddOrder = async (req, res, next) => {
   let test = [0, 1, 2, 3, 4, 5, 7, 8, 9][Math.floor(Math.random() * 9)];
 
   const encryptedString = cryptr.encrypt(orderDelAdd.id);
+
   orderIdSecretKey =
     digitfirst + encryptedString.substring(0, 6).slice(0, 6) + digit + test;
 
   await Order.create({
     restaurantId: req.admin.id,
-    totalPrice: totalPrice,
+    totalPrice: totalPriceFill,
     orderStatusId: 1,
     orderDeliveryAddressId: orderDelAdd.id,
     locationNameId: 1,
@@ -5908,8 +5968,12 @@ exports.postAddOrder = async (req, res, next) => {
     take: 0,
     orderType: 0,
     encodedKey: orderIdSecretKey,
+    messageCourier: "",
+    deliveryPrice: 0,
+    mobile: 0,
+    web: 0,
+    restaurantAdded: 1,
   })
-
     .then((result) => {
       res.redirect("/admin/orders");
     })
@@ -5918,6 +5982,7 @@ exports.postAddOrder = async (req, res, next) => {
       error.httpStatusCode = 500;
       return next(error);
     });
+  // }
 };
 /// COURIER
 exports.getOrdersByCourier = async (req, res, next) => {
@@ -6163,11 +6228,48 @@ const getOrderByStatusCourier = async (status, req, res) => {
 };
 
 exports.getDeliveryAddressByPhone = async (req, res, next) => {
-  let phone = req.body.phoneNumberSearch;
-  console.log("=--=-=-=-=-=-=-=-==-=--=", req.body.phoneNumberSearch);
+  let phone = req.body.phoneNumberFill;
+
   const result = await OrderDeliveryAddress.findAll({
-    where: { phoneNumber: phone },
+    where: {
+      phoneNumber: {
+        [Op.like]: `%${phone}%`,
+      },
+    },
+    include: [
+      {
+        model: Order,
+        include: [
+          {
+            model: LocationName,
+            include: [
+              { model: LocationNameTranslation, where: { languageId: 1 } },
+            ],
+          },
+        ],
+      },
+    ],
   });
-  // console.log("=-=-=-=-=-=-=-==--=-=-==-=-", req.body);
-  console.log(result);
+  let finalResult = [];
+  for (let i = 0; i < result.length; i++) {
+    let orderJoined = result[i].Orders;
+    for (j = 0; j < orderJoined.length; j++) {
+      const items = {
+        id: result[i].id,
+        phoneNumber: result[i].phoneNumber,
+        name: result[i].userName,
+        location: orderJoined[j].LocationName.LocationNameTranslations[0].name,
+        street: result[i].street,
+        houseNumber: result[i].houseNumber,
+        floor: result[i].floor,
+        doorNumber: result[i].doorNumber,
+      };
+      finalResult.push(items);
+      // console.log();
+    }
+  }
+  console.log(finalResult);
+  res.json({
+    finalResult,
+  });
 };

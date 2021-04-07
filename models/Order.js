@@ -23,6 +23,7 @@ const Order = sequelize.define("Order", {
   mobile: Sequelize.INTEGER,
   web: Sequelize.INTEGER,
   courierId: Sequelize.INTEGER,
+  restaurantAdded: Sequelize.INTEGER,
 });
 
 module.exports = Order;

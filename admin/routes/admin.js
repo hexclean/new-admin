@@ -262,9 +262,9 @@ router.get(
 router.get("/upsell", isAuth, adminController.getUpsell);
 router.post("/ajax", isAuth, ordersController.postEditOrderAjax);
 router.get("/courier-orders", isAuth, ordersController.getOrdersByCourier);
-router.post("/send-order", isAuth, ordersController.postAddOrder);
+router.post("/create-order", isAuth, ordersController.postAddOrder);
 router.post(
-  "/serch-by-phone",
+  "/search-by-phone",
   isAuth,
   ordersController.getDeliveryAddressByPhone
 );
