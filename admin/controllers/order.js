@@ -5681,10 +5681,10 @@ const getOrderByStatus = async (status, reqAdmin, languageCode, req, res) => {
     where: {
       orderStatusId: status,
       restaurantId: reqAdmin,
-      createdAt: {
-        [Op.gt]: TODAY_START,
-        [Op.lt]: NOW,
-      },
+      // createdAt: {
+      //   [Op.gt]: TODAY_START,
+      //   [Op.lt]: NOW,
+      // },
     },
     include: [
       {

@@ -1852,13 +1852,49 @@
                           ordersecond.orders[i].messageCourier %> <% } %>
                         </p>
                         <div class="rend-close">
-                          <h5>Rendelés törlése</h5>
-                          <button
-                            onclick="document.getElementById('id<%= ordersecond.orders[i].id %>').style.display='none'"
-                            class="btn-light"
-                          >
-                            Ablak bezárása
-                          </button>
+                          <h5 style="cursor:pointer" data-toggle="modal" data-target="#deleteOrder<%= ordersecond.orders[i].id %>">Rendelés törlése</h5>
+
+                          <!-- Button trigger modal -->
+
+
+                        <!-- DELETE MODAL -->
+                        <form 
+                          id="delete-order"
+                          class="ms-content-wrapper" 
+                          action="/admin/delete-order/<%= ordersecond.orders[i].id %>"
+                          method="POST"
+                          enctype="multipart/form-data">
+                        <div class="modal fade" id="deleteOrder<%= ordersecond.orders[i].id %>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel<%= ordersecond.orders[i].id %>" aria-hidden="true">
+                          <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel<%= ordersecond.orders[i].id %>"><u><%= ordersecond.orders[i].encodedKey %></u> rendelés törlése</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                </button>
+                              </div>
+                              <div class="modal-body">
+                                <div class="input-group mb-3">
+                                  <div class="input-group-prepend">
+                                    <span class="input-group-text" id="inputGroup-sizing-default">Törlés oka</span>
+                                  </div>
+                                  <input type="text" name="reject" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+                                </div>
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Ablak bezárása</button>
+                                <button type="submit" class="btn" style="background: #931414 !important; color: white;">Rendelés törlése</button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <button
+                        onclick="document.getElementById('id<%= ordersecond.orders[i].id %>').style.display='none'"
+                        class="btn-light"
+                      >
+                        Ablak bezárása
+                      </button>
+                          </form>
                         </div>
                       </div>
                     </div>
@@ -2152,13 +2188,49 @@
                           orderthird.orders[i].messageCourier %> <% } %>
                         </p>
                         <div class="rend-close">
-                          <h5>Rendelés törlése</h5>
-                          <button
-                            onclick="document.getElementById('id<%= orderthird.orders[i].id %>').style.display='none'"
-                            class="btn-light"
-                          >
-                            Ablak bezárása
-                          </button>
+                          <h5 style="cursor:pointer" data-toggle="modal" data-target="#deleteOrder<%= orderthird.orders[i].id %>">Rendelés törlése</h5>
+
+                          <!-- Button trigger modal -->
+
+
+                        <!-- DELETE MODAL -->
+                        <form 
+                          id="delete-order"
+                          class="ms-content-wrapper" 
+                          action="/admin/delete-order/<%= orderthird.orders[i].id %>"
+                          method="POST"
+                          enctype="multipart/form-data">
+                        <div class="modal fade" id="deleteOrder<%= orderthird.orders[i].id %>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel<%= orderthird.orders[i].id %>" aria-hidden="true">
+                          <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel<%= orderthird.orders[i].id %>"><u><%= orderthird.orders[i].encodedKey %></u> rendelés törlése</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                </button>
+                              </div>
+                              <div class="modal-body">
+                                <div class="input-group mb-3">
+                                  <div class="input-group-prepend">
+                                    <span class="input-group-text" id="inputGroup-sizing-default">Törlés oka</span>
+                                  </div>
+                                  <input type="text" name="reject" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+                                </div>
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Ablak bezárása</button>
+                                <button type="submit" class="btn" style="background: #931414 !important; color: white;">Rendelés törlése</button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <button
+                        onclick="document.getElementById('id<%= orderthird.orders[i].id %>').style.display='none'"
+                        class="btn-light"
+                      >
+                        Ablak bezárása
+                      </button>
+                          </form>
                         </div>
                       </div>
                     </div>
@@ -2451,13 +2523,49 @@
                           %> <% } %>
                         </p>
                         <div class="rend-close">
-                          <h5>Rendelés törlése</h5>
-                          <button
-                            onclick="document.getElementById('id<%= orderfour.orders[i].id %>').style.display='none'"
-                            class="btn-light"
-                          >
-                            Ablak bezárása
-                          </button>
+                          <h5 style="cursor:pointer" data-toggle="modal" data-target="#deleteOrder<%= orderfour.orders[i].id %>">Rendelés törlése</h5>
+
+                          <!-- Button trigger modal -->
+
+
+                        <!-- DELETE MODAL -->
+                        <form 
+                          id="delete-order"
+                          class="ms-content-wrapper" 
+                          action="/admin/delete-order/<%= orderfour.orders[i].id %>"
+                          method="POST"
+                          enctype="multipart/form-data">
+                        <div class="modal fade" id="deleteOrder<%= orderfour.orders[i].id %>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel<%= orderfour.orders[i].id %>" aria-hidden="true">
+                          <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel<%= orderfour.orders[i].id %>"><u><%= orderfour.orders[i].encodedKey %></u> rendelés törlése</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                </button>
+                              </div>
+                              <div class="modal-body">
+                                <div class="input-group mb-3">
+                                  <div class="input-group-prepend">
+                                    <span class="input-group-text" id="inputGroup-sizing-default">Törlés oka</span>
+                                  </div>
+                                  <input type="text" name="reject" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+                                </div>
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Ablak bezárása</button>
+                                <button type="submit" class="btn" style="background: #931414 !important; color: white;">Rendelés törlése</button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <button
+                        onclick="document.getElementById('id<%= orderfour.orders[i].id %>').style.display='none'"
+                        class="btn-light"
+                      >
+                        Ablak bezárása
+                      </button>
+                          </form>
                         </div>
                       </div>
                     </div>
@@ -2749,15 +2857,7 @@
                           - <% } else{ %> <%= orderfive.orders[i].messageCourier
                           %> <% } %>
                         </p>
-                        <div class="rend-close">
-                          <h5>Rendelés törlése</h5>
-                          <button
-                            onclick="document.getElementById('id<%= orderfive.orders[i].id %>').style.display='none'"
-                            class="btn-light"
-                          >
-                            Ablak bezárása
-                          </button>
-                        </div>
+                       
                       </div>
                     </div>
                   </div>
