@@ -16,6 +16,7 @@ const liveSearchController = require("../controllers/live-search");
 const ordersController = require("../controllers/order");
 const reckoningController = require("../controllers/reckoning");
 const deliveryPriceController = require("../controllers/delivery-price");
+const statisticController = require("../controllers/statistic");
 const isAuth = require("../../middleware/is-auth");
 const router = express.Router();
 
@@ -268,6 +269,15 @@ router.post(
   isAuth,
   ordersController.getDeliveryAddressByPhone
 );
+router.post("/delete-order/:id", isAuth, ordersController.postDeleteOrder);
+//
+router.get("/statistic-orders", isAuth, statisticController.getStatistic);
+router.post(
+  "/statistic-orders-search",
+  isAuth,
+  statisticController.postStatistic
+);
+
 // router.get("/daily-menu", isAuth, adminController.getDailyMenu);
 // router.post("/add-product", adminController.postAddProduct);
 // router.get("/edit-product/:productId", isAuth, adminController.getEditProduct);

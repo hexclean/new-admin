@@ -1223,6 +1223,7 @@
       });
     </script>
 
+
     <div class="main-container">
       <div class="container">
         <div class="main-column">
@@ -1441,7 +1442,7 @@
                             </td>
                           </tr>
                           <tr>
-                            <td><img src="../img/c2.png" />Telefonszam</td>
+                            <td><img src="../img/c2.png" />Telefonszám</td>
                             <td>
                               <%=
                               orderfirst.orders[i].OrderDeliveryAddress.phoneNumber
@@ -1496,7 +1497,10 @@
                           </tr>
                           <tr>
                             <td><img src="../img/c7.png" />Fizetesi mod</td>
-                            <td>Keszpenz</td>
+                            <td><%
+                              if(orderfirst.orders[i].orderType ==1){ %>
+                              Készpénz <% } else{ %> Bankkártya a futárnál
+                               <% } %></td>
                           </tr>
                         </table>
                       </div>
@@ -1509,14 +1513,49 @@
                           orderfirst.orders[i].messageCourier %> <% } %>
                         </p>
                         <div class="rend-close">
-                          <h5>Rendelés törlése</h5>
+                          <h5 style="cursor:pointer" data-toggle="modal" data-target="#deleteOrder<%= orderfirst.orders[i].id %>">Rendelés törlése</h5>
 
-                          <button
-                            onclick="document.getElementById('id<%= orderfirst.orders[i].id %>').style.display='none'"
-                            class="btn-light"
-                          >
-                            Ablak bezárása
-                          </button>
+                          <!-- Button trigger modal -->
+
+
+                        <!-- DELETE MODAL -->
+                        <form 
+                          id="delete-order"
+                          class="ms-content-wrapper" 
+                          action="/admin/delete-order/<%= orderfirst.orders[i].id %>"
+                          method="POST"
+                          enctype="multipart/form-data">
+                        <div class="modal fade" id="deleteOrder<%= orderfirst.orders[i].id %>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel<%= orderfirst.orders[i].id %>" aria-hidden="true">
+                          <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel<%= orderfirst.orders[i].id %>"><u><%= orderfirst.orders[i].encodedKey %></u> rendelés törlése</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                </button>
+                              </div>
+                              <div class="modal-body">
+                                <div class="input-group mb-3">
+                                  <div class="input-group-prepend">
+                                    <span class="input-group-text" id="inputGroup-sizing-default">Törlés oka</span>
+                                  </div>
+                                  <input type="text" name="reject" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+                                </div>
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Ablak bezárása</button>
+                                <button type="submit" class="btn" style="background: #931414 !important; color: white;">Rendelés törlése</button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <button
+                        onclick="document.getElementById('id<%= orderfirst.orders[i].id %>').style.display='none'"
+                        class="btn-light"
+                      >
+                        Ablak bezárása
+                      </button>
+                          </form>
                         </div>
                       </div>
                     </div>
@@ -1740,7 +1779,7 @@
                             </td>
                           </tr>
                           <tr>
-                            <td><img src="../img/c2.png" />Telefonszam</td>
+                            <td><img src="../img/c2.png" />Telefonszám</td>
                             <td>
                               <%=
                               ordersecond.orders[i].OrderDeliveryAddress.phoneNumber
@@ -1796,8 +1835,11 @@
                           </tr>
 
                           <tr>
-                            <td><img src="../img/c7.png" />Fizetesi mod</td>
-                            <td>Keszpenz</td>
+                            <td><img src="../img/c7.png" />Fizetesi mód</td>
+                            <td><%
+                              if(ordersecond.orders[i].orderType ==1){ %>
+                              Készpénz <% } else{ %> Bankkártya a futárnál
+                               <% } %></td>
                           </tr>
                         </table>
                       </div>
@@ -2039,7 +2081,7 @@
                             </td>
                           </tr>
                           <tr>
-                            <td><img src="../img/c2.png" />Telefonszam</td>
+                            <td><img src="../img/c2.png" />Telefonszám</td>
                             <td>
                               <%=
                               orderthird.orders[i].OrderDeliveryAddress.phoneNumber
@@ -2094,7 +2136,10 @@
                           </tr>
                           <tr>
                             <td><img src="../img/c7.png" />Fizetesi mod</td>
-                            <td>Keszpenz</td>
+                            <td><%
+                              if(orderthird.orders[i].orderType ==1){ %>
+                              Készpénz <% } else{ %> Bankkártya a futárnál
+                               <% } %></td>
                           </tr>
                         </table>
                       </div>
@@ -2335,7 +2380,7 @@
                             </td>
                           </tr>
                           <tr>
-                            <td><img src="../img/c2.png" />Telefonszam</td>
+                            <td><img src="../img/c2.png" />Telefonszám</td>
                             <td>
                               <%=
                               orderfour.orders[i].OrderDeliveryAddress.phoneNumber
@@ -2390,7 +2435,10 @@
                           </tr>
                           <tr>
                             <td><img src="../img/c7.png" />Fizetesi mod</td>
-                            <td>Keszpenz</td>
+                            <td><%
+                              if(orderfour.orders[i].orderType ==1){ %>
+                              Készpénz <% } else{ %> Bankkártya a futárnál
+                               <% } %></td>
                           </tr>
                         </table>
                       </div>
@@ -2631,7 +2679,7 @@
                             </td>
                           </tr>
                           <tr>
-                            <td><img src="../img/c2.png" />Telefonszam</td>
+                            <td><img src="../img/c2.png" />Telefonszám</td>
                             <td>
                               <%=
                               orderfive.orders[i].OrderDeliveryAddress.phoneNumber
@@ -2686,7 +2734,10 @@
                           </tr>
                           <tr>
                             <td><img src="../img/c7.png" />Fizetesi mod</td>
-                            <td>Keszpenz</td>
+                            <td><%
+                              if(orderfive.orders[i].orderType ==1){ %>
+                              Készpénz <% } else{ %> Bankkártya a futárnál
+                               <% } %></td>
                           </tr>
                         </table>
                       </div>

@@ -1,0 +1,115 @@
+
+
+<%- include('../includes/head.ejs') %>
+</head>
+<body class="ms-body ms-aside-left-open ms-primary-theme ms-has-quickbar">
+   <%- include('../includes/navigation.ejs') %> 
+   <main class="body-content">
+      <%- include('../includes/navigation-bar.ejs') %>
+      <div class="ms-content-wrapper">
+         <div class="ms-profile-overview no-img-var">
+            <ul class="ms-profile-navigation nav nav-tabs tabs-bordered" role="tablist">
+               <li role="presentation"><a href="#" aria-controls="tab1" class="active show" role="tab" data-toggle="tab"><%= lingua.all_allergens %></a></li>
+               <li role="presentation"><a class="add-variant" href="/admin/add-allergen"><%= lingua.create_allergen %></a></li>
+            </ul>
+         </div>
+      </div>
+      <script>
+        $(function () {
+          $("#datepickerStart").datepicker();
+        });
+        $(function () {
+          $("#datepickerEnd").datepicker();
+        });
+      </script>
+        <script>
+            $(function () {
+              $("#getOrders").click(function () {
+                var datepickerStart = $("#datepickerStart").val();
+                var datepickerEnd = $("#datepickerEnd").val();
+                console.log(datepickerStart);
+                console.log(datepickerEnd);
+                $.ajax({
+                  url: "/admin/statistic-orders-search",
+                  type: "POST",
+                  data: {
+                    datepickerStart: datepickerStart,
+                    datepickerEnd: datepickerEnd,
+                  },
+                  success: function (data) {
+                    console.log(data);
+                    //   for (let i = 0; i < data.result.length; i++) {
+                    $("#list-group").append(
+                      `<li class="list-group-item list-group-item-action"><u>Osszes</u>: ${data.result[0].totalOrder}, </li>`
+                    );
+                    $("#list-group").append(
+                      `<li class="list-group-item list-group-item-action"><u>Foodnet</u>: ${data.result[0].foodnetOrders}, </li>`
+                    );
+                    $("#list-group").append(
+                      `<li class="list-group-item list-group-item-action"><u>Telefonos</u>: ${data.result[0].phoneOrders}, </li>`
+                    );
+                    
+                    // location.reload();
+                    //   }
+                  },
+                });
+              });
+            });
+          </script>
+      <div class="ms-content-wrapper">
+         <div class="row">
+            <div class="col-12">
+               <div class="ms-panel">
+                  <div class="ms-panel-header">
+                     <h6>Rendelés keresés</h6>
+                  </div>
+                  <div class="ms-panel-body">
+                    <div class="container-fluid">
+                        <div class="row">
+                        
+                        <!-- Porting begin -->
+                        <div class="col-lg-10">
+                        
+                         
+                        
+                            <div class="form-group" id="data_5">
+                              <div class="input-group input-group-sm my-2" >
+                                <input class="form-control" name="datepickerStart" id="datepickerStart">
+                                <div class="input-group-prepend input-group-append">
+                                  <span class="input-group-text">to</span>
+                                </div>
+                                <input class="form-control" name="datepickerEnd" id="datepickerEnd">
+                              </div>
+                            </div>
+                        
+                            <button class="btn btn-sm btn-success ml-2" id="getOrders" type="submit">Keresés</button>
+                           
+                        
+                         
+                          
+                        </div>
+                        <!-- Porting end -->
+                        
+                        </div>
+                        </div>
+                 
+
+                   
+                      
+                           
+                              
+                     
+                              <ul id="list-group"></ul>
+                         
+                      
+                    
+                    
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </main>
+   <%- include('../includes/end.ejs') %>
+</body>
+
