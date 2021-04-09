@@ -238,16 +238,7 @@ router.get("/products-reviews", isAuth, reviewController.getProductsReview);
 
 // Orders
 router.get("/orders", isAuth, ordersController.getOrders);
-router.get("/accepted-orders", isAuth, ordersController.getAcceptedOrders);
-router.get("/deleted-orders", isAuth, ordersController.getDeletedOrders);
-router.get("/edit-order/:orderId", isAuth, ordersController.getEditOrder);
-router.post("/edit-order", isAuth, ordersController.postEditOrder);
-router.get("/in-progress-orders", isAuth, ordersController.getInProgressOrder);
-router.post(
-  "/edit-in-progress-order",
-  isAuth,
-  ordersController.postEditInProgressOrder
-);
+
 // Reckoning
 router.get("/reckoning", isAuth, reckoningController.getIndex);
 router.post("/reckoning", isAuth, reckoningController.postExport);
