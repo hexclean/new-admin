@@ -661,10 +661,10 @@ const getOrderByStatus = async (status, reqAdmin, languageCode, req, res) => {
     where: {
       orderStatusId: status,
       restaurantId: reqAdmin,
-      // createdAt: {
-      //   [Op.gt]: TODAY_START,
-      //   [Op.lt]: NOW,
-      // },
+      createdAt: {
+        [Op.gt]: TODAY_START,
+        [Op.lt]: NOW,
+      },
     },
     include: [
       {
@@ -885,7 +885,7 @@ exports.postEditOrderAjax = async (req, res, next) => {
     async function sendEmailForUser() {
       const data = {
         from: "info@foodnet.ro",
-        to: "erdosjozsef20@gmail.com",
+        to: userEmail,
         subject: "Sikeresen felvett rendelés!",
         html: `
         
