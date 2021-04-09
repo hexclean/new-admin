@@ -769,7 +769,7 @@
       .cus-details2 .display-topright {
         position: absolute;
         right: -7px;
-        top: 7px;
+        top: 14px;
         font-size: 15px;
       }
       .cus-details2 .button {
@@ -1504,7 +1504,7 @@
                             </td>
                           </tr>
                           <tr>
-                            <td><img src="../img/c7.png" />Fizetesi mod</td>
+                            <td><img src="../img/c7.png" />Fizetesi mód</td>
                             <td><%
                               if(orderfirst.orders[i].orderType ==1){ %>
                               Készpénz <% } else{ %> Bankkártya a futárnál
@@ -1560,7 +1560,7 @@
                       </form>
                         <button
                         onclick="document.getElementById('id<%= orderfirst.orders[i].id %>').style.display='none'"
-                        class="btn-light"
+                        class="btn-light display-topright"
                       >
                         Ablak bezárása
                       </button>
@@ -1904,13 +1904,14 @@
                             </div>
                           </div>
                         </div>
+                      </form>
                         <button
                         onclick="document.getElementById('id<%= ordersecond.orders[i].id %>').style.display='none'"
-                        class="btn-light"
+                        class="btn-light display-topright"
                       >
                         Ablak bezárása
                       </button>
-                          </form>
+                         
                         </div>
                       </div>
                     </div>
@@ -2195,7 +2196,7 @@
                             </td>
                           </tr>
                           <tr>
-                            <td><img src="../img/c7.png" />Fizetesi mod</td>
+                            <td><img src="../img/c7.png" />Fizetesi mód</td>
                             <td><%
                               if(orderthird.orders[i].orderType ==1){ %>
                               Készpénz <% } else{ %> Bankkártya a futárnál
@@ -2248,13 +2249,14 @@
                             </div>
                           </div>
                         </div>
+                      </form>
                         <button
                         onclick="document.getElementById('id<%= orderthird.orders[i].id %>').style.display='none'"
-                        class="btn-light"
+                        class="btn-light display-topright"
                       >
                         Ablak bezárása
                       </button>
-                          </form>
+                         
                         </div>
                       </div>
                     </div>
@@ -2538,7 +2540,7 @@
                             </td>
                           </tr>
                           <tr>
-                            <td><img src="../img/c7.png" />Fizetesi mod</td>
+                            <td><img src="../img/c7.png" />Fizetesi mód</td>
                             <td><%
                               if(orderfour.orders[i].orderType ==1){ %>
                               Készpénz <% } else{ %> Bankkártya a futárnál
@@ -2591,13 +2593,14 @@
                             </div>
                           </div>
                         </div>
+                      </form>
                         <button
                         onclick="document.getElementById('id<%= orderfour.orders[i].id %>').style.display='none'"
-                        class="btn-light"
+                        class="btn-light display-topright"
                       >
                         Ablak bezárása
                       </button>
-                          </form>
+                          
                         </div>
                       </div>
                     </div>
@@ -2881,7 +2884,7 @@
                             </td>
                           </tr>
                           <tr>
-                            <td><img src="../img/c7.png" />Fizetesi mod</td>
+                            <td><img src="../img/c7.png" />Fizetesi mód</td>
                             <td><%
                               if(orderfive.orders[i].orderType ==1){ %>
                               Készpénz <% } else{ %> Bankkártya a futárnál
@@ -2897,7 +2900,14 @@
                           - <% } else{ %> <%= orderfive.orders[i].messageCourier
                           %> <% } %>
                         </p>
-                       
+                        <div class="rend-close">
+                        <button
+                        onclick="document.getElementById('id<%= orderfive.orders[i].id %>').style.display='none'"
+                        class="btn-light display-topright"
+                      >
+                        Ablak bezárása
+                      </button>
+                    </div>
                       </div>
                     </div>
                   </div>
