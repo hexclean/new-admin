@@ -252,7 +252,8 @@ router.get(
 // UPSELL
 // router.get("/add-product", isAuth, adminController.getUpsell);
 router.get("/upsell", isAuth, adminController.getUpsell);
-router.post("/ajax", isAuth, ordersController.postEditOrderAjax);
+router.post("/ajax/next", isAuth, ordersController.postEditOrderAjaxNext);
+router.post("/ajax/prev", isAuth, ordersController.postEditOrderAjaxPrev);
 router.get("/courier-orders", isAuth, ordersController.getOrdersByCourier);
 router.post("/create-order", isAuth, ordersController.postAddOrder);
 router.post(

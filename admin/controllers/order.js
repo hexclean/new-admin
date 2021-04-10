@@ -661,10 +661,10 @@ const getOrderByStatus = async (status, reqAdmin, languageCode, req, res) => {
     where: {
       orderStatusId: status,
       restaurantId: reqAdmin,
-      createdAt: {
-        [Op.gt]: TODAY_START,
-        [Op.lt]: NOW,
-      },
+      // createdAt: {
+      //   [Op.gt]: TODAY_START,
+      //   [Op.lt]: NOW,
+      // },
     },
     include: [
       {
@@ -867,7 +867,7 @@ const getOrderByStatus = async (status, reqAdmin, languageCode, req, res) => {
   return { orders: orders };
 };
 
-exports.postEditOrderAjax = async (req, res, next) => {
+exports.postEditOrderAjaxNext = async (req, res, next) => {
   let orderStatusId = req.body.orderStatusId;
   let orderId = req.body.orderId;
 
@@ -1430,6 +1430,16 @@ exports.postEditOrderAjax = async (req, res, next) => {
     }
     await sendEmailForUser();
   }
+
+  await Order.update(
+    { orderStatusId: orderStatusId, courierId: req.admin.id },
+    { where: { id: orderId } }
+  );
+};
+
+exports.postEditOrderAjaxPrev = async (req, res, next) => {
+  let orderStatusId = req.body.orderStatusId;
+  let orderId = req.body.orderId;
 
   await Order.update(
     { orderStatusId: orderStatusId, courierId: req.admin.id },

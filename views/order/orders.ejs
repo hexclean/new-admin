@@ -877,62 +877,54 @@
 
         if (nextCol === 2) {
           $.ajax({
-            url: "http://localhost:3000/admin/ajax",
+            url: "http://localhost:3000/admin/ajax/next",
             type: "POST",
             data: {
               orderStatusId: 2,
               orderId: id,
             },
-            success: function (data) {
-              console.log(data);
-            },
+            
           });
-          // alert("update status to Felvett rendelések: orderId" + id);
+          
         }
 
         if (nextCol === 3) {
           $.ajax({
-            url: "http://localhost:3000/admin/ajax",
+            url: "http://localhost:3000/admin/ajax/next",
             type: "POST",
             data: {
               orderStatusId: 3,
               orderId: id,
             },
-            success: function (data) {
-              console.log(data);
-            },
+            
           });
-          // alert("update status to Elkészítve: orderId" + id);
+          
         }
 
         if (nextCol === 4) {
           $.ajax({
-            url: "http://localhost:3000/admin/ajax",
+            url: "http://localhost:3000/admin/ajax/next",
             type: "POST",
             data: {
               orderStatusId: 4,
               orderId: id,
             },
-            success: function (data) {
-              console.log(data);
-            },
+            
           });
-          // alert("update status to Odaadva futárnak: orderId" + id);
+          
         }
 
         if (nextCol === 5) {
           $.ajax({
-            url: "http://localhost:3000/admin/ajax",
+            url: "http://localhost:3000/admin/ajax/next",
             type: "POST",
             data: {
               orderStatusId: 5,
               orderId: id,
             },
-            success: function (data) {
-              console.log(data);
-            },
+            
           });
-          // alert("update status to Kiszállítva: orderId" + id);
+          
         }
 
         $(order).attr("data-current-column", nextCol);
@@ -951,62 +943,54 @@
 
         if (nextCol === 2) {
           $.ajax({
-            url: "http://localhost:3000/admin/ajax",
+            url: "http://localhost:3000/admin/ajax/prev",
             type: "POST",
             data: {
               orderStatusId: 2,
               orderId: id,
             },
-            success: function (data) {
-              console.log(data);
-            },
+            
           });
-          // alert("update status to Felvett rendelések: orderId" + id);
+          
         }
 
         if (nextCol === 3) {
           $.ajax({
-            url: "http://localhost:3000/admin/ajax",
+            url: "http://localhost:3000/admin/ajax/prev",
             type: "POST",
             data: {
               orderStatusId: 3,
               orderId: id,
             },
-            success: function (data) {
-              console.log(data);
-            },
+            
           });
-          // alert("update status to Elkészítve: orderId" + id);
+          
         }
 
         if (nextCol === 4) {
           $.ajax({
-            url: "http://localhost:3000/admin/ajax",
+            url: "http://localhost:3000/admin/ajax/prev",
             type: "POST",
             data: {
               orderStatusId: 4,
               orderId: id,
             },
-            success: function (data) {
-              console.log(data);
-            },
+            
           });
-          // alert("update status to Odaadva futárnak: orderId" + id);
+          
         }
 
         if (nextCol === 5) {
           $.ajax({
-            url: "http://localhost:3000/admin/ajax",
+            url: "http://localhost:3000/admin/ajax/prev",
             type: "POST",
             data: {
               orderStatusId: 5,
               orderId: id,
             },
-            success: function (data) {
-              console.log(data);
-            },
+            
           });
-          // alert("update status to Kiszállítva: orderId" + id);
+          
         }
 
         $(order).attr("data-current-column", nextCol);
@@ -1048,7 +1032,21 @@
       Új rendelés
     </button></div>
     <% } %>
-    
+
+    <div class="d-flex justify-content-center">  <button
+      type="button"
+      class="btn btn-primary"
+      id="refresh-column1"
+      style="margin-top: 5px;"
+    >
+      Frissítés
+    </button></div>
+    <script>
+      $( "#refresh-column1" ).click(function() {
+        location.reload();
+});
+      
+    </script>
 
       <!-- Modal -->
       <div
