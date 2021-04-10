@@ -1502,12 +1502,23 @@
                             </td>
                           </tr>
                           <tr>
-                            <td><img src="../img/c7.png" />Fizetesi mód</td>
+                            <td><img src="../img/c7.png" />Fizetési mód</td>
                             <td><%
                               if(orderfirst.orders[i].orderType ==1){ %>
                               Készpénz <% } else{ %> Bankkártya a futárnál
                                <% } %></td>
                           </tr>
+                          <%
+                              if(orderfirst.orders[i].take ==1){ %>
+                          <tr style="background: red;
+                          color: white;">
+                            <td style="background: red;
+color: white;"><img src="../img/alarm.png" />Elvitelre</td>
+                            <td>
+                              Igen
+                              </td>
+                          </tr>
+                          <% } %>
                         </table>
                       </div>
                       <div class="cus-details2">
@@ -1849,12 +1860,23 @@
                           </tr>
 
                           <tr>
-                            <td><img src="../img/c7.png" />Fizetesi mód</td>
+                            <td><img src="../img/c7.png" />Fizetési mód</td>
                             <td><%
                               if(ordersecond.orders[i].orderType ==1){ %>
                               Készpénz <% } else{ %> Bankkártya a futárnál
                                <% } %></td>
                           </tr>
+                          <%
+                              if(ordersecond.orders[i].take ==1){ %>
+                          <tr style="background: red;
+                          color: white;">
+                            <td style="background: red;
+                          color: white;"><img src="../img/alarm.png" />Elvitelre</td>
+                            <td>
+                              Igen
+                              </td>
+                          </tr>
+                          <% } %>
                         </table>
                       </div>
                       <div class="cus-details2">
@@ -2194,12 +2216,23 @@
                             </td>
                           </tr>
                           <tr>
-                            <td><img src="../img/c7.png" />Fizetesi mód</td>
+                            <td><img src="../img/c7.png" />Fizetési mód</td>
                             <td><%
                               if(orderthird.orders[i].orderType ==1){ %>
                               Készpénz <% } else{ %> Bankkártya a futárnál
                                <% } %></td>
                           </tr>
+                          <%
+                          if(orderthird.orders[i].take ==1){ %>
+                      <tr style="background: red;
+                      color: white;">
+                        <td style="background: red;
+                      color: white;"><img src="../img/alarm.png" />Elvitelre</td>
+                        <td>
+                          Igen
+                          </td>
+                      </tr>
+                      <% } %>
                         </table>
                       </div>
                       <div class="cus-details2">
@@ -2538,12 +2571,23 @@
                             </td>
                           </tr>
                           <tr>
-                            <td><img src="../img/c7.png" />Fizetesi mód</td>
+                            <td><img src="../img/c7.png" />Fizetési mód</td>
                             <td><%
                               if(orderfour.orders[i].orderType ==1){ %>
                               Készpénz <% } else{ %> Bankkártya a futárnál
                                <% } %></td>
                           </tr>
+                          <%
+                          if(orderfour.orders[i].take ==1){ %>
+                      <tr style="background: red;
+                      color: white;">
+                        <td style="background: red;
+                      color: white;"><img src="../img/alarm.png" />Elvitelre</td>
+                        <td>
+                          Igen
+                          </td>
+                      </tr>
+                      <% } %>
                         </table>
                       </div>
                       <div class="cus-details2">
@@ -2882,12 +2926,23 @@
                             </td>
                           </tr>
                           <tr>
-                            <td><img src="../img/c7.png" />Fizetesi mód</td>
+                            <td><img src="../img/c7.png" />Fizetési mód</td>
                             <td><%
                               if(orderfive.orders[i].orderType ==1){ %>
                               Készpénz <% } else{ %> Bankkártya a futárnál
                                <% } %></td>
                           </tr>
+                          <%
+                          if(orderfive.orders[i].take ==1){ %>
+                      <tr style="background: red;
+                      color: white;">
+                        <td style="background: red;
+                      color: white;"><img src="../img/alarm.png" />Elvitelre</td>
+                        <td>
+                          Igen
+                          </td>
+                      </tr>
+                      <% } %>
                         </table>
                       </div>
                       <div class="cus-details2">
