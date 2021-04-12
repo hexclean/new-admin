@@ -237,10 +237,10 @@ exports.postAddProduct = async (req, res, next) => {
     );
   }
 
-  productTranslation()
-    .then((result) => {
-      createVariant();
-      allergens();
+  await productTranslation()
+    .then(async (result) => {
+      await createVariant();
+      await allergens();
       res.redirect("/admin/products"),
         {
           ext: ext,
@@ -458,14 +458,14 @@ exports.postEditProduct = async (req, res, next) => {
     ],
   });
 
-  Product.findAll({
+  await Product.findAll({
     include: [
       {
         model: ProductTranslation,
       },
     ],
   })
-    .then((result) => {
+    .then(async (result) => {
       async function msg() {
         await Product.findByPk(prodId).then((product) => {
           if (product.restaurantId.toString() !== req.admin.id.toString()) {
@@ -620,10 +620,10 @@ exports.postEditProduct = async (req, res, next) => {
           }
         }
       }
-      msg()
-        .then((result) => {
-          variantsFn();
-          productHasAllergenFn();
+      await msg()
+        .then(async (result) => {
+          await variantsFn();
+          await productHasAllergenFn();
           res.redirect("/admin/products");
         })
         .catch((err) => {
