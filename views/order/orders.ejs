@@ -81,13 +81,15 @@
          }
          /* Start arrows media */
          @media (min-width:1400px) and (max-width:1800px) {
-         .column1 {
-         width: 25% !important;
-         }
          .move-order-next-left-elkeszitve{
-         margin-left: -199px !important;
+         margin-left: -152px !important;
          padding-top: 5px;
          }
+         #column-5 .move-order-next-left-elkeszitve{
+         margin-left: 0px !important;
+         /* padding-top: 5px; */
+         }
+
          .move-order-next{
          padding-top: 5px;
          }
@@ -118,10 +120,10 @@
          }
          @media (min-width:1100px) and (max-width:1199px) {
          .column1 {
-         width: 26% !important;
+         width: 31.2% !important;
          }
          .move-order-next-left-elkeszitve{
-         margin-left: -142px !important;
+         margin-left: -175px !important;
          padding-top: 5px;
          }
          .move-order-next-right-elkeszitve{
@@ -1705,7 +1707,7 @@
                            </p>
                            <span class="arrow"
                               ><img
-                              class="move-order-prev"
+                              class="move-order-prev move-order-next-left-elkeszitve"
                               data-id="<%= ordersecond.orders[i].id %>"
                               src="../img/left-arrow.png"
                               /></span>
@@ -2397,7 +2399,7 @@
                            </p>
                            <span class="arrow"
                               ><img
-                              class="move-order-prev"
+                              class="move-order-prev move-order-next-left-elkeszitve"
                               data-id="<%= orderfour.orders[i].id %>"
                               src="../img/left-arrow.png"
                               /></span>
@@ -2741,7 +2743,7 @@
                            </p>
                            <span class="arrow"
                               ><img
-                              class="move-order-prev"
+                              class="move-order-prev move-order-next-left-elkeszitve"
                               data-id="<%= orderfive.orders[i].id %>"
                               src="../img/left-arrow.png"
                               /></span>
