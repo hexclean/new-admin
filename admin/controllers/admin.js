@@ -429,7 +429,7 @@ exports.postEditProduct = async (req, res, next) => {
   const updatedEnDesc = req.body.enDescription;
   //
   const updatedExtraPrice = req.body.price;
-  const image = req.file;
+  const image = await req.file;
   const filteredStatus = req.body.status.filter(Boolean);
   const Op = Sequelize.Op;
   const productArray = [prodId];
