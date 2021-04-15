@@ -13,6 +13,12 @@ sequelize = new Sequelize("defaultdb", "doadmin", "s27c8agot7l7a13z", {
 //   port: 25060,
 // });
 
+// sequelize = new Sequelize("foodnet", "root", "", {
+//   host: "",
+//   dialect: "mysql",
+//   operatorsAliases: false,
+// });
+
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 

@@ -467,7 +467,7 @@ exports.postEditProduct = async (req, res, next) => {
   })
     .then(async (result) => {
       async function msg() {
-        await Product.findByPk(prodId).then((product) => {
+        await Product.findByPk(prodId).then(async (product) => {
           if (product.restaurantId.toString() !== req.admin.id.toString()) {
             return res.redirect("/");
           }
@@ -475,7 +475,7 @@ exports.postEditProduct = async (req, res, next) => {
           if (req.body.isDailyMenu == 1) {
             if (image) {
               fileHelper.deleteFile(product.productImagePath);
-              Product.update(
+              await Product.update(
                 {
                   active: 1,
                   isDailyMenu: 1,
@@ -487,7 +487,7 @@ exports.postEditProduct = async (req, res, next) => {
                 { where: { id: prodId } }
               );
             } else {
-              Product.update(
+              await Product.update(
                 {
                   active: 1,
                   isDailyMenu: 1,
@@ -501,7 +501,7 @@ exports.postEditProduct = async (req, res, next) => {
           } else {
             if (image) {
               fileHelper.deleteFile(product.productImagePath);
-              Product.update(
+              await Product.update(
                 {
                   productImagePath: image.path,
                   active: 1,
