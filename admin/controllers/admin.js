@@ -511,12 +511,6 @@ exports.postEditProduct = async (req, res, next) => {
               );
             }
           }
-
-          // if (image) {
-          //   fileHelper.deleteFile(product.productImagePath);
-          //   product.productImagePath = image.path;
-          // }
-          // return product.save();
         });
         await ProductTranslation.update(
           {
