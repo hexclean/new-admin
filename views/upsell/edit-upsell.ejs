@@ -1,0 +1,364 @@
+
+
+<%- include('../includes/head.ejs') %>
+<%- include('../jQuery-validation/product.ejs') %>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>
+<link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+<body class="ms-body ms-aside-left-open ms-primary-theme ms-has-quickbar" >
+   <%- include('../includes/navigation.ejs') %>
+   <main class="body-content">
+      <%- include('../includes/navigation-bar.ejs') %>
+      <form
+         name="myForm"
+         class="ms-content-wrapper"
+         action="/admin/<% if (editing) { %>edit-upsell<% } else { %>add-upsell<% } %>"
+         method="POST"
+         enctype="multipart/form-data"
+         id="product-form">
+
+         <script>
+            $(document).ready(function () {
+                const regex = /[^\d.]|\.(?=.*\.)/g;
+                const subst = ``;
+                $(".product_price_input").keyup(function () {
+                  const str = this.value;
+                  const result = str.replace(regex, subst);
+                  this.value = result;
+                });
+              });
+         </script>
+        
+     
+
+
+        
+         <div class="row">
+            <div class="col-xl-6 col-md-12" style="height: 1364px;">
+               <div class="ms-panel ms-panel-fh">
+                  <div class="ms-panel-header">
+                     <h6><% if (editing) { %>"<%= product[0].ProductTranslations[0].title %>" <%= lingua.product_edit_title %><% } else { %> <%= lingua.create_product %> <% } %></h6>
+                  </div>
+                  <div class="ms-panel-body">
+                     <div class="form-row">
+                        <div class="col-md-12 mb-3">
+                           <label for="roTitle"><%= lingua.product_ro_name %></label>
+                           <div class="input-group">
+                              <input
+                                 class="form-control"
+                                 type="text"
+                                 name="roTitle"
+                                 id="roTitle"
+                                 value="<% if (editing) { %><%= product[0].ProductTranslations[0].title %><% } %>">
+                           </div>
+                           <span class="error_form" id="roName_error_message"></span>
+                        </div>
+                        <div class="col-md-12 mb-3">
+                           <label for="huTitle"><%= lingua.product_hu_name %></label>
+                           <div class="input-group">
+                              <input
+                                 class="form-control"
+                                 type="text"
+                                 name="huTitle"
+                                 id="huTitle"
+                                 value="<% if (editing) { %><%= product[0].ProductTranslations[1].title %><% } %>">
+                           </div>
+                           <span class="error_form" id="huName_error_message"></span>
+                        </div>
+                        <div class="col-md-12 mb-3">
+                           <label for="enTitle"><%= lingua.product_en_name %></label>
+                           <div class="input-group">
+                              <input
+                                 class="form-control"
+                                 type="text"
+                                 name="enTitle"
+                                 id="enTitle"
+                                 value="<% if (editing) { %><%= product[0].ProductTranslations[2].title %><% } %>">
+                           </div>
+                           <span class="error_form" id="enName_error_message"></span>
+                        </div>
+                        <div class="col-md-12 mb-3">
+                           <label for="roDescription"><%= lingua.product_ro_description %></label>
+                           <div class="input-group">
+                              <textarea
+                                 class="form-control"
+                                 name="roDescription"
+                                 id="roDescription"
+                                 rows="5"><% if (editing) { %><%= product[0].ProductTranslations[0].description %><% } %></textarea>
+                           </div>
+                           <span class="error_form" id="roDescription_error_message"></span>
+                        </div>
+                        <div class="col-md-12 mb-3">
+                           <label for="huDescription"><%= lingua.product_hu_description %></label>
+                           <div class="input-group">
+                              <textarea
+                                 class="form-control"
+                                 name="huDescription"
+                                 id="huDescription"
+                                 rows="5"><% if (editing) { %><%= product[0].ProductTranslations[1].description %><% } %></textarea>
+                           </div>
+                           <span class="error_form" id="huDescription_error_message"></span>
+                        </div>
+                        <div class="col-md-12 mb-3">
+                           <label for="enDescription"><%= lingua.product_en_description %></label>
+                           <div class="input-group">
+                              <textarea
+                                 class="form-control"
+                                 name="enDescription"
+                                 id="enDescription"
+                                 rows="5"><% if (editing) { %><%= product[0].ProductTranslations[2].description %><% } %></textarea>
+                           </div>
+                           <span class="error_form" id="enDescription_error_message"></span>
+                        </div>
+                        <div class="col-md-12 mb-3">
+                           <label for="validationCustom12"><%= lingua.create_product_image %></label>
+                           <div class="custom-file" >
+                              <input accept="image/png, image/jpeg,image/jpeg" filesize=2 type="file" name="image" id="image" />
+                           </div>
+                           <span class="error_form" id="image_error_message"></span>
+                        </div>
+                        <span class="error_form" id="file_error_message"></span>
+
+                        <button  id="createProduct" name="createProduct" class="btn btn-success has-icon" type="submit">
+                           <% if (editing) { %><%= lingua.button_editing %><% } else { %> <%= lingua.create_product %><% } %>
+                           </button>
+                     </div>
+                  </div>
+               </div>
+            </div>
+           
+            <div class="col-xl-6 col-md-12">
+               <div class="row">
+                  <div class="col-md-12">
+                     <div class="ms-panel">
+                        <% if (editing) { %>
+                        <div class="ms-panel-header">
+                           <div class="ms-panel-body">
+                              <div class="carousel-inner">
+                                 <div class="carousel-item active">
+                                    <img src="/<%= product[0].productImagePath %>" alt="<%= product[0].id %>">
+                                 </div>
+                              </div>
+                           </div>
+                            <% }  %>
+                        </div>
+                       
+                       
+                        <% if (editing) { %>
+                        <script>
+                           $(document).ready(function () {
+                           
+                           $("select#categoryId").val("<% if (editing) { %><%=  currentCat %><% } %>");
+                           });
+                        </script> 
+                        <input
+                           type="hidden"
+                           value="<%= productIds %>"
+                           name="productId"
+                           />
+                        <% } %>
+                      
+                     </div>
+                  </div>
+                  <div class="col-xl-12 col-md-12">
+                     <div class="ms-panel ms-panel-fh">
+                        <div class="ms-panel-header">
+                           <h6><%= lingua.product_box_title %></h6>
+                        </div>
+                        <div class="ms-panel-body">
+                           <p class="ms-directions"><code style="font-size: 13px;"><%= lingua.product_box_subtitle %></code>
+                           </p>
+                           <div class="row">
+                              <div class="col-md-12">
+                                 <ul class="ms-list ms-list-display">
+                                    <%  for (let i = 0; i <boxArray.length; i++) { %>
+                                    <input
+                                       type="hidden"
+                                       value="<%= boxArray[i].id %>"
+                                       name="boxId"
+                                       /> 
+                                    <li>
+                                       <label class="ms-switch" data-extra="<%= boxArray[i].id %>">
+                                       <input type="hidden" value="off" class="statusBox-<%= boxArray[i].id %> status-hidden-box" name="statusBox[<%= boxArray[i].id %>]" > 
+                                       <input data-boxId="<%= boxArray[i].id %>" class="statusBox-checkbox statusBox-checkbox-<%= boxArray[i].id %>" type="checkbox"> <span class="ms-switch-slider ms-switch-success round"></span>
+                                       </label> <span> <%= boxArray[i].sku %> </span> <b>:</b> <span> <%= boxArray[i].price %> </span>lei
+                                    </li>
+                                    <% } %>
+                                 </ul>
+                                 <span class="error_form" id="box_error_message"></span>
+
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="col-xl-12 col-md-12">
+                     <div class="ms-panel ms-panel-fh">
+                        <div class="ms-panel-header">
+                           <h6><%= lingua.product_allergen_title %></h6>
+                        </div>
+                        <div class="ms-panel-body">
+                           <p class="ms-directions"><code style="font-size: 13px;"><%= lingua.product_allergen_subtitle %></code>
+                           </p>
+                           <div class="row">
+                              <div class="col-md-12">
+                                 <ul class="ms-list ms-list-display">
+                                    <%  for (let i = 0; i <allergenArray.length; i++) { %>
+                                    <input
+                                       type="hidden"
+                                       value="<%= allergenArray[i].id %>"
+                                       name="allergenId"
+                                       /> 
+                                    <li>
+                                       <label class="ms-switch" data-extra="<%= allergenArray[i].id %>">
+                                       <input type="hidden" value="off" class="statusAllergen-<%= allergenArray[i].id %>  status-hidden-allergen" name="statusAllergen[<%= allergenArray[i].id %>]" > 
+                                       <input data-allergenId="<%= allergenArray[i].id %>"  class="statusAllergen-checkbox statusAllergen-checkbox-<%= allergenArray[i].id %>" type="checkbox"> <span class="ms-switch-slider ms-switch-success round"></span>
+                                       </label> <span> <%= allergenArray[i].AllergenTranslations[0].name %> </span>
+                                    </li>
+                                    <% } %>
+                                 </ul>
+                                 <span class="error_form" id="allergen_error_message"></span>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+         
+         <div class="row">
+         <div class="col-xl-6 col-md-12">
+            <label for="validationCustom22"><%= lingua.product_select_category %></label>
+            <div class="input-group">
+               <select class="form-control category_select categoryId" for="categoryId" id="categoryId" name="categoryId">
+                  <option selected value="">Kategória kiválasztása</option>
+                  <% for(let i = 0; i < cat.length; i++) { %>
+                  <option id="categoryId" name="categoryId" value='<%= cat[i].id %>'><%= cat[i].CategoryTranslations[0].name %></option>
+                  <% } %>
+               </select>
+            </div>
+            <span class="error_form" id="category_error_message"></span>
+         </div>
+      </div>
+     
+         <div class="ms-panel ms-btn-display">
+            <div class="ms-panel-header">
+               <h6><%= lingua.product_variant_title %></h6>
+            </div>
+            <span class="error_form" id="variant_error_message"></span>     
+         </div>
+         <% if (editing) { %>  <% if (productVariant.length > 0) { %>
+         <div class="ms-content-wrapper">
+            <div class="row">
+               <div class="col-md-12">
+                  <div class="row">
+                     <%  for (let i = 0; i < productVariant.length; i++) { %>
+                     <input
+                        type="hidden"
+                        value="<%= productVariant[i].id %>"
+                        name="variantIdUp"
+                        />          
+                  
+                     <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 extra_box category-<%= productVariant[i].categoryId %> category-all" data-extra="<%= productVariant[i].id %>">
+                        <div class="ms-card">
+                           <div class="d-flex justify-content-center extra-margin-top">
+                              <div class="row">       
+                                 
+                                 <label  class="ms-switch test1234" >                 
+                                 <input id="variantChx" type="hidden" value="off" class="status-<%= productVariant[i].id %> status-hidden test1234" name="status[<%= productVariant[i].id %>]" >          
+                                 <input data-extraId="<%= productVariant[i].id %>"  class="status-checkbox test1234 status-checkbox-<%= productVariant[i].id %>" type="checkbox">
+                                 <span class="ms-switch-slider ms-switch-success round test1234"></span>
+                                 </label> 
+                              </div>
+                              <span class="error_form" id="variant_error_message"></span>
+
+                           </div>
+                           <div class="ms-card-body">
+                              <div class="new d-flex justify-content-center extra-name">
+                                 <h6 class="mb-0"><b><%= productVariant[i].sku %></b> </h6>
+                              </div>
+                              <div class="col-md-12 mb-3">
+                                 <label for="price"><%= lingua.create_product_price %></label>
+                                 <div class="input-group">
+                                    <input
+                                       class="price_<%= productVariant[i].id %> product_price_input"
+                                       type="text"
+                                       name="price"
+                                       id="price"
+                                      
+                                       value="<% if (editing) { %><%= netest[i].price %><% } %>"
+                                       />
+                                 </div>
+                                 <span class="extra_error_message error_form" id="price_error_message_<%= productVariant[i].extraId %>"></span>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     <% } %>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <% } else { %>
+         <% } %><% } else { %>
+         <% if (ext.length > 0) { %>
+           
+         <div class="ms-content-wrapper">
+            <div class="row">
+               <div class="col-md-12">
+                  <div id="selectedVariantsCategory" class="row">
+                     <% for (let extra of ext) { %>
+                     <input
+                        type="hidden"
+                        value="<%= extra.id %>"
+                        name="extraId"
+                        id="extraIdJq"
+                        />          
+                     <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 extra_box category-<%= extra.categoryId %> category-all" data-extra="<%= extra.id %>">
+                        <div class="ms-card">
+                           <div class="d-flex justify-content-center extra-margin-top">
+                              <div class="row"> 
+                                 
+                                 <label  class="ms-switch" >                 
+                                 <input id="variantNumber_<%= extra.id %>" type="hidden" value="off" class="status-<%= extra.id %> status-hidden" name="status[<%= extra.id %>]" >          
+                                 <input   data-extraId="<%= extra.id %>"  class="status-checkbox variants status-checkbox-<%= extra.id %>" type="checkbox"> <span class="ms-switch-slider ms-switch-success round"></span>
+                                 </label> 
+                              </div> 
+                           </div>
+                           <div class="ms-card-body">
+                              <div class="new d-flex justify-content-center extra-name">
+                                 <h6 class="mb-0"><b><%= extra.sku %></b> </h6>
+                              </div>
+                              <div class="col-md-12 mb-3">
+                                 <label for="price"><%= lingua.create_product_price %></label>
+                                 <div class="input-group">
+                                    <input
+                                       class="form-control price_<%= extra.id %> product_price_input"
+                                       type="text"
+                                       name="price"
+                                       id="price"
+                                       value="<% if (editing) { %><%= extra.price %><% } %>"
+                                       />
+                                 </div>
+                                 <span class="info-box-price" id="price_error_message"><%= lingua.price_info %></span>
+                                 <br>
+                                 <span class="extra_error_message error_form" id="price_error_message_<%= extra.id %>"></span>
+                              </div>
+                            
+                           </div>
+                        </div>
+                     </div>
+                     <% } %>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <% } else { %>
+         <% } %>
+         <% } %>
+      </form>
+   </main>
+   <%- include('../includes/end.ejs') %>
+

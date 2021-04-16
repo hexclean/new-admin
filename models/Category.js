@@ -10,6 +10,7 @@ const Category = sequelize.define("Category", {
   },
   order: Sequelize.INTEGER,
   active: Sequelize.INTEGER,
+  upsell: Sequelize.INTEGER,
 });
 
 module.exports = Category;

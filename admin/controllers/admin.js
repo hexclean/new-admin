@@ -107,11 +107,12 @@ exports.postAddProduct = async (req, res, next) => {
   const filteredStatusAllergen = req.body.statusAllergen.filter(Boolean);
   const filteredStatusBox = req.body.statusBox.filter(Boolean);
 
-  if (!req.file || !req.file.path) {
-    return res.redirect("/admin/products");
-  }
+  // if (!req.file || !req.file.path) {
+  //   return res.redirect("/admin/products");
+  // }
   const image = req.file;
   const imageUrl = image.path;
+  console.log(imageUrl);
   if (
     roTitle.length == 0 ||
     allergenId.length == 0 ||
@@ -286,6 +287,7 @@ exports.getEditProduct = async (req, res, next) => {
     include: [
       {
         model: AllergenTranslation,
+        where: { languageId: 2 },
       },
       { model: ProductHasAllergen },
     ],

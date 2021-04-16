@@ -17,6 +17,7 @@ const ordersController = require("../controllers/order");
 const reckoningController = require("../controllers/reckoning");
 const deliveryPriceController = require("../controllers/delivery-price");
 const statisticController = require("../controllers/statistic");
+const upsellController = require("../controllers/upsell");
 const isAuth = require("../../middleware/is-auth");
 const router = express.Router();
 
@@ -167,6 +168,11 @@ router.get("/edit-product/:productId", isAuth, adminController.getEditProduct);
 router.post("/edit-product", isAuth, adminController.postEditProduct);
 router.post("/delete-product", isAuth, adminController.postDeleteProduct);
 
+// UPSELL
+router.get("/add-upsell", isAuth, upsellController.getAddUpsell);
+router.post("/add-upsell", upsellController.postAddUpsell);
+router.get("/edit-upsell/:productId", isAuth, upsellController.getEditUpsell);
+router.post("/edit-upsell", isAuth, upsellController.postEditUpsell);
 // Profile
 router.get(
   "/edit-opening-hours/:restaurantId",
