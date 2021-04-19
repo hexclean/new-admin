@@ -153,6 +153,7 @@ exports.postAddUpsell = async (req, res, next) => {
     productImagePath: imageUrl,
     active: 1,
     isDailyMenu: 0,
+    upsell: 2,
   });
   productId = product.id;
 

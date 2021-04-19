@@ -13,7 +13,7 @@ const CategoryTranslation = require("../../models/CategoryTranslation");
 const Box = require("../../models/Box");
 const ITEMS_PER_PAGE = 30;
 
-exports.getAddProduct = async (req, res, next) => {
+exports.getAddDownsell = async (req, res, next) => {
   let languageCode;
 
   if (req.cookies.language == "ro") {
@@ -44,6 +44,7 @@ exports.getAddProduct = async (req, res, next) => {
     const cat = await Category.findAll({
       where: {
         restaurantId: req.admin.id,
+        // upsell: 1,
       },
       include: [
         {
@@ -52,13 +53,11 @@ exports.getAddProduct = async (req, res, next) => {
         },
       ],
     });
-
     const ext = await Variant.findAll({
       where: {
         restaurantId: req.admin.id,
       },
     });
-
     const checkVariantLength = await ProductVariants.findAll({
       where: { restaurantId: req.admin.id },
     });
@@ -74,7 +73,7 @@ exports.getAddProduct = async (req, res, next) => {
       return res.redirect("/admin/products");
     }
 
-    res.render("admin/edit-product", {
+    res.render("downsell/edit-downsell", {
       pageTitle: "Add Product",
       path: "/admin/add-product",
       editing: false,
@@ -92,7 +91,7 @@ exports.getAddProduct = async (req, res, next) => {
   }
 };
 
-exports.postAddProduct = async (req, res, next) => {
+exports.postAddDownsell = async (req, res, next) => {
   const allergenId = req.body.allergenId;
   var filteredStatus = req.body.status.filter(Boolean);
   const roTitle = req.body.roTitle;
@@ -107,12 +106,9 @@ exports.postAddProduct = async (req, res, next) => {
   const filteredStatusAllergen = req.body.statusAllergen.filter(Boolean);
   const filteredStatusBox = req.body.statusBox.filter(Boolean);
 
-  // if (!req.file || !req.file.path) {
-  //   return res.redirect("/admin/products");
-  // }
   const image = req.file;
   const imageUrl = image.path;
-  console.log(imageUrl);
+
   if (
     roTitle.length == 0 ||
     allergenId.length == 0 ||
@@ -153,26 +149,13 @@ exports.postAddProduct = async (req, res, next) => {
 
   let productId;
 
-  if (req.body.isDailyMenu == 1) {
-    const product = await req.admin.createProduct({
-      productImagePath: imageUrl,
-      active: 1,
-      isDailyMenu: 1,
-      soldOut: 0,
-      startTime: req.body.startDate,
-      endTime: req.body.endDate,
-      upsell: 1,
-    });
-    productId = product.id;
-  } else {
-    const product = await req.admin.createProduct({
-      productImagePath: imageUrl,
-      active: 1,
-      isDailyMenu: 0,
-      upsell: 1,
-    });
-    productId = product.id;
-  }
+  const product = await req.admin.createProduct({
+    productImagePath: imageUrl,
+    active: 1,
+    isDailyMenu: 0,
+    upsell: 3,
+  });
+  productId = product.id;
 
   async function productTranslation() {
     await ProductTranslation.create({
@@ -255,7 +238,7 @@ exports.postAddProduct = async (req, res, next) => {
       return next(error);
     });
 };
-exports.getEditProduct = async (req, res, next) => {
+exports.getEditDownsell = async (req, res, next) => {
   const editMode = req.query.edit;
   const prodId = req.params.productId;
   const productId = [prodId];
@@ -381,7 +364,7 @@ exports.getEditProduct = async (req, res, next) => {
       for (let i = 0; i < product.length; i++) {
         productVariantTest = product[i].ProductFinals;
       }
-      res.render("admin/edit-product", {
+      res.render("downsell/edit-downsell", {
         isActiveAllergen: allergenTest,
         pageTitle: "Edit Product",
         path: "/admin/edit-product",
@@ -415,7 +398,7 @@ exports.getEditProduct = async (req, res, next) => {
     });
 };
 
-exports.postEditProduct = async (req, res, next) => {
+exports.postEditDownsell = async (req, res, next) => {
   const prodId = req.body.productId;
   const varId = req.body.variantIdUp;
   const allergenId = req.body.allergenId;
@@ -423,6 +406,7 @@ exports.postEditProduct = async (req, res, next) => {
   const boxId = req.body.boxId;
   const filteredStatusAllergen = req.body.statusAllergen.filter(Boolean);
   // Title
+
   const updatedRoTitle = req.body.roTitle;
   const updatedHuTitle = req.body.huTitle;
   const updatedEnTitle = req.body.enTitle;
@@ -476,44 +460,16 @@ exports.postEditProduct = async (req, res, next) => {
             return res.redirect("/");
           }
 
-          if (req.body.isDailyMenu == 1) {
-            if (image) {
-              fileHelper.deleteFile(product.productImagePath);
-              await Product.update(
-                {
-                  active: 1,
-                  isDailyMenu: 1,
-                  soldOut: 0,
-                  startTime: req.body.startDate,
-                  endTime: req.body.endDate,
-                  productImagePath: image.path,
-                },
-                { where: { id: prodId } }
-              );
-            } else {
-              await Product.update(
-                {
-                  active: 1,
-                  isDailyMenu: 1,
-                  soldOut: 0,
-                  startTime: req.body.startDate,
-                  endTime: req.body.endDate,
-                },
-                { where: { id: prodId } }
-              );
-            }
-          } else {
-            if (image) {
-              fileHelper.deleteFile(product.productImagePath);
-              await Product.update(
-                {
-                  productImagePath: image.path,
-                  active: 1,
-                  isDailyMenu: 0,
-                },
-                { where: { id: prodId } }
-              );
-            }
+          if (image) {
+            fileHelper.deleteFile(product.productImagePath);
+            await Product.update(
+              {
+                productImagePath: image.path,
+                active: 1,
+                isDailyMenu: 0,
+              },
+              { where: { id: prodId } }
+            );
           }
         });
         await ProductTranslation.update(
@@ -711,7 +667,7 @@ exports.getProducts = async (req, res, next) => {
     });
 };
 
-exports.postDeleteProduct = (req, res, next) => {
+exports.postDeleteDownsell = (req, res, next) => {
   const prodId = req.body.productId;
   Product.findByPk(prodId)
     .then((product) => {
@@ -731,7 +687,7 @@ exports.postDeleteProduct = (req, res, next) => {
     });
 };
 
-exports.getDailyMenu = async (req, res, next) => {
+exports.getDownsell = async (req, res, next) => {
   const page = +req.query.page || 1;
   let totalItems;
   let languageCode;
@@ -751,7 +707,7 @@ exports.getDailyMenu = async (req, res, next) => {
   });
 
   await Product.findAll({
-    where: { restaurantId: req.admin.id, active: 1, isDailyMenu: 1 },
+    where: { restaurantId: req.admin.id, active: 1, upsell: 2 },
 
     include: [
       {
@@ -767,82 +723,7 @@ exports.getDailyMenu = async (req, res, next) => {
         where: {
           restaurantId: req.admin.id,
           active: 1,
-          isDailyMenu: 1,
-        },
-        include: [
-          {
-            model: ProductTranslation,
-            where: { languageId: languageCode },
-          },
-          {
-            model: ProductFinal,
-            where: { active: 1 },
-            include: [{ model: Variant }],
-          },
-        ],
-        offset: (page - 1) * ITEMS_PER_PAGE,
-        limit: ITEMS_PER_PAGE,
-      });
-    })
-    .then((product) => {
-      res.render("admin/daily-menu", {
-        pageTitle: "Admin Products",
-        path: "/admin/products",
-        currentPage: page,
-        hasNextPage: ITEMS_PER_PAGE * page < totalItems.length,
-        hasPreviousPage: page > 1,
-        nextPage: page + 1,
-        previousPage: page - 1,
-        lastPage: Math.ceil(totalItems.length / ITEMS_PER_PAGE),
-        prods: product,
-        checkVariantLength: checkVariantLength,
-        checkBoxLength: checkBoxLength,
-      });
-    })
-    .catch((err) => {
-      const error = new Error(err);
-      error.httpStatusCode = 500;
-      return next(error);
-    });
-};
-
-exports.getUpsell = async (req, res, next) => {
-  const page = +req.query.page || 1;
-  let totalItems;
-  let languageCode;
-
-  if (req.cookies.language == "ro") {
-    languageCode = 1;
-  } else if (req.cookies.language == "hu") {
-    languageCode = 2;
-  } else {
-    languageCode = 3;
-  }
-  const checkVariantLength = await ProductVariants.findAll({
-    where: { restaurantId: req.admin.id },
-  });
-  const checkBoxLength = await Box.findAll({
-    where: { restaurantId: req.admin.id },
-  });
-
-  await Product.findAll({
-    where: { restaurantId: req.admin.id, active: 1, upsell: 1 },
-
-    include: [
-      {
-        model: ProductTranslation,
-        where: { languageId: languageCode },
-      },
-      { model: ProductFinal, where: { active: 1 } },
-    ],
-  })
-    .then((numAllergen) => {
-      totalItems = numAllergen;
-      return Product.findAll({
-        where: {
-          restaurantId: req.admin.id,
-          active: 1,
-          upsell: 1,
+          upsell: 2,
         },
         include: [
           {
