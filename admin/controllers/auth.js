@@ -15,14 +15,10 @@ exports.getLogin = (req, res, next) => {
   } else {
     message = null;
   }
+  if (req.admin != undefined) {
+    res.redirect("/admin/orders");
+  }
 
-  // try {
-  //   if (req.admin.id !== null) {
-  //     res.redirect("/admin/orders");
-  //   }
-  // } catch (error) {
-  //   res.redirect("/");
-  // }
   res.render("auth/login", {
     path: "/login",
     pageTitle: "Login",
@@ -36,7 +32,7 @@ exports.getLogin = (req, res, next) => {
 };
 
 exports.getSignup = (req, res, next) => {
-  if (req.admin.id !== null) {
+  if (req.admin != undefined) {
     res.redirect("/admin/orders");
   }
   res.render("auth/signup", {
