@@ -106,7 +106,7 @@ exports.postAddProduct = async (req, res, next) => {
   const extId = await req.body.extraId;
   const filteredStatusAllergen = await req.body.statusAllergen.filter(Boolean);
   const filteredStatusBox = await req.body.statusBox.filter(Boolean);
-
+  console.log(11111111);
   const image = await req.file;
   const imageUrl = image.path;
 
@@ -126,11 +126,13 @@ exports.postAddProduct = async (req, res, next) => {
   ) {
     return res.redirect("/admin/products");
   }
+  console.log(222222222);
   const box = await Box.findAll({
     where: {
       restaurantId: req.admin.id,
     },
   });
+  console.log(33333333);
   const allergen = await Allergen.findAll({
     where: {
       restaurantId: req.admin.id,
@@ -141,16 +143,17 @@ exports.postAddProduct = async (req, res, next) => {
       },
     ],
   });
-
+  console.log(44444444);
   const ext = await Variant.findAll({
     where: {
       restaurantId: req.admin.id,
     },
   });
-
+  console.log(555555);
   let productId;
   async function createProduct() {
     if (req.body.isDailyMenu == 1) {
+      console.log(6666666666);
       const product = await req.admin.createProduct({
         productImagePath: imageUrl,
         active: 1,
@@ -161,7 +164,9 @@ exports.postAddProduct = async (req, res, next) => {
         upsell: 1,
       });
       productId = product.id;
+      console.log(7777777);
     } else {
+      console.log(8888888);
       const product = await Product.create({
         productImagePath: imageUrl,
         active: 1,
@@ -170,39 +175,47 @@ exports.postAddProduct = async (req, res, next) => {
         restaurantId: req.admin.id,
       });
       productId = product.id;
+      console.log(99999999);
     }
   }
+  console.log(11122222);
   async function productTranslation() {
+    console.log(1111333333);
     await ProductTranslation.create({
       title: roTitle,
       languageId: 1,
       description: roDescription,
       productId: productId,
     });
+    console.log(111114444);
     await ProductTranslation.create({
       title: huTitle,
       languageId: 2,
       description: huDescription,
       productId: productId,
     });
-
+    console.log(111111555);
     await ProductTranslation.create({
       title: enTitle,
       languageId: 3,
       description: enDescription,
       productId: productId,
     });
+    console.log(111116666);
   }
 
   async function createVariant() {
+    console.log(1111117777777);
     let boxIdFinal = 0;
     for (let i = 0; i < box.length; i++) {
+      console.log(1111118888888);
       if (filteredStatusBox[i] == "on") {
         boxIdFinal = filteredStatusBox[i].substring(2) + boxId[i];
       }
     }
-
+    console.log(11111999999);
     for (let i = 0; i <= ext.length - 1; i++) {
+      console.log(22222222233333333);
       await ProductFinal.create({
         price: price[i] || 0,
         productId: productId,
@@ -211,12 +224,16 @@ exports.postAddProduct = async (req, res, next) => {
         active: filteredStatus[i] == "on" ? 1 : 0,
         boxId: Number.isInteger(boxIdFinal) ? null : boxIdFinal,
       });
+      console.log(2222222224444444);
     }
   }
-
+  console.log(222222225555555);
   async function allergens() {
+    console.log(22222226666666666);
     if (Array.isArray(allergen)) {
+      console.log(22222277777777);
       for (let i = 0; i <= allergen.length - 1; i++) {
+        console.log(22222228888888888);
         await ProductHasAllergen.create({
           productId: productId,
           allergenId: allergenId[i],
@@ -225,7 +242,7 @@ exports.postAddProduct = async (req, res, next) => {
         });
       }
     }
-
+    console.log(222222229999999);
     await Category.update(
       {
         active: 1,
@@ -236,11 +253,17 @@ exports.postAddProduct = async (req, res, next) => {
         },
       }
     );
+    console.log(33333333444444444);
   }
+  console.log(3333333335555555);
   await createProduct();
+  console.log(333333333366666);
   await productTranslation();
+  console.log(3333777777777777777);
   await createVariant();
+  console.log(33333333388888888888);
   await allergens();
+  console.log(33333399999999999999);
   res.redirect("/admin/products"),
     {
       ext: ext,
