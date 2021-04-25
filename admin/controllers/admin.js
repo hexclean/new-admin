@@ -162,11 +162,12 @@ exports.postAddProduct = async (req, res, next) => {
     });
     productId = product.id;
   } else {
-    const product = await req.admin.createProduct({
+    const product = await Product.create({
       productImagePath: imageUrl,
       active: 1,
       isDailyMenu: 0,
       upsell: 1,
+      restaurantId: req.admin.id,
     });
     productId = product.id;
   }
