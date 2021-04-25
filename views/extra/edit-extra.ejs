@@ -19,8 +19,32 @@
                   <div class="ms-panel-header">
                      <h6><% if (editing) { %><%= lingua.update_extra %><% } else { %> <%= lingua.create_extra %> <% } %></h6>
                   </div>
+                  <script>
+                     $(document).ready(function () {
+                         const regex = /[^\d.]|\.(?=.*\.)/g;
+                         const subst = ``;
+                         $(".extra_price_input").keyup(function () {
+                           const str = this.value;
+                           const result = str.replace(regex, subst);
+                           this.value = result;
+                         });
+                       });
+                  </script>
                   <div class="ms-panel-body">
                      <div class="form-row">
+                        <div class="col-md-12 mb-3">
+                           <label for="price">Ár</label>
+                           <div class="input-group extra_price_input">
+                              <input
+                                 class="form-control extra_price_input"
+                                 type="text"
+                                 name="price"
+                                 autocomplete="off"
+                                 id="price"
+                                 value="<% if (editing) { %><%= extra[0].price %><% } %>">
+                           </div>
+                           <span class="error_form" id="roName_error_message"></span>
+                        </div>
                         <div class="col-md-12 mb-3">
                            <label for="roName"><%= lingua.extra_ro_name %></label>
                            <div class="input-group">

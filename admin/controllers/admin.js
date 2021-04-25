@@ -107,12 +107,9 @@ exports.postAddProduct = async (req, res, next) => {
   const filteredStatusAllergen = req.body.statusAllergen.filter(Boolean);
   const filteredStatusBox = req.body.statusBox.filter(Boolean);
 
-  // if (!req.file || !req.file.path) {
-  //   return res.redirect("/admin/products");
-  // }
   const image = req.file;
   const imageUrl = image.path;
-  console.log(imageUrl);
+
   if (
     roTitle.length == 0 ||
     allergenId.length == 0 ||
@@ -370,7 +367,7 @@ exports.getEditProduct = async (req, res, next) => {
       },
     ],
   })
-    .then((product) => {
+    .then(async (product) => {
       let startDateFin;
       let endDateFin;
       if (product[0].isDailyMenu == 1) {

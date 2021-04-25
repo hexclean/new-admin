@@ -8,10 +8,7 @@ const ProductVariantsExtras = sequelize.define("ProductVariantsExtras", {
     allowNull: false,
     primaryKey: true,
   },
-  price: {
-    type: Sequelize.FLOAT,
-    allowNull: false,
-  },
+
   discountedPrice: {
     type: Sequelize.FLOAT,
     allowNull: false,

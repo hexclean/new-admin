@@ -7,18 +7,6 @@
    <%- include('../includes/navigation.ejs') %>
    <main class="body-content">
       <%- include('../includes/navigation-bar.ejs') %>
-       <script>
-         $(document).ready(function () {
-             const regex = /[^\d.]|\.(?=.*\.)/g;
-             const subst = ``;
-             $(".extra_price_input").keyup(function () {
-               const str = this.value;
-               const result = str.replace(regex, subst);
-               this.value = result;
-             });
-           });
-      </script>
-      
       <form
          class="ms-content-wrapper" name="myForm"
          action="/admin/<% if (editing) { %>edit-variant<% } else { %>add-variant<% } %>"
@@ -239,24 +227,7 @@
                                  <h6 class="mb-0"><b><%=  variant[i].ExtraTranslations[0].name %></b> </h6>
                               </div>
                               
-                              <div class="col-md-12 mb-3">
-                                 <label for="price"><%= lingua.variant_price %></label>
-                                 <div class="input-group">
-                                    <input
-                                       class="form-control price_<%= variant[i].ProductVariantsExtras[0].extraId %> extra_price_input"
-                                       type="text"
-                                       name="price"
-                                       id="price"
-                                       autocomplete="off"
-                                       placeholder="<%= lingua.price_placeholder %>"
-                                       value="<% if (editing) { %><%= variant[i].ProductVariantsExtras[0].price %><% } %>"
-                                       />
-                                 </div>
-                                 <span class="info-box-price" id="price_error_message"><%= lingua.price_info %></span>
-                                 <br>
-                                 <span class="extra_error_message error_form" id="price_error_message_<%= variant[i].ProductVariantsExtras[0].extraId %>"></span>
-                              </div>
-                              
+                             
                              
                            </div>
                         </div>
@@ -301,25 +272,7 @@
                               <div class="new d-flex justify-content-center extra-name">
                                  <h6 class="mb-0"><b><%= ext[i].ExtraTranslations[0].name %></b> </h6>
                               </div>
-                              <div class="col-md-12 mb-3">
-                                 <label for="price"><%= lingua.variant_price %></label>
-                                 <div class="input-group">
-                                    <input
-                                       class="form-control price_<%= ext[i].id %> extra_price_input"
-                                       type="text"
-                                       name="price"
-                                       autocomplete="off"
-                                       placeholder="<%= lingua.price_placeholder %>"
-                                       id="price"
-                                       value="<% if (editing) { %><%= ext[i].price %><% } %>"
-                                       />
-                                 </div>
-                                 <span class="info-box-price" id="price_error_message"><%= lingua.price_info %></span>
-                                 <br>
-                                 <span class="extra_error_message error_form" id="price_error_message_<%= ext[i].id %>"></span>
-                              </div>
-                           
-                        
+                              
                            </div>
                         </div>
                      </div>

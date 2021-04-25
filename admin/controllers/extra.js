@@ -68,7 +68,8 @@ exports.postAddExtra = async (req, res, next) => {
   const huName = req.body.huName;
   const enName = req.body.enName;
   const filteredStatus = req.body.status.filter(Boolean);
-
+  const price = req.body.price;
+  console.log(req.body);
   // let extraType;
 
   // if (req.body.extraOpt == 1) {
@@ -100,6 +101,7 @@ exports.postAddExtra = async (req, res, next) => {
   try {
     const extra = await Extra.create({
       // extraType: extraType,
+      price: price,
       restaurantId: req.admin.id,
     });
 
@@ -186,9 +188,9 @@ exports.postAddExtra = async (req, res, next) => {
       }
     }
 
-    createExtraTranslation();
-    addAllergenToExtra();
-    add();
+    await createExtraTranslation();
+    await addAllergenToExtra();
+    await add();
 
     res.redirect("/admin/extra-index"),
       {
@@ -297,6 +299,7 @@ exports.postEditExtra = async (req, res, next) => {
   const extTranId = req.body.extTranId;
   const filteredStatus = req.body.status.filter(Boolean);
   const extraArray = [extraIdEditing];
+  const price = req.body.price;
   // let extraType;
   // console.log(req.body);
   // if (req.body.extraOpt == 1) {
@@ -326,18 +329,15 @@ exports.postEditExtra = async (req, res, next) => {
   });
 
   try {
-    Extra.findAll({
+    await Extra.findAll({
       include: [
         {
           model: ExtraTranslation,
         },
       ],
-    }).then((extra) => {
+    }).then(async (extra) => {
       async function updateExtraTranslation() {
-        // await Extra.update(
-        //   { extraType: extraType },
-        //   { where: { id: req.body.extraIdEditing } }
-        // );
+        await Extra.update({ price: price }, { where: { id: extraIdEditing } });
         await ExtraTranslation.update(
           { name: updatedRoName },
           { where: { id: extTranId[0], languageId: 1 } }
