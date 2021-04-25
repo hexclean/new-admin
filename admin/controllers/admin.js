@@ -93,19 +93,19 @@ exports.getAddProduct = async (req, res, next) => {
 };
 
 exports.postAddProduct = async (req, res, next) => {
-  const allergenId = req.body.allergenId;
-  var filteredStatus = req.body.status.filter(Boolean);
-  const roTitle = req.body.roTitle;
-  const huTitle = req.body.huTitle;
-  const enTitle = req.body.enTitle;
-  const boxId = req.body.boxId;
-  const price = req.body.price;
-  const roDescription = req.body.roDescription;
-  const huDescription = req.body.huDescription;
-  const enDescription = req.body.enDescription;
-  const extId = req.body.extraId;
-  const filteredStatusAllergen = req.body.statusAllergen.filter(Boolean);
-  const filteredStatusBox = req.body.statusBox.filter(Boolean);
+  const allergenId = await req.body.allergenId;
+  var filteredStatus = await req.body.status.filter(Boolean);
+  const roTitle = await req.body.roTitle;
+  const huTitle = await req.body.huTitle;
+  const enTitle = await req.body.enTitle;
+  const boxId = await req.body.boxId;
+  const price = await req.body.price;
+  const roDescription = await req.body.roDescription;
+  const huDescription = awaitreq.body.huDescription;
+  const enDescription = await req.body.enDescription;
+  const extId = await req.body.extraId;
+  const filteredStatusAllergen = await req.body.statusAllergen.filter(Boolean);
+  const filteredStatusBox = await req.body.statusBox.filter(Boolean);
 
   const image = req.file;
   const imageUrl = image.path;
