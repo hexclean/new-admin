@@ -149,29 +149,29 @@ exports.postAddProduct = async (req, res, next) => {
   });
 
   let productId;
-
-  if (req.body.isDailyMenu == 1) {
-    const product = await req.admin.createProduct({
-      productImagePath: imageUrl,
-      active: 1,
-      isDailyMenu: 1,
-      soldOut: 0,
-      startTime: req.body.startDate,
-      endTime: req.body.endDate,
-      upsell: 1,
-    });
-    productId = product.id;
-  } else {
-    const product = await Product.create({
-      productImagePath: imageUrl,
-      active: 1,
-      isDailyMenu: 0,
-      upsell: 1,
-      restaurantId: req.admin.id,
-    });
-    productId = product.id;
+  async function createProduct() {
+    if (req.body.isDailyMenu == 1) {
+      const product = await req.admin.createProduct({
+        productImagePath: imageUrl,
+        active: 1,
+        isDailyMenu: 1,
+        soldOut: 0,
+        startTime: req.body.startDate,
+        endTime: req.body.endDate,
+        upsell: 1,
+      });
+      productId = product.id;
+    } else {
+      const product = await Product.create({
+        productImagePath: imageUrl,
+        active: 1,
+        isDailyMenu: 0,
+        upsell: 1,
+        restaurantId: req.admin.id,
+      });
+      productId = product.id;
+    }
   }
-
   async function productTranslation() {
     await ProductTranslation.create({
       title: roTitle,
@@ -237,7 +237,7 @@ exports.postAddProduct = async (req, res, next) => {
       }
     );
   }
-
+  await createProduct();
   await productTranslation();
   await createVariant();
   await allergens();
