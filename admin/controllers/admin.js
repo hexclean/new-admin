@@ -101,14 +101,14 @@ exports.postAddProduct = async (req, res, next) => {
   const boxId = await req.body.boxId;
   const price = await req.body.price;
   const roDescription = await req.body.roDescription;
-  const huDescription = awaitreq.body.huDescription;
+  const huDescription = await req.body.huDescription;
   const enDescription = await req.body.enDescription;
   const extId = await req.body.extraId;
   const filteredStatusAllergen = await req.body.statusAllergen.filter(Boolean);
   const filteredStatusBox = await req.body.statusBox.filter(Boolean);
 
-  const image = req.file;
-  const imageUrl = image.path;
+  const image = await req.file;
+  const imageUrl = await image.path;
 
   if (
     roTitle.length == 0 ||
