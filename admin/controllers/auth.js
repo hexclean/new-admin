@@ -45,7 +45,7 @@ exports.getSignup = (req, res, next) => {
 exports.postLogin = (req, res, next) => {
   const email = req.body.email;
   const password = req.body.password;
-  Admin.findOne({ where: { email: email } })
+  Admin.findOne({ where: { email: email, comission: 0 } })
     .then((admin) => {
       if (!admin) {
         return res.redirect("/login");
