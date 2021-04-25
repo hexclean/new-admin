@@ -108,7 +108,7 @@ exports.postAddProduct = async (req, res, next) => {
   const filteredStatusBox = await req.body.statusBox.filter(Boolean);
 
   const image = await req.file;
-  const imageUrl = await image.path;
+  const imageUrl = image.path;
 
   if (
     roTitle.length == 0 ||
