@@ -243,11 +243,12 @@ exports.postAddProduct = async (req, res, next) => {
   res.redirect("/admin/products"),
     {
       ext: ext,
-    }.catch((err) => {
-      const error = new Error(err);
-      error.httpStatusCode = 500;
-      return next(error);
-    });
+    };
+  // .catch((err) => {
+  //   const error = new Error(err);
+  //   error.httpStatusCode = 500;
+  //   return next(error);
+  // });
 };
 exports.getEditProduct = async (req, res, next) => {
   const editMode = req.query.edit;
