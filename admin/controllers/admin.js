@@ -237,16 +237,13 @@ exports.postAddProduct = async (req, res, next) => {
     );
   }
 
-  await productTranslation()
-    .then(async (result) => {
-      await createVariant();
-      await allergens();
-      res.redirect("/admin/products"),
-        {
-          ext: ext,
-        };
-    })
-    .catch((err) => {
+  await productTranslation();
+  await createVariant();
+  await allergens();
+  res.redirect("/admin/products"),
+    {
+      ext: ext,
+    }.catch((err) => {
       const error = new Error(err);
       error.httpStatusCode = 500;
       return next(error);
