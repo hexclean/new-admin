@@ -624,7 +624,7 @@ exports.getProducts = async (req, res, next) => {
   });
 
   await Product.findAll({
-    where: { restaurantId: req.admin.id, active: 1 },
+    where: { restaurantId: req.admin.id, active: 1, upsell: 1 },
 
     include: [
       {
@@ -640,6 +640,7 @@ exports.getProducts = async (req, res, next) => {
         where: {
           restaurantId: req.admin.id,
           active: 1,
+          upsell: 1,
         },
         include: [
           {

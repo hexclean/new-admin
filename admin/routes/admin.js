@@ -19,10 +19,13 @@ const deliveryPriceController = require("../controllers/delivery-price");
 const statisticController = require("../controllers/statistic");
 const upsellController = require("../controllers/upsell");
 const downsellController = require("../controllers/downsell");
+const listsController = require("../controllers/lists");
 
 const isAuth = require("../../middleware/is-auth");
 const router = express.Router();
-
+// LISTS
+router.get("/upsell", isAuth, listsController.getUpsellProducts);
+router.get("/downsell", isAuth, listsController.getDownsellProducts);
 // PROPERTY
 router.get("/add-property", isAuth, propertyController.getAddProperty);
 router.post("/add-property", isAuth, propertyController.postAddProperty);
@@ -171,20 +174,28 @@ router.post("/edit-product", isAuth, adminController.postEditProduct);
 router.post("/delete-product", isAuth, adminController.postDeleteProduct);
 
 // UPSELL
-router.get("/add-upsell", isAuth, upsellController.getAddUpsell);
-router.post("/add-upsell", upsellController.postAddUpsell);
-router.get("/edit-upsell/:productId", isAuth, upsellController.getEditUpsell);
-router.post("/edit-upsell", isAuth, upsellController.postEditUpsell);
+router.get("/add-upsell", isAuth, upsellController.getAddUpsellProduct);
+router.post("/add-upsell", upsellController.postAddUpsellProduct);
+router.get(
+  "/edit-upsell/:productId",
+  isAuth,
+  upsellController.getEditUpsellProduct
+);
+router.post("/edit-upsell", isAuth, upsellController.postEditUpsellProduct);
 
 // DOWNSELL
-router.get("/add-downsell", isAuth, downsellController.getAddDownsell);
-router.post("/add-downsell", downsellController.postAddDownsell);
+router.get("/add-downsell", isAuth, downsellController.getAddDownsellProduct);
+router.post("/add-downsell", downsellController.postAddDownsellProduct);
 router.get(
   "/edit-downsell/:productId",
   isAuth,
-  downsellController.getEditDownsell
+  downsellController.getEditDownsellProduct
 );
-router.post("/edit-downsell", isAuth, downsellController.postEditDownsell);
+router.post(
+  "/edit-downsell",
+  isAuth,
+  downsellController.postEditDownsellProduct
+);
 
 // Profile
 router.get(

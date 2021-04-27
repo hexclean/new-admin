@@ -1,5 +1,6 @@
 
 
+
 <%- include('../includes/head.ejs') %>
 <script>
    $(document).ready(function() {
@@ -24,19 +25,19 @@
             <% if ( variant.length < 2) { %>
             <div class="alert alert-warning alert-dismissible">
                <h5><i class="icon fas fa-exclamation-triangle"></i> Figyelmeztetés!</h5>
-               Termék létrehozásához legalább 2 variánsnak kell lennie!
+               Upsell termék létrehozásához legalább 2 variánsnak kell lennie!
              </div>
              <% } %>
              <% if ( box.length < 2) { %>
              <div class="alert alert-warning alert-dismissible">
                <h5><i class="icon fas fa-exclamation-triangle"></i> Figyelmeztetés!</h5>
-               Termék létrehozásához legalább 2 csomagolásnak kell lennie!
+               Upsell termék létrehozásához legalább 2 csomagolásnak kell lennie!
              </div>
              <% } %>
             <div class="container-fluid">
                <div class="row mb-2">
                   <div class="col-sm-6">
-                     <h1>Termék lista</h1>
+                     <h1>Upsell termék lista</h1>
                   </div>
                </div>
             </div>
@@ -49,9 +50,9 @@
                <!-- /.row -->
                <div class="row">
                   <div class="col-12">
-                     <a href="/admin/add-product">
+                     <a href="/admin/add-upsell">
                      <button type="button" class="btn btn-block btn-outline-secondary">
-                     Termék létrehozása
+                        Upsell termék létrehozása
                      </button>
                      </a>
                      <div class="card">
@@ -104,7 +105,7 @@
                                        </form>
                                     </td>
                                     <td>
-                                       <a class="btn btn-success btn-sm" href="/admin/edit-product/<%= prods[i].id %>?edit=true">
+                                       <a class="btn btn-success btn-sm" href="/admin/edit-upsell/<%= prods[i].id %>?edit=true">
                                        <i class="fas fa-pencil-alt">
                                        </i>
                                        <%= lingua.button_edit %>
