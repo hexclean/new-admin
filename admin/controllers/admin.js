@@ -85,8 +85,6 @@ exports.getAddProduct = async (req, res, next) => {
       ext: variant,
       cat: cat,
       boxArray: box,
-      checkBoxLength: checkBoxLength,
-      checkVariantLength: checkVariantLength,
       allergenArray: allergen,
     });
   } catch (err) {
@@ -437,12 +435,6 @@ exports.postEditProduct = async (req, res, next) => {
   const Op = Sequelize.Op;
   const productArray = [prodId];
   let boxIdFinal = 0;
-  // Ha nem az étteremhez tartozik, akkor átirányítódik a termékek listára
-  await Product.findByPk(prodId).then(async (product) => {
-    if (product.restaurantId.toString() !== req.admin.id.toString()) {
-      return res.redirect("/admin/products");
-    }
-  });
 
   // Étteremhez rendelt csomagolások lekérése
   const box = await Box.findAll({
@@ -474,16 +466,22 @@ exports.postEditProduct = async (req, res, next) => {
 
   try {
     async function updateProduct() {
-      // Ha új kép töltődik fel akkor megkeresi a régi képet azt kitörli és feltölti az újonnan létrehozott képet
-      if (image) {
-        fileHelper.deleteFile(product.productImagePath);
-        await Product.update(
-          {
-            productImagePath: image.path,
-          },
-          { where: { id: prodId } }
-        );
-      }
+      // Ha nem az étteremhez tartozik, akkor átirányítódik a termékek listára
+      await Product.findByPk(prodId).then(async (product) => {
+        if (product.restaurantId.toString() !== req.admin.id.toString()) {
+          return res.redirect("/admin/products");
+        }
+        // Ha új kép töltődik fel akkor megkeresi a régi képet azt kitörli és feltölti az újonnan létrehozott képet
+        if (image) {
+          fileHelper.deleteFile(product.productImagePath);
+          await Product.update(
+            {
+              productImagePath: image.path,
+            },
+            { where: { id: prodId } }
+          );
+        }
+      });
 
       await ProductTranslation.update(
         {
@@ -582,6 +580,30 @@ exports.postEditProduct = async (req, res, next) => {
   }
 };
 
+// POST
+// Termék inaktiválása
+exports.postDeleteProduct = async (req, res, next) => {
+  const prodId = req.body.productId;
+  try {
+    async function inactivateProduct() {
+      await Product.findByPk(prodId).then((product) => {
+        if (!product) {
+          return next(new Error("Product not found."));
+        }
+        product.soldOut = 1;
+        product.active = 0;
+        return product.save();
+      });
+    }
+    await inactivateProduct();
+    res.redirect("/admin/products");
+  } catch (err) {
+    const error = new Error(err);
+    error.httpStatusCode = 500;
+    return next(error);
+  }
+};
+
 exports.getProducts = async (req, res, next) => {
   const page = +req.query.page || 1;
   let totalItems;
@@ -647,26 +669,6 @@ exports.getProducts = async (req, res, next) => {
         prods: product,
         variant: variant,
         box: box,
-      });
-    })
-    .catch((err) => {
-      const error = new Error(err);
-      error.httpStatusCode = 500;
-      return next(error);
-    });
-};
-
-exports.postDeleteProduct = (req, res, next) => {
-  const prodId = req.body.productId;
-  Product.findByPk(prodId)
-    .then((product) => {
-      if (!product) {
-        return next(new Error("Product not found."));
-      }
-      product.soldOut = 1;
-      product.active = 0;
-      return product.save().then((result) => {
-        res.redirect("/admin/products");
       });
     })
     .catch((err) => {
