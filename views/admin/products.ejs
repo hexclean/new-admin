@@ -17,8 +17,22 @@
    <div class="wrapper">
       <%- include('../includes/nav.ejs') %> <%- include('../includes/aside.ejs')
          %>
+        
       <div class="content-wrapper">
+         
          <section class="content-header">
+            <% if ( variant.length < 2) { %>
+            <div class="alert alert-warning alert-dismissible">
+               <h5><i class="icon fas fa-exclamation-triangle"></i> Figyelmeztetés!</h5>
+               Termék létrehozásához legalább 2 variánsnak kell lennie!
+             </div>
+             <% } %>
+             <% if ( box.length < 2) { %>
+             <div class="alert alert-warning alert-dismissible">
+               <h5><i class="icon fas fa-exclamation-triangle"></i> Figyelmeztetés!</h5>
+               Termék létrehozásához legalább 2 csomagolásnak kell lennie!
+             </div>
+             <% } %>
             <div class="container-fluid">
                <div class="row mb-2">
                   <div class="col-sm-6">

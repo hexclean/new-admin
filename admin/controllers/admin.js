@@ -13,6 +13,8 @@ const CategoryTranslation = require("../../models/CategoryTranslation");
 const Box = require("../../models/Box");
 const ITEMS_PER_PAGE = 30;
 
+// GET
+// Termék létrehozás oldal betöltése
 exports.getAddProduct = async (req, res, next) => {
   let languageCode;
 
@@ -25,6 +27,7 @@ exports.getAddProduct = async (req, res, next) => {
   }
 
   try {
+    // Étteremhez rendelt allergének lekérése
     const allergen = await Allergen.findAll({
       where: {
         restaurantId: req.admin.id,
@@ -36,11 +39,15 @@ exports.getAddProduct = async (req, res, next) => {
         },
       ],
     });
+
+    // Étteremhez rendelt csomagolások lekérése
     const box = await Box.findAll({
       where: {
         restaurantId: req.admin.id,
       },
     });
+
+    // Étteremhez rendelt kategóriák lekérése
     const cat = await Category.findAll({
       where: {
         restaurantId: req.admin.id,
@@ -53,32 +60,29 @@ exports.getAddProduct = async (req, res, next) => {
       ],
     });
 
-    const ext = await Variant.findAll({
+    // Étteremhez rendelt variánsok lekérése
+    const variant = await Variant.findAll({
       where: {
         restaurantId: req.admin.id,
       },
     });
 
-    const checkVariantLength = await ProductVariants.findAll({
-      where: { restaurantId: req.admin.id },
-    });
-    const checkBoxLength = await Box.findAll({
-      where: { restaurantId: req.admin.id },
-    });
-
-    if (checkVariantLength.length < 2) {
+    // Le kell ellenőrizni, hogy az étteremnek legalább 2 hozzárendelt variánsa van-e
+    if (variant.length < 2) {
       return res.redirect("/admin/products");
     }
 
-    if (checkBoxLength.length < 1) {
+    // Le kell ellenőrizni, hogy az étteremnek legalább 2 hozzárendelt csomagolása van-e
+    if (box.length < 2) {
       return res.redirect("/admin/products");
     }
 
+    // Átadom az adatokat a html oldalnak
     res.render("admin/edit-product", {
       pageTitle: "Add Product",
       path: "/admin/add-product",
       editing: false,
-      ext: ext,
+      ext: variant,
       cat: cat,
       boxArray: box,
       checkBoxLength: checkBoxLength,
@@ -91,25 +95,29 @@ exports.getAddProduct = async (req, res, next) => {
     return next(error);
   }
 };
-
+// POST
+// Termék létrehozása
 exports.postAddProduct = async (req, res, next) => {
-  const allergenId = await req.body.allergenId;
-  var filteredStatus = await req.body.status.filter(Boolean);
-  const roTitle = await req.body.roTitle;
-  const huTitle = await req.body.huTitle;
-  const enTitle = await req.body.enTitle;
-  const boxId = await req.body.boxId;
-  const price = await req.body.price;
-  const roDescription = await req.body.roDescription;
-  const huDescription = await req.body.huDescription;
-  const enDescription = await req.body.enDescription;
-  const extId = await req.body.extraId;
-  const filteredStatusAllergen = await req.body.statusAllergen.filter(Boolean);
-  const filteredStatusBox = await req.body.statusBox.filter(Boolean);
-  console.log(11111111);
-  const image = await req.file;
+  // Változók deklarálása
+  const allergenId = req.body.allergenId;
+  const restaurantId = req.admin.id;
+  var filteredStatus = req.body.status.filter(Boolean);
+  const roTitle = req.body.roTitle;
+  const huTitle = req.body.huTitle;
+  const enTitle = req.body.enTitle;
+  const boxId = req.body.boxId;
+  const price = req.body.price;
+  const roDescription = req.body.roDescription;
+  const huDescription = req.body.huDescription;
+  const enDescription = req.body.enDescription;
+  const extId = req.body.extraId;
+  const filteredStatusAllergen = req.body.statusAllergen.filter(Boolean);
+  const filteredStatusBox = req.body.statusBox.filter(Boolean);
+  const image = req.file;
   const imageUrl = image.path;
+  let productId;
 
+  // Szerver validáció, ha üresek a mezők vissza irányít a termék lista oldalra
   if (
     roTitle.length == 0 ||
     allergenId.length == 0 ||
@@ -126,349 +134,324 @@ exports.postAddProduct = async (req, res, next) => {
   ) {
     return res.redirect("/admin/products");
   }
-  console.log(222222222);
-  const box = await Box.findAll({
-    where: {
-      restaurantId: req.admin.id,
-    },
-  });
-  console.log(33333333);
-  const allergen = await Allergen.findAll({
-    where: {
-      restaurantId: req.admin.id,
-    },
-    include: [
-      {
-        model: AllergenTranslation,
+  try {
+    // Étteremhez rendelt csomagolások lekérése
+    const box = await Box.findAll({
+      where: {
+        restaurantId: restaurantId,
       },
-    ],
-  });
-  console.log(44444444);
-  const ext = await Variant.findAll({
-    where: {
-      restaurantId: req.admin.id,
-    },
-  });
-  console.log(555555);
-  let productId;
-  async function createProduct() {
-    if (req.body.isDailyMenu == 1) {
-      console.log(6666666666);
-      const product = await req.admin.createProduct({
-        productImagePath: imageUrl,
-        active: 1,
-        isDailyMenu: 1,
-        soldOut: 0,
-        startTime: req.body.startDate,
-        endTime: req.body.endDate,
-        upsell: 1,
-      });
-      productId = product.id;
-      console.log(7777777);
-    } else {
-      console.log(8888888);
+    });
+
+    // Étteremhez rendelt allergének lekérése
+    const allergen = await Allergen.findAll({
+      where: {
+        restaurantId: restaurantId,
+      },
+      include: [
+        {
+          model: AllergenTranslation,
+        },
+      ],
+    });
+
+    // Étteremhez rendelt variánsok lekérése
+    const variant = await Variant.findAll({
+      where: {
+        restaurantId: restaurantId,
+      },
+    });
+
+    // Termék létrehozása
+    async function createProduct() {
       const product = await Product.create({
         productImagePath: imageUrl,
         active: 1,
         isDailyMenu: 0,
         upsell: 1,
-        restaurantId: req.admin.id,
+        restaurantId: restaurantId,
       });
       productId = product.id;
-      console.log(99999999);
-    }
-  }
-  console.log(11122222);
-  async function productTranslation() {
-    console.log(1111333333);
-    await ProductTranslation.create({
-      title: roTitle,
-      languageId: 1,
-      description: roDescription,
-      productId: productId,
-    });
-    console.log(111114444);
-    await ProductTranslation.create({
-      title: huTitle,
-      languageId: 2,
-      description: huDescription,
-      productId: productId,
-    });
-    console.log(111111555);
-    await ProductTranslation.create({
-      title: enTitle,
-      languageId: 3,
-      description: enDescription,
-      productId: productId,
-    });
-    console.log(111116666);
-  }
 
-  async function createVariant() {
-    console.log(1111117777777);
-    let boxIdFinal = 0;
-    for (let i = 0; i < box.length; i++) {
-      console.log(1111118888888);
-      if (filteredStatusBox[i] == "on") {
-        boxIdFinal = filteredStatusBox[i].substring(2) + boxId[i];
+      await ProductTranslation.create({
+        title: roTitle,
+        languageId: 1,
+        description: roDescription,
+        productId: productId,
+      });
+
+      await ProductTranslation.create({
+        title: huTitle,
+        languageId: 2,
+        description: huDescription,
+        productId: productId,
+      });
+
+      await ProductTranslation.create({
+        title: enTitle,
+        languageId: 3,
+        description: enDescription,
+        productId: productId,
+      });
+    }
+
+    // 1. Először megnézem, hogy melyik doboz van bejelölve
+    // 2. A ProductFinal táblába elmentem a létrehozott terméket hozzárendelve a dobozt és az összes variánst -
+    // (amelyik variáns be van jelölve azt a ProductFinal active oszlopba 1-el a többit 0-val mentődik)
+    async function createProductFinal() {
+      let boxIdFinal = 0;
+      for (let i = 0; i < box.length; i++) {
+        if (filteredStatusBox[i] == "on") {
+          boxIdFinal = filteredStatusBox[i].substring(2) + boxId[i];
+        }
+      }
+
+      for (let i = 0; i < variant.length; i++) {
+        await ProductFinal.create({
+          price: price[i] || 0,
+          productId: productId,
+          variantId: extId[i],
+          discountedPrice: 0,
+          active: filteredStatus[i] == "on" ? 1 : 0,
+          boxId: Number.isInteger(boxIdFinal) ? null : boxIdFinal,
+        });
       }
     }
-    console.log(11111999999);
-    for (let i = 0; i <= ext.length - 1; i++) {
-      console.log(22222222233333333);
-      await ProductFinal.create({
-        price: price[i] || 0,
-        productId: productId,
-        variantId: extId[i],
-        discountedPrice: 0,
-        active: filteredStatus[i] == "on" ? 1 : 0,
-        boxId: Number.isInteger(boxIdFinal) ? null : boxIdFinal,
-      });
-      console.log(2222222224444444);
-    }
-  }
-  console.log(222222225555555);
-  async function allergens() {
-    console.log(22222226666666666);
-    if (Array.isArray(allergen)) {
-      console.log(22222277777777);
+
+    // Elmentődik a termékhez hozzárendelt allergén -
+    // (amelyik allergén be van jelölve azt a ProductHasAllergen active oszlopba 1-el a többit 0-val mentődik)
+    async function allergens() {
       for (let i = 0; i <= allergen.length - 1; i++) {
-        console.log(22222228888888888);
         await ProductHasAllergen.create({
           productId: productId,
           allergenId: allergenId[i],
           active: filteredStatusAllergen[i] == "on" ? 1 : 0,
-          restaurantId: req.admin.id,
+          restaurantId: restaurantId,
         });
       }
     }
-    console.log(222222229999999);
-    await Category.update(
-      {
-        active: 1,
-      },
-      {
-        where: {
-          id: req.body.categoryId,
+
+    // Csak akkor lesz látható a kategória, amikor legalább 1 termék hozzá van rendelve
+    async function setAvaiableCategory() {
+      await Category.update(
+        {
+          active: 1,
         },
-      }
-    );
-    console.log(33333333444444444);
+        {
+          where: {
+            id: req.body.categoryId,
+          },
+        }
+      );
+    }
+
+    await createProduct();
+    await createProductFinal();
+    await allergens();
+    await setAvaiableCategory();
+
+    res.redirect("/admin/products"),
+      {
+        ext: variant,
+      };
+  } catch (err) {
+    const error = new Error(err);
+    error.httpStatusCode = 500;
+    return next(error);
   }
-  console.log(3333333335555555);
-  await createProduct();
-  console.log(333333333366666);
-  await productTranslation();
-  console.log(3333777777777777777);
-  await createVariant();
-  console.log(33333333388888888888);
-  await allergens();
-  console.log(33333399999999999999);
-  res.redirect("/admin/products"),
-    {
-      ext: ext,
-    };
-  // .catch((err) => {
-  //   const error = new Error(err);
-  //   error.httpStatusCode = 500;
-  //   return next(error);
-  // });
 };
+
+// GET
+// Termék szerkesztés oldal betöltése
 exports.getEditProduct = async (req, res, next) => {
+  // Változók deklarálása
+  const restaurantId = req.admin.id;
   const editMode = req.query.edit;
   const prodId = req.params.productId;
   const productId = [prodId];
   const Op = Sequelize.Op;
-  await Product.findByPk(prodId).then((product) => {
-    if (!product || !editMode) {
-      return res.redirect("/");
-    }
-  });
+  let getProductPrice = [];
 
-  const cat = await Category.findAll({
-    where: {
-      restaurantId: req.admin.id,
-    },
-    include: [
-      {
-        model: CategoryTranslation,
-      },
-    ],
-  });
+  try {
+    // Ha a termék nem az étteremhez tartozik, akkor automatikusan visszairányít a termékek oldalra
+    await Product.findByPk(prodId).then((product) => {
+      if (!product || !editMode) {
+        return res.redirect("/admin/products");
+      }
+    });
 
-  const box = await Box.findAll({
-    where: {
-      restaurantId: req.admin.id,
-    },
-  });
-  const allergen = await Allergen.findAll({
-    where: {
-      restaurantId: req.admin.id,
-    },
-    include: [
-      {
-        model: AllergenTranslation,
-        where: { languageId: 2 },
+    // Étteremhez rendelt kategóriák lekérése
+    const cat = await Category.findAll({
+      where: {
+        restaurantId: restaurantId,
       },
-      { model: ProductHasAllergen },
-    ],
-  });
+      include: [
+        {
+          model: CategoryTranslation,
+        },
+      ],
+    });
 
-  const allergenTest = await Allergen.findAll({
-    where: {
-      restaurantId: req.admin.id,
-    },
-    include: [
-      {
-        model: AllergenTranslation,
+    // Étteremhez rendelt csomagolások lekérése
+    const box = await Box.findAll({
+      where: {
+        restaurantId: restaurantId,
       },
-      {
-        model: ProductHasAllergen,
-        where: {
-          productId: { [Op.in]: productId },
-          restaurantId: req.admin.id,
+    });
+
+    // Étteremhez rendelt allergének lekérése
+    const allergen = await Allergen.findAll({
+      where: {
+        restaurantId: restaurantId,
+      },
+      include: [
+        {
+          model: AllergenTranslation,
+          where: { languageId: 2 },
+        },
+        {
+          model: ProductHasAllergen,
+          where: {
+            productId: { [Op.in]: productId },
+            restaurantId: restaurantId,
+          },
+        },
+      ],
+    });
+
+    // Az összes variáns lekérése. A választható variáns listában jelennek meg
+    const prodVariant = await ProductVariants.findAll({
+      where: {
+        restaurantId: restaurantId,
+      },
+      include: [
+        {
+          model: ProductFinal,
+        },
+      ],
+    });
+
+    // ProductFinal táblából lekérem azokat a variánsokat, amelyek az aktuális termékhez tartoznak (árak kiíratása végett)
+    let productFinal = await ProductFinal.findAll({
+      where: {
+        productId: {
+          [Op.in]: productId,
         },
       },
-    ],
-  });
-
-  const prodVariant = await ProductVariants.findAll({
-    where: {
-      restaurantId: req.admin.id,
-    },
-    include: [
-      {
-        model: ProductFinal,
-      },
-    ],
-  });
-  let productFinal = await ProductFinal.findAll({
-    where: {
-      productId: {
-        [Op.in]: productId,
-      },
-    },
-  });
-
-  const test78 = await Product.findAll({
-    where: {
-      id: prodId,
-      restaurantId: req.admin.id,
-    },
-    include: [
-      {
-        model: ProductTranslation,
-      },
-      {
-        model: ProductFinal,
-        where: { active: 1 },
-        include: [
-          {
-            model: Variant,
-          },
-        ],
-      },
-    ],
-  });
-  await Product.findAll({
-    where: {
-      id: prodId,
-      restaurantId: req.admin.id,
-    },
-    include: [
-      {
-        model: ProductTranslation,
-      },
-      {
-        model: ProductFinal,
-        include: [
-          {
-            model: Variant,
-          },
-        ],
-      },
-    ],
-  })
-    .then(async (product) => {
-      // console.log(product);
-      let startDateFin;
-      let endDateFin;
-      if (product[0].isDailyMenu == 1) {
-        startDateFin = product[0].startTime;
-        endDateFin = product[0].endTime;
-      }
-      let productVariantTest = [];
-      for (let i = 0; i < product.length; i++) {
-        productVariantTest = product[i].ProductFinals;
-        console.log(productVariantTest[i].price);
-      }
-      // console.log();
-
-      res.render("admin/edit-product", {
-        isActiveAllergen: allergenTest,
-        pageTitle: "Edit Product",
-        path: "/admin/edit-product",
-        editing: editMode,
-        currentCat: test78[0].ProductFinals[0].Variant.categoryId,
-        allergenArray: allergen,
-        product: product,
-        variantIdByParams: prodId,
-        cat: cat,
-        productIds: prodId,
-        productId: prodId,
-        ext: productFinal,
-        netest: productVariantTest,
-        boxArray: box,
-        productVariant: prodVariant,
-        errorMessage: null,
-        validationErrors: [],
-        boxEnabled: productFinal,
-        extTranslations: product[0].productTranslations,
-        isActive: product[0].allergen,
-        isActiveVariant: productFinal,
-        startDateFin: startDateFin,
-        endDateFin: endDateFin,
-      });
-    })
-    .catch((err) => {
-      console.log(err);
-      const error = new Error(err);
-      error.httpStatusCode = 500;
-      return next(error);
     });
+
+    // Ebből a lekérdezésből megtudom, hogy a termék melyik kategóriában tartozik és ezáltal a lenyíló lista automatikusan beállítódik az aktuálisra
+    const getCurrentCategory = await Product.findAll({
+      where: {
+        id: prodId,
+        restaurantId: restaurantId,
+      },
+      include: [
+        {
+          model: ProductTranslation,
+        },
+        {
+          model: ProductFinal,
+          where: { active: 1 },
+          include: [
+            {
+              model: Variant,
+            },
+          ],
+        },
+      ],
+    });
+
+    // Ebből a lekérdezésből kiíratódnak a jelenlegi árak
+    const product = await Product.findAll({
+      where: {
+        id: prodId,
+        restaurantId: restaurantId,
+      },
+      include: [
+        {
+          model: ProductTranslation,
+        },
+        {
+          model: ProductFinal,
+          include: [
+            {
+              model: Variant,
+            },
+          ],
+        },
+      ],
+    });
+
+    for (let i = 0; i < product.length; i++) {
+      getProductPrice = product[i].ProductFinals;
+    }
+
+    res.render("admin/edit-product", {
+      pageTitle: "Edit Product",
+      path: "/admin/edit-product",
+      editing: editMode,
+      currentCat: getCurrentCategory[0].ProductFinals[0].Variant.categoryId,
+      allergenArray: allergen,
+      product: product,
+      variantIdByParams: prodId,
+      cat: cat,
+      productIds: prodId,
+      productId: prodId,
+      ext: productFinal,
+      netest: getProductPrice,
+      boxArray: box,
+      productVariant: prodVariant,
+      boxEnabled: productFinal,
+      extTranslations: product[0].productTranslations,
+      isActive: product[0].allergen,
+      isActiveVariant: productFinal,
+    });
+  } catch (err) {
+    console.log(err);
+    const error = new Error(err);
+    error.httpStatusCode = 500;
+    return next(error);
+  }
 };
 
+// POST
+// Termék szerkesztése
 exports.postEditProduct = async (req, res, next) => {
-  console.log(req.body);
-  let restaurantId = 1;
-  console.log("restaurantId", req.admin.id);
+  // Változók deklarálása
+  let restaurantId = req.admin.id;
   const prodId = req.body.productId;
   const varId = req.body.variantIdUp;
   const allergenId = req.body.allergenId;
   const filteredStatusBox = req.body.statusBox.filter(Boolean);
   const boxId = req.body.boxId;
   const filteredStatusAllergen = req.body.statusAllergen.filter(Boolean);
-  // Title
   const updatedRoTitle = req.body.roTitle;
   const updatedHuTitle = req.body.huTitle;
   const updatedEnTitle = req.body.enTitle;
-
-  // Description
   const updatedRoDesc = req.body.roDescription;
   const updatedHuDesc = req.body.huDescription;
   const updatedEnDesc = req.body.enDescription;
-  //
   const updatedExtraPrice = req.body.price;
   const image = await req.file;
   const filteredStatus = req.body.status.filter(Boolean);
   const Op = Sequelize.Op;
   const productArray = [prodId];
-  //
+  let boxIdFinal = 0;
+  // Ha nem az étteremhez tartozik, akkor átirányítódik a termékek listára
+  await Product.findByPk(prodId).then(async (product) => {
+    if (product.restaurantId.toString() !== req.admin.id.toString()) {
+      return res.redirect("/admin/products");
+    }
+  });
+
+  // Étteremhez rendelt csomagolások lekérése
   const box = await Box.findAll({
     where: {
-      restaurantId: req.admin.id,
+      restaurantId: restaurantId,
     },
   });
+
+  // Termékhez hozzárendelt allergének lekérése
   const productHasAllergen = await ProductHasAllergen.findAll({
     where: {
       productId: {
@@ -477,6 +460,7 @@ exports.postEditProduct = async (req, res, next) => {
     },
   });
 
+  // Variánsok lekérdezése
   const variants = await ProductVariants.findAll({
     where: {
       restaurantId: restaurantId,
@@ -488,180 +472,114 @@ exports.postEditProduct = async (req, res, next) => {
     ],
   });
 
-  await Product.findAll({
-    include: [
-      {
-        model: ProductTranslation,
-      },
-    ],
-  })
-    .then(async (result) => {
-      async function msg() {
-        await Product.findByPk(prodId).then(async (product) => {
-          // if (product.restaurantId.toString() !== req.admin.id.toString()) {
-          //   return res.redirect("/");
-          // }
-
-          if (req.body.isDailyMenu == 1) {
-            if (image) {
-              fileHelper.deleteFile(product.productImagePath);
-              await Product.update(
-                {
-                  active: 1,
-                  isDailyMenu: 1,
-                  soldOut: 0,
-                  startTime: req.body.startDate,
-                  endTime: req.body.endDate,
-                  productImagePath: image.path,
-                },
-                { where: { id: prodId } }
-              );
-            } else {
-              await Product.update(
-                {
-                  active: 1,
-                  isDailyMenu: 1,
-                  soldOut: 0,
-                  startTime: req.body.startDate,
-                  endTime: req.body.endDate,
-                },
-                { where: { id: prodId } }
-              );
-            }
-          } else {
-            if (image) {
-              fileHelper.deleteFile(product.productImagePath);
-              await Product.update(
-                {
-                  productImagePath: image.path,
-                  active: 1,
-                  isDailyMenu: 0,
-                },
-                { where: { id: prodId } }
-              );
-            }
-          }
-        });
-        await ProductTranslation.update(
+  try {
+    async function updateProduct() {
+      // Ha új kép töltődik fel akkor megkeresi a régi képet azt kitörli és feltölti az újonnan létrehozott képet
+      if (image) {
+        fileHelper.deleteFile(product.productImagePath);
+        await Product.update(
           {
-            title: updatedRoTitle,
-            description: updatedRoDesc,
+            productImagePath: image.path,
           },
-          { where: { productId: prodId, languageId: 1 } }
+          { where: { id: prodId } }
         );
+      }
 
-        await ProductTranslation.update(
-          {
-            title: updatedHuTitle,
-            description: updatedHuDesc,
-          },
-          { where: { productId: prodId, languageId: 2 } }
-        );
+      await ProductTranslation.update(
+        {
+          title: updatedRoTitle,
+          description: updatedRoDesc,
+        },
+        { where: { productId: prodId, languageId: 1 } }
+      );
 
-        await ProductTranslation.update(
+      await ProductTranslation.update(
+        {
+          title: updatedHuTitle,
+          description: updatedHuDesc,
+        },
+        { where: { productId: prodId, languageId: 2 } }
+      );
+
+      await ProductTranslation.update(
+        {
+          title: updatedEnTitle,
+          description: updatedEnDesc,
+        },
+        { where: { productId: prodId, languageId: 3 } }
+      );
+    }
+
+    async function updateProductFinal() {
+      const Op = Sequelize.Op;
+
+      // A kijelölt csomagolás megkeresése
+      for (let i = 0; i < box.length; i++) {
+        if (filteredStatusBox[i] == "on") {
+          boxIdFinal = filteredStatusBox[i].substring(2) + boxId[i];
+        }
+      }
+
+      // ProductFinal táblában frissítésre kerül a felületen módosított változások (ár, variáns, csomagolás)
+      for (let i = 0; i < variants.length; i++) {
+        let variIds = [varId[i]];
+        let prodIds = [prodId];
+        await ProductFinal.update(
           {
-            title: updatedEnTitle,
-            description: updatedEnDesc,
-          },
-          { where: { productId: prodId, languageId: 3 } }
-        );
-        await Category.update(
-          {
-            active: 1,
+            price: updatedExtraPrice[i] || 0,
+            discountedPrice: updatedExtraPrice[i] || 0,
+            active: filteredStatus[i] == "on" ? 1 : 0,
+            boxId: Number.isInteger(boxIdFinal) ? null : boxIdFinal,
           },
           {
             where: {
-              id: req.body.categoryId,
+              variantId: {
+                [Op.in]: variIds,
+              },
+              productId: {
+                [Op.in]: prodIds,
+              },
             },
           }
         );
       }
+    }
 
-      async function variantsFn() {
-        const Op = Sequelize.Op;
-        let boxIdFinal = 0;
-        for (let i = 0; i < box.length; i++) {
-          if (filteredStatusBox[i] == "on") {
-            boxIdFinal = filteredStatusBox[i].substring(2) + boxId[i];
-          }
-        }
-
-        for (let i = 0; i < variants.length; i++) {
-          let variIds = [varId[i]];
-          let prodIds = [prodId];
-          await ProductFinal.update(
-            {
-              price: updatedExtraPrice[i] || 0,
-              discountedPrice: updatedExtraPrice[i] || 0,
-              active: filteredStatus[i] == "on" ? 1 : 0,
-              boxId: Number.isInteger(boxIdFinal) ? null : boxIdFinal,
+    async function updateAllergens() {
+      const Op = Sequelize.Op;
+      // Változtatott hozzárendelt allergének frissítése
+      for (let i = 0; i <= productHasAllergen.length - 1; i++) {
+        let productIds = [allergenId[i]];
+        let productId = [prodId];
+        await ProductHasAllergen.update(
+          {
+            active: filteredStatusAllergen[i] == "on" ? 1 : 0,
+          },
+          {
+            where: {
+              restaurantId: req.admin.id,
+              allergenId: {
+                [Op.in]: productIds,
+              },
+              productId: {
+                [Op.in]: productId,
+              },
             },
-            {
-              where: {
-                variantId: {
-                  [Op.in]: variIds,
-                },
-                productId: {
-                  [Op.in]: prodIds,
-                },
-              },
-            }
-          ).catch((err) => {
-            console.log(err);
-            const error = new Error(err);
-            error.httpStatusCode = 500;
-            return next(error);
-          });
-        }
-      }
-
-      async function productHasAllergenFn() {
-        if (Array.isArray(productHasAllergen)) {
-          const Op = Sequelize.Op;
-          for (let i = 0; i <= productHasAllergen.length - 1; i++) {
-            let productIds = [allergenId[i]];
-            let productId = [prodId];
-            await ProductHasAllergen.update(
-              {
-                active: filteredStatusAllergen[i] == "on" ? 1 : 0,
-              },
-              {
-                where: {
-                  restaurantId: req.admin.id,
-                  allergenId: {
-                    [Op.in]: productIds,
-                  },
-                  productId: {
-                    [Op.in]: productId,
-                  },
-                },
-              }
-            ).catch((err) => {
-              const error = new Error(err);
-              error.httpStatusCode = 500;
-              return next(error);
-            });
           }
-        }
+        );
       }
-      await msg()
-        .then(async (result) => {
-          await variantsFn();
-          await productHasAllergenFn();
-          res.redirect("/admin/products");
-        })
-        .catch((err) => {
-          console.log(err);
-          const error = new Error(err);
-          error.httpStatusCode = 500;
-          return next(error);
-        });
-    })
-    .catch((err) => {
-      const error = new Error(err);
-      error.httpStatusCode = 500;
-      return next(error);
-    });
+    }
+    await updateProduct();
+    await updateProductFinal();
+    await updateAllergens();
+
+    res.redirect("/admin/products");
+  } catch (err) {
+    console.log(err);
+    const error = new Error(err);
+    error.httpStatusCode = 500;
+    return next(error);
+  }
 };
 
 exports.getProducts = async (req, res, next) => {
@@ -676,10 +594,10 @@ exports.getProducts = async (req, res, next) => {
   } else {
     languageCode = 3;
   }
-  const checkVariantLength = await ProductVariants.findAll({
+  const variant = await ProductVariants.findAll({
     where: { restaurantId: req.admin.id },
   });
-  const checkBoxLength = await Box.findAll({
+  const box = await Box.findAll({
     where: { restaurantId: req.admin.id },
   });
 
@@ -727,8 +645,8 @@ exports.getProducts = async (req, res, next) => {
         previousPage: page - 1,
         lastPage: Math.ceil(totalItems.length / ITEMS_PER_PAGE),
         prods: product,
-        checkVariantLength: checkVariantLength,
-        checkBoxLength: checkBoxLength,
+        variant: variant,
+        box: box,
       });
     })
     .catch((err) => {

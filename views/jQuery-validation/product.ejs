@@ -413,12 +413,12 @@ boxEnabled.length; i++) { %> <% if (boxEnabled[i].boxId !=undefined) { %>
   });
 </script>
 <% } %> <% } %> <% } %> <% if (editing) { %> <% for (let i = 0; i <
-isActiveAllergen.length; i++) { %> <% if
-(isActiveAllergen[i].ProductHasAllergens[0].active == 1) { %>
+allergenArray.length; i++) { %> <% if
+(allergenArray[i].ProductHasAllergens[0].active == 1) { %>
 <script>
   $(document).ready(function () {
     var activeCheckbox =
-      "<%= isActiveAllergen[i].ProductHasAllergens[0].allergenId %>";
+      "<%= allergenArray[i].ProductHasAllergens[0].allergenId %>";
     $(".statusAllergen-checkbox-" + activeCheckbox).prop("checked", true);
     $(".statusAllergen-" + activeCheckbox).val("on");
   });

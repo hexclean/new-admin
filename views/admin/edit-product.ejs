@@ -301,7 +301,7 @@
                                             id="price"
                                             name="price"
                                             placeholder="price"
-                                            value="<% if (editing) { %><%= 33%><% } %>"
+                                            value="<% if (editing) { %><%= netest[i].price %><% } %>"
                                             />
                                     </div>
                                 </div>
@@ -313,7 +313,7 @@
                     </div>
                     <% } else { %>
                      <div class="row">
-                        <% for (let extra of ext) { %>
+                        <% for (let extra of variant) { %>
                            <input
                            type="hidden"
                            value="<%= extra.id %>"
