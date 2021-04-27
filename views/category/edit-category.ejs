@@ -1,129 +1,205 @@
 
-
 <%- include('../includes/head.ejs') %>
 <%- include('../jQuery-validation/category.ejs') %>
-</head>
-<body class="ms-body ms-aside-left-open ms-primary-theme ms-has-quickbar">
-   <%- include('../includes/navigation.ejs') %>
-   <main class="body-content">
-      <%- include('../includes/navigation-bar.ejs') %>
-      <form 
-         id="createCategory_form"
-         class="ms-content-wrapper" 
-         action="/admin/<% if (editing) { %>edit-category<% } else { %>add-category<% } %>"
-         method="POST"
-         enctype="multipart/form-data">
-         <div class="row">
-            <div class="col-xl-6 col-md-12"style="height: 504px !important;">
-               <div class="ms-panel ms-panel-fh">
-                  <div class="ms-panel-header">
-                     <h6><% if (editing) { %>"<%= category[0].CategoryTranslations[0].name %>" <%= lingua.category_edit_title %><% } else { %> <%= lingua.create_category %> <% } %></h6>
-                  </div>
-                  <div class="ms-panel-body">
-                     <div class="form-row">
-                        <div class="col-md-12 mb-3">
-                           <label for="roName"><%= lingua.category_ro_name %></label>
-                           <div class="input-group">
-                              <input
-                                 class="form-control"
-                                 type="text"
-                                 autocomplete="off"
-                                 name="roName"
-                                 id="roName"
-                                 value="<% if (editing) { %><%= category[0].CategoryTranslations[0].name %><% } %>">
-                           </div>
-                           <span class="error_form" id="roName_error_message"></span>
-                        </div>
-                        <div class="col-md-12 mb-3">
-                           <label for="huName"><%= lingua.category_hu_name %></label>
-                           <div class="input-group">
-                              <input
-                                 class="form-control"
-                                 type="text"
-                                 autocomplete="off"
-                                 name="huName"
-                                 id="huName"
-                                 value="<% if (editing) { %><%= category[0].CategoryTranslations[1].name %><% } %>">
-                           </div>
-                           <span class="error_form" id="huName_error_message"></span>
-                        </div>
-                        <div class="col-md-12 mb-3">
-                           <label for="enName"><%= lingua.category_en_name %></label>
-                           <div class="input-group">
-                              <input
-                                 class="form-control"
-                                 type="text"
-                                 name="enName"
-                                 autocomplete="off"
-                                 id="enName"
-                                 value="<% if (editing) { %><%= category[0].CategoryTranslations[2].name %><% } %>">
-                           </div>
-                           <span class="error_form" id="enName_error_message"></span>
-                        </div>
-                        <div class="col-md-12 mb-3">
-                           <button type="submit" name="createCategory" id="createCategory" class="btn btn-success has-icon" ><% if (editing) { %><%=lingua.button_editing %><% } else { %><%= lingua.create_category %><% } %></button>
-                           <span class="error_form" id="enName_error_message"></span>
-                        </div>
-                     </div>
-                  </div>
-               </div>
+  </head>
+  <body class="hold-transition sidebar-mini">
+   <form id="createCategory_form"
+   class="ms-content-wrapper" 
+   action="/admin/<% if (editing) { %>edit-category<% } else { %>add-category<% } %>"
+   method="POST"
+   enctype="multipart/form-data">
+    <div class="wrapper">
+      <%- include('../includes/nav.ejs') %> <%- include('../includes/aside.ejs')
+      %>
+     
+      <div class="content-wrapper">
+       
+        <section class="content-header">
+          <div class="container-fluid">
+            <div class="row mb-2">
+              <div class="col-sm-6">
+                <h1>Kategória</h1>
+              </div>
+             
             </div>
-            <div class="col-xl-6 col-md-12">
-               <div class="ms-panel ms-panel-fh">
-                  <div class="ms-panel-header">
-                     <h6><%= lingua.category_property_title %></h6>
+          </div>
+        
+        </section>
+
+       
+        <section class="content">
+          <div class="container-fluid">
+            <div class="row">
+             
+              <div class="col-md-6">
+                
+                <div class="card card-secondary">
+                  <div class="card-header">
+                    <h3 class="card-title">Kategória adatok megadása</h3>
                   </div>
-                  <div class="ms-panel-body">
-                     <p class="ms-directions"><code><%= lingua.category_property_subtitle %></code>
-                     </p>
-                     <% if(editing){ %>
-                     <% for (let i = 0; i < isActiveProperty.length; i++) { %>
-                     <% if (isActiveProperty[i].active == 1 ) { %>
-                     <script>
-                        $(document).ready(function() {
-                        var activeCheckbox ="<%= isActiveProperty[i].propertyId %>";
-                        $('.status-checkbox-'+activeCheckbox).prop('checked', true);
-                        $('.status-'+activeCheckbox).val('on');
-                        });
-                     </script>
-                     <% } 
-                        %>
-                     <% } %>
-                     <% } %>
-                     <div class="row">
-                        <div class="col-md-6">
-                           <ul class="ms-list ms-list-display">
-                              <% for (let i=0; i < property.length; i++ ) { %>
-                              <input
-                                 type="hidden"
-                                 value="<%= property[i].id %>"
-                                 name="propertyId"
-                                 /> 
-                              <li>
-                                 <label class="ms-checkbox-wrap ms-checkbox-success" data-extra="<%= property[i].id %>">
-                                 <input type="hidden" value="off" class="status-<%= property[i].id %> status-hidden" name="status[<%= property[i].id %>]" value="<%= property[i].id %>" >
-                                 <input data-propertyId="<%= property[i].id %>" class="status-checkbox status-checkbox-<%= property[i].id %>" type="checkbox" value="<%= property[i].id %>"> <i class="ms-checkbox-check"></i>
-                                 </label> <span> <%= property[i].PropertyTranslations[0].name %> </span>
-                              </li>
-                              <% } %>
-                           </ul>
-                           <span class="error_form" id="property_error_message"></span>
+                 
+                 
+                    <div class="card-body">
+                      <div class="form-group">
+                        <label for="exampleInputEmail1">Román neve</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="exampleInputEmail1"
+                          placeholder="Román neve"
+                          name="roName"
+                          value="<% if (editing) { %><%= category[0].CategoryTranslations[0].name %><% } %>">
+                    
+                      </div>
+                      <div class="form-group">
+                        <label for="huName">Magyar neve</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          placeholder="Magyar neve"
+                          id="huName"
+                          name="huName"
+                          value="<% if (editing) { %><%= category[0].CategoryTranslations[1].name %><% } %>">
+                      
+                      </div>
+                      
+                      <div class="form-group">
+                        <label for="enName">Angol neve</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          placeholder="Angol neve"
+                          id="enName"
+                          name="enName"
+                          value="<% if (editing) { %><%= category[0].CategoryTranslations[2].name %><% } %>">
+                      
+                      </div>
+                      <span class="error_form" id="enName_error_message"></span>
+                    
+                    </div>
+                  
+
+                    <div class="card-footer">
+                      <button name="createCategory" id="createCategory" type="submit" class="btn btn-secondary">
+                        Mentés
+                      </button>
+                    </div>
+        
+                </div>
+              </div>
+              
+              <div class="col-md-6">
+                <div class="card card-secondary">
+                  <div class="card-header">
+                    <h3 class="card-title">Alkategória megadása</h3>
+                  </div>
+                 
+                  <div class="card-body">
+                 
+                      <div class="form-group">
+                        <% for (let i=0; i < property.length; i++ ) { %>
+                        <div
+                          class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success"
+                        >
+                          <input
+                            type="hidden"
+                            value="<%= property[i].id %>"
+                            name="propertyId"
+                          />
+                          <input
+                            type="hidden"
+                            value="off"
+                            class="status-<%= property[i].id %> status-hidden"
+                            name="status[<%= property[i].id %>]"
+                            value="<%= property[i].id %>"
+                          />
+                          <input
+                            type="checkbox"
+                            class="custom-control-input status-checkbox status-checkbox-<%= property[i].id %>"
+                            id="customSwitch<%= property[i].id %>"
+                            data-propertyId="<%= property[i].id %>"
+                            value="<%= property[i].id %>"
+                          />
+                          <label
+                            data-extra="<%= property[i].id %>"
+                            class="custom-control-label"
+                            for="customSwitch<%= property[i].id %>"
+                          >
+                            <%= property[i].PropertyTranslations[0].name %>
+                          </label>
                         </div>
-                     </div>
+                        <% } %>
+                      </div>
+            
                   </div>
-               </div>
+                  <% if(editing){ %> <% for (let i = 0; i <
+                  isActiveProperty.length; i++) { %> <% if
+                  (isActiveProperty[i].active == 1 ) { %>
+                  <script>
+                    $(document).ready(function () {
+                      var activeCheckbox =
+                        "<%= isActiveProperty[i].propertyId %>";
+                      $(".status-checkbox-" + activeCheckbox).prop(
+                        "checked",
+                        true
+                      );
+                      $(".status-" + activeCheckbox).val("on");
+                    });
+                  </script>
+                  <% } %> <% } %> <% } %> <% if (editing) { %>
+                  <input
+                    type="hidden"
+                    value="<%= categoryId %>"
+                    name="categoryId"
+                  />
+                 <% } %>
+                 
+                </div>
+               
+              </div>
+             
             </div>
           
+          </div>
+         
+        </section>
+       
+      </div>
+      
+      <footer class="main-footer">
+        <div class="float-right d-none d-sm-block"><b>Version</b> 3.1.0</div>
+        <strong
+          >Copyright &copy; 2014-2021
+          <a href="https://adminlte.io">AdminLTE.io</a>.</strong
+        >
+        All rights reserved.
+      </footer>
 
-           
-            <% if (editing) { %>
-            <input type="hidden" value="<%= categoryId %>" name="categoryId">
-            <%for (let i = 0; i < extTranslations.length; i++){%>
-            <input type="hidden" value="<%= extTranslations[i].id %>" name="categoryTranslationId">
-            <%}%>
-            <% } %>
-         </div>
-      </form>
-   </main>
-   <%- include('../includes/end.ejs') %>
+      <!-- Control Sidebar -->
+      <aside class="control-sidebar control-sidebar-dark">
+        <!-- Control sidebar content goes here -->
+      </aside>
+      <!-- /.control-sidebar -->
+    </div>
+    <!-- ./wrapper -->
+
+    <!-- jQuery -->
+    <script src="/plugins/jquery/jquery.min.js"></script>
+    <!-- Bootstrap 4 -->
+    <script src="/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- bs-custom-file-input -->
+    <script src="/plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="/js/adminlte.min.js"></script>
+    <!-- AdminLTE for demo purposes -->
+    <script src="/js/demo.js"></script>
+    <!-- Page specific script -->
+    <script>
+      $(function () {
+        bsCustomFileInput.init();
+      });
+    </script>
+            </form>
+
+  <%- include('../includes/end.ejs') %>
 

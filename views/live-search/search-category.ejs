@@ -1,28 +1,23 @@
 <thead>
   <tr>
-    <th scope="col">Id</th>
-    <th scope="col"><%= lingua.category_list_name %></th>
-    <th scope="col"><%= lingua.category_list_status %></th>
-    <th scope="col"><%= lingua.category_list_operation %></th>
+    <th>ID</th>
+    <th>KATEGÓRIA NÉV</th>
+    <th>MÜVELET</th>
   </tr>
 </thead>
 <% for (let i=0; i < category.length; i++ ) { %>
 <tbody>
   <tr>
-    <th scope="row"><%= category[i].id %></th>
-
-    <td>
-      <%= category[i].CategoryTranslations[0].name %>
-    </td>
-    <td>
-      <span class="badge badge-success"><%= lingua.status_active %></span>
-    </td>
+    <td><%= category[i].id %></td>
+    <td><%= category[i].CategoryTranslations[0].name %></td>
     <td>
       <a
+        class="btn btn-secondary btn-sm"
         href="/admin/edit-category/<%= category[i].id %>?edit=true"
-        class="btn grid-btn mt-0 btn-sm btn-secondary"
-        ><%= lingua.button_edit %></a
       >
+        <i class="fas fa-pencil-alt"> </i>
+        <%= lingua.button_edit %>
+      </a>
     </td>
   </tr>
 </tbody>

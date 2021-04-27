@@ -32,30 +32,6 @@ function extras() {
 
   Language.hasMany(ExtraTranslation, { foreignKey: "languageId" });
 
-  ExtraHasAllergen.belongsTo(Restaurant, {
-    constrains: true,
-    onDelete: "CASCADE",
-    foreignKey: "restaurantId",
-  });
-
-  Restaurant.hasMany(ExtraHasAllergen, { foreignKey: "restaurantId" });
-
-  ExtraHasAllergen.belongsTo(Allergen, {
-    constrains: true,
-    onDelete: "CASCADE",
-    foreignKey: "allergenId",
-  });
-
-  Allergen.hasMany(ExtraHasAllergen, { foreignKey: "allergenId" });
-
-  ExtraHasAllergen.belongsTo(Extra, {
-    constrains: true,
-    onDelete: "CASCADE",
-    foreignKey: "extraId",
-  });
-
-  Extra.hasMany(ExtraHasAllergen, { foreignKey: "extraId" });
-
   VariantsExtras.belongsTo(Variant, {
     constrains: true,
     onDelete: "CASCADE",

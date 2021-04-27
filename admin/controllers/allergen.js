@@ -6,8 +6,9 @@ const ExtraHasAllergen = require("../../models/ExtraHasAllergen");
 const Product = require("../../models/Product");
 const ProductHasAllergen = require("../../models/ProductHasAllergen");
 const Op = Sequelize.Op;
-const ITEMS_PER_PAGE = 30;
 
+// GET
+// Allergén létrehozás oldal betöltése
 exports.getAddAllergen = async (req, res, next) => {
   res.render("allergen/edit-allergen", {
     pageTitle: "Add Product",
@@ -16,6 +17,8 @@ exports.getAddAllergen = async (req, res, next) => {
   });
 };
 
+// POST
+// Allergén létrehozása
 exports.postAddAllergen = async (req, res, next) => {
   const roName = req.body.roName;
   const huName = req.body.huName;
@@ -23,55 +26,40 @@ exports.postAddAllergen = async (req, res, next) => {
   if (roName.length == 0 || huName.length == 0 || enName.length == 0) {
     return res.redirect("/admin/allergen-index");
   }
-  const allergen = await Allergen.create({
-    restaurantId: req.admin.id,
-  });
 
-  async function extraTranslation() {
-    await AllergensTranslation.create({
-      name: roName,
-      languageId: 1,
-      allergenId: allergen.id,
+  try {
+    const allergen = await Allergen.create({
       restaurantId: req.admin.id,
     });
-    await AllergensTranslation.create({
-      name: huName,
-      languageId: 2,
-      restaurantId: req.admin.id,
 
-      allergenId: allergen.id,
-    });
+    async function createAllergenTranslation() {
+      await AllergensTranslation.create({
+        name: roName,
+        languageId: 1,
+        allergenId: allergen.id,
+        restaurantId: req.admin.id,
+      });
+      await AllergensTranslation.create({
+        name: huName,
+        languageId: 2,
+        restaurantId: req.admin.id,
 
-    await AllergensTranslation.create({
-      name: enName,
-      languageId: 3,
-      allergenId: allergen.id,
-      restaurantId: req.admin.id,
-    });
-  }
+        allergenId: allergen.id,
+      });
 
-  async function extraMenuAllergen() {
-    const totalExtras = await Extra.findAll({
-      where: { restaurantId: req.admin.id },
-    });
-    if (Array.isArray(totalExtras)) {
-      for (let i = 0; i <= totalExtras.length - 1; i++) {
-        await ExtraHasAllergen.create({
-          active: 0,
-          restaurantId: req.admin.id,
-          allergenId: allergen.id,
-          extraId: totalExtras[i].id,
-        });
-      }
-    } else {
-      return;
+      await AllergensTranslation.create({
+        name: enName,
+        languageId: 3,
+        allergenId: allergen.id,
+        restaurantId: req.admin.id,
+      });
     }
-  }
-  async function productMenuAllergen() {
-    const totalProducts = await Product.findAll({
-      where: { restaurantId: req.admin.id },
-    });
-    if (Array.isArray(totalProducts)) {
+
+    async function createAllergenToProduct() {
+      const totalProducts = await Product.findAll({
+        where: { restaurantId: req.admin.id },
+      });
+
       for (let i = 0; i <= totalProducts.length - 1; i++) {
         await ProductHasAllergen.create({
           active: 0,
@@ -80,70 +68,64 @@ exports.postAddAllergen = async (req, res, next) => {
           productId: totalProducts[i].id,
         });
       }
-    } else {
-      return;
     }
+
+    await createAllergenTranslation();
+    await createAllergenToProduct();
+
+    res.redirect("/admin/allergen-index");
+  } catch (err) {
+    const error = new Error(err);
+    error.httpStatusCode = 500;
+    return next(error);
   }
-
-  extraTranslation()
-    .then((result) => {
-      extraMenuAllergen();
-      productMenuAllergen();
-
-      res.redirect("/admin/allergen-index");
-      // res.write(
-      //   '<script>window.alert("dasd");window.location="/admin/allergen-index"</script>'
-      // );
-    })
-    .catch((err) => {
-      const error = new Error(err);
-      error.httpStatusCode = 500;
-      return next(error);
-    });
 };
 
+// GET
+// Allergén szerkesztés oldal betöltése
 exports.getEditAllergen = async (req, res, next) => {
   const editMode = req.query.edit;
   const allergenId = req.params.allergenId;
+
+  // Ha nem az étteremhez tartozik, akkor átírányítás
   await Allergen.findByPk(allergenId).then((allergen) => {
     if (!allergen || !editMode) {
       return res.redirect("/");
     }
   });
 
-  await Allergen.findAll({
-    where: {
-      id: allergenId,
-    },
-    include: [
-      {
-        model: AllergensTranslation,
+  try {
+    const allergen = await Allergen.findAll({
+      where: {
+        id: allergenId,
       },
-    ],
-  })
-    .then((allergen) => {
-      res.render("allergen/edit-allergen", {
-        pageTitle: "Edit Product",
-        path: "/admin/edit-product",
-        editing: editMode,
-        allergen: allergen,
-        allergenId: allergenId,
-        extTranslations: allergen[0].AllergenTranslations,
-      });
-    })
-    .catch((err) => {
-      const error = new Error(err);
-      error.httpStatusCode = 500;
-      return next(error);
+      include: [
+        {
+          model: AllergensTranslation,
+        },
+      ],
     });
+    res.render("allergen/edit-allergen", {
+      pageTitle: "Edit Product",
+      path: "/admin/edit-product",
+      editing: editMode,
+      allergen: allergen,
+      allergenId: allergenId,
+    });
+  } catch (err) {
+    const error = new Error(err);
+    error.httpStatusCode = 500;
+    return next(error);
+  }
 };
 
+// POST
+// Allergén módosítása
 exports.postEditAllergen = async (req, res, next) => {
   const updatedRoName = req.body.roName;
   const updatedHuName = req.body.huName;
   const updatedEnName = req.body.enName;
-  const allergenTranId = req.body.allergenTranId;
-
+  const allergenId = req.body.allergenId;
   if (
     updatedRoName.length == 0 ||
     updatedHuName.length == 0 ||
@@ -151,72 +133,29 @@ exports.postEditAllergen = async (req, res, next) => {
   ) {
     return res.redirect("/admin/allergen-index");
   }
-  Allergen.findAll({
-    include: [
-      {
-        model: AllergensTranslation,
-      },
-    ],
-  })
-    .then((allergen) => {
-      async function msg() {
-        await AllergensTranslation.update(
-          { name: updatedRoName },
-          { where: { id: allergenTranId[0], languageId: 1 } }
-        );
+  try {
+    async function updateAllergen() {
+      await AllergensTranslation.update(
+        { name: updatedRoName },
+        { where: { allergenId: allergenId, languageId: 1 } }
+      );
 
-        await AllergensTranslation.update(
-          { name: updatedHuName },
-          { where: { id: allergenTranId[1], languageId: 2 } }
-        );
+      await AllergensTranslation.update(
+        { name: updatedHuName },
+        { where: { allergenId: allergenId, languageId: 2 } }
+      );
 
-        await AllergensTranslation.update(
-          { name: updatedEnName },
-          { where: { id: allergenTranId[2], languageId: 3 } }
-        );
-      }
+      await AllergensTranslation.update(
+        { name: updatedEnName },
+        { where: { allergenId: allergenId, languageId: 3 } }
+      );
+    }
 
-      msg();
-
-      res.redirect("/admin/allergen-index");
-    })
-    .catch((err) => {
-      const error = new Error(err);
-      error.httpStatusCode = 500;
-      return next(error);
-    });
-};
-
-exports.getSearch = async (req, res, next) => {
-  const { term } = req.query;
-  const currentAllergenName = 1;
-  const currentPage = 1;
-  const previousPage = 1;
-  const lastPage = 1;
-  const nextPage = 1;
-  const hasNextPage = 1;
-  const hasPreviousPage = 1;
-  await Allergen.findAll({
-    where: { restaurantId: req.admin.id },
-    include: [
-      {
-        model: AllergensTranslation,
-        where: { name: { [Op.like]: "%" + term + "%" } },
-      },
-    ],
-  })
-    .then((gigs) => {
-      res.render("allergen/index", {
-        gigs,
-        ag: gigs,
-        currentAllergenName: currentAllergenName,
-        currentPage: currentPage,
-        nextPage: nextPage,
-        previousPage: previousPage,
-        lastPage: lastPage,
-        hasNextPage: hasNextPage,
-        hasPreviousPage: hasPreviousPage,
-      });
-    })
-    .catch((err) => console.log(err));
+    await updateAllergen();
+    res.redirect("/admin/allergen-index");
+  } catch (err) {
+    const error = new Error(err);
+    error.httpStatusCode = 500;
+    return next(error);
+  }
 };

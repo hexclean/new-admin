@@ -1,27 +1,23 @@
 <thead>
   <tr>
-    <th scope="col">Id</th>
-    <th scope="col">Sku</th>
-    <th scope="col"><%= lingua.variant_list_status %></th>
-    <th scope="col"><%= lingua.variant_list_operation %></th>
+    <th>ID</th>
+    <th>VARIÁNS NÉV</th>
+    <th>MÜVELET</th>
   </tr>
 </thead>
 <% for (let i=0; i< variant.length; i++) { %>
 <tbody>
   <tr>
-    <th scope="row"><%= variant[i].id %></th>
+    <td><%= variant[i].id %></td>
     <td><%= variant[i].sku %></td>
-
-    <td>
-      <span class="badge badge-success"><%= lingua.status_active %></span>
-    </td>
-
     <td>
       <a
+        class="btn btn-success btn-sm"
         href="/admin/edit-variant/<%= variant[i].id %>?edit=true"
-        class="btn grid-btn mt-0 btn-sm btn-secondary"
-        ><%= lingua.button_edit %></a
       >
+        <i class="fas fa-pencil-alt"> </i>
+        <%= lingua.button_edit %>
+      </a>
     </td>
   </tr>
 </tbody>

@@ -3,28 +3,69 @@
     <ul class="pagination pagination-round has-gap">
       <% if (currentPage !== 1 && previousPage !== 1) { %>
       <li class="page-item">
-        <a class="page-link" href="?page=1">1</a>
+        <a
+          class="page-link"
+          style="
+            background-color: #28a745 !important;
+            border-color: #28a745 !important;
+            color: white !important;
+          "
+          href="?page=1"
+          >1</a
+        >
       </li>
       <% } %> <% if (hasPreviousPage) { %>
       <li class="page-item">
-        <a class="page-link" href="?page=<%= previousPage %>"
+        <a
+          class="page-link"
+          href="?page=<%= previousPage %>"
+          style="
+            background-color: #28a745 !important;
+            border-color: #28a745 !important;
+            color: white !important;
+          "
           ><%= previousPage %></a
         >
       </li>
       <% } %>
       <li class="page-item active">
-        <a class="page-link" href="?page=<%= currentPage %>"
+        <a
+          class="page-link"
+          href="?page=<%= currentPage %>"
+          style="
+            background-color: #28a745 !important;
+            border-color: #28a745 !important;
+            color: white !important;
+          "
           ><%= currentPage %></a
         >
       </li>
       <% if (hasNextPage) { %>
       <li class="page-item">
-        <a class="page-link" href="?page=<%= nextPage %>"><%= nextPage %></a>
+        <a
+          class="page-link"
+          href="?page=<%= nextPage %>"
+          style="
+            background-color: #28a745 !important;
+            border-color: #28a745 !important;
+            color: white !important;
+          "
+          ><%= nextPage %></a
+        >
       </li>
 
       <% } %> <% if (lastPage !== currentPage && nextPage !== lastPage) { %>
       <li class="page-item">
-        <a class="page-link" href="?page=<%= lastPage %>"><%= lastPage %></a>
+        <a
+          class="page-link"
+          style="
+            background-color: #28a745 !important;
+            border-color: #28a745 !important;
+            color: white !important;
+          "
+          href="?page=<%= lastPage %>"
+          ><%= lastPage %></a
+        >
       </li>
       <% } %>
     </ul>

@@ -1,86 +1,140 @@
 
-
 <%- include('../includes/head.ejs') %>
-
 <script>
-$(document).ready(function() {
-	$('#search').keyup(function() {
-		const boxId = $('#search').val();
-		$.get("get-filtered-box/" + boxId).done(function(data) {
-			$("#searchedBox").html(data);
-		});
-	});
-})
-</script>
-
+   $(document).ready(function() {
+      $('#search').keyup(function() {
+         const boxId = $('#search').val();
+         $.get("get-filtered-box/" + boxId).done(function(data) {
+            $("#searchedBox").html(data);
+         });
+      });
+   })
+   </script>
 </head>
-<body class="ms-body ms-aside-left-open ms-primary-theme ms-has-quickbar">
-   <%- include('../includes/navigation.ejs') %> 
-   <main class="body-content">
-      <%- include('../includes/navigation-bar.ejs') %>
-      <div class="ms-content-wrapper">
-         <div class="ms-profile-overview no-img-var">
-            <ul class="ms-profile-navigation nav nav-tabs tabs-bordered" role="tablist">
-               <li role="presentation"><a href="#" aria-controls="tab1" class="active show" role="tab" data-toggle="tab"><%= lingua.all_boxes %></a></li>
-               <li role="presentation"><a class="add-variant" href="/admin/add-box"><%= lingua.create_box %></a></li>
-            </ul>
-         </div>
+<body class="hold-transition sidebar-mini">
+<div class="wrapper">
+  <%- include('../includes/nav.ejs') %> <%- include('../includes/aside.ejs')
+  %>
+
+  
+  <div class="content-wrapper">
+   
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>Csomagolás lista</h1>
+          </div>
+          
+        </div>
       </div>
-
+      
+      <!-- /.container-fluid -->
+    </section>
     
-    
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row"></div>
+        <!-- /.row -->
+        
+        <div class="row">
+          
+          <div class="col-12">
+            <a href="/admin/add-box">
+            <button type="button" class="btn btn-block btn-outline-secondary">
+            
+            
+             
+                Csomagolás létrehozása
+             
+              
+            </button>
+          </a>
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title"></h3>
 
-      <div class="ms-content-wrapper">
-         <div class="row">
-            <div class="col-12">
-               <div class="ms-panel">
-                  <div class="ms-panel-header">
-                     <h6> <%= lingua.all_boxes %></h6>
+                <div class="card-tools">
+                  <div
+                    class="input-group input-group-sm"
+                    style="width: 150px;"
+                  >
+                    <input
+                      type="text"
+                      name="search" id="search"
+                      class="form-control float-right"
+                      placeholder="Keresés"
+                    />
+
+                    <div class="input-group-append">
+                      <button type="submit" class="btn btn-default">
+                        <i class="fas fa-search"></i>
+                      </button>
+                    </div>
                   </div>
-                  <div class="ms-panel-body">
-                     <div class="table-responsive">
-                        <% if (box.length > 0) { %>
-                        <table id="searchedBox" class="table table-hover thead-primary">
-                           <thead>
-                              <tr>
-                                 <th scope="col">Id</th>
-                                 <th scope="col"><%= lingua.box_list_name %></th>
-                                 <th scope="col"><%= lingua.box_list_price %></th>
-                                 <th scope="col"><%= lingua.box_list_status %></th>
-                                 <th scope="col" ><%= lingua.box_list_operation %></th>
-                              </tr>
-                           </thead>
-                           <div class="col-6">
-                              <input type="text" name="search" id="search" placeholder="<%= lingua.search_box %>" class="extra-search form-control" />
-                           </div>
-                           <hr>
-                         
-                           <% for (let i = 0; i < box.length; i++) { %>
-                           <tbody>
-                              <th scope="row"><%= box[i].id %></th>
-                              <td><%= box[i].sku %></td>
-                              <td><%= box[i].price %></td>
-                              <td><span style="font-size: 14px !important" class="badge badge-success"><%= lingua.status_active %></span></td>
-                              <td style="font-size: 14px !important">
-                                 <a style="font-size: 14px !important" href="/admin/edit-box/<%= box[i].id %>?edit=true"class="btn grid-btn mt-0 btn-sm btn-secondary" ><%= lingua.button_edit %></a>
-                              </td>
-                           </tbody>
-                           
-                           <% } %>
-                           <% } else { %>
-                              <h4><%= lingua.no_boxes %></h4>
-                              <% } %>
-                        </table>
-                     </div>
-                     <% if (box.length > 0) { %>
-                     <%- include('../includes/pagination.ejs', {currentPage: currentPage, nextPage: nextPage, previousPage: previousPage, lastPage: lastPage, hasNextPage: hasNextPage, hasPreviousPage: hasPreviousPage}) %>
-                     <% } %>
-                  </div>
-               </div>
+                </div>
+              </div>
+
+              <div class="card-body table-responsive p-0">
+                <table id="searchedBox" class="table table-hover text-nowrap">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>ÁR</th>
+                      <th>CSOMAGOLÁS NÉV</th>
+                      <th>MÜVELET</th>
+                    </tr>
+                  </thead>
+                  <% for (let i = 0; i < box.length; i++) { %>
+                  <tbody>
+                    <tr>
+                      <td><%= box[i].id %></td>
+                      <td><%= box[i].price %></td>
+                      <td><%= box[i].sku %></td>
+                      <td>
+                        <a class="btn btn-secondary btn-sm" href="/admin/edit-box/<%= box[i].id %>?edit=true">
+                          <i class="fas fa-pencil-alt">
+                          </i>
+                          <%= lingua.button_edit %>
+                      </a>
+                      </td>
+                     
+                    </tr>
+                  </tbody>
+                  <% } %>
+                </table>
+              </div>
+              <div class="card-footer clearfix">
+                <ul class="pagination pagination-sm m-0 float-right">
+                  <% if (box.length > 0) { %>
+                    <%- include('../includes/pagination.ejs', {currentPage: currentPage, nextPage: nextPage, previousPage: previousPage, lastPage: lastPage, hasNextPage: hasNextPage, hasPreviousPage: hasPreviousPage}) %>
+                    <% } %>
+                </ul>
+              </div>
             </div>
-         </div>
+          </div>
+        </div>
       </div>
-   </main>
-   <%- include('../includes/end.ejs') %>
-</body>
+    </section>
+  </div>
 
+  <%- include('../includes/footer.ejs') %>
+
+  <aside class="control-sidebar control-sidebar-dark">
+    <!-- Control sidebar content goes here -->
+  </aside>
+  <!-- /.control-sidebar -->
+</div>
+<!-- ./wrapper -->
+
+<!-- jQuery -->
+<script src="/plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- AdminLTE App -->
+<script src="/js/adminlte.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="/js/demo.js"></script>
+</body>
+</html>

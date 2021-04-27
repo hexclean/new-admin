@@ -228,7 +228,7 @@ router.get(
 router.get("/dashboard", isAuth, adminProfileController.getDashboard);
 
 // Allergen
-router.get("/allergen/search", isAuth, allergenController.getSearch);
+// router.get("/allergen/search", isAuth, allergenController.getSearch);
 router.get("/add-allergen", isAuth, allergenController.getAddAllergen);
 router.post("/add-allergen", isAuth, allergenController.postAddAllergen);
 router.get(

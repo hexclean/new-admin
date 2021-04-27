@@ -1,41 +1,26 @@
 <thead>
   <tr>
-    <th scope="col">Id</th>
-    <th scope="col"><%= lingua.box_list_name %></th>
-    <th scope="col"><%= lingua.box_list_price %></th>
-    <th scope="col"><%= lingua.box_list_status %></th>
-    <th scope="col"><%= lingua.box_list_operation %></th>
+    <th>ID</th>
+    <th>ÁR</th>
+    <th>CSOMAGOLÁS NÉV</th>
+    <th>MÜVELET</th>
   </tr>
 </thead>
-<div class="col-6">
-  <input
-    type="text"
-    name="search"
-    id="search"
-    placeholder="<%= lingua.search_box %>"
-    class="extra-search form-control"
-  />
-</div>
-<hr />
-
 <% for (let i = 0; i < box.length; i++) { %>
 <tbody>
-  <th scope="row"><%= box[i].id %></th>
-  <td><%= box[i].BoxTranslations[0].name %></td>
-  <td><%= box[i].price %></td>
-  <td>
-    <span style="font-size: 14px !important;" class="badge badge-success"
-      ><%= lingua.status_active %></span
-    >
-  </td>
-  <td style="font-size: 14px !important;">
-    <a
-      style="font-size: 14px !important;"
-      href="/admin/edit-box/<%= box[i].id %>?edit=true"
-      class="btn grid-btn mt-0 btn-sm btn-secondary"
-      ><%= lingua.button_edit %></a
-    >
-  </td>
+  <tr>
+    <td><%= box[i].id %></td>
+    <td><%= box[i].price %></td>
+    <td><%= box[i].sku %></td>
+    <td>
+      <a
+        class="btn btn-secondary btn-sm"
+        href="/admin/edit-box/<%= box[i].id %>?edit=true"
+      >
+        <i class="fas fa-pencil-alt"> </i>
+        <%= lingua.button_edit %>
+      </a>
+    </td>
+  </tr>
 </tbody>
-
 <% } %>

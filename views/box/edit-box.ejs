@@ -1,85 +1,135 @@
 
-
 <%- include('../includes/head.ejs') %>
 <%- include('../jQuery-validation/box.ejs') %>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 </head>
-<body class="ms-body ms-aside-left-open ms-primary-theme ms-has-quickbar">
-   <%- include('../includes/navigation.ejs') %>
-   <main class="body-content">
-      <%- include('../includes/navigation-bar.ejs') %>
+<body class="hold-transition sidebar-mini">
+  <div class="wrapper">
+    <%- include('../includes/nav.ejs') %> <%- include('../includes/aside.ejs')
+    %>
+    <script>
+      $(document).ready(function () {
+        const regex = /[^\d.]|\.(?=.*\.)/g;
+        const subst = ``;
+        $("#price").keyup(function () {
+          const str = this.value;
+          const result = str.replace(regex, subst);
+          this.value = result;
+        });
+      });
+    </script>
+   
+    <div class="content-wrapper">
 
-      <script>
-         $(document).ready(function () {
-             const regex = /[^\d.]|\.(?=.*\.)/g;
-             const subst = ``;
-             $("#price").keyup(function () {
-               const str = this.value;
-               const result = str.replace(regex, subst);
-               this.value = result;
-             });
-           });
-      </script>
-      
-      <form 
-         id="createBox_form"
-         class="ms-content-wrapper" 
-         action="/admin/<% if (editing) { %>edit-box<% } else { %>add-box<% } %>"
-         method="POST"
-         enctype="multipart/form-data">
-         <div class="row">
-            <div class="col-xl-6 col-md-12">
-               <div class="ms-panel ms-panel-fh">
-                  <div class="ms-panel-header">
-                     <h6><% if (editing) { %>"<%= box[0].sku %>" <%= lingua.box_edit_title %><% } else { %> <%= lingua.create_box %> <% } %></h6>
-                  </div>
-                  <div class="ms-panel-body">
-                     <div class="form-row">
-                        <div class="col-md-12 mb-3">
-                           <label for="price"><%= lingua.box_price %></label>
-                           <div class="input-group">
-                              <input
-                                 class="form-control"
-                                 type="text"
-                                 name="price"
-                                 autocomplete="off"
-                                 id="price"
-                                 placeholder="<%= lingua.price_placeholder %>"
-                                 value="<% if (editing) { %><%= box[0].price %><% } %>">
-                           </div>
-                           <span class="error_form" id="price_error_message"></span>
-                        </div>
-                        <div class="col-md-12 mb-3">
-                           <label for="sku"><%= lingua.box_ro_name %></label>
-                           <div class="input-group">
-                              <input
-                                 class="form-control"
-                                 type="text"
-                                 autocomplete="off"
-                                 name="sku"
-                                 id="sku"
-                                 value="<% if (editing) { %><%= box[0].sku %><% } %>">
-                           </div>
-                           <span class="error_form" id="sku_error_message"></span>
-                        </div>
-                    
-                        <div class="col-md-12 mb-3">
-                           <button type="submit" id="createBox" class="btn btn-success has-icon" ><% if (editing) { %><%=lingua.button_editing %><% } else { %><%= lingua.create_box %><% } %></button>
-                           <span class="error_form" id="enName_error_message"></span>
-                        </div>
-                     </div>
-                  </div>
-               </div>
+      <section class="content-header">
+        <div class="container-fluid">
+          <div class="row mb-2">
+            <div class="col-sm-6">
+              <h1>
+                <% if (editing) { %><%= lingua.update_extra %><% } else { %> <%=
+                lingua.create_extra %> <% } %>
+              </h1>
             </div>
-                <% if (editing) { %>
-               <input type="hidden" value="<%= boxId %>" name="boxId">
-               
-               <% } %>
+          </div>
+        </div>
+        <!-- /.container-fluid -->
+      </section>
+
+      <!-- Main content -->
+      <section class="content">
+        <div class="container-fluid">
+          <div class="row">
+            <!-- left column -->
+            <div class="col-md-6">
+              <!-- general form elements -->
+              <div class="card card-secondary">
+                <div class="card-header">
+                  <h3 class="card-title">Extra adatatok megadása</h3>
+                </div>
+                <!-- /.card-header -->
+                <!-- form start -->
+                <form
+                  id="createBox_form"
+                  class="ms-content-wrapper"
+                  action="/admin/<% if (editing) { %>edit-box<% } else { %>add-box<% } %>"
+                  method="POST"
+                  enctype="multipart/form-data"
+                >
+                  <div class="card-body">
+                    <div class="form-group">
+                      <label for="price">Ár</label>
+                      <input
+                        type="text"
+                        class="form-control extra_price_input"
+                        id="price"
+                        name="price"
+                        placeholder="Csomagolás ára"
+                        autocomplete="off"
+                        value="<% if (editing) { %><%= box[0].price %><% } %>"
+                      />
+                    </div>
+                    <div class="form-group">
+                      <label for="sku">Csomagolás neve</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="sku"
+                        name="sku"
+                        placeholder="Extra román neve"
+                        value="<% if (editing) { %><%= box[0].sku %><% } %>"
+                      />
+                    </div>
+
+                    <div class="form-check"></div>
+                  </div>
+                 
+                  <% if (editing) { %>
+                  <input type="hidden" value="<%= boxId %>" name="boxId" />
+
+                  <% } %>
+                  <div class="card-footer">
+                    <button
+                      id="createBox"
+                      type="submit"
+                      class="btn btn-secondary"
+                    >
+                     Mentés
+                    </button>
+                  </div>
+                </form>
+              </div>
+              
             </div>
-         </div>
-         </div>
-      </form>
-   </main>
-   <%- include('../includes/end.ejs') %>
+          </div>
+ 
+        </div>
+      </section>
+ 
+    </div>
+    <%- include('../includes/footer.ejs') %>
+
+
+    <aside class="control-sidebar control-sidebar-dark">
+
+    </aside>
+
+  </div>
+
+
+  <!-- jQuery -->
+  <script src="/plugins/jquery/jquery.min.js"></script>
+  <!-- Bootstrap 4 -->
+  <script src="/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <!-- bs-custom-file-input -->
+  <script src="/plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
+  <!-- AdminLTE App -->
+  <script src="/js/adminlte.min.js"></script>
+  <!-- AdminLTE for demo purposes -->
+  <script src="/js/demo.js"></script>
+  <!-- Page specific script -->
+  <script>
+    $(function () {
+      bsCustomFileInput.init();
+    });
+  </script>
 </body>
-

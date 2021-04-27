@@ -2,12 +2,11 @@ const Category = require("../../models/Category");
 const CategoryTranslation = require("../../models/CategoryTranslation");
 const Allergen = require("../../models/Allergen");
 const Property = require("../../models/Property");
-const PropertyValue = require("../../models/PropertyValue");
 const PropertyTranslation = require("../../models/PropertyTranslation");
-const PropertyValueTranslation = require("../../models/PropertyValueTranslation");
 const Sequelize = require("sequelize");
 const CategoryProperty = require("../../models/CategoryProperty");
 const Op = Sequelize.Op;
+
 exports.getAddCategory = async (req, res, next) => {
   let languageCode;
 
@@ -24,6 +23,7 @@ exports.getAddCategory = async (req, res, next) => {
       restaurantId: req.admin.id,
     },
   });
+
   const property = await Property.findAll({
     where: {
       restaurantId: req.admin.id,
@@ -193,7 +193,7 @@ exports.postAddCategory = async (req, res, next) => {
   }
 
   try {
-    async function createExtraTranslation() {
+    async function createCategory() {
       const category = await Category.create({
         restaurantId: req.admin.id,
         active: 0,
@@ -230,7 +230,7 @@ exports.postAddCategory = async (req, res, next) => {
       }
     }
 
-    createExtraTranslation();
+    await createCategory();
     res.redirect("/admin/category-index");
   } catch (err) {
     const error = new Error(err);
@@ -238,10 +238,10 @@ exports.postAddCategory = async (req, res, next) => {
     return next(error);
   }
 };
-
 exports.getEditCategory = async (req, res, next) => {
   const editMode = req.query.edit;
   const categoryId = req.params.categoryId;
+
   await Category.findByPk(categoryId).then((category) => {
     if (!category || !editMode) {
       return res.redirect("/");
@@ -294,13 +294,11 @@ exports.getEditCategory = async (req, res, next) => {
     return next(error);
   }
 };
-
 exports.postEditCategory = async (req, res, next) => {
   const categoryId = req.body.categoryId;
   const updatedRoName = req.body.roName;
   const updatedHuName = req.body.huName;
   const updatedEnName = req.body.enName;
-  const categoryTranslationId = req.body.categoryTranslationId;
   const filteredStatus = req.body.status.filter(Boolean);
   const propertyId = req.body.propertyId;
 
@@ -308,8 +306,7 @@ exports.postEditCategory = async (req, res, next) => {
     updatedRoName.length == 0 ||
     updatedHuName.length == 0 ||
     updatedEnName.length == 0 ||
-    categoryTranslationId.length == 0 ||
-    categoryId.length.length == 0
+    categoryId.length == 0
   ) {
     return res.redirect("/admin/category-index");
   }
@@ -318,52 +315,45 @@ exports.postEditCategory = async (req, res, next) => {
   });
 
   try {
-    Category.findAll({
-      where: { restaurantId: req.admin.id },
-      include: [
-        {
-          model: CategoryTranslation,
-        },
-      ],
-    }).then(async (result) => {
+    async function updateCategory() {
       await CategoryTranslation.update(
         { name: updatedRoName },
-        { where: { id: categoryTranslationId[0], languageId: 1 } }
+        { where: { categoryId: categoryId, languageId: 1 } }
       );
 
       await CategoryTranslation.update(
         { name: updatedHuName },
-        { where: { id: categoryTranslationId[1], languageId: 2 } }
+        { where: { categoryId: categoryId, languageId: 2 } }
       );
 
       await CategoryTranslation.update(
         { name: updatedEnName },
-        { where: { id: categoryTranslationId[2], languageId: 3 } }
+        { where: { categoryId: categoryId, languageId: 3 } }
       );
-    });
-    async function updateExtraHasAllergen() {
-      if (Array.isArray(isActiveProperty)) {
-        for (let i = 0; i <= isActiveProperty.length - 1; i++) {
-          let propertyIds = [propertyId[i]];
+    }
 
-          await CategoryProperty.update(
-            {
-              active: filteredStatus[i] == "on" ? 1 : 0,
-            },
-            {
-              where: {
-                categoryId: categoryId,
-                restaurantId: req.admin.id,
-                propertyId: {
-                  [Op.in]: propertyIds,
-                },
+    async function updateExtraHasAllergen() {
+      for (let i = 0; i <= isActiveProperty.length - 1; i++) {
+        let propertyIds = [propertyId[i]];
+
+        await CategoryProperty.update(
+          {
+            active: filteredStatus[i] == "on" ? 1 : 0,
+          },
+          {
+            where: {
+              categoryId: categoryId,
+              restaurantId: req.admin.id,
+              propertyId: {
+                [Op.in]: propertyIds,
               },
-            }
-          );
-        }
+            },
+          }
+        );
       }
     }
-    updateExtraHasAllergen();
+    await updateCategory();
+    await updateExtraHasAllergen();
     res.redirect("/admin/category-index");
   } catch (err) {
     const error = new Error(err);

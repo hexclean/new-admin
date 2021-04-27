@@ -332,6 +332,7 @@ exports.getEditVariant = async (req, res, next) => {
 };
 
 exports.postEditVariant = async (req, res, next) => {
+  console.log(req.body);
   const extId = req.body.extraId;
   const updatedSku = req.body.sku;
   const varId = req.body.variantId;
@@ -342,77 +343,83 @@ exports.postEditVariant = async (req, res, next) => {
   const Op = Sequelize.Op;
   const dasd = req.body.varId;
   let variantId = [dasd];
-  if (extId.length == 0 || updatedSku.length == 0) {
-    return res.redirect("/admin/variant-index");
-  }
-  const productVarToExt = await ProductVariantsExtras.findAll({
-    where: {
-      variantId: {
-        [Op.in]: variantId,
-      },
-    },
-    include: [{ model: Extra }],
-  });
-  await VariantPropertyValue.update(
-    {
-      propertyValueId: req.body.propertyValueId,
-      propertyId: req.body.propertyId,
-    },
-    {
-      where: {
-        variantId: req.body.varId,
-      },
+
+  try {
+    if (extId.length == 0 || updatedSku.length == 0) {
+      return res.redirect("/admin/variant-index");
     }
-  );
+    const productVarToExt = await ProductVariantsExtras.findAll({
+      where: {
+        variantId: {
+          [Op.in]: variantId,
+        },
+      },
+      include: [{ model: Extra }],
+    });
 
-  await Variant.findAll()
-    .then(async (variant) => {
-      async function msg() {
-        await Variant.findByPk(varId).then((variant) => {
-          variant.sku = updatedSku;
-          variant.maxOption = maxOption;
-          variant.categoryId = categoryId;
-          return variant.save();
-        });
+    await VariantPropertyValue.update(
+      {
+        propertyValueId: req.body.propertyValueId,
+        propertyId: req.body.propertyId,
+      },
+      {
+        where: {
+          variantId: req.body.varId,
+        },
+      }
+    );
 
-        if (Array.isArray(productVarToExt)) {
-          const Op = Sequelize.Op;
-          for (let i = 0; i <= productVarToExt.length - 1; i++) {
-            let extrasIds = [extId[i]];
-            let variantId = [varId];
+    async function msg() {
+      await Variant.findByPk(varId).then((variant) => {
+        variant.sku = updatedSku;
+        variant.maxOption = maxOption;
+        variant.categoryId = categoryId;
+        return variant.save();
+      });
 
-            await ProductVariantsExtras.update(
-              {
-                // extraType: productVarToExt[i].Extra.extraType,
-                discountedPrice: 1,
-                active: filteredStatus[i] == "on" ? 1 : 0,
-                requiredExtra: filteredOptions[i] == "on" ? 1 : 0,
-              },
-              {
-                where: {
-                  extraId: {
-                    [Op.in]: extrasIds,
-                  },
-                  variantId: {
-                    [Op.in]: variantId,
-                  },
+      if (Array.isArray(productVarToExt)) {
+        const Op = Sequelize.Op;
+        for (let i = 0; i <= productVarToExt.length - 1; i++) {
+          let extrasIds = [extId[i]];
+          let variantId = [varId];
+
+          await ProductVariantsExtras.update(
+            {
+              discountedPrice: 1,
+              active: filteredStatus[i] == "on" ? 1 : 0,
+              requiredExtra: filteredOptions[i] == "on" ? 1 : 0,
+            },
+            {
+              where: {
+                extraId: {
+                  [Op.in]: extrasIds,
                 },
-              }
-            );
-          }
+                variantId: {
+                  [Op.in]: variantId,
+                },
+              },
+            }
+          );
         }
       }
+    }
 
-      await msg();
+    await msg();
 
-      res.redirect("/admin/variant-index");
-    })
-    .catch((err) => {
-      console.log(err);
-      const error = new Error(err);
-      error.httpStatusCode = 500;
-      return next(error);
-    });
+    res.redirect("/admin/variant-index");
+  } catch (error) {
+    console.log(error);
+    error.httpStatusCode = 500;
+    return next(error);
+  }
+
+  // })
+  // .catch((err) => {
+  //   console.log(err);
+  //   const error = new Error(err);
+  //   error.httpStatusCode = 500;
+  //   return next(error);
+  // });
 };
 
 exports.getFilteredProperty = async (req, res, next) => {

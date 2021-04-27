@@ -390,6 +390,7 @@ exports.getEditProduct = async (req, res, next) => {
     ],
   })
     .then(async (product) => {
+      // console.log(product);
       let startDateFin;
       let endDateFin;
       if (product[0].isDailyMenu == 1) {
@@ -399,7 +400,10 @@ exports.getEditProduct = async (req, res, next) => {
       let productVariantTest = [];
       for (let i = 0; i < product.length; i++) {
         productVariantTest = product[i].ProductFinals;
+        console.log(productVariantTest[i].price);
       }
+      // console.log();
+
       res.render("admin/edit-product", {
         isActiveAllergen: allergenTest,
         pageTitle: "Edit Product",
@@ -435,6 +439,9 @@ exports.getEditProduct = async (req, res, next) => {
 };
 
 exports.postEditProduct = async (req, res, next) => {
+  console.log(req.body);
+  let restaurantId = 1;
+  console.log("restaurantId", req.admin.id);
   const prodId = req.body.productId;
   const varId = req.body.variantIdUp;
   const allergenId = req.body.allergenId;
@@ -472,7 +479,7 @@ exports.postEditProduct = async (req, res, next) => {
 
   const variants = await ProductVariants.findAll({
     where: {
-      restaurantId: req.admin.id,
+      restaurantId: restaurantId,
     },
     include: [
       {
@@ -491,9 +498,9 @@ exports.postEditProduct = async (req, res, next) => {
     .then(async (result) => {
       async function msg() {
         await Product.findByPk(prodId).then(async (product) => {
-          if (product.restaurantId.toString() !== req.admin.id.toString()) {
-            return res.redirect("/");
-          }
+          // if (product.restaurantId.toString() !== req.admin.id.toString()) {
+          //   return res.redirect("/");
+          // }
 
           if (req.body.isDailyMenu == 1) {
             if (image) {
@@ -644,6 +651,7 @@ exports.postEditProduct = async (req, res, next) => {
           res.redirect("/admin/products");
         })
         .catch((err) => {
+          console.log(err);
           const error = new Error(err);
           error.httpStatusCode = 500;
           return next(error);

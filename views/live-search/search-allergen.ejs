@@ -1,27 +1,24 @@
 <thead>
   <tr>
-    <th scope="col">Id</th>
-    <th scope="col"><%= lingua.allergen_list_name %></th>
-    <th scope="col"><%= lingua.allergen_list_status %></th>
-    <th scope="col"><%= lingua.allergen_list_operation %></th>
+    <th>ID</th>
+    <th>ALLERGÉN NÉV</th>
+    <th>MÜVELET</th>
   </tr>
 </thead>
-<% if (allergen.length > 0) { %> <% for (let i = 0; i < allergen.length; i++) {
-%>
+<% for (let i = 0; i < allergen.length; i++) { %>
 <tbody>
-  <th scope="row"><%= allergen[i].id %></th>
-  <td><%= allergen[i].AllergenTranslations[0].name %></td>
-
-  <td><span class="badge badge-success"><%= lingua.status_active %></span></td>
-
-  <td>
-    <a
-      href="/admin/edit-allergen/<%= allergen[i].id %>?edit=true"
-      class="btn grid-btn mt-0 btn-sm btn-secondary"
-      ><%= lingua.button_edit %></a
-    >
-  </td>
+  <tr>
+    <td><%= allergen[i].id %></td>
+    <td><%= allergen[i].AllergenTranslations[0].name %></td>
+    <td>
+      <a
+        class="btn btn-secondary btn-sm"
+        href="/admin/edit-allergen/<%= allergen[i].id %>?edit=true"
+      >
+        <i class="fas fa-pencil-alt"> </i>
+        <%= lingua.button_edit %>
+      </a>
+    </td>
+  </tr>
 </tbody>
-<% } %> <% } else { %>
-<h1>No Products Found!</h1>
 <% } %>

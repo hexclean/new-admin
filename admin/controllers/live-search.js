@@ -181,7 +181,7 @@ exports.getFilteredBox = async (req, res, next) => {
   await Box.findAll({
     where: {
       restaurantId: req.admin.id,
-      name: { [Op.like]: "%" + boxName + "%" },
+      sku: { [Op.like]: "%" + boxName + "%" },
     },
   })
 
