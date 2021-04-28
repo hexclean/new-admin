@@ -9,13 +9,8 @@ const ProductTranslation = require("../../models/ProductTranslation");
 const Categories = require("../../models/Category");
 const CategoryProperty = require("../../models/CategoryProperty");
 
+// Alkategória oldal létrehozásának betöltése
 exports.getAddProperty = async (req, res, next) => {
-  //   await AdminLogs.create({
-  //     restaurant_id: req.admin.id,
-  //     operation_type: "GET",
-  //     description: "Opened the box creation page",
-  //     route: "getAddBox",
-  //   });
   res.render("property/edit-property", {
     pageTitle: "Add Product",
     path: "/admin/add-product",
@@ -23,78 +18,84 @@ exports.getAddProperty = async (req, res, next) => {
   });
 };
 
+// Alkategória létrehozása
 exports.postAddProperty = async (req, res, next) => {
   const roName = req.body.roName;
   const huName = req.body.huName;
   const enName = req.body.enName;
+  const restaurantId = req.admin.id;
 
-  const property = await Property.create({
-    restaurantId: req.admin.id,
-  });
-
-  async function createProperty() {
-    await PropertyTranslation.create({
-      name: roName,
-      languageId: 1,
-      propertyId: property.id,
-    });
-    await PropertyTranslation.create({
-      name: huName,
-      languageId: 2,
-      propertyId: property.id,
+  try {
+    const property = await Property.create({
+      restaurantId: restaurantId,
     });
 
-    await PropertyTranslation.create({
-      name: enName,
-      languageId: 3,
-      propertyId: property.id,
-    });
-  }
-
-  async function createPropertyV() {
-    const propVName = req.body.propVName;
-
-    for (let i = 1; i <= propVName.length; i++) {
-      const propVroName = req.body["propVroName" + i];
-      const propVhuName = req.body["propVhuName" + i];
-      const propVenName = req.body["propVenName" + i];
-
-      const propertyValue = await PropertyValue.create({
-        restaurantId: req.admin.id,
+    // Alkategória létrehozása
+    async function createProperty() {
+      await PropertyTranslation.create({
+        name: roName,
+        languageId: 1,
+        propertyId: property.id,
+      });
+      await PropertyTranslation.create({
+        name: huName,
+        languageId: 2,
         propertyId: property.id,
       });
 
-      await PropertyValueTranslation.create({
-        name: propVroName,
-        languageId: 1,
-        propertyValueId: propertyValue.id,
-      });
-      await PropertyValueTranslation.create({
-        name: propVhuName,
-        languageId: 2,
-        propertyValueId: propertyValue.id,
-      });
-
-      await PropertyValueTranslation.create({
-        name: propVenName,
+      await PropertyTranslation.create({
+        name: enName,
         languageId: 3,
-        propertyValueId: propertyValue.id,
+        propertyId: property.id,
       });
     }
-  }
 
-  async function add() {
-    const categories = await Categories.findAll({
-      where: { restaurantId: req.admin.id },
-    });
+    // Alkategórián belüli értékek létrehozása
+    async function createPropertyValues() {
+      const propVName = req.body.propVName;
 
-    for (let i = 0; i < categories.length; i++) {
-      let categoriesId = [];
-      let propertyId = [];
+      for (let i = 1; i <= propVName.length; i++) {
+        const propVroName = req.body["propVroName" + i];
+        const propVhuName = req.body["propVhuName" + i];
+        const propVenName = req.body["propVenName" + i];
 
-      categoriesId = categories[i].id;
-      propertyId = property.id;
-      if (categories.length != 0) {
+        const propertyValue = await PropertyValue.create({
+          restaurantId: req.admin.id,
+          propertyId: property.id,
+        });
+
+        await PropertyValueTranslation.create({
+          name: propVroName,
+          languageId: 1,
+          propertyValueId: propertyValue.id,
+        });
+        await PropertyValueTranslation.create({
+          name: propVhuName,
+          languageId: 2,
+          propertyValueId: propertyValue.id,
+        });
+
+        await PropertyValueTranslation.create({
+          name: propVenName,
+          languageId: 3,
+          propertyValueId: propertyValue.id,
+        });
+      }
+    }
+
+    // A kategóriákhoz hozzá rendelem az újonnan létrehozott alkategóriát
+    async function createCategoryProperty() {
+      const categories = await Categories.findAll({
+        where: { restaurantId: req.admin.id },
+      });
+
+      for (let i = 0; i < categories.length; i++) {
+        let categoriesId = [];
+        let propertyId = [];
+
+        categoriesId = categories[i].id;
+        propertyId = property.id;
+
         await CategoryProperty.create({
           restaurantId: req.admin.id,
           propertyId: propertyId,
@@ -103,20 +104,16 @@ exports.postAddProperty = async (req, res, next) => {
         });
       }
     }
+    await createProperty();
+    await createPropertyValues();
+    await createCategoryProperty();
+    return res.redirect("/admin/subcategories");
+  } catch (err) {
+    console.log(err);
+    const error = new Error(err);
+    error.httpStatusCode = 500;
+    return next(error);
   }
-
-  createProperty()
-    .then((result) => {
-      createPropertyV();
-      add();
-      res.redirect("/admin/property-index");
-    })
-    .catch((err) => {
-      console.log(err);
-      const error = new Error(err);
-      error.httpStatusCode = 500;
-      return next(error);
-    });
 };
 
 exports.getEditProperty = async (req, res, next) => {

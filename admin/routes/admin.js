@@ -44,6 +44,8 @@ router.get("/upsell", isAuth, listsController.getUpsellProducts);
 router.get("/downsell", isAuth, listsController.getDownsellProducts);
 router.get("/daily-menu", isAuth, listsController.getDailyMenu);
 router.get("/products", isAuth, listsController.getProducts);
+router.get("/subcategories", isAuth, listsController.getSubcategories);
+router.get("/deleted-products", isAuth, listsController.getSoldOutProducts);
 // PROPERTY
 router.get("/add-property", isAuth, propertyController.getAddProperty);
 router.post("/add-property", isAuth, propertyController.postAddProperty);
@@ -109,6 +111,16 @@ router.get(
   liveSearchController.getFilteredProduct
 );
 router.get(
+  "/get-filtered-upsell/:productId",
+  isAuth,
+  liveSearchController.getFilteredUpsell
+);
+router.get(
+  "/get-filtered-downsell/:productId",
+  isAuth,
+  liveSearchController.getFilteredDownsell
+);
+router.get(
   "/get-filtered-deleted-product/:productId",
   isAuth,
   liveSearchController.getFilteredDeletedProduct
@@ -124,7 +136,6 @@ router.get("/extra-index", isAuth, comboController.getExtraIndex);
 router.get("/category-index", isAuth, comboController.getCategoryIndex);
 router.get("/allergen-index", isAuth, comboController.getAllergenIndex);
 router.get("/box-index", isAuth, comboController.getBoxIndex);
-router.get("/property-index", isAuth, comboController.getPropertyIndex);
 
 // FAQ
 router.get("/faq-index", isAuth, faqController.getIndex);
@@ -273,7 +284,6 @@ router.post(
 
 // Deleted Items
 router.get("/deleted-items", isAuth, deletedItemsController.getIndex);
-router.get("/deleted-pr", isAuth, deletedItemsController.getProducts);
 router.post(
   "/restore-product",
   isAuth,

@@ -9,13 +9,14 @@
           
             e.preventDefault();
             $('<div/>').addClass( 'new-text-div' )
-            .html( $(`   <div class="ms-panel-body cnt">
+            .html( $(`   <div class="form-group cnt">
                <input type="hidden" value="${counter}" name="counter" id="counter">
                      <div class="form-row">
                         <input type="hidden" value="${counter}" name="propVName">
                         <div class="col-md-12 mb-3">
                            <label for="propVroName${counter}"><%= lingua.box_name_ro %></label>
                            <div class="input-group">
+                              <label for="sku">Variáns neve</label>
                               <input
                                  class="form-control propValRo"
                                  type="text"
@@ -70,157 +71,174 @@
     
     );
 </script>
-</head>
-<body class="ms-body ms-aside-left-open ms-primary-theme ms-has-quickbar">
-   <%- include('../includes/navigation.ejs') %>
-   <main class="body-content">
-      <%- include('../includes/navigation-bar.ejs') %>
-      <span class="error_form" id="counter_error_message"></span>
-
-      <form 
-         id="createProperty_form"
-         class="ms-content-wrapper" 
-         action="/admin/<% if (editing) { %>edit-property<% } else { %>add-property<% } %>"
-         method="POST"
-         enctype="multipart/form-data">
-         <div class="row">
-            <div class="col-xl-6 col-md-12" style="
-            height: 581px;">
-               <div class="ms-panel ms-panel-fh">
-                  <div class="ms-panel-header">
-                     <h6><%= lingua.create_property %></h6>
-                  </div>
-                  <div class="ms-panel-body">
-                     <p class="ms-directions"><code><%= lingua.extra_allergen_subtitle %></code>
-                     </p>
-                     <div class="form-row">
-                        <div class="col-md-12 mb-3">
-                           <label for="roName"><%= lingua.property_ro_name %></label>
-                           <div class="input-group">
-                              <input
-                                 class="form-control"
-                                 type="text"
-                                 autocomplete="off"
-                                 name="roName"
-                                 id="roName"
-                                 value="<% if (editing) { %><%= propTrans[0].name %><% } %>">
-                           </div>
-                           <span class="error_form" id="roName_error_message"></span>
-                        </div>
-                        <div class="col-md-12 mb-3">
-                           <label for="huName"><%= lingua.property_hu_name %></label>
-                           <div class="input-group">
-                              <input
-                                 class="form-control"
-                                 type="text"
-                                 autocomplete="off"
-                                 name="huName"
-                                 id="huName"
-                                 value="<% if (editing) { %><%= propTrans[1].name %><% } %>">
-                           </div>
-                           <span class="error_form" id="huName_error_message"></span>
-                        </div>
-                        <div class="col-md-12 mb-3">
-                           <label for="enName"><%= lingua.property_en_name %></label>
-                           <div class="input-group">
-                              <input
-                                 class="form-control"
-                                 type="text"
-                                 autocomplete="off"
-                                 name="enName"
-                                 id="enName"
-                                 value="<% if (editing) { %><%= propTrans[2].name %><% } %>">
-                           </div>
-                           <span class="error_form" id="enName_error_message"></span>
-                        </div>
-                        <div class="col-md-12 mb-3">
-                           <button type="submit" name="createProperty" id="createProperty" class="btn btn-success has-icon" ><% if (editing) { %><%=lingua.button_edit %><% } else { %><%= lingua.create_property %><% } %></button>
-                        </div>
-                     </div>
-                  </div>
-                  <% if (editing) { %>
-                  <input type="hidden" value="<%= propertyId %>" name="propertyId">
-                  <%for (let i = 0; i < propTrans.length; i++){%>
-                     <input type="hidden" value="<%= propTrans[i].id %>" name="propTransId">
-                     <%}%>
-                  <% } %>
-               </div>
+  </head>
+  <body class="hold-transition sidebar-mini">
+     <form name="myForm"
+     action="/admin/<% if (editing) { %>edit-variant<% } else { %>add-variant<% } %>"
+     method="POST"
+     enctype="multipart/form-data"
+     id="variant_form">
+    <div class="wrapper">
+      <%- include('../includes/nav.ejs') %> <%- include('../includes/aside.ejs')
+      %>
+      <!-- Content Wrapper. Contains page content -->
+      <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+          <div class="container-fluid">
+            <div class="row mb-2">
+              <div class="col-sm-6">
+                <h1>Variáns testreszabása</h1>
+              </div>
+            
             </div>
+          </div>
+          <!-- /.container-fluid -->
+        </section>
 
-            <% if(editing){ %>
+        <!-- Main content -->
+        <section class="content">
+          <div class="container-fluid">
+            <div class="row">
+              <!-- left column -->
+              <div class="col-md-6">
+                <!-- general form elements -->
+                <div class="card card-secondary">
+                  <div class="card-header">
+                    <h3 class="card-title">Variáns fő adatai</h3>
+                  </div>
+                  <!-- /.card-header -->
+                  <!-- form start -->
                
-            <div class="col-xl-6 col-md-12" style="
-            height: 581px;">
-               <div class="row">
-                  <div class="col-md-12">
-                     <div class="ms-panel">
-                        <div class="ms-panel-header">
-                           <h6>Product</h6>
-                           <p class="ms-directions"><code><%= lingua.extra_allergen_subtitle %></code>
-                           </p>
-                        </div>
-                        <% for(let i = 0; i < items.length; i++) { %>
-                           <% if (i%3 == 0) { %>
-                              <hr class="line-colour-hr-pr">
-                         <% } %>
-                         <div class="ms-panel-body format-div-pr">
-                           <div class="form-row">
-                              <div class="col-md-12 mb-3">
-                                 <label for="roName"><%= lingua.box_name_ro %></label>
-                                 <div class="input-group">
-                                    <input type="hidden" value="<%= items[i].id %>" name="prodVarTransId">
-                                    <input type="hidden" value="<%= items[i].languageId %>" name="prodVarTransLanguageId">
-                                    <input
-                                       class="form-control"
-                                       type="text"
-                                       autocomplete="off"
-                                       name="updatedName"
-                                       id="roName"
-                                       value="<% if (editing) { %><%= items[i].name %><% } %>">
-                                 </div>
-                                 <span class="error_form" id="roName_error_message"></span>
-                              </div>
-                           </div>
-                        </div>
-                        <% } %>
+                    <div class="card-body">
+                      <div class="form-group">
+                        <label for="sku">Variáns neve</label>
+                        <input
+                        name="sku"
+                          type="text"
+                          class="form-control"
+                          id="sku"
+                          placeholder="Variáns neve"
+                          value="<% if (editing) { %><%= variant[0].ProductVariantsExtras[0].Variant.sku %><% } %>">
+                      </div>
+                      <div class="form-group">
+                        <label for="sku">Variáns neve</label>
+                        <input
+                        name="sku"
+                          type="text"
+                          class="form-control"
+                          id="sku"
+                          placeholder="Variáns neve"
+                          value="<% if (editing) { %><%= variant[0].ProductVariantsExtras[0].Variant.sku %><% } %>">
+                      </div>
+                      <div class="form-group">
+                        <label for="sku">Variáns neve</label>
+                        <input
+                        name="sku"
+                          type="text"
+                          class="form-control"
+                          id="sku"
+                          placeholder="Variáns neve"
+                          value="<% if (editing) { %><%= variant[0].ProductVariantsExtras[0].Variant.sku %><% } %>">
+                      </div>
                     
-                              
-                           <button class="btn btn-success has-icon" id="add">Add</button>
+                    
+                     
+                      <div class="row">
                        
-                     </div>
-                  </div>
-               </div>
-            </div>
-           
-            <% } else{ %>  
-               <div class="col-xl-6 col-md-12">
-                  <div class="row">
-                     <div class="col-md-12">
-                        <div class="ms-panel">
-                         
-                           <div class="ms-panel-header">
-                              <h6>Product</h6>
-                           </div>
-                           <p class="ms-directions"><code><%= lingua.extra_allergen_subtitle %></code>
-                           </p>
-                               <div class="service_box">
-                           <div class="form">
-                         
-                              
-                           <button class="btn btn-success has-icon" id="add">Add</button>
+                     
+                       
+                        
                           
-                        </div>
-                     </div>
-                                    
-                        </div>
-                     </div>
-                  </div>
-               </div>
-               <% } %>
+                       
+                      </div>
+                    </div>
+                  
+                    <!-- /.card-body -->
 
-         </div>
-         </div>
-         </div>
-      </form>
-   </main>
-   <%- include('../includes/end.ejs') %>
+                    <div class="card-footer">
+                      <button type="submit" class="btn btn-secondary">
+                        Mentés
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              
+                <!-- /.card -->
+                 </div>
+             
+             <div class="col-md-6"  >
+
+                <!-- /.card -->
+                <!-- general form elements disabled -->
+                <div class="card card-secondary" >
+                  <div class="card-header" >
+                    <h3 class="card-title" >Variáns alkategóriába sorolása</h3>
+                  </div>
+                  <!-- /.card-header -->
+                  <div class="card-body" >
+                   
+                   
+                      <div  class="row" >
+                        <div class="col-sm-12">
+                          <!-- select -->
+                        
+                       
+                        </div>
+                        <button class="btn btn-success has-icon" id="add">Add</button>
+                         
+                      </div>
+                    
+                     
+                     
+                    </form>
+                  </div>
+                  
+                  <!-- /.card-body -->
+                </div>
+                
+                <!-- /.card -->
+              </div>
+              
+              <!--/.col (right) -->
+            </div>
+       
+
+            
+            <!-- /.row -->
+          </div>
+          <!-- /.container-fluid -->
+        </section>
+        <!-- /.content -->
+      </div>
+   </form>
+   <%- include('../includes/footer.ejs') %>
+      <!-- /.content-wrapper -->
+    
+
+      <!-- Control Sidebar -->
+      <aside class="control-sidebar control-sidebar-dark">
+        <!-- Control sidebar content goes here -->
+      </aside>
+      <!-- /.control-sidebar -->
+    </div>
+    <!-- ./wrapper -->
+
+    <!-- jQuery -->
+    <script src="/plugins/jquery/jquery.min.js"></script>
+    <!-- Bootstrap 4 -->
+    <script src="/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- bs-custom-file-input -->
+    <script src="/plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="/js/adminlte.min.js"></script>
+    <!-- AdminLTE for demo purposes -->
+    <script src="/js/demo.js"></script>
+    <!-- Page specific script -->
+    <script>
+      $(function () {
+        bsCustomFileInput.init();
+      });
+    </script>
+  </body>
+</html>

@@ -973,6 +973,8 @@ exports.getFilteredProduct = async (req, res, next) => {
     where: {
       restaurantId: req.admin.id,
       active: 1,
+      upsell: 1,
+      isDailyMenu: 0,
     },
     include: [
       {
@@ -1089,6 +1091,114 @@ exports.getFilteredDeletedProduct = async (req, res, next) => {
 
     .then((prods) => {
       res.render("live-search/search-deleted-product", {
+        prods: prods,
+        editing: false,
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
+};
+
+exports.getFilteredUpsell = async (req, res, next) => {
+  var productName = req.params.productId;
+  var currentProductName;
+  var currentLanguage = req.cookies.language;
+
+  if (productName.length == 1) {
+    productName = [];
+  }
+
+  if (currentLanguage == "ro") {
+    currentProductName = 1;
+  } else if (currentLanguage == "hu") {
+    currentProductName = 2;
+  } else {
+    currentProductName = 3;
+  }
+
+  await Products.findAll({
+    where: {
+      restaurantId: req.admin.id,
+      active: 1,
+      upsell: 2,
+      isDailyMenu: 0,
+    },
+    include: [
+      {
+        model: ProductTranslation,
+        where: {
+          title: { [Op.like]: "%" + productName + "%" },
+          languageId: currentProductName,
+        },
+      },
+      {
+        model: ProductFinal,
+        where: { active: 1 },
+        include: [{ model: Variant }],
+      },
+    ],
+  })
+
+    .then((prods) => {
+      res.render("live-search/search-upsell", {
+        prods: prods,
+        editing: false,
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
+};
+
+exports.getFilteredDownsell = async (req, res, next) => {
+  var productName = req.params.productId;
+  var currentProductName;
+  var currentLanguage = req.cookies.language;
+
+  if (productName.length == 1) {
+    productName = [];
+  }
+
+  if (currentLanguage == "ro") {
+    currentProductName = 1;
+  } else if (currentLanguage == "hu") {
+    currentProductName = 2;
+  } else {
+    currentProductName = 3;
+  }
+
+  await Products.findAll({
+    where: {
+      restaurantId: req.admin.id,
+      active: 1,
+      upsell: 3,
+      isDailyMenu: 0,
+    },
+    include: [
+      {
+        model: ProductTranslation,
+        where: {
+          title: { [Op.like]: "%" + productName + "%" },
+          languageId: currentProductName,
+        },
+      },
+      {
+        model: ProductFinal,
+        where: { active: 1 },
+        include: [{ model: Variant }],
+      },
+    ],
+  })
+
+    .then((prods) => {
+      res.render("live-search/search-upsell", {
         prods: prods,
         editing: false,
       });

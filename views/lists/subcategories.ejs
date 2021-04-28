@@ -1,18 +1,17 @@
 
 
-
 <%- include('../includes/head.ejs') %>
 <script>
-   $(document).ready(function() {
-      $('#searchProduct').keyup(function() {
-         const productId = $('#searchProduct').val();
-         console.log(productId)
-         $.get("get-filtered-downsell/" + productId).done(function(data) {
-            $("#searchedProduct").html(data);
-         });
-      });
-   })
-   </script>
+    $(document).ready(function() {
+    $('#searchProperty').keyup(function() {
+          const propertyId = $('#searchProperty').val();
+          $.get( "get-filtered-property/"+ propertyId )
+       .done(function( data ) {
+          $("#searchedExtra").html(data);
+       });
+    });
+    })
+ </script>
 </head>
 <body class="hold-transition sidebar-mini">
    <div class="wrapper">
@@ -22,22 +21,10 @@
       <div class="content-wrapper">
          
          <section class="content-header">
-            <% if ( variant.length < 2) { %>
-            <div class="alert alert-warning alert-dismissible">
-               <h5><i class="icon fas fa-exclamation-triangle"></i> Figyelmeztetés!</h5>
-               Downsell termék létrehozásához legalább 2 variánsnak kell lennie!
-             </div>
-             <% } %>
-             <% if ( box.length < 2) { %>
-             <div class="alert alert-warning alert-dismissible">
-               <h5><i class="icon fas fa-exclamation-triangle"></i> Figyelmeztetés!</h5>
-               Downsell termék létrehozásához legalább 2 csomagolásnak kell lennie!
-             </div>
-             <% } %>
             <div class="container-fluid">
                <div class="row mb-2">
                   <div class="col-sm-6">
-                     <h1>Downsell termék lista</h1>
+                     <h1>Alkategóriák</h1>
                   </div>
                </div>
             </div>
@@ -50,9 +37,9 @@
                <!-- /.row -->
                <div class="row">
                   <div class="col-12">
-                     <a href="/admin/add-downsell">
+                     <a href="/admin/add-property">
                      <button type="button" class="btn btn-block btn-outline-secondary">
-                        Downsell termék létrehozása
+                     Alkategória létrehozása
                      </button>
                      </a>
                      <div class="card">
@@ -82,30 +69,17 @@
                               <thead>
                                  <tr>
                                     <th>ID</th>
-                                    <th>TERMÉK NÉV</th>
-                                    <th>VARIÁNS NÉV</th>
-                                    <th>TÖRLÉS</th>
+                                    <th>ALKATEGÓRIA NÉV</th>
                                     <th>MÓDOSÍTÁS</th>
                                  </tr>
                               </thead>
-                              <% for (let i=0; i < prods.length; i++ ) { %>
+                              <% for (let i=0; i < property.length; i++ ) { %>
                               <tbody>
                                  <tr>
-                                    <td><%= prods[i].id %></td>
-                                    <td><%= prods[i].ProductTranslations[0].title %></td>
-                                    <td><%= prods[i].ProductFinals[0].Variant.sku %></td>
+                                    <td><%= property[i].id %></td>
+                                    <td><%= property[i].PropertyTranslations[0].name %></td>
                                     <td>
-                                       <form action="/admin/delete-product" method="POST">
-                                          <input type="hidden" value="<%= prods[i].id %>" name="productId">
-                                          <a class="btn btn-danger btn-sm" href="/admin/delete-product">
-                                          <i class="fas fa-trash">
-                                          </i>
-                                          Elfogyott
-                                          </a>
-                                       </form>
-                                    </td>
-                                    <td>
-                                       <a class="btn btn-success btn-sm" href="/admin/edit-downsell/<%= prods[i].id %>?edit=true">
+                                       <a class="btn btn-success btn-sm" href="/admin/edit-property/<%= property[i].id %>?edit=true">
                                        <i class="fas fa-pencil-alt">
                                        </i>
                                        <%= lingua.button_edit %>
@@ -118,7 +92,7 @@
                         </div>
                         <div class="card-footer clearfix">
                            <ul class="pagination pagination-sm m-0 float-right">
-                              <% if (prods.length > 0) { %>
+                              <% if (property.length > 0) { %>
                               <%- include('../includes/pagination.ejs', {currentPage: currentPage, nextPage: nextPage, previousPage: previousPage, lastPage: lastPage, hasNextPage: hasNextPage, hasPreviousPage: hasPreviousPage}) %>
                               <% } %>
                            </ul>
