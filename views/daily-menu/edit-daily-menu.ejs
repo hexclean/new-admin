@@ -1,7 +1,7 @@
 
 
 <%- include('../includes/head.ejs') %>
-<%- include('../jQuery-validation/product.ejs') %>
+<%- include('../jQuery-validation/daily-menu.ejs') %>
 </head>
 <body class="hold-transition sidebar-mini">
     <div class="wrapper">
@@ -44,99 +44,107 @@
                                     <!-- form start -->
                                     <div class="card-body">
                                         <div class="form-group">
-                                            <label for="startDate">startDate</label>
+                                            <label for="startDate">Mettől</label>
                                             <input
                                                 type="text"
-                                                class="form-control"
+                                                class="form-control startVal"
                                                 id="startDate"
                                                 name="startDate"
-                                                placeholder="startDate"
+                                                placeholder="pl: 09:30"
                                                 value="<% if (editing) { %><%= startDateFin %><% } %>">
+                                                <span class="invalid-feedback" id="start_error_message"></span>
                                         </div>
                                         <div class="form-group">
-                                            <label for="endDate">endDate</label>
+                                            <label for="endDate">Meddig</label>
                                             <input
                                                 type="text"
-                                                class="form-control"
+                                                class="form-control endVal"
                                                 id="endDate"
                                                 name="endDate"
-                                                placeholder="endDate"
+                                                placeholder="pl: 15:30"
                                                 value="<% if (editing) { %><%= endDateFin %><% } %>">
+                                                <span class="invalid-feedback" id="end_error_message"></span>
                                         </div>
                                         <div class="form-group">
-                                            <label for="roTitle">roTitle</label>
+                                            <label for="roTitle">Termék román neve</label>
                                             <input
                                                 type="text"
-                                                class="form-control"
+                                                class="form-control roTitle"
                                                 id="roTitle"
                                                 name="roTitle"
-                                                placeholder="roTitle"
+                                                placeholder="Termék román neve"
                                                 value="<% if (editing) { %><%= product[0].ProductTranslations[0].title %><% } %>">
+                                                <span class="invalid-feedback" id="roName_error_message"></span>
                                         </div>
                                         <div class="form-group">
-                                            <label for="huTitle">huTitle</label>
+                                            <label for="huTitle">Termék magyar neve</label>
                                             <input
                                                 type="text"
-                                                class="form-control"
+                                                class="form-control huTitle"
                                                 id="huTitle"
                                                 name="huTitle"
-                                                placeholder="huTitle"
+                                                placeholder="Termék magyar neve"
                                                 value="<% if (editing) { %><%= product[0].ProductTranslations[1].title %><% } %>">
+                                                <span class="invalid-feedback" id="huName_error_message"></span>
                                         </div>
                                         <div class="form-group">
-                                            <label for="enTitle">enTitle</label>
+                                            <label for="enTitle">Termék angol neve</label>
                                             <input
                                                 type="text"
-                                                class="form-control"
+                                                class="form-control enTitle"
                                                 id="enTitle"
                                                 name="enTitle"
-                                                placeholder="enTitle"
+                                                placeholder="Termék angol neve"
                                                 value="<% if (editing) { %><%= product[0].ProductTranslations[2].title %><% } %>">
+                                                <span class="invalid-feedback" id="enName_error_message"></span>
                                         </div>
                                         <div class="form-group">
                                             <div class="form-group">
-                                                <label>roDescription</label>
+                                                <label>Termék román leírása</label>
                                                 <textarea
-                                                    class="form-control"
+                                                    class="form-control roDescription"
                                                     rows="3"
                                                     id="roDescription"
                                                     name="roDescription"
-                                                    placeholder="Enter ..."
+                                                    placeholder="Termék román leírása"
                                                     ><% if (editing) { %><%= product[0].ProductTranslations[0].description %><% } %></textarea>
+                                                    <span class="invalid-feedback" id="roDescription_error_message"></span>
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <div class="form-group">
-                                                <label>huDescription</label>
+                                                <label>Termék magyar leírása</label>
                                                 <textarea
-                                                    class="form-control"
+                                                    class="form-control huDescription"
                                                     rows="3"
                                                     id="huDescription"
                                                     name="huDescription"
-                                                    placeholder="Enter ..."
+                                                    placeholder="Termék magyar leírása"
                                                     ><% if (editing) { %><%= product[0].ProductTranslations[1].description %><% } %></textarea>
+                                                    <span class="invalid-feedback" id="huDescription_error_message"></span>
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <div class="form-group">
-                                                <label>enDescription</label>
+                                                <label>Termék angol leírása</label>
                                                 <textarea
-                                                    class="form-control"
+                                                    class="form-control enDescription"
                                                     rows="3"
                                                     id="enDescription"
                                                     name="enDescription"
-                                                    placeholder="Enter ..."
+                                                    placeholder="Termék angol leírása"
                                                     ><% if (editing) { %><%= product[0].ProductTranslations[2].description %><% } %></textarea>
+                                                    <span class="invalid-feedback" id="enDescription_error_message"></span>
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="exampleInputFile">File input</label>
+                                            <label for="exampleInputFile">Termék fényképe</label>
                                             <div class="input-group">
                                                 <div class="custom-file">
                                                     <input
                                                         accept="image/png, image/jpeg,image/jpeg" filesize=2 type="file" name="image" id="image"
                                                         type="file"
-                                                        class="custom-file-input"
+                                                        class="custom-file-input exampleInputFile"
                                                         id="exampleInputFile"
                                                         />
                                                     <label
@@ -145,13 +153,13 @@
                                                         >Fénykép kiválasztása</label
                                                         >
                                                 </div>
-                                                
+                                                <span class="invalid-feedback" id="file_error_message"></span>
                                             </div>
                                         </div>
                                     </div>
                                     <!-- /.card-body -->
                                     <div class="card-footer">
-                                        <button type="submit" class="btn btn-primary">
+                                        <button type="submit" class="btn btn-secondary">
                                         Mentés
                                         </button>
                                     </div>
@@ -168,7 +176,7 @@
                                     </div>
                                     <!-- /.card-header -->
                                     <div class="card-body">
-                                        <div class="form-group">
+                                        <div class="form-group boxesVal">
                                             <%  for (let i = 0; i <boxArray.length; i++) { %>
                                             <input
                                                 type="hidden"
@@ -192,6 +200,7 @@
                                                     >
                                             </div>
                                             <% } %>
+                                            <span class="invalid-feedback" id="box_error_message"></span>
                                         </div>
                                     </div>
                                     <div class="form-group"></div>
@@ -202,7 +211,7 @@
                                     </div>
                                     <!-- /.card-header -->
                                     <div class="card-body">
-                                        <div class="form-group">
+                                        <div class="form-group allergenError">
                                             <%  for (let i = 0; i <allergenArray.length; i++) { %>
                                             <input
                                                 type="hidden"
@@ -227,6 +236,7 @@
                                                     >
                                             </div>
                                             <% } %>
+                                            <span class="invalid-feedback" id="allergen_error_message"></span>
                                         </div>
                                     </div>
                                     <div class="form-group"></div>
@@ -234,7 +244,7 @@
                                 <% if (editing) { %>
                                 <div class="card card-secondary">
                                  <div class="card-header">
-                                     <h3 class="card-title">Termé kép</h3>
+                                     <h3 class="card-title">Termék képe</h3>
                                  </div>
                                  <!-- /.card-header -->
                                  <div class="card-body">
@@ -265,7 +275,7 @@
                         <!--/.col (right) -->
                         <div class="col-md-6">
                             <!-- select -->
-                            <div class="form-group">
+                            <div class="form-group variantCheck">
                                 <label>Kategória választás</label>
                                 <select for="categoryId" id="categoryId" name="categoryId" class="custom-select category_select categoryId">
                                     <option selected disabled>Válassz egyet</option>
@@ -273,6 +283,7 @@
                                     <option id="categoryId" name="categoryId" value='<%= cat[i].id %>'><%= cat[i].CategoryTranslations[0].name %></option>
                                     <% } %>
                                 </select>
+                                <span class="invalid-feedback" id="variant_error_message"></span>
                             </div>
                         </div>
                     </div>
@@ -304,18 +315,18 @@
                                             <label
                                                 class="custom-control-label"
                                                 for="variantSwitch<%= productVariant[i].id %>"
-                                                ><%= productVariant[i].sku %></label
+                                                >Aktiv (ha zöld)</label
                                                 >
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label for="price">price</label>
+                                        <label for="price">Termék ára</label>
                                         <input
                                             type="text"
                                             class="form-control price_<%= productVariant[i].id %> product_price_input"
                                             id="price"
                                             name="price"
-                                            placeholder="price"
+                                            placeholder="Termék ára"
                                             value="<% if (editing) { %><%= netest[i].price %><% } %>"
                                             />
                                     </div>
@@ -355,18 +366,18 @@
                                             <label
                                                 class="custom-control-label"
                                                 for="variantSwitch<%= extra.id %>"
-                                                >Aktiválás</label
+                                                >Aktiv (ha zöld)</label
                                                 >
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label for="price">price</label>
+                                        <label for="price">Termék ára</label>
                                         <input
                                             type="text"
                                             class="form-control price_<%= extra.id %> product_price_input"
                                             id="price"
                                             name="price"
-                                            placeholder="price"
+                                            placeholder="Termék ára"
                                             value="<% if (editing) { %><%= extra.price %><% } %>"
                                             />
                                     </div>

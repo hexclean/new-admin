@@ -90,6 +90,8 @@
     $("#image_error_message").hide();
     $("#box_error_message").hide();
     $("#file_error_message").hide();
+    $("#start_error_message").hide();
+    $("#end_error_message").hide();
     var error_roName = false;
     var error_huName = false;
     var error_enName = false;
@@ -102,8 +104,16 @@
     var error_box = false;
     var error_file = false;
     var error_size = false;
+    var error_start = false;
+    var error_end = false;
     $("#roTitle").focusout(function () {
       check_roName();
+    });
+    $("#startDate").focusout(function () {
+      check_startDate();
+    });
+    $("#endDate").focusout(function () {
+      check_endDate();
     });
     $("#huTitle").focusout(function () {
       check_huName();
@@ -145,7 +155,30 @@
         $("#roName_error_message").hide();
       }
     }
-
+    function check_startDate() {
+      var startDate_length = $("#startDate").val().length;
+      if (startDate_length !=5) {
+           $( ".startVal" ).addClass( "is-invalid" );
+           $("#start_error_message").html("Helytelen formátum! pl: 09:00 vagy 15:00");
+        $("#start_error_message").show();
+        error_start = true;
+      } else {
+        $( ".startVal" ).removeClass( "is-invalid" );
+        $("#start_error_message").hide();
+      }
+    }
+    function check_endDate() {
+      var end_length = $("#endDate").val().length;
+      if (end_length !=5) {
+           $( ".endVal" ).addClass( "is-invalid" );
+           $("#end_error_message").html("Helytelen formátum! pl: 09:00 vagy 15:00");
+        $("#end_error_message").show();
+        error_end = true;
+      } else {
+        $( ".endVal" ).removeClass( "is-invalid" );
+        $("#end_error_message").hide();
+      }
+    }
     function check_file() {
       var vidFileLength = $("#image");
       if (vidFileLength[0].files.length ==0  ) {
@@ -296,6 +329,8 @@
     }
     $("#product-form").submit(function () {
       error_roName = false;
+       error_start = false;
+     error_end = false;
       error_huName = false;
       error_enName = false;
       error_roDescription = false;
@@ -317,6 +352,8 @@
       check_enDescription();
       check_variant();
       check_allergen();
+      check_startDate();
+      check_endDate();
       <% if(!editing){ %>
       check_file();
       <% } %>
@@ -329,6 +366,8 @@
         error_roName == false &&
         error_huName == false &&
         error_enName == false &&
+        error_end == false &&
+        error_start == false &&
         error_roDescription == false &&
         error_huDescription == false &&
         error_enDescription == false &&
