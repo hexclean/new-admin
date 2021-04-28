@@ -20,12 +20,34 @@ const statisticController = require("../controllers/statistic");
 const upsellController = require("../controllers/upsell");
 const downsellController = require("../controllers/downsell");
 const listsController = require("../controllers/lists");
+const dailyMenuController = require("../controllers/daily-menu");
 
 const isAuth = require("../../middleware/is-auth");
 const router = express.Router();
+
+// Daily Menu
+router.get("/add-daily-menu", isAuth, dailyMenuController.getAddDailyMenu);
+router.post(
+  "/add-daily-menu",
+  isAuth,
+  dailyMenuController.postAddDailyMenuProduct
+);
+router.get(
+  "/edit-daily-menu/:productId",
+  isAuth,
+  dailyMenuController.getEditDailyMenu
+);
+router.post(
+  "/edit-daily-menu/:productId",
+  isAuth,
+  dailyMenuController.postEditDailyMenu
+);
+
 // LISTS
 router.get("/upsell", isAuth, listsController.getUpsellProducts);
 router.get("/downsell", isAuth, listsController.getDownsellProducts);
+router.get("/daily-menu", isAuth, listsController.getDailyMenu);
+router.get("/products", isAuth, listsController.getProducts);
 // PROPERTY
 router.get("/add-property", isAuth, propertyController.getAddProperty);
 router.post("/add-property", isAuth, propertyController.postAddProperty);
@@ -166,7 +188,6 @@ router.post("/add-extra", isAuth, extraController.postAddExtra);
 
 // Product
 router.get("/add-product", isAuth, adminController.getAddProduct);
-router.get("/products", isAuth, adminController.getProducts);
 router.get("/daily-menu", isAuth, adminController.getDailyMenu);
 router.post("/add-product", adminController.postAddProduct);
 router.get("/edit-product/:productId", isAuth, adminController.getEditProduct);

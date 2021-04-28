@@ -1,0 +1,149 @@
+
+
+
+<%- include('../includes/head.ejs') %>
+<script>
+   $(document).ready(function() {
+      $('#searchProduct').keyup(function() {
+         const productId = $('#searchProduct').val();
+         console.log(productId)
+         $.get("get-filtered-product/" + productId).done(function(data) {
+            $("#searchedProduct").html(data);
+         });
+      });
+   })
+   </script>
+</head>
+<body class="hold-transition sidebar-mini">
+   <div class="wrapper">
+      <%- include('../includes/nav.ejs') %> <%- include('../includes/aside.ejs')
+         %>
+        
+      <div class="content-wrapper">
+         
+         <section class="content-header">
+            <% if ( variant.length < 2) { %>
+            <div class="alert alert-warning alert-dismissible">
+               <h5><i class="icon fas fa-exclamation-triangle"></i> Figyelmeztetés!</h5>
+               Downsell termék létrehozásához legalább 2 variánsnak kell lennie!
+             </div>
+             <% } %>
+             <% if ( box.length < 2) { %>
+             <div class="alert alert-warning alert-dismissible">
+               <h5><i class="icon fas fa-exclamation-triangle"></i> Figyelmeztetés!</h5>
+               Downsell termék létrehozásához legalább 2 csomagolásnak kell lennie!
+             </div>
+             <% } %>
+            <div class="container-fluid">
+               <div class="row mb-2">
+                  <div class="col-sm-6">
+                     <h1>Napi menü termék lista</h1>
+                  </div>
+               </div>
+            </div>
+            <!-- /.container-fluid -->
+         </section>
+         <!-- Main content -->
+         <section class="content">
+            <div class="container-fluid">
+               <div class="row"></div>
+               <!-- /.row -->
+               <div class="row">
+                  <div class="col-12">
+                     <a href="/admin/add-daily-menu">
+                     <button type="button" class="btn btn-block btn-outline-secondary">
+                        Napi menü termék létrehozása
+                     </button>
+                     </a>
+                     <div class="card">
+                        <div class="card-header">
+                           <h3 class="card-title"></h3>
+                           <div class="card-tools">
+                              <div
+                                 class="input-group input-group-sm"
+                                 style="width: 150px;"
+                                 >
+                                 <input
+                                    type="text"
+                                    name="searchProduct" id="searchProduct"
+                                    class="form-control float-right"
+                                    placeholder="Keresés"
+                                    />
+                                 <div class="input-group-append">
+                                    <button type="submit" class="btn btn-default">
+                                    <i class="fas fa-search"></i>
+                                    </button>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="card-body table-responsive p-0">
+                           <table id="searchedProduct" class="table table-hover text-nowrap">
+                              <thead>
+                                 <tr>
+                                    <th>ID</th>
+                                    <th>TERMÉK NÉV</th>
+                                    <th>VARIÁNS NÉV</th>
+                                    <th>TÖRLÉS</th>
+                                    <th>MÓDOSÍTÁS</th>
+                                 </tr>
+                              </thead>
+                              <% for (let i=0; i < prods.length; i++ ) { %>
+                              <tbody>
+                                 <tr>
+                                    <td><%= prods[i].id %></td>
+                                    <td><%= prods[i].ProductTranslations[0].title %></td>
+                                    <td><%= prods[i].ProductFinals[0].Variant.sku %></td>
+                                    <td>
+                                       <form action="/admin/delete-product" method="POST">
+                                          <input type="hidden" value="<%= prods[i].id %>" name="productId">
+                                          <a class="btn btn-danger btn-sm" href="/admin/delete-product">
+                                          <i class="fas fa-trash">
+                                          </i>
+                                          Elfogyott
+                                          </a>
+                                       </form>
+                                    </td>
+                                    <td>
+                                       <a class="btn btn-success btn-sm" href="/admin/edit-daily-menu/<%= prods[i].id %>?edit=true">
+                                       <i class="fas fa-pencil-alt">
+                                       </i>
+                                       <%= lingua.button_edit %>
+                                       </a>
+                                    </td>
+                                 </tr>
+                              </tbody>
+                              <% } %>
+                           </table>
+                        </div>
+                        <div class="card-footer clearfix">
+                           <ul class="pagination pagination-sm m-0 float-right">
+                              <% if (prods.length > 0) { %>
+                              <%- include('../includes/pagination.ejs', {currentPage: currentPage, nextPage: nextPage, previousPage: previousPage, lastPage: lastPage, hasNextPage: hasNextPage, hasPreviousPage: hasPreviousPage}) %>
+                              <% } %>
+                           </ul>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </section>
+      </div>
+      <%- include('../includes/footer.ejs') %>
+      <aside class="control-sidebar control-sidebar-dark">
+         <!-- Control sidebar content goes here -->
+      </aside>
+      <!-- /.control-sidebar -->
+   </div>
+   <!-- ./wrapper -->
+   <!-- jQuery -->
+   <script src="/plugins/jquery/jquery.min.js"></script>
+   <!-- Bootstrap 4 -->
+   <script src="/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+   <!-- AdminLTE App -->
+   <script src="/js/adminlte.min.js"></script>
+   <!-- AdminLTE for demo purposes -->
+   <script src="/js/demo.js"></script>
+</body>
+</html>
+
