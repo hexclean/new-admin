@@ -126,10 +126,10 @@
                     <h3 class="card-title" >Variáns alkategóriába sorolása</h3>
                   </div>
                   <!-- /.card-header -->
-                  <div class="card-body" id="propByCatEdit">
+                  <div class="card-body" >
                    
-                  
-                      <div class="row" >
+                    <% if(editing){ %>
+                      <div id="propByCatEdit" class="row" >
                         <div class="col-sm-6">
                           <!-- select -->
                           <div class="form-group" >
@@ -180,14 +180,16 @@
                          </div>
                          <% } %>
                       </div>
-
-                     
-
+                      <% } else{ %>  
                     
-                  
+                    
+                        <div id="propByCat" class="row">
+                          <div class="col-sm-6">
+                          </div>
+                       </div>
                     
                      
-                      
+                        <% } %>
                      
                      
                     </form>
@@ -201,18 +203,19 @@
               
               <!--/.col (right) -->
             </div>
+            <div class="col-sm-6">
             <div class="form-group">
               <label for="sku">Extra keresése</label>
               <input
-              name="sku"
                 type="text"
                 class="form-control"
-                id="sku"
-                placeholder="Variáns neve"
+                name="search" id="search" autocomplete="off"
+                placeholder="Extra neve"
                 value="">
             </div>
+            </div>
             <h5 class="mb-2">Extrák kezelése</h5>
-
+            <% if (editing) { %>
             <div class="row">
                <% for (let i = 0; i < variant.length; i++) { %>
                   <input
@@ -286,6 +289,9 @@
               <% } %>
             
             </div>
+            <% } else { %>
+              <h1>ddd</h1>
+              <% } %>
             <!-- /.row -->
           </div>
           <!-- /.container-fluid -->
