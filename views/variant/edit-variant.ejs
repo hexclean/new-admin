@@ -214,6 +214,7 @@
                 value="">
             </div>
             </div>
+
             <h5 class="mb-2">Extrák kezelése</h5>
             <% if (editing) { %>
             <div class="row">
@@ -290,7 +291,79 @@
             
             </div>
             <% } else { %>
-              <h1>ddd</h1>
+               <div class="row">
+                <% for (let i=0; i < ext.length; i++ ) { %>
+                  <input
+                  type="hidden"
+                  value="<%= ext[i].id %>"
+                  name="extraId"
+                  />   
+              <div class="col-md-3 extra_box extra-all extra-<%= ext[i].ExtraTranslations[0].name %>" data-extra="<%= ext[i].id %>">
+                <div class="card card-success">
+                  <div class="card-header">
+                    <h3 class="card-title"><strong><%=  ext[i].ExtraTranslations[0].name %></strong></h3>
+                  </div>
+                  <div class="card-body">
+
+
+
+
+
+                     <div class="form-group">
+                        <div
+                          class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success"
+                        >
+                        <input type="hidden" value="off" class="status-<%= ext[i].id %>" name="status[<%= ext[i].id %>]" >
+                          <input
+                            type="checkbox"
+                            data-extraId="<%= ext[i].id %>"
+                            class="custom-control-input status-checkbox status-checkbox-<%= ext[i].id %>"
+                            id="optionalSwitch<%= ext[i].id %>"
+                          />
+                          <label
+                            class="custom-control-label"
+                            for="optionalSwitch<%= ext[i].id %>"
+                            >Opcionális</label
+                          >
+                        </div>
+                      </div>
+
+
+
+
+
+
+                      <div class="form-group">
+                        <div
+                          class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success"
+                        >
+                        <input type="hidden" value="off" class="statusOption<%= ext[i].id %>  status-option" name="statusOption[<%= ext[i].id %>]" >
+                          <input
+                           data-optionId="<%= ext[i].id %>"
+                           
+                            type="checkbox"
+                            class="custom-control-input status-checkbox-option status-checkbox-option-<%= ext[i].id %>"
+                            id="requiredSwitch<%= ext[i].id %>"
+                          />
+                          <label
+                            class="custom-control-label"
+                            for="requiredSwitch<%= ext[i].id %>"
+                            >Kötelező</label
+                          >
+                        </div>
+                      </div>
+
+
+
+
+                  </div>
+                  <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+              </div>
+              <% } %>
+            
+            </div>
               <% } %>
             <!-- /.row -->
           </div>
