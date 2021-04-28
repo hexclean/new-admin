@@ -37,11 +37,7 @@ router.get(
   isAuth,
   dailyMenuController.getEditDailyMenu
 );
-router.post(
-  "/edit-daily-menu/:productId",
-  isAuth,
-  dailyMenuController.postEditDailyMenu
-);
+router.post("/edit-daily-menu", isAuth, dailyMenuController.postEditDailyMenu);
 
 // LISTS
 router.get("/upsell", isAuth, listsController.getUpsellProducts);
