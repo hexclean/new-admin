@@ -121,6 +121,11 @@ router.get(
   liveSearchController.getFilteredDownsell
 );
 router.get(
+  "/get-filtered-daily-menu/:productId",
+  isAuth,
+  liveSearchController.getFilteredDailyMenu
+);
+router.get(
   "/get-filtered-deleted-product/:productId",
   isAuth,
   liveSearchController.getFilteredDeletedProduct

@@ -1,0 +1,36 @@
+<thead>
+  <tr>
+    <th>ID</th>
+    <th>TERMÉK NÉV</th>
+    <th>VARIÁNS NÉV</th>
+    <th>TÖRLÉS</th>
+    <th>MÓDOSÍTÁS</th>
+  </tr>
+</thead>
+<% for (let i=0; i < prods.length; i++ ) { %>
+<tbody>
+  <tr>
+    <td><%= prods[i].id %></td>
+    <td><%= prods[i].ProductTranslations[0].title %></td>
+    <td><%= prods[i].ProductFinals[0].Variant.sku %></td>
+    <td>
+      <form action="/admin/delete-product" method="POST">
+        <input type="hidden" value="<%= prods[i].id %>" name="productId" />
+        <button class="btn btn-danger btn-sm" type="submit">
+          <i class="fas fa-trash"> </i>
+          Elfogyott
+        </button>
+      </form>
+    </td>
+    <td>
+      <a
+        class="btn btn-success btn-sm"
+        href="/admin/edit-daily-menu/<%= prods[i].id %>?edit=true"
+      >
+        <i class="fas fa-pencil-alt"> </i>
+        <%= lingua.button_edit %>
+      </a>
+    </td>
+  </tr>
+</tbody>
+<% } %>

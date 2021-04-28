@@ -7,7 +7,7 @@
       $('#searchProduct').keyup(function() {
          const productId = $('#searchProduct').val();
          console.log(productId)
-         $.get("get-filtered-product/" + productId).done(function(data) {
+         $.get("get-filtered-daily-menu/" + productId).done(function(data) {
             $("#searchedProduct").html(data);
          });
       });
