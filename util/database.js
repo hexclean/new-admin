@@ -13,7 +13,7 @@ const db = {};
 //   port: 25060,
 // });
 
-sequelize = new Sequelize("foodnet", "root", "", {
+sequelize = new Sequelize("foodnet-test", "root", "", {
   host: "",
   dialect: "mysql",
   operatorsAliases: false,

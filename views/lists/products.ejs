@@ -33,6 +33,12 @@
                Termék létrehozásához legalább 2 csomagolásnak kell lennie!
              </div>
              <% } %>
+             <% if ( checkAllergenLength.length < 2) { %>
+               <div class="alert alert-warning alert-dismissible">
+                 <h5><i class="icon fas fa-exclamation-triangle"></i> Figyelmeztetés!</h5>
+                 Upsell termék létrehozásához legalább 2 allergénnek kell lennie!
+               </div>
+               <% } %>
             <div class="container-fluid">
                <div class="row mb-2">
                   <div class="col-sm-6">

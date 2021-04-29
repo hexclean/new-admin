@@ -68,6 +68,11 @@ exports.getAddDownsellProduct = async (req, res, next) => {
       return res.redirect("/admin/downsell");
     }
 
+    // Le kell ellenőrizni, hogy az étteremnek legalább 2 hozzárendelt allergénje van-e
+    if (allergen.length < 2) {
+      return res.redirect("/admin/products");
+    }
+
     // Átadom az adatokat a html oldalnak
     res.render("downsell/edit-downsell", {
       pageTitle: "Add Product",

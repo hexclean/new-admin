@@ -25,9 +25,17 @@ exports.getUpsellProducts = async (req, res, next) => {
   const variant = await ProductVariants.findAll({
     where: { restaurantId: restaurantId },
   });
+
   // Le kell ellenőrizni, hogy az étteremnek legalább 2 hozzárendelt csomagolása van-e
   const box = await Box.findAll({
     where: { restaurantId: restaurantId },
+  });
+
+  // Le kell ellenőrizni, hogy az étteremnek legalább 2 hozzárendelt allergénje van-e
+  const checkAllergenLength = await Allergen.findAll({
+    where: {
+      restaurantId: req.admin.id,
+    },
   });
 
   // Upsell termékek keresése
@@ -79,6 +87,7 @@ exports.getUpsellProducts = async (req, res, next) => {
         prods: product,
         variant: variant,
         box: box,
+        checkAllergenLength: checkAllergenLength,
       });
     })
     .catch((err) => {
@@ -101,6 +110,13 @@ exports.getDownsellProducts = async (req, res, next) => {
   // Le kell ellenőrizni, hogy az étteremnek legalább 2 hozzárendelt csomagolása van-e
   const box = await Box.findAll({
     where: { restaurantId: restaurantId },
+  });
+
+  // Le kell ellenőrizni, hogy az étteremnek legalább 2 hozzárendelt allergénje van-e
+  const checkAllergenLength = await Allergen.findAll({
+    where: {
+      restaurantId: req.admin.id,
+    },
   });
 
   // Upsell termékek keresése
@@ -152,6 +168,7 @@ exports.getDownsellProducts = async (req, res, next) => {
         prods: product,
         variant: variant,
         box: box,
+        checkAllergenLength: checkAllergenLength,
       });
     })
     .catch((err) => {
@@ -176,6 +193,12 @@ exports.getDailyMenu = async (req, res, next) => {
     where: { restaurantId: restaurantId },
   });
 
+  // Le kell ellenőrizni, hogy az étteremnek legalább 2 hozzárendelt allergénje van-e
+  const checkAllergenLength = await Allergen.findAll({
+    where: {
+      restaurantId: req.admin.id,
+    },
+  });
   // Upsell termékek keresése
   await Product.findAll({
     where: { restaurantId: restaurantId, active: 1, upsell: 1, isDailyMenu: 1 },
@@ -225,6 +248,7 @@ exports.getDailyMenu = async (req, res, next) => {
         prods: product,
         variant: variant,
         box: box,
+        checkAllergenLength: checkAllergenLength,
       });
     })
     .catch((err) => {
@@ -247,6 +271,13 @@ exports.getProducts = async (req, res, next) => {
   // Le kell ellenőrizni, hogy az étteremnek legalább 2 hozzárendelt csomagolása van-e
   const box = await Box.findAll({
     where: { restaurantId: restaurantId },
+  });
+
+  // Le kell ellenőrizni, hogy az étteremnek legalább 2 hozzárendelt allergénje van-e
+  const checkAllergenLength = await Allergen.findAll({
+    where: {
+      restaurantId: req.admin.id,
+    },
   });
 
   // Upsell termékek keresése
@@ -298,6 +329,7 @@ exports.getProducts = async (req, res, next) => {
         prods: product,
         variant: variant,
         box: box,
+        checkAllergenLength: checkAllergenLength,
       });
     })
     .catch((err) => {

@@ -37,11 +37,6 @@ exports.getAddCategory = async (req, res, next) => {
     ],
   });
 
-  // Le kell ellenőrizni, hogy az étteremnek legalább 2 hozzárendelt variánsa van-e
-  if (checkAllergenLength.length < 2) {
-    return res.redirect("/admin/category-index");
-  }
-
   // Le kell ellenőrizni, hogy az étteremnek legalább 2 hozzárendelt alkategóriája van-e
   if (property.length < 2) {
     return res.redirect("/admin/category-index");

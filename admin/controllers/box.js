@@ -16,7 +16,7 @@ exports.postAddBox = async (req, res, next) => {
   // Változók deklarálása
   const sku = req.body.sku;
   const price = req.body.price;
-  const restaurantId = req.body.id;
+  const restaurantId = req.admin.id;
   if (sku.length == 0 || price.length == 0) {
     return res.redirect("/admin/box-index");
   }
@@ -82,7 +82,7 @@ exports.postEditBox = async (req, res, next) => {
   const sku = req.body.sku;
   const price = req.body.price;
   const boxId = req.body.boxId;
-  const restaurantId = req.body.id;
+  const restaurantId = req.admin.id;
 
   // Szerver oldali validáció
   if (price.length == 0 || boxId.length == 0 || sku.length == 0) {

@@ -69,6 +69,11 @@ exports.getAddProduct = async (req, res, next) => {
       return res.redirect("/admin/products");
     }
 
+    // Le kell ellenőrizni, hogy az étteremnek legalább 2 hozzárendelt allergénje van-e
+    if (allergen.length < 2) {
+      return res.redirect("/admin/products");
+    }
+
     // Átadom az adatokat a html oldalnak
     res.render("admin/edit-product", {
       pageTitle: "Add Product",

@@ -448,6 +448,7 @@ exports.getFilteredProperty = async (req, res, next) => {
   // Változók deklarálása
   const languageCode = getLanguageCode(req.cookies.language);
   var categoryId = req.params.categoryId;
+  let restaurantId = req.admin.id;
 
   // Alkategóriákhoz keresés
   const result = await CategoryProperty.findAll({

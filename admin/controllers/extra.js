@@ -22,6 +22,7 @@ exports.getAddExtra = async (req, res, next) => {
 // POST
 // Extra létrehozása
 exports.postAddExtra = async (req, res, next) => {
+  console.log(req.body);
   const roName = req.body.roName;
   const huName = req.body.huName;
   const enName = req.body.enName;
@@ -75,15 +76,15 @@ exports.postAddExtra = async (req, res, next) => {
 
       for (let i = 0; i < variants.length; i++) {
         let variantId = [];
-        let extraId = [];
+        let extraIdNew = [];
 
         variantId = variants[i].id;
-        extraId = extraId;
+        extraIdNew = extraId;
 
         await ProductVariantsExtras.create({
           active: 0,
           restaurantId: restaurantId,
-          extraId: extraId,
+          extraId: extraIdNew,
           discountedPrice: 0,
           price: 0,
           // extraType: extraType,
