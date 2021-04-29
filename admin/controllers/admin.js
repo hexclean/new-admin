@@ -11,26 +11,18 @@ const AllergenTranslation = require("../../models/AllergenTranslation");
 const Category = require("../../models/Category");
 const CategoryTranslation = require("../../models/CategoryTranslation");
 const Box = require("../../models/Box");
-const ITEMS_PER_PAGE = 30;
 const { getLanguageCode } = require("../../shared/language");
 // GET
 // Termék létrehozás oldal betöltése
 exports.getAddProduct = async (req, res, next) => {
-  let languageCode;
-
-  if (req.cookies.language == "ro") {
-    languageCode = 1;
-  } else if (req.cookies.language == "hu") {
-    languageCode = 2;
-  } else {
-    languageCode = 3;
-  }
+  const languageCode = getLanguageCode(req.cookies.language);
+  const restaurantId = req.admin.id;
 
   try {
     // Étteremhez rendelt allergének lekérése
     const allergen = await Allergen.findAll({
       where: {
-        restaurantId: req.admin.id,
+        restaurantId: restaurantId,
       },
       include: [
         {
@@ -43,14 +35,14 @@ exports.getAddProduct = async (req, res, next) => {
     // Étteremhez rendelt csomagolások lekérése
     const box = await Box.findAll({
       where: {
-        restaurantId: req.admin.id,
+        restaurantId: restaurantId,
       },
     });
 
     // Étteremhez rendelt kategóriák lekérése
     const cat = await Category.findAll({
       where: {
-        restaurantId: req.admin.id,
+        restaurantId: restaurantId,
       },
       include: [
         {
@@ -63,7 +55,7 @@ exports.getAddProduct = async (req, res, next) => {
     // Étteremhez rendelt variánsok lekérése
     const variant = await Variant.findAll({
       where: {
-        restaurantId: req.admin.id,
+        restaurantId: restaurantId,
       },
     });
 
@@ -234,6 +226,7 @@ exports.postAddProduct = async (req, res, next) => {
       await Category.update(
         {
           active: 1,
+          upsell: 0,
         },
         {
           where: {

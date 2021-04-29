@@ -11,26 +11,18 @@ const AllergenTranslation = require("../../models/AllergenTranslation");
 const Category = require("../../models/Category");
 const CategoryTranslation = require("../../models/CategoryTranslation");
 const Box = require("../../models/Box");
-const ITEMS_PER_PAGE = 30;
+const { getLanguageCode } = require("../../shared/language");
 
 // GET
 // Termék létrehozás oldal betöltése
 exports.getAddDailyMenu = async (req, res, next) => {
-  let languageCode;
-
-  if (req.cookies.language == "ro") {
-    languageCode = 1;
-  } else if (req.cookies.language == "hu") {
-    languageCode = 2;
-  } else {
-    languageCode = 3;
-  }
-
+  const languageCode = getLanguageCode(req.cookies.language);
+  let restaurantId = req.admin.id;
   try {
     // Étteremhez rendelt allergének lekérése
     const allergen = await Allergen.findAll({
       where: {
-        restaurantId: req.admin.id,
+        restaurantId: restaurantId,
       },
       include: [
         {
@@ -43,14 +35,14 @@ exports.getAddDailyMenu = async (req, res, next) => {
     // Étteremhez rendelt csomagolások lekérése
     const box = await Box.findAll({
       where: {
-        restaurantId: req.admin.id,
+        restaurantId: restaurantId,
       },
     });
 
     // Étteremhez rendelt kategóriák lekérése
     const cat = await Category.findAll({
       where: {
-        restaurantId: req.admin.id,
+        restaurantId: restaurantId,
       },
       include: [
         {
@@ -63,18 +55,18 @@ exports.getAddDailyMenu = async (req, res, next) => {
     // Étteremhez rendelt variánsok lekérése
     const variant = await Variant.findAll({
       where: {
-        restaurantId: req.admin.id,
+        restaurantId: restaurantId,
       },
     });
 
     // Le kell ellenőrizni, hogy az étteremnek legalább 2 hozzárendelt variánsa van-e
     if (variant.length < 2) {
-      return res.redirect("/admin/products");
+      return res.redirect("/admin/daily-menu");
     }
 
     // Le kell ellenőrizni, hogy az étteremnek legalább 2 hozzárendelt csomagolása van-e
     if (box.length < 2) {
-      return res.redirect("/admin/products");
+      return res.redirect("/admin/daily-menu");
     }
 
     // Átadom az adatokat a html oldalnak
@@ -132,7 +124,7 @@ exports.postAddDailyMenuProduct = async (req, res, next) => {
     filteredStatusAllergen.length == 0 ||
     filteredStatusBox.length == 0
   ) {
-    return res.redirect("/admin/upsell");
+    return res.redirect("/admin/daily-menu");
   }
   try {
     // Étteremhez rendelt csomagolások lekérése
@@ -273,7 +265,7 @@ exports.getEditDailyMenu = async (req, res, next) => {
   const productId = [prodId];
   const Op = Sequelize.Op;
   let getProductPrice = [];
-
+  const languageCode = getLanguageCode(req.cookies.language);
   try {
     // Ha a termék nem az étteremhez tartozik, akkor automatikusan visszairányít a termékek oldalra
     await Product.findByPk(prodId).then((product) => {
@@ -290,6 +282,7 @@ exports.getEditDailyMenu = async (req, res, next) => {
       include: [
         {
           model: CategoryTranslation,
+          where: { languageId: languageCode },
         },
       ],
     });
@@ -309,7 +302,7 @@ exports.getEditDailyMenu = async (req, res, next) => {
       include: [
         {
           model: AllergenTranslation,
-          where: { languageId: 2 },
+          where: { languageId: languageCode },
         },
         {
           model: ProductHasAllergen,
@@ -477,9 +470,6 @@ exports.postEditDailyMenu = async (req, res, next) => {
     async function updateProduct() {
       // Ha nem az étteremhez tartozik, akkor átirányítódik a termékek listára
       await Product.findByPk(prodId).then(async (product) => {
-        // if (product.restaurantId.toString() !== req.admin.id.toString()) {
-        //   return res.redirect("/admin/products");
-        // }
         // Ha új kép töltődik fel akkor megkeresi a régi képet azt kitörli és feltölti az újonnan létrehozott képet
         if (image) {
           fileHelper.deleteFile(product.productImagePath);
@@ -613,7 +603,7 @@ exports.postDeleteProduct = async (req, res, next) => {
       });
     }
     await inactivateProduct();
-    res.redirect("/admin/products");
+    res.redirect("/admin/daily-menu");
   } catch (err) {
     const error = new Error(err);
     error.httpStatusCode = 500;

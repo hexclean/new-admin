@@ -11,7 +11,6 @@ const AllergenTranslation = require("../../models/AllergenTranslation");
 const Category = require("../../models/Category");
 const CategoryTranslation = require("../../models/CategoryTranslation");
 const Box = require("../../models/Box");
-const ITEMS_PER_PAGE = 30;
 const { getLanguageCode } = require("../../shared/language");
 // GET
 // Termék létrehozás oldal betöltése
@@ -226,6 +225,7 @@ exports.postAddDownsellProduct = async (req, res, next) => {
       await Category.update(
         {
           active: 1,
+          upsell: 5,
         },
         {
           where: {

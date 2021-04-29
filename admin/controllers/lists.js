@@ -385,15 +385,6 @@ exports.getSoldOutProducts = async (req, res, next) => {
     languageCode = 3;
   }
 
-  // Le kell ellenőrizni, hogy az étteremnek legalább 2 hozzárendelt variánsa van-e
-  const variant = await ProductVariants.findAll({
-    where: { restaurantId: restaurantId },
-  });
-  // Le kell ellenőrizni, hogy az étteremnek legalább 2 hozzárendelt csomagolása van-e
-  const box = await Box.findAll({
-    where: { restaurantId: restaurantId },
-  });
-
   // Upsell termékek keresése
   await Product.findAll({
     where: { restaurantId: restaurantId, active: 0, soldOut: 1 },
@@ -440,8 +431,6 @@ exports.getSoldOutProducts = async (req, res, next) => {
         previousPage: page - 1,
         lastPage: Math.ceil(totalItems.length / ITEMS_PER_PAGE),
         prods: product,
-        variant: variant,
-        box: box,
       });
     })
     .catch((err) => {

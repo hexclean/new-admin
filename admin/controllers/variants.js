@@ -20,7 +20,7 @@ const { getLanguageCode } = require("../../shared/language");
 exports.getAddVariant = async (req, res, next) => {
   // Változók deklarálása
   const languageCode = getLanguageCode(req.cookies.language);
-  let restaurantId = restaurantId;
+  let restaurantId = req.admin.id;
 
   // Lekérem az étterem összes extráit
   const ext = await Extras.findAll({
@@ -73,7 +73,7 @@ exports.postAddVariant = async (req, res, next) => {
   const maxOption = req.body.maxOption;
   const filteredStatus = req.body.status.filter(Boolean);
   const filteredOptions = req.body.statusOption.filter(Boolean);
-  const restaurantId = restaurantId;
+  const restaurantId = req.admin.id;
   let variantId;
 
   // Szerver oldali validáció
@@ -185,21 +185,12 @@ exports.postAddVariant = async (req, res, next) => {
 exports.getEditVariant = async (req, res, next) => {
   const editMode = req.query.edit;
   const varId = req.params.variantId;
+  const languageCode = getLanguageCode(req.cookies.language);
   await Variant.findByPk(varId).then((variant) => {
     if (!variant || !editMode) {
       return res.redirect("/");
     }
   });
-
-  let languageCode;
-
-  if (req.cookies.language == "ro") {
-    languageCode = 1;
-  } else if (req.cookies.language == "hu") {
-    languageCode = 2;
-  } else {
-    languageCode = 3;
-  }
 
   const propertyValTransId = await VariantPropertyValue.findAll({
     where: { variantId: varId },

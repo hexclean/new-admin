@@ -226,6 +226,7 @@ exports.postAddUpsellProduct = async (req, res, next) => {
       await Category.update(
         {
           active: 1,
+          upsell: 5,
         },
         {
           where: {

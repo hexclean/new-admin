@@ -1,17 +1,7 @@
 
 
 <%- include('../includes/head.ejs') %>
-<script>
-   $(document).ready(function() {
-      $('#searchProduct').keyup(function() {
-         const productId = $('#searchProduct').val();
-         console.log(productId)
-         $.get("get-filtered-product/" + productId).done(function(data) {
-            $("#searchedProduct").html(data);
-         });
-      });
-   })
-   </script>
+
 </head>
 <body class="hold-transition sidebar-mini">
    <div class="wrapper">
@@ -21,22 +11,11 @@
       <div class="content-wrapper">
          
          <section class="content-header">
-            <% if ( variant.length < 2) { %>
-            <div class="alert alert-warning alert-dismissible">
-               <h5><i class="icon fas fa-exclamation-triangle"></i> Figyelmeztetés!</h5>
-               Termék létrehozásához legalább 2 variánsnak kell lennie!
-             </div>
-             <% } %>
-             <% if ( box.length < 2) { %>
-             <div class="alert alert-warning alert-dismissible">
-               <h5><i class="icon fas fa-exclamation-triangle"></i> Figyelmeztetés!</h5>
-               Termék létrehozásához legalább 2 csomagolásnak kell lennie!
-             </div>
-             <% } %>
+           
             <div class="container-fluid">
                <div class="row mb-2">
                   <div class="col-sm-6">
-                     <h1>Termék lista</h1>
+                     <h1>Törölt termék lista</h1>
                   </div>
                </div>
             </div>
@@ -49,11 +28,7 @@
                <!-- /.row -->
                <div class="row">
                   <div class="col-12">
-                     <a href="/admin/add-product">
-                     <button type="button" class="btn btn-block btn-outline-secondary">
-                     Termék létrehozása
-                     </button>
-                     </a>
+                   
                      <div class="card">
                         <div class="card-header">
                            <h3 class="card-title"></h3>
@@ -68,11 +43,7 @@
                                     class="form-control float-right"
                                     placeholder="Keresés"
                                     />
-                                 <div class="input-group-append">
-                                    <button type="submit" class="btn btn-default">
-                                    <i class="fas fa-search"></i>
-                                    </button>
-                                 </div>
+                              
                               </div>
                            </div>
                         </div>
@@ -83,8 +54,7 @@
                                     <th>ID</th>
                                     <th>TERMÉK NÉV</th>
                                     <th>VARIÁNS NÉV</th>
-                                    <th>TÖRLÉS</th>
-                                    <th>MÓDOSÍTÁS</th>
+                                    <th>ÚJRA ELÉRHETŐ</th>
                                  </tr>
                               </thead>
                               <% for (let i=0; i < prods.length; i++ ) { %>
@@ -94,23 +64,17 @@
                                     <td><%= prods[i].ProductTranslations[0].title %></td>
                                     <td><%= prods[i].ProductFinals[0].Variant.sku %></td>
                                     <td>
-                                       <form action="/admin/delete-product" method="POST">
+                                       <form action="/admin/restore-product" method="POST">
                                           <input type="hidden" value="<%= prods[i].id %>" name="productId">
-                                          <button type="submit" class="btn btn-danger btn-sm">
-                                          <i class="fas fa-trash">
+                                          <button type="submit" class="btn btn-success btn-sm">
+                                          <i class="fas fa-pencil-alt">
                                           </i>
-                                          Elfogyott
+                                          Újra elérhető
                                        </button>
                                        </form>
                                     </td>
                                    
-                                    <td>
-                                       <a class="btn btn-success btn-sm" href="/admin/edit-product/<%= prods[i].id %>?edit=true">
-                                       <i class="fas fa-pencil-alt">
-                                       </i>
-                                       <%= lingua.button_edit %>
-                                       </a>
-                                    </td>
+                                   
                                  </tr>
                               </tbody>
                               <% } %>

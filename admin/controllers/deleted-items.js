@@ -79,9 +79,9 @@ exports.getProducts = async (req, res, next) => {
     });
 };
 
-exports.postRestoreProduct = (req, res, next) => {
+exports.postRestoreProduct = async (req, res, next) => {
   const prodId = req.body.productId;
-  Products.findByPk(prodId)
+  await Products.findByPk(prodId)
     .then((product) => {
       if (!product) {
         return next(new Error("Product not found."));
@@ -89,7 +89,7 @@ exports.postRestoreProduct = (req, res, next) => {
       product.soldOut = 0;
       product.active = 1;
       return product.save().then((result) => {
-        res.redirect("/admin/deleted-pr");
+        res.redirect("/admin/deleted-products");
       });
     })
     .catch((err) => {
