@@ -84,7 +84,7 @@ exports.postAddCategory = async (req, res, next) => {
         restaurantId: restaurantId,
         active: 0,
       });
-      categoryId = categoryId.id;
+      categoryId = category.id;
 
       await CategoryTranslation.create({
         name: roName,
@@ -126,6 +126,7 @@ exports.postAddCategory = async (req, res, next) => {
 
     res.redirect("/admin/category-index");
   } catch (err) {
+    console.log(err);
     const error = new Error(err);
     error.httpStatusCode = 500;
     return next(error);
