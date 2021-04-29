@@ -51,7 +51,7 @@
     if (property > 0) {
       $("#property_error_message").hide();
     } else {
-      $("#property_error_message").html(`<%= lingua.variant_validation %>`);
+      $("#property_error_message").html("Alkategória kiválasztása kötelező!");
       $("#property_error_message").show();
       error_property = true;
     }
@@ -82,7 +82,7 @@
 
       if (sku_length < 2 || sku_length > 200) {
         $(".sku").addClass("is-invalid");
-        $("#sku_error_message").html("Variáns neve megadása kötelező!");
+        $("#sku_error_message").html("Variáns nevének megadása kötelező!");
         $("#sku_error_message").show();
         error_sku = true;
       } else {

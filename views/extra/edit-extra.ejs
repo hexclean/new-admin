@@ -37,8 +37,9 @@
           <div class="row mb-2">
             <div class="col-sm-6">
               <h1>
-                <% if (editing) { %><%= lingua.update_extra %><% } else { %> <%=
-                lingua.create_extra %> <% } %>
+                
+Extra
+
               </h1>
             </div>
           </div>
@@ -53,7 +54,7 @@
             <!-- left column -->
             <div class="col-md-6">
               <!-- general form elements -->
-              <div class="card card-success">
+              <div class="card card-secondary">
                 <div class="card-header">
                   <h3 class="card-title">Extra adatatok megadása</h3>
                 </div>
@@ -105,7 +106,7 @@
                         class="form-control huName"
                         id="huName"
                         name="huName"
-                        placeholder="Extra román neve"
+                        placeholder="Extra magyar neve"
                         value="<% if (editing) { %><%= extra[0].ExtraTranslations[1].name %><% } %>"
                       />
                       <span
@@ -120,7 +121,7 @@
                         class="form-control enName"
                         id="enName"
                         name="enName"
-                        placeholder="Extra román neve"
+                        placeholder="Extra angol neve"
                         value="<% if (editing) { %><%= extra[0].ExtraTranslations[2].name %><% } %>"
                       />
                       <span
@@ -136,7 +137,7 @@
                   <input type="hidden" value="<%= extraId %>" name="extraId" />
                   <% } %>
                   <div class="card-footer">
-                    <button type="submit" class="btn btn-success">
+                    <button type="submit" class="btn btn-secondary">
                       <% if (editing) { %><%=lingua.button_editing %><% } else {
                       %><%= lingua.create_extra %><% } %>
                     </button>

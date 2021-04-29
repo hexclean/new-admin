@@ -41,12 +41,12 @@
                  
                     <div class="card-body">
                       <div class="form-group">
-                        <label for="roName">Román neve</label>
+                        <label for="roName">Allergén román neve</label>
                         <input
                           type="text"
                           class="form-control roName"
                           id="roName"
-                          placeholder="Román neve"
+                          placeholder="Allergén román neve"
                           name="roName"
                           value="<% if (editing) { %><%= allergen[0].AllergenTranslations[0].name %><% } %>">
                           <span
@@ -55,11 +55,11 @@
                         ></span>
                       </div>
                       <div class="form-group">
-                        <label for="huName">Magyar neve</label>
+                        <label for="huName">Allergén magyar neve</label>
                         <input
                           type="text"
                           class="form-control huName"
-                          placeholder="Magyar neve"
+                          placeholder="Allergén magyar neve"
                           id="huName"
                           name="huName"
                           value="<% if (editing) { %><%= allergen[0].AllergenTranslations[1].name %><% } %>">
@@ -70,11 +70,11 @@
                       </div>
                       
                       <div class="form-group">
-                        <label for="enName">Angol neve</label>
+                        <label for="enName">Allergén angol neve</label>
                         <input
                           type="text"
                           class="form-control enName"
-                          placeholder="Angol neve"
+                          placeholder="Allergén angol neve"
                           id="enName"
                           name="enName"
                           value="<% if (editing) { %><%= allergen[0].AllergenTranslations[2].name %><% } %>">

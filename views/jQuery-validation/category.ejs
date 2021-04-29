@@ -31,7 +31,9 @@
 
       if (roName_length < 1 || roName_length > 60) {
         $(".roName").addClass("is-invalid");
-        $("#roName_error_message").html("A kategóia nevét kötelező megadni!");
+        $("#roName_error_message").html(
+          "Kategória román nevének megadása kötelező!"
+        );
         $("#roName_error_message").show();
         error_roName = true;
         $("#createCategory").disabled = true;
@@ -47,7 +49,9 @@
 
       if (huName_length < 1 || huName_length > 60) {
         $(".huName").addClass("is-invalid");
-        $("#huName_error_message").html("A kategóia nevét kötelező megadni!");
+        $("#huName_error_message").html(
+          "Kategória magyar nevének megadása kötelező!"
+        );
         $("#huName_error_message").show();
         error_huName = true;
         $("#createCategory").disabled = true;
@@ -63,7 +67,9 @@
 
       if (enName_length < 1 || enName_length > 60) {
         $(".enName").addClass("is-invalid");
-        $("#enName_error_message").html("A kategóia nevét kötelező megadni!");
+        $("#enName_error_message").html(
+          "Kategória angol nevének megadása kötelező!"
+        );
         $("#enName_error_message").show();
         error_enName = true;
         $("#createCategory").disabled = true;

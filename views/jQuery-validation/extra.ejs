@@ -50,7 +50,7 @@
 
       if (check_price < 1) {
         $(".price").addClass("is-invalid");
-        $("#price_error_message").html("Ár megadása kötelező!");
+        $("#price_error_message").html("Extra árának megadása kötelező!");
         $("#price_error_message").show();
         error_price = true;
       } else {
@@ -64,7 +64,9 @@
 
       if (roName_length < 1 || roName_length > 100) {
         $(".roName").addClass("is-invalid");
-        $("#roName_error_message").html("Extra román neve megadása kötelező!");
+        $("#roName_error_message").html(
+          "Extra román nevének megadása kötelező!"
+        );
         $("#roName_error_message").show();
         error_roName = true;
       } else {
@@ -78,7 +80,9 @@
 
       if (huName_length < 1 || huName_length > 100) {
         $(".huName").addClass("is-invalid");
-        $("#huName_error_message").html("Extra magyar neve megadása kötelező!");
+        $("#huName_error_message").html(
+          "Extra magyar nevének megadása kötelező!"
+        );
         $("#huName_error_message").show();
         error_huName = true;
       } else {
@@ -92,7 +96,9 @@
 
       if (enName_length < 1 || enName_length > 100) {
         $(".enName").addClass("is-invalid");
-        $("#enName_error_message").html("Extra magyar neve megadása kötelező!");
+        $("#enName_error_message").html(
+          "Extra angol nevének megadása kötelező!"
+        );
         $("#enName_error_message").show();
         error_enName = true;
       } else {

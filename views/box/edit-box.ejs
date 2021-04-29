@@ -26,8 +26,7 @@
           <div class="row mb-2">
             <div class="col-sm-6">
               <h1>
-                <% if (editing) { %><%= lingua.update_extra %><% } else { %> <%=
-                lingua.create_extra %> <% } %>
+               Csomagolás
               </h1>
             </div>
           </div>
@@ -44,7 +43,7 @@
               <!-- general form elements -->
               <div class="card card-secondary">
                 <div class="card-header">
-                  <h3 class="card-title">Extra adatatok megadása</h3>
+                  <h3 class="card-title">Csomagolás adatatok megadása</h3>
                 </div>
                 <!-- /.card-header -->
                 <!-- form start -->
@@ -79,7 +78,7 @@
                         class="form-control sku"
                         id="sku"
                         name="sku"
-                        placeholder="Extra román neve"
+                        placeholder="Csomagolás neve"
                         value="<% if (editing) { %><%= box[0].sku %><% } %>"
                       />
                       <span

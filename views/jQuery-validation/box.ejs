@@ -21,7 +21,7 @@
 
       if (price < 1 || price > 10) {
         $(".price").addClass("is-invalid");
-        $("#price_error_message").html("Doboz ára megadása kötelező!");
+        $("#price_error_message").html("Csomagolás árának megadása kötelező!");
         $("#price_error_message").show();
 
         error_price = true;
@@ -36,7 +36,7 @@
 
       if (sku_length < 1 || sku_length > 50) {
         $(".sku").addClass("is-invalid");
-        $("#sku_error_message").html("Doboz neve megadása kötelező!");
+        $("#sku_error_message").html("Csomagolás nevének megadása kötelező!");
         $("#sku_error_message").show();
         error_sku = true;
       } else {

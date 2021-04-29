@@ -41,22 +41,22 @@
                  
                     <div class="card-body">
                       <div class="form-group">
-                        <label for="roName">Román neve</label>
+                        <label for="roName">Kategória román neve</label>
                         <input
                           type="text"
                           class="form-control roName"
                           id="roName"
-                          placeholder="Román név"
+                          placeholder="Kategória román neve"
                           name="roName"
                           value="<% if (editing) { %><%= category[0].CategoryTranslations[0].name %><% } %>">
                           <span class="invalid-feedback" id="roName_error_message"></span>
                       </div>
                       <div class="form-group">
-                        <label for="huName">Magyar neve</label>
+                        <label for="huName">Kategória magyar neve</label>
                         <input
                           type="text"
                           class="form-control huName"
-                          placeholder="Magyar név"
+                          placeholder="Kategória magyar neve"
                           id="huName"
                           name="huName"
                           value="<% if (editing) { %><%= category[0].CategoryTranslations[1].name %><% } %>">
@@ -64,11 +64,11 @@
                       </div>
                       
                       <div class="form-group">
-                        <label for="enName">Angol neve</label>
+                        <label for="enName">Kategória angol neve</label>
                         <input
                           type="text"
                           class="form-control enName"
-                          placeholder="Angol név"
+                          placeholder="Kategória angol neve"
                           id="enName"
                           name="enName"
                           value="<% if (editing) { %><%= category[0].CategoryTranslations[2].name %><% } %>">

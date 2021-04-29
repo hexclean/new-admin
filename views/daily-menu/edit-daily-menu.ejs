@@ -38,7 +38,7 @@
                                 <!-- general form elements -->
                                 <div class="card card-secondary">
                                     <div class="card-header">
-                                        <h3 class="card-title">Termék fő adatai</h3>
+                                        <h3 class="card-title">Napi menü fő adatai</h3>
                                     </div>
                                     <!-- /.card-header -->
                                     <!-- form start -->
@@ -66,79 +66,79 @@
                                                 <span class="invalid-feedback" id="end_error_message"></span>
                                         </div>
                                         <div class="form-group">
-                                            <label for="roTitle">Termék román neve</label>
+                                            <label for="roTitle">Napi menü román neve</label>
                                             <input
                                                 type="text"
                                                 class="form-control roTitle"
                                                 id="roTitle"
                                                 name="roTitle"
-                                                placeholder="Termék román neve"
+                                                placeholder="Napi menü román neve"
                                                 value="<% if (editing) { %><%= product[0].ProductTranslations[0].title %><% } %>">
                                                 <span class="invalid-feedback" id="roName_error_message"></span>
                                         </div>
                                         <div class="form-group">
-                                            <label for="huTitle">Termék magyar neve</label>
+                                            <label for="huTitle">Napi menü magyar neve</label>
                                             <input
                                                 type="text"
                                                 class="form-control huTitle"
                                                 id="huTitle"
                                                 name="huTitle"
-                                                placeholder="Termék magyar neve"
+                                                placeholder="Napi menü magyar neve"
                                                 value="<% if (editing) { %><%= product[0].ProductTranslations[1].title %><% } %>">
                                                 <span class="invalid-feedback" id="huName_error_message"></span>
                                         </div>
                                         <div class="form-group">
-                                            <label for="enTitle">Termék angol neve</label>
+                                            <label for="enTitle">Napi menü angol neve</label>
                                             <input
                                                 type="text"
                                                 class="form-control enTitle"
                                                 id="enTitle"
                                                 name="enTitle"
-                                                placeholder="Termék angol neve"
+                                                placeholder="Napi menü angol neve"
                                                 value="<% if (editing) { %><%= product[0].ProductTranslations[2].title %><% } %>">
                                                 <span class="invalid-feedback" id="enName_error_message"></span>
                                         </div>
                                         <div class="form-group">
                                             <div class="form-group">
-                                                <label>Termék román leírása</label>
+                                                <label>Napi menü román leírása</label>
                                                 <textarea
                                                     class="form-control roDescription"
                                                     rows="3"
                                                     id="roDescription"
                                                     name="roDescription"
-                                                    placeholder="Termék román leírása"
+                                                    placeholder="Napi menü román leírása"
                                                     ><% if (editing) { %><%= product[0].ProductTranslations[0].description %><% } %></textarea>
                                                     <span class="invalid-feedback" id="roDescription_error_message"></span>
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <div class="form-group">
-                                                <label>Termék magyar leírása</label>
+                                                <label>Napi menü magyar leírása</label>
                                                 <textarea
                                                     class="form-control huDescription"
                                                     rows="3"
                                                     id="huDescription"
                                                     name="huDescription"
-                                                    placeholder="Termék magyar leírása"
+                                                    placeholder="Napi menü magyar leírása"
                                                     ><% if (editing) { %><%= product[0].ProductTranslations[1].description %><% } %></textarea>
                                                     <span class="invalid-feedback" id="huDescription_error_message"></span>
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <div class="form-group">
-                                                <label>Termék angol leírása</label>
+                                                <label>Napi menü angol leírása</label>
                                                 <textarea
                                                     class="form-control enDescription"
                                                     rows="3"
                                                     id="enDescription"
                                                     name="enDescription"
-                                                    placeholder="Termék angol leírása"
+                                                    placeholder="Napi menü angol leírása"
                                                     ><% if (editing) { %><%= product[0].ProductTranslations[2].description %><% } %></textarea>
                                                     <span class="invalid-feedback" id="enDescription_error_message"></span>
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="exampleInputFile">Termék fényképe</label>
+                                            <label for="exampleInputFile">Napi menü fényképe</label>
                                             <div class="input-group">
                                                 <div class="custom-file">
                                                     <input
