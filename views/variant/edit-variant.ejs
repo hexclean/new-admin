@@ -45,10 +45,15 @@
                         <input
                         name="sku"
                           type="text"
-                          class="form-control"
+                          class="form-control sku"
                           id="sku"
                           placeholder="Variáns neve"
                           value="<% if (editing) { %><%= variant[0].ProductVariantsExtras[0].Variant.sku %><% } %>">
+
+                          <span
+                          class="invalid-feedback"
+                          id="sku_error_message"
+                        ></span>
                       </div>
                     
                     
@@ -75,17 +80,32 @@
                         </div>
                         <% } else { %>
                            <div class="col-sm-6">
-                              <!-- select -->
-                              <div class="form-group">
-                                <label>Kategória választás</label>
-                                <select for="categoryId" id="categoryId" name="categoryId" class="custom-select">
-                                  <option selected disabled>Válassz egyet</option>
-                                  <% for(let i = 0; i < cat.length; i++) { %>
-                                  <option id="categoryId" name="categoryId" value='<%= cat[i].id %>'><%= cat[i].CategoryTranslations[0].name %></option>
-                                  <% } %>
-                                </select>
-                              </div>
+                              
+
+
+
+
+
+
+                                <div class="form-group">
+                             <label>Kötelezően választandó extra</label>
+                             <select class="custom-select categoryErrorVal" for="categoryId" id="categoryId" name="categoryId">
+                              <option value="" selected disabled hidden>Kategória kiválasztása</option>
+                              <% for(let i = 0; i < cat.length; i++) { %>
+                                <option id="categoryId" name="categoryId" value='<%= cat[i].id %>'><%= cat[i].CategoryTranslations[0].name %>
+                                </option>
+                                <% } %>
+                              
+                             </select>
+                             <span
+                             class="invalid-feedback"
+                             id="category_error_message"
+                           ></span>
+                           </div>
+                         
+                                
                             </div>
+                         
                             <% } %>
                         <div class="col-sm-6">
                            <!-- select -->
@@ -164,7 +184,7 @@
                               for="propertyValueId"
                               id="propertyValueId"
                               name="propertyValueId">
-                               <option value="" selected disabled hidden >option 1</option>
+                               <option value="" selected hidden >option 1</option>
                                <% for(let j = 0; j < resultProp[i].Property.PropertyValues.length; j++) {
                                  %>
                                <option
