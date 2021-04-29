@@ -1,11 +1,7 @@
 const Allergen = require("../../models/Allergen");
 const AllergensTranslation = require("../../models/AllergenTranslation");
-const Sequelize = require("sequelize");
-const Extra = require("../../models/Extra");
-const ExtraHasAllergen = require("../../models/ExtraHasAllergen");
 const Product = require("../../models/Product");
 const ProductHasAllergen = require("../../models/ProductHasAllergen");
-const Op = Sequelize.Op;
 
 // GET
 // Allergén létrehozás oldal betöltése
@@ -23,58 +19,66 @@ exports.postAddAllergen = async (req, res, next) => {
   const roName = req.body.roName;
   const huName = req.body.huName;
   const enName = req.body.enName;
+  const restaurantId = req.admin.id;
+  let allergenId;
+
+  // Szerver oldali validáció
   if (roName.length == 0 || huName.length == 0 || enName.length == 0) {
     return res.redirect("/admin/allergen-index");
   }
 
   try {
-    const allergen = await Allergen.create({
-      restaurantId: req.admin.id,
-    });
+    // Allergén létrehozása
+    async function createAllergen() {
+      allergen = await Allergen.create({
+        restaurantId: restaurantId,
+      });
+      allergenId = allergen.id;
 
-    async function createAllergenTranslation() {
       await AllergensTranslation.create({
         name: roName,
         languageId: 1,
-        allergenId: allergen.id,
-        restaurantId: req.admin.id,
+        allergenId: allergenId,
+        restaurantId: restaurantId,
       });
       await AllergensTranslation.create({
         name: huName,
         languageId: 2,
-        restaurantId: req.admin.id,
+        restaurantId: restaurantId,
 
-        allergenId: allergen.id,
+        allergenId: allergenId,
       });
 
       await AllergensTranslation.create({
         name: enName,
         languageId: 3,
-        allergenId: allergen.id,
-        restaurantId: req.admin.id,
+        allergenId: allergenId,
+        restaurantId: restaurantId,
       });
     }
 
+    // A létrehozott allergént is elmentem nem aktívként a ProductHasAllergen táblába
     async function createAllergenToProduct() {
       const totalProducts = await Product.findAll({
-        where: { restaurantId: req.admin.id },
+        where: { restaurantId: restaurantId },
       });
 
       for (let i = 0; i <= totalProducts.length - 1; i++) {
         await ProductHasAllergen.create({
           active: 0,
-          restaurantId: req.admin.id,
-          allergenId: allergen.id,
+          restaurantId: restaurantId,
+          allergenId: allergenId,
           productId: totalProducts[i].id,
         });
       }
     }
 
-    await createAllergenTranslation();
+    await createAllergen();
     await createAllergenToProduct();
 
     res.redirect("/admin/allergen-index");
   } catch (err) {
+    console.log(err);
     const error = new Error(err);
     error.httpStatusCode = 500;
     return next(error);
@@ -95,6 +99,7 @@ exports.getEditAllergen = async (req, res, next) => {
   });
 
   try {
+    // Megkeresen a szerkeszteni kívánt allergént
     const allergen = await Allergen.findAll({
       where: {
         id: allergenId,
@@ -105,6 +110,8 @@ exports.getEditAllergen = async (req, res, next) => {
         },
       ],
     });
+
+    // Átadom az adatokat a HTML fájlnak
     res.render("allergen/edit-allergen", {
       pageTitle: "Edit Product",
       path: "/admin/edit-product",
@@ -113,6 +120,7 @@ exports.getEditAllergen = async (req, res, next) => {
       allergenId: allergenId,
     });
   } catch (err) {
+    console.log(err);
     const error = new Error(err);
     error.httpStatusCode = 500;
     return next(error);
@@ -126,6 +134,8 @@ exports.postEditAllergen = async (req, res, next) => {
   const updatedHuName = req.body.huName;
   const updatedEnName = req.body.enName;
   const allergenId = req.body.allergenId;
+
+  // Szerver oldali validáció
   if (
     updatedRoName.length == 0 ||
     updatedHuName.length == 0 ||
@@ -133,7 +143,9 @@ exports.postEditAllergen = async (req, res, next) => {
   ) {
     return res.redirect("/admin/allergen-index");
   }
+
   try {
+    // Allergén módosítása
     async function updateAllergen() {
       await AllergensTranslation.update(
         { name: updatedRoName },
