@@ -96,6 +96,7 @@ exports.getUpsellProducts = async (req, res, next) => {
 };
 
 exports.getDownsellProducts = async (req, res, next) => {
+  console.log(78787);
   const page = +req.query.page || 1;
   let totalItems;
   let languageCode;

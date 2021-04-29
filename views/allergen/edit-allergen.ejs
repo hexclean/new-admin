@@ -1,6 +1,6 @@
 
 <%- include('../includes/head.ejs') %>
-<%- include('../jQuery-validation/category.ejs') %>
+<%- include('../jQuery-validation/allergen.ejs') %>
   </head>
   <body class="hold-transition sidebar-mini">
    <form id="createAllergen_form"
@@ -41,40 +41,49 @@
                  
                     <div class="card-body">
                       <div class="form-group">
-                        <label for="exampleInputEmail1">Román neve</label>
+                        <label for="roName">Román neve</label>
                         <input
                           type="text"
-                          class="form-control"
-                          id="exampleInputEmail1"
+                          class="form-control roName"
+                          id="roName"
                           placeholder="Román neve"
                           name="roName"
                           value="<% if (editing) { %><%= allergen[0].AllergenTranslations[0].name %><% } %>">
-                    
+                          <span
+                          class="invalid-feedback"
+                          id="roName_error_message"
+                        ></span>
                       </div>
                       <div class="form-group">
                         <label for="huName">Magyar neve</label>
                         <input
                           type="text"
-                          class="form-control"
+                          class="form-control huName"
                           placeholder="Magyar neve"
                           id="huName"
                           name="huName"
                           value="<% if (editing) { %><%= allergen[0].AllergenTranslations[1].name %><% } %>">
-                      
+                          <span
+                          class="invalid-feedback"
+                          id="huName_error_message"
+                        ></span>
                       </div>
                       
                       <div class="form-group">
                         <label for="enName">Angol neve</label>
                         <input
                           type="text"
-                          class="form-control"
+                          class="form-control enName"
                           placeholder="Angol neve"
                           id="enName"
                           name="enName"
                           value="<% if (editing) { %><%= allergen[0].AllergenTranslations[2].name %><% } %>">
-                      
+                          <span
+                          class="invalid-feedback"
+                          id="enName_error_message"
+                        ></span>
                       </div>
-                      <span class="error_form" id="enName_error_message"></span>
+                      
                     
                     </div>
                   

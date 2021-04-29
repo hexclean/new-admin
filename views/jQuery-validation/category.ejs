@@ -30,13 +30,13 @@
       var roName_length = $("#roName").val().length;
 
       if (roName_length < 1 || roName_length > 60) {
-        $("#roName_error_message").html(
-          "<%= lingua.category_ro_name_validation %>"
-        );
+        $(".roName").addClass("is-invalid");
+        $("#roName_error_message").html("A kategóia nevét kötelező megadni!");
         $("#roName_error_message").show();
         error_roName = true;
         $("#createCategory").disabled = true;
       } else {
+        $(".roName").removeClass("is-invalid");
         $("#roName_error_message").hide();
         $("#createCategory").removeAttr("disabled");
       }
@@ -46,13 +46,13 @@
       var huName_length = $("#huName").val().length;
 
       if (huName_length < 1 || huName_length > 60) {
-        $("#huName_error_message").html(
-          "<%= lingua.category_hu_name_validation %>"
-        );
+        $(".huName").addClass("is-invalid");
+        $("#huName_error_message").html("A kategóia nevét kötelező megadni!");
         $("#huName_error_message").show();
         error_huName = true;
         $("#createCategory").disabled = true;
       } else {
+        $(".huName").removeClass("is-invalid");
         $("#huName_error_message").hide();
         $("#createCategory").removeAttr("disabled");
       }
@@ -62,13 +62,13 @@
       var enName_length = $("#enName").val().length;
 
       if (enName_length < 1 || enName_length > 60) {
-        $("#enName_error_message").html(
-          "<%= lingua.category_en_name_validation %>"
-        );
+        $(".enName").addClass("is-invalid");
+        $("#enName_error_message").html("A kategóia nevét kötelező megadni!");
         $("#enName_error_message").show();
         error_enName = true;
         $("#createCategory").disabled = true;
       } else {
+        $(".enName").removeClass("is-invalid");
         $("#enName_error_message").hide();
         $("#createCategory").removeAttr("disabled");
       }
@@ -76,11 +76,13 @@
 
     function check_property() {
       if ($(".status-hidden[value='on']").length != 1) {
-        $("#property_error_message").html("csak 1 et lehet megadni");
+        $(".subCat").addClass("is-invalid");
+        $("#property_error_message").html("1 alkategória megadása kötelező!");
         $("#property_error_message").show();
         error_property = true;
         $("#createCategory").disabled = true;
       } else {
+        $(".subCat").removeClass("is-invalid");
         $("#property_error_message").hide();
         $("#createCategory").removeAttr("disabled");
       }

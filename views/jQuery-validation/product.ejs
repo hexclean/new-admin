@@ -132,7 +132,9 @@
     $("#image").change(function () {
       check_file();
     });
-
+    $("#image").change(function () {
+      check_file_size();
+    });
     function check_roName() {
       var roName_length = $("#roTitle").val().length;
       if (roName_length < 2 || roName_length > 200) {

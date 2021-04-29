@@ -17,12 +17,14 @@
     $("#huName_error_message").hide();
     $("#enName_password_error_message").hide();
     $("#allergen_error_message").hide();
+    $("#price_error_message").hide();
 
     var error_roName = false;
     var error_huName = false;
     var error_enName = false;
     var error_sku = false;
     var error_allergen = false;
+    var error_price = false;
 
     $("#roName").focusout(function () {
       check_roName();
@@ -39,17 +41,34 @@
     $(".status-checkbox").change(function () {
       check_allergen();
     });
+    $("#price").change(function () {
+      check_price();
+    });
+
+    function check_price() {
+      var check_price = $("#price").val().length;
+
+      if (check_price < 1) {
+        $(".price").addClass("is-invalid");
+        $("#price_error_message").html("Ár megadása kötelező!");
+        $("#price_error_message").show();
+        error_price = true;
+      } else {
+        $(".price").removeClass("is-invalid");
+        $("#price_error_message").hide();
+      }
+    }
 
     function check_roName() {
       var roName_length = $("#roName").val().length;
 
       if (roName_length < 1 || roName_length > 100) {
-        $("#roName_error_message").html(
-          `<%= lingua.extra_ro_name_validation %>`
-        );
+        $(".roName").addClass("is-invalid");
+        $("#roName_error_message").html("Extra román neve megadása kötelező!");
         $("#roName_error_message").show();
         error_roName = true;
       } else {
+        $(".roName").removeClass("is-invalid");
         $("#roName_error_message").hide();
       }
     }
@@ -58,12 +77,12 @@
       var huName_length = $("#huName").val().length;
 
       if (huName_length < 1 || huName_length > 100) {
-        $("#huName_error_message").html(
-          `<%= lingua.extra_hu_name_validation %>`
-        );
+        $(".huName").addClass("is-invalid");
+        $("#huName_error_message").html("Extra magyar neve megadása kötelező!");
         $("#huName_error_message").show();
         error_huName = true;
       } else {
+        $(".huName").removeClass("is-invalid");
         $("#huName_error_message").hide();
       }
     }
@@ -72,43 +91,32 @@
       var enName_length = $("#enName").val().length;
 
       if (enName_length < 1 || enName_length > 100) {
-        $("#enName_error_message").html(
-          `<%= lingua.extra_en_name_validation %>`
-        );
+        $(".enName").addClass("is-invalid");
+        $("#enName_error_message").html("Extra magyar neve megadása kötelező!");
         $("#enName_error_message").show();
         error_enName = true;
       } else {
+        $(".enName").removeClass("is-invalid");
         $("#enName_error_message").hide();
       }
     }
 
-    function check_allergen() {
-      if ($(".status-hidden[value='on']").length < 1) {
-        $("#allergen_error_message").html("csak 1 et lehet megadni");
-        $("#allergen_error_message").show();
-        error_allergen = true;
-        $("#createBox").disabled = true;
-      } else {
-        $("#allergen_error_message").hide();
-        $("#createBox").removeAttr("disabled");
-      }
-    }
     $("#createExtra_form").submit(function () {
       error_roName = false;
       error_huName = false;
       error_enName = false;
-      error_allergen = false;
+      error_price = false;
 
       check_roName();
       check_huName();
       check_enName();
-      check_allergen();
+      check_price();
 
       if (
         error_roName == false &&
         error_huName == false &&
         error_enName == false &&
-        error_allergen == false
+        error_price == false
       ) {
         $("#createBox").prop("disabled", true);
         return true;

@@ -7,7 +7,6 @@
     var error_roName = false;
     var error_huName = false;
     var error_enName = false;
-    var error_sku = false;
 
     $("#roName").focusout(function () {
       check_roName();
@@ -25,12 +24,14 @@
       var roName_length = $("#roName").val().length;
 
       if (roName_length < 1 || roName_length > 700) {
+        $(".roName").addClass("is-invalid");
         $("#roName_error_message").html(
-          `<%= lingua.allergen_ro_name_validation %>`
+          "Allergén román neve megadása kötelező!"
         );
         $("#roName_error_message").show();
         error_roName = true;
       } else {
+        $(".roName").removeClass("is-invalid");
         $("#roName_error_message").hide();
       }
     }
@@ -39,12 +40,14 @@
       var huName_length = $("#huName").val().length;
 
       if (huName_length < 1 || huName_length > 700) {
+        $(".huName").addClass("is-invalid");
         $("#huName_error_message").html(
-          `<%= lingua.allergen_hu_name_validation %>`
+          "Allergén magyar neve megadása kötelező!"
         );
         $("#huName_error_message").show();
         error_huName = true;
       } else {
+        $(".huName").removeClass("is-invalid");
         $("#huName_error_message").hide();
       }
     }
@@ -53,12 +56,15 @@
       var enName_length = $("#enName").val().length;
 
       if (enName_length < 1 || enName_length > 700) {
+        $(".enName").addClass("is-invalid");
         $("#enName_error_message").html(
-          `<%= lingua.allergen_en_name_validation %>`
+          "Allergén angol neve megadása kötelező!"
         );
         $("#enName_error_message").show();
+
         error_enName = true;
       } else {
+        $(".enName").removeClass("is-invalid");
         $("#enName_error_message").hide();
       }
     }

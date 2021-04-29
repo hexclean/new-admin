@@ -20,10 +20,13 @@
       var price = $("#price").val().length;
 
       if (price < 1 || price > 10) {
-        $("#price_error_message").html("<%= lingua.box_ro_name_validation %>");
+        $(".price").addClass("is-invalid");
+        $("#price_error_message").html("Doboz ára megadása kötelező!");
         $("#price_error_message").show();
+
         error_price = true;
       } else {
+        $(".price").removeClass("is-invalid");
         $("#price_error_message").hide();
       }
     }
@@ -32,10 +35,12 @@
       var sku_length = $("#sku").val().length;
 
       if (sku_length < 1 || sku_length > 50) {
-        $("#sku_error_message").html("<%= lingua.box_ro_name_validation %>");
+        $(".sku").addClass("is-invalid");
+        $("#sku_error_message").html("Doboz neve megadása kötelező!");
         $("#sku_error_message").show();
         error_sku = true;
       } else {
+        $(".sku").removeClass("is-invalid");
         $("#sku_error_message").hide();
       }
     }
