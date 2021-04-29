@@ -14,14 +14,13 @@ const PropertyTranslation = require("../../models/PropertyTranslation");
 const PropertyValueTranslation = require("../../models/PropertyValueTranslation");
 const VariantPropertyValue = require("../../models/VariantPropertyValue");
 const Extra = require("../../models/Extra");
-const Op = Sequelize.Op;
 const { getLanguageCode } = require("../../shared/language");
 // GET
 // Variáns oldal létrehozás betöltése
 exports.getAddVariant = async (req, res, next) => {
   // Változók deklarálása
   const languageCode = getLanguageCode(req.cookies.language);
-  let restaurantId = req.admin.id;
+  let restaurantId = restaurantId;
 
   // Lekérem az étterem összes extráit
   const ext = await Extras.findAll({
@@ -74,13 +73,15 @@ exports.postAddVariant = async (req, res, next) => {
   const maxOption = req.body.maxOption;
   const filteredStatus = req.body.status.filter(Boolean);
   const filteredOptions = req.body.statusOption.filter(Boolean);
-  const restaurantId = req.admin.id;
+  const restaurantId = restaurantId;
   let variantId;
+
   // Szerver oldali validáció
   if (extId.length == 0 || sku.length == 0) {
     return res.redirect("/admin/variant-index");
   }
 
+  // Lekérem az étteremnek az extráit
   const ext = await Extras.findAll({
     where: { restaurantId: restaurantId },
     include: [
@@ -99,10 +100,12 @@ exports.postAddVariant = async (req, res, next) => {
     ],
   });
 
+  // Lekérem az étteremnek a termékeit
   let productId = await Products.findAll({
     where: { restaurantId: restaurantId },
   });
 
+  // Lekérem az étteremnek a kategóriáját
   const cat = await Category.findAll({
     where: { restaurantId: restaurantId },
     include: [
@@ -111,6 +114,7 @@ exports.postAddVariant = async (req, res, next) => {
       },
     ],
   });
+
   try {
     // Variáns létrehozása
     async function createVariant() {
@@ -134,33 +138,50 @@ exports.postAddVariant = async (req, res, next) => {
         });
       }
     }
+
+    // Elmentem az extrákot a variánshoz
+    async function createExtraToVariant() {
+      for (let i = 0; i < ext.length; i++) {
+        await ProductVariantsExtras.create({
+          discountedPrice: 1,
+          variantId: variantId,
+          // extraType: ext[i].extraType,
+          extraId: extId[i],
+          active: filteredStatus[i] == "on" ? 1 : 0,
+          restaurantId: restaurantId,
+          requiredExtra: filteredOptions[i] == "on" ? 1 : 0,
+        });
+      }
+    }
+
+    // A variánshoz hozzá rendelem az alkategóriát
+    async function createSubcategoryToVariant() {
+      await VariantPropertyValue.create({
+        variantId: variantId,
+        propertyValueId: propertyValueId,
+        propertyId: propertyId,
+      });
+    }
+
+    await createVariant();
+    await createVariantToProductFinal();
+    await createExtraToVariant();
+    await createSubcategoryToVariant();
+    res.redirect("/admin/variant-index"),
+      {
+        ext: ext,
+        cat: cat,
+      };
   } catch (err) {
+    console.log(err);
     const error = new Error(err);
     error.httpStatusCode = 500;
     return next(error);
   }
-
-  await VariantPropertyValue.create({
-    variantId: variant.id,
-    propertyValueId: propertyValueId,
-    propertyId: propertyId,
-  });
-
-  await productVariantTranslation()
-    .then((result) => {
-      res.redirect("/admin/variant-index"),
-        {
-          ext: ext,
-          cat: cat,
-        };
-    })
-    .catch((err) => {
-      // const error = new Error(err);
-      // error.httpStatusCode = 500;
-      // return next(error);
-    });
 };
 
+// GET
+// Variáns oldal szerkesztés betöltése
 exports.getEditVariant = async (req, res, next) => {
   const editMode = req.query.edit;
   const varId = req.params.variantId;
@@ -327,8 +348,10 @@ exports.getEditVariant = async (req, res, next) => {
     });
 };
 
+// POST
+// Variáns szerkesztése
 exports.postEditVariant = async (req, res, next) => {
-  console.log(req.body);
+  // Változók deklarálása
   const extId = req.body.extraId;
   const updatedSku = req.body.sku;
   const varId = req.body.variantId;
@@ -336,71 +359,81 @@ exports.postEditVariant = async (req, res, next) => {
   const filteredOptions = req.body.statusOption.filter(Boolean);
   const maxOption = req.body.maxOption;
   const categoryId = req.body.categoryId;
-  const Op = Sequelize.Op;
   const dasd = req.body.varId;
   let variantId = [dasd];
+  const propertyValueId = req.body.propertyValueId;
+  const propertyId = req.body.propertyId;
+  const Op = Sequelize.Op;
+  // Szerver oldali validáció
+  if (extId.length == 0 || updatedSku.length == 0) {
+    return res.redirect("/admin/variant-index");
+  }
 
+  // Lekérem a variánshoz rendelt extráit
+  const productVarToExt = await ProductVariantsExtras.findAll({
+    where: {
+      variantId: {
+        [Op.in]: variantId,
+      },
+    },
+    include: [{ model: Extra }],
+  });
   try {
-    if (extId.length == 0 || updatedSku.length == 0) {
-      return res.redirect("/admin/variant-index");
+    async function updateSubcategory() {
+      // A variáns frissítése, ha frissül az alkategória
+      await VariantPropertyValue.update(
+        {
+          propertyValueId: propertyValueId,
+          propertyId: propertyId,
+        },
+        {
+          where: {
+            variantId: varId,
+          },
+        }
+      );
     }
-    const productVarToExt = await ProductVariantsExtras.findAll({
-      where: {
-        variantId: {
-          [Op.in]: variantId,
-        },
-      },
-      include: [{ model: Extra }],
-    });
 
-    await VariantPropertyValue.update(
-      {
-        propertyValueId: req.body.propertyValueId,
-        propertyId: req.body.propertyId,
-      },
-      {
-        where: {
-          variantId: req.body.varId,
-        },
-      }
-    );
-
-    async function msg() {
+    async function updateVariant() {
+      // Variáns frissítése
       await Variant.findByPk(varId).then((variant) => {
         variant.sku = updatedSku;
         variant.maxOption = maxOption;
         variant.categoryId = categoryId;
         return variant.save();
       });
+    }
 
-      if (Array.isArray(productVarToExt)) {
-        const Op = Sequelize.Op;
-        for (let i = 0; i <= productVarToExt.length - 1; i++) {
-          let extrasIds = [extId[i]];
-          let variantId = [varId];
+    async function updateExtras() {
+      // Végigmegyek az extrákon és frissítem a ki-be jelöléseket
+      for (let i = 0; i < productVarToExt.length; i++) {
+        let extrasIds = [extId[i]];
+        let variantId = [varId];
 
-          await ProductVariantsExtras.update(
-            {
-              discountedPrice: 1,
-              active: filteredStatus[i] == "on" ? 1 : 0,
-              requiredExtra: filteredOptions[i] == "on" ? 1 : 0,
-            },
-            {
-              where: {
-                extraId: {
-                  [Op.in]: extrasIds,
-                },
-                variantId: {
-                  [Op.in]: variantId,
-                },
+        // Extrák ki-be jelölése frissítése
+        await ProductVariantsExtras.update(
+          {
+            discountedPrice: 1,
+            active: filteredStatus[i] == "on" ? 1 : 0,
+            requiredExtra: filteredOptions[i] == "on" ? 1 : 0,
+          },
+          {
+            where: {
+              extraId: {
+                [Op.in]: extrasIds,
               },
-            }
-          );
-        }
+              variantId: {
+                [Op.in]: variantId,
+              },
+            },
+          }
+        );
       }
     }
 
-    await msg();
+    await updateSubcategory();
+    await updateVariant();
+    await updateExtras();
 
     res.redirect("/admin/variant-index");
   } catch (error) {
@@ -418,19 +451,16 @@ exports.postEditVariant = async (req, res, next) => {
   // });
 };
 
+// GET
+// Alkategóriák keresése categoryId alapján
 exports.getFilteredProperty = async (req, res, next) => {
+  // Változók deklarálása
+  const languageCode = getLanguageCode(req.cookies.language);
   var categoryId = req.params.categoryId;
-  let languageCode;
 
-  if (req.cookies.language == "ro") {
-    languageCode = 1;
-  } else if (req.cookies.language == "hu") {
-    languageCode = 2;
-  } else {
-    languageCode = 3;
-  }
+  // Alkategóriákhoz keresés
   const result = await CategoryProperty.findAll({
-    where: { restaurantId: req.admin.id, categoryId: categoryId, active: 1 },
+    where: { restaurantId: restaurantId, categoryId: categoryId, active: 1 },
     include: [
       {
         model: Property,
@@ -457,50 +487,6 @@ exports.getFilteredProperty = async (req, res, next) => {
     res.render("variant/current-property", {
       result: result,
       editing: false,
-    });
-  } catch (error) {
-    console.log(error);
-    error.httpStatusCode = 500;
-    return next(error);
-  }
-};
-
-exports.getTest = async (req, res, next) => {
-  var categoryId = req.params.categoryId;
-  var languageId;
-  var currentLanguage = req.cookies.language;
-
-  if (currentLanguage == "ro") {
-    languageId = 1;
-  } else if (currentLanguage == "hu") {
-    languageId = 2;
-  } else {
-    languageId = 3;
-  }
-
-  const result = await CategoryProperty.findAll({
-    where: { id: categoryId },
-    include: [
-      {
-        model: Property,
-        include: [
-          {
-            model: PropertyTranslation,
-          },
-          {
-            model: PropertyValue,
-            include: [{ model: PropertyValueTranslation }],
-          },
-        ],
-      },
-    ],
-  });
-
-  try {
-    res.render("variant/current-property", {
-      result: result,
-      editing: false,
-      languageId: languageId,
     });
   } catch (error) {
     console.log(error);

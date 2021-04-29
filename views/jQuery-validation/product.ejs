@@ -55,11 +55,13 @@
             $("#price_error_message_" + extraId)
               .show()
               .html("Ár megadása kötelező!");
+              $( ".price_"+ extraId).addClass( "is-invalid" );
             error_price = true;
           } else {
+            $( ".price_"+ extraId).removeClass( "is-invalid" );
             $("#price_error_message_" + extraId)
-              .hide()
-              .html("");
+              .hide();
+
           }
         } else {
           $(this).find(".extra_error_message").hide();
@@ -70,13 +72,15 @@
       var len = $(this).val().length;
       var extraId = $(this).closest(".extra_box").data("extra");
       if (len < 1) {
+        $( ".price_"+ extraId).addClass( "is-invalid" );
         $("#price_error_message_" + extraId)
           .show()
-          .html("Ár megadása kötelező!");
+          .html("Termék ára megadása kötelező!");
+
       } else {
+        $( ".price_"+ extraId).removeClass( "is-invalid" );
         $("#price_error_message_" + extraId)
-          .hide()
-          .html("");
+          .hide();
       }
     });
     $("#roName_error_message").hide();

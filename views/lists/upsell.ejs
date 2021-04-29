@@ -95,20 +95,20 @@
                                     <td><%= prods[i].ProductTranslations[0].title %></td>
                                     <td><%= prods[i].ProductFinals[0].Variant.sku %></td>
                                     <td>
-                                       <form action="/admin/delete-product" method="POST">
+                                       <form action="/admin/delete-upsell" method="POST">
                                           <input type="hidden" value="<%= prods[i].id %>" name="productId">
-                                          <a class="btn btn-danger btn-sm" href="/admin/delete-product">
+                                          <button class="btn btn-danger btn-sm" type="submit" href="/admin/delete-upsell">
                                           <i class="fas fa-trash">
                                           </i>
                                           Elfogyott
-                                          </a>
+                                          </button>
                                        </form>
                                     </td>
                                     <td>
                                        <a class="btn btn-success btn-sm" href="/admin/edit-upsell/<%= prods[i].id %>?edit=true">
                                        <i class="fas fa-pencil-alt">
                                        </i>
-                                       <%= lingua.button_edit %>
+                                       Szerkesztés
                                        </a>
                                     </td>
                                  </tr>

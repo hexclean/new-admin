@@ -12,25 +12,17 @@ const Category = require("../../models/Category");
 const CategoryTranslation = require("../../models/CategoryTranslation");
 const Box = require("../../models/Box");
 const ITEMS_PER_PAGE = 30;
-
+const { getLanguageCode } = require("../../shared/language");
 // GET
 // Termék létrehozás oldal betöltése
 exports.getAddDownsellProduct = async (req, res, next) => {
-  let languageCode;
-
-  if (req.cookies.language == "ro") {
-    languageCode = 1;
-  } else if (req.cookies.language == "hu") {
-    languageCode = 2;
-  } else {
-    languageCode = 3;
-  }
-
+  const languageCode = getLanguageCode(req.cookies.language);
+  const restaurantId = req.admin.id;
   try {
     // Étteremhez rendelt allergének lekérése
     const allergen = await Allergen.findAll({
       where: {
-        restaurantId: req.admin.id,
+        restaurantId: restaurantId,
       },
       include: [
         {
@@ -43,14 +35,14 @@ exports.getAddDownsellProduct = async (req, res, next) => {
     // Étteremhez rendelt csomagolások lekérése
     const box = await Box.findAll({
       where: {
-        restaurantId: req.admin.id,
+        restaurantId: restaurantId,
       },
     });
 
     // Étteremhez rendelt kategóriák lekérése
     const cat = await Category.findAll({
       where: {
-        restaurantId: req.admin.id,
+        restaurantId: restaurantId,
       },
       include: [
         {
@@ -63,18 +55,18 @@ exports.getAddDownsellProduct = async (req, res, next) => {
     // Étteremhez rendelt variánsok lekérése
     const variant = await Variant.findAll({
       where: {
-        restaurantId: req.admin.id,
+        restaurantId: restaurantId,
       },
     });
 
     // Le kell ellenőrizni, hogy az étteremnek legalább 2 hozzárendelt variánsa van-e
     if (variant.length < 2) {
-      return res.redirect("/admin/products");
+      return res.redirect("/admin/downsell");
     }
 
     // Le kell ellenőrizni, hogy az étteremnek legalább 2 hozzárendelt csomagolása van-e
     if (box.length < 2) {
-      return res.redirect("/admin/products");
+      return res.redirect("/admin/downsell");
     }
 
     // Átadom az adatokat a html oldalnak
@@ -93,6 +85,7 @@ exports.getAddDownsellProduct = async (req, res, next) => {
     return next(error);
   }
 };
+
 // POST
 // Termék létrehozása
 exports.postAddDownsellProduct = async (req, res, next) => {
@@ -130,7 +123,7 @@ exports.postAddDownsellProduct = async (req, res, next) => {
     filteredStatusAllergen.length == 0 ||
     filteredStatusBox.length == 0
   ) {
-    return res.redirect("/admin/downsell");
+    return res.redirect("/admin/upsell");
   }
   try {
     // Étteremhez rendelt csomagolások lekérése
@@ -268,12 +261,12 @@ exports.getEditDownsellProduct = async (req, res, next) => {
   const productId = [prodId];
   const Op = Sequelize.Op;
   let getProductPrice = [];
-
+  const languageCode = getLanguageCode(req.cookies.language);
   try {
     // Ha a termék nem az étteremhez tartozik, akkor automatikusan visszairányít a termékek oldalra
     await Product.findByPk(prodId).then((product) => {
       if (!product || !editMode) {
-        return res.redirect("/admin/products");
+        return res.redirect("/admin/downsell");
       }
     });
 
@@ -285,10 +278,10 @@ exports.getEditDownsellProduct = async (req, res, next) => {
       include: [
         {
           model: CategoryTranslation,
+          where: { languageId: languageCode },
         },
       ],
     });
-
     // Étteremhez rendelt csomagolások lekérése
     const box = await Box.findAll({
       where: {
@@ -304,7 +297,7 @@ exports.getEditDownsellProduct = async (req, res, next) => {
       include: [
         {
           model: AllergenTranslation,
-          where: { languageId: 2 },
+          where: { languageId: languageCode },
         },
         {
           model: ProductHasAllergen,
@@ -468,9 +461,9 @@ exports.postEditDownsellProduct = async (req, res, next) => {
     async function updateProduct() {
       // Ha nem az étteremhez tartozik, akkor átirányítódik a termékek listára
       await Product.findByPk(prodId).then(async (product) => {
-        // if (product.restaurantId.toString() !== req.admin.id.toString()) {
-        //   return res.redirect("/admin/products");
-        // }
+        if (product.restaurantId.toString() !== req.admin.id.toString()) {
+          return res.redirect("/admin/downsell");
+        }
         // Ha új kép töltődik fel akkor megkeresi a régi képet azt kitörli és feltölti az újonnan létrehozott képet
         if (image) {
           fileHelper.deleteFile(product.productImagePath);
@@ -582,7 +575,7 @@ exports.postEditDownsellProduct = async (req, res, next) => {
 
 // POST
 // Termék inaktiválása
-exports.postDeleteProduct = async (req, res, next) => {
+exports.postDeleteDownsellProduct = async (req, res, next) => {
   const prodId = req.body.productId;
   try {
     async function inactivateProduct() {
@@ -596,234 +589,10 @@ exports.postDeleteProduct = async (req, res, next) => {
       });
     }
     await inactivateProduct();
-    res.redirect("/admin/products");
+    res.redirect("/admin/downsell");
   } catch (err) {
     const error = new Error(err);
     error.httpStatusCode = 500;
     return next(error);
   }
-};
-
-exports.getProducts = async (req, res, next) => {
-  const page = +req.query.page || 1;
-  let totalItems;
-  let languageCode;
-
-  if (req.cookies.language == "ro") {
-    languageCode = 1;
-  } else if (req.cookies.language == "hu") {
-    languageCode = 2;
-  } else {
-    languageCode = 3;
-  }
-  const variant = await ProductVariants.findAll({
-    where: { restaurantId: req.admin.id },
-  });
-  const box = await Box.findAll({
-    where: { restaurantId: req.admin.id },
-  });
-
-  await Product.findAll({
-    where: { restaurantId: req.admin.id, active: 1 },
-
-    include: [
-      {
-        model: ProductTranslation,
-        where: { languageId: languageCode },
-      },
-      { model: ProductFinal, where: { active: 1 } },
-    ],
-  })
-    .then((numAllergen) => {
-      totalItems = numAllergen;
-      return Product.findAll({
-        where: {
-          restaurantId: req.admin.id,
-          active: 1,
-        },
-        include: [
-          {
-            model: ProductTranslation,
-            where: { languageId: languageCode },
-          },
-          {
-            model: ProductFinal,
-            where: { active: 1 },
-            include: [{ model: Variant }],
-          },
-        ],
-        offset: (page - 1) * ITEMS_PER_PAGE,
-        limit: ITEMS_PER_PAGE,
-      });
-    })
-    .then((product) => {
-      res.render("admin/products", {
-        pageTitle: "Admin Products",
-        path: "/admin/products",
-        currentPage: page,
-        hasNextPage: ITEMS_PER_PAGE * page < totalItems.length,
-        hasPreviousPage: page > 1,
-        nextPage: page + 1,
-        previousPage: page - 1,
-        lastPage: Math.ceil(totalItems.length / ITEMS_PER_PAGE),
-        prods: product,
-        variant: variant,
-        box: box,
-      });
-    })
-    .catch((err) => {
-      const error = new Error(err);
-      error.httpStatusCode = 500;
-      return next(error);
-    });
-};
-
-exports.getDailyMenu = async (req, res, next) => {
-  const page = +req.query.page || 1;
-  let totalItems;
-  let languageCode;
-
-  if (req.cookies.language == "ro") {
-    languageCode = 1;
-  } else if (req.cookies.language == "hu") {
-    languageCode = 2;
-  } else {
-    languageCode = 3;
-  }
-  const checkVariantLength = await ProductVariants.findAll({
-    where: { restaurantId: req.admin.id },
-  });
-  const checkBoxLength = await Box.findAll({
-    where: { restaurantId: req.admin.id },
-  });
-
-  await Product.findAll({
-    where: { restaurantId: req.admin.id, active: 1, isDailyMenu: 1 },
-
-    include: [
-      {
-        model: ProductTranslation,
-        where: { languageId: languageCode },
-      },
-      { model: ProductFinal, where: { active: 1 } },
-    ],
-  })
-    .then((numAllergen) => {
-      totalItems = numAllergen;
-      return Product.findAll({
-        where: {
-          restaurantId: req.admin.id,
-          active: 1,
-          isDailyMenu: 1,
-        },
-        include: [
-          {
-            model: ProductTranslation,
-            where: { languageId: languageCode },
-          },
-          {
-            model: ProductFinal,
-            where: { active: 1 },
-            include: [{ model: Variant }],
-          },
-        ],
-        offset: (page - 1) * ITEMS_PER_PAGE,
-        limit: ITEMS_PER_PAGE,
-      });
-    })
-    .then((product) => {
-      res.render("admin/daily-menu", {
-        pageTitle: "Admin Products",
-        path: "/admin/products",
-        currentPage: page,
-        hasNextPage: ITEMS_PER_PAGE * page < totalItems.length,
-        hasPreviousPage: page > 1,
-        nextPage: page + 1,
-        previousPage: page - 1,
-        lastPage: Math.ceil(totalItems.length / ITEMS_PER_PAGE),
-        prods: product,
-        checkVariantLength: checkVariantLength,
-        checkBoxLength: checkBoxLength,
-      });
-    })
-    .catch((err) => {
-      const error = new Error(err);
-      error.httpStatusCode = 500;
-      return next(error);
-    });
-};
-
-exports.getUpsell = async (req, res, next) => {
-  const page = +req.query.page || 1;
-  let totalItems;
-  let languageCode;
-
-  if (req.cookies.language == "ro") {
-    languageCode = 1;
-  } else if (req.cookies.language == "hu") {
-    languageCode = 2;
-  } else {
-    languageCode = 3;
-  }
-  const checkVariantLength = await ProductVariants.findAll({
-    where: { restaurantId: req.admin.id },
-  });
-  const checkBoxLength = await Box.findAll({
-    where: { restaurantId: req.admin.id },
-  });
-
-  await Product.findAll({
-    where: { restaurantId: req.admin.id, active: 1, upsell: 1 },
-
-    include: [
-      {
-        model: ProductTranslation,
-        where: { languageId: languageCode },
-      },
-      { model: ProductFinal, where: { active: 1 } },
-    ],
-  })
-    .then((numAllergen) => {
-      totalItems = numAllergen;
-      return Product.findAll({
-        where: {
-          restaurantId: req.admin.id,
-          active: 1,
-          upsell: 1,
-        },
-        include: [
-          {
-            model: ProductTranslation,
-            where: { languageId: languageCode },
-          },
-          {
-            model: ProductFinal,
-            where: { active: 1 },
-            include: [{ model: Variant }],
-          },
-        ],
-        offset: (page - 1) * ITEMS_PER_PAGE,
-        limit: ITEMS_PER_PAGE,
-      });
-    })
-    .then((product) => {
-      res.render("upsell/upsells", {
-        pageTitle: "Admin Products",
-        path: "/admin/products",
-        currentPage: page,
-        hasNextPage: ITEMS_PER_PAGE * page < totalItems.length,
-        hasPreviousPage: page > 1,
-        nextPage: page + 1,
-        previousPage: page - 1,
-        lastPage: Math.ceil(totalItems.length / ITEMS_PER_PAGE),
-        prods: product,
-        checkVariantLength: checkVariantLength,
-        checkBoxLength: checkBoxLength,
-      });
-    })
-    .catch((err) => {
-      const error = new Error(err);
-      error.httpStatusCode = 500;
-      return next(error);
-    });
 };

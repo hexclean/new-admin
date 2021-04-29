@@ -89,7 +89,6 @@ exports.getUpsellProducts = async (req, res, next) => {
 };
 
 exports.getDownsellProducts = async (req, res, next) => {
-  console.log(78787);
   const page = +req.query.page || 1;
   let totalItems;
   let restaurantId = req.admin.id;
@@ -446,6 +445,66 @@ exports.getSoldOutProducts = async (req, res, next) => {
       });
     })
     .catch((err) => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
+};
+
+exports.getCategoryIndex = async (req, res, next) => {
+  const page = +req.query.page || 1;
+  let totalItems;
+  let restaurantId = req.admin.id;
+  const languageCode = getLanguageCode(req.cookies.language);
+
+  const property = await Property.findAll({
+    where: { restaurantId: restaurantId },
+  });
+
+  await Category.findAll({
+    where: {
+      restaurantId: restaurantId,
+    },
+    include: [
+      {
+        model: CategoryTranslation,
+        where: { languageId: languageCode },
+      },
+    ],
+  })
+    .then((numCategory) => {
+      totalItems = numCategory;
+      return Category.findAll({
+        where: {
+          restaurantId: restaurantId,
+        },
+        include: [
+          {
+            model: CategoryTranslation,
+            where: { languageId: languageCode },
+          },
+        ],
+
+        offset: (page - 1) * ITEMS_PER_PAGE,
+        limit: ITEMS_PER_PAGE,
+      });
+    })
+    .then((category) => {
+      res.render("lists/category", {
+        pageTitle: "Admin Products",
+        path: "/admin/products",
+        currentPage: page,
+        hasNextPage: ITEMS_PER_PAGE * page < totalItems.length,
+        hasPreviousPage: page > 1,
+        nextPage: page + 1,
+        property: property,
+        previousPage: page - 1,
+        lastPage: Math.ceil(totalItems.length / ITEMS_PER_PAGE),
+        category: category,
+      });
+    })
+    .catch((err) => {
+      console.log(err);
       const error = new Error(err);
       error.httpStatusCode = 500;
       return next(error);

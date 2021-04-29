@@ -12,7 +12,7 @@ const Category = require("../../models/Category");
 const CategoryTranslation = require("../../models/CategoryTranslation");
 const Box = require("../../models/Box");
 const ITEMS_PER_PAGE = 30;
-
+const { getLanguageCode } = require("../../shared/language");
 // GET
 // Termék létrehozás oldal betöltése
 exports.getAddProduct = async (req, res, next) => {
@@ -93,6 +93,7 @@ exports.getAddProduct = async (req, res, next) => {
     return next(error);
   }
 };
+
 // POST
 // Termék létrehozása
 exports.postAddProduct = async (req, res, next) => {
@@ -268,7 +269,7 @@ exports.getEditProduct = async (req, res, next) => {
   const productId = [prodId];
   const Op = Sequelize.Op;
   let getProductPrice = [];
-
+  const languageCode = getLanguageCode(req.cookies.language);
   try {
     // Ha a termék nem az étteremhez tartozik, akkor automatikusan visszairányít a termékek oldalra
     await Product.findByPk(prodId).then((product) => {
@@ -285,6 +286,7 @@ exports.getEditProduct = async (req, res, next) => {
       include: [
         {
           model: CategoryTranslation,
+          where: { languageId: languageCode },
         },
       ],
     });
@@ -304,7 +306,7 @@ exports.getEditProduct = async (req, res, next) => {
       include: [
         {
           model: AllergenTranslation,
-          where: { languageId: 2 },
+          where: { languageId: languageCode },
         },
         {
           model: ProductHasAllergen,

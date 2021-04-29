@@ -311,6 +311,7 @@
                                             placeholder="Termék ára"
                                             value="<% if (editing) { %><%= netest[i].price %><% } %>"
                                             />
+                                            <span class="invalid-feedback" id="price_error_message"></span>
                                     </div>
                                 </div>
                                 <!-- /.card-body -->
@@ -362,6 +363,7 @@
                                             placeholder="Termék ára"
                                             value="<% if (editing) { %><%= extra.price %><% } %>"
                                             />
+                                            <span class="invalid-feedback" id="price_error_message_<%= extra.id %>"></span>
                                     </div>
                                 </div>
                                 <!-- /.card-body -->
