@@ -15,13 +15,6 @@ exports.getAddCategory = async (req, res, next) => {
   const languageCode = getLanguageCode(req.cookies.language);
   const restaurantId = req.admin.id;
 
-  // Lekérem az étterem allergénjeit a validáció miatt
-  const checkAllergenLength = await Allergen.findAll({
-    where: {
-      restaurantId: restaurantId,
-    },
-  });
-
   // Lekérem az étterem alkategóriájit a validáció miatt
   const property = await Property.findAll({
     where: {
