@@ -6,15 +6,6 @@ const ProductVariants = require("../../models/Variant");
 // GET
 // Extra létrehozás oldal betöltése
 exports.getAddExtra = async (req, res, next) => {
-  let languageCode;
-
-  if (req.cookies.language == "ro") {
-    languageCode = 1;
-  } else if (req.cookies.language == "hu") {
-    languageCode = 2;
-  } else {
-    languageCode = 3;
-  }
   try {
     res.render("extra/edit-extra", {
       pageTitle: "Add Product",

@@ -13,20 +13,13 @@ const Category = require("../../models/Category");
 const CategoryTranslation = require("../../models/CategoryTranslation");
 const Box = require("../../models/Box");
 const ITEMS_PER_PAGE = 30;
+const { getLanguageCode } = require("../../shared/language");
 
 exports.getUpsellProducts = async (req, res, next) => {
   const page = +req.query.page || 1;
+  const languageCode = getLanguageCode(req.cookies.language);
   let totalItems;
-  let languageCode;
   let restaurantId = req.admin.id;
-
-  if (req.cookies.language == "ro") {
-    languageCode = 1;
-  } else if (req.cookies.language == "hu") {
-    languageCode = 2;
-  } else {
-    languageCode = 3;
-  }
 
   // Le kell ellenőrizni, hogy az étteremnek legalább 2 hozzárendelt variánsa van-e
   const variant = await ProductVariants.findAll({
@@ -99,16 +92,8 @@ exports.getDownsellProducts = async (req, res, next) => {
   console.log(78787);
   const page = +req.query.page || 1;
   let totalItems;
-  let languageCode;
   let restaurantId = req.admin.id;
-
-  if (req.cookies.language == "ro") {
-    languageCode = 1;
-  } else if (req.cookies.language == "hu") {
-    languageCode = 2;
-  } else {
-    languageCode = 3;
-  }
+  const languageCode = getLanguageCode(req.cookies.language);
 
   // Le kell ellenőrizni, hogy az étteremnek legalább 2 hozzárendelt variánsa van-e
   const variant = await ProductVariants.findAll({
@@ -180,16 +165,8 @@ exports.getDownsellProducts = async (req, res, next) => {
 exports.getDailyMenu = async (req, res, next) => {
   const page = +req.query.page || 1;
   let totalItems;
-  let languageCode;
   let restaurantId = req.admin.id;
-
-  if (req.cookies.language == "ro") {
-    languageCode = 1;
-  } else if (req.cookies.language == "hu") {
-    languageCode = 2;
-  } else {
-    languageCode = 3;
-  }
+  const languageCode = getLanguageCode(req.cookies.language);
 
   // Le kell ellenőrizni, hogy az étteremnek legalább 2 hozzárendelt variánsa van-e
   const variant = await ProductVariants.findAll({
@@ -261,16 +238,8 @@ exports.getDailyMenu = async (req, res, next) => {
 exports.getProducts = async (req, res, next) => {
   const page = +req.query.page || 1;
   let totalItems;
-  let languageCode;
   let restaurantId = req.admin.id;
-
-  if (req.cookies.language == "ro") {
-    languageCode = 1;
-  } else if (req.cookies.language == "hu") {
-    languageCode = 2;
-  } else {
-    languageCode = 3;
-  }
+  const languageCode = getLanguageCode(req.cookies.language);
 
   // Le kell ellenőrizni, hogy az étteremnek legalább 2 hozzárendelt variánsa van-e
   const variant = await ProductVariants.findAll({

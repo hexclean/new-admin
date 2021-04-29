@@ -6,27 +6,26 @@ const PropertyTranslation = require("../../models/PropertyTranslation");
 const Sequelize = require("sequelize");
 const CategoryProperty = require("../../models/CategoryProperty");
 const Op = Sequelize.Op;
+const { getLanguageCode } = require("../../shared/language");
 
+// GET
+// Kategória létrehozás oldal betöltése
 exports.getAddCategory = async (req, res, next) => {
-  let languageCode;
+  // Változók deklarálása
+  const languageCode = getLanguageCode(req.cookies.language);
+  const restaurantId = req.admin.id;
 
-  if (req.cookies.language == "ro") {
-    languageCode = 1;
-  } else if (req.cookies.language == "hu") {
-    languageCode = 2;
-  } else {
-    languageCode = 3;
-  }
-
+  // Lekérem az étterem allergénjeit a validáció miatt
   const checkAllergenLength = await Allergen.findAll({
     where: {
-      restaurantId: req.admin.id,
+      restaurantId: restaurantId,
     },
   });
 
+  // Lekérem az étterem alkategóriájit a validáció miatt
   const property = await Property.findAll({
     where: {
-      restaurantId: req.admin.id,
+      restaurantId: restaurantId,
     },
     include: [
       {
@@ -38,12 +37,16 @@ exports.getAddCategory = async (req, res, next) => {
     ],
   });
 
-  if (checkAllergenLength.length === 0) {
+  // Le kell ellenőrizni, hogy az étteremnek legalább 2 hozzárendelt variánsa van-e
+  if (checkAllergenLength.length < 2) {
     return res.redirect("/admin/category-index");
   }
+
+  // Le kell ellenőrizni, hogy az étteremnek legalább 2 hozzárendelt alkategóriája van-e
   if (property.length < 2) {
     return res.redirect("/admin/category-index");
   }
+  // Az adatokat átadom a html fájlnak
   res.render("category/edit-category", {
     pageTitle: "Add Product",
     path: "/admin/add-product",
@@ -51,138 +54,20 @@ exports.getAddCategory = async (req, res, next) => {
     property: property,
   });
 };
-exports.getOrderCategory = async (req, res, next) => {
-  const category = await Category.findAll({
-    where: { restaurantId: req.admin.id },
-    include: [{ model: CategoryTranslation, where: { languageId: 1 } }],
-  });
-  // console.log(category);
-  // const property77 = await Property.findAll({
-  //   where: {
-  //     restaurantId: req.admin.id,
-  //   },
-  //   include: [
-  //     {
-  //       model: PropertyTranslation,
-  //       where: {
-  //         languageId: 1,
-  //       },
-  //     },
-  //   ],
-  //   include: [
-  //     {
-  //       model: PropertyValue,
-  //       where: { propertyId: 1 },
-  //       include: [
-  //         {
-  //           model: PropertyValueTranslation,
-  //           where: { languageId: 1 },
-  //         },
-  //       ],
-  //     },
-  //   ],
-  // });
 
-  res.render("category/order-category", {
-    pageTitle: "Add Product",
-    path: "/admin/add-product",
-    editing: false,
-    category: category,
-    // property: property,
-  });
-};
-exports.postOrderCategory = async (req, res, next) => {
-  const alma = req.body.alma;
-  let newTest = [alma];
-  const categoryId = req.body.categoryId;
-  // const roName = req.body.roName;
-  // const huName = req.body.huName;
-  // const enName = req.body.enName;
-  // const filteredStatus = req.body.status.filter(Boolean);
-  // const propertyId = req.body.propertyId;
-
-  // if (roName == "" || huName == "" || enName == "") {
-  //   return res.redirect("/admin/category-index");
-  // }
-  try {
-    async function cc() {
-      for (let i = 0; i < newTest.length; i++) {
-        let categoryId = [req.body.categoryId];
-        let testId = categoryId[i];
-        console.log("testId", testId);
-        console.log(newTest);
-        await Category.update(
-          {
-            order: newTest[i],
-          },
-          {
-            where: {
-              restaurantId: req.admin.id,
-              // id: {
-              //   [Op.in]: testId[i],
-              // },
-            },
-          }
-        );
-      }
-    }
-    cc();
-  } catch (error) {
-    console.log(error);
-  }
-
-  // try {
-  //   async function createExtraTranslation() {
-  //     const category = await Category.create({
-  //       restaurantId: req.admin.id,
-  //     });
-
-  //     await CategoryTranslation.create({
-  //       name: roName,
-  //       languageId: 1,
-  //       categoryId: category.id,
-  //       restaurantId: req.admin.id,
-  //     });
-
-  //     await CategoryTranslation.create({
-  //       name: huName,
-  //       languageId: 2,
-  //       categoryId: category.id,
-  //       restaurantId: req.admin.id,
-  //     });
-
-  //     await CategoryTranslation.create({
-  //       name: enName,
-  //       languageId: 3,
-  //       categoryId: category.id,
-  //       restaurantId: req.admin.id,
-  //     });
-
-  //     for (let i = 0; i <= filteredStatus.length - 1; i++) {
-  //       await CategoryProperty.create({
-  //         categoryId: category.id,
-  //         propertyId: propertyId[i],
-  //         active: filteredStatus[i] == "on" ? 1 : 0,
-  //         restaurantId: req.admin.id,
-  //       });
-  //     }
-  //   }
-
-  //   createExtraTranslation();
-  //   res.redirect("/admin/category-index");
-  // } catch (err) {
-  //   const error = new Error(err);
-  //   error.httpStatusCode = 500;
-  //   return next(error);
-  // }
-};
+// POST
+// Kategória létrehozása
 exports.postAddCategory = async (req, res, next) => {
+  // Változók deklarálása
   const roName = req.body.roName;
   const huName = req.body.huName;
   const enName = req.body.enName;
   const filteredStatus = req.body.status.filter(Boolean);
   const propertyId = req.body.propertyId;
+  let restaurantId = req.admin.id;
+  let categoryId;
 
+  // Szerver oldali validáció létrehozásra
   if (
     roName.length == 0 ||
     huName.length == 0 ||
@@ -193,44 +78,52 @@ exports.postAddCategory = async (req, res, next) => {
   }
 
   try {
+    // Kategória létrehozása
     async function createCategory() {
-      const category = await Category.create({
-        restaurantId: req.admin.id,
+      category = await Category.create({
+        restaurantId: restaurantId,
         active: 0,
       });
+      categoryId = categoryId.id;
 
       await CategoryTranslation.create({
         name: roName,
         languageId: 1,
-        categoryId: category.id,
-        restaurantId: req.admin.id,
+        categoryId: categoryId,
+        restaurantId: restaurantId,
       });
 
       await CategoryTranslation.create({
         name: huName,
         languageId: 2,
-        categoryId: category.id,
-        restaurantId: req.admin.id,
+        categoryId: categoryId,
+        restaurantId: restaurantId,
       });
 
       await CategoryTranslation.create({
         name: enName,
         languageId: 3,
-        categoryId: category.id,
-        restaurantId: req.admin.id,
+        categoryId: categoryId,
+        restaurantId: restaurantId,
       });
+    }
 
+    // A CategoryProperty táblába elmentem az összes alkategórákat a saját státuszukkal
+    async function createSubcategoryToCategory() {
+      // Elmentem az összes alkategóriát. Amelyik be van jelölve az 1-essel mentődik a többi 0-val
       for (let i = 0; i <= filteredStatus.length - 1; i++) {
         await CategoryProperty.create({
-          categoryId: category.id,
+          categoryId: categoryId,
           propertyId: propertyId[i],
           active: filteredStatus[i] == "on" ? 1 : 0,
-          restaurantId: req.admin.id,
+          restaurantId: restaurantId,
         });
       }
     }
 
     await createCategory();
+    await createSubcategoryToCategory();
+
     res.redirect("/admin/category-index");
   } catch (err) {
     const error = new Error(err);
@@ -238,55 +131,66 @@ exports.postAddCategory = async (req, res, next) => {
     return next(error);
   }
 };
+
+// GET
+// Kategória szerkesztés oldal betöltése
 exports.getEditCategory = async (req, res, next) => {
   const editMode = req.query.edit;
   const categoryId = req.params.categoryId;
+  const languageCode = getLanguageCode(req.cookies.language);
+  let restaurantId = req.admin.id;
 
-  await Category.findByPk(categoryId).then((category) => {
-    if (!category || !editMode) {
-      return res.redirect("/");
-    }
-  });
-
-  const isActiveProperty = await CategoryProperty.findAll({
-    where: { restaurantId: req.admin.id, categoryId: categoryId },
-  });
-
-  const property = await Property.findAll({
-    where: {
-      restaurantId: req.admin.id,
-    },
-    include: [
-      {
-        model: PropertyTranslation,
-        where: {
-          languageId: 1,
-        },
-      },
-    ],
-  });
   try {
-    await Category.findAll({
+    // Ha nem az étterem kategóriája, akkor visszairányítom a kategória listára
+    await Category.findByPk(categoryId).then((category) => {
+      if (!category || !editMode) {
+        return res.redirect("/category-index");
+      }
+    });
+
+    // Megkeresem a kijelölt alkategóriát
+    const isActiveProperty = await CategoryProperty.findAll({
+      where: { restaurantId: restaurantId, categoryId: categoryId },
+    });
+
+    // Lekérem az étterem alkategóriájit
+    const property = await Property.findAll({
+      where: {
+        restaurantId: restaurantId,
+      },
+      include: [
+        {
+          model: PropertyTranslation,
+          where: {
+            languageId: languageCode,
+          },
+        },
+      ],
+    });
+
+    // Megkeresem a jelenlegi szerkeszteni kívánt kategóriát
+    const category = await Category.findAll({
       where: {
         id: categoryId,
-        restaurantId: req.admin.id,
+        restaurantId: restaurantId,
       },
       include: [
         {
           model: CategoryTranslation,
         },
       ],
-    }).then((category) => {
-      res.render("category/edit-category", {
-        pageTitle: "Edit Product",
-        path: "/admin/edit-product",
-        editing: editMode,
-        category: category,
-        categoryId: categoryId,
-        extTranslations: category[0].CategoryTranslations,
-        isActiveProperty: isActiveProperty,
-        property: property,
-      });
+    });
+
+    // Átadom a lekért adatokat a html oldalnak
+    res.render("category/edit-category", {
+      pageTitle: "Edit Product",
+      path: "/admin/edit-product",
+      editing: editMode,
+      category: category,
+      categoryId: categoryId,
+      extTranslations: category[0].CategoryTranslations,
+      isActiveProperty: isActiveProperty,
+      property: property,
     });
   } catch (err) {
     const error = new Error(err);
@@ -294,14 +198,20 @@ exports.getEditCategory = async (req, res, next) => {
     return next(error);
   }
 };
+
+// POST
+// Kategória szerkesztése
 exports.postEditCategory = async (req, res, next) => {
+  // Változók deklarálása
   const categoryId = req.body.categoryId;
   const updatedRoName = req.body.roName;
   const updatedHuName = req.body.huName;
   const updatedEnName = req.body.enName;
   const filteredStatus = req.body.status.filter(Boolean);
   const propertyId = req.body.propertyId;
+  let restaurantId = req.admin.id;
 
+  // Szerver oldali validáció létrehozásra
   if (
     updatedRoName.length == 0 ||
     updatedHuName.length == 0 ||
@@ -310,11 +220,14 @@ exports.postEditCategory = async (req, res, next) => {
   ) {
     return res.redirect("/admin/category-index");
   }
+
+  // Megkeresem a kijelölt alkategóriát
   const isActiveProperty = await CategoryProperty.findAll({
-    where: { restaurantId: req.admin.id, categoryId: categoryId },
+    where: { restaurantId: restaurantId, categoryId: categoryId },
   });
 
   try {
+    // Kategória szerkesztése
     async function updateCategory() {
       await CategoryTranslation.update(
         { name: updatedRoName },
@@ -332,8 +245,9 @@ exports.postEditCategory = async (req, res, next) => {
       );
     }
 
-    async function updateExtraHasAllergen() {
-      for (let i = 0; i <= isActiveProperty.length - 1; i++) {
+    // Elmenti a kijelölt alkategóriát 1-el a többit 0-val
+    async function updateActiveSubcategory() {
+      for (let i = 0; i < isActiveProperty.length; i++) {
         let propertyIds = [propertyId[i]];
 
         await CategoryProperty.update(
@@ -343,7 +257,7 @@ exports.postEditCategory = async (req, res, next) => {
           {
             where: {
               categoryId: categoryId,
-              restaurantId: req.admin.id,
+              restaurantId: restaurantId,
               propertyId: {
                 [Op.in]: propertyIds,
               },
@@ -353,7 +267,8 @@ exports.postEditCategory = async (req, res, next) => {
       }
     }
     await updateCategory();
-    await updateExtraHasAllergen();
+    await updateActiveSubcategory();
+
     res.redirect("/admin/category-index");
   } catch (err) {
     const error = new Error(err);
