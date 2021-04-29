@@ -26,7 +26,10 @@ exports.postAddExtra = async (req, res, next) => {
   const huName = req.body.huName;
   const enName = req.body.enName;
   const price = req.body.price;
+  let restaurantId = req.admin.id;
+  let extraId;
 
+  // Szerver oldali validáció
   if (
     roName.length == 0 ||
     huName.length == 0 ||
@@ -37,34 +40,37 @@ exports.postAddExtra = async (req, res, next) => {
   }
 
   try {
-    const extra = await Extra.create({
-      // extraType: extraType,
-      price: price,
-      restaurantId: req.admin.id,
-    });
-
+    // Extra létrehozása
     async function createExtra() {
+      const extra = await Extra.create({
+        // extraType: extraType,
+        price: price,
+        restaurantId: restaurantId,
+      });
+      extraId = extra.id;
+
       await ExtraTranslation.create({
         name: roName,
         languageId: 1,
-        extraId: extra.id,
+        extraId: extraId,
       });
       await ExtraTranslation.create({
         name: huName,
         languageId: 2,
-        extraId: extra.id,
+        extraId: extraId,
       });
 
       await ExtraTranslation.create({
         name: enName,
         languageId: 3,
-        extraId: extra.id,
+        extraId: extraId,
       });
     }
 
+    // Az újonnan létrehozott extrát hozzá rendelem nem aktívként az összes variánsokhoz
     async function addExtraToVariant() {
       const variants = await ProductVariants.findAll({
-        where: { restaurantId: req.admin.id },
+        where: { restaurantId: restaurantId },
       });
 
       for (let i = 0; i < variants.length; i++) {
@@ -72,11 +78,11 @@ exports.postAddExtra = async (req, res, next) => {
         let extraId = [];
 
         variantId = variants[i].id;
-        extraId = extra.id;
+        extraId = extraId;
 
         await ProductVariantsExtras.create({
           active: 0,
-          restaurantId: req.admin.id,
+          restaurantId: restaurantId,
           extraId: extraId,
           discountedPrice: 0,
           price: 0,
@@ -103,6 +109,9 @@ exports.postAddExtra = async (req, res, next) => {
 exports.getEditExtra = async (req, res, next) => {
   const editMode = req.query.edit;
   const extraId = req.params.extraId;
+  const restaurantId = req.admin.id;
+
+  // Szerver oldali validáció
   await Extra.findByPk(extraId).then((extra) => {
     if (!extra || !editMode) {
       return res.redirect("/");
@@ -113,7 +122,7 @@ exports.getEditExtra = async (req, res, next) => {
     const extra = await Extra.findAll({
       where: {
         id: extraId,
-        restaurantId: req.admin.id,
+        restaurantId: restaurantId,
       },
       include: [
         {
@@ -122,6 +131,7 @@ exports.getEditExtra = async (req, res, next) => {
       ],
     });
 
+    // Átadom a lekért adatokat a HTML oldalnak
     res.render("extra/edit-extra", {
       pageTitle: "Edit Product",
       path: "/admin/edit-product",
@@ -131,6 +141,7 @@ exports.getEditExtra = async (req, res, next) => {
       extraTranslation: extra[0].ExtraTranslations,
     });
   } catch (err) {
+    console.log(err);
     const error = new Error(err);
     error.httpStatusCode = 500;
     return next(error);
@@ -145,6 +156,8 @@ exports.postEditExtra = async (req, res, next) => {
   const enName = req.body.enName;
   const price = req.body.price;
   const extraId = req.body.extraId;
+
+  // Szerver oldali validáció
   if (
     roName.length == 0 ||
     huName.length == 0 ||
@@ -153,7 +166,9 @@ exports.postEditExtra = async (req, res, next) => {
   ) {
     return res.redirect("/admin/extra-index");
   }
+
   try {
+    // Extra szerkesztése
     async function updateExtra() {
       await Extra.update({ price: price }, { where: { id: extraId } });
 
@@ -177,6 +192,7 @@ exports.postEditExtra = async (req, res, next) => {
 
     res.redirect("/admin/extra-index");
   } catch (err) {
+    console.log(err);
     const error = new Error(err);
     error.httpStatusCode = 500;
     return next(error);
