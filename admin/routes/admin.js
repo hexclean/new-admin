@@ -196,11 +196,15 @@ router.post("/add-extra", isAuth, extraController.postAddExtra);
 
 // Product
 router.get("/add-product", isAuth, adminController.getAddProduct);
-router.get("/daily-menu", isAuth, adminController.getDailyMenu);
 router.post("/add-product", adminController.postAddProduct);
 router.get("/edit-product/:productId", isAuth, adminController.getEditProduct);
 router.post("/edit-product", isAuth, adminController.postEditProduct);
 router.post("/delete-product", isAuth, adminController.postDeleteProduct);
+router.post(
+  "/delete-daily-menu",
+  isAuth,
+  dailyMenuController.postDeleteDailyMenu
+);
 
 // UPSELL
 router.get("/add-upsell", isAuth, upsellController.getAddUpsellProduct);
@@ -291,9 +295,6 @@ router.post(
   deletedItemsController.postRestoreProduct
 );
 
-// Review
-router.get("/products-reviews", isAuth, reviewController.getProductsReview);
-
 // Orders
 router.get("/orders", isAuth, ordersController.getOrders);
 
@@ -308,8 +309,7 @@ router.get(
   deliveryPriceController.getEditDeliveryPrice
 );
 // UPSELL
-// router.get("/add-product", isAuth, adminController.getUpsell);
-router.get("/upsell", isAuth, adminController.getUpsell);
+
 router.post("/ajax/next", isAuth, ordersController.postEditOrderAjaxNext);
 router.post("/ajax/prev", isAuth, ordersController.postEditOrderAjaxPrev);
 router.get("/courier-orders", isAuth, ordersController.getOrdersByCourier);
@@ -328,7 +328,6 @@ router.post(
   statisticController.postStatistic
 );
 
-// router.get("/daily-menu", isAuth, adminController.getDailyMenu);
 // router.post("/add-product", adminController.postAddProduct);
 // router.get("/edit-product/:productId", isAuth, adminController.getEditProduct);
 // router.post("/edit-product", isAuth, adminController.postEditProduct);

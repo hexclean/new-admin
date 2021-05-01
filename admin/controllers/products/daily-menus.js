@@ -589,7 +589,7 @@ exports.postEditDailyMenu = async (req, res, next) => {
 
 // POST
 // Termék inaktiválása
-exports.postDeleteProduct = async (req, res, next) => {
+exports.postDeleteDailyMenu = async (req, res, next) => {
   const prodId = req.body.productId;
   try {
     async function inactivateProduct() {

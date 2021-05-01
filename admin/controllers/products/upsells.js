@@ -590,7 +590,7 @@ exports.postDeleteUpsellProduct = async (req, res, next) => {
       });
     }
     await inactivateProduct();
-    res.redirect("/admin/upsell");
+    res.redirect("/admin/upsells");
   } catch (err) {
     const error = new Error(err);
     error.httpStatusCode = 500;

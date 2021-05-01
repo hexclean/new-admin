@@ -101,13 +101,13 @@
                                     <td><%= prods[i].ProductTranslations[0].title %></td>
                                     <td><%= prods[i].ProductFinals[0].Variant.sku %></td>
                                     <td>
-                                       <form action="/admin/delete-product" method="POST">
+                                       <form action="/admin/delete-daily-menu" method="POST">
                                           <input type="hidden" value="<%= prods[i].id %>" name="productId">
-                                          <a class="btn btn-danger btn-sm" href="/admin/delete-product">
+                                          <button type="submit" class="btn btn-danger btn-sm">
                                           <i class="fas fa-trash">
                                           </i>
                                           Elfogyott
-                                          </a>
+                                       </button>
                                        </form>
                                     </td>
                                     <td>
