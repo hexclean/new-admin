@@ -94,18 +94,15 @@ exports.getAddDailyMenu = async (req, res, next) => {
 // Termék létrehozása
 exports.postAddDailyMenuProduct = async (req, res, next) => {
   // Változók deklarálása
-  console.log(req.admin.id);
   const allergenId = req.body.allergenId;
   const restaurantId = req.admin.id;
   var filteredStatus = req.body.status.filter(Boolean);
   const roTitle = req.body.roTitle;
   const huTitle = req.body.huTitle;
-  const enTitle = req.body.enTitle;
   const boxId = req.body.boxId;
   const price = req.body.price;
   const roDescription = req.body.roDescription;
   const huDescription = req.body.huDescription;
-  const enDescription = req.body.enDescription;
   const extId = req.body.extraId;
   const filteredStatusAllergen = req.body.statusAllergen.filter(Boolean);
   const filteredStatusBox = req.body.statusBox.filter(Boolean);
@@ -121,11 +118,9 @@ exports.postAddDailyMenuProduct = async (req, res, next) => {
     allergenId.length == 0 ||
     filteredStatus.length == 0 ||
     huTitle.length == 0 ||
-    enTitle.length == 0 ||
     price.length == 0 ||
     roDescription.length == 0 ||
     huDescription.length == 0 ||
-    enDescription.length == 0 ||
     extId.length == 0 ||
     filteredStatusAllergen.length == 0 ||
     filteredStatusBox.length == 0
@@ -188,9 +183,9 @@ exports.postAddDailyMenuProduct = async (req, res, next) => {
       });
 
       await ProductTranslation.create({
-        title: enTitle,
+        title: roTitle,
         languageId: 3,
-        description: enDescription,
+        description: roDescription,
         productId: productId,
       });
     }
@@ -432,10 +427,8 @@ exports.postEditDailyMenu = async (req, res, next) => {
   const filteredStatusAllergen = req.body.statusAllergen.filter(Boolean);
   const updatedRoTitle = req.body.roTitle;
   const updatedHuTitle = req.body.huTitle;
-  const updatedEnTitle = req.body.enTitle;
   const updatedRoDesc = req.body.roDescription;
   const updatedHuDesc = req.body.huDescription;
-  const updatedEnDesc = req.body.enDescription;
   const updatedExtraPrice = req.body.price;
   const image = await req.file;
   const filteredStatus = req.body.status.filter(Boolean);
@@ -515,8 +508,8 @@ exports.postEditDailyMenu = async (req, res, next) => {
 
       await ProductTranslation.update(
         {
-          title: updatedEnTitle,
-          description: updatedEnDesc,
+          title: updatedRoTitle,
+          description: updatedRoDesc,
         },
         { where: { productId: prodId, languageId: 3 } }
       );
