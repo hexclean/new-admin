@@ -1800,6 +1800,13 @@ exports.getOrderDetail = async (req, res, next) => {
   //   include: [{ model: RestaurantRole }],
   // });
   // let userRoleType = userRole.RestaurantRoles[0].role;
+  let reqAdmin = req.admin.id;
+  const orderId = req.params.orderId;
+  await Order.findOne({ where: { encodedKey: orderId } }).then((order) => {
+    if (!order) {
+      return res.redirect("/admin/order-list");
+    }
+  });
   let languageCode;
   if (req.cookies.language == "ro") {
     languageCode = 1;
@@ -1808,8 +1815,7 @@ exports.getOrderDetail = async (req, res, next) => {
   } else {
     languageCode = 3;
   }
-  let reqAdmin = req.admin.id;
-  const orderId = req.params.orderId;
+
   const orderfirst = await getOrderByEncodedKey(
     orderId,
     reqAdmin,
@@ -1842,9 +1848,6 @@ const getOrderByEncodedKey = async (
   req,
   res
 ) => {
-  const TODAY_START = new Date().setHours(0, 0, 0, 0);
-  const NOW = new Date();
-
   const orders = await Order.findAll({
     order: [["createdAt", "DESC"]],
     where: {
@@ -1909,7 +1912,11 @@ const getOrderByEncodedKey = async (
       },
     ],
   });
-  // console.log(orders);
+  // if (orders.length < 1) {
+  //   return res.redirect("/admin/order-list");
+  //   // console.log(4234324);
+  // }
+  console.log(orders);
   let extras = [];
   let test = [];
   let cutlery;
