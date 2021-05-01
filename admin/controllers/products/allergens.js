@@ -18,12 +18,11 @@ exports.getAddAllergen = async (req, res, next) => {
 exports.postAddAllergen = async (req, res, next) => {
   const roName = req.body.roName;
   const huName = req.body.huName;
-  const enName = req.body.enName;
   const restaurantId = req.admin.id;
   let allergenId;
 
   // Szerver oldali validáció
-  if (roName.length == 0 || huName.length == 0 || enName.length == 0) {
+  if (roName.length == 0 || huName.length == 0) {
     return res.redirect("/admin/allerges");
   }
 
@@ -50,7 +49,7 @@ exports.postAddAllergen = async (req, res, next) => {
       });
 
       await AllergensTranslation.create({
-        name: enName,
+        name: roName,
         languageId: 3,
         allergenId: allergenId,
         restaurantId: restaurantId,
@@ -132,15 +131,10 @@ exports.getEditAllergen = async (req, res, next) => {
 exports.postEditAllergen = async (req, res, next) => {
   const updatedRoName = req.body.roName;
   const updatedHuName = req.body.huName;
-  const updatedEnName = req.body.enName;
   const allergenId = req.body.allergenId;
 
   // Szerver oldali validáció
-  if (
-    updatedRoName.length == 0 ||
-    updatedHuName.length == 0 ||
-    updatedEnName.length == 0
-  ) {
+  if (updatedRoName.length == 0 || updatedHuName.length == 0) {
     return res.redirect("/admin/allergens");
   }
 
@@ -158,7 +152,7 @@ exports.postEditAllergen = async (req, res, next) => {
       );
 
       await AllergensTranslation.update(
-        { name: updatedEnName },
+        { name: updatedRoName },
         { where: { allergenId: allergenId, languageId: 3 } }
       );
     }

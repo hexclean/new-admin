@@ -88,17 +88,6 @@
                                                 <span class="invalid-feedback" id="huName_error_message"></span>
                                         </div>
                                         <div class="form-group">
-                                            <label for="enTitle">Napi menü angol neve</label>
-                                            <input
-                                                type="text"
-                                                class="form-control enTitle"
-                                                id="enTitle"
-                                                name="enTitle"
-                                                placeholder="Napi menü angol neve"
-                                                value="<% if (editing) { %><%= product[0].ProductTranslations[2].title %><% } %>">
-                                                <span class="invalid-feedback" id="enName_error_message"></span>
-                                        </div>
-                                        <div class="form-group">
                                             <div class="form-group">
                                                 <label>Napi menü román leírása</label>
                                                 <textarea
@@ -122,19 +111,6 @@
                                                     placeholder="Napi menü magyar leírása"
                                                     ><% if (editing) { %><%= product[0].ProductTranslations[1].description %><% } %></textarea>
                                                     <span class="invalid-feedback" id="huDescription_error_message"></span>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <div class="form-group">
-                                                <label>Napi menü angol leírása</label>
-                                                <textarea
-                                                    class="form-control enDescription"
-                                                    rows="3"
-                                                    id="enDescription"
-                                                    name="enDescription"
-                                                    placeholder="Napi menü angol leírása"
-                                                    ><% if (editing) { %><%= product[0].ProductTranslations[2].description %><% } %></textarea>
-                                                    <span class="invalid-feedback" id="enDescription_error_message"></span>
                                             </div>
                                         </div>
                                         <div class="form-group">

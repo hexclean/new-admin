@@ -25,18 +25,12 @@ exports.postAddExtra = async (req, res, next) => {
   console.log(req.body);
   const roName = req.body.roName;
   const huName = req.body.huName;
-  const enName = req.body.enName;
   const price = req.body.price;
   let restaurantId = req.admin.id;
   let extraId;
 
   // Szerver oldali validáció
-  if (
-    roName.length == 0 ||
-    huName.length == 0 ||
-    enName.length == 0 ||
-    price.length == 0
-  ) {
+  if (roName.length == 0 || huName.length == 0 || price.length == 0) {
     return res.redirect("/admin/extras");
   }
 
@@ -62,7 +56,7 @@ exports.postAddExtra = async (req, res, next) => {
       });
 
       await ExtraTranslation.create({
-        name: enName,
+        name: roName,
         languageId: 3,
         extraId: extraId,
       });
@@ -154,17 +148,11 @@ exports.getEditExtra = async (req, res, next) => {
 exports.postEditExtra = async (req, res, next) => {
   const roName = req.body.roName;
   const huName = req.body.huName;
-  const enName = req.body.enName;
   const price = req.body.price;
   const extraId = req.body.extraId;
 
   // Szerver oldali validáció
-  if (
-    roName.length == 0 ||
-    huName.length == 0 ||
-    enName.length == 0 ||
-    price.length == 0
-  ) {
+  if (roName.length == 0 || huName.length == 0 || price.length == 0) {
     return res.redirect("/admin/extras");
   }
 
@@ -184,7 +172,7 @@ exports.postEditExtra = async (req, res, next) => {
       );
 
       await ExtraTranslation.update(
-        { name: enName },
+        { name: roName },
         { where: { extraId: extraId, languageId: 3 } }
       );
     }

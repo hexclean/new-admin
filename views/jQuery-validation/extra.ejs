@@ -1,17 +1,5 @@
 <script>
   $(document).ready(function () {
-    $(".status-checkbox").click(function () {
-      var extraId = $(this).attr("data-extraId");
-      if ($(this).is(":checked")) {
-        $(".status-" + extraId).val("on");
-      } else {
-        $(".status-" + extraId).val("off");
-      }
-    });
-  });
-</script>
-<script>
-  $(document).ready(function () {
     const regex = /[^\d.]|\.(?=.*\.)/g;
     const subst = ``;
     $(".extra_price_input").keyup(function () {
@@ -25,15 +13,10 @@
   $(function () {
     $("#roName_error_message").hide();
     $("#huName_error_message").hide();
-    $("#enName_password_error_message").hide();
-    $("#allergen_error_message").hide();
     $("#price_error_message").hide();
 
     var error_roName = false;
     var error_huName = false;
-    var error_enName = false;
-    var error_sku = false;
-    var error_allergen = false;
     var error_price = false;
 
     $("#roName").focusout(function () {
@@ -44,13 +27,6 @@
       check_huName();
     });
 
-    $("#enName").focusout(function () {
-      check_enName();
-    });
-
-    $(".status-checkbox").change(function () {
-      check_allergen();
-    });
     $("#price").change(function () {
       check_price();
     });
@@ -101,37 +77,18 @@
       }
     }
 
-    function check_enName() {
-      var enName_length = $("#enName").val().length;
-
-      if (enName_length < 1 || enName_length > 100) {
-        $(".enName").addClass("is-invalid");
-        $("#enName_error_message").html(
-          "Extra angol nevének megadása kötelező!"
-        );
-        $("#enName_error_message").show();
-        error_enName = true;
-      } else {
-        $(".enName").removeClass("is-invalid");
-        $("#enName_error_message").hide();
-      }
-    }
-
     $("#createExtra_form").submit(function () {
       error_roName = false;
       error_huName = false;
-      error_enName = false;
       error_price = false;
 
       check_roName();
       check_huName();
-      check_enName();
       check_price();
 
       if (
         error_roName == false &&
         error_huName == false &&
-        error_enName == false &&
         error_price == false
       ) {
         $("#createBox").prop("disabled", true);
@@ -142,11 +99,6 @@
     });
   });
 </script>
-<style>
-  .intro {
-    border-color: red;
-  }
-</style>
 
 <script>
   $(document).ready(function () {

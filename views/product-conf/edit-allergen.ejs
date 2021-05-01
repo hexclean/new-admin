@@ -59,20 +59,6 @@
                                     id="huName_error_message"
                                     ></span>
                               </div>
-                              <div class="form-group">
-                                 <label for="enName">Allergén angol neve</label>
-                                 <input
-                                    type="text"
-                                    class="form-control enName"
-                                    placeholder="Allergén angol neve"
-                                    id="enName"
-                                    name="enName"
-                                    value="<% if (editing) { %><%= allergen[0].AllergenTranslations[2].name %><% } %>">
-                                 <span
-                                    class="invalid-feedback"
-                                    id="enName_error_message"
-                                    ></span>
-                              </div>
                            </div>
                            <div class="card-footer">
                               <button name="createCategory" id="createCategory" type="submit" class="btn btn-secondary">

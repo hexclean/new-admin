@@ -2,22 +2,15 @@
   $(function () {
     $("#roName_error_message").hide();
     $("#huName_error_message").hide();
-    $("#enName_error_message").hide();
 
     var error_roName = false;
     var error_huName = false;
-    var error_enName = false;
-
     $("#roName").focusout(function () {
       check_roName();
     });
 
     $("#huName").focusout(function () {
       check_huName();
-    });
-
-    $("#enName").focusout(function () {
-      check_enName();
     });
 
     function check_roName() {
@@ -52,37 +45,14 @@
       }
     }
 
-    function check_enName() {
-      var enName_length = $("#enName").val().length;
-
-      if (enName_length < 1 || enName_length > 700) {
-        $(".enName").addClass("is-invalid");
-        $("#enName_error_message").html(
-          "Allergén angol nevének megadása kötelező!"
-        );
-        $("#enName_error_message").show();
-
-        error_enName = true;
-      } else {
-        $(".enName").removeClass("is-invalid");
-        $("#enName_error_message").hide();
-      }
-    }
-
     $("#createAllergen_form").submit(function () {
       error_roName = false;
       error_huName = false;
-      error_enName = false;
 
       check_roName();
       check_huName();
-      check_enName();
 
-      if (
-        error_roName == false &&
-        error_huName == false &&
-        error_enName == false
-      ) {
+      if (error_roName == false && error_huName == false) {
         $("#createBox").prop("disabled", true);
 
         return true;
