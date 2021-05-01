@@ -1,6 +1,5 @@
 const Category = require("../../../models/Category");
 const CategoryTranslation = require("../../../models/CategoryTranslation");
-const Allergen = require("../../../models/Allergen");
 const Property = require("../../../models/Property");
 const PropertyTranslation = require("../../../models/PropertyTranslation");
 const Sequelize = require("sequelize");
@@ -49,19 +48,13 @@ exports.postAddCategory = async (req, res, next) => {
   // Változók deklarálása
   const roName = req.body.roName;
   const huName = req.body.huName;
-  const enName = req.body.enName;
   const filteredStatus = req.body.status.filter(Boolean);
   const propertyId = req.body.propertyId;
   let restaurantId = req.admin.id;
   let categoryId;
 
   // Szerver oldali validáció létrehozásra
-  if (
-    roName.length == 0 ||
-    huName.length == 0 ||
-    enName.length == 0 ||
-    filteredStatus.length == 0
-  ) {
+  if (roName.length == 0 || huName.length == 0 || filteredStatus.length == 0) {
     return res.redirect("/admin/categories");
   }
 
@@ -89,7 +82,7 @@ exports.postAddCategory = async (req, res, next) => {
       });
 
       await CategoryTranslation.create({
-        name: enName,
+        name: roName,
         languageId: 3,
         categoryId: categoryId,
         restaurantId: restaurantId,
@@ -195,7 +188,6 @@ exports.postEditCategory = async (req, res, next) => {
   const categoryId = req.body.categoryId;
   const updatedRoName = req.body.roName;
   const updatedHuName = req.body.huName;
-  const updatedEnName = req.body.enName;
   const filteredStatus = req.body.status.filter(Boolean);
   const propertyId = req.body.propertyId;
   let restaurantId = req.admin.id;
@@ -204,7 +196,6 @@ exports.postEditCategory = async (req, res, next) => {
   if (
     updatedRoName.length == 0 ||
     updatedHuName.length == 0 ||
-    updatedEnName.length == 0 ||
     categoryId.length == 0
   ) {
     return res.redirect("/admin/categories");
@@ -229,7 +220,7 @@ exports.postEditCategory = async (req, res, next) => {
       );
 
       await CategoryTranslation.update(
-        { name: updatedEnName },
+        { name: updatedRoName },
         { where: { categoryId: categoryId, languageId: 3 } }
       );
     }

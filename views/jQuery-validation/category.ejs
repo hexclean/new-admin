@@ -2,12 +2,10 @@
   $(function () {
     $("#roName_error_message").hide();
     $("#huName_error_message").hide();
-    $("#enName_error_message").hide();
     $("#property_error_message").hide();
 
     var error_roName = false;
     var error_huName = false;
-    var error_enName = false;
     var error_property = false;
 
     $("#roName").focusout(function () {
@@ -16,10 +14,6 @@
 
     $("#huName").focusout(function () {
       check_huName();
-    });
-
-    $("#enName").focusout(function () {
-      check_enName();
     });
 
     $(".status-checkbox").change(function () {
@@ -62,24 +56,6 @@
       }
     }
 
-    function check_enName() {
-      var enName_length = $("#enName").val().length;
-
-      if (enName_length < 1 || enName_length > 60) {
-        $(".enName").addClass("is-invalid");
-        $("#enName_error_message").html(
-          "Kategória angol nevének megadása kötelező!"
-        );
-        $("#enName_error_message").show();
-        error_enName = true;
-        $("#createCategory").disabled = true;
-      } else {
-        $(".enName").removeClass("is-invalid");
-        $("#enName_error_message").hide();
-        $("#createCategory").removeAttr("disabled");
-      }
-    }
-
     function check_property() {
       if ($(".status-hidden[value='on']").length != 1) {
         $(".subCat").addClass("is-invalid");
@@ -97,18 +73,15 @@
     $("#createCategory_form").submit(function () {
       error_roName = false;
       error_huName = false;
-      error_enName = false;
       error_property = false;
 
       check_roName();
       check_huName();
-      check_enName();
       check_property();
 
       if (
         error_roName == false &&
         error_huName == false &&
-        error_enName == false &&
         error_property == false
       ) {
         $("#createCategory").prop("disabled", true);
@@ -120,12 +93,6 @@
     });
   });
 </script>
-
-<style>
-  .intro {
-    border-color: red;
-  }
-</style>
 
 <script>
   $(document).ready(function () {
