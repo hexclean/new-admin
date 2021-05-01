@@ -10,7 +10,17 @@
     });
   });
 </script>
-
+<script>
+  $(document).ready(function () {
+    const regex = /[^\d.]|\.(?=.*\.)/g;
+    const subst = ``;
+    $(".extra_price_input").keyup(function () {
+      const str = this.value;
+      const result = str.replace(regex, subst);
+      this.value = result;
+    });
+  });
+</script>
 <script>
   $(function () {
     $("#roName_error_message").hide();

@@ -94,6 +94,7 @@ exports.getAddDailyMenu = async (req, res, next) => {
 // Termék létrehozása
 exports.postAddDailyMenuProduct = async (req, res, next) => {
   // Változók deklarálása
+  console.log(req.admin.id);
   const allergenId = req.body.allergenId;
   const restaurantId = req.admin.id;
   var filteredStatus = req.body.status.filter(Boolean);
@@ -254,6 +255,7 @@ exports.postAddDailyMenuProduct = async (req, res, next) => {
         ext: variant,
       };
   } catch (err) {
+    console.log(err);
     const error = new Error(err);
     error.httpStatusCode = 500;
     return next(error);

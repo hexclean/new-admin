@@ -1,424 +1,305 @@
+
+
 <%- include('../includes/head.ejs') %>
 <%- include('../jQuery-validation/variant.ejs') %>
-  </head>
-  <body class="hold-transition sidebar-mini">
-     <form name="myForm"
-     action="/admin/<% if (editing) { %>edit-variant<% } else { %>add-variant<% } %>"
-     method="POST"
-     enctype="multipart/form-data"
-     id="variant_form">
-    <div class="wrapper">
-      <%- include('../includes/nav.ejs') %> <%- include('../includes/aside.ejs')
+</head>
+<body class="hold-transition sidebar-mini">
+   <form name="myForm"
+      action="/admin/<% if (editing) { %>edit-variant<% } else { %>add-variant<% } %>"
+      method="POST"
+      enctype="multipart/form-data"
+      id="variant_form">
+      <div class="wrapper">
+         <%- include('../includes/nav.ejs') %> <%- include('../includes/aside.ejs')
+            %>
+         <div class="content-wrapper">
+            <section class="content-header">
+               <div class="container-fluid">
+                  <div class="row mb-2">
+                     <div class="col-sm-6">
+                        <h1>Variáns testreszabása</h1>
+                     </div>
+                  </div>
+               </div>
+            </section>
+            <section class="content">
+               <div class="container-fluid">
+                  <div class="row">
+                     <div class="col-md-6">
+                        <div class="card card-secondary">
+                           <div class="card-header">
+                              <h3 class="card-title">Variáns fő adatai</h3>
+                           </div>
+                           <div class="card-body">
+                              <div class="form-group">
+                                 <label for="sku">Variáns neve</label>
+                                 <input
+                                    name="sku"
+                                    type="text"
+                                    class="form-control sku"
+                                    id="sku"
+                                    placeholder="Variáns neve"
+                                    value="<% if (editing) { %><%= variant[0].ProductVariantsExtras[0].Variant.sku %><% } %>">
+                                 <span
+                                    class="invalid-feedback"
+                                    id="sku_error_message"
+                                    ></span>
+                              </div>
+                              <div class="row">
+                                 <% if (editing) { %>
+                                 <input
+                                    type="hidden"
+                                    value="<%= varId %>"
+                                    name="varId"
+                                    /> 
+                                 <input type="hidden" value="<%= variantIdByParams %>" name="variantId">
+                                 <div class="col-sm-6">
+                                    <div class="form-group">
+                                       <label>Kategória választás</label>
+                                       <select for="categoryId" id="categoryId" name="categoryId" class="custom-select">
+                                          <option selected disabled>Válassz egyet</option>
+                                          <% for(let i = 0; i < cat.length; i++) { %>
+                                          <option id="categoryId" name="categoryId" value='<%= cat[i].id %>'><%= cat[i].CategoryTranslations[0].name %></option>
+                                          <% } %>
+                                       </select>
+                                    </div>
+                                 </div>
+                                 <% } else { %>
+                                 <div class="col-sm-6">
+                                    <div class="form-group">
+                                       <label>Kötelezően választandó extra</label>
+                                       <select class="custom-select categoryErrorVal" for="categoryId" id="categoryId" name="categoryId">
+                                          <option value="" selected disabled hidden>Kategória kiválasztása</option>
+                                          <% for(let i = 0; i < cat.length; i++) { %>
+                                          <option id="categoryId" name="categoryId" value='<%= cat[i].id %>'><%= cat[i].CategoryTranslations[0].name %>
+                                          </option>
+                                          <% } %>
+                                       </select>
+                                       <span
+                                          class="invalid-feedback"
+                                          id="category_error_message"
+                                          ></span>
+                                    </div>
+                                 </div>
+                                 <% } %>
+                                 <div class="col-sm-6">
+                                    <div class="form-group">
+                                       <label>Kötelezően választandó extra</label>
+                                       <select id="maxOption" name="maxOption" class="custom-select">
+                                          <option value="0" selected >0</option>
+                                          <option value="1">1</option>
+                                          <option value="2">2</option>
+                                          <option value="3" >3</option>
+                                          <option value="4">4</option>
+                                          <option value="5">5</option>
+                                       </select>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="card-footer">
+                              <button type="submit" class="btn btn-secondary">
+                              Mentés
+                              </button>
+                           </div>
+   </form>
+   </div>
+   </div>
+   <div class="col-md-6"  >
+   <div class="card card-secondary" >
+   <div class="card-header" >
+   <h3 class="card-title" >Variáns alkategóriába sorolása</h3>
+   </div>
+   <div class="card-body" >
+   <% if(editing){ %>
+   <div id="propByCatEdit" class="row" >
+   <div class="col-sm-6">
+   <div class="form-group" >
+   <label>Alkategória</label>
+   <select
+      for="propertyId"
+      id="propertyId"
+      name="propertyId"
+      class="custom-select">
+   <% for(let i = 0; i < resultProp.length; i++) { %>
+   <option
+      id="propertyId"
+      name="propertyId"
+      value="<%= resultProp[i].Property.id %>"><%= resultProp[i].Property.PropertyTranslations[0].name %></option>
+   </select>
+   </div>
+   <script>
+      $(document).ready(function () {
+        var id = "<%= testActiveOk %>";
+        $("#propertyValueId").val(id);
+      
+      });
+   </script>
+   </div>
+   <div class="col-sm-6">
+   <div class="form-group">
+   <label>Alkategóriába sorolás</label>
+   <select 
+      class="custom-select"
+      for="propertyValueId"
+      id="propertyValueId"
+      name="propertyValueId">
+   <option value="" selected hidden >option 1</option>
+   <% for(let j = 0; j < resultProp[i].Property.PropertyValues.length; j++) {
       %>
-      <!-- Content Wrapper. Contains page content -->
-      <div class="content-wrapper">
-        <!-- Content Header (Page header) -->
-        <section class="content-header">
-          <div class="container-fluid">
-            <div class="row mb-2">
-              <div class="col-sm-6">
-                <h1>Variáns testreszabása</h1>
-              </div>
-            
-            </div>
-          </div>
-          <!-- /.container-fluid -->
-        </section>
-
-        <!-- Main content -->
-        <section class="content">
-          <div class="container-fluid">
-            <div class="row">
-              <!-- left column -->
-              <div class="col-md-6">
-                <!-- general form elements -->
-                <div class="card card-secondary">
-                  <div class="card-header">
-                    <h3 class="card-title">Variáns fő adatai</h3>
-                  </div>
-                  <!-- /.card-header -->
-                  <!-- form start -->
-               
-                    <div class="card-body">
-                      <div class="form-group">
-                        <label for="sku">Variáns neve</label>
-                        <input
-                        name="sku"
-                          type="text"
-                          class="form-control sku"
-                          id="sku"
-                          placeholder="Variáns neve"
-                          value="<% if (editing) { %><%= variant[0].ProductVariantsExtras[0].Variant.sku %><% } %>">
-
-                          <span
-                          class="invalid-feedback"
-                          id="sku_error_message"
-                        ></span>
-                      </div>
-                    
-                    
-                     
-                      <div class="row">
-                        <% if (editing) { %>
-                           <input
-                           type="hidden"
-                           value="<%= varId %>"
-                           name="varId"
-                           /> 
-                           <input type="hidden" value="<%= variantIdByParams %>" name="variantId">
-                        <div class="col-sm-6">
-                          <!-- select -->
-                          <div class="form-group">
-                            <label>Kategória választás</label>
-                            <select for="categoryId" id="categoryId" name="categoryId" class="custom-select">
-                              <option selected disabled>Válassz egyet</option>
-                              <% for(let i = 0; i < cat.length; i++) { %>
-                              <option id="categoryId" name="categoryId" value='<%= cat[i].id %>'><%= cat[i].CategoryTranslations[0].name %></option>
-                              <% } %>
-                            </select>
-                          </div>
-                        </div>
-                        <% } else { %>
-                           <div class="col-sm-6">
-                              
-
-
-
-
-
-
-                                <div class="form-group">
-                             <label>Kötelezően választandó extra</label>
-                             <select class="custom-select categoryErrorVal" for="categoryId" id="categoryId" name="categoryId">
-                              <option value="" selected disabled hidden>Kategória kiválasztása</option>
-                              <% for(let i = 0; i < cat.length; i++) { %>
-                                <option id="categoryId" name="categoryId" value='<%= cat[i].id %>'><%= cat[i].CategoryTranslations[0].name %>
-                                </option>
-                                <% } %>
-                              
-                             </select>
-                             <span
-                             class="invalid-feedback"
-                             id="category_error_message"
-                           ></span>
-                           </div>
-                         
-                                
-                            </div>
-                         
-                            <% } %>
-                        <div class="col-sm-6">
-                           <!-- select -->
-                           <div class="form-group">
-                             <label>Kötelezően választandó extra</label>
-                             <select id="maxOption" name="maxOption" class="custom-select">
-                              <option value="0" selected >0</option>
-                              <option value="1">1</option>
-                              <option value="2">2</option>
-                              <option value="3" >3</option>
-                              <option value="4">4</option>
-                              <option value="5">5</option>
-                             </select>
-                           </div>
-                         </div>
-                      </div>
-                    </div>
-                  
-                    <!-- /.card-body -->
-
-                    <div class="card-footer">
-                      <button type="submit" class="btn btn-secondary">
-                        Mentés
-                      </button>
-                    </div>
-                  </form>
-                </div>
-              
-                <!-- /.card -->
-                 </div>
-             
-              <div class="col-md-6"  >
-         
-                <!-- /.card -->
-                <!-- general form elements disabled -->
-                <div class="card card-secondary" >
-                  <div class="card-header" >
-                    <h3 class="card-title" >Variáns alkategóriába sorolása</h3>
-                  </div>
-                  <!-- /.card-header -->
-                  <div class="card-body" >
-                   
-                    <% if(editing){ %>
-                      <div id="propByCatEdit" class="row" >
-                        <div class="col-sm-6">
-                          <!-- select -->
-                          <div class="form-group" >
-                            <label>Alkategória</label>
-                            <select
-                            for="propertyId"
-                            id="propertyId"
-                            name="propertyId"
-                            class="custom-select">
-                            <% for(let i = 0; i < resultProp.length; i++) { %>
-                              <option
-                              id="propertyId"
-                              name="propertyId"
-                              value="<%= resultProp[i].Property.id %>"><%= resultProp[i].Property.PropertyTranslations[0].name %></option>
-                              
-                            </select>
-                          </div>
-                          <script>
-                           $(document).ready(function () {
-                             var id = "<%= testActiveOk %>";
-                             $("#propertyValueId").val(id);
-
-                           });
-                         </script>
-                        </div>
-                        <div class="col-sm-6">
-                           <!-- select -->
-                           <div class="form-group">
-                             <label>Alkategóriába sorolás</label>
-                             <select 
-                              class="custom-select"
-                              for="propertyValueId"
-                              id="propertyValueId"
-                              name="propertyValueId">
-                               <option value="" selected hidden >option 1</option>
-                               <% for(let j = 0; j < resultProp[i].Property.PropertyValues.length; j++) {
-                                 %>
-                               <option
-                               id="propertyValueId"
-                               name="propertyValueId"
-                               value="<%= resultProp[i].Property.PropertyValues[j].id %>"><%=
-                               resultProp[i].Property.PropertyValues[j].PropertyValueTranslations[0].name
-                               %></option>
-                               <% } %>
-                              
-                             </select>
-                           </div>
-                         </div>
-                         <% } %>
-                      </div>
-                      <% } else{ %>  
-                    
-                    
-                        <div id="propByCat" class="row">
-                          <div class="col-sm-6">
-                          </div>
-                       </div>
-                    
-                     
-                        <% } %>
-                     
-                     
-                    </form>
-                  </div>
-                  
-                  <!-- /.card-body -->
-                </div>
-                
-                <!-- /.card -->
-              </div>
-              
-              <!--/.col (right) -->
-            </div>
-            <div class="col-sm-6">
-            <div class="form-group">
-              <label for="sku">Extra keresése</label>
-              <input
-                type="text"
-                class="form-control"
-                name="search" id="search" autocomplete="off"
-                placeholder="Írd be a keresendő extrát"
-                value="">
-            </div>
-            </div>
-
-            <h5 class="mb-2">Extrák kezelése</h5>
-            <% if (editing) { %>
-            <div class="row">
-               <% for (let i = 0; i < variant.length; i++) { %>
-                  <input
-                  type="hidden"
-                  value="<%= variant[i].ProductVariantsExtras[0].extraId %>"
-                  name="extraId"
-                  /> 
-              <div class="col-md-3 extra_box extra-all extra-<%= variant[i].ExtraTranslations[0].name %>" data-extra="<%= variant[i].ProductVariantsExtras[0].extraId %>">
-                <div class="card card-success">
-                  <div class="card-header">
-                    <h3 class="card-title"><strong><%=  variant[i].ExtraTranslations[0].name %></strong></h3>
-                  </div>
-                  <div class="card-body">
-
-
-
-
-
-                     <div class="form-group">
-                        <div
-                          class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success"
-                        >
-                        <input type="hidden" value="off" class="status-<%= variant[i].ProductVariantsExtras[0].extraId %>" name="status[<%= variant[i].ProductVariantsExtras[0].extraId %>]" >
-                          <input
-                            type="checkbox"
-                            data-extraId="<%= variant[i].ProductVariantsExtras[0].extraId %>"
-                            class="custom-control-input status-checkbox status-checkbox-<%= variant[i].ProductVariantsExtras[0].extraId %>"
-                            id="optionalSwitch<%= variant[i].id %>"
-                          />
-                          <label
-                            class="custom-control-label"
-                            for="optionalSwitch<%= variant[i].id %>"
-                            >Opcionális</label
-                          >
-                        </div>
-                      </div>
-
-
-
-
-
-
-                      <div class="form-group">
-                        <div
-                          class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success"
-                        >
-                        <input type="hidden" value="off" class="statusOption<%= variant[i].id %> status-option" name="statusOption[<%= variant[i].id %>]" >
-                          <input
-                           data-optionId="<%= variant[i].id %>"
-                           
-                            type="checkbox"
-                            class="custom-control-input status-checkbox-option status-checkbox-option-<%= variant[i].id %>"
-                            id="requiredSwitch<%= variant[i].id %>"
-                          />
-                          <label
-                            class="custom-control-label"
-                            for="requiredSwitch<%= variant[i].id %>"
-                            >Kötelező</label
-                          >
-                        </div>
-                      </div>
-
-
-
-
-                  </div>
-                  <!-- /.card-body -->
-                </div>
-                <!-- /.card -->
-              </div>
-              <% } %>
-            
-            </div>
-            <% } else { %>
-               <div class="row">
-                <% for (let i=0; i < ext.length; i++ ) { %>
-                  <input
-                  type="hidden"
-                  value="<%= ext[i].id %>"
-                  name="extraId"
-                  />   
-              <div class="col-md-3 extra_box extra-all extra-<%= ext[i].ExtraTranslations[0].name %>" data-extra="<%= ext[i].id %>">
-                <div class="card card-success">
-                  <div class="card-header">
-                    <h3 class="card-title"><strong><%=  ext[i].ExtraTranslations[0].name %></strong></h3>
-                  </div>
-                  <div class="card-body">
-
-
-
-
-
-                     <div class="form-group">
-                        <div
-                          class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success"
-                        >
-                        <input type="hidden" value="off" class="status-<%= ext[i].id %>" name="status[<%= ext[i].id %>]" >
-                          <input
-                            type="checkbox"
-                            data-extraId="<%= ext[i].id %>"
-                            class="custom-control-input status-checkbox status-checkbox-<%= ext[i].id %>"
-                            id="optionalSwitch<%= ext[i].id %>"
-                          />
-                          <label
-                            class="custom-control-label"
-                            for="optionalSwitch<%= ext[i].id %>"
-                            >Opcionális</label
-                          >
-                        </div>
-                      </div>
-
-
-
-
-
-
-                      <div class="form-group">
-                        <div
-                          class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success"
-                        >
-                        <input type="hidden" value="off" class="statusOption<%= ext[i].id %>  status-option" name="statusOption[<%= ext[i].id %>]" >
-                          <input
-                           data-optionId="<%= ext[i].id %>"
-                           
-                            type="checkbox"
-                            class="custom-control-input status-checkbox-option status-checkbox-option-<%= ext[i].id %>"
-                            id="requiredSwitch<%= ext[i].id %>"
-                          />
-                          <label
-                            class="custom-control-label"
-                            for="requiredSwitch<%= ext[i].id %>"
-                            >Kötelező</label
-                          >
-                        </div>
-                      </div>
-
-
-
-
-                  </div>
-                  <!-- /.card-body -->
-                </div>
-                <!-- /.card -->
-              </div>
-              <% } %>
-            
-            </div>
-              <% } %>
-            <!-- /.row -->
-          </div>
-          <!-- /.container-fluid -->
-        </section>
-        <!-- /.content -->
-      </div>
+   <option
+      id="propertyValueId"
+      name="propertyValueId"
+      value="<%= resultProp[i].Property.PropertyValues[j].id %>"><%=
+      resultProp[i].Property.PropertyValues[j].PropertyValueTranslations[0].name
+      %></option>
+   <% } %>
+   </select>
+   </div>
+   </div>
+   <% } %>
+   </div>
+   <% } else{ %>  
+   <div id="propByCat" class="row">
+   <div class="col-sm-6">
+   </div>
+   </div>
+   <% } %>
+   </form>
+   </div>
+   </div>
+   </div>
+   </div>
+   <div class="col-sm-6">
+   <div class="form-group">
+   <label for="sku">Extra keresése</label>
+   <input
+      type="text"
+      class="form-control"
+      name="search" id="search" autocomplete="off"
+      placeholder="Írd be a keresendő extrát"
+      value="">
+   </div>
+   </div>
+   <h5 class="mb-2">Extrák kezelése</h5>
+   <% if (editing) { %>
+   <div class="row">
+   <% for (let i = 0; i < variant.length; i++) { %>
+   <input
+      type="hidden"
+      value="<%= variant[i].ProductVariantsExtras[0].extraId %>"
+      name="extraId"
+      /> 
+   <div class="col-md-3 extra_box extra-all extra-<%= variant[i].ExtraTranslations[0].name %>" data-extra="<%= variant[i].ProductVariantsExtras[0].extraId %>">
+   <div class="card card-success">
+   <div class="card-header">
+   <h3 class="card-title"><strong><%=  variant[i].ExtraTranslations[0].name %></strong></h3>
+   </div>
+   <div class="card-body">
+   <div class="form-group">
+   <div
+      class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success"
+      >
+   <input type="hidden" value="off" class="status-<%= variant[i].ProductVariantsExtras[0].extraId %>" name="status[<%= variant[i].ProductVariantsExtras[0].extraId %>]" >
+   <input
+      type="checkbox"
+      data-extraId="<%= variant[i].ProductVariantsExtras[0].extraId %>"
+      class="custom-control-input status-checkbox status-checkbox-<%= variant[i].ProductVariantsExtras[0].extraId %>"
+      id="optionalSwitch<%= variant[i].id %>"
+      />
+   <label
+      class="custom-control-label"
+      for="optionalSwitch<%= variant[i].id %>"
+      >Opcionális</label
+      >
+   </div>
+   </div>
+   <div class="form-group">
+   <div
+      class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success"
+      >
+   <input type="hidden" value="off" class="statusOption<%= variant[i].id %> status-option" name="statusOption[<%= variant[i].id %>]" >
+   <input
+      data-optionId="<%= variant[i].id %>"
+      type="checkbox"
+      class="custom-control-input status-checkbox-option status-checkbox-option-<%= variant[i].id %>"
+      id="requiredSwitch<%= variant[i].id %>"
+      />
+   <label
+      class="custom-control-label"
+      for="requiredSwitch<%= variant[i].id %>"
+      >Kötelező</label
+      >
+   </div>
+   </div>
+   </div>
+   </div>
+   </div>
+   <% } %>
+   </div>
+   <% } else { %>
+   <div class="row">
+   <% for (let i=0; i < ext.length; i++ ) { %>
+   <input
+      type="hidden"
+      value="<%= ext[i].id %>"
+      name="extraId"
+      />   
+   <div class="col-md-3 extra_box extra-all extra-<%= ext[i].ExtraTranslations[0].name %>" data-extra="<%= ext[i].id %>">
+   <div class="card card-success">
+   <div class="card-header">
+   <h3 class="card-title"><strong><%=  ext[i].ExtraTranslations[0].name %></strong></h3>
+   </div>
+   <div class="card-body">
+   <div class="form-group">
+   <div
+      class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success"
+      >
+   <input type="hidden" value="off" class="status-<%= ext[i].id %>" name="status[<%= ext[i].id %>]" >
+   <input
+      type="checkbox"
+      data-extraId="<%= ext[i].id %>"
+      class="custom-control-input status-checkbox status-checkbox-<%= ext[i].id %>"
+      id="optionalSwitch<%= ext[i].id %>"
+      />
+   <label
+      class="custom-control-label"
+      for="optionalSwitch<%= ext[i].id %>"
+      >Opcionális</label
+      >
+   </div>
+   </div>
+   <div class="form-group">
+   <div
+      class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success"
+      >
+   <input type="hidden" value="off" class="statusOption<%= ext[i].id %>  status-option" name="statusOption[<%= ext[i].id %>]" >
+   <input
+      data-optionId="<%= ext[i].id %>"
+      type="checkbox"
+      class="custom-control-input status-checkbox-option status-checkbox-option-<%= ext[i].id %>"
+      id="requiredSwitch<%= ext[i].id %>"
+      />
+   <label
+      class="custom-control-label"
+      for="requiredSwitch<%= ext[i].id %>"
+      >Kötelező</label
+      >
+   </div>
+   </div>
+   </div>
+   </div>
+   </div>
+   <% } %>
+   </div>
+   <% } %>
+   </div>
+   </section>
+   </div>
    </form>
    <%- include('../includes/footer.ejs') %>
-      <!-- /.content-wrapper -->
-    
-
-      <!-- Control Sidebar -->
-      <aside class="control-sidebar control-sidebar-dark">
-        <!-- Control sidebar content goes here -->
-      </aside>
-      <!-- /.control-sidebar -->
-    </div>
-    <!-- ./wrapper -->
-
-    <!-- jQuery -->
-    <script src="/plugins/jquery/jquery.min.js"></script>
-    <!-- Bootstrap 4 -->
-    <script src="/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <!-- bs-custom-file-input -->
-    <script src="/plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
-    <!-- AdminLTE App -->
-    <script src="/js/adminlte.min.js"></script>
-    <!-- AdminLTE for demo purposes -->
-    <script src="/js/demo.js"></script>
-    <!-- Page specific script -->
-    <script>
-      $(function () {
-        bsCustomFileInput.init();
-      });
-    </script>
-  </body>
+   </div>
+   <%- include('../includes/end.ejs') %>
+</body>
 </html>
+

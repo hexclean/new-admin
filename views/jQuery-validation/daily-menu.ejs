@@ -45,6 +45,7 @@
       $("#price_error_message_" + extraId).hide();
       error_price = false;
     });
+
     function check_variantInputs() {
       var extraId = $(this).attr("data-extraId");
       $(".extra_box").each(function () {
@@ -54,31 +55,39 @@
           if (price_len < 1) {
             $("#price_error_message_" + extraId)
               .show()
-              .html("Mezo kitoltese kotelezo");
+              .html("Ár megadása kötelező!");
+              $( ".price_"+ extraId).addClass( "is-invalid" );
             error_price = true;
           } else {
+            $( ".price_"+ extraId).removeClass( "is-invalid" );
             $("#price_error_message_" + extraId)
-              .hide()
-              .html("");
+              .hide();
+
           }
         } else {
           $(this).find(".extra_error_message").hide();
         }
       });
     }
+
+
     $(".extra_price_input").focusout(function () {
       var len = $(this).val().length;
       var extraId = $(this).closest(".extra_box").data("extra");
       if (len < 1) {
+        $( ".price_"+ extraId).addClass( "is-invalid" );
         $("#price_error_message_" + extraId)
           .show()
-          .html("Mezo kitoltese kotelezo");
+          .html("Termék ára megadása kötelező!");
+
       } else {
+        $( ".price_"+ extraId).removeClass( "is-invalid" );
         $("#price_error_message_" + extraId)
-          .hide()
-          .html("");
+          .hide();
       }
     });
+
+
     $("#roName_error_message").hide();
     $("#huName_error_message").hide();
     $("#enName_error_message").hide();
@@ -92,6 +101,7 @@
     $("#file_error_message").hide();
     $("#start_error_message").hide();
     $("#end_error_message").hide();
+    $("#category_error_message").hide();
     var error_roName = false;
     var error_huName = false;
     var error_enName = false;
@@ -106,6 +116,7 @@
     var error_size = false;
     var error_start = false;
     var error_end = false;
+    var error_categoryId = false;
     $("#roTitle").focusout(function () {
       check_roName();
     });
@@ -142,6 +153,9 @@
     $("#image").change(function () {
       check_file();
     });
+    $("#categoryId").change(function () {
+      check_categoryId();
+    });
 
     function check_roName() {
       var roName_length = $("#roTitle").val().length;
@@ -155,6 +169,24 @@
         $("#roName_error_message").hide();
       }
     }
+
+    function check_categoryId() {
+      var categoryId = $("#categoryId").val();
+      if (categoryId  == null) {
+           $( ".categoryIdCheck" ).addClass( "is-invalid" );
+           $("#error_categoryId").html("Legalább 1 kategória kiválasztása kötelező!");
+        $("#error_categoryId").show();
+        error_categoryId = true;
+      } else {
+        $( ".categoryIdCheck" ).removeClass( "is-invalid" );
+        $("#error_categoryId").hide();
+      }
+    }
+
+
+
+
+
     function check_startDate() {
       var startDate_length = $("#startDate").val().length;
       if (startDate_length !=5) {
@@ -289,7 +321,7 @@
       if ($(".status-hidden[value='on']").length != 1) {
 
         $( ".variantCheck" ).addClass( "is-invalid" );
-           $("#variant_error_message").html("A napi menühöz csak 1 variáns rendelhető!");
+           $("#variant_error_message").html("Csak 1 variáns kiválasztása lehetséges!");
            $("#variant_error_message").show();
         error_variants = true;
         $("#createProduct").disabled = true;
@@ -338,6 +370,7 @@
       error_enDescription = false;
       error_variants = false;
       error_allergens = false;
+      error_categoryId = false;
       error_size = false;
       <% if(!editing){ %>
       error_file == false;
@@ -350,6 +383,7 @@
       check_roDescription();
       check_huDescription();
       check_enDescription();
+      check_categoryId()
       check_variant();
       check_allergen();
       check_startDate();
@@ -378,7 +412,8 @@
         <% if(!editing){ %>
         error_file == false &&
         <% } %>
-        error_price == false
+        error_price == false &&
+        error_categoryId == false
       ) {
 
 
@@ -395,6 +430,7 @@
 <script>
   $(document).ready(function () {
     const categoryId = $("#categoryId").val();
+
     $(".category-all").hide();
     $(".category-<%= currentCat %>").show();
     if (true) {

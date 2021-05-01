@@ -68,6 +68,7 @@
         }
       });
     }
+
     $(".extra_price_input").focusout(function () {
       var len = $(this).val().length;
       var extraId = $(this).closest(".extra_box").data("extra");
@@ -94,6 +95,7 @@
     $("#image_error_message").hide();
     $("#box_error_message").hide();
     $("#file_error_message").hide();
+    $("#category_error_message").hide();
     var error_roName = false;
     var error_huName = false;
     var error_enName = false;
@@ -106,6 +108,7 @@
     var error_box = false;
     var error_file = false;
     var error_size = false;
+    var error_categoryId = false;
     $("#roTitle").focusout(function () {
       check_roName();
     });
@@ -138,6 +141,9 @@
     });
     $("#image").change(function () {
       check_file_size();
+    });
+    $("#categoryId").change(function () {
+      check_categoryId();
     });
     function check_roName() {
       var roName_length = $("#roTitle").val().length;
@@ -258,6 +264,20 @@
       }
     }
 
+    function check_categoryId() {
+      var categoryId = $("#categoryId").val();
+      if (categoryId  == null) {
+           $( ".categoryIdCheck" ).addClass( "is-invalid" );
+           $("#error_categoryId").html("Legalább 1 kategória kiválasztása kötelező!");
+        $("#error_categoryId").show();
+        error_categoryId = true;
+      } else {
+        $( ".categoryIdCheck" ).removeClass( "is-invalid" );
+        $("#error_categoryId").hide();
+      }
+    }
+
+
     function check_variant() {
       if ($(".status-hidden[value='on']").length != 1) {
 
@@ -310,12 +330,14 @@
       error_variants = false;
       error_allergens = false;
       error_size = false;
+      error_categoryId = false
       <% if(!editing){ %>
       error_file == false;
       <% } %>
       error_box = false;
       error_price = false;
       check_roName();
+      check_categoryId()
       check_huName();
       check_enName();
       check_roDescription();
@@ -345,7 +367,8 @@
         <% if(!editing){ %>
         error_file == false &&
         <% } %>
-        error_price == false
+        error_price == false &&
+        error_categoryId == false
       ) {
 
 
