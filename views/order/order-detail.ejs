@@ -57,8 +57,19 @@
                         Település: <%= orderfirst.orders[0].LocationName.LocationNameTranslations[0].name %><br />
                         Utca: <%= orderfirst.orders[0].OrderDeliveryAddress.street %><br />
                         Házszám: <%= orderfirst.orders[0].OrderDeliveryAddress.houseNumber %><br />
-                        <% if(orderfirst.orders[0].OrderDeliveryAddress.floor.length <10 ){ %> Emelet: <%= orderfirst.orders[0].OrderDeliveryAddress.floor %><br /> <% } %>
-                        Ajtószám: <%= orderfirst.orders[0].OrderDeliveryAddress.doorNumber %>
+                        <% if(orderfirst.orders[0].OrderDeliveryAddress.floor !== ""
+                              ){ %>
+                          Emelet: <%=
+                                 orderfirst.orders[0].OrderDeliveryAddress.floor %><br/>
+                           
+                           <% } %>
+                           <% if(orderfirst.orders[0].OrderDeliveryAddress.floor !== ""
+                           ){ %>
+                            Ajtószám: <%=
+                              orderfirst.orders[0].OrderDeliveryAddress.doorNumber %><br/>
+                        
+                        <% } %>
+                       
                       </address>
                     </div>
                     <!-- /.col -->
@@ -67,7 +78,16 @@
                       <address>
                         <% if(orderfirst.orders[0].cutlery == 1){ %>
                             <strong>Nem kér evőeszközt</strong><br />
-                            <% } %>
+                          <% } else{ %>  
+                            <strong>Kér evőeszközt</strong><br />
+                         <% } %>
+                         <% if(orderfirst.orders[0].take == 1){ %>
+                            <strong>Elvitelre kéri</strong><br />
+                          <% } else{ %>  
+                            <strong>Szállítva kéri</strong><br />
+                         <% } %>
+
+
                             <% if(orderfirst.orders[0].messageCourier.length ==0){ %>
                                 <strong>Megjegyzés a futárnak:</strong> - <% } else{ %><strong>Megjegyzés a futárnak:</strong> <%=
                             orderfirst.orders[i].messageCourier %> <% } %><br />
