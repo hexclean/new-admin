@@ -42,6 +42,7 @@
     var error_price = false;
     $(".status-checkbox").click(function () {
       var extraId = $(this).data("extraId");
+      console.log(extraId)
       $("#price_error_message_" + extraId).hide();
       error_price = false;
     });
@@ -77,13 +78,15 @@
         $("#price_error_message_" + extraId)
           .show()
           .html("Termék ára megadása kötelező!");
-
+          error_price = true;
       } else {
         $( ".price_"+ extraId).removeClass( "is-invalid" );
         $("#price_error_message_" + extraId)
           .hide();
       }
     });
+
+
     $("#roName_error_message").hide();
     $("#huName_error_message").hide();
     $("#enName_error_message").hide();
