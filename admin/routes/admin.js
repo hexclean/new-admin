@@ -1,15 +1,15 @@
 const express = require("express");
-const adminController = require("../controllers/admin");
-const propertyController = require("../controllers/property");
-const extraController = require("../controllers/extra");
-const variantsController = require("../controllers/variants");
+const adminController = require("../controllers/products/products");
+const propertyController = require("../controllers/products/subcategories");
+const extraController = require("../controllers/products/extras");
+const variantsController = require("../controllers/products/variants");
 const faqController = require("../controllers/faq");
-const categoryController = require("../controllers/category");
-const boxController = require("../controllers/box");
+const categoryController = require("../controllers/products/categories");
+const boxController = require("../controllers/products/boxes");
 const couponController = require("../controllers/coupon");
 const reviewController = require("../controllers/review");
 const adminProfileController = require("../controllers/profile");
-const allergenController = require("../controllers/allergen");
+const allergenController = require("../controllers/products/allergens");
 const deletedItemsController = require("../controllers/deleted-items");
 const comboController = require("../controllers/combo");
 const liveSearchController = require("../controllers/live-search");
@@ -17,13 +17,27 @@ const ordersController = require("../controllers/order");
 const reckoningController = require("../controllers/reckoning");
 const deliveryPriceController = require("../controllers/delivery-price");
 const statisticController = require("../controllers/statistic");
-const upsellController = require("../controllers/upsell");
-const downsellController = require("../controllers/downsell");
+const upsellController = require("../controllers/products/upsells");
+const downsellController = require("../controllers/products/downsells");
 const listsController = require("../controllers/lists");
-const dailyMenuController = require("../controllers/daily-menu");
-
+const dailyMenuController = require("../controllers/products/daily-menus");
 const isAuth = require("../../middleware/is-auth");
 const router = express.Router();
+
+// LISTS
+router.get("/subcategories", isAuth, listsController.getSubcategories);
+
+// Listák
+router.get("/products", isAuth, listsController.getProducts);
+router.get("/allergens", isAuth, listsController.getAllergenIndex);
+router.get("/daily-menus", isAuth, listsController.getDailyMenu);
+router.get("/downsells", isAuth, listsController.getDownsellProducts);
+router.get("/upsells", isAuth, listsController.getUpsellProducts);
+router.get("/deleted-products", isAuth, listsController.getDeletedProducts);
+router.get("/categories", isAuth, listsController.getCategoryIndex);
+router.get("/variants", isAuth, listsController.getVariantIndex);
+router.get("/extras", isAuth, listsController.getExtraIndex);
+router.get("/boxes", isAuth, listsController.getBoxIndex);
 
 // Daily Menu
 router.get("/add-daily-menu", isAuth, dailyMenuController.getAddDailyMenu);
@@ -39,14 +53,6 @@ router.get(
 );
 router.post("/edit-daily-menu", isAuth, dailyMenuController.postEditDailyMenu);
 
-// LISTS
-router.get("/upsell", isAuth, listsController.getUpsellProducts);
-router.get("/downsell", isAuth, listsController.getDownsellProducts);
-router.get("/daily-menu", isAuth, listsController.getDailyMenu);
-router.get("/products", isAuth, listsController.getProducts);
-router.get("/subcategories", isAuth, listsController.getSubcategories);
-router.get("/deleted-products", isAuth, listsController.getSoldOutProducts);
-router.get("/category-index", isAuth, listsController.getCategoryIndex);
 // PROPERTY
 router.get("/add-property", isAuth, propertyController.getAddProperty);
 router.post("/add-property", isAuth, propertyController.postAddProperty);
@@ -137,14 +143,6 @@ router.get(
   liveSearchController.getFilteredProperty
 );
 // COMBO
-router.get("/variant-index", isAuth, comboController.getVariantIndex);
-router.get("/extra-index", isAuth, comboController.getExtraIndex);
-
-router.get("/allergen-index", isAuth, comboController.getAllergenIndex);
-router.get("/box-index", isAuth, comboController.getBoxIndex);
-
-// FAQ
-router.get("/faq-index", isAuth, faqController.getIndex);
 
 // VARIANT
 router.get("/add-variant", isAuth, variantsController.getAddVariant);

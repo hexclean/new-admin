@@ -59,7 +59,7 @@ exports.getFilteredExtra = async (req, res, next) => {
   })
 
     .then((extra) => {
-      res.render("live-search/search-extra", {
+      res.render("live-search/extras", {
         extra: extra,
         editing: false,
       });
@@ -104,7 +104,7 @@ exports.getFilteredCategory = async (req, res, next) => {
   })
 
     .then((category) => {
-      res.render("live-search/search-category", {
+      res.render("live-search/categories", {
         category: category,
         editing: false,
       });
@@ -150,7 +150,7 @@ exports.getFilteredAllergen = async (req, res, next) => {
   })
 
     .then((allergen) => {
-      res.render("live-search/search-allergen", {
+      res.render("live-search/allergens", {
         allergen: allergen,
         editing: false,
       });
@@ -186,7 +186,7 @@ exports.getFilteredBox = async (req, res, next) => {
   })
 
     .then((box) => {
-      res.render("live-search/search-box", {
+      res.render("live-search/boxes", {
         box: box,
         editing: false,
       });
@@ -213,7 +213,7 @@ exports.getFilteredVariant = async (req, res, next) => {
   })
 
     .then((variant) => {
-      res.render("live-search/search-variant", {
+      res.render("live-search/variants", {
         variant: variant,
         editing: false,
       });
@@ -298,7 +298,6 @@ exports.getFilteredOrders = async (req, res, next) => {
       },
     ],
   });
-  console.log("=--==-=-=-=--", orders.length);
 
   let extras = [];
   let totalPriceFinal;
@@ -993,7 +992,7 @@ exports.getFilteredProduct = async (req, res, next) => {
   })
 
     .then((prods) => {
-      res.render("live-search/search-product", {
+      res.render("live-search/products", {
         prods: prods,
         editing: false,
       });
@@ -1039,7 +1038,7 @@ exports.getFilteredProperty = async (req, res, next) => {
   })
 
     .then((property) => {
-      res.render("live-search/search-property", {
+      res.render("live-search/subcategories", {
         property: property,
         editing: false,
       });
@@ -1090,7 +1089,7 @@ exports.getFilteredDeletedProduct = async (req, res, next) => {
   })
 
     .then((prods) => {
-      res.render("live-search/search-deleted-product", {
+      res.render("live-search/search-deleted-products", {
         prods: prods,
         editing: false,
       });
@@ -1144,7 +1143,7 @@ exports.getFilteredUpsell = async (req, res, next) => {
   })
 
     .then((prods) => {
-      res.render("live-search/search-upsell", {
+      res.render("live-search/upsells", {
         prods: prods,
         editing: false,
       });
@@ -1198,7 +1197,7 @@ exports.getFilteredDownsell = async (req, res, next) => {
   })
 
     .then((prods) => {
-      res.render("live-search/search-upsell", {
+      res.render("live-search/downsells", {
         prods: prods,
         editing: false,
       });
@@ -1252,7 +1251,7 @@ exports.getFilteredDailyMenu = async (req, res, next) => {
   })
 
     .then((prods) => {
-      res.render("live-search/search-daily-menu", {
+      res.render("live-search/daily-menus", {
         prods: prods,
         editing: false,
       });
