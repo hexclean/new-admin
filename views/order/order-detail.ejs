@@ -1,0 +1,244 @@
+<%- include('../includes/head.ejs') %>
+
+  </head>
+  <body class="hold-transition sidebar-mini">
+    <div class="wrapper">
+        <%- include('../includes/nav.ejs') %>
+
+        <%- include('../includes/aside.ejs') %>
+
+
+      <!-- Content Wrapper. Contains page content -->
+      <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+          <div class="container-fluid">
+            <div class="row mb-2">
+              <div class="col-sm-6">
+                <h1>Rendelés megtekintése (<%= orderfirst.orders[0].encodedKey %>)</h1>
+              </div>
+             
+            </div>
+          </div>
+          <!-- /.container-fluid -->
+        </section>
+
+        <section class="content">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-12">
+                <div class="callout callout-info">
+                  <h5><i class="fas fa-info"></i> Megjegyzés:</h5>
+                  Ez a felület csak a rendelés megtekintésére alkalmas! Rendelések kezelésére kattints a <a href="/admin/orders">rendeléskezelés</a>-re!
+                </div>
+
+                <!-- Main content -->
+                <div class="invoice p-3 mb-3">
+                  <!-- title row -->
+                  <div class="row">
+                    <div class="col-12">
+                      <h4>
+                        <i class="fas fa-globe"></i> Foodnet rendelés
+                        <small class="float-right">Rendelés leadva: <%= orderfirst.orders[0].createdAt.toLocaleString("en-GB", {
+                            timeZone: "Europe/Helsinki",
+                          }); %></small>
+                      </h4>
+                    </div>
+                    <!-- /.col -->
+                  </div>
+                  <!-- info row -->
+                  <div class="row invoice-info">
+                    <div class="col-sm-4 invoice-col">
+                        <strong>Megrendelő</strong>
+                      <address>
+                        Megrendelő neve: <%= orderfirst.orders[0].OrderDeliveryAddress.userName %><br />
+                        Telefonszám: <%= orderfirst.orders[0].OrderDeliveryAddress.phoneNumber %><br />
+                        E-mail: <%= orderfirst.orders[0].OrderDeliveryAddress.email %><br />
+                        Település: <%= orderfirst.orders[0].LocationName.LocationNameTranslations[0].name %><br />
+                        Utca: <%= orderfirst.orders[0].OrderDeliveryAddress.street %><br />
+                        Házszám: <%= orderfirst.orders[0].OrderDeliveryAddress.houseNumber %><br />
+                        <% if(orderfirst.orders[0].OrderDeliveryAddress.floor.length <10 ){ %> Emelet: <%= orderfirst.orders[0].OrderDeliveryAddress.floor %><br /> <% } %>
+                        Ajtószám: <%= orderfirst.orders[0].OrderDeliveryAddress.doorNumber %>
+                      </address>
+                    </div>
+                    <!-- /.col -->
+                    <div class="col-sm-4 invoice-col">
+                      Fő információ
+                      <address>
+                        <strong>John Doe</strong><br />
+                        795 Folsom Ave, Suite 600<br />
+                        San Francisco, CA 94107<br />
+                        Phone: (555) 539-1037<br />
+                        Email: john.doe@example.com
+                      </address>
+                    </div>
+                    <!-- /.col -->
+                    <div class="col-sm-4 invoice-col">
+                      <b>Rendelési szám <%= orderfirst.orders[0].encodedKey %></b><br />
+                      <br />
+                      <b>Order ID:</b> 4F3S8J<br />
+                      <b>Payment Due:</b> 2/22/2014<br />
+                      <b>Account:</b> 968-34567
+                    </div>
+                    <!-- /.col -->
+                  </div>
+                  <!-- /.row -->
+
+                  <!-- Table row -->
+                  <div class="row">
+                    <div class="col-12 table-responsive">
+                        <% for (let i =0; i < orderfirst.orders.length; i++) { %>
+                        <% for (let j =0; j < orderfirst.orders[i].products.length;
+                        j++) { %>
+                      <table class="table table-striped">
+                        <thead>
+                          <tr>
+                            <th>Ételek/extrák</th>
+                            <th>Kategoria</th>
+                            <th>Db</th>
+                            <th>Egységár</th>
+                            <th>Össz ár</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td><%= orderfirst.orders[i].products[j].product_name %></td>
+                            <td><%= orderfirst.orders[i].products[j].variant_sku %></td>
+                            <td><%= orderfirst.orders[i].products[j].product_quantity %></td>
+                            <td>
+                                <%= orderfirst.orders[i].products[j].product_price %> RON
+                            </td>
+                            <td><%= (orderfirst.orders[i].products[j].product_quantity
+                                *
+                                orderfirst.orders[i].products[j].product_price).toFixed(2)
+                                %> RON</td>
+                          </tr>
+                          <% for (let k = 0; k <
+                            orderfirst.orders[i].products[j].extras.length; ++k) { %>
+                         <% if(orderfirst.orders[i].products[j].extra_length != 0){
+                            %>
+                          <tr>
+                            <td><%=
+                                orderfirst.orders[i].products[j].extras[k].extra_name
+                                %> (extra)</td>
+                            <td><%=
+                                orderfirst.orders[i].products[j].extras[k].extra_quantity
+                                %></td>
+                            <td><%=
+                                orderfirst.orders[i].products[j].extras[k].extra_price
+                                %> RON</td>
+                            <td><%=
+                                (orderfirst.orders[i].products[j].extras[k].extra_quantity
+                                *
+                                orderfirst.orders[i].products[j].extras[k].extra_price).toFixed(2)
+                                %> RON</td>
+                            <td><%=
+                                (orderfirst.orders[i].products[j].extras[k].extra_quantity
+                                *
+                                orderfirst.orders[i].products[j].extras[k].extra_price).toFixed(2)
+                                %> RON</td>
+                          </tr>
+                          <% } %> <% } %>
+                          <%
+                            if(orderfirst.orders[i].products[j].boxPrice !=0){ %>
+                          <tr>
+                            <td>Csomagolás</td>
+                            <td></td>
+                            <td><%= orderfirst.orders[i].products[j].product_quantity
+                                %></td>
+                            <td>
+                                <%= orderfirst.orders[i].products[j].boxPrice %> RON
+                            </td>
+                            <td><%= orderfirst.orders[i].products[j].totalBoxPrice %>
+                                RON</td>
+                          </tr>
+                          <% } %>
+                          <%
+                                    if(orderfirst.orders[i].products[j].message.length !=0){
+                                    %>
+                          <tr>
+                            <td> Speciális kérés: <%=
+                                orderfirst.orders[i].products[j].message %></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                          </tr>
+                          <% } %>
+                        </tbody>
+                      </table>
+                      <% } %>
+                      <% } %>
+                    </div>
+                    <!-- /.col -->
+                  </div>
+                  <!-- /.row -->
+
+                  <div class="row">
+                    <!-- accepted payments column -->
+                    <div class="col-6">
+                      <p class="lead">Fizetés a futárnál</p>
+                      
+                     
+                        
+                      </p>
+                    </div>
+                    <!-- /.col -->
+                    <div class="col-6">
+                      
+                      <div class="table-responsive">
+                        <table class="table">
+                          <tr>
+                            <th style="width: 50%;">Teljes összeg:</th>
+                            <td><%= orderfirst.orders[0].totalPrice %>
+                                RON</td>
+                          </tr>
+                          <tr>
+                            <th>Szállítási költség:</th>
+                            <td><%= orderfirst.orders[0].deliveryPrice
+                                %> RON</td>
+                          </tr>
+                         
+                        </table>
+                      </div>
+                    </div>
+                    <!-- /.col -->
+                  </div>
+                  <!-- /.row -->
+
+                  <!-- this row will not appear when printing -->
+                  <div class="row no-print">
+                    <div class="col-12">
+                      <a href="/admin/order-list">
+                      <button type="button" class="btn btn-success float-right">
+                        <i class="far fa-credit-card"></i> Vissza a rednelések listára
+                      </button>
+                    </a>
+                    </div>
+                  </div>
+                </div>
+                <!-- /.invoice -->
+              </div>
+              <!-- /.col -->
+            </div>
+            <!-- /.row -->
+          </div>
+          <!-- /.container-fluid -->
+        </section>
+        <!-- /.content -->
+      </div>
+      <!-- /.content-wrapper -->
+      <%- include('../includes/footer.ejs') %>
+
+
+      <!-- Control Sidebar -->
+      <aside class="control-sidebar control-sidebar-dark">
+        <!-- Control sidebar content goes here -->
+      </aside>
+      <!-- /.control-sidebar -->
+    </div>
+    <!-- ./wrapper -->
+    <%- include('../includes/end.ejs') %>
+
+  </body>
+</html>

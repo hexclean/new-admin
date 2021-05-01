@@ -4,9 +4,10 @@ const Product = require("../../models/Product");
 const Variant = require("../../models/Variant");
 const ProductTranslation = require("../../models/ProductTranslation");
 const ProductFinal = require("../../models/ProductFinal");
+const Orders = require("../../models/Order");
 const Sequelize = require("sequelize");
 const Allergen = require("../../models/Allergen");
-const ProductHasAllergen = require("../../models/ProductHasAllergen");
+const Users = require("../../models/User");
 const ProductVariants = require("../../models/Variant");
 const AllergenTranslation = require("../../models/AllergenTranslation");
 const Category = require("../../models/Category");
@@ -16,6 +17,7 @@ const Extras = require("../../models/Extra");
 const ExtraTranslations = require("../../models/ExtraTranslation");
 const ITEMS_PER_PAGE = 30;
 const { getLanguageCode } = require("../../shared/language");
+const OrderDeliveryAddress = require("../../models/OrderDeliveryAddress");
 
 // Termékek
 exports.getProducts = async (req, res, next) => {
@@ -759,6 +761,51 @@ exports.getAllergenIndex = async (req, res, next) => {
         previousPage: page - 1,
         lastPage: Math.ceil(totalItems.length / ITEMS_PER_PAGE),
         allergen: allergen,
+      });
+    })
+    .catch((err) => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
+};
+
+// Rendelések
+exports.getOrders = async (req, res, next) => {
+  const page = +req.query.page || 1;
+  let totalItems;
+  const restaurantId = req.admin.id;
+
+  await Orders.findAll({
+    where: {
+      restaurantId: restaurantId,
+    },
+    include: [{ model: OrderDeliveryAddress, include: [{ model: Users }] }],
+  })
+    .then((orders) => {
+      totalItems = orders;
+      return Orders.findAll({
+        where: {
+          restaurantId: restaurantId,
+        },
+        include: [{ model: OrderDeliveryAddress, include: [{ model: Users }] }],
+
+        offset: (page - 1) * ITEMS_PER_PAGE,
+        limit: ITEMS_PER_PAGE,
+      });
+    })
+    .then((orders) => {
+      console.log(orders);
+      res.render("lists/orders", {
+        pageTitle: "Admin Products",
+        path: "/admin/products",
+        currentPage: page,
+        hasNextPage: ITEMS_PER_PAGE * page < totalItems.length,
+        hasPreviousPage: page > 1,
+        nextPage: page + 1,
+        previousPage: page - 1,
+        lastPage: Math.ceil(totalItems.length / ITEMS_PER_PAGE),
+        orders: orders,
       });
     })
     .catch((err) => {

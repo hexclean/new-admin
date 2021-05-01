@@ -1,0 +1,139 @@
+
+<%- include('../includes/head.ejs') %>
+<script>
+   $(document).ready(function() {
+      $('#searchCategory').keyup(function() {
+         const extraId = $('#searchCategory').val();
+         $.get("get-filtered-category/" + extraId).done(function(data) {
+            $("#searchedCategory").html(data);
+         });
+      });
+   })
+   </script>
+</head>
+<body class="hold-transition sidebar-mini">
+<div class="wrapper">
+  <%- include('../includes/nav.ejs') %> <%- include('../includes/aside.ejs')
+  %>
+
+  
+  <div class="content-wrapper">
+   
+    <section class="content-header">
+    
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>Kategória lista</h1>
+          </div>
+          
+        </div>
+      </div>
+      
+      <!-- /.container-fluid -->
+    </section>
+    
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row"></div>
+        <!-- /.row -->
+        
+        <div class="row">
+          
+          <div class="col-12">
+            <a href="/admin/add-category">
+            <button type="button" class="btn btn-block btn-outline-secondary">
+            
+            
+             
+                Kategória létrehozása
+             
+              
+            </button>
+          </a>
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title"></h3>
+
+                <div class="card-tools">
+                  <div
+                    class="input-group input-group-sm"
+                    style="width: 150px;"
+                  >
+                    <input
+                      type="text"
+                      name="searchCategory" id="searchCategory"
+                      class="form-control float-right"
+                      placeholder="Keresés"
+                    />
+
+                    <div class="input-group-append">
+                      <button type="submit" class="btn btn-default">
+                        <i class="fas fa-search"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card-body table-responsive p-0">
+                <table id="searchedCategory" class="table table-hover text-nowrap">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>ÉRTÉK</th>
+                      <th>MÜVELET</th>
+                    </tr>
+                  </thead>
+                  <% for (let i=0; i < orders.length; i++ ) { %>
+                  <tbody>
+                    <tr>
+                      <td><%= orders[i].encodedKey %></td>
+                      <td><%= orders[i].totalPrice %></td>
+                      <td>
+                        <a class="btn btn-secondary btn-sm" href="/admin/view-order/<%= orders[i].encodedKey %>">
+                          <i class="fas fa-folder">
+                          </i>
+                          Megtekintés
+                      </a>
+                      </td>
+                     
+                    </tr>
+                  </tbody>
+                  <% } %>
+                </table>
+              </div>
+              <div class="card-footer clearfix">
+                <ul class="pagination pagination-sm m-0 float-right">
+                  <% if (orders.length > 0) { %>
+                    <%- include('../includes/pagination.ejs', {currentPage: currentPage, nextPage: nextPage, previousPage: previousPage, lastPage: lastPage, hasNextPage: hasNextPage, hasPreviousPage: hasPreviousPage}) %>
+                    <% } %>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <%- include('../includes/footer.ejs') %>
+
+  <aside class="control-sidebar control-sidebar-dark">
+    <!-- Control sidebar content goes here -->
+  </aside>
+  <!-- /.control-sidebar -->
+</div>
+<!-- ./wrapper -->
+
+<!-- jQuery -->
+<script src="/plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- AdminLTE App -->
+<script src="/js/adminlte.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="/js/demo.js"></script>
+</body>
+</html>

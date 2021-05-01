@@ -26,7 +26,8 @@ const router = express.Router();
 
 // LISTS
 router.get("/subcategories", isAuth, listsController.getSubcategories);
-
+// Rendelések
+router.get("/view-order/:orderId", isAuth, ordersController.getOrderDetail);
 // Listák
 router.get("/products", isAuth, listsController.getProducts);
 router.get("/allergens", isAuth, listsController.getAllergenIndex);
@@ -38,6 +39,7 @@ router.get("/categories", isAuth, listsController.getCategoryIndex);
 router.get("/variants", isAuth, listsController.getVariantIndex);
 router.get("/extras", isAuth, listsController.getExtraIndex);
 router.get("/boxes", isAuth, listsController.getBoxIndex);
+router.get("/order-list", isAuth, listsController.getOrders);
 
 // Daily Menu
 router.get("/add-daily-menu", isAuth, dailyMenuController.getAddDailyMenu);
