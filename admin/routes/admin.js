@@ -236,10 +236,7 @@ router.post(
 router.post("/delete-upsell", isAuth, upsellController.postDeleteUpsellProduct);
 
 // Profile
-router.get(
-  "/edit-opening-hours/:restaurantId",
-  adminProfileController.getEditOpeningHours
-);
+
 router.post(
   "/edit-opening-hours",
   isAuth,
@@ -270,10 +267,6 @@ router.post(
 
 router.post("/edit-profile", isAuth, adminProfileController.postEditProfile);
 
-router.get(
-  "/edit-profile/:restaurantId",
-  adminProfileController.getEditProfile
-);
 router.get("/dashboard", isAuth, adminProfileController.getDashboard);
 
 // Allergen

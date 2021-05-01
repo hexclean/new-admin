@@ -1,103 +1,483 @@
+
+
 <%- include('../includes/head.ejs') %>
+<%- include('../jQuery-validation/profile.ejs') %>
 </head>
-<body class="ms-body ms-aside-left-open ms-primary-theme ms-has-quickbar">
- <%- include('../includes/navigation.ejs') %> 
- 
-
-
-  <main class="body-content">  
-    <%- include('../includes/navigation-bar.ejs') %>
-    <div class="ms-content-wrapper">
-      <div class="ms-profile-overview">
-        <div style="background-image: url('/<%= admin.coverImage %>');" class="ms-profile-cover">
-          <img class="ms-profile-img" src="/<%= admin.profileImage %>" >
-          <div class="ms-profile-user-info">
-            <h4 class="ms-profile-username text-white"><%= admin.fullName %></h4>
-           
-          </div>
-          <div class="ms-profile-user-buttons">
-           
-          </div>
-        </div>
-        <ul class="ms-profile-navigation nav nav-tabs tabs-bordered" role="tablist">
-          <li role="presentation"><a href="#tab1" aria-controls="tab1" class="active show" role="tab" data-toggle="tab"> <%= lingua.primary_data %> </a></li>
-          <li role="presentation"><a href="/admin/edit-profile/<%= admin.id %>?edit=true"><%= lingua.primary_data_edit %></a></li>
-          <li role="presentation"><a href="/admin/edit-opening-hours/<%= admin.id %>?edit=true"><%= lingua.opening_hours %></a></li>
-          <li role="presentation"><a href="/admin/edit-profile-image/<%= admin.id %>?edit=true"><%= lingua.profile_image %></a></li>
-          <li role="presentation"><a href="/admin/edit-cover-image/<%= admin.id %>?edit=true"><%= lingua.cover_image %></a></li>
-
-        </ul>
-  
-      
-      </div>
-      
-     
-       
-
-      <div class="container">
-        <div class="row">
-          <div class="col-sm">
-           <a href="?language=hu">
-            <img src="/images/hu.png" width="100" height="100">
-            </a>       
-          </div>
-          <div class="col-sm">
-           <a href="?language=ro">
-            <img src="/images/ro.png" width="100" height="100">
-            </a>      
-          </div>
-          <div class="col-sm">
-           <a href="?language=en">
-            <img src="/images/en.png" width="100" height="100">
-            </a>   
-          </div>
-        </div>
-      
- 
-      </div>
-      <div class="row">
-      
-        <div class="col-xl-5 col-md-12">
-          <div class="ms-panel ms-panel-fh">
-            <div class="ms-panel-body">
-              <table class="table ms-profile-information">
-                <tbody>
-                  <tr>
-                    <th scope="row"><%= lingua.restaurant_name %></th>
-                    <td><%= admin.fullName %></td>
-                  </tr>
-                  <tr>
-                    <th scope="row"><%= lingua.restaurant_email %></th>
-                    <td><%= admin.email %></td>
-                  </tr>
-                  <tr>
-                    <th scope="row"><%= lingua.restaurant_phone %></th>
-                    <td><%= admin.phoneNumber %></td>
-                  </tr>
-                 
-                
-                  <tr>
-                    <th scope="row"><%= lingua.restaurant_joined %></th>
-                    <td><%= admin.createdAt.toLocaleString("en-GB", {
-                      timeZone: "Europe/Helsinki",
-                    }); %></td>
-                  </tr>
-                </tbody>
-              </table>
+<body class="hold-transition sidebar-mini">
+   <div class="wrapper">
+      <%- include('../includes/nav.ejs') %>
+      <%- include('../includes/aside.ejs') %>
+      <div class="content-wrapper">
+         <section class="content-header">
+            <div class="container-fluid">
+               <div class="row mb-2">
+                  <div class="col-sm-6">
+                     <h1>Profile</h1>
+                  </div>
+                  <div class="col-sm-6">
+                     <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">User Profile</li>
+                     </ol>
+                  </div>
+               </div>
             </div>
-          </div>
-          
-        </div>
-        
+         </section>
+         <section class="content">
+            <div class="container-fluid">
+               <div class="row">
+                  <div class="col-md-3">
+                     <div class="card card-primary card-outline">
+                        <div class="card-body box-profile">
+                           <div class="text-center">
+                              <img
+                                 class="profile-user-img img-fluid img-circle"
+                                 src="http://admin.foodnet.ro/images/2021-03-20T20:16:02.615Z-grilllogo.jpg"
+                                 alt="User profile picture"
+                                 />
+                           </div>
+                           <h3 class="profile-username text-center">Pizza&grill</h3>
+                           <ul class="list-group list-group-unbordered mb-3">
+                              <li class="list-group-item">
+                                 <b>E-mail</b>
+                                 <a class="float-right">kukullo@foodnet.ro</a>
+                              </li>
+                              <li class="list-group-item">
+                                 <b>Telefonszám</b>
+                                 <a class="float-right">+40753541070</a>
+                              </li>
+                           </ul>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="col-md-9">
+                     <div class="card">
+                        <div class="card-header p-2">
+                           <ul class="nav nav-pills">
+                              <li class="nav-item">
+                                 <a
+                                    class="nav-link active"
+                                    href="#activity"
+                                    data-toggle="tab"
+                                    >Nyitvatartás</a
+                                    >
+                              </li>
+                              <li class="nav-item">
+                                 <a class="nav-link" href="#settings" data-toggle="tab"
+                                    >Alapadatok</a
+                                    >
+                              </li>
+                           </ul>
+                        </div>
+                        <div class="card-body">
+                           <div class="tab-content">
+                              <div class="active tab-pane" id="activity">
+                                 <form
+                                    class="ms-content-wrapper"
+                                    action="/admin/edit-opening-hours"
+                                    method="POST"
+                                    enctype="multipart/form-data"
+                                    id="updateOpening"
+                                    class="form-horizontal">
+                                    <div class="form-group row">
+                                       <label
+                                          for="inputName"
+                                          class="col-sm-2 col-form-label"
+                                          >Hétfői nyitás</label
+                                          >
+                                       <div class="col-sm-10">
+                                          <input
+                                             type="text"
+                                             class="form-control"
+                                             id="mondayOpen"
+                                             placeholder="Hétfői nyitás"
+                                             name="mondayOpen"
+                                             value="<%= admin[0].Hours[0].OpeningHour.open %>"
+                                             />
+                                       </div>
+                                    </div>
+                                    <div class="form-group row">
+                                       <label
+                                          for="mondayClose"
+                                          class="col-sm-2 col-form-label"
+                                          >Hétfői zárás</label
+                                          >
+                                       <div class="col-sm-10">
+                                          <input
+                                             type="text"
+                                             class="form-control"
+                                             id="mondayClose"
+                                             placeholder="Hétfői zárás"
+                                             name="mondayClose"
+                                             value="<%= admin[0].Hours[0].OpeningHour.close %>"
+                                             />
+                                       </div>
+                                    </div>
+                                    <hr/>
+                                    <div class="form-group row">
+                                       <label
+                                          for="tuesdayOpen"
+                                          class="col-sm-2 col-form-label"
+                                          >Keddi nyitás</label
+                                          >
+                                       <div class="col-sm-10">
+                                          <input
+                                             type="text"
+                                             class="form-control"
+                                             id="tuesdayOpen"
+                                             placeholder="Name"
+                                             name="tuesdayOpen"
+                                             value="<%= admin[0].Hours[1].OpeningHour.open %>"
+                                             />
+                                       </div>
+                                    </div>
+                                    <div class="form-group row">
+                                       <label
+                                          for="tuesdayClose"
+                                          class="col-sm-2 col-form-label"
+                                          >Keddi zárás</label
+                                          >
+                                       <div class="col-sm-10">
+                                          <input
+                                             type="text"
+                                             class="form-control"
+                                             id="tuesdayClose"
+                                             placeholder="Email"
+                                             name="tuesdayClose"
+                                             value="<%= admin[0].Hours[1].OpeningHour.close %>"
+                                             />
+                                       </div>
+                                    </div>
+                                    <hr/>
+                                    <div class="form-group row">
+                                       <label
+                                          for="wednesdayOpen"
+                                          class="col-sm-2 col-form-label"
+                                          >Szerdai nyitás</label
+                                          >
+                                       <div class="col-sm-10">
+                                          <input
+                                             type="text"
+                                             class="form-control"
+                                             id="wednesdayOpen"
+                                             placeholder="Name"
+                                             name="wednesdayOpen"
+                                             value="<%= admin[0].Hours[2].OpeningHour.open %>"
+                                             />
+                                       </div>
+                                    </div>
+                                    <div class="form-group row">
+                                       <label
+                                          for="wednesdayClose"
+                                          class="col-sm-2 col-form-label"
+                                          >Szerdai zárás</label
+                                          >
+                                       <div class="col-sm-10">
+                                          <input
+                                             type="text"
+                                             class="form-control"
+                                             id="wednesdayClose"
+                                             placeholder="Email"
+                                             name="wednesdayClose"
+                                             value="<%= admin[0].Hours[2].OpeningHour.close %>"
+                                             />
+                                       </div>
+                                    </div>
+                                    <hr/>
+                                    <div class="form-group row">
+                                       <label
+                                          for="thursdayOpen"
+                                          class="col-sm-2 col-form-label"
+                                          >Csütörtöki nyitás</label
+                                          >
+                                       <div class="col-sm-10">
+                                          <input
+                                             type="text"
+                                             class="form-control"
+                                             id="thursdayOpen"
+                                             placeholder="Name"
+                                             name="thursdayOpen"
+                                             value="<%= admin[0].Hours[3].OpeningHour.open %>"
+                                             />
+                                       </div>
+                                    </div>
+                                    <div class="form-group row">
+                                       <label
+                                          for="thursdayClose"
+                                          class="col-sm-2 col-form-label"
+                                          >Csütörtöki zárás</label
+                                          >
+                                       <div class="col-sm-10">
+                                          <input
+                                             type="text"
+                                             class="form-control"
+                                             id="thursdayClose"
+                                             placeholder="Email"
+                                             name="thursdayClose"
+                                             value="<%= admin[0].Hours[3].OpeningHour.close %>"
+                                             />
+                                       </div>
+                                    </div>
+                                    <hr/>
+                                    <div class="form-group row">
+                                       <label
+                                          for="fridayOpen"
+                                          class="col-sm-2 col-form-label"
+                                          >Pénteki nyitás</label
+                                          >
+                                       <div class="col-sm-10">
+                                          <input
+                                             type="text"
+                                             class="form-control"
+                                             id="fridayOpen"
+                                             placeholder="Name"
+                                             name="fridayOpen"
+                                             value="<%= admin[0].Hours[4].OpeningHour.open %>"
+                                             />
+                                       </div>
+                                    </div>
+                                    <div class="form-group row">
+                                       <label
+                                          for="fridayClose"
+                                          class="col-sm-2 col-form-label"
+                                          >Pénteki zárás</label
+                                          >
+                                       <div class="col-sm-10">
+                                          <input
+                                             type="text"
+                                             class="form-control"
+                                             id="fridayClose"
+                                             placeholder="Email"
+                                             name="fridayClose"
+                                             value="<%= admin[0].Hours[4].OpeningHour.close %>"
+                                             />
+                                       </div>
+                                    </div>
+                                    <hr/>
+                                    <div class="form-group row">
+                                       <label
+                                          for="saturdayOpen"
+                                          class="col-sm-2 col-form-label"
+                                          >Szombati nyitás</label
+                                          >
+                                       <div class="col-sm-10">
+                                          <input
+                                             type="text"
+                                             class="form-control"
+                                             id="saturdayOpen"
+                                             placeholder="Name"
+                                             name="saturdayOpen"
+                                             value="<%= admin[0].Hours[5].OpeningHour.open %>"
+                                             />
+                                       </div>
+                                    </div>
+                                    <div class="form-group row">
+                                       <label
+                                          for="saturdayClose"
+                                          class="col-sm-2 col-form-label"
+                                          >Szombati zárás</label
+                                          >
+                                       <div class="col-sm-10">
+                                          <input
+                                             type="text"
+                                             class="form-control"
+                                             id="saturdayClose"
+                                             placeholder="Email"
+                                             name="saturdayClose"
+                                             value="<%= admin[0].Hours[5].OpeningHour.close %>"
+                                             />
+                                       </div>
+                                    </div>
+                                    <hr/>
+                                    <div class="form-group row">
+                                       <label
+                                          for="sundayOpen"
+                                          class="col-sm-2 col-form-label"
+                                          >Vasárnapi nyitás</label
+                                          >
+                                       <div class="col-sm-10">
+                                          <input
+                                             type="text"
+                                             class="form-control"
+                                             id="sundayOpen"
+                                             placeholder="Name"
+                                             name="sundayOpen"
+                                             value="<%= admin[0].Hours[6].OpeningHour.open %>"
+                                             />
+                                       </div>
+                                    </div>
+                                    <div class="form-group row">
+                                       <label
+                                          for="sundayClose"
+                                          class="col-sm-2 col-form-label"
+                                          >Vasárnapi zárás</label
+                                          >
+                                       <div class="col-sm-10">
+                                          <input
+                                             type="text"
+                                             class="form-control"
+                                             id="sundayClose"
+                                             placeholder="Email"
+                                             name="sundayClose"
+                                             value="<%= admin[0].Hours[6].OpeningHour.close %>"
+                                             />
+                                       </div>
+                                    </div>
+                                    <hr/>
+                                    <div class="form-group row">
+                                       <div class="offset-sm-2 col-sm-10">
+                                          <button type="submit" class="btn btn-secondary">
+                                          Submit
+                                          </button>
+                                       </div>
+                                 </form>
+                                 </div>
+                              </div>
+                              <div class="tab-pane" id="settings">
+                                 <form
+                                 class="ms-content-wrapper"
+                                 action="/admin/edit-profile"
+                                 method="POST"
+                                 enctype="multipart/form-data"
+                                 id="update_profile"
+                                  class="form-horizontal">
+                                    <div class="form-group row">
+                                       <label
+                                          for="fullName"
+                                          class="col-sm-2 col-form-label"
+                                          >Név</label
+                                          >
+                                       <div class="col-sm-10">
+                                          <input
+                                             type="text"
+                                             class="form-control"
+                                             id="fullName"
+                                             placeholder="Name"
+                                             name="fullName"
+                                             value="<%= admin[0].fullName %>"
+                                             />
+                                       </div>
+                                    </div>
+                                    <div class="form-group row">
+                                       <label
+                                          for="email"
+                                          class="col-sm-2 col-form-label"
+                                          >E-mail</label
+                                          >
+                                       <div class="col-sm-10">
+                                          <input
+                                             type="email"
+                                             class="form-control"
+                                             id="email"
+                                             placeholder="Email"
+                                             name="email"
+                                             value="<%= admin[0].email %>"
+                                             />
+                                       </div>
+                                    </div>
+                                    <div class="form-group row">
+                                       <label
+                                          for="phoneNumber"
+                                          class="col-sm-2 col-form-label"
+                                          >Telefonszám</label
+                                          >
+                                       <div class="col-sm-10">
+                                          <input
+                                             type="text"
+                                             class="form-control"
+                                             id="phoneNumber"
+                                             name="phoneNumber"
+                                             placeholder="Name"
+                                             value="<%= admin[0].phoneNumber %>"
+                                             />
+                                       </div>
+                                    </div>
+                                    <div class="form-group row">
+                                       <label
+                                          for="roShortCompanyDesc"
+                                          class="col-sm-2 col-form-label"
+                                          >Promóciós szöveg románul</label
+                                          >
+                                       <div class="col-sm-10">
+                                          <input
+                                             class="form-control"
+                                             id="roShortCompanyDesc"
+                                             name="roShortCompanyDesc"
+                                             placeholder="Experience"
+                                             value= "<%= admins[0].RestaurantInfos[0].shortCompanyDesc %>"
+                                             ></input>
+                                       </div>
+                                    </div>
+                                    <div class="form-group row">
+                                       <label
+                                          for="huShortCompanyDesc"
+                                          class="col-sm-2 col-form-label"
+                                          >Promóciós szöveg magyarul</label
+                                          >
+                                       <div class="col-sm-10">
+                                          <input
+                                             class="form-control"
+                                             id="huShortCompanyDesc"
+                                             placeholder="Experience"
+                                             name="huShortCompanyDesc"
+                                             value= "<%= admins[0].RestaurantInfos[1].shortCompanyDesc %>"
+                                             ></input>
+                                       </div>
+                                    </div>
+                                    <div class="form-group row">
+                                       <label
+                                          for="roAdress"
+                                          class="col-sm-2 col-form-label"
+                                          >Elérhetőség románul</label
+                                          >
+                                       <div class="col-sm-10">
+                                          <input
+                                             class="form-control"
+                                             id="roAdress"
+                                             placeholder="Experience"
+                                             name="roAdress"
+                                             value= "<%= admins[0].RestaurantInfos[0].address %>"
+                                             ></input>
+                                       </div>
+                                    </div>
+                                    <div class="form-group row">
+                                       <label
+                                          for="huAdress"
+                                          class="col-sm-2 col-form-label"
+                                          >Elérhetőség magyarul</label
+                                          >
+                                       <div class="col-sm-10">
+                                          <input
+                                             class="form-control"
+                                             id="huAdress"
+                                             placeholder="Experience"
+                                             name="huAdress"
+                                             value= "<%= admins[0].RestaurantInfos[1].address %>"
+                                             ></input>
+                                       </div>
+                                    </div>
+                                    <div class="form-group row">
+                                       <div class="offset-sm-2 col-sm-10">
+                                          <button type="submit" class="btn btn-secondary">
+                                          Submit
+                                          </button>
+                                       </div>
+                                    </div>
+                                 </form>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </section>
       </div>
-      
-    </div>
-    <form action="/logout" method="POST">
-      <button class="btn btn-primary" type="submit" id="updateOpeningHrBtn">
-                    <%= lingua.logout %>
-                     </button>
-    </form>
-  </main>
-<%- include('../includes/end.ejs')
-  %>
+      <%- include('../includes/footer.ejs') %>
+      <aside class="control-sidebar control-sidebar-dark">
+      </aside>
+   </div>
+   <%- include('../includes/end.ejs') %>
 </body>
+</html>
+

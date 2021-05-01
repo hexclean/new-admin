@@ -4,87 +4,6 @@ const fileHelper = require("../../util/file");
 const Hours = require("../../models/Hours.js");
 const OpeningHours = require("../../models/OpeningHours");
 const OpeningHoursTranslation = require("../../models/OpeningHoursTranslation");
-exports.getEditProfile = async (req, res, next) => {
-  restaurantId = req.admin.id;
-  adminIdParams = req.params.restaurantId;
-  const editMode = req.query.edit;
-  if (!editMode) {
-    return res.redirect("/");
-  }
-
-  await Admin.findAll({
-    where: { id: req.admin.id },
-    include: [
-      {
-        model: RestaurantInfo,
-      },
-    ],
-  })
-    .then((admin) => {
-      res.render("profile/edit-profile", {
-        pageTitle: "Edit Product",
-        path: "/admin/edit-product",
-        editing: editMode,
-        admin: admin,
-        hasError: false,
-        errorMessage: null,
-        validationErrors: [],
-      });
-    })
-    .catch((err) => {
-      const error = new Error(err);
-      error.httpStatusCode = 500;
-      return next(error);
-    });
-};
-
-exports.getEditOpeningHours = async (req, res, next) => {
-  const adminIdParams = req.params.restaurantId;
-  const restaurantId = req.admin.id;
-
-  const editMode = req.query.edit;
-
-  if (adminIdParams != restaurantId) {
-    return res.redirect("/");
-  }
-
-  if (!editMode) {
-    return res.redirect("/");
-  }
-
-  await Admin.findAll({
-    where: { id: req.admin.id },
-    include: [
-      {
-        model: Hours,
-        include: [
-          {
-            model: OpeningHours,
-            include: [
-              {
-                model: OpeningHoursTranslation,
-              },
-            ],
-          },
-        ],
-      },
-    ],
-  })
-    .then((admin) => {
-      console.log(admin);
-      res.render("profile/edit-opening-hours", {
-        pageTitle: "Edit Product",
-        path: "/admin/edit-product",
-        editing: editMode,
-        admin: admin,
-      });
-    })
-    .catch((err) => {
-      const error = new Error(err);
-      error.httpStatusCode = 500;
-      return next(error);
-    });
-};
 
 exports.postEditOpeningHours = async (req, res, next) => {
   const mondayOpen = req.body.mondayOpen;
@@ -201,7 +120,7 @@ exports.postEditOpeningHours = async (req, res, next) => {
       }
     );
   }
-  updateOpeningHours();
+  await updateOpeningHours();
   return res.redirect("/admin/dashboard");
 };
 
@@ -210,80 +129,98 @@ exports.postEditProfile = async (req, res, next) => {
   const phoneNumber = req.body.phoneNumber;
   const roAdress = req.body.roAdress;
   const huAdress = req.body.huAdress;
-  const enAdress = req.body.enAdress;
+  const email = req.body.email;
   const roShortCompanyDesc = req.body.roShortCompanyDesc;
   const huShortCompanyDesc = req.body.huShortCompanyDesc;
   const enShortCompanyDesc = req.body.enShortCompanyDesc;
   const city = req.body.city;
   const village = req.body.village;
+  let restaurantId = req.admin.id;
+  try {
+    async function updateProfile() {
+      await Admin.update(
+        {
+          phoneNumber: phoneNumber,
+          deliveryPriceVillage: village,
+          deliveryPriceCity: city,
+          fullName: fullName,
+          email: email,
+        },
+        { where: { id: restaurantId } }
+      );
 
-  Admin.findAll({
-    include: [
-      {
-        model: RestaurantInfo,
-        where: { restaurantId: req.admin.id },
-      },
-    ],
-  })
-    .then((admin) => {
-      async function msg() {
-        await Admin.update(
-          {
-            phoneNumber: phoneNumber,
-            deliveryPriceVillage: village,
-            deliveryPriceCity: city,
-            fullName: fullName,
-          },
-          { where: { id: req.admin.id } }
-        );
+      await RestaurantInfo.update(
+        { shortCompanyDesc: roShortCompanyDesc, address: roAdress },
+        { where: { restaurantId: restaurantId, languageId: 1 } }
+      );
 
-        await RestaurantInfo.update(
-          { shortCompanyDesc: roShortCompanyDesc, address: roAdress },
-          { where: { restaurantId: req.admin.id, languageId: 1 } }
-        );
+      await RestaurantInfo.update(
+        { shortCompanyDesc: huShortCompanyDesc, address: huAdress },
+        { where: { restaurantId: restaurantId, languageId: 2 } }
+      );
 
-        await RestaurantInfo.update(
-          { shortCompanyDesc: huShortCompanyDesc, address: huAdress },
-          { where: { restaurantId: req.admin.id, languageId: 2 } }
-        );
+      await RestaurantInfo.update(
+        { shortCompanyDesc: enShortCompanyDesc, address: roAdress },
+        { where: { restaurantId: restaurantId, languageId: 3 } }
+      );
+    }
+    await updateProfile();
 
-        await RestaurantInfo.update(
-          { shortCompanyDesc: enShortCompanyDesc, address: enAdress },
-          { where: { restaurantId: req.admin.id, languageId: 3 } }
-        );
-      }
-      msg();
-
-      res.redirect("/admin/dashboard");
-    })
-    .catch((err) => {
-      const error = new Error(err);
-      error.httpStatusCode = 500;
-      return next(error);
-    });
+    res.redirect("/admin/dashboard");
+  } catch (err) {
+    const error = new Error(err);
+    error.httpStatusCode = 500;
+    return next(error);
+  }
 };
 
-exports.getDashboard = (req, res, next) => {
+exports.getDashboard = async (req, res, next) => {
   const editMode = req.query.edit;
   const restaurantId = req.admin.id;
 
-  Admin.findByPk(restaurantId)
-    .then((admin) => {
-      if (!admin) {
-        return res.redirect("/admin/products");
-      }
-      res.render("profile/dashboard", {
-        pageTitle: "Edit admin",
-        editing: editMode,
-        path: "/admin/edit-admin",
-        admin: admin,
-      });
-    })
-    .catch((err) => {
-      const error = new Error(err);
-      error.httpStatusCode = 500;
-      return next(error);
-    });
+  const admin = await Admin.findAll({
+    where: { id: req.admin.id },
+    include: [
+      {
+        model: Hours,
+
+        include: [
+          {
+            model: OpeningHours,
+            include: [
+              {
+                model: OpeningHoursTranslation,
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  });
+  const admins = await Admin.findAll({
+    where: { id: req.admin.id },
+    include: [{ model: RestaurantInfo }],
+  });
+  console.log(admins[0].RestaurantInfos);
+  // Admin.findByPk(restaurantId)
+  // .then((admin) => {
+  //   if (!admin) {
+  //     return res.redirect("/admin/products");
+  //   }
+
+  res.render("profile/dashboard", {
+    pageTitle: "Edit admin",
+    editing: editMode,
+    path: "/admin/edit-admin",
+    admin: admin,
+    admins: admins,
+  });
+  // })
+  // .catch((err) => {
+  //   const error = new Error(err);
+  //   error.httpStatusCode = 500;
+  //   return next(error);
+  // });
 };
 
 exports.getEditProfileImages = (req, res, next) => {
