@@ -91,9 +91,11 @@ exports.getEditAllergen = async (req, res, next) => {
   const allergenId = req.params.allergenId;
 
   // Ha nem az étteremhez tartozik, akkor átírányítás
-  await Allergen.findByPk(allergenId).then((allergen) => {
-    if (!allergen || !editMode) {
-      return res.redirect("/");
+  await Allergen.findOne({
+    where: { id: allergenId, restaurantId: req.admin.id },
+  }).then((allergen) => {
+    if (!allergen) {
+      return res.redirect("/admin/allergens");
     }
   });
 

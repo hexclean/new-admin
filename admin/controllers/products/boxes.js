@@ -45,11 +45,13 @@ exports.getEditBox = async (req, res, next) => {
   const restaurantId = req.admin.id;
 
   // Ha nem az étteremhez tartozik, akkor visszairányít a csomagolás listára
-  await Box.findByPk(boxId).then((box) => {
-    if (!box || !editMode) {
-      return res.redirect("/");
+  await Box.findOne({ where: { id: boxId, restaurantId: req.admin.id } }).then(
+    (box) => {
+      if (!box) {
+        return res.redirect("/admin/boxes");
+      }
     }
-  });
+  );
 
   try {
     // Csomagolás keresése

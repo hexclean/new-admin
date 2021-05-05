@@ -22,7 +22,6 @@ exports.getAddExtra = async (req, res, next) => {
 // POST
 // Extra létrehozása
 exports.postAddExtra = async (req, res, next) => {
-  console.log(req.body);
   const roName = req.body.roName;
   const huName = req.body.huName;
   const price = req.body.price;
@@ -107,9 +106,11 @@ exports.getEditExtra = async (req, res, next) => {
   const restaurantId = req.admin.id;
 
   // Szerver oldali validáció
-  await Extra.findByPk(extraId).then((extra) => {
-    if (!extra || !editMode) {
-      return res.redirect("/");
+  await Extra.findOne({
+    where: { id: extraId, restaurantId: req.admin.id },
+  }).then((extras) => {
+    if (!extras) {
+      return res.redirect("/admin/extras");
     }
   });
 

@@ -186,8 +186,11 @@ exports.getEditVariant = async (req, res, next) => {
   const editMode = req.query.edit;
   const varId = req.params.variantId;
   const languageCode = getLanguageCode(req.cookies.language);
-  await Variant.findByPk(varId).then((variant) => {
-    if (!variant || !editMode) {
+
+  await Variant.findOne({
+    where: { id: varId, restaurantId: req.admin.id },
+  }).then((extras) => {
+    if (!extras) {
       return res.redirect("/admin/variants");
     }
   });
